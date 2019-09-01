@@ -26,7 +26,8 @@ class CreatePeopleTable extends Migration
             $table->string('phone_mobile')->nullable();
             $table->string('phone_private')->nullable();
             $table->string('fax')->nullable();
-            $table->string('email')->nullable();
+            // TODO: remove character limit once travis can handle mariadb 10.4.7 and thus uniqueness properly
+            $table->string('email', 100)->nullable();
             $table->string('website')->nullable();
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();

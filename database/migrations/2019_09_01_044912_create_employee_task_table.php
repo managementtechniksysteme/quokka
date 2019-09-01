@@ -14,8 +14,8 @@ class CreateEmployeeTaskTable extends Migration
     public function up()
     {
         Schema::create('employee_task', function (Blueprint $table) {
-            $table->bigInteger('employee_id');
-            $table->bigInteger('task_id');
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('task_id');
             $table->timestamps();
 
             $table->primary(['employee_id', 'task_id']);

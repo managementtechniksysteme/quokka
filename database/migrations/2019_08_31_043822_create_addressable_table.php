@@ -14,9 +14,9 @@ class CreateAddressableTable extends Migration
     public function up()
     {
         Schema::create('addressable', function (Blueprint $table) {
-            $table->bigInteger("address_id");
-            $table->bigInteger("addressable_id");
-            $table->string("addressable_type");
+            $table->bigInteger('address_id');
+            $table->bigInteger('addressable_id');
+            $table->string('addressable_type');
             $table->timestamps();
 
             $table->primary(['address_id', 'addressable_id', 'addressable_type']);

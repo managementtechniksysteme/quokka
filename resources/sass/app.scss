@@ -1,0 +1,74 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Vue: wait for components to fully load before showing content
+[v-cloak] {display: none}
+
+// Delete dropdown button with red text and white text with red background on hover
+button.dropdown-item-delete {
+  color: $danger !important;
+}
+
+button.dropdown-item-delete:hover {
+  color: $danger !important;
+}
+
+button.dropdown-item-delete:active {
+  color: #ffffff !important;
+  background-color: $danger !important;
+}
+
+// No link outlines (e.g. quick menu dropdowns)
+.outline-none {
+  outline: none;
+}
+
+// Feather icons
+.feather {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.feather-16{
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+}
+
+.feather-20{
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.feather-24{
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+}
+
+.feather-28{
+  min-width: 28px;
+  min-height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+}
+
+.feather-32{
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+}

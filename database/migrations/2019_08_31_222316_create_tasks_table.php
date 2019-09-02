@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
             $table->string('name');
             $table->date('starts_on')->nullable();
             $table->date('ends_on')->nullable();
+            $table->date('due_on')->nullable();
             $table->boolean('private');
             $table->enum('priority', ['low', 'medium', 'high']);
             $table->enum('status', ['new', 'in progress', 'finished']);
@@ -30,7 +31,7 @@ class CreateTasksTable extends Migration
             $table->unique('name');
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('employee_id')->references('person_id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

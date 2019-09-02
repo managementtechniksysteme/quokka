@@ -155,7 +155,7 @@ class LoginTest extends TestCase
         $this->get($otpUrl);
 
         $response = $this->post($otpUrl, [
-            'user' => encrypt($user->id),
+            'user' => encrypt($user->getAuthIdentifier()),
             'one_time_password' => $google2fa->getCurrentOtp($otp_secret),
         ]);
 
@@ -166,7 +166,6 @@ class LoginTest extends TestCase
     public function test_remember_me_functionality()
     {
         $user = factory(User::class)->create([
-            'id' => random_int(1, 100),
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -180,7 +179,7 @@ class LoginTest extends TestCase
 
         $response->assertRedirect($this->successfulLoginRoute());
         $response->assertCookie(Auth::guard()->getRecallerName(), vsprintf('%s|%s|%s', [
-            $user->id,
+            $user->employee_id,
             $user->getRememberToken(),
             $user->password,
         ]));
@@ -227,7 +226,7 @@ class LoginTest extends TestCase
         $this->get($otpUrl);
 
         $response = $this->post($otpUrl, [
-            'user' => encrypt($user->id),
+            'user' => encrypt($user->getAuthIdentifier()),
             'one_time_password' => '123456',
         ]);
 

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'password', 'otp_secret', 'employee_id',
+        'employee_id', 'username', 'password', 'otp_secret',
     ];
 
     /**
@@ -29,9 +29,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $primaryKey = 'employee_id';
+    public $incrementing = false;
+
     public function employee()
     {
-        return $this->belongsTo('App\Employee');
+        return $this->belongsTo('App\Employee', 'employee_id', 'person_id');
     }
 
     public function getPersonAttribute()

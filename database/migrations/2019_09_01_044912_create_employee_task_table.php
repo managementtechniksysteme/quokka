@@ -20,7 +20,7 @@ class CreateEmployeeTaskTable extends Migration
 
             $table->primary(['employee_id', 'task_id']);
 
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('employee_id')->references('person_id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('restrict')->onUpdate('cascade');
         });
     }

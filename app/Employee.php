@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    protected $fillable = [
-        'person_id', 'entered_on', 'left_on', 'holidays',
-    ];
-
     protected $casts = [
+        'person_id' => 'int',
         'entered_on' => 'date',
         'left_on' => 'date',
+        'holidays' => 'int',
+    ];
+
+    protected $fillable = [
+        'person_id', 'entered_on', 'left_on', 'holidays',
     ];
 
     protected $primaryKey = 'person_id';

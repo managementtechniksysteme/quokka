@@ -11,6 +11,10 @@ class User extends Authenticatable
     use Notifiable;
     use SoftDeletes;
 
+    protected $casts = [
+      'employee_id' => 'int',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

@@ -87,6 +87,8 @@ class LoginTest extends TestCase
             'password' => $password,
         ]);
 
+        $expected = $this->app->make('auth')->user();
+
         $response->assertRedirect($this->successfulLoginRoute());
         $this->assertAuthenticatedAs($user);
     }
@@ -126,7 +128,7 @@ class LoginTest extends TestCase
         $redirectUrl = $this->responseUrl($response);
 
         $response->assertRedirect();
-        $this->assertContains($this->otpGetRoute(), $redirectUrl);
+        $this->assertStringContainsString($this->otpGetRoute(), $redirectUrl);
         $this->assertGuest();
     }
 

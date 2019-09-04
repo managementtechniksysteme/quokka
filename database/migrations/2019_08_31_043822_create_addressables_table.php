@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAddressableTable extends Migration
+class CreateAddressablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAddressableTable extends Migration
      */
     public function up()
     {
-        Schema::create('addressable', function (Blueprint $table) {
+        Schema::create('addressables', function (Blueprint $table) {
             $table->bigInteger('address_id');
             $table->bigInteger('addressable_id');
             $table->string('addressable_type');

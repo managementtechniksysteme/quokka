@@ -234,6 +234,7 @@ class LoginTest extends TestCase
 
         // TODO: query parameter ordering for asserting redirect
         //$response->assertRedirect($otpUrl);
+        $this->assertStringContainsString($this->otpGetRoute(), $this->responseUrl($response));
         $response->assertSessionHasErrors('one_time_password');
         $this->assertFalse(session()->hasOldInput('one_time_password'));
         $this->assertGuest();

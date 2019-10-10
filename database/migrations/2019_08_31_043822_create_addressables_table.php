@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAddressablesTable extends Migration
 {
@@ -19,7 +19,9 @@ class CreateAddressablesTable extends Migration
             $table->string('addressable_type');
             $table->timestamps();
 
-            $table->primary(['address_id', 'addressable_id', 'addressable_type']);
+            // The field address_id is not part of the primary key in order
+            // to limit addresses to one per linked model (e.g. company).
+            $table->primary(['addressable_id', 'addressable_type']);
         });
     }
 

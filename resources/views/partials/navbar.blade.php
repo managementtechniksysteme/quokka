@@ -12,7 +12,7 @@
             <ul class="navbar-nav mr-auto">
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="#">
+                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('companies.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>

@@ -22,11 +22,11 @@ class Employee extends Model
 
     public function person()
     {
-        return $this->belongsTo('App\Person');
+        return $this->belongsTo(Person::class);
     }
 
     public function user()
     {
-        return $this->hasOne('App\User', 'employee_id');
+        return $this->hasOne(User::class, 'employee_id');
     }
 }

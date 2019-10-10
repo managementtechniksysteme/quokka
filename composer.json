@@ -11,6 +11,7 @@
         "php": "^7.2",
         "bacon/bacon-qr-code": "^2.0",
         "fideloper/proxy": "^4.0",
+        "graham-campbell/markdown": "^11.1",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "pragmarx/google2fa": "^5.0",

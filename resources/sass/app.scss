@@ -7,8 +7,120 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Vue Select
+@import "~vue-select/src/scss/vue-select.scss";
+
 // Vue: wait for components to fully load before showing content
 [v-cloak] {display: none}
+
+// Fixes for EasyMDE (hide editor preview in edit mode, smaller toolbar)
+.CodeMirror > .editor-preview {
+  display: none;
+}
+
+.vue-easymde > .editor-toolbar > button {
+  width: 24px;
+  height: 24px;
+}
+
+// Fixes for Vue Select to display correctly with Bootstrap CSS
+.v-select .vs__dropdown-toggle {
+  @extend .form-control;
+  display: flex;
+}
+
+.vs__actions {
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.vs__clear {
+  display: flex;
+  align-items: center;
+}
+
+.vs__dropdown-option {
+  padding: 0.375rem 0.75rem;
+}
+
+.vs__selected-options {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.vs__search, .vs__search:focus, .vs__selected {
+  margin-top: 0;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+// Feather icons
+svg.feather {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+svg.feather-12 {
+  min-width: 12px;
+  min-height: 12px;
+  max-width: 12px;
+  max-height: 12px;
+}
+
+svg.feather-16 {
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
+}
+
+svg.feather-20 {
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 20px;
+  max-height: 20px;
+}
+
+svg.feather-24 {
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+}
+
+svg.feather-28 {
+  min-width: 28px;
+  min-height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+}
+
+svg.feather-32 {
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+}
+
+// Empty state images
+img.empty-state {
+  min-width: 256px;
+  max-width: 256px;
+}
+
+// Overview dropdown
+.dropdown-toggle-vertical-points:after {
+  border: none;
+  content: '\2807';
+}
+
+.dropdown-toggle-vertical-points:hover, .dropdown-toggle-vertical-points:focus {
+  text-decoration: none;
+}
 
 // Delete dropdown button with red text and white text with red background on hover
 button.dropdown-item-delete {
@@ -29,46 +141,19 @@ button.dropdown-item-delete:active {
   outline: none;
 }
 
-// Feather icons
-.feather {
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
+// Overview cards
+.overview-card:hover {
+  background-color: $hover-bg;
 }
 
-.feather-16{
-  min-width: 16px;
-  min-height: 16px;
-  max-width: 16px;
-  max-height: 16px;
+// Side menu
+.menu-item.active {
+  color: $primary !important;
+  font-weight: bold;
 }
 
-.feather-20{
-  min-width: 20px;
-  min-height: 20px;
-  max-width: 20px;
-  max-height: 20px;
-}
-
-.feather-24{
-  min-width: 24px;
-  min-height: 24px;
-  max-width: 24px;
-  max-height: 24px;
-}
-
-.feather-28{
-  min-width: 28px;
-  min-height: 28px;
-  max-width: 28px;
-  max-height: 28px;
-}
-
-.feather-32{
-  min-width: 32px;
-  min-height: 32px;
-  max-width: 32px;
-  max-height: 32px;
+.menu-item:hover {
+  background-color: $hover-bg;
+  color: $primary !important;
+  text-decoration: none;
 }

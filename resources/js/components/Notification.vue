@@ -1,5 +1,5 @@
 <template>
-    <div id="notification" :class="[{'show': show}, backgroundClass]" v-show="show" v-cloak>
+    <div id="notification" :class="[{'show': show}, backgroundClass, colorClass]" v-show="show" v-cloak>
         <slot></slot>
     </div>
 </template>
@@ -12,7 +12,7 @@
 
         data() {
             return {
-                show : false,
+                show: false,
             }
         },
 
@@ -23,6 +23,13 @@
                     'bg-info': this.type === 'info',
                     'bg-warning': this.type === 'warning',
                     'bg-danger': this.type === 'danger'
+                }
+            },
+
+            colorClass: function () {
+                return {
+                    'text-white': this.type === 'success' || this.type === 'info' ||this.type === 'danger',
+                    'text-dark': this.type === 'warning',
                 }
             }
         },
@@ -54,7 +61,6 @@
         width: 100%;
         top: 0;
         left: 0;
-        color: #fff;
         text-align: center;
         padding: 16px;
         position: fixed;

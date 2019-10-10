@@ -7,7 +7,13 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import AddressDropdown from './components/AddressDropdown';
+import GestureLinks from './components/GestureLinks';
 import Notification from './components/Notification.vue';
+import vSelect from 'vue-select';
+import VueEasymde from "vue-easymde";
+import { VueHammer } from 'vue2-hammer';
+import "easymde/dist/easymde.min.css";
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,7 +26,21 @@ import Notification from './components/Notification.vue';
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.component('address-dropdown', AddressDropdown);
+Vue.component('gesture-links', GestureLinks);
 Vue.component('notification', Notification);
+Vue.component('vue-easymde', VueEasymde);
+Vue.component('v-select', vSelect);
+
+Vue.use(VueHammer);
+
+VueHammer.config.pan = {
+    direction: 'horizontal'
+};
+
+VueHammer.config.swipe = {
+    direction: 'horizontal'
+};
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

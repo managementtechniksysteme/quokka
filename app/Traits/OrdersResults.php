@@ -18,7 +18,7 @@ trait OrdersResults
 
         foreach ($orderArray as $order) {
             if (is_array($order)) {
-                switch (sizeof($order)) {
+                switch (count($order)) {
                     case 1:
                         $query->orderBy($order[0]);
                         break;

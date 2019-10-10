@@ -3,12 +3,12 @@
 namespace Tests\Feature\Auth;
 
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
+use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use PragmaRX\Google2FA\Google2FA;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginTest extends TestCase
 {

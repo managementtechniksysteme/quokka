@@ -1,10 +1,10 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Employee;
 use App\User;
-use Faker\Generator as Faker;
+use App\Employee;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
 
 /*
 |--------------------------------------------------------------------------

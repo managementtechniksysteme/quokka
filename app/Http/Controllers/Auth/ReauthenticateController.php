@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PragmaRX\Google2FA\Google2FA;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
-use PragmaRX\Google2FA\Google2FA;
 
 class ReauthenticateController extends Controller
 {

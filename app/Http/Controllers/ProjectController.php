@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Http\Requests\ProjectStoreRequest;
-use App\Http\Requests\ProjectUpdateRequest;
 use App\Project;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProjectStoreRequest;
+use App\Http\Requests\ProjectUpdateRequest;
 
 class ProjectController extends Controller
 {

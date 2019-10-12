@@ -46,7 +46,7 @@
             <div class="form-group col">
                 <label for="address_id">Adresse</label>
                 <address-dropdown :addresses="{{ $addresses }}" :current_address="{{ $currentAddress ?? 'null' }}"></address-dropdown>
-                <div class="invalid-feedback">
+                <div class="invalid-feedback @error('address_id') d-block @enderror">
                     @error('address_id')
                     {{ $message }}
                     @enderror

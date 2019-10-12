@@ -2,7 +2,7 @@
 
 @section('tab')
     @unless ($company->people->isEmpty())
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="#">
+        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
             </svg>
@@ -95,7 +95,7 @@
                 <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                 <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Personen zugeordnet.</p>
                 <p class="lead">Lege eine neue Person an.</p>
-                <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="#">
+                <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                     </svg>

@@ -97,7 +97,7 @@
             <div class="form-group col">
                 <label for="address_id">Privatadresse</label>
                 <address-dropdown :addresses="{{ $addresses }}" :current_address="{{ $currentAddress ?? 'null' }}"></address-dropdown>
-                <div class="invalid-feedback">
+                <div class="invalid-feedback @error('address_id') d-block @enderror">
                     @error('address_id')
                         {{ $message }}
                     @enderror
@@ -178,7 +178,7 @@
         <div class="form-group">
             <label for="company_id">Firma</label>
             <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}"></company-dropdown>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback @error('company_id') d-block @enderror">
                 @error('company_id')
                     {{ $message }}
                 @enderror

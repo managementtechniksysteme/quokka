@@ -82,7 +82,7 @@
                 <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                 <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
                 <p class="lead">Lege ein neues Projekt an.</p>
-                <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="#">
+                <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                     </svg>

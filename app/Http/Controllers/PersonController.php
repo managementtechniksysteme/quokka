@@ -32,16 +32,23 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $addresses = Address::order()->get();
+
+        $currentCompany = null;
+
+        if ($request->filled('company')) {
+            $currentCompany = Company::find($request->company);
+        }
+
         $companies = Company::order()->get();
 
         return view('person.create')
             ->with('person', null)
             ->with('currentAddress', null)
             ->with('addresses', $addresses->toJson())
-            ->with('currentCompany', null)
+            ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson());
     }
 

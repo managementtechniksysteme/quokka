@@ -179,5 +179,6 @@ return [
         'size'                  => 'Größe',
         'starts_on'             => 'Startdatum',
         'ends_on'               => 'Enddatum',
+        'company_id'            => 'Firma',
     ],
 ];

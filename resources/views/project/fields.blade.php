@@ -55,7 +55,7 @@
         <div class="form-group">
             <label for="company_id">Firma</label>
             <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}"></company-dropdown>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback @error('company_id') d-block @enderror">
                 @error('company_id')
                     {{ $message }}
                 @enderror

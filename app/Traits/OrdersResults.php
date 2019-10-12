@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait OrdersResults
 {
-    public function scopeOrder($query, $params)
+    public function scopeOrder($query, $params = null)
     {
         if (isset($params['sort']) && isset($this->orderKeys[$params['sort']])) {
             $orderArray = $this->orderKeys[$params['sort']];

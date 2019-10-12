@@ -1,17 +1,17 @@
 <template>
     <div>
-        <input v-if="selected" type="hidden" id="address_id" name="address_id" :value="selected.id" />
-        <v-select :options="addresses" label="address_line" placeholder="Addresse auswählen" :value="selected" @input="setSelected"></v-select>
+        <input v-if="selected" type="hidden" id="company_id" name="company_id" :value="selected.id" />
+        <v-select :options="companies" label="full_name" placeholder="Firma auswählen" :value="selected" @input="setSelected"></v-select>
     </div>
 </template>
 
 <script>
     export default {
-        name: "AddressDropdown",
+        name: "CompanyDropdown",
 
         data() {
             return {
-                selected: this.current_address,
+                selected: this.current_company,
             }
         },
 
@@ -22,13 +22,13 @@
         },
 
         props: {
-            addresses: {
+            companies: {
                 type: Array,
                 default() {
                     return [];
                 }
             },
-            current_address: {
+            current_company: {
                 type: Object,
                 default() {
                     return null;

@@ -15,7 +15,7 @@ class Project extends Model
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'comment',
+        'name', 'starts_on', 'ends_on', 'comment', 'company_id',
     ];
 
     protected $orderKeys = [
@@ -27,5 +27,10 @@ class Project extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

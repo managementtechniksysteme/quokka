@@ -8,6 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import AddressDropdown from './components/AddressDropdown';
+import CompanyDropdown from './components/CompanyDropdown';
 import GestureLinks from './components/GestureLinks';
 import Notification from './components/Notification.vue';
 import vSelect from 'vue-select';
@@ -27,6 +28,7 @@ import "easymde/dist/easymde.min.css";
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('address-dropdown', AddressDropdown);
+Vue.component('company-dropdown', CompanyDropdown);
 Vue.component('gesture-links', GestureLinks);
 Vue.component('notification', Notification);
 Vue.component('vue-easymde', VueEasymde);

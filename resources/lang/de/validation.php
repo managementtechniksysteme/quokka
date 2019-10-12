@@ -177,5 +177,7 @@ return [
         'time'                  => 'Uhrzeit',
         'available'             => 'verfügbar',
         'size'                  => 'Größe',
+        'starts_on'             => 'Startdatum',
+        'ends_on'               => 'Enddatum',
     ],
 ];

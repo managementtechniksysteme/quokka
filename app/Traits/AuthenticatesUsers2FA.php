@@ -3,13 +3,13 @@
 namespace App\Traits;
 
 use App\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Validation\ValidationException;
 use PragmaRX\Google2FA\Google2FA;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 trait AuthenticatesUsers2FA
 {

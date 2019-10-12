@@ -3,11 +3,11 @@
 namespace Tests\Feature\Auth;
 
 use App\User;
-use Tests\TestCase;
-use PragmaRX\Google2FA\Google2FA;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use PragmaRX\Google2FA\Google2FA;
+use Tests\TestCase;
 
 class ReauthenticateTest extends TestCase
 {

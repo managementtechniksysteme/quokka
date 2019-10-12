@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use App\Company;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CompanyController extends Controller
 {

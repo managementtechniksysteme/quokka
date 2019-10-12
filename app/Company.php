@@ -9,6 +9,10 @@ class Company extends Model
 {
     use OrdersResults;
 
+    protected $appends = [
+        'full_name',
+    ];
+
     protected $fillable = [
         'name', 'name_2', 'phone', 'fax', 'email', 'website', 'comment',
     ];

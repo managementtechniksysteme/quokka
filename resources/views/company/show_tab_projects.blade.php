@@ -2,7 +2,7 @@
 
 @section('tab')
     @unless ($company->projects->isEmpty())
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="#">
+        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
             </svg>

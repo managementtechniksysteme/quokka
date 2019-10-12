@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Http\Requests\ProjectStoreRequest;
+use App\Http\Requests\ProjectUpdateRequest;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -12,9 +15,15 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $projects = Project::order($request->input())
+            ->with('company')
+            ->withCount('tasks')
+            ->paginate(15)
+            ->appends($request->except('page'));
+
+        return view('project.index')->with(compact('projects'));
     }
 
     /**
@@ -22,9 +31,20 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $currentCompany = null;
+
+        if ($request->filled('company')) {
+            $currentCompany = Company::find($request->company);
+        }
+
+        $companies = Company::order()->get();
+
+        return view('project.create')
+            ->with('project', null)
+            ->with('currentCompany', $currentCompany)
+            ->with('companies', $companies->toJson());
     }
 
     /**
@@ -33,9 +53,13 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProjectStoreRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        Project::create($validatedData);
+
+        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich angelegt.');
     }
 
     /**
@@ -44,9 +68,23 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Project $project, Request $request)
     {
-        //
+        $input = $request->input();
+        $project->loadCount('tasks');
+
+        switch ($request->tab) {
+            case 'overview':
+                return view('project.show_tab_overview')->with(compact('project'));
+            case 'tasks':
+                $project->load(['tasks' => function ($query) use ($input) {
+                    $query->order($input);
+                }])->paginate(15)->appends($request->except('page'));
+
+                return view('project.show_tab_tasks')->with(compact('project'));
+            default:
+                return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+        }
     }
 
     /**
@@ -55,9 +93,15 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit(Project $project, Request $request)
     {
-        //
+        $currentCompany = $project->company;
+        $companies = Company::order()->get();
+
+        return view('project.edit')
+            ->with('project', $project)
+            ->with('currentCompany', $currentCompany)
+            ->with('companies', $companies->toJson());
     }
 
     /**
@@ -67,9 +111,13 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(ProjectUpdateRequest $request, Project $project)
     {
-        //
+        $validatedData = $request->validated();
+
+        $project->update($validatedData);
+
+        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -80,6 +128,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich entfernt.');
     }
 }

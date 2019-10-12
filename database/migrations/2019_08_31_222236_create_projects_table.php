@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProjectsTable extends Migration
 {
@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
-            $table->unique('name');
+            $table->unique(['name', 'company_id']);
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict')->onUpdate('cascade');
         });

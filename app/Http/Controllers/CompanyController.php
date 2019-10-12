@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use App\Company;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CompanyController extends Controller
 {
@@ -44,7 +44,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $addresses = Address::all();
+        $addresses = Address::order()->get();
 
         return view('company.create')
             ->with('company', null)
@@ -99,15 +99,15 @@ class CompanyController extends Controller
             case 'overview':
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
-                $company->load('projects')->whereHas('projects', function ($query) use ($input) {
-                    $query->order($input);
-                })->paginate(15)->appends($request->except('page'));
+                $company->load(['projects' => function ($query) use ($input) {
+                    $query->order($input)->withCount('tasks');
+                }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_projects')->with(compact('company'));
             case 'people':
-                $company->load('people')->whereHas('people', function ($query) use ($input) {
+                $company->load(['people' => function ($query) use ($input) {
                     $query->order($input);
-                })->paginate(15)->appends($request->except('page'));
+                }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_people')->with(compact('company'));
             default:
@@ -124,7 +124,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         $currentAddress = optional($company->address)->first() ?? null;
-        $addresses = Address::all();
+        $addresses = Address::order()->get();
 
         return view('company.edit')
             ->with(compact('company'))

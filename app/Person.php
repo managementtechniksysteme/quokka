@@ -12,15 +12,22 @@ class Person extends Model
     use OrdersResults;
 
     protected $fillable = [
-        'first_name', 'last_name', 'gender', 'email',
+        'first_name', 'last_name', 'title_prefix', 'title_suffix', 'gender', 'department', 'role', 'phone_company',
+        'phone_mobile', 'phone_private', 'fax', 'email', 'website', 'comment', 'company_id',
     ];
 
     protected $orderKeys = [
+        'default' => ['last_name', 'first_name'],
         'first-name-asc' => ['first_name', 'last_name'],
         'first-name-desc' => [['first_name', 'desc'], ['last_name', 'desc']],
         'last-name-asc' => ['last_name', 'first_name'],
         'last-name-desc' => [['last_name', 'desc'], ['first_name', 'desc']],
     ];
+
+    public function address()
+    {
+        return $this->morphToMany(Address::class, 'addressable');
+    }
 
     public function company()
     {

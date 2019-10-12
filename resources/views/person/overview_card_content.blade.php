@@ -2,7 +2,7 @@
     <div class="row align-items-center px-3">
 
         <div class="col flex-grow-1 h-100 py-3">
-            <a class="stretched-link outline-none" href="#"></a>
+            <a class="stretched-link outline-none" href="{{ route('people.show', $person) }}"></a>
             <p class="m-0">
                 {{ $person->name }}
             </p>
@@ -36,14 +36,14 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="companyOverviewDropdown" data-toggle="dropdown"></button>
 
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Person bearbeiten
                     </a>
 
-                    <form action="#" method="post">
+                    <form action="{{ route('people.destroy', $person) }}" method="post">
                         @csrf
                         @method('DELETE')
 

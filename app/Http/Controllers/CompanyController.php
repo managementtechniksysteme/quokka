@@ -75,7 +75,7 @@ class CompanyController extends Controller
                 $company->address()->sync($address);
 
                 return redirect()->route('companies.index')
-                    ->with('info', 'Die Firma wurde erfolgreich angelegt und mit der bereits vorhandenen Adresse erknüpft.');
+                    ->with('info', 'Die Firma wurde erfolgreich angelegt und mit der bereits vorhandenen Adresse verknüpft.');
             } else {
                 $company->address()->sync(Address::create($validatedData));
             }
@@ -97,6 +97,8 @@ class CompanyController extends Controller
 
         switch ($request->tab) {
             case 'overview':
+                $company->load('address');
+
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
                 $company->load(['projects' => function ($query) use ($input) {

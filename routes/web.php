@@ -25,6 +25,7 @@ Route::post('/reauthenticate', 'Auth\ReauthenticateController@reauthenticate');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::resource('addresses', 'AddressController');
 Route::resource('companies', 'CompanyController');
 Route::resource('people', 'PersonController');
 Route::resource('projects', 'ProjectController');

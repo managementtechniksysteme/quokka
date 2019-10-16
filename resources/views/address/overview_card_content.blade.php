@@ -11,6 +11,22 @@
             </p>
         </div>
 
+        <div class="small col-auto text-right">
+            <span class="text-muted d-inline-flex align-items-center">
+                <svg class="feather feather-12 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
+                </svg>
+                {{ $address->companies_count }}
+            </span>
+
+            <span class="text-muted d-inline-flex align-items-center ml-2">
+                <svg class="feather feather-12 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                </svg>
+                {{ $address->people_count }}
+            </span>
+        </div>
+
         <div class="col-md-auto d-none d-md-block">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="addressOverviewDropdown" data-toggle="dropdown"></button>

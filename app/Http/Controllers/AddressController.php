@@ -16,7 +16,11 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        $addresses = Address::order($request->input())->paginate(15)->appends($request->except('page'));
+        $addresses = Address::order($request->input())
+            ->withCount('companies')
+            ->withCount('people')
+            ->paginate(15)
+            ->appends($request->except('page'));
 
         return view('address.index')->with(compact('addresses'));
     }

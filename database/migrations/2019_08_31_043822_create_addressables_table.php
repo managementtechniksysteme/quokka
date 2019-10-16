@@ -14,14 +14,16 @@ class CreateAddressablesTable extends Migration
     public function up()
     {
         Schema::create('addressables', function (Blueprint $table) {
-            $table->bigInteger('address_id');
-            $table->bigInteger('addressable_id');
+            $table->unsignedBigInteger('address_id');
+            $table->unsignedBigInteger('addressable_id');
             $table->string('addressable_type');
             $table->timestamps();
 
             // The field address_id is not part of the primary key in order
             // to limit addresses to one per linked model (e.g. company).
             $table->primary(['addressable_id', 'addressable_type']);
+
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Address;
+use App\Http\Requests\AddressStoreRequest;
+use App\Http\Requests\AddressUpdateRequest;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -12,9 +14,11 @@ class AddressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $addresses = Address::order($request->input())->paginate(15)->appends($request->except('page'));
+
+        return view('address.index')->with(compact('addresses'));
     }
 
     /**
@@ -24,7 +28,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        return view('address.create')->with('address', null);
     }
 
     /**
@@ -33,9 +37,11 @@ class AddressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddressStoreRequest $request)
     {
-        //
+        Address::create($request->validated());
+
+        return redirect()->route('addresses.index')->with('success', 'Die Adresse wurde erfolgreich angelegt.');
     }
 
     /**
@@ -46,7 +52,7 @@ class AddressController extends Controller
      */
     public function show(Address $address)
     {
-        //
+        return view('address.show')->with(compact('address'));
     }
 
     /**
@@ -57,7 +63,7 @@ class AddressController extends Controller
      */
     public function edit(Address $address)
     {
-        //
+        return view('address.edit')->with(compact('address'));
     }
 
     /**
@@ -67,9 +73,11 @@ class AddressController extends Controller
      * @param  \App\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Address $address)
+    public function update(AddressUpdateRequest $request, Address $address)
     {
-        //
+        $address->update($request->validated());
+
+        return redirect()->route('addresses.index')->with('success', 'Die Adresse wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -80,6 +88,8 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-        //
+        $address->delete();
+
+        return redirect()->route('addresses.index')->with('success', 'Die Adresse wurde erfolgreich entfernt.');
     }
 }

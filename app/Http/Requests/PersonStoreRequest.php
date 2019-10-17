@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PersonStoreRequest extends FormRequest
 {
@@ -11,8 +13,12 @@ class PersonStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        $street_number = $request->street_number;
+        $postcode = $request->postcode;
+        $city = $request->city;
+
         return [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -20,7 +26,16 @@ class PersonStoreRequest extends FormRequest
             'title_suffix' => 'nullable',
             'gender' => 'required|in:male,female,neutral',
             'address_id' => 'exists:addresses,id|nullable',
-            'street_number' => 'required_with:postcode,city|nullable',
+            'street_number' => [
+                'required_with:postcode,city',
+                'nullable',
+                Rule::unique('addresses')->where(function ($query) use ($street_number, $postcode, $city) {
+                    return $query
+                        ->where('street_number', $street_number)
+                        ->where('postcode', $postcode)
+                        ->where('city', $city);
+                }),
+            ],
             'postcode' => 'required_with:street_number,city|digits_between:4,5|nullable',
             'city' => 'required_with:street_number,postcode|nullable',
             'company_id' => 'exists:companies,id|nullable',

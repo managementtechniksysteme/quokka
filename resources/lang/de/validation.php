@@ -128,8 +128,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'street_number' => [
+            'unique' => 'Eine Addresse mit den angegebenen Daten existiert bereits.',
         ],
     ],
 

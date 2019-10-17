@@ -2,19 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Address;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class AddressStoreRequest extends FormRequest
 {
-    public function messages()
-    {
-        return [
-            'street_number.unique' => 'Eine Addresse mit den angegeben Daten existiert bereits.',
-        ];
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

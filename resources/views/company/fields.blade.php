@@ -194,7 +194,7 @@
                     {{ $message }}
                 @enderror
             </div>
-            <a class="text-muted d-flex align-items-center mt-1" href="#">
+            <a class="text-muted d-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>

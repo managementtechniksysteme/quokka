@@ -62,7 +62,7 @@
         </div>
 
         <div class="form-group">
-            <label for="title_suffix">Namenszusatz Postfix</label>
+            <label for="title_suffix">Namenszusatz Suffix</label>
             <input type="text" class="form-control @error('title_suffix') is-invalid @enderror" id="title_suffix" name="title_suffix" placeholder="MSc" value="{{ old('title_suffix', optional($person)->title_suffix) }}" />
             <div class="invalid-feedback">
                 @error('title_suffix')

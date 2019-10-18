@@ -104,7 +104,7 @@
         </div>
 
         <a id="paragraphen_und_zeilenumbrueche"></a>
-        <h4 class="mt-4">Paragrapphen und Zeilenumbrüche</h4>
+        <h4 class="mt-4">Paragraphen und Zeilenumbrüche</h4>
 
         @markdown
         Paragraphen werden durch eine leere Zeile getrennt. Um einen Zeilenumbruch einzufügen, können entweder zwei

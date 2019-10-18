@@ -16,13 +16,13 @@ class HelpController extends Controller
     {
         $files = File::allFiles(resource_path('views/help'));
 
-        $names = array_map(function($element) {
-            return $element->getBasename(".blade.php");
+        $names = array_map(function ($element) {
+            return $element->getBasename('.blade.php');
         }, $files);
 
         $index = array_search('index', $names);
 
-        if($index !== false){
+        if ($index !== false) {
             unset($names[$index]);
         }
 

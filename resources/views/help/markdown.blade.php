@@ -2,10 +2,24 @@
 
 @section('content')
     <div class="container">
+        <a id="top"></a>
         <h3>
             Hilfe
             <small class="text-muted">Markdown</small>
         </h3>
+
+        @markdown
+        1. [Überschriften](#ueberschriften)
+        2. [Paragrapphen und Zeilenumbrüche](#paragraphen_und_zeilenumbrueche)
+        3. [Fetter, kursiver und durchgestrichener Text](#fetter_kursiver_und_durchgestrichener_text)
+        4. [Zitate](#zitate)
+        5. [Aufzählungen, Nummerierungen und Listen von Erledigungen](#aufzaehlungen_nummerierungen_und_listen_von_erledigungen)
+        6. [Links und Email Adressen](#links_und_email_adressen)
+        7. [Bilder](#bilder)
+        8. [Tabellen](#tabellen)
+        9. [Horizontale Linien](#horizontale_linien)
+        10. [Quelltext und Hervorheben von Text im Fließtext (Inline Quelltext), Text ohne Formatierung](#quelltext_und_hervorheben_von_text_in_fliesstext_inline_quelltext_text_ohne_formatierung)
+        @endmarkdown
 
         @markdown
         Der in Quokka implementierte Markdown Editor unterztützt eine Reihe von Textmanipulationen. Diese sind im
@@ -29,9 +43,10 @@
 
         </div>
 
-        @markdown
-        #### Überschriften
+        <a id="ueberschriften"></a>
+        <h4 class="mt-4">Überschriften</h4>
 
+        @markdown
         Überschriften werden durch das Rautensymbol (`#`), gefolgt von einem Leerzeichen eingeleitet. Durch verwenden
         von mehreren Rautensymbolen hintereinander können Überschriften unterschiedlicher Grösse erzeugt werden (je
         mehr Rautensymbole, desto kleiner die Überschrift).
@@ -86,9 +101,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Paragrapphen und Zeilenumbrüche
+        <a id="paragraphen_und_zeilenumbrueche"></a>
+        <h4 class="mt-4">Paragrapphen und Zeilenumbrüche</h4>
 
+        @markdown
         Paragraphen werden durch eine leere Zeile getrennt. Um einen Zeilenumbruch einzufügen, können entweder zwei
         oder mehr Leerzeichen oder ein Backslash (`\`) an das Ende der Zeile vor dem Umbruch angehängt werden.
         @endmarkdown
@@ -119,9 +135,9 @@
             @endmarkdown
         </div>
 
+        <a id="fetter_kursiver_und_durchgestrichener_text"></a>
+        <h4 class="mt-4">Fetter, kursiver und durchgestrichener Text</h4>
         @markdown
-        #### Fetter, kursiver und durchgestrichener Text
-
         Um Text fett darzustellen, kann er entweder mit zwei Sternsymbolen (`**`) oder zwei Unterstrichen (`__`)
         umschlossen werden. Kursiver Text kann mittels umschließen von einem Sternsymbol (`*`) oder Unterstrich (`_`)
         erzeugt werden. Um Text durchgestrichen erscheinen zu lassen, kann er in zwei Tildesymbole (`~~`) eingeschlossen
@@ -148,9 +164,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Zitate
+        <a id="zitate"></a>
+        <h4 class="mt-4">Zitate</h4>
 
+        @markdown
         Zur Darstellung eines Zitates wird jede Zeile mit einem Größer Symbol (`>`), gefolgt von einem Leerzeichen,
         begonnen. Zwischen zwei Paragraphen muß eine Zeile mit dem Größer Symbol (`>`) eingefügt werden. Um Zitate
         zu verschachteln, werden mehrere Größer Symbole (`>>`) hintereinander gereiht.
@@ -176,9 +193,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Aufzählungen, Nummerierungen und Listen von Erledigungen
+        <a id="aufzaehlungen_nummerierungen_und_listen_von_erledigungen"></a>
+        <h4 class="mt-4">Aufzählungen, Nummerierungen und Listen von Erledigungen</h4>
 
+        @markdown
         Um eine Aufzählung zu erstellen, muss jeder Aufzählungspunkt in einer neün Zeile begonnen und durch
         ein Sternsymbol (`*`), einen Bindestrich (`-`) oder ein Plus Symbol (`+`), gefolgt von einem Leerzeichen,
         angeführt werden. Durch Einrücken um vier Leerzeichen oder einem Tabulator werden untergeordnete Listen
@@ -335,9 +353,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Links und Email Adressen
+        <a id="links_und_email_adressen"></a>
+        <h4 class="mt-4">Links und Email Adressen</h4>
 
+        @markdown
         Ein Link oder eine Email Adresse wird durch den anzuzeigenden Text in eckigen Klammern (`[Text]`), gefolgt von
         der URL beziehungsweise Adresse in runden Klammern (`(URL)`) eingefügt. Falls kein seperater Text angezeigt
         werden soll, kann eine Link oder Email Adresse erstellt werden, indem die URL beziehungsweise Adresse durch
@@ -367,9 +386,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Bilder
+        <a id="bilder"></a>
+        <h4 class="mt-4">Bilder</h4>
 
+        @markdown
         Um ein Bild einzufügen, ist ein Ausrufezeichen, gefolgt von einer alternativen Bildbeschreibung in eckigen
         Klammern (`[Beschreibung]`) sowie der URL zum gewünschten Bild in runden Klammern (`(URL)`) einzugeben.
         @endmarkdown
@@ -388,9 +408,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Tabellen
+        <a id="tabellen"></a>
+        <h4 class="mt-4">Tabellen</h4>
 
+        @markdown
         Tabellen werden aufgebaut, indem Spalten durch senkrechte Striche (`|`) getrennt werden. Der Tabellenkopf wird
         vom Inhalt durch Bindestriche (`-`) getrennt. Zwischen einzelnen Inhaltszeilen ist keine Trennung erforderlich.
         Durch das Einfügen von Doppelpunkten (`:`) in der Trennzeile kann die Ausrichtung der jeweiligen Spalte
@@ -431,9 +452,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Horizontale Linien
+        <a id="horizontale_linien"></a>
+        <h4 class="mt-4">Horizontale Linien</h4>
 
+        @markdown
         Um eine horizontale Linie anzuzeigen, können drei oder mehr Stern Symbole (`***`), Bindestriche (`---`) oder
         Unterstriche (`___`) auf einer eigenen Linie angeführt werden.
         @endmarkdown
@@ -456,9 +478,10 @@
             @endmarkdown
         </div>
 
-        @markdown
-        #### Quelltext und Hervorheben von Text im Fließtext (Inline Quelltext), Text ohne Formatierung
+        <a id="quelltext_und_hervorheben_von_text_in_fliesstext_inline_quelltext_text_ohne_formatierung"></a>
+        <h4 class="mt-4">Quelltext und Hervorheben von Text im Fließtext (Inline Quelltext), Text ohne Formatierung</h4>
 
+        @markdown
         Um Quelltext darzustellen, wird dieser von jeweils drei Backticks (`` ``` ``) in einer eigenen Zeile vor und nach
         dem Quelltext umschlossen. Dieser Text wird wie eingegeben, ohne Formatierung abgebildet. Alternativ kann
         Quelltext in jeder Zeile um vier Leerzeichen oder einen Tabulator eingerückt werden. Um Text innerhalb eines

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
 
 class HelpController extends Controller
@@ -13,7 +14,19 @@ class HelpController extends Controller
      */
     public function index()
     {
-        return view('help.index');
+        $files = File::allFiles(resource_path('views/help'));
+
+        $names = array_map(function ($element) {
+            return $element->getBasename('.blade.php');
+        }, $files);
+
+        $index = array_search('index', $names);
+
+        if ($index !== false) {
+            unset($names[$index]);
+        }
+
+        return view('help.index')->with(compact('names'));
     }
 
     /**

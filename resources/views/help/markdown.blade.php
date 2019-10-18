@@ -38,7 +38,7 @@
             <p class="m-0">
                 Die Darstellung von Elemementen in der Anwendung kann sich von jener in generierten PDF Dokumenten
                 teilweise unterscheiden. Manche Elemente werden in PDF Dokumenten gänzlich ignoriert. Hierzu werden
-                in den einzelnen Abschnitten genaüre Informationen angegeben.
+                in den einzelnen Abschnitten Hinweise angegeben.
             </p>
 
         </div>
@@ -48,7 +48,7 @@
 
         @markdown
         Überschriften werden durch das Rautensymbol (`#`), gefolgt von einem Leerzeichen eingeleitet. Durch verwenden
-        von mehreren Rautensymbolen hintereinander können Überschriften unterschiedlicher Grösse erzeugt werden (je
+        von mehreren Rautensymbolen hintereinander können Überschriften unterschiedlicher Größe erzeugt werden (je
         mehr Rautensymbole, desto kleiner die Überschrift).
         @endmarkdown
 
@@ -75,6 +75,8 @@
             ###### Überschrift 6
             @endmarkdown
         </div>
+
+
 
         @markdown
         Überschriften der ersten zwei Ebenen können  alternativ

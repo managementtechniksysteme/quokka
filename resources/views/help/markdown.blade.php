@@ -23,7 +23,7 @@
 
         @markdown
         Der in Quokka implementierte Markdown Editor unterztützt eine Reihe von Textmanipulationen. Diese sind im
-        Folgenden genaür beschrieben. Die wichtigsten Möglichkeiten zur Veränderung von Text sind des weiteren über
+        Folgenden beschrieben. Die wichtigsten Möglichkeiten zur Veränderung von Text sind des weiteren über
         die Aktionsleiste des Editors aufrufbar.
         @endmarkdown
 

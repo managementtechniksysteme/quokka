@@ -11209,3 +11209,17 @@ button.dropdown-item-delete:active {
   text-decoration: none;
 }
 
+.markdown-example-input > pre {
+  margin-bottom: 0;
+}
+
+.markdown-example-output blockquote {
+  border-left: 2px solid;
+  border-color: #6c757d;
+  padding-left: 5px;
+}
+
+.markdown-example-output pre {
+  background-color: #f8f9fa;
+}
+

@@ -52,7 +52,7 @@
         mehr Rautensymbole, desto kleiner die Überschrift).
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             # Überschrift 1
@@ -65,7 +65,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1" >
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             # Überschrift 1
             ## Überschrift 2
@@ -75,7 +75,6 @@
             ###### Überschrift 6
             @endmarkdown
         </div>
-
 
 
         @markdown
@@ -83,7 +82,7 @@
         durch Gleichheitszeichen (`=`) beziehungsweise Bindestriche (`-`) in der nächsten Zeile erzeugt werden.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Überschrift 1
@@ -94,7 +93,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Überschrift 1
             ==============
@@ -111,7 +110,7 @@
         oder mehr Leerzeichen oder ein Backslash (`\`) an das Ende der Zeile vor dem Umbruch angehängt werden.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Dieser Text befindet sich im ersten Paragraph.
@@ -125,7 +124,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Dieser Text befindet sich im ersten Paragraph.
             Auch dieser Text ist Teil des ersten Paragraphes. Er wird direkt an den vorherigen Text angehängt.
@@ -146,7 +145,7 @@
         werden. Die Manipulationsmöglichkeiten können beliebig kombiniert werden.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             **fett**, __ebenfalls fett__
@@ -157,7 +156,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             **fett**, __ebenfalls fett__\
             *kursiv*, _ebenfalls kursiv_\
@@ -175,7 +174,7 @@
         zu verschachteln, werden mehrere Größer Symbole (`>>`) hintereinander gereiht.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             > Ein Zitat
@@ -186,7 +185,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             > Ein Zitat
             >
@@ -207,7 +206,7 @@
         Leerzeichen oder einem Tabulator einzurücken sind.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Beispiel 1
@@ -234,7 +233,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Beispiel 1
 
@@ -265,7 +264,7 @@
         seqüntieller Reihung erfolgen.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Beispiel 1
@@ -292,7 +291,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Beispiel 1
 
@@ -323,7 +322,7 @@
         Aufgabe beziehungsweise einem x (`- [x]`) oder X (`- [X]`) für eine erledigte Aufgabe angeführt.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Beispiel 1
@@ -340,7 +339,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Beispiel 1
 
@@ -366,7 +365,7 @@
         eingefügt werden, Es wird daraus automatisch ein Link erstellt.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             Ein Link zu [Google](https://google.com) und eine Email zu [Max Mustermann](max.mustermann@example.com).
@@ -378,7 +377,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Ein Link zu [Google](https://google.com) und eine Email zu [Max Mustermann](max.mustermann@example.com).
 
@@ -396,7 +395,7 @@
         Klammern (`[Beschreibung]`) sowie der URL zum gewünschten Bild in runden Klammern (`(URL)`) einzugeben.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             ![Ein Bild einer Katze](https://placekitten.com/300/200)
@@ -404,7 +403,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             ![Ein Bild einer Katze](https://placekitten.com/300/200)
             @endmarkdown
@@ -422,7 +421,7 @@
         der Inhalt vertikal und horizontal ausgerichtet wird, ist optional.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             erste Spalte | zweite Spalte (mittig) | dritte Spalte (rechtsbündig)
@@ -439,7 +438,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             erste Spalte | zweite Spalte (mittig) | dritte Spalte (rechtsbündig)
             -------------|:----------------------:|-----------------------------:
@@ -462,7 +461,7 @@
         Unterstriche (`___`) auf einer eigenen Linie angeführt werden.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             ***
@@ -472,7 +471,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             ***
             ---
@@ -490,7 +489,7 @@
         Fließtextes hervorzuheben, wird dieser in einzelne Backticks (`` ` ``) eingeschlossen.
         @endmarkdown
 
-        <div class="bg-light border border-bottom-0 p-1">
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
             ```
@@ -508,7 +507,7 @@
             @endmarkdown
         </div>
 
-        <div class="border mb-2 p-1">
+        <div class="markdown-example-output border mb-2 p-2">
             @markdown
             ```
             Mehrzeiliger

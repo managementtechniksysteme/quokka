@@ -157,3 +157,18 @@ button.dropdown-item-delete:active {
   color: $primary !important;
   text-decoration: none;
 }
+
+// Markdown help example code
+.markdown-example-input > pre {
+    margin-bottom: 0;
+}
+
+.markdown-example-output blockquote {
+    border-left: 2px solid;
+    border-color: $secondary;
+    padding-left: 5px;
+}
+
+.markdown-example-output pre {
+    background-color: $light;
+}

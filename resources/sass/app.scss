@@ -172,3 +172,11 @@ button.dropdown-item-delete:active {
 .markdown-example-output pre {
     background-color: $light;
 }
+
+// Avatars
+.avatar {
+    min-height: 4em;
+    min-width: 4em;
+    max-height: 4em;
+    max-width: 4em;
+}

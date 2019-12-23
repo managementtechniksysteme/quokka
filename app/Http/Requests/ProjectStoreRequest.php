@@ -32,8 +32,8 @@ class ProjectStoreRequest extends FormRequest
                     return $query->where('name', $name)->where('company_id', $company_id);
                 }),
             ],
-            'starts_on' => 'nullable',
-            'ends_on' => 'after_or_equal:starts_on|nullable',
+            'starts_on' => 'date|nullable',
+            'ends_on' => 'date|after_or_equal:starts_on|nullable',
             'company_id' => 'required|exists:companies,id',
             'comment' => 'nullable',
         ];

@@ -93,7 +93,7 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project, Request $request)
+    public function edit(Project $project)
     {
         $currentCompany = $project->company;
         $companies = Company::order()->get();

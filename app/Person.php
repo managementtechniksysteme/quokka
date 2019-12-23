@@ -11,13 +11,17 @@ class Person extends Model
     use Notifiable;
     use OrdersResults;
 
+    protected $appends = [
+        'name',
+    ];
+
     protected $fillable = [
         'first_name', 'last_name', 'title_prefix', 'title_suffix', 'gender', 'department', 'role', 'phone_company',
         'phone_mobile', 'phone_private', 'fax', 'email', 'website', 'comment', 'company_id',
     ];
 
     protected $orderKeys = [
-        'default' => ['last_name', 'first_name'],
+        'default' => ['first_name', 'last_name'],
         'first-name-asc' => ['first_name', 'last_name'],
         'first-name-desc' => [['first_name', 'desc'], ['last_name', 'desc']],
         'last-name-asc' => ['last_name', 'first_name'],

@@ -78,7 +78,7 @@
                         Stammdaten
                     </a>
 
-                    <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
+                    <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                         </svg>
@@ -97,7 +97,7 @@
                         Stammdaten
                     </a>
 
-                    <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
+                    <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                         </svg>

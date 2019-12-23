@@ -1,5 +1,5 @@
 @if(Session::has('success'))
-    <notification type="success"  v-cloak>
+    <notification type="success" v-cloak>
         <div class="d-inline-flex align-items-center">
             <svg class="feather feather-24 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
@@ -17,7 +17,7 @@
         </div>
     </notification>
 @elseif(Session::has('warning'))
-    <notification type="warning"  v-cloak>
+    <notification type="warning" v-cloak>
         <div class="d-inline-flex align-items-center">
             <svg class="feather feather-24 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
@@ -26,7 +26,7 @@
         </div>
     </notification>
 @elseif(Session::has('danger'))
-    <notification type="danger"  v-cloak>
+    <notification type="danger" v-cloak>
         <div class="d-inline-flex align-items-center">
             <svg class="feather feather-24 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>

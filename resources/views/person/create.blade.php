@@ -11,9 +11,9 @@
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
                 <svg class="feather feather-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                 </svg>
-                Person anlegen
+                Person speichern
             </button>
         </form>
     </div>

@@ -162,6 +162,8 @@ class CompanyController extends Controller
             } else {
                 $company->address()->sync(Address::create($validatedData));
             }
+        } else {
+            $company->address()->detach();
         }
 
         return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich bearbeitet.');

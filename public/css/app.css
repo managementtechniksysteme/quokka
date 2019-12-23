@@ -11223,3 +11223,10 @@ button.dropdown-item-delete:active {
   background-color: #f8f9fa;
 }
 
+.avatar {
+  min-height: 4em;
+  min-width: 4em;
+  max-height: 4em;
+  max-width: 4em;
+}
+

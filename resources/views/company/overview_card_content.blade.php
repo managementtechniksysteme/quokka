@@ -14,16 +14,16 @@
             </p>
         </div>
 
-        <div class="small col-auto text-right">
+        <div class="col-auto text-right">
             <a class="text-muted d-inline-flex align-items-center" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
-                <svg class="feather feather-12 mr-1">
+                <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                 </svg>
                 {{ $company->projects_count }}
             </a>
 
             <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
-                <svg class="feather feather-12 mr-1">
+                <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                 </svg>
                 {{ $company->people_count }}

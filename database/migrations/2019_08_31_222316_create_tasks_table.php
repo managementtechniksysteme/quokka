@@ -24,11 +24,11 @@ class CreateTasksTable extends Migration
             $table->enum('status', ['new', 'in progress', 'finished']);
             $table->enum('billed', ['yes', 'no', 'warranty']);
             $table->text('comment')->nullable();
-            $table->unsignedBigInteger('project_id')->nullable();
-            $table->unsignedBigInteger('employee_id')->nullable();
+            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('employee_id');
             $table->timestamps();
 
-            $table->unique('name');
+            $table->unique(['name', 'project_id']);
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('employee_id')->references('person_id')->on('employees')->onDelete('restrict')->onUpdate('cascade');

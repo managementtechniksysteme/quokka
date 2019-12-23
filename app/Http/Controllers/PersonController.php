@@ -147,6 +147,8 @@ class PersonController extends Controller
             } else {
                 $person->address()->sync(Address::create($validatedData));
             }
+        } else {
+            $person->address()->detach();
         }
 
         return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich bearbeitet.');

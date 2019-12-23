@@ -85,17 +85,17 @@
                 Bemerkungen
             </label>
             <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Projekt"  value="{{ old('comment', optional($project)->comment) }}"></vue-easymde>
-            <div class="invalid-feedback">
-                @error('comment')
-                    {{ $message }}
-                @enderror
-            </div>
-            <a class="text-muted d-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
+            <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
             </a>
+            <div class="invalid-feedback @error('comment') d-block @enderror">
+                @error('comment')
+                    {{ $message }}
+                @enderror
+            </div>
         </div>
 
     </div>

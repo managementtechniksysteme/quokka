@@ -29,4 +29,19 @@ class Employee extends Model
     {
         return $this->hasOne(User::class, 'employee_id');
     }
+
+    public function tasksResponsibleFor()
+    {
+        return $this->hasMany(Task::class, 'employee_id');
+    }
+
+    public function tasksInvolvedIn()
+    {
+        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id');
+    }
+
+    public function taskComments()
+    {
+        return $this->hasMany(TaskComment::class, 'employee_id');
+    }
 }

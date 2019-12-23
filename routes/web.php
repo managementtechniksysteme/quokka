@@ -30,3 +30,5 @@ Route::resource('companies', 'CompanyController');
 Route::resource('help', 'HelpController')->only(['index', 'show']);
 Route::resource('people', 'PersonController');
 Route::resource('projects', 'ProjectController');
+Route::resource('tasks', 'TaskController');
+Route::resource('comments', 'CommentController')->except(['index', 'show']);

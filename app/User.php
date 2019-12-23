@@ -55,4 +55,8 @@ class User extends Authenticatable
     {
         return $this->person->email;
     }
+
+    public function getUsernameAvatarStringAttribute() {
+        return strtoupper($this->username);
+    }
 }

@@ -59,5 +59,18 @@
   "One Time Password": "Einmalpasswort",
   "Authenticate": "Authentisieren",
   "You can find your six digit one time password in the authenticator app on your mobile phone.": "Das sechs-stellige Einmaplpasswort findest du in der Authenticator App deines Mobiltelefones.",
-  "The requested resource requires you to reauthenticate with your credentials due to security reasons.": "Die angeforderte Seite benötigt aus Sicherheitsgründen eine erneute Authentisierung mittels deiner Zugangsdaten."
+  "The requested resource requires you to reauthenticate with your credentials due to security reasons.": "Die angeforderte Seite benötigt aus Sicherheitsgründen eine erneute Authentisierung mittels deiner Zugangsdaten.",
+  "low": "niedrig",
+  "medium": "mittel",
+  "high": "hoch",
+  "new": "neu",
+  "in progress": "in Bearbeitung",
+  "finished": "erledigt",
+  "billed": "verrechnet",
+  "not billed": "nicht verrechnet",
+  "warranty": "Garantie",
+  "public": "öffentlich",
+  "private": "privat",
+  "yes": "ja",
+  "no": "nein"
 }

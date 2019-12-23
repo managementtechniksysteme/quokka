@@ -10,7 +10,7 @@
                 @if(isset($secondaryInformation))
                     @switch($secondaryInformation)
                         @case('dates')
-                            <svg class="feather feather-16 mx-1">
+                            <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $project->starts_on ? $project->starts_on->format('d.m.Y') : 'kein Start angegeben' }}
@@ -23,21 +23,21 @@
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
-                            {{ optional($project->company)->name ?? 'keine Firma angegeben' }}
+                            {{ $project->company->name }}
                             @break
                     @endswitch()
                 @else
                     <svg class="feather feather-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
-                    {{ optional($project->company)->name ?? 'keine Firma angegeben' }}
+                    {{ $project->company->name }}
                 @endif
             </p>
         </div>
 
-        <div class="small col-auto text-right">
+        <div class="col-auto text-right">
             <a class="text-muted d-inline-flex align-items-center" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
-                <svg class="feather feather-12 mr-1">
+                <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                 </svg>
                 {{ $project->tasks_count }}

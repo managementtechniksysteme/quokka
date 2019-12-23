@@ -8,12 +8,14 @@ trait OrdersResults
     {
         if (isset($params['sort']) && isset($this->orderKeys[$params['sort']])) {
             $orderArray = $this->orderKeys[$params['sort']];
+        } elseif (isset($this->orderKeys['default'])) {
+            $orderArray = $this->orderKeys['default'];
         } else {
-            if (isset($this->orderKeys['default'])) {
-                $orderArray = $this->orderKeys['default'];
-            } else {
-                return $query;
-            }
+            return $query;
+        }
+
+        if (isset($orderArray['raw'])) {
+            return $query->orderByRaw($orderArray['raw']);
         }
 
         foreach ($orderArray as $order) {

@@ -10,7 +10,7 @@ class TaskComment extends Model
     use OrdersResults;
 
     protected $fillable = [
-        'comment', 'task_id', 'employee_id'
+        'comment', 'task_id', 'employee_id',
     ];
 
     protected $orderKeys = [

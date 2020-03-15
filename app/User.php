@@ -12,7 +12,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
     protected $casts = [
-      'employee_id' => 'int',
+        'employee_id' => 'int',
     ];
 
     /**

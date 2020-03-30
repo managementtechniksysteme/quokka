@@ -46,7 +46,7 @@ return [
         'League\CommonMark\Ext\Strikethrough\StrikethroughExtension',
         'League\CommonMark\Ext\TaskList\TaskListExtension',
         'League\CommonMark\Ext\Table\TableExtension',
-        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

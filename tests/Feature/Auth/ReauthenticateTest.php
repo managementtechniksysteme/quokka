@@ -103,7 +103,7 @@ class ReauthenticateTest extends TestCase
         $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response = $this->actingAs($user)->post($this->reauthenticatePostRoute(), [
-                'password' => $password,
+            'password' => $password,
         ]);
 
         $response->assertRedirect($this->reauthenticateRequiredRoute());
@@ -123,8 +123,8 @@ class ReauthenticateTest extends TestCase
         $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response = $this->actingAs($user)->post($this->reauthenticatePostRoute(), [
-                'password' => $password,
-                'one_time_password' => $google2fa->getCurrentOtp($otp_secret),
+            'password' => $password,
+            'one_time_password' => $google2fa->getCurrentOtp($otp_secret),
         ]);
 
         $response->assertRedirect($this->reauthenticateRequiredRoute());
@@ -139,7 +139,7 @@ class ReauthenticateTest extends TestCase
         $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response = $this->actingAs($user)->post($this->reauthenticatePostRoute(), [
-                'password' => 'invalid-password',
+            'password' => 'invalid-password',
         ]);
 
         $response->assertRedirect($this->reauthenticateGetRoute());
@@ -157,8 +157,8 @@ class ReauthenticateTest extends TestCase
         $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response = $this->actingAs($user)->post($this->reauthenticatePostRoute(), [
-                'password' => $password,
-                'one_time_password' => '123456',
+            'password' => $password,
+            'one_time_password' => '123456',
         ]);
 
         $response->assertRedirect($this->reauthenticateGetRoute());

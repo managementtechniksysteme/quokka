@@ -54,7 +54,7 @@
                                 <svg class="feather feather-16 mx-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
-                                {{ $memo->personRecipient->name }}
+                                {{ optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
                             </div>
                             @break
                     @endswitch()
@@ -81,7 +81,7 @@
                         <svg class="feather feather-16 mx-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
-                        {{ $memo->personRecipient->name }}
+                        {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
                     </div>
                 @endif
             </div>

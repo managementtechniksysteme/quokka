@@ -62,7 +62,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="@if($task->isNew()) text-primary @elseif($task->isInProgress()) text-warning @else text-success @endif feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                         </svg>
                         Status
@@ -88,7 +88,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="@if($task->private) text-warning @else text-muted @endif feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
                         </svg>
                         Sichtbarkeitsstatus

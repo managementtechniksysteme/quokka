@@ -1,16 +1,16 @@
 @extends('company.show')
 
 @section('tab')
-    <div class="row">
 
-        <div class="col-auto">
-            <p class="text-muted d-flex align-items-center">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="text-muted d-flex align-items-center">
                 <svg class="feather feather-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 Addresse
-            </p>
-            <p>
+            </div>
+            <p class="m-0">
                 @if ($company->address->first())
                     {{ $company->address->first()->street_number }} <br />
                     {{ $company->address->first()->postcode }} {{ $company->address->first()->city }} <br />
@@ -26,81 +26,80 @@
             </p>
         </div>
 
-        <div class="col-auto">
-
-            <div class="row">
-
-                <div class="col-auto">
-                    <p class="text-muted d-flex align-items-center">
+        <div class="col-md-8">
+            <div class="row mt-4 mt-md-0">
+                <div class="col-sm-3">
+                    <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                         </svg>
-                        Tel<span class="d-none d-md-inline">efon</span>
-                    </p>
-                    <p class="text-muted d-flex align-items-center">
+                        Telefon
+                    </div>
+                </div>
+                <div class="col">
+                    {{ $company->phone ?? 'nicht angegeben' }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         Fax
-                    </p>
-                    <p class="text-muted d-flex align-items-center">
+                    </div>
+                </div>
+                <div class="col">
+                    {{ $company->fax ?? 'nicht angegeben' }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email
-                    </p>
-                    <p class="text-muted d-flex align-items-center">
+                    </div>
+                </div>
+                <div class="col">
+                    @if ($company->email)
+                        <a href="mailto:{{ $company->email }}">{{ $company->email }}</a>
+                    @else
+                        nicht angegeben
+                    @endif
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use>
                         </svg>
-                        Web<span class="d-none d-md-inline">seite</span>
-                    </p>
+                        Webseite
+                    </div>
                 </div>
-
-                <div class="col-auto">
-                    <p>
-                        {{ $company->phone ?? 'nicht angegeben' }}
-                    </p>
-                    <p>
-                        {{ $company->fax ?? 'nicht angegeben' }}
-                    </p>
-                    <p>
-                        @if ($company->email)
-                            <a href="mailto:{{ $company->email }}">{{ $company->email }}</a>
-                        @else
-                            nicht angegeben
-                        @endif
-                    </p>
-                    <p>
-                        @if ($company->website)
-                            <a href="{{ $company->website }}">{{ $company->website }}</a>
-                        @else
-                            nicht angegeben
-                        @endif
-                    </p>
+                <div class="col">
+                    @if ($company->website)
+                        <a href="{{ $company->website }}">{{ $company->website }}</a>
+                    @else
+                        nicht angegeben
+                    @endif
                 </div>
-
             </div>
-
-        </div>
-
-    </div>
-
-    <div class="row mt-2">
-        <div class="col">
-            <p class="text-muted d-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                </svg>
-                Bemerkungen
-            </p>
-            <p>
-                @if ($company->comment)
-                    @markdown ($company->comment)
-                @else
-                    keine Bemerkungen angegeben
-                @endif
-            </p>
         </div>
     </div>
+
+    <div class="text-muted d-flex align-items-center mt-4">
+        <svg class="feather feather-16 mr-2">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+        </svg>
+        Bemerkungen
+    </div>
+    @if ($company->comment)
+        @markdown ($company->comment)
+    @else
+        keine Bemerkungen angegeben
+    @endif
+
 @endsection

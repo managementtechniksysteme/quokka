@@ -70,160 +70,173 @@
         </div>
 
         <div class="row mt-4">
-
-            <div class="col-auto">
+            <div class="col-lg">
                 <div class="row">
-                    <div class="col-auto">
-                        <p class="text-muted d-flex align-items-center">
+                    <div class="col-md-4">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
                             Firma
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        {{ optional($person->company)->full_name ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                             </svg>
                             Abteilung
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                        {{ $person->department ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                             </svg>
                             Rolle
-                        </p>
+                        </div>
                     </div>
-
-                    <div class="col-auto">
-                        <p>
-                            {{ optional($person->company)->full_name ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            {{ $person->department ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            {{ $person->role ?? 'nicht angegeben' }}
+                    <div class="col-7 col-md-8">
+                        {{ $person->role ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="text-muted d-flex align-items-center">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
+                            </svg>
+                            Privatadresse
+                        </div>
+                        <p class="m-0">
+                            @if ($person->address->first())
+                                {{ $person->address->first()->street_number }} <br />
+                                {{ $person->address->first()->postcode }} {{ $person->address->first()->city }} <br />
+                                <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $person->address->first()->address_line }}">
+                                    <svg class="feather feather-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+                                    </svg>
+                                    Google Maps
+                                </a>
+                            @else
+                                keine Adresse angegeben
+                            @endif
                         </p>
                     </div>
                 </div>
-
-                <p class="text-muted d-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-                    </svg>
-                    Privatadresse
-                </p>
-                <p>
-                    @if ($person->address->first())
-                        {{ $person->address->first()->street_number }} <br />
-                        {{ $person->address->first()->postcode }} {{ $person->address->first()->city }} <br />
-                        <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $person->address->first()->address_line }}">
-                            <svg class="feather feather-16 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                            </svg>
-                            Google Maps
-                        </a>
-                    @else
-                        keine Adresse angegeben
-                    @endif
-                </p>
             </div>
 
-            <div class="col-auto">
-
-                <div class="row">
-
-                    <div class="col-auto">
-                        <p class="text-muted d-flex align-items-center">
+            <div class="col-lg">
+                <div class="row mt-4 mt-lg-0">
+                    <div class="col-5 col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                             </svg>
-                            Tel<span class="d-none d-md-inline">efon</span>&nbsp;g<span class="d-none d-md-inline">eschäftlich</span>
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                            Telefon geschäftlich
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        {{ $person->phone_company ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
                             </svg>
-                            Tel<span class="d-none d-md-inline">efon</span>&nbsp;m<span class="d-none d-md-inline">obil</span>
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                            Telefon&nbsp;mobil
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        {{ $person->phone_mobile ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                             </svg>
-                            Tel<span class="d-none d-md-inline">efon</span>&nbsp;p<span class="d-none d-md-inline">rivat</span>
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                            Telefon&nbsp;privat
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        {{ $person->phone_private ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5  col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             Fax
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        {{ $person->fax ?? 'nicht angegeben' }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email
-                        </p>
-                        <p class="text-muted d-flex align-items-center">
+                        </div>
+                    </div>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        @if ($person->email)
+                            <a href="mailto:{{ $person->email }}">{{ $person->email }}</a>
+                        @else
+                            nicht angegeben
+                        @endif
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-5 col-md-4 col-lg-5">
+                        <div class="text-muted d-flex align-items-center">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use>
                             </svg>
                             Web<span class="d-none d-md-inline">seite</span>
-                        </p>
+                        </div>
                     </div>
-
-                    <div class="col-auto">
-                        <p>
-                            {{ $person->phone_company ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            {{ $person->phone_mobile ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            {{ $person->phone_private ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            {{ $person->fax ?? 'nicht angegeben' }}
-                        </p>
-                        <p>
-                            @if ($person->email)
-                                <a href="mailto:{{ $person->email }}">{{ $person->email }}</a>
-                            @else
-                                nicht angegeben
-                            @endif
-                        </p>
-                        <p>
-                            @if ($person->website)
-                                <a href="{{ $person->website }}">{{ $person->website }}</a>
-                            @else
-                                nicht angegeben
-                            @endif
-                        </p>
+                    <div class="col-7 col-md-8 col-lg-7">
+                        @if ($person->website)
+                            <a href="{{ $person->website }}">{{ $person->website }}</a>
+                        @else
+                            nicht angegeben
+                        @endif
                     </div>
-
                 </div>
-
-            </div>
-
-        </div>
-
-        <div class="row mt-2">
-            <div class="col">
-                <p class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                    </svg>
-                    Bemerkungen
-                </p>
-                <p>
-                    @if ($person->comment)
-                        @markdown ($person->comment)
-                    @else
-                        keine Bemerkungen angegeben
-                    @endif
-                </p>
             </div>
         </div>
+
+        <div class="text-muted d-flex align-items-center mt-4">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+            </svg>
+            Bemerkungen
+        </div>
+        @if ($person->comment)
+            @markdown ($person->comment)
+        @else
+            keine Bemerkungen angegeben
+        @endif
 
     </div>
 @endsection

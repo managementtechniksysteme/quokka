@@ -20,7 +20,7 @@
                         </a>
                     </li>
                     <li class="nav-itemr">
-                        <a class="nav-link d-inline-flex align-items-center" href="#">
+                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                             </svg>
@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="nav-itemr">
-                        <a class="nav-link d-inline-flex align-items-center" href="#">
+                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('tasks.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>

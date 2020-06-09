@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('addresses', 'AddressController');
 Route::resource('companies', 'CompanyController');
 Route::resource('help', 'HelpController')->only(['index', 'show']);
+Route::resource('memos', 'MemoController');
 Route::resource('people', 'PersonController');
 Route::resource('projects', 'ProjectController');
 Route::resource('tasks', 'TaskController');

@@ -69,7 +69,7 @@
         </div>
 
         <div class="row mt-4">
-            <div class="d-none d-md-block col-md-3">
+            <div class="d-none d-lg-block col-lg-3">
                 <div class="menu border-right pr-3">
                     <a class="menu-item @if (request()->tab == 'overview') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'overview']) }}">
                         <svg class="feather feather-16 mr-2">
@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="menu d-block d-md-none col mb-4">
+            <div class="menu d-block d-lg-none col mb-4">
                 <div class="border-bottom pb-2">
                     <a class="menu-item @if (request()->tab == 'overview') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'overview']) }}">
                         <svg class="feather feather-16 mr-2">
@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-lg-9">
                 @yield ('tab')
             </div>
         </div>

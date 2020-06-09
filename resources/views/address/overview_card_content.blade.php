@@ -11,7 +11,7 @@
             </p>
         </div>
 
-        <div class="small col-auto text-right">
+        <div class="d-none d-sm-block col-sm-auto text-right">
             <span class="text-muted d-inline-flex align-items-center">
                 <svg class="feather feather-12 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>

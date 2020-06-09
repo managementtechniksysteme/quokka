@@ -3,10 +3,10 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('people.show', $person) }}"></a>
-            <p class="m-0">
+            <div>
                 {{ $person->name }}
-            </p>
-            <p class="text-muted d-inline-flex align-items-center m-0">
+            </div>
+            <div class="text-muted d-inline-flex align-items-center">
                 @if(isset($secondaryInformation))
                     @switch($secondaryInformation)
                         @case('address')
@@ -28,7 +28,7 @@
                     </svg>
                     {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
                 @endif
-            </p>
+            </div>
         </div>
 
         <div class="col-md-auto d-none d-md-block">

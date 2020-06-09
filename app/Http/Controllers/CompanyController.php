@@ -30,7 +30,8 @@ class CompanyController extends Controller
     {
         $companies = Company::order($request->input())
             ->with('address')
-            ->withCount(['people', 'projects'])
+            ->withCount('people')
+            ->withCount('projects')
             ->paginate(15)
             ->appends($request->except('page'));
 
@@ -102,7 +103,7 @@ class CompanyController extends Controller
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
                 $company->load(['projects' => function ($query) use ($input) {
-                    $query->order($input)->withCount('tasks');
+                    $query->order($input)->withCount('tasks')->withCount('memos');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_projects')->with(compact('company'));

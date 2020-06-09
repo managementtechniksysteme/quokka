@@ -20,6 +20,7 @@ class ProjectController extends Controller
         $projects = Project::order($request->input())
             ->with('company')
             ->withCount('tasks')
+            ->withCount('memos')
             ->paginate(15)
             ->appends($request->except('page'));
 
@@ -71,7 +72,7 @@ class ProjectController extends Controller
     public function show(Project $project, Request $request)
     {
         $input = $request->input();
-        $project->loadCount('tasks');
+        $project->loadCount('tasks')->loadCount('memos');
 
         switch ($request->tab) {
             case 'overview':
@@ -82,6 +83,12 @@ class ProjectController extends Controller
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_tasks')->with(compact('project'));
+            case 'memos':
+                $project->load(['memos' => function ($query) use ($input) {
+                    $query->order($input);
+                }])->paginate(15)->appends($request->except('page'));
+
+                return view('project.show_tab_memos')->with(compact('project'));
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
         }

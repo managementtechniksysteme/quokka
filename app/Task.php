@@ -92,4 +92,19 @@ class Task extends Model
     {
         return $this->status !== 'finished' && $this->due_on && $this->due_on->isPast();
     }
+
+    public function isNew()
+    {
+        return $this->status === 'new';
+    }
+
+    public function isInProgress()
+    {
+        return $this->status === 'in progress';
+    }
+
+    public function isFinished()
+    {
+        return $this->status === 'finished';
+    }
 }

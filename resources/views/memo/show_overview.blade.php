@@ -1,7 +1,7 @@
 <div class="mt-4">
 
     <div class="row">
-        <div class="col-sm-5 col-md-4 col-lg-2">
+        <div class="col-sm-5 col-md-3 col-lg-2">
             <div class="text-muted d-flex align-items-center">
                 <svg class="feather feather-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
@@ -9,24 +9,50 @@
                 Projekt
             </div>
         </div>
-        <div class="col-sm-7">
-            {{ $task->project->name }}
+        <div class="col">
+            {{ $memo->project->name }}
         </div>
     </div>
 
     <div class="row mt-3 mt-md-4">
-        <div class="col-md-8 col-lg">
+        <div class="col-md">
             <div class="row">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#hash"></use>
                         </svg>
-                        Fälligkeitsdatum
+                        Nummer
                     </div>
                 </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->due_on ? $task->due_on->format('d.m.Y') : 'nicht angegeben' }}
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ $memo->number }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-5 col-md col-lg-4">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        </svg>
+                        Verfasser
+                    </div>
+                </div>
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ $memo->employeeComposer->person->name }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-5 col-md col-lg-4">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        </svg>
+                        Empfänger
+                    </div>
+                </div>
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ optional($memo->personRecipient)->name ?? 'nicht angegeben' }}
                 </div>
             </div>
             <div class="row mt-3">
@@ -35,97 +61,74 @@
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
-                        Zeitraum
+                        Datum
                     </div>
                 </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->starts_on ? $task->starts_on->format('d.m.Y') : 'kein Start' }}
-                    <svg class="feather feather-16 mx-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
-                    </svg>
-                    {{ $task->ends_on ? $task->ends_on->format('d.m.Y') : 'kein Ende' }}
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ $memo->meeting_held_on->format('d.m.Y') }}
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
-                        Priorität
+                        Nächster Termin
                     </div>
                 </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->priority) }}
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ $memo->next_meeting_on ? $memo->next_meeting_on->format('d.m.Y') : 'nicht angegeben' }}
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
-                        Status
+                        Verfassungsdatum
                     </div>
                 </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->status) }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
-                        </svg>
-                        Verrechnungsstatus
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->billed_string) }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
-                        </svg>
-                        Sichtbarkeitsstatus
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->visibility_string) }}
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ $memo->created_at->format('d.m.Y') }}
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 col-lg">
+        <div class="col-md">
             <div class="row mt-3 mt-md-0">
-                <div class="col-sm-5 col-md-12 col-lg">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                        </svg>
-                        Verantwortliche Person
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md-12 col-lg">
-                    {{ $task->responsibleEmployee->person->name }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md-12 col-lg">
+                <div class="col-sm-5 col-md-12 col-lg-5">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                         </svg>
-                        Mitwirkende Personen
+                        Anwesende Personen
                     </div>
                 </div>
-                <div class="col-sm-7 col-md-12 col-lg">
-                    @forelse($task->involvedEmployees as $employee)
-                        {{ $employee->person->name }}
+                <div class="col col-sm-7 col-md-12 col-lg-7">
+                    @forelse($memo->presentPeople as $person)
+                        {{ $person->name }}
+                        @unless($loop->last)
+                            <br />
+                        @endunless
+                    @empty
+                        keine Personen angegeben
+                    @endforelse
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-5 col-md-12 col-lg-5">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                        </svg>
+                        Verteiler
+                    </div>
+                </div>
+                <div class="col col-sm-7 col-md-12 col-lg-7">
+                    @forelse($memo->notifiedPeople as $person)
+                        {{ $person->name }}
                         @unless($loop->last)
                             <br />
                         @endunless
@@ -143,8 +146,8 @@
         </svg>
         Bemerkungen
     </div>
-    @if ($task->comment)
-        @markdown ($task->comment)
+    @if ($memo->comment)
+        @markdown ($memo->comment)
     @else
         keine Bemerkungen angegeben
     @endif

@@ -40,6 +40,11 @@ class Employee extends Model
         return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id');
     }
 
+    public function composedMemos()
+    {
+        return $this->hasMany(Memo::class);
+    }
+
     public function taskComments()
     {
         return $this->hasMany(TaskComment::class, 'employee_id');

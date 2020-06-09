@@ -3,18 +3,18 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('companies.show', $company) }}"></a>
-            <p class="m-0">
+            <div>
                 {{ $company->full_name }}
-            </p>
-            <p class="text-muted d-inline-flex align-items-center m-0">
+            </div>
+            <div class="text-muted d-inline-flex align-items-center">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 {{ optional($company->address->first())->address_line ?? 'keine Adresse angegeben' }}
-            </p>
+            </div>
         </div>
 
-        <div class="col-auto text-right">
+        <div class="d-none d-sm-block col-sm-auto text-right">
             <a class="text-muted d-inline-flex align-items-center" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>

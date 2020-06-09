@@ -3,10 +3,10 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('projects.show', $project) }}"></a>
-            <p class="m-0">
+            <div>
                 {{ $project->name }}
-            </p>
-            <p class="text-muted d-inline-flex align-items-center m-0">
+            </div>
+            <div class="text-muted d-inline-flex align-items-center">
                 @if(isset($secondaryInformation))
                     @switch($secondaryInformation)
                         @case('dates')
@@ -32,15 +32,22 @@
                     </svg>
                     {{ $project->company->name }}
                 @endif
-            </p>
+            </div>
         </div>
 
-        <div class="col-auto text-right">
+        <div class="d-none d-sm-block col-sm-auto  text-right">
             <a class="text-muted d-inline-flex align-items-center" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                 </svg>
                 {{ $project->tasks_count }}
+            </a>
+
+            <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('projects.show', [$project, 'tab' => 'memos']) }}">
+                <svg class="feather feather-16 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                </svg>
+                {{ $project->memos_count }}
             </a>
         </div>
 

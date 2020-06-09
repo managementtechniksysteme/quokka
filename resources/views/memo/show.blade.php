@@ -2,25 +2,30 @@
 
 @section('content')
     <div class="container">
-
         <h3>
-            Addresse
-            <small class="text-muted">{{ $address->address_line }}</small>
+            Aktenvermerk
+            <small class="text-muted">{{ $memo->title }}</small>
         </h3>
 
-        <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('addresses.edit', $address) }}">
+        <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('memos.edit', $memo) }}">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
             </svg>
-            Adresse bearbeiten
+            Aktenvermerk bearbeiten
         </a>
-        <a class="btn btn-outline-warning d-none d-lg-inline-flex align-items-center" href="#">
+        <a class="btn btn-outline-warning d-none d-xl-inline-flex align-items-center" href="#">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
             </svg>
-            Adresse zu Favoriten hinzufügen
+            Aktenvermerk zu Favoriten hinzufügen
         </a>
-        <form action="{{ route('addresses.destroy', $address) }}" method="post" class="d-none d-lg-inline">
+        <a class="btn btn-outline-secondary d-none d-xl-inline-flex align-items-center" href="#">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+            </svg>
+            PDF des Aktenvermerkes erstellen
+        </a>
+        <form action="{{ route('memos.destroy', $memo) }}" method="post" class="d-none d-xl-inline">
             @csrf
             @method('DELETE')
 
@@ -28,11 +33,11 @@
                 <svg class="feather feather-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                 </svg>
-                Adresse entfernen
+                Aktenvermerk entfernen
             </button>
         </form>
 
-        <div class="dropdown d-inline d-lg-none">
+        <div class="dropdown d-inline d-xl-none">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownActionsButton" data-toggle="dropdown">
                 Weitere Aktionen
             </button>
@@ -41,9 +46,15 @@
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
-                    Adresse zu Favoriten hinzufügen
+                    Aktenvermerk zu Favoriten hinzufügen
                 </a>
-                <form action="{{ route('addresses.destroy', $address) }}" method="post">
+                <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                    </svg>
+                    PDF des Aktenvermerkes erstellen
+                </a>
+                <form action="{{ route('memos.destroy', $memo) }}" method="post">
                     @csrf
                     @method('DELETE')
 
@@ -51,29 +62,13 @@
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                         </svg>
-                        Adresse entfernen
+                        Aktenvermerk entfernen
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-            </svg>
-            Adresse
-        </div>
-        <p>
-            {{ $address->street_number }} <br />
-            {{ $address->postcode }} {{ $address->city }} <br />
-            <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $address->address_line }}">
-                <svg class="feather feather-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                </svg>
-                Google Maps
-            </a>
-        </p>
-
+        @include ('memo.show_overview')
 
     </div>
 @endsection

@@ -146,7 +146,7 @@
         </div>
 
         <div class="form-group">
-            <label for="company_id">Projekt</label>
+            <label for="project_id">Projekt</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
                 @error('project_id')
@@ -246,7 +246,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Firma"  value="{{ old('comment', optional($task)->comment) }}"></vue-easymde>
+            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($task)->comment) }}"></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>

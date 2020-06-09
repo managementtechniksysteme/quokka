@@ -1,5 +1,12 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+/* nunito-regular - latin */
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Nunito Regular'), local('Nunito-Regular'),
+        url('../fonts/nunito-v12-latin-regular.woff2') format('woff2');
+}
+
 
 // Variables
 @import 'variables';
@@ -179,4 +186,9 @@ button.dropdown-item-delete:active {
     min-width: 4em;
     max-height: 4em;
     max-width: 4em;
+}
+
+// Status border
+.border-status {
+    border-left: 3px solid;
 }

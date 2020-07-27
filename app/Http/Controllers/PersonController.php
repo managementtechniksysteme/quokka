@@ -64,21 +64,18 @@ class PersonController extends Controller
 
         $person = Person::create($validatedData);
 
+        $pivotData = [['address_type' => 'private']];
+
         if ($request->filled('address_id')) {
-            $person->address()->sync(Address::find($request->address_id));
-        } elseif ($request->filled('street_number') && $request->filled('postcode') && $request->filled('city')) {
+            $person->address()->sync(array_combine([$request->address_id], $pivotData));
+        } elseif ($request->filled('address_name') && $request->filled('street_number')
+            && $request->filled('postcode') && $request->filled('city')) {
             $addressData = Arr::only($validatedData, ['street_number', 'postcode', 'city']);
+            $addressData['name'] = $validatedData['address_name'];
 
-            $address = Address::where($addressData)->first();
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
 
-            if ($address) {
-                $person->address()->sync($address);
-
-                return redirect()->route('people.index')
-                    ->with('info', 'Die Person wurde erfolgreich angelegt und mit der bereits vorhandenen Adresse verknüpft.');
-            } else {
-                $person->address()->sync(Address::create($validatedData));
-            }
+            $person->address()->sync(array_combine([$address->id], $pivotData));
         }
 
         return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich angelegt.');
@@ -132,21 +129,18 @@ class PersonController extends Controller
 
         $person->update($validatedData);
 
+        $pivotData = [['address_type' => 'private']];
+
         if ($request->filled('address_id')) {
-            $person->address()->sync(Address::find($request->address_id));
-        } elseif ($request->filled('street_number') && $request->filled('postcode') && $request->filled('city')) {
+            $person->address()->sync(array_combine([$request->address_id], $pivotData));
+        } elseif ($request->filled('address_name') && $request->filled('street_number')
+            && $request->filled('postcode') && $request->filled('city')) {
             $addressData = Arr::only($validatedData, ['street_number', 'postcode', 'city']);
+            $addressData['name'] = $validatedData['address_name'];
 
-            $address = Address::where($addressData)->first();
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
 
-            if ($address) {
-                $person->address()->sync($address);
-
-                return redirect()->route('people.index')
-                    ->with('info', 'Die Person wurde erfolgreich bearbeitet. Die bereits vorhandene Adresse wurde zugewiesen.');
-            } else {
-                $person->address()->sync(Address::create($validatedData));
-            }
+            $person->address()->sync(array_combine([$address->id], $pivotData));
         } else {
             $person->address()->detach();
         }
@@ -164,13 +158,11 @@ class PersonController extends Controller
     {
         $address = $person->address()->withCount('companies')->withCount('people')->first();
 
+        $person->address()->detach();
         $person->delete();
 
         if ($address && $address->companies_count + $address->people_count == 1) {
             $address->delete();
-
-            return redirect()->route('people.index')
-                ->with('success', 'Die Person und verknüpfte Adresse wurden erfolgreich entfernt.');
         }
 
         return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich entfernt.');

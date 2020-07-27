@@ -5,7 +5,7 @@
 
         <h3>
             Addresse
-            <small class="text-muted">{{ $address->address_line }}</small>
+            <small class="text-muted">{{ $address->name }}, {{ $address->address_line }}</small>
         </h3>
 
         <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('addresses.edit', $address) }}">
@@ -64,6 +64,7 @@
             Adresse
         </div>
         <p>
+            {{ $address->name}} <br />
             {{ $address->street_number }} <br />
             {{ $address->postcode }} {{ $address->city }} <br />
             <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $address->address_line }}">

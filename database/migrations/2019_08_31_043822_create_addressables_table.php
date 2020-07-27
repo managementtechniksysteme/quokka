@@ -17,11 +17,10 @@ class CreateAddressablesTable extends Migration
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('addressable_id');
             $table->string('addressable_type');
+            $table->enum('address_type', ['company', 'operator', 'private'])->nullable();
             $table->timestamps();
 
-            // The field address_id is not part of the primary key in order
-            // to limit addresses to one per linked model (e.g. company).
-            $table->primary(['addressable_id', 'addressable_type']);
+            $table->primary(['address_id', 'addressable_id', 'addressable_type', 'address_type'], 'addressables_primary');
 
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('restrict')->onUpdate('cascade');
         });

@@ -14,7 +14,7 @@ class Address extends Model
     ];
 
     protected $fillable = [
-        'street_number', 'postcode', 'city',
+        'name', 'street_number', 'postcode', 'city',
     ];
 
     protected $orderKeys = [

@@ -4,10 +4,10 @@
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('addresses.show', $address) }}"></a>
             <p class="m-0">
-                {{ $address->street_number }}
+                {{ $address->name }}
             </p>
             <p class="text-muted m-0">
-                {{ $address->postcode }} {{ $address->city }}
+                {{ $address->address_line }}
             </p>
         </div>
 

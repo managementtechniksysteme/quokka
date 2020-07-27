@@ -25,7 +25,12 @@ class Company extends Model
 
     public function address()
     {
-        return $this->morphToMany(Address::class, 'addressable');
+        return $this->morphToMany(Address::class, 'addressable')->wherePivot('address_type', 'company');
+    }
+
+    public function operatorAddress()
+    {
+        return $this->morphToMany(Address::class, 'addressable')->wherePivot('address_type', 'operator');
     }
 
     public function people()

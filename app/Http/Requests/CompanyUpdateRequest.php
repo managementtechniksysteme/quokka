@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class CompanyUpdateRequest extends FormRequest
 {
@@ -27,18 +26,15 @@ class CompanyUpdateRequest extends FormRequest
             'email' => 'email|nullable',
             'website' => 'url|nullable',
             'address_id' => 'exists:addresses,id|nullable',
-            'street_number' => [
-                'required_with:postcode,city',
-                'nullable',
-                Rule::unique('addresses')->where(function ($query) use ($street_number, $postcode, $city) {
-                    return $query
-                        ->where('street_number', $street_number)
-                        ->where('postcode', $postcode)
-                        ->where('city', $city);
-                }),
-            ],
-            'postcode' => 'required_with:street_number,city|digits_between:4,5|nullable',
-            'city' => 'required_with:street_number,postcode|nullable',
+            'address_name' => 'required_with:street_number,postcode,city|nullable',
+            'street_number' => 'required_with:address_name,postcode,city|nullable',
+            'postcode' => 'required_with:address_name,street_number,city|digits_between:4,5|nullable',
+            'city' => 'required_with:address_name,street_number,postcode|nullable',
+            'operator_address_id' => 'exists:addresses,id|nullable',
+            'operator_address_name' => 'required_with:operator_street_number,operator_postcode,operator_city|nullable',
+            'operator_street_number' => 'required_with:operator_address_name,operator_postcode,operator_city|nullable',
+            'operator_postcode' => 'required_with:operator_address_name,operator_street_number,operator_city|digits_between:4,5|nullable',
+            'operator_city' => 'required_with:operator_address_name,operator_street_number,operator_postcode|nullable',
             'comment' => 'nullable',
         ];
     }

@@ -30,6 +30,7 @@ class CompanyController extends Controller
     {
         $companies = Company::order($request->input())
             ->with('address')
+            ->with('operatorAddress')
             ->withCount('people')
             ->withCount('projects')
             ->paginate(15)
@@ -50,6 +51,7 @@ class CompanyController extends Controller
         return view('company.create')
             ->with('company', null)
             ->with('currentAddress', null)
+            ->with('currentOperatorAddress', null)
             ->with('addresses', $addresses->toJson());
     }
 
@@ -65,21 +67,36 @@ class CompanyController extends Controller
 
         $company = Company::create($validatedData);
 
+        $pivotData = [['address_type' => 'company']];
+
         if ($request->filled('address_id')) {
-            $company->address()->sync(Address::find($request->address_id));
-        } elseif ($request->filled('street_number') && $request->filled('postcode') && $request->filled('city')) {
+            $company->address()->sync(array_combine([$request->address_id], $pivotData));
+        } elseif ($request->filled('address_name') && $request->filled('street_number')
+            && $request->filled('postcode') && $request->filled('city')) {
             $addressData = Arr::only($validatedData, ['street_number', 'postcode', 'city']);
+            $addressData['name'] = $validatedData['address_name'];
 
-            $address = Address::where($addressData)->first();
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
 
-            if ($address) {
-                $company->address()->sync($address);
+            $company->address()->sync(array_combine([$address->id], $pivotData));
+        }
 
-                return redirect()->route('companies.index')
-                    ->with('info', 'Die Firma wurde erfolgreich angelegt und mit der bereits vorhandenen Adresse verknüpft.');
-            } else {
-                $company->address()->sync(Address::create($validatedData));
-            }
+        $pivotData = [['address_type' => 'operator']];
+
+        if ($request->filled('operator_address_id')) {
+            $company->operatorAddress()->sync(array_combine([$request->operator_address_id], $pivotData));
+        } elseif ($request->filled('operator_address_name') && $request->filled('operator_street_number')
+            && $request->filled('operator_postcode') && $request->filled('operator_city')) {
+            $addressData = [];
+
+            $addressData['name'] = $validatedData['operator_address_name'];
+            $addressData['street_number'] = $validatedData['operator_street_number'];
+            $addressData['postcode'] = $validatedData['operator_postcode'];
+            $addressData['city'] = $validatedData['operator_city'];
+
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
+
+            $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
         }
 
         return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich angelegt.');
@@ -127,11 +144,13 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         $currentAddress = optional($company->address)->first() ?? null;
+        $currentOperatorAddress = optional($company->operatorAddress)->first() ?? null;
         $addresses = Address::order()->get();
 
         return view('company.edit')
             ->with(compact('company'))
             ->with('currentAddress', $currentAddress)
+            ->with('currentOperatorAddress', $currentOperatorAddress)
             ->with('addresses', $addresses->toJson());
     }
 
@@ -148,23 +167,40 @@ class CompanyController extends Controller
 
         $company->update($validatedData);
 
+        $pivotData = [['address_type' => 'company']];
+
         if ($request->filled('address_id')) {
-            $company->address()->sync(Address::find($request->address_id));
-        } elseif ($request->filled('street_number') && $request->filled('postcode') && $request->filled('city')) {
+            $company->address()->sync(array_combine([$request->address_id], $pivotData));
+        } elseif ($request->filled('address_name') && $request->filled('street_number')
+            && $request->filled('postcode') && $request->filled('city')) {
             $addressData = Arr::only($validatedData, ['street_number', 'postcode', 'city']);
+            $addressData['name'] = $validatedData['address_name'];
 
-            $address = Address::where($addressData)->first();
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
 
-            if ($address) {
-                $company->address()->sync($address);
-
-                return redirect()->route('companies.index')
-                    ->with('info', 'Die Firma wurde erfolgreich bearbeitet. Die bereits vorhandene Adresse wurde zugewiesen.');
-            } else {
-                $company->address()->sync(Address::create($validatedData));
-            }
+            $company->address()->sync(array_combine([$address->id], $pivotData));
         } else {
             $company->address()->detach();
+        }
+
+        $pivotData = [['address_type' => 'operator']];
+
+        if ($request->filled('operator_address_id')) {
+            $company->operatorAddress()->sync(array_combine([$request->operator_address_id], $pivotData));
+        } elseif ($request->filled('operator_address_name') && $request->filled('operator_street_number')
+            && $request->filled('operator_postcode') && $request->filled('operator_city')) {
+            $addressData = [];
+
+            $addressData['name'] = $validatedData['operator_address_name'];
+            $addressData['street_number'] = $validatedData['operator_street_number'];
+            $addressData['postcode'] = $validatedData['operator_postcode'];
+            $addressData['city'] = $validatedData['operator_city'];
+
+            $address = Address::where($addressData)->first() ?? Address::create($addressData);
+
+            $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
+        } else {
+            $company->operatorAddress()->detach();
         }
 
         return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich bearbeitet.');
@@ -179,14 +215,18 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         $address = $company->address()->withCount('companies')->withCount('people')->first();
+        $operatorAddress = $company->operatorAddress()->withCount('companies')->withCount('people')->first();
 
+        $company->address()->detach();
+        $company->operatorAddress()->detach();
         $company->delete();
 
         if ($address && $address->companies_count + $address->people_count == 1) {
             $address->delete();
+        }
 
-            return redirect()->route('companies.index')
-                ->with('success', 'Die Firma und verknüpfte Adresse wurden erfolgreich entfernt.');
+        if ($operatorAddress && $operatorAddress->companies_count + $operatorAddress->people_count == 1) {
+            $operatorAddress->delete();
         }
 
         return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich entfernt.');

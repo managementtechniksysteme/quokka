@@ -122,7 +122,19 @@
             Neue Adresse anlegen
         </button>
 
-        <div class="collapse @if (old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+        <div class="collapse @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+
+            <div class="form-group">
+                <label for="address_name">Name</label>
+                <input type="text" class="form-control @error('address_name') is-invalid @enderror" id="address_name" name="address_name" placeholder="Max Mustermann" value="{{ old('address_name') }}" />
+                <div class="invalid-feedback">
+                    @error('address_name')
+                    {{ $message }}
+                    @else
+                        Gib bitte den Namen der Adresse ein.
+                    @enderror
+                </div>
+            </div>
 
             <div class="form-group">
                 <label for="street_number">Straße und Hausnummer</label>

@@ -30,7 +30,7 @@ class Person extends Model
 
     public function address()
     {
-        return $this->morphToMany(Address::class, 'addressable');
+        return $this->morphToMany(Address::class, 'addressable')->wherePivot('address_type', 'private');
     }
 
     public function company()

@@ -4,6 +4,10 @@
     @php $currentAddress = Address::find(old('address_id')); @endphp
 @endif
 
+@if (old('operator_address_id'))
+    @php $currentOperatorAddress = Address::find(old('operator_address_id')); @endphp
+@endif
+
 @csrf
 
 <div class="row">
@@ -48,7 +52,7 @@
                 <address-dropdown :addresses="{{ $addresses }}" :current_address="{{ $currentAddress ?? 'null' }}"></address-dropdown>
                 <div class="invalid-feedback @error('address_id') d-block @enderror">
                     @error('address_id')
-                    {{ $message }}
+                        {{ $message }}
                     @enderror
                 </div>
             </div>
@@ -71,7 +75,19 @@
             Neue Adresse anlegen
         </button>
 
-        <div class="collapse @if (old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+        <div class="collapse @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control @error('address_name') is-invalid @enderror" id="address_name" name="address_name" placeholder="Musterfirma" value="{{ old('address_name') }}" />
+                <div class="invalid-feedback">
+                    @error('address_name')
+                        {{ $message }}
+                    @else
+                        Gib bitte den Namen der Adresse ein.
+                    @enderror
+                </div>
+            </div>
 
             <div class="form-group">
                 <label for="street_number">Straße und Hausnummer</label>
@@ -100,6 +116,83 @@
                 <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" name="city" placeholder="Musterstadt" value="{{ old('city') }}" />
                 <div class="invalid-feedback">
                     @error('city')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="address_id">Adresse des Betreibers</label>
+                <address-dropdown input_name="operator_address_id" :addresses="{{ $addresses }}" :current_address="{{ $currentOperatorAddress ?? 'null' }}"></address-dropdown>
+                <div class="invalid-feedback @error('operator_address_id') d-block @enderror">
+                    @error('operator_address_id')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group d-none d-lg-block col-lg-auto">
+                <label>&nbsp;</label>
+                <button class="btn btn-outline-secondary d-flex align-items-center" type="button" data-toggle="collapse" data-target="#newOperatorAddressFields">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                    </svg>
+                    Neue Adresse anlegen
+                </button>
+            </div>
+        </div>
+
+        <button class="btn btn-outline-secondary d-flex align-items-center d-lg-none mb-3" type="button" data-toggle="collapse" data-target="#newOperatorAddressFields">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+            </svg>
+            Neue Adresse anlegen
+        </button>
+
+        <div class="collapse @if (old('operator_address_name') || old('operator_street_number') || old('operator_postcode') || old('operator_city')) show @endif" id="newOperatorAddressFields">
+
+            <div class="form-group">
+                <label for="operator_name">Name</label>
+                <input type="text" class="form-control @error('operator_address_name') is-invalid @enderror" id="operator_address_name" name="operator_address_name" placeholder="Musterfirma" value="{{ old('operator_address_name') }}" />
+                <div class="invalid-feedback">
+                    @error('operator_address_name')
+                        {{ $message }}
+                    @else
+                        Gib bitte den Namen der Adresse ein.
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="operator_street_number">Straße und Hausnummer</label>
+                <input type="text" class="form-control @error('operator_street_number') is-invalid @enderror" id="operator_street_number" name="operator_street_number" placeholder="Musterstraße 99" value="{{ old('operator_street_number') }}" />
+                <div class="invalid-feedback">
+                    @error('operator_street_number')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="operator_postcode">Postleitzahl</label>
+                <input type="text" pattern="\d*" maxlength="5" class="form-control @error('operator_postcode') is-invalid @enderror" id="operator_postcode" name="operator_postcode" placeholder="1234" value="{{ old('operator_postcode') }}" />
+                <div class="invalid-feedback">
+                    @error('operator_postcode')
+                        {{ $message }}
+                    @else
+                        Gib bitte eine gültige Postleitzahl (bestehend aus Ziffern) ein.
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="operator_city">Stadt</label>
+                <input type="text" class="form-control @error('operator_city') is-invalid @enderror" id="operator_city" name="operator_city" placeholder="Musterstadt" value="{{ old('operator_city') }}" />
+                <div class="invalid-feedback">
+                    @error('operator_city')
                         {{ $message }}
                     @enderror
                 </div>

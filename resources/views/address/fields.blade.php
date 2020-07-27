@@ -16,6 +16,18 @@
     <div class="col-md-8">
 
         <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Musterfirma" value="{{ old('name', optional($address)->name) }}" required />
+            <div class="invalid-feedback">
+                @error('name')
+                    {{ $message }}
+                @else
+                    Gib bitte den Namen der Adresse ein.
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="street_number">Straße und Hausnummer</label>
             <input type="text" class="form-control @error('street_number') is-invalid @enderror" id="street_number" name="street_number" placeholder="Musterstraße 99" value="{{ old('street_number', optional($address)->street_number) }}" required />
             <div class="invalid-feedback">

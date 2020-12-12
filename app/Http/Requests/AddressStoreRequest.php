@@ -30,7 +30,7 @@ class AddressStoreRequest extends FormRequest
             ],
             'street_number' => 'required',
             'postcode' => 'required|digits_between:4,5',
-            'city' => 'required',
+            'city' => 'required|max:50',
         ];
     }
 }

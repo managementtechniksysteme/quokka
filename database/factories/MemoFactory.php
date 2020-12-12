@@ -1,15 +1,22 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Memo;
-use Faker\Generator as Faker;
+use App\Models\Address;
+use App\Models\Memo;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Memo::class, function (Faker $faker) {
-    return [
-        'number' => $faker->randomNumber(),
-        'title' => $faker->sentence,
-        'meeting_held_on' => $faker->date(),
-        'next_meeting_on' => $faker->optional()->date(),
-        'comment' => $faker->realText(),
-    ];
-});
+class MemoFactory extends Factory
+{
+    protected $model = Memo::class;
+
+    public function definition()
+    {
+        return [
+            'number' => $this->faker->randomNumber(),
+            'title' => $this->faker->sentence,
+            'meeting_held_on' => $this->faker->date(),
+            'next_meeting_on' => $this->faker->optional()->date(),
+            'comment' => $this->faker->realText(),
+        ];
+    }
+}

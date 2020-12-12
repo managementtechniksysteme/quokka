@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Address;
-use App\Company;
+use App\Models\Address;
+use App\Models\Company;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use Illuminate\Http\Request;

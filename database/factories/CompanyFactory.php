@@ -1,17 +1,23 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Company;
-use Faker\Generator as Faker;
+use App\Models\Company;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Company::class, function (Faker $faker) {
-    return [
-        'name' => $faker->company,
-        'name_2' => $faker->optional()->companySuffix,
-        'phone' => $faker->optional()->phoneNumber,
-        'fax' => $faker->optional()->phoneNumber,
-        'email' => $faker->optional()->email,
-        'website' => $faker->optional()->url,
-        'comment' => $faker->optional()->realText(),
-    ];
-});
+class CompanyFactory extends Factory
+{
+    protected $model = Company::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->company,
+            'name_2' => $this->faker->optional()->companySuffix,
+            'phone' => $this->faker->optional()->phoneNumber,
+            'fax' => $this->faker->optional()->phoneNumber,
+            'email' => $this->faker->optional()->email,
+            'website' => $this->faker->optional()->url,
+            'comment' => $this->faker->optional()->realText(),
+        ];
+    }
+}

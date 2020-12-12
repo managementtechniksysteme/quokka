@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,25 +13,39 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index')->name('welcome');
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ReauthenticateController;
+use App\Http\Controllers\Auth\SecondFactorController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HelpController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MemoController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\WelcomeController;
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Auth::routes([
     'register' => false,
 ]);
 
-Route::get('/otp', 'Auth\SecondFactorController@index')->name('otp');
-Route::post('/otp', 'Auth\LoginController@loginSecondFactorOneTimePassword');
+Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
+Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);
 
-Route::get('/reauthenticate', 'Auth\ReauthenticateController@index')->name('reauthenticate');
-Route::post('/reauthenticate', 'Auth\ReauthenticateController@reauthenticate');
+Route::get('/reauthenticate', [ReauthenticateController::class. 'index'])->name('reauthenticate');
+Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', [HomeController::class. 'index'])->name('home');
 
-Route::resource('addresses', 'AddressController');
-Route::resource('companies', 'CompanyController');
-Route::resource('help', 'HelpController')->only(['index', 'show']);
-Route::resource('memos', 'MemoController');
-Route::resource('people', 'PersonController');
-Route::resource('projects', 'ProjectController');
-Route::resource('tasks', 'TaskController');
-Route::resource('comments', 'CommentController')->except(['index', 'show']);
+Route::resource('addresses', AddressController::class);
+Route::resource('companies', CompanyController::class);
+Route::resource('help', HelpController::class)->only(['index', 'show']);
+Route::resource('memos', MemoController::class);
+Route::resource('people', PersonController::class);
+Route::resource('projects', ProjectController::class);
+Route::resource('tasks', TaskController::class);
+Route::resource('comments', CommentController::class)->except(['index', 'show']);

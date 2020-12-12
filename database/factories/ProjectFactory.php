@@ -1,14 +1,21 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Project;
-use Faker\Generator as Faker;
+use App\Models\Address;
+use App\Models\Project;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Project::class, function (Faker $faker) {
-    return [
-        'name' => $faker->sentence,
-        'starts_on' => $faker->optional()->date(),
-        'ends_on' => $faker->optional()->date(),
-        'comment' => $faker->optional()->realText(),
-    ];
-});
+class ProjectFactory extends Factory
+{
+    protected $model = Project::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->sentence,
+            'starts_on' => $this->faker->optional()->date(),
+            'ends_on' => $this->faker->optional()->date(),
+            'comment' => $this->faker->optional()->realText(),
+        ];
+    }
+}

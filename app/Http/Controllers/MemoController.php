@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
-use App\Memo;
-use App\Person;
-use App\Project;
+use App\Models\Memo;
+use App\Models\Person;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class MemoController extends Controller

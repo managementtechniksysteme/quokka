@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AddressController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
 use App\Http\Controllers\Auth\SecondFactorController;
@@ -26,6 +24,7 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -36,10 +35,10 @@ Auth::routes([
 Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
 Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);
 
-Route::get('/reauthenticate', [ReauthenticateController::class. 'index'])->name('reauthenticate');
+Route::get('/reauthenticate', [ReauthenticateController::class.'index'])->name('reauthenticate');
 Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
-Route::get('/home', [HomeController::class. 'index'])->name('home');
+Route::get('/home', [HomeController::class.'index'])->name('home');
 
 Route::resource('addresses', AddressController::class);
 Route::resource('companies', CompanyController::class);

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
-use App\Models\Company;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
+use App\Models\Address;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
-use App\Models\Company;
 use App\Http\Requests\PersonStoreRequest;
 use App\Http\Requests\PersonUpdateRequest;
+use App\Models\Address;
+use App\Models\Company;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;

@@ -1,7 +1,7 @@
 <?php
+
 namespace Database\Factories;
 
-use App\Models\Address;
 use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

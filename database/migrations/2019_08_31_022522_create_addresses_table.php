@@ -17,8 +17,8 @@ class CreateAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('street_number');
-            $table->string('postcode');
-            $table->string('city');
+            $table->string('postcode', 6);
+            $table->string('city', 50);
             $table->timestamps();
 
             $table->unique(['name', 'street_number', 'postcode', 'city'], 'addresses_unique');

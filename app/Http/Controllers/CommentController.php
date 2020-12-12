@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
-use App\Task;
-use App\TaskComment;
+use App\Model\Task;
+use App\Model\TaskComment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller

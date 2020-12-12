@@ -1,19 +1,26 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Task;
-use Faker\Generator as Faker;
+use App\Models\Address;
+use App\Models\Task;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Task::class, function (Faker $faker) {
-    return [
-        'name' => $faker->sentence,
-        'starts_on' => $faker->optional()->date(),
-        'ends_on' => $faker->optional()->date(),
-        'due_on' => $faker->optional()->date(),
-        'private' => $faker->boolean,
-        'priority' => $faker->randomElement(['low', 'medium', 'high']),
-        'status' => $faker->randomElement(['new', 'in progress', 'finished']),
-        'billed' => $faker->randomElement(['yes', 'no', 'warranty']),
-        'comment' => $faker->optional()->realText(),
-    ];
-});
+class TaskFactory extends Factory
+{
+    protected $model = Task::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->sentence,
+            'starts_on' => $this->faker->optional()->date(),
+            'ends_on' => $this->faker->optional()->date(),
+            'due_on' => $this->faker->optional()->date(),
+            'private' => $this->faker->boolean,
+            'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
+            'status' => $this->faker->randomElement(['new', 'in progress', 'finished']),
+            'billed' => $this->faker->randomElement(['yes', 'no', 'warranty']),
+            'comment' => $this->faker->optional()->realText(),
+        ];
+    }
+}

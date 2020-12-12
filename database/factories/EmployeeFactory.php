@@ -1,15 +1,22 @@
 <?php
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Employee;
-use App\Person;
-use Faker\Generator as Faker;
+use App\Models\Address;
+use App\Models\Employee;
+use App\Models\Person;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Employee::class, function (Faker $faker) {
-    return [
-        'person_id' => factory(Person::class),
-        'entered_on' => $faker->date(),
-        'left_on' => $faker->optional()->date(),
-        'holidays' => $faker->numberBetween(0, 100),
-    ];
-});
+class EmployeeFactory extends Factory
+{
+    protected $model = Emoployee::class;
+
+    public function definition()
+    {
+        return [
+            'person_id' => Person::factory(),
+            'entered_on' => $this->faker->date(),
+            'left_on' => $this->faker->optional()->date(),
+            'holidays' => $this->faker->numberBetween(0, 100),
+        ];
+    }
+}

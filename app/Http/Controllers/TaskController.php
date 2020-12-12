@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Employee;
+use App\Models\Employee;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
-use App\Person;
-use App\Project;
-use App\Task;
-use App\TaskComment;
+use App\Models\Person;
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\TaskComment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;

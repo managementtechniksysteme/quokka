@@ -38,7 +38,7 @@ Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']
 Route::get('/reauthenticate', [ReauthenticateController::class.'index'])->name('reauthenticate');
 Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
-Route::get('/home', [HomeController::class.'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('addresses', AddressController::class);
 Route::resource('companies', CompanyController::class);

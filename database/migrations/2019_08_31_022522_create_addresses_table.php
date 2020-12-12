@@ -21,7 +21,7 @@ class CreateAddressesTable extends Migration
             $table->string('city');
             $table->timestamps();
 
-            $table->unique(['name', 'street_number', 'postcode', 'city']);
+            $table->unique(['name', 'street_number', 'postcode', 'city'], 'addresses_unique');
         });
     }
 

@@ -1,6 +1,6 @@
 @php
-    use \App\Person;
-    use \App\Project;
+    use \App\Models\Person;
+    use \App\Models\Project;
 @endphp
 
 @if (old('project_id'))

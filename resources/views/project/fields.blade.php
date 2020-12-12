@@ -1,4 +1,4 @@
-@php use \App\Company; @endphp
+@php use \App\Models\Company; @endphp
 
 @if (old('company_id'))
     @php $currentCompany = Company::find(old('company_id')); @endphp

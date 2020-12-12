@@ -1,4 +1,4 @@
-@php use \App\Address; @endphp
+@php use \App\Models\Address; @endphp
 
 @if (old('address_id'))
     @php $currentAddress = Address::find(old('address_id')); @endphp

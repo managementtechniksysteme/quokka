@@ -1,6 +1,6 @@
 @php
-    use \App\Address;
-    use \App\Company;
+    use \App\Models\Address;
+    use \App\Models\Company;
 @endphp
 
 @if (old('address_id'))

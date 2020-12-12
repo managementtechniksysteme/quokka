@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressStoreRequest;
 use App\Http\Requests\AddressUpdateRequest;
-use App\Model\Address;
+use App\Models\Address;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller

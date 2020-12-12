@@ -29,7 +29,7 @@ class ProjectUpdateRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('projects')->where(function ($query) use ($project, $name, $company_id) {
+                Rule::unique('projects')->where(function ($query) use ($name, $company_id) {
                     return $query->where('name', $name)->where('company_id', $company_id);
                 })->ignore($project),
             ],

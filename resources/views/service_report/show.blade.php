@@ -78,7 +78,7 @@
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
                     <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
                     Projekt
                 </div>

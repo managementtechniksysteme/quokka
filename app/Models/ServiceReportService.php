@@ -17,7 +17,7 @@ class ServiceReportService extends Model
     ];
 
     protected $fillable = [
-        'provided_on', 'hours', 'allowances', 'kilometres', 'service_report_id'
+        'provided_on', 'hours', 'allowances', 'kilometres', 'service_report_id',
     ];
 
     protected $orderKeys = [

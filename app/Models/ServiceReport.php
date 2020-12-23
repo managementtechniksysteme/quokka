@@ -19,7 +19,7 @@ class ServiceReport extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'number', 'status', 'comment', 'project_id', 'employee_id'
+        'number', 'status', 'comment', 'project_id', 'employee_id',
     ];
 
     protected $orderKeys = [

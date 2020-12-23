@@ -32,7 +32,7 @@ class ServiceReportSignatureRequestMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Servicebericht unterschreiben (' . $this->serviceReport->project->name . ' #' . $this->serviceReport->number . ')')
+            ->subject('Servicebericht unterschreiben ('.$this->serviceReport->project->name.' #'.$this->serviceReport->number.')')
             ->markdown('emails.service_report.signature_request');
     }
 }

@@ -189,7 +189,7 @@ return [
         'billed'                => 'Verrechnungsstatus',
         'private'               => 'Sichtbarkeitsstatus',
         'comment'               => 'Bemerkungen',
-        "services"              => "Serviceleistungen",
+        'services'              => 'Serviceleistungen',
         'signature'             => 'Unterschrift',
     ],
 ];

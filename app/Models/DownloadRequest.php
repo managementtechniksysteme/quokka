@@ -12,7 +12,7 @@ class DownloadRequest extends Model
     ];
 
     protected $fillable = [
-        'requestable_id', 'requestable_type', 'token'
+        'requestable_id', 'requestable_type', 'token',
     ];
 
     protected $primaryKey = 'token';
@@ -24,7 +24,8 @@ class DownloadRequest extends Model
         return $this->morphTo();
     }
 
-    public static function fromToken(string $requestableType, string $token) {
+    public static function fromToken(string $requestableType, string $token)
+    {
         return DownloadRequest::whereRequestableType($requestableType)->whereToken($token)->first()->requestable ?? null;
     }
 }

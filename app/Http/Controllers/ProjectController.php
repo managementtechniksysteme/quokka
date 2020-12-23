@@ -21,6 +21,7 @@ class ProjectController extends Controller
             ->with('company')
             ->withCount('tasks')
             ->withCount('memos')
+            ->withCount('serviceReports')
             ->paginate(15)
             ->appends($request->except('page'));
 
@@ -72,23 +73,43 @@ class ProjectController extends Controller
     public function show(Project $project, Request $request)
     {
         $input = $request->input();
-        $project->loadCount('tasks')->loadCount('memos');
+        $project->loadCount('tasks')->loadCount('memos')->loadCount('serviceReports');
 
         switch ($request->tab) {
             case 'overview':
                 return view('project.show_tab_overview')->with(compact('project'));
+
             case 'tasks':
                 $project->load(['tasks' => function ($query) use ($input) {
-                    $query->order($input);
+                    $query
+                        ->with('responsibleEmployee.person')
+                        ->order($input);
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_tasks')->with(compact('project'));
+
             case 'memos':
                 $project->load(['memos' => function ($query) use ($input) {
-                    $query->order($input);
+                    $query
+                        ->with('employeeComposer.person')
+                        ->with('personRecipient')
+                        ->order($input);
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_memos')->with(compact('project'));
+
+            case 'service_reports':
+                $project->load(['serviceReports' => function ($query) use ($input) {
+                    $query
+                        ->with('employee.person')
+                        ->withMin('services', 'provided_on')
+                        ->withMax('services', 'provided_on')
+                        ->withSum('services', 'hours')
+                        ->order($input);
+                }])->paginate(15)->appends($request->except('page'));
+
+                return view('project.show_tab_service_reports')->with(compact('project'));
+
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
         }

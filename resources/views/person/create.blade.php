@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Person anlegen</h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            <h3>Person anlegen</h3>
+        </div>
+    </div>
 
+    <div class="container mt-4">
         <form class="needs-validation mt-4" action="{{ route('people.store') }}" method="post" novalidate>
             @component('person.fields', [ 'person' => $person, 'currentAddress' => $currentAddress,
                 'addresses' => $addresses, 'currentCompany' => $currentCompany, 'companies' => $companies ])

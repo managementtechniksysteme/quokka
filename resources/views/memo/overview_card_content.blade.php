@@ -18,7 +18,7 @@
                                 <svg class="text-muted feather feather-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
-                                {{ $memo->meeting_held_on->format('d.m.Y') }}
+                                {{ $memo->meeting_held_on }}
                             </div>
                             <div class="d-flex d-md-inline-flex align-items-center">
                                 <svg class="feather feather-16 ml-md-2 mr-1">
@@ -46,7 +46,7 @@
                                 <svg class="text-muted feather feather-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
-                                {{ $memo->meeting_held_on->format('d.m.Y') }}
+                                {{ $memo->meeting_held_on }}
                                 <svg class="feather feather-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                 </svg>
@@ -73,7 +73,7 @@
                         <svg class="text-muted feather feather-16 ml-md-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
-                        {{ $memo->meeting_held_on->format('d.m.Y') }}
+                        {{ $memo->meeting_held_on }}
                         <svg class="feather feather-16 ml-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                         </svg>

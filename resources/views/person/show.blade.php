@@ -1,13 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            @include('person.breadcrumb')
 
-        <h3>
-            Person
-            <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
-        </h3>
+            <h3>
+                Person
+                <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
+            </h3>
+        </div>
+    </div>
 
+    <div class="container mt-4">
         <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>

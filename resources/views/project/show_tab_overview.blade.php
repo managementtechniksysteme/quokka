@@ -26,11 +26,11 @@
         </div>
         <div class="col">
             <div class="d-flex align-items-center">
-                {{ $project->starts_on ? $project->starts_on->format('d.m.Y') : 'kein Start angegeben' }}
+                {{ $project->starts_on ? $project->starts_on : 'kein Start angegeben' }}
                 <svg class="feather feather-16 mx-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                 </svg>
-                {{ $project->ends_on ? $project->ends_on->format('d.m.Y') : 'kein Ende angegeben' }}
+                {{ $project->ends_on ?? 'kein Ende angegeben' }}
             </div>
         </div>
     </div>

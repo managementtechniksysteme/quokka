@@ -7,10 +7,17 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "url": "https://github.com/SilvertipSoftware/laravel-pdf-latex.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "graham-campbell/markdown": "^13.1",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
@@ -20,7 +27,10 @@
         "league/commonmark-ext-table": "^2.1",
         "league/commonmark-ext-task-list": "^1.0",
         "pragmarx/google2fa": "^5.0",
-        "spatie/laravel-permission": "^3.0"
+        "silvertipsoftware/laravel-pdf-latex": "^2.2.1",
+        "spatie/laravel-medialibrary": "^9.0.0",
+        "spatie/laravel-permission": "^3.0",
+        "ueberdosis/pandoc": "^0.5.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

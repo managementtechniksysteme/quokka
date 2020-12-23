@@ -19,17 +19,19 @@
         computed: {
             backgroundClass: function () {
                 return {
-                    'bg-success': this.type === 'success',
-                    'bg-info': this.type === 'info',
-                    'bg-warning': this.type === 'warning',
-                    'bg-danger': this.type === 'danger'
+                    'bg-green-200': this.type === 'success',
+                    'bg-blue-200': this.type === 'info',
+                    'bg-yellow-200': this.type === 'warning',
+                    'bg-red-200': this.type === 'danger'
                 }
             },
 
             colorClass: function () {
                 return {
-                    'text-white': this.type === 'success' || this.type === 'info' ||this.type === 'danger',
-                    'text-dark': this.type === 'warning',
+                    'text-green-800': this.type === 'success',
+                    'text-blue-800': this.type === 'info',
+                    'text-yellow-800': this.type === 'warning',
+                    'text-red-800': this.type === 'danger'
                 }
             }
         },

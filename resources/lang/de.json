@@ -72,5 +72,6 @@
   "public": "öffentlich",
   "private": "privat",
   "yes": "ja",
-  "no": "nein"
+  "no": "nein",
+  "signed": "unterschrieben"
 }

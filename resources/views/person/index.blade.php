@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Personen</h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            <h3>Personen</h3>
+        </div>
+    </div>
 
+    <div class="container mt-4">
         @unless ($people->isEmpty())
             <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('people.create') }}">
                 <svg class="feather feather-16 mr-2">

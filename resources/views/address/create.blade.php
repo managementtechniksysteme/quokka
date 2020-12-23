@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Adresse anlegen</h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            <h3>Adresse anlegen</h3>
+        </div>
+    </div>
 
+    <div class="container mt-4">
         <form class="needs-validation mt-4" action="{{ route('addresses.store') }}" method="post" novalidate>
             @component('address.fields', [ 'address' => $address ])
             @endcomponent

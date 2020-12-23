@@ -1,12 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>
-            Person bearbeiten
-            <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
-        </h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            @include('person.breadcrumb')
 
+            <h3>
+                Person bearbeiten
+                <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
+            </h3>
+        </div>
+    </div>
+
+    <div class="container mt-4">
         <form class="needs-validation mt-4" action="{{ route('people.update', $person) }}" method="post" novalidate>
             @method('PATCH')
             @component('person.fields', [ 'person' => $person, 'currentAddress' => $currentAddress,

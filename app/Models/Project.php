@@ -38,4 +38,9 @@ class Project extends Model
     {
         return $this->hasMany(Memo::class);
     }
+
+    public function serviceReports()
+    {
+        return $this->hasMany(ServiceReport::class);
+    }
 }

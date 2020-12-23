@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-sm-7">
-            {{ $task->project->name }}
+            <a href="{{ route('projects.show', $task->project) }}">{{ $task->project->name }}</a>
         </div>
     </div>
 

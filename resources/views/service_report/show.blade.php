@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col">
-                {{ $serviceReport->project->name }}
+                <a href="{{ route('projects.show', $serviceReport->project) }}">{{ $serviceReport->project->name }}</a>
             </div>
         </div>
         <div class="row mt-3">

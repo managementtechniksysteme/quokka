@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col">
-            {{ $project->company->full_name }}
+            <a href="{{ route('companies.show', $project->company) }}">{{ $project->company->full_name }}</a>
         </div>
     </div>
     <div class="row mt-3">

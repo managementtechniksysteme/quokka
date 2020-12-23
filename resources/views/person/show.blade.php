@@ -86,7 +86,11 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        {{ optional($person->company)->full_name ?? 'nicht angegeben' }}
+                        @if($person->company)
+                            <a href="{{ route('companies.show', $person->company) }}">{{ $person->company->full_name }}</a>
+                        @else
+                            nicht angegeben
+                        @endif
                     </div>
                 </div>
                 <div class="row mt-3">

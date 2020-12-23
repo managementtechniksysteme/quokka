@@ -12,7 +12,7 @@ class SignatureRequest extends Model
     ];
 
     protected $fillable = [
-        'requestable_id', 'requestable_type', 'token'
+        'requestable_id', 'requestable_type', 'token',
     ];
 
     protected $primaryKey = 'token';
@@ -24,7 +24,8 @@ class SignatureRequest extends Model
         return $this->morphTo();
     }
 
-    public static function fromToken(string $requestableType, string $token) {
+    public static function fromToken(string $requestableType, string $token)
+    {
         return SignatureRequest::whereRequestableType($requestableType)->whereToken($token)->first()->requestable ?? null;
     }
 }

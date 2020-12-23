@@ -9,27 +9,31 @@ trait HasSignatureRequest
 {
     use InteractsWithMedia;
 
-    public function signatureRequest() {
+    public function signatureRequest()
+    {
         return $this->morphOne(SignatureRequest::class, 'requestable');
     }
 
-    public function signature() {
+    public function signature()
+    {
         return $this->getFirstMedia('signature');
     }
 
-    public function generateSignatureRequest() {
+    public function generateSignatureRequest()
+    {
         $signatureRequest = $this->signatureRequest ?? SignatureRequest::make();
 
         do {
             $signatureRequest->token = \Str::random(64);
-        } while(SignatureRequest::find($signatureRequest->token));
+        } while (SignatureRequest::find($signatureRequest->token));
 
         $signatureRequest->requestable()->associate($this);
 
         $signatureRequest->save();
     }
 
-    public function deleteSignatureRequest() {
+    public function deleteSignatureRequest()
+    {
         $signatureRequest = $this->signatureRequest;
 
         if ($signatureRequest) {
@@ -37,14 +41,16 @@ trait HasSignatureRequest
         }
     }
 
-    public function addSignature(string $signature) {
+    public function addSignature(string $signature)
+    {
         $this->addMediaFromBase64($signature)->usingFileName('signature.png')->toMediaCollection('signature');
     }
 
-    public function deleteSignature() {
+    public function deleteSignature()
+    {
         $signature = $this->signature();
 
-        if($signature) {
+        if ($signature) {
             $signature->delete();
         }
     }

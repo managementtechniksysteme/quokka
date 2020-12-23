@@ -244,7 +244,7 @@
                 @error('email')
                     {{ $message }}
                 @else
-                    Gib bitte eine gueltige E-Mail Addresse ein.
+                    Gib bitte eine gültige E-Mail Addresse ein.
                 @enderror
             </div>
         </div>
@@ -256,7 +256,7 @@
                 @error('website')
                     {{ $message }}
                 @else
-                    Gib bitte eine gueltige Webseite ein.
+                    Gib bitte eine gültige Webseite ein.
                 @enderror
             </div>
         </div>

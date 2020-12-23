@@ -1,12 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>
-            Projekt
-            <small class="text-muted">{{ $project->name }}</small>
-        </h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            @include('project.breadcrumb')
 
+            <h3>
+                Projekt
+                <small class="text-muted">{{ $project->name }}</small>
+            </h3>
+        </div>
+    </div>
+
+    <div class="container mt-4">
         <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('projects.edit', $project) }}">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
@@ -93,6 +99,14 @@
                         Aktenvermerke
                         <span class="ml-auto">{{ $project->memos_count }}</span>
                     </a>
+
+                    <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                        </svg>
+                        Serviceberichte
+                        <span class="ml-auto">{{ $project->service_reports_count }}</span>
+                    </a>
                 </div>
             </div>
 
@@ -117,6 +131,13 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                         </svg>
                         Aktenvermerke
+                    </a>
+
+                    <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                        </svg>
+                        Serviceberichte
                     </a>
                 </div>
             </div>

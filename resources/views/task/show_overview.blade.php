@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->due_on ? $task->due_on->format('d.m.Y') : 'nicht angegeben' }}
+                    {{ $task->due_on ? $task->due_on : 'nicht angegeben' }}
                 </div>
             </div>
             <div class="row mt-3">
@@ -39,11 +39,11 @@
                     </div>
                 </div>
                 <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->starts_on ? $task->starts_on->format('d.m.Y') : 'kein Start' }}
+                    {{ $task->starts_on ?? 'kein Start' }}
                     <svg class="feather feather-16 mx-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                     </svg>
-                    {{ $task->ends_on ? $task->ends_on->format('d.m.Y') : 'kein Ende' }}
+                    {{ $task->ends_on ? $task->ends_on : 'kein Ende' }}
                 </div>
             </div>
             <div class="row mt-3">

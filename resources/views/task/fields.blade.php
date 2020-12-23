@@ -103,7 +103,7 @@
 
         <div class="form-group">
             <div>
-                <label for="gender">Status</label>
+                <label for="status">Status</label>
             </div>
             <div class="btn-group btn-group-toggle @error('status') is-invalid @enderror" data-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('status', optional($task)->status) == 'new') active @endif">
@@ -125,7 +125,7 @@
 
         <div class="form-group">
             <div>
-                <label for="gender">Verrechnungsstatus</label>
+                <label for="billed">Verrechnungsstatus</label>
             </div>
             <div class="btn-group btn-group-toggle @error('billed') is-invalid @enderror" data-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('billed', optional($task)->billed) == 'yes') active @endif">

@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="col col-sm-7 col-md col-lg-8">
-                    {{ $memo->meeting_held_on->format('d.m.Y') }}
+                    {{ $memo->meeting_held_on }}
                 </div>
             </div>
             <div class="row mt-3">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="col col-sm-7 col-md col-lg-8">
-                    {{ $memo->next_meeting_on ? $memo->next_meeting_on->format('d.m.Y') : 'nicht angegeben' }}
+                    {{ $memo->next_meeting_on ? $memo->next_meeting_on : 'nicht angegeben' }}
                 </div>
             </div>
             <div class="row mt-3">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="col col-sm-7 col-md col-lg-8">
-                    {{ $memo->created_at->format('d.m.Y') }}
+                    {{ $memo->created_at }}
                 </div>
             </div>
         </div>

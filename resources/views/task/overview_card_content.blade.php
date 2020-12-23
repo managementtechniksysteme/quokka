@@ -20,7 +20,7 @@
                                 <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
-                                {{ $task->due_on ? $task->due_on->format('d.m.Y') : 'kein Datum angegeben' }}
+                                {{ $task->due_on ?? 'kein Datum angegeben' }}
                             </div>
                             @break
                         @default
@@ -38,7 +38,7 @@
                                 <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
-                                {{ $task->due_on ? $task->due_on->format('d.m.Y') : 'kein Datum angegeben' }}
+                                {{ $task->due_on ?? 'kein Datum angegeben' }}
                             </div>
                             @break
                     @endswitch()
@@ -57,7 +57,7 @@
                         <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                         </svg>
-                        {{ $task->due_on ? $task->due_on->format('d.m.Y') : 'kein Datum angegeben' }}
+                        {{ $task->due_on ?? 'kein Datum angegeben' }}
                     </div>
                 @endif
             </div>

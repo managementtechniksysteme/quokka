@@ -13,11 +13,11 @@
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
-                            {{ $project->starts_on ? $project->starts_on->format('d.m.Y') : 'kein Start angegeben' }}
+                            {{ $project->starts_on ?? 'kein Start angegeben' }}
                             <svg class="feather feather-16 mx-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                             </svg>
-                            {{ $project->ends_on ? $project->ends_on->format('d.m.Y') : 'kein Ende angegeben' }}
+                            {{ $project->ends_on ?? 'kein Ende angegeben' }}
                             @break
                         @default
                             <svg class="feather feather-16 mr-1">
@@ -48,6 +48,13 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                 </svg>
                 {{ $project->memos_count }}
+            </a>
+
+            <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('projects.show', [$project, 'tab' => 'serviceReports']) }}">
+                <svg class="feather feather-16 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                </svg>
+                {{ $project->service_reports_count }}
             </a>
         </div>
 

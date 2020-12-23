@@ -1,0 +1,57 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            @include('service_report.breadcrumb')
+
+            <h3>
+                Servicebericht unterschreiben und herunterladen
+                <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>
+            </h3>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="text-center mt-4">
+            <img class="empty-state" src="{{ asset('svg/approve.svg') }}" alt="done" />
+            <p class="lead text-muted mt-1">Vielen Dank, dass Sie den Servicebericht unterschrieben haben.</p>
+        </div>
+
+        <h4 class="mt-4">Servicebericht herunterladen</h4>
+
+        <p>Klicken Sie auf folgenden Button, um den Servicebericht im PDF Format zur Archivierung herunterzuladen.</p>
+
+        <div class="text-center">
+            <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('service-reports.customer-download', $serviceReport->downloadRequest->token) }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                </svg>
+                Servicebericht als PDF herunterladen
+            </a>
+        </div>
+
+        <p class="mt-4">Alternativ können Sie sich einen Link zum Herunterladen per Email schicken lassen, falls Sie den Servicebericht auf einem anderen Gerät herunterladen möchten. Geben Sie hierzu bitte die gewünschte Email Adresse in folgendes Feld ein und klicken anschliessend auf den Button.</p>
+
+        <form class="needs-validation" action="{{ route('service-reports.customer-email-download-request', $serviceReport->downloadRequest->token) }}" method="post" novalidate>
+            @csrf
+
+
+            <div class="form-group">
+                <div class="col col-md-6 offset-md-3">
+                    <input type="email" class="form-control" name="email" placeholder="Email Adresse" value="{{ $serviceReport->project->company->email }}" required />
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-outline-secondary d-inline-flex align-items-center">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
+                    </svg>
+                    Link als Email senden
+                </button>
+            </div>
+
+        </form>
+    </div>
+@endsection

@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h3>Aufgaben</h3>
+    <div class="bg-gray-100 mt-0">
+        <div class="container py-4">
+            <h3>Aufgaben</h3>
+        </div>
+    </div>
 
+    <div class="container mt-4">
         @unless ($tasks->isEmpty())
             <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
                 <svg class="feather feather-16 mr-2">
@@ -104,7 +108,7 @@
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                     <p class="lead text-muted">Es sind keine Aufgaben im System vorhanden.</p>
-                    <p class="lead">Lege ein neue Aufgabe an.</p>
+                    <p class="lead">Lege eine neue Aufgabe an.</p>
                     <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
                         <svg class="feather feather-20 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>

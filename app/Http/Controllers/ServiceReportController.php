@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\SingleEmailRequest;
 use App\Http\Requests\ServiceReportSignRequest;
 use App\Http\Requests\ServiceReportStoreRequest;
 use App\Http\Requests\ServiceReportUpdateRequest;
 use App\Mail\ServiceReportDownloadRequestMail;
+use App\Mail\ServiceReportMail;
 use App\Mail\ServiceReportSignatureRequestMail;
 use App\Models\DownloadRequest;
+use App\Models\Person;
 use App\Models\Project;
 use App\Models\ServiceReport;
 use App\Models\ServiceReportService;
@@ -181,6 +184,36 @@ class ServiceReportController extends Controller
         return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich entfernt.');
     }
 
+    public function showEmail(Request $request, ServiceReport $serviceReport) {
+        $serviceReport
+            ->load('project');
+
+        $people = Person::whereNotNull('email')->order()->get();
+
+        return view('service_report.email')
+            ->with('serviceReport', $serviceReport)
+            ->with('people', $people)
+            ->with('currentTo', null)
+            ->with('currentCC', null)
+            ->with('currentBCC', null);
+    }
+
+    public function email(EmailRequest $request, ServiceReport $serviceReport) {
+        $validatedData = $request->validated();
+
+        $mail = Mail::to($request->email_to);
+        if($request->email_cc) {
+            $mail = $mail->cc($request->email_cc);
+        }
+        if($request->email_bcc) {
+            $mail = $mail->bcc($request->email_bcc);
+        }
+
+        $mail->send(new ServiceReportMail($serviceReport));
+
+        return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich gesendet.');
+    }
+
     public function showEmailSignatureRequest(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
@@ -189,8 +222,13 @@ class ServiceReportController extends Controller
         return view('service_report.email_signature_request', $serviceReport)->with(compact('serviceReport'));
     }
 
-    private function sendSignatureRequest(ServiceReport $serviceReport, string $email)
+    public function emailSignatureRequest(SingleEmailRequest $request, ServiceReport $serviceReport)
     {
+        $validatedData = $request->validated();
+
+        $serviceReport->generateSignatureRequest();
+        $serviceReport->load('signatureRequest');
+
         $serviceReport
             ->load('project')
             ->load('employee.person')
@@ -201,7 +239,9 @@ class ServiceReportController extends Controller
             ->loadSum('services', 'allowances')
             ->loadSum('services', 'kilometres');
 
-        Mail::to($email)->send(new ServiceReportSignatureRequestMail($serviceReport));
+        Mail::to($request->email)->send(new ServiceReportSignatureRequestMail($serviceReport));
+
+        return redirect()->route('service-reports.index')->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
     public function showSignRequest(Request $request, string $token)
@@ -215,18 +255,6 @@ class ServiceReportController extends Controller
         }
 
         return view('service_report.sign')->with(compact('serviceReport'));
-    }
-
-    public function emailSignatureRequest(EmailRequest $request, ServiceReport $serviceReport)
-    {
-        $validatedData = $request->validated();
-
-        $serviceReport->generateSignatureRequest();
-        $serviceReport->load('signatureRequest');
-
-        $this->sendSignatureRequest($serviceReport, $request->email);
-
-        return redirect()->route('service-reports.index')->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
     public function sign(ServiceReportSignRequest $request, string $token)
@@ -264,7 +292,7 @@ class ServiceReportController extends Controller
         return view('service_report.email_download_request', $serviceReport)->with(compact('serviceReport'));
     }
 
-    public function emailDownloadRequest(EmailRequest $request, ServiceReport $serviceReport)
+    public function emailDownloadRequest(SingleEmailRequest $request, ServiceReport $serviceReport)
     {
         $validatedData = $request->validated();
 
@@ -276,7 +304,7 @@ class ServiceReportController extends Controller
         return redirect()->route('service-reports.index')->with('success', 'Der Link zum Herunterladen wurde erfolgreich gesendet.');
     }
 
-    public function customerEmailDownloadRequest(EmailRequest $request, string $token)
+    public function customerEmailDownloadRequest(SingleEmailRequest $request, string $token)
     {
         $validatedData = $request->validated();
 

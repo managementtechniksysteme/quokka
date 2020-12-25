@@ -49,7 +49,9 @@
 
             sortArrayByName(people) {
                 people.sort((a, b) => {
-                    return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+                    let a_lower = a.name.toLowerCase();
+                    let b_lower = b.name.toLowerCase();
+                    return a_lower > b_lower ? 1 : b_lower > a_lower ? -1 : 0;
                 });
             }
         },

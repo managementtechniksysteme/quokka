@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class ServiceReportStoreRequest extends FormRequest
 {
@@ -18,6 +17,7 @@ class ServiceReportStoreRequest extends FormRequest
         return [
             'project_id' => 'required|exists:projects,id',
             'comment' => 'required',
+            'send_signature_request' => 'accepted|sometimes',
             'services' => 'required|array|min:1',
             'services.*.provided_on' => 'required|date|distinct',
             'services.*.hours' => 'required|numeric|min:0|multiple_of:0.5',

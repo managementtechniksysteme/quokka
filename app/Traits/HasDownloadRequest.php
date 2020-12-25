@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\DownloadRequest;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait HasDownloadRequest
 {

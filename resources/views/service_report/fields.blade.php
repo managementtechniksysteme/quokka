@@ -132,3 +132,39 @@
         </div>
     </div>
 </div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
+            </svg>
+            Anfrage zur Unterschrift senden
+        </p>
+        <p class="text-muted">
+            Bei Aktivierung der Schaltfläche kann nach dem Speichern direkt eine Anfrage zur Unterschrift per Email versendet werden.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="alert alert-info" role="alert">
+            <div class="d-inline-flex align-items-center">
+                <svg class="feather feather-24 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                </svg>
+                Die Email Adresse kann im nächsten Schritt angegeben werden.
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
+                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
+            </div>
+            <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
+                @error('send_signature_request')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>

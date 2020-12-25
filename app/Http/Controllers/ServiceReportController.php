@@ -92,7 +92,11 @@ class ServiceReportController extends Controller
             $serviceReportService->save();
         }
 
-        return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+        if ($request->send_signature_request) {
+            return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+        } else {
+            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+        }
     }
 
     /**
@@ -162,7 +166,11 @@ class ServiceReportController extends Controller
 
         $serviceReport->deleteSignatureRequest();
 
-        return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+        if ($request->send_signature_request) {
+            return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+        } else {
+            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+        }
     }
 
     /**

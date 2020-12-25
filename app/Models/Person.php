@@ -63,9 +63,11 @@ class Person extends Model
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function mailableEntity() {
+    public function mailableEntity()
+    {
         $mailable = $this->replicate();
         $mailable->id = $this->id;
+
         return $mailable->only(['id', 'name', 'email']);
     }
 }

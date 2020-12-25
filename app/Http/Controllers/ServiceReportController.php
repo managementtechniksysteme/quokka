@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailRequest;
-use App\Http\Requests\SingleEmailRequest;
 use App\Http\Requests\ServiceReportSignRequest;
 use App\Http\Requests\ServiceReportStoreRequest;
 use App\Http\Requests\ServiceReportUpdateRequest;
+use App\Http\Requests\SingleEmailRequest;
 use App\Mail\ServiceReportDownloadRequestMail;
 use App\Mail\ServiceReportMail;
 use App\Mail\ServiceReportSignatureRequestMail;
@@ -184,7 +184,8 @@ class ServiceReportController extends Controller
         return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich entfernt.');
     }
 
-    public function showEmail(Request $request, ServiceReport $serviceReport) {
+    public function showEmail(Request $request, ServiceReport $serviceReport)
+    {
         $serviceReport
             ->load('project');
 
@@ -198,14 +199,15 @@ class ServiceReportController extends Controller
             ->with('currentBCC', null);
     }
 
-    public function email(EmailRequest $request, ServiceReport $serviceReport) {
+    public function email(EmailRequest $request, ServiceReport $serviceReport)
+    {
         $validatedData = $request->validated();
 
         $mail = Mail::to($request->email_to);
-        if($request->email_cc) {
+        if ($request->email_cc) {
             $mail = $mail->cc($request->email_cc);
         }
-        if($request->email_bcc) {
+        if ($request->email_bcc) {
             $mail = $mail->bcc($request->email_bcc);
         }
 

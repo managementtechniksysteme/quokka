@@ -45,6 +45,6 @@ class Company extends Model
 
     public function getFullNameAttribute()
     {
-        return $this->name . ($this->name_2 ? (" " . $this->name_2) : "");
+        return $this->name.($this->name_2 ? (' '.$this->name_2) : '');
     }
 }

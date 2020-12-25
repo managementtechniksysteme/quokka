@@ -49,6 +49,8 @@ Route::resource('people', PersonController::class);
 Route::resource('projects', ProjectController::class);
 
 Route::resource('service-reports', ServiceReportController::class);
+Route::get('/service-reports/{service_report}/email', [ServiceReportController::class, 'showEmail'])->name('service-reports.email');
+Route::post('/service-reports/{service_report}/email', [ServiceReportController::class, 'email']);
 Route::get('/service-reports/{service_report}/email-download-request', [ServiceReportController::class, 'showEmailDownloadRequest'])->name('service-reports.email-download-request');
 Route::post('/service-reports/{service_report}/email-download-request', [ServiceReportController::class, 'emailDownloadRequest']);
 Route::get('/service-reports/{service_report}/email-signature-request', [ServiceReportController::class, 'showEmailSignatureRequest'])->name('service-reports.email-signature-request');
@@ -63,5 +65,5 @@ Route::resource('tasks', TaskController::class);
 Route::resource('comments', CommentController::class)->except(['index', 'show']);
 
 Route::get('/mail', function () {
-    return new App\Mail\ServiceReportSignatureRequestMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('signatureRequest')->loadMin('services', 'provided_on')->loadMax('services', 'provided_on')->loadSum('services', 'hours')->loadSum('services', 'allowances')->loadSum('services', 'kilometres'));
+    return new App\Mail\ServiceReportMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('services'));
 });

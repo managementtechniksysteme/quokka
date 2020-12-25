@@ -15,7 +15,12 @@ class EmailRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'email' => 'required|email|',
+            'email_to' => 'required|array',
+            'email_to.*.email' => 'email',
+            'email_cc' => 'array',
+            'email_cc.*.email' => 'email',
+            'email_bcc' => 'array',
+            'email_bcc.*.email' => 'email',
         ];
     }
 }

@@ -177,7 +177,7 @@ return [
         'time'                  => 'Uhrzeit',
         'available'             => 'verfügbar',
         'size'                  => 'Größe',
-        'comments'               => 'Bemerkungen',
+        'comments'              => 'Bemerkungen',
         'starts_on'             => 'Startdatum',
         'ends_on'               => 'Enddatum',
         'due_on'                => 'Fälligkeitsdatum',
@@ -191,5 +191,8 @@ return [
         'comment'               => 'Bemerkungen',
         'services'              => 'Serviceleistungen',
         'signature'             => 'Unterschrift',
+        'email_to'              => 'Email an',
+        'email_cc'              => 'Email CC',
+        'email_bcc'             => 'Email BCC',
     ],
 ];

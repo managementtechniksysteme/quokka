@@ -28,7 +28,8 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = Company::order($request->input())
+        $companies = Company::filter($request->input())
+            ->order($request->input())
             ->with('address')
             ->with('operatorAddress')
             ->withCount('people')
@@ -120,13 +121,13 @@ class CompanyController extends Controller
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
                 $company->load(['projects' => function ($query) use ($input) {
-                    $query->order($input)->withCount('tasks')->withCount('memos');
+                    $query->filter($input)->order($input)->withCount('tasks')->withCount('memos');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_projects')->with(compact('company'));
             case 'people':
                 $company->load(['people' => function ($query) use ($input) {
-                    $query->order($input);
+                    $query->filter($input)->order($input);
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_people')->with(compact('company'));

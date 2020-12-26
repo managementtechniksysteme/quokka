@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    use FiltersResults;
     use OrdersResults;
 
     protected $appends = [
@@ -16,6 +18,12 @@ class Company extends Model
     protected $fillable = [
         'name', 'name_2', 'phone', 'fax', 'email', 'website', 'comment',
     ];
+
+    protected $filterFields = [
+        'name', 'name_2',
+    ];
+
+    protected $filterKeys = [];
 
     protected $orderKeys = [
         'default' => ['name'],

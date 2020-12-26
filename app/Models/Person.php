@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class Person extends Model
 {
+    use FiltersResults;
     use Notifiable;
     use OrdersResults;
 
@@ -18,6 +20,15 @@ class Person extends Model
     protected $fillable = [
         'first_name', 'last_name', 'title_prefix', 'title_suffix', 'gender', 'department', 'role', 'phone_company',
         'phone_mobile', 'phone_private', 'fax', 'email', 'website', 'comment', 'company_id',
+    ];
+
+    protected $filterFields = [
+        'first_name', 'last_name', 'department', 'role',
+    ];
+
+    protected $filterKeys = [
+        'firma:(.*)' => ['company.name', '{value}'],
+        'f:(.*)' => ['company.name', '{value}'],
     ];
 
     protected $orderKeys = [

@@ -22,7 +22,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $tasks = Task::order($request->input())
+        $tasks = Task::filter($request->input())->order($request->input())
             ->with('project')
             ->with('responsibleEmployee.person')
             ->paginate(15)

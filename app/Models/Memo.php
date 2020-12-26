@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 
 class Memo extends Model
 {
+    use FiltersResults;
     use OrdersResults;
 
     protected $casts = [
@@ -18,6 +20,28 @@ class Memo extends Model
     protected $fillable = [
         'number', 'title', 'meeting_held_on', 'next_meeting_on', 'comment', 'project_id',
         'employee_id', 'person_id',
+    ];
+
+    protected $filterFields = [
+        'title',
+    ];
+
+    protected $filterKeys = [
+        'hat:folgetermin' => ['raw' => ['next_meeting_on >= curdate()', 'next_meeting_on < curdate() or next_meeting_on is null']],
+        'nummer:(\d)' => ['number', '{value}'],
+        'n:(\d)' => ['number', '{value}'],
+        'projekt:(.*)' => ['project.name', '{value}'],
+        'p:(.*)' => ['project.name', '{value}'],
+        'von:(.*)' => ['employeeComposer.user.username', '{value}'],
+        'an:(.*)' => ['personRecepient.last_name', '{value}'],
+        'beteiligt:(.*)' => ['presentPeople.last_name', '{value}'],
+        'b:(.*)' => ['presentPeople.last_name', '{value}'],
+        'beteiligt_mitarbeiter:(.*)' => ['presentPeople.employee.user.username', '{value}'],
+        'bm:(.*)' => ['presentPeople.employee.user.username', '{value}'],
+        'verständigt:(.*)' => ['notifiedPeople.last_name', '{value}'],
+        'v:(.*)' => ['notifiedPeople.last_name', '{value}'],
+        'verständigt_mitarbeiter:(.*)' => ['notifiedPeople.employee.user.username', '{value}'],
+        'vm:(.*)' => ['notifiedPeople.employee.user.username', '{value}'],
     ];
 
     protected $orderKeys = [

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    use FiltersResults;
     use OrdersResults;
 
     protected $casts = [
@@ -20,6 +22,33 @@ class Task extends Model
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'due_on', 'private', 'priority', 'status', 'billed', 'comment', 'project_id',
         'employee_id',
+    ];
+
+    protected $filterFields = [
+        'name',
+    ];
+
+    protected $filterKeys = [
+        'ist:privat' => ['private', true],
+        'ist:niedrig' => ['priority', 'low'],
+        'ist:mittel' => ['priority', 'medium'],
+        'ist:hoch' => ['priority', 'high'],
+        'ist:neu' => ['status', 'new'],
+        'ist:in_bearbeitung' => ['status', 'in progress'],
+        'ist:ib' => ['status', 'in progress'],
+        'ist:erledigt' => ['status', 'finished'],
+        'ist:verrechnet' => ['billed', 'yes'],
+        'ist:nicht_verrechnet' => ['billed', 'no'],
+        'ist:nv' => ['billed', 'no'],
+        'ist:garantie' => ['billed', 'warranty'],
+        'ist:überfällig' => ['due_on', 'curdate()', '>', '<='],
+        'ist:bald_fällig' => ['raw' => ['due_on between curdate() and date_add(curdate(), interval 7 day)', 'due_on not between curdate() and date_add(curdate(), interval 7 day)']],
+        'projekt:(.*)' => ['project.name', '{value}'],
+        'p:(.*)' => ['project.name', '{value}'],
+        'verantwortlich:(.*)' => ['responsibleEmployee.user.username', '{value}'],
+        'v:(.*)' => ['responsibleEmployee.user.username', '{value}'],
+        'beteiligt:(.*)' => ['involvedEmployees.user.username', '{value}'],
+        'b:(.*)' => ['involvedEmployees.user.username', '{value}'],
     ];
 
     protected $orderKeys = [

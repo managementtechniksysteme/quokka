@@ -17,7 +17,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::order($request->input())
+        $projects = Project::filter($request->input())
+            ->order($request->input())
             ->with('company')
             ->withCount('tasks')
             ->withCount('memos')
@@ -82,8 +83,9 @@ class ProjectController extends Controller
             case 'tasks':
                 $project->load(['tasks' => function ($query) use ($input) {
                     $query
-                        ->with('responsibleEmployee.person')
-                        ->order($input);
+                        ->filter($input)
+                        ->order($input)
+                        ->with('responsibleEmployee.person');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_tasks')->with(compact('project'));
@@ -91,9 +93,10 @@ class ProjectController extends Controller
             case 'memos':
                 $project->load(['memos' => function ($query) use ($input) {
                     $query
+                        ->filter($input)
+                        ->order($input)
                         ->with('employeeComposer.person')
-                        ->with('personRecipient')
-                        ->order($input);
+                        ->with('personRecipient');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_memos')->with(compact('project'));
@@ -101,11 +104,12 @@ class ProjectController extends Controller
             case 'service_reports':
                 $project->load(['serviceReports' => function ($query) use ($input) {
                     $query
+                        ->filter($input)
+                        ->order($input)
                         ->with('employee.person')
                         ->withMin('services', 'provided_on')
                         ->withMax('services', 'provided_on')
-                        ->withSum('services', 'hours')
-                        ->order($input);
+                        ->withSum('services', 'hours');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_service_reports')->with(compact('project'));

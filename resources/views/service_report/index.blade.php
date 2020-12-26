@@ -8,7 +8,7 @@
     </div>
 
     <div class="container mt-4">
-        @unless ($serviceReports->isEmpty())
+        @unless ($serviceReports->isEmpty() && !Request::get('search'))
             <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('service-reports.create') }}">
                 <svg class="feather feather-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
@@ -26,7 +26,7 @@
                         @endif
 
                         <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="Serviceberichte suchen">
+                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Serviceberichte suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="feather feather-16">
@@ -95,14 +95,18 @@
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Es sind keine Serviceberichte im System vorhanden.</p>
-                    <p class="lead">Lege einen neuen Servicebericht an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('service-reports.create') }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Servicebericht anlegen
-                    </a>
+                    @if(Request::get('search'))
+                        <p class="lead text-muted">Es wurden keine Serviceberichte passend zur Suche gefunden.</p>
+                    @else
+                        <p class="lead text-muted">Es sind keine Serviceberichte im System vorhanden.</p>
+                        <p class="lead">Lege einen neuen Servicebericht an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('service-reports.create') }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Servicebericht anlegen
+                        </a>
+                    @endif
                 </div>
             @endforelse
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\HasDownloadRequest;
 use App\Traits\HasSignatureRequest;
 use App\Traits\OrdersResults;
@@ -10,6 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class ServiceReport extends Model implements HasMedia
 {
+    use FiltersResults;
     use HasDownloadRequest;
     use HasSignatureRequest;
     use OrdersResults;
@@ -20,6 +22,20 @@ class ServiceReport extends Model implements HasMedia
 
     protected $fillable = [
         'number', 'status', 'comment', 'project_id', 'employee_id',
+    ];
+
+    protected $filterFields = [
+        'number', 'comment',
+    ];
+
+    protected $filterKeys = [
+        'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'nummer:(\d)' => ['number', '{value}'],
+        'n:(\d)' => ['number', '{value}'],
+        'projekt:(.*)' => ['project.name', '{value}'],
+        'p:(.*)' => ['project.name', '{value}'],
+        'techniker:(.*)' => ['employee.user.username', '{value}'],
+        't:(.*)' => ['employee.user.username', '{value}'],
     ];
 
     protected $orderKeys = [

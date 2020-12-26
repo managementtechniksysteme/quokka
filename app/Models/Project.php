@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use FiltersResults;
     use OrdersResults;
 
     protected $casts = [
@@ -16,6 +18,16 @@ class Project extends Model
 
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'comment', 'company_id',
+    ];
+
+    protected $filterFields = [
+        'name',
+    ];
+
+    protected $filterKeys = [
+        'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'firma:(.*)' => ['company.name', '{value}'],
+        'f:(.*)' => ['company.name', '{value}'],
     ];
 
     protected $orderKeys = [

@@ -29,7 +29,8 @@ class ServiceReportController extends Controller
      */
     public function index(Request $request)
     {
-        $serviceReports = ServiceReport::order($request->input())
+        $serviceReports = ServiceReport::filter($request->input())
+            ->order($request->input())
             ->with('project')
             ->with('employee.person')
             ->withMin('services', 'provided_on')

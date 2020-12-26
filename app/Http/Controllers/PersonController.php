@@ -19,7 +19,8 @@ class PersonController extends Controller
      */
     public function index(Request $request)
     {
-        $people = Person::order($request->input())
+        $people = Person::filter($request->input())
+            ->order($request->input())
             ->with('address')
             ->paginate(15)
             ->appends($request->except('page'));

@@ -33,6 +33,13 @@
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
                                 </button>
+                                @if (Request::get('search'))
+                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" href="{{ route('projects.index') }}">
+                                        <svg class="feather feather-16">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
+                                        </svg>
+                                    </a>
+                                @endif
                             </div>
                         </div>
 

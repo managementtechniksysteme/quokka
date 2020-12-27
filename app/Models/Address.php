@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
+    use FiltersResults;
     use OrdersResults;
 
     protected $appends = [
@@ -16,6 +18,12 @@ class Address extends Model
     protected $fillable = [
         'name', 'street_number', 'postcode', 'city',
     ];
+
+    protected $filterFields = [
+        'name', 'street_number', 'postcode', 'city',
+    ];
+
+    protected $filterKeys = [];
 
     protected $orderKeys = [
         'default' => ['street_number', 'postcode', 'city'],

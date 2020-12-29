@@ -194,5 +194,7 @@ return [
         'email_to'              => 'Email an',
         'email_cc'              => 'Email CC',
         'email_bcc'             => 'Email BCC',
+        'new_attachments'       => 'Anhänge (neu)',
+        'remove_attachments'    => 'Anhänge (zu entfernen)',
     ],
 ];

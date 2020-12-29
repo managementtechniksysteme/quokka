@@ -78,7 +78,7 @@
 
         <div class="form-group">
             <label for="project_id">Projekt</label>
-            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
+            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" v-cloak></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
                 @error('project_id')
                     {{ $message }}
@@ -104,7 +104,7 @@
     <div class="col-md-8">
         <div class="form-group">
             <label for="employee_id">Verfasser</label>
-            <person-dropdown inputname="employee_id" :people="{{ $employees }}" :current_person="{{ $currentEmployeeComposer ?? 'null' }}"></person-dropdown>
+            <person-dropdown inputname="employee_id" :people="{{ $employees }}" :current_person="{{ $currentEmployeeComposer ?? 'null' }}" v-cloak></person-dropdown>
             <div class="invalid-feedback @error('employee_id') d-block @enderror">
                 @error('employee_id')
                     {{ $message }}
@@ -114,7 +114,7 @@
 
         <div class="form-group">
             <label for="person_id">Empfänger</label>
-            <person-dropdown inputname="person_id" :people="{{ $people }}" :current_person="{{ $currentPersonRecipient ?? 'null' }}"></person-dropdown>
+            <person-dropdown inputname="person_id" :people="{{ $people }}" :current_person="{{ $currentPersonRecipient ?? 'null' }}" v-cloak></person-dropdown>
             <div class="invalid-feedback @error('person_id') d-block @enderror">
                 @error('person_id')
                     {{ $message }}
@@ -124,7 +124,7 @@
 
         <div class="form-group">
             <label for="present_ids">Anwesende Personen</label>
-            <people-selector inputname="present_ids[]" :people="{{ $people }}" :current_people="{{ $currentPresentPeople ?? 'null' }}"></people-selector>
+            <people-selector inputname="present_ids[]" :people="{{ $people }}" :current_people="{{ $currentPresentPeople ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('present_ids') d-block @enderror">
                 @error('present_ids')
                     {{ $message }}
@@ -134,7 +134,7 @@
 
         <div class="form-group">
             <label for="notified_ids">Verteiler</label>
-            <people-selector inputname="notified_ids[]" :people="{{ $people }}" :current_people="{{ $currentNotifiedPeople ?? 'null' }}"></people-selector>
+            <people-selector inputname="notified_ids[]" :people="{{ $people }}" :current_people="{{ $currentNotifiedPeople ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('notified_ids') d-block @enderror">
                 @error('notified_ids')
                     {{ $message }}
@@ -163,7 +163,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Aktenvermerk"  value="{{ old('comment', optional($memo)->comment) }}"></vue-easymde>
+            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Aktenvermerk"  value="{{ old('comment', optional($memo)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
@@ -172,6 +172,46 @@
             </a>
             <div class="invalid-feedback @error('comment') d-block @enderror">
                 @error('comment')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+            </svg>
+            Anhänge
+        </p>
+        <p class="text-muted">
+            Dem Aktenvermerk zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat.
+        </p>
+        <p class="text-muted">
+            Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>
+                Anhänge
+            </label>
+            <attachments-selector accept="image/*" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+            <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
+                @error('remove_attachments')
+                    {{ $message }}
+                @enderror
+                @error('remove_attachments.*')
+                    {{ $message }}
+                @enderror
+                @error('new_attachments')
+                    {{ $message }}
+                @enderror
+                @error('new_attachments.*')
                     {{ $message }}
                 @enderror
             </div>

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
-
 class HomeController extends Controller
 {
     /**
@@ -23,16 +21,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $people = Person::whereNotNull('email')->order()->get();
-
-        $currentTo = collect()->push(Person::find(1));
-
-        $currentCC = collect()->push(Person::find(2));
-
-        return view('home')
-            ->with('people', $people->toJson())
-            ->with('currentTo', $currentTo->toJson())
-            ->with('currentCC', $currentCC->toJson())
-            ->with('currentBCC', null);
+        return view('home');
     }
 }

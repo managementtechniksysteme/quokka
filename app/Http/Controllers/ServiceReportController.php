@@ -61,7 +61,8 @@ class ServiceReportController extends Controller
             ->with('serviceReport', null)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentServices', null);
+            ->with('currentServices', null)
+            ->with('currentAttachments', null);
     }
 
     /**
@@ -93,6 +94,10 @@ class ServiceReportController extends Controller
             $serviceReportService->save();
         }
 
+        if ($request->new_attachments) {
+            $serviceReport->addAttachments($request->new_attachments);
+        }
+
         if ($request->send_signature_request) {
             return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         } else {
@@ -113,7 +118,8 @@ class ServiceReportController extends Controller
             ->load('employee.person')
             ->load('services');
 
-        return view('service_report.show')->with(compact('serviceReport'));
+        return view('service_report.show')
+            ->with(compact('serviceReport'));
     }
 
     /**
@@ -128,12 +134,14 @@ class ServiceReportController extends Controller
         $currentProject = $serviceReport->project;
         $projects = Project::order()->get();
         $currentServices = $serviceReport->services;
+        $currentAttachments = $serviceReport->attachmentsWithUrl();
 
         return view('service_report.edit')
             ->with('serviceReport', $serviceReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentServices', $currentServices->toJson());
+            ->with('currentServices', $currentServices->toJson())
+            ->with('currentAttachments', $currentAttachments->toJson());
     }
 
     /**
@@ -163,6 +171,14 @@ class ServiceReportController extends Controller
 
             $serviceReport->deleteDownloadRequest();
             $serviceReport->deleteSignature();
+        }
+
+        if ($request->remove_attachments) {
+            $serviceReport->deleteAttachments($request->remove_attachments);
+        }
+
+        if ($request->new_attachments) {
+            $serviceReport->addAttachments($request->new_attachments);
         }
 
         $serviceReport->deleteSignatureRequest();

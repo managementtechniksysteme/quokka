@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Traits\FiltersResults;
+use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
-use App\Traits\HasSignatureRequest;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -12,8 +12,8 @@ use Spatie\MediaLibrary\HasMedia;
 class ServiceReport extends Model implements HasMedia
 {
     use FiltersResults;
+    use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
-    use HasSignatureRequest;
     use OrdersResults;
 
     protected $casts = [
@@ -49,6 +49,7 @@ class ServiceReport extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('signature')->singleFile()->useDisk('local');
+        $this->addMediaCollection('attachments')->useDisk('local');
     }
 
     public function project()

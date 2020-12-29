@@ -53,7 +53,8 @@ class TaskController extends Controller
             ->with('projects', $projects->toJson())
             ->with('currentResponsibleEmployee', null)
             ->with('currentInvolvedEmployees', null)
-            ->with('employees', $employees->toJson());
+            ->with('employees', $employees->toJson())
+            ->with('currentAttachments', null);
     }
 
     /**
@@ -87,6 +88,10 @@ class TaskController extends Controller
             }
 
             $task->involvedEmployees()->attach($employees);
+        }
+
+        if ($request->new_attachments) {
+            $task->addAttachments($request->new_attachments);
         }
 
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
@@ -126,13 +131,16 @@ class TaskController extends Controller
 
         $currentInvolvedEmployees = Person::order()->find($task->involvedEmployees->pluck('person_id')) ?? null;
 
+        $currentAttachments = $task->attachmentsWithUrl();
+
         return view('task.edit')
             ->with('task', $task)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentResponsibleEmployee', $currentResponsibleEmployee)
             ->with('currentInvolvedEmployees', $currentInvolvedEmployees->toJson())
-            ->with('employees', $employees->toJson());
+            ->with('employees', $employees->toJson())
+            ->with('currentAttachments', $currentAttachments->toJson());
     }
 
     /**
@@ -169,6 +177,14 @@ class TaskController extends Controller
             $task->involvedEmployees()->sync($employees);
         } else {
             $task->involvedEmployees()->detach();
+        }
+
+        if ($request->remove_attachments) {
+            $task->deleteAttachments($request->remove_attachments);
+        }
+
+        if ($request->new_attachments) {
+            $task->addAttachments($request->new_attachments);
         }
 
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');

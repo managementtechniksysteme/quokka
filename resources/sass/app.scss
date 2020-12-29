@@ -198,3 +198,23 @@ button.dropdown-item-delete:active {
 .border-status {
     border-left: 3px solid;
 }
+
+// Attachments
+.attachment-img-preview {
+    min-width: 50px;
+    min-height: 50px;
+    width: 50px;
+    height: 50px;
+    max-width: 50px;
+    max-height: 50px;
+    object-fit: cover;
+}
+
+.attachment:hover {
+    background-color: $hover-bg !important;
+}
+
+// Minimum width of 0
+.min-w-0 {
+    min-width: 0;
+}

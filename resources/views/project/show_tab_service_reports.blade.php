@@ -29,6 +29,13 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                 </svg>
                             </button>
+                            @if (Request::get('search'))
+                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
+                                    <svg class="feather feather-16">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
+                                    </svg>
+                                </a>
+                            @endif
                         </div>
                     </div>
 
@@ -90,6 +97,10 @@
         @forelse ($project->serviceReports as $serviceReport)
             @component('service_report.overview_card', [ 'serviceReport' => $serviceReport, 'secondaryInformation' => 'withoutProject' ])
             @endcomponent
+
+            @if(!$loop->last)
+                <hr class="m-0" />
+            @endif
         @empty
             <div class="text-center">
                 <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />

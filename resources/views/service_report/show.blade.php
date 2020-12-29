@@ -134,17 +134,39 @@
 
         @include('service_report.show_services')
 
-        <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Bemerkungen
-        </div>
         @if ($serviceReport->comment)
+            <div class="text-muted d-flex align-items-center mt-4">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+                </svg>
+                Bemerkungen
+            </div>
             @markdown ($serviceReport->comment)
-        @else
-            keine Bemerkungen angegeben
-    @endif
+        @endif
 
+        @if($serviceReport->attachments()->count() > 0)
+            <div class="text-muted d-flex align-items-center mt-4">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+                </svg>
+                Anhänge
+            </div>
+            <div class="row">
+                @foreach($serviceReport->attachments() as $attachment)
+                    <div class="col-12 col-md-6 col-lg-3 mt-1">
+                        <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                            <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                            <div class="min-w-0">
+                                <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
+                                <div class="text-muted">{{ $attachment->human_readable_size }}</div>
+                            </div>
+                            <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
+    </div>
 
 @endsection

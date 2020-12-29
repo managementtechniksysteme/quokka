@@ -38,6 +38,10 @@ class TaskUpdateRequest extends FormRequest
             'involved_ids' => 'array|nullable',
             'involved_ids.*' => 'exists:employees,person_id',
             'comment' => 'nullable',
+            'remove_attachments' => 'array|nullable',
+            'remove_attachments.*' => 'exists:media,id',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'image',
         ];
     }
 }

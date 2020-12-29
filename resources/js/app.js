@@ -8,6 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import AddressDropdown from './components/AddressDropdown';
+import AttachmentsSelector from './components/AttachmentsSelector';
 import CompanyDropdown from './components/CompanyDropdown';
 import EmailSelector from "./components/EmailSelector";
 import GestureLinks from './components/GestureLinks';
@@ -35,6 +36,7 @@ import "easymde/dist/easymde.min.css";
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('address-dropdown', AddressDropdown);
+Vue.component('attachments-selector', AttachmentsSelector);
 Vue.component('company-dropdown', CompanyDropdown);
 Vue.component('email-selector', EmailSelector);
 Vue.component('gesture-links', GestureLinks);

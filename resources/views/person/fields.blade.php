@@ -96,7 +96,7 @@
         <div class="form-row">
             <div class="form-group col">
                 <label for="address_id">Privatadresse</label>
-                <address-dropdown :addresses="{{ $addresses }}" :current_address="{{ $currentAddress ?? 'null' }}"></address-dropdown>
+                <address-dropdown :addresses="{{ $addresses }}" :current_address="{{ $currentAddress ?? 'null' }}" v-cloak></address-dropdown>
                 <div class="invalid-feedback @error('address_id') d-block @enderror">
                     @error('address_id')
                         {{ $message }}
@@ -198,7 +198,7 @@
         </div>
 
         <div class="form-group">
-            <label for="name">Abteilung</label>
+            <label for="department">Abteilung</label>
             <input type="text" class="form-control @error('department') is-invalid @enderror" id="department" name="department" placeholder="Entwicklung" value="{{ old('department', optional($person)->department) }}" />
             <div class="invalid-feedback">
                 @error('department')
@@ -208,7 +208,7 @@
         </div>
 
         <div class="form-group">
-            <label for="name">Rolle</label>
+            <label for="role">Rolle</label>
             <input type="text" class="form-control @error('role') is-invalid @enderror" id="role" name="role" placeholder="Techniker" value="{{ old('role', optional($person)->role) }}" />
             <div class="invalid-feedback">
                 @error('role')
@@ -236,7 +236,7 @@
 
     <div class="col-md-8">
         <div class="form-group">
-            <label for="phone">Telefon geschäftlich</label>
+            <label for="phone_company">Telefon geschäftlich</label>
             <input type="text" class="form-control @error('phone_company') is-invalid @enderror" id="phone_company" name="phone_company" placeholder="+431234567890" value="{{ old('phone_company', optional($person)->phone_company) }}" />
             <div class="invalid-feedback">
                 @error('phone_company')
@@ -246,7 +246,7 @@
         </div>
 
         <div class="form-group">
-            <label for="phone">Telefon mobil</label>
+            <label for="phone_mobile">Telefon mobil</label>
             <input type="text" class="form-control @error('phone_mobile') is-invalid @enderror" id="phone_mobile" name="phone_mobile" placeholder="+431234567890" value="{{ old('phone_mobile', optional($person)->phone_mobile) }}" />
             <div class="invalid-feedback">
                 @error('phone_mobile')
@@ -256,7 +256,7 @@
         </div>
 
         <div class="form-group">
-            <label for="phone">Telefon privat</label>
+            <label for="phone_private">Telefon privat</label>
             <input type="text" class="form-control @error('phone_private') is-invalid @enderror" id="phone_private" name="phone_private" placeholder="+431234567890" value="{{ old('phone_private', optional($person)->phone_private) }}" />
             <div class="invalid-feedback">
                 @error('phone_private')
@@ -289,7 +289,7 @@
 
         <div class="form-group">
             <label for="website">Webseite</label>
-            <input type="url" class="form-control @error('website') is-invalid @enderror" id="sebsite" name="website" placeholder="https://example.com" value="{{ old('website', optional($person)->website) }}" />
+            <input type="url" class="form-control @error('website') is-invalid @enderror" id="website" name="website" placeholder="https://example.com" value="{{ old('website', optional($person)->website) }}" />
             <div class="invalid-feedback">
                 @error('website')
                     {{ $message }}
@@ -319,7 +319,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Firma"  value="{{ old('comment', optional($person)->comment) }}"></vue-easymde>
+            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Firma"  value="{{ old('comment', optional($person)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>

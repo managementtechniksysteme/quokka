@@ -72,15 +72,20 @@
             },
 
             changeNewAttachmentName(event, value) {
-                let index = this.new_attachments.indexOf(value);
+                var file_name = event.target.innerText.replace(/(\r\n|\n|\r)/gm, "");
 
-                value.file_name = event.target.innerHTML.replace(/(\r\n|\n|\r)/gm, "");
+                console.log(file_name);
 
-                if(!value.file_name.endsWith(value.extension)) {
-                    value.file_name = value.file_name.endsWith('.') ? value.file_name.concat(value.extension) : value.file_name.concat('.', value.extension);
+                if(file_name === '' || file_name === value.extension) {
+                    event.target.innerHTML = value.file_name;
+                    return;
                 }
 
-                event.target.innerHTML = value.file_name;
+                if(!file_name.endsWith(value.extension)) {
+                    value.file_name = file_name.endsWith('.') ? file_name.concat(value.extension) : file_name.concat('.', value.extension);
+                }
+
+                event.target.innerText = value.file_name;
 
                 this.refreshNewAttachments();
             },

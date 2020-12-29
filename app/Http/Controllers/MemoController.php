@@ -54,7 +54,8 @@ class MemoController extends Controller
             ->with('currentPersonRecipient', null)
             ->with('currentPresentPeople', null)
             ->with('currentNotifiedPeople', null)
-            ->with('people', $people->toJson());
+            ->with('people', $people->toJson()
+            ->with('currentAttachments', null));
     }
 
     /**
@@ -84,6 +85,10 @@ class MemoController extends Controller
 
         if ($request->filled('notified_ids')) {
             $memo->notifiedPeople()->attach(Person::find($request->notified_ids), ['person_type' => 'notified']);
+        }
+
+        if ($request->new_attachments) {
+            $memo->addAttachments($request->new_attachments);
         }
 
         return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
@@ -129,6 +134,8 @@ class MemoController extends Controller
         $currentNotifiedPeople = $memo->notifiedPeople ?? null;
         $people = Person::order()->get();
 
+        $currentAttachments = $memo->attachmentsWithUrl();
+
         return view('memo.edit')
             ->with('memo', $memo)
             ->with('currentProject', $currentProject)
@@ -138,7 +145,8 @@ class MemoController extends Controller
             ->with('currentPersonRecipient', $currentPersonRecipient)
             ->with('currentPresentPeople', $currentPresentPeople)
             ->with('currentNotifiedPeople', $currentNotifiedPeople)
-            ->with('people', $people->toJson());
+            ->with('people', $people->toJson())
+            ->with('currentAttachments', $currentAttachments->toJson());
     }
 
     /**
@@ -166,6 +174,14 @@ class MemoController extends Controller
             $memo->notifiedPeople()->sync(array_combine($request->notified_ids, $pivotData));
         } else {
             $memo->notifiedPeople()->detach($memo->notifiedPeople, ['person_type' => 'notified']);
+        }
+
+        if ($request->remove_attachments) {
+            $memo->deleteAttachments($request->remove_attachments);
+        }
+
+        if ($request->new_attachments) {
+            $memo->addAttachments($request->new_attachments);
         }
 
         return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');

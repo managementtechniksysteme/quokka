@@ -80,18 +80,24 @@
             <h4>Diskussion</h4>
 
             @unless($task->comments->isEmpty())
-                <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                    <svg class="feather feather-20 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                    </svg>
-                    Kommentar anlegen
-                </a>
+                <div class="mb-2">
+                    <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
+                        <svg class="feather feather-20 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                        </svg>
+                        Kommentar anlegen
+                    </a>
+                </div>
             @endunless
 
             <div class="mt-3">
                 @forelse ($task->comments as $comment)
                     @component('comment.overview_card', [ 'comment' => $comment ])
                     @endcomponent
+
+                    @if(!$loop->last)
+                        <hr class="m-0" />
+                    @endif
                 @empty
                     <div class="text-center">
                         <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />

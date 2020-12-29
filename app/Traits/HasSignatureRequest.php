@@ -9,6 +9,11 @@ trait HasSignatureRequest
 {
     use InteractsWithMedia;
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('signature')->singleFile()->useDisk('local');
+    }
+
     public function signatureRequest()
     {
         return $this->morphOne(SignatureRequest::class, 'requestable');

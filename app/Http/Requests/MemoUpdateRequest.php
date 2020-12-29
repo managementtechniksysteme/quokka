@@ -36,6 +36,10 @@ class MemoUpdateRequest extends FormRequest
             'notified_ids' => 'array|nullable',
             'notified_ids.*' => 'exists:people,id',
             'comment' => 'required',
+            'remove_attachments' => 'array|nullable',
+            'remove_attachments.*' => 'exists:media,id',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'image',
         ];
     }
 }

@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            <label for="name_2">Startdatum</label>
+            <label for="starts_on">Startdatum</label>
             <input type="date" class="form-control @error('starts_on') is-invalid @enderror" id="starts_on" name="starts_on" placeholder="" value="{{ old('starts_on', optional(optional($project)->starts_on)->format('Y-m-d')) }}" />
             <div class="invalid-feedback">
                 @error('starts_on')
@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group">
-            <label for="name_2">Enddatum</label>
+            <label for="ends_on">Enddatum</label>
             <input type="date" class="form-control @error('ends_on') is-invalid @enderror" id="ends_on" name="ends_on" placeholder="" value="{{ old('ends_on', optional(optional($project)->ends_on)->format('Y-m-d')) }}" />
             <div class="invalid-feedback">
                 @error('ends_on')
@@ -54,7 +54,7 @@
 
         <div class="form-group">
             <label for="company_id">Firma</label>
-            <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}"></company-dropdown>
+            <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}" v-cloak></company-dropdown>
             <div class="invalid-feedback @error('company_id') d-block @enderror">
                 @error('company_id')
                     {{ $message }}
@@ -84,7 +84,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Projekt"  value="{{ old('comment', optional($project)->comment) }}"></vue-easymde>
+            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Projekt"  value="{{ old('comment', optional($project)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>

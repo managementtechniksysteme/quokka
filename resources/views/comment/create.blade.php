@@ -13,8 +13,8 @@
     </div>
 
     <div class="container mt-4">
-        <form class="needs-validation mt-4" action="{{ route('comments.store') }}" method="post" novalidate>
-            @component('comment.fields', [ 'task' => $task, 'comment' => $comment ])
+        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('comments.store') }}" method="post" novalidate>
+            @component('comment.fields', [ 'task' => $task, 'comment' => $comment, 'currentAttachments' => $currentAttachments ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center">

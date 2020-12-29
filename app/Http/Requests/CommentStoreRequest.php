@@ -16,6 +16,8 @@ class CommentStoreRequest extends FormRequest
         return [
             'task_id' => 'required|exists:tasks,id',
             'comment' => 'required',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'image',
         ];
     }
 }

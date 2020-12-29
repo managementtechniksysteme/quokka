@@ -23,7 +23,7 @@ class CommentController extends Controller
             abort(404);
         }
 
-        return view('comment.create')->with('comment', null)->with('task', $task);
+        return view('comment.create')->with('comment', null)->with('task', $task)->with('currentAttachments', null);
     }
 
     /**
@@ -43,6 +43,10 @@ class CommentController extends Controller
         $task = Task::find($request->task_id);
         $task->comments()->save($comment);
 
+        if ($request->new_attachments) {
+            $comment->addAttachments($request->new_attachments);
+        }
+
         return redirect()
             ->route('tasks.show', $task)
             ->with('success', 'Der Kommentar wurde erfolgreich angelegt.');
@@ -56,7 +60,12 @@ class CommentController extends Controller
      */
     public function edit(TaskComment $comment)
     {
-        return view('comment.edit')->with('comment', $comment)->with('task', $comment->task);
+        $currentAttachments = $comment->attachmentsWithUrl();
+
+        return view('comment.edit')
+            ->with('comment', $comment)
+            ->with('task', $comment->task)
+            ->with('currentAttachments', $currentAttachments->toJson());
     }
 
     /**
@@ -71,6 +80,14 @@ class CommentController extends Controller
         $validatedData = $request->validated();
 
         $comment->update($validatedData);
+
+        if ($request->remove_attachments) {
+            $comment->deleteAttachments($request->remove_attachments);
+        }
+
+        if ($request->new_attachments) {
+            $comment->addAttachments($request->new_attachments);
+        }
 
         return redirect()
             ->route('tasks.show', $comment->task)

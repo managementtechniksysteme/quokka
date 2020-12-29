@@ -1,4 +1,4 @@
-<div class="overview-card rounded p-1 mt-2">
+<div class="overview-card rounded px-1 py-2">
     <div class="row">
         <div class="col-auto">
             <div class="avatar bg-primary rounded-circle d-inline-flex align-items-center justify-content-center">
@@ -45,16 +45,73 @@
                 </div>
 
             </div>
+
             <div class="row d-none d-md-block mt-2">
                 <div class="col">
                     @markdown ($comment->comment)
                 </div>
             </div>
+
+            @if($comment->attachments()->count() > 0)
+                <div class="d-none d-md-block">
+                    <div class="row text-muted d-flex align-items-center mt-4">
+                        <div class="col">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+                            </svg>
+                            Anhänge
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach($comment->attachments() as $attachment)
+                            <div class="col-md-6 col-lg-3 mt-1">
+                                <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                    <div class="min-w-0">
+                                        <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
+                                        <div class="text-muted">{{ $attachment->human_readable_size }}</div>
+                                    </div>
+                                    <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
-    <div class="row d-md-none mt-2">
+
+    <div class="row d-md-none mt-3">
         <div class="col">
             @markdown ($comment->comment)
         </div>
     </div>
+
+    @if($comment->attachments()->count() > 0)
+        <div class="d-md-none">
+            <div class="row text-muted d-flex align-items-center mt-1">
+                <div class="col">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+                    </svg>
+                    Anhänge
+                </div>
+            </div>
+            <div class="row">
+                @foreach($comment->attachments() as $attachment)
+                    <div class="col-12 col-md-6 col-lg-3 mt-1">
+                        <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                            <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                            <div class="min-w-0">
+                                <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
+                                <div class="text-muted">{{ $attachment->human_readable_size }}</div>
+                            </div>
+                            <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
 </div>

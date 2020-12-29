@@ -13,9 +13,9 @@
     </div>
 
     <div class="container mt-4">
-        <form class="needs-validation mt-4" action="{{ route('tasks.update', $task) }}" method="post" novalidate>
+        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('tasks.update', $task) }}" method="post" novalidate>
             @method('PATCH')
-            @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees ])
+            @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentAttachments' => $currentAttachments ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">

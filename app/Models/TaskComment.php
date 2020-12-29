@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
 
-class TaskComment extends Model
+class TaskComment extends Model implements HasMedia
 {
+    use HasAttachments;
     use OrdersResults;
 
     protected $fillable = [

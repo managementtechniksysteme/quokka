@@ -23,6 +23,7 @@ use App\Http\Controllers\MemoController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceReportController;
+use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::get('/reauthenticate', [ReauthenticateController::class.'index'])->name('
 Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/home', [HomeController::class, 'post']);
 
 Route::resource('addresses', AddressController::class);
 Route::resource('companies', CompanyController::class);
@@ -67,3 +69,5 @@ Route::resource('comments', CommentController::class)->except(['index', 'show'])
 Route::get('/mail', function () {
     return new App\Mail\ServiceReportMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('services'));
 });
+
+Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');

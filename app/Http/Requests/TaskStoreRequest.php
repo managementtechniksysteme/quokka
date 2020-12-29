@@ -37,6 +37,8 @@ class TaskStoreRequest extends FormRequest
             'involved_ids' => 'array|nullable',
             'involved_ids.*' => 'exists:employees,person_id',
             'comment' => 'nullable',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'image',
         ];
     }
 }

@@ -16,6 +16,10 @@ class CommentUpdateRequest extends FormRequest
         return [
             'task_id' => 'required|exists:tasks,id',
             'comment' => 'required',
+            'remove_attachments' => 'array|nullable',
+            'remove_attachments.*' => 'exists:media,id',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'image',
         ];
     }
 }

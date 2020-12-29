@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Traits\FiltersResults;
+use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
 
-class Task extends Model
+class Task extends Model implements HasMedia
 {
     use FiltersResults;
+    use HasAttachments;
     use OrdersResults;
 
     protected $casts = [
@@ -59,6 +62,8 @@ class Task extends Model
         'name-desc' => [['name', 'desc']],
         'status-asc' => ['raw' => 'field(status, "new", "in progress", "finished"), ISNULL(due_on), due_on'],
         'status-desc' => ['raw' => 'field(status, "finished", "in progress", "new"), ISNULL(due_on), due_on'],
+        'priority-asc' => ['raw' => 'field(priority, "low", "medium", "high")'],
+        'priority-desc' => ['raw' => 'field(priority, "high", "medium", "low")'],
     ];
 
     public function project()

@@ -34,7 +34,7 @@
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
-                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" href="{{ route('addresses.index') }}">
+                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
                                         <svg class="feather feather-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>
@@ -97,6 +97,10 @@
             @forelse ($addresses as $address)
                 @component('address.overview_card', [ 'address' => $address ])
                 @endcomponent
+
+                @if(!$loop->last)
+                    <hr class="m-0" />
+                @endif
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />

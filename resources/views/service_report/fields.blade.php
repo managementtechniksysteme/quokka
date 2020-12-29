@@ -87,7 +87,7 @@
     </div>
 
     <div class="col-md-8">
-        <services-selector :current_services="{{ $currentServices ?? 'null' }}"></services-selector>
+        <services-selector :current_services="{{ $currentServices ?? 'null' }}" v-cloak></services-selector>
         <div class="invalid-feedback @error('services') d-block @enderror @error('services.*') d-block @enderror">
             @error('services')
                 {{ $message }}
@@ -117,7 +117,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($serviceReport)->comment) }}"></vue-easymde>
+            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($serviceReport)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
@@ -163,6 +163,46 @@
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                 @error('send_signature_request')
                     {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+            </svg>
+            Anhänge
+        </p>
+        <p class="text-muted">
+            Dem Aktenvermerk zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat.
+        </p>
+        <p class="text-muted">
+            Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>
+                Anhänge
+            </label>
+            <attachments-selector accept="image/*" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+            <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
+                @error('remove_attachments')
+                {{ $message }}
+                @enderror
+                @error('remove_attachments.*')
+                {{ $message }}
+                @enderror
+                @error('new_attachments')
+                {{ $message }}
+                @enderror
+                @error('new_attachments.*')
+                {{ $message }}
                 @enderror
             </div>
         </div>

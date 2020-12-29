@@ -8,8 +8,8 @@
     </div>
 
     <div class="container mt-4">
-        <form class="needs-validation mt-4" action="{{ route('tasks.store') }}" method="post" novalidate>
-            @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees ])
+        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('tasks.store') }}" method="post" novalidate>
+            @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentAttachments' => $currentAttachments ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">

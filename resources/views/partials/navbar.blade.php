@@ -11,14 +11,27 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('companies.index') }}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('companies.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
                             Firmen
                         </a>
+                        <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret h-20"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('people.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                                </svg>
+                                Personen
+                            </a>
+                        </div>
                     </li>
+
                     <li class="nav-itemr">
                         <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
                             <svg class="feather feather-20 mr-2">
@@ -27,15 +40,35 @@
                             Projekte
                         </a>
                     </li>
-                    <li class="nav-itemr">
-                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('tasks.index') }}">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('tasks.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
-                            Aufgaben
+                            Aufgabem
                         </a>
+                        <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret h-20"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarTasksDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                                </svg>
+                                Aktenvermerke
+                            </a>
+                            <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('service-reports.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                                </svg>
+                                Serviceberichte
+                            </a>
+                        </div>
                     </li>
-                    <li class="nav-itemr">
+
+                    <li class="nav-item">
                         <a class="nav-link d-inline-flex align-items-center" href="#">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
@@ -79,17 +112,16 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarUserDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                             </svg>
                             {{ Auth::user()->person->first_name }}
-                            <span class="caret ml-1"></span>
                         </a>
 
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarUserDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('home') }}">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                                 </svg>

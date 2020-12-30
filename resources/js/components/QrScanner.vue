@@ -80,7 +80,7 @@
             url_whitelist: {
                 type: String,
                 default() {
-                    return null;
+                    return '';
                 }
             },
         }

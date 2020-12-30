@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="qr_scanner_error !== null" class="text-center mt-4">
+        <div v-if="qr_scanner_error !== null" class="text-center">
             <notification type="danger" v-cloak>
                 <div class="d-inline-flex align-items-center">
                     <svg class="feather feather-24 mr-2">
@@ -23,12 +23,8 @@
             </div>
         </notification>
 
-        <h1 v-if="qr_scanner_error === null" class="text-center mt-4">
-            QR-Code scannen
-        </h1>
-        <div class="mt-1">
-            <qrcode-stream @init="onInit" @decode="onDecode"></qrcode-stream>
-        </div>
+        <qrcode-stream @init="onInit" @decode="onDecode"></qrcode-stream>
+
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="qr_scanner_error !== null" class="text-center">
+        <div v-if="qr_scanner_error !== null">
             <notification type="danger" v-cloak>
                 <div class="d-inline-flex align-items-center">
                     <svg class="feather feather-24 mr-2">
@@ -9,9 +9,10 @@
                     {{qr_scanner_error}}
                 </div>
             </notification>
-
-            <img class="empty-state" src="svg/notify.svg" alt="no data" />
-            <p class="lead text-muted">{{qr_scanner_error}}</p>
+            <div class="text-center">
+                <img class="empty-state" src="svg/notify.svg" alt="no data" />
+                <p class="lead text-muted">{{qr_scanner_error}}</p>
+            </div>
         </div>
 
         <notification v-if="qr_url_error !== null" type="warning" v-cloak>

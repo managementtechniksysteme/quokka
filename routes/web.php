@@ -73,7 +73,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
 });
 
-
 Route::get('/mail', function () {
     return new App\Mail\ServiceReportMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('services'));
 });

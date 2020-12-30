@@ -18,11 +18,13 @@ import PersonDropdown from './components/PersonDropdown';
 import ProjectDropdown from "./components/ProjectDropdown";
 import ServicesSelector from "./components/ServicesSelector";
 import SignaturePad from "./components/SignaturePad";
+import QrScanner from "./components/QrScanner";
 import vSelect from 'vue-select';
 import VueEasymde from "vue-easymde";
 import { VueHammer } from 'vue2-hammer';
 import VueSignaturePad from 'vue-signature-pad';
 import "easymde/dist/easymde.min.css";
+import VueQrcodeReader from "vue-qrcode-reader";
 
 /**
  * The following block of code may be used to automatically register your
@@ -48,10 +50,11 @@ Vue.component("services-selector", ServicesSelector);
 Vue.component('signature-pad', SignaturePad);
 Vue.component('vue-easymde', VueEasymde);
 Vue.component('v-select', vSelect);
-Vue.component('VueSignaturePad', VueSignaturePad);
+Vue.component('qr-scanner', QrScanner);
 
 Vue.use(VueHammer);
 Vue.use(VueSignaturePad);
+Vue.use(VueQrcodeReader);
 
 VueHammer.config.pan = {
     direction: 'horizontal'

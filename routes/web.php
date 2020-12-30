@@ -22,6 +22,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\QrScanController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
@@ -70,9 +71,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('tasks', TaskController::class);
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
 
+    Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
 });
-
 
 Route::get('/mail', function () {
     return new App\Mail\ServiceReportMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('services'));

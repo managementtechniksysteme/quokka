@@ -4,7 +4,6 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Die {{ config('app.name') }} Projektmanagement Applikation.">
 
@@ -37,9 +36,6 @@
 
     <!-- Disable night mode for this page  -->
     <meta name="nightmode" content="disable">
-
-    <!-- Fitscreen  -->
-    <meta name="viewport" content="uc-fitscreen=yes"/>
 
     <!-- Layout mode -->
     <meta name="layoutmode" content="standard">

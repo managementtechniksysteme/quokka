@@ -1,0 +1,60 @@
+{
+    "name": "Quokka",
+    "short_name": "Quokka",
+    "description": "Die Quokka Projektmanagement Applikation.",
+    "start_url": "/home",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [{
+        "src": "icons/icon_48.png",
+        "sizes": "48x48",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/icon_72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/icon_96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/icon_144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/icon_192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }],
+    "shortcuts": [{
+        "name": "QR-Code scannen",
+        "short_name": "QR-Code",
+        "description": "Einen QR-Code für Schnellzugriff scannen.",
+        "url": "/qr-scan",
+        "icons": [{
+            "src": "/icons/icon_shortcut_camera_48.png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "/icons/icon_shortcut_camera_72.png",
+            "sizes": "72x72"
+        },
+        {
+            "src": "/icons/icon_shortcut_camera_96.png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "/icons/icon_shortcut_camera_144.png",
+            "sizes": "144x144"
+        },
+        {
+            "src": "/icons/icon_shortcut_camera_192.png",
+            "sizes": "192x192"
+        }]
+    }]
+}

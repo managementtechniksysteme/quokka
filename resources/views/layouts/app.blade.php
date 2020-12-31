@@ -20,7 +20,7 @@
     <!-- Windows  -->
     <meta name="msapplication-navbutton-color" content="white">
     <meta name="msapplication-TileColor" content="white">
-    <meta name="msapplication-TileImage" content="icons/icon_144.png">
+    <meta name="msapplication-TileImage" content="/icons/icon_144.png">
 
     <!-- Pinned Sites  -->
     <meta name="application-name" content="{{ config('app.name') }}">
@@ -44,28 +44,28 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Main Link Tags  -->
-    <link href="icons/icon_48.png" rel="icon" type="image/png" sizes="48x48">
-    <link href="icons/icon_72.png" rel="icon" type="image/png" sizes="72x72">
-    <link href="icons/icon_96.png" rel="icon" type="image/png" sizes="96x96">
-    <link href="icons/icon_144.png" rel="icon" type="image/png" sizes="144x144">
-    <link href="icons/icon_192.png" rel="icon" type="image/png" sizes="192x192">
-    <link href="icons/icon_512.png" rel="icon" type="image/png" sizes="512x512">
+    <link href="/icons/icon_48.png" rel="icon" type="image/png" sizes="48x48">
+    <link href="/icons/icon_72.png" rel="icon" type="image/png" sizes="72x72">
+    <link href="/icons/icon_96.png" rel="icon" type="image/png" sizes="96x96">
+    <link href="/icons/icon_144.png" rel="icon" type="image/png" sizes="144x144">
+    <link href="/icons/icon_192.png" rel="icon" type="image/png" sizes="192x192">
+    <link href="/icons/icon_512.png" rel="icon" type="image/png" sizes="512x512">
 
     <!-- iOS  -->
-    <link href="icons/icon_72.png" rel="apple-touch-icon">
-    <link href="icons/icon_96.png" rel="apple-touch-icon" sizes="96x96">
-    <link href="icons/icon_144.png" rel="apple-touch-icon" sizes="144x144">
-    <link href="icons/icon_192.png" rel="apple-touch-icon" sizes="192x192">
+    <link href="/icons/icon_72.png" rel="apple-touch-icon">
+    <link href="/icons/icon_96.png" rel="apple-touch-icon" sizes="96x96">
+    <link href="/icons/icon_144.png" rel="apple-touch-icon" sizes="144x144">
+    <link href="/icons/icon_192.png" rel="apple-touch-icon" sizes="192x192">
 
     <!-- Startup Image  -->
-    <link href="icons/icon_512.png" rel="apple-touch-startup-image">
+    <link href="/icons/icon_512.png" rel="apple-touch-startup-image">
 
     <!-- Others -->
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
     <!-- UC Browser  -->
-    <link href="icons/icon_48.png" rel="apple-touch-icon-precomposed" sizes="48x48">
-    <link href="icons/icon_72.png" rel="apple-touch-icon" sizes="72x72">
+    <link href="/icons/icon_48.png" rel="apple-touch-icon-precomposed" sizes="48x48">
+    <link href="/icons/icon_72.png" rel="apple-touch-icon" sizes="72x72">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -76,7 +76,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>

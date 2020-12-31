@@ -131,10 +131,10 @@
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Es sind keine Aufgaben im System vorhanden.</p>
                     @if(Request::get('search'))
                         <p class="lead text-muted">Es wurden keine Aufgaben passend zur Suche gefunden.</p>
                     @else
+                        <p class="lead text-muted">Es sind keine Aufgaben im System vorhanden.</p>
                         <p class="lead">Lege eine neue Aufgabe an.</p>
                         <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
                             <svg class="feather feather-20 mr-2">

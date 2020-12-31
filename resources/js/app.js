@@ -91,3 +91,9 @@ const app = new Vue({
         });
     }, false);
 })();
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/serviceworker.js');
+    });
+}

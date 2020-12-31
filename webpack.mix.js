@@ -12,5 +12,6 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/serviceworker.js', 'public')
     .sass('resources/sass/app.scss', 'public/css')
     .copy('node_modules/feather-icons/dist/feather-sprite.svg', 'public/svg');

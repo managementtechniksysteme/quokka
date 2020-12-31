@@ -10,7 +10,7 @@
                 </div>
             </notification>
             <div class="text-center">
-                <img class="empty-state" src="svg/notify.svg" alt="no data" />
+                <img class="empty-state" src="svg/notify.svg" alt="notify" />
                 <p class="lead text-muted">{{qr_scanner_error}}</p>
             </div>
         </div>

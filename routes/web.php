@@ -20,6 +20,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
@@ -34,6 +35,7 @@ Auth::routes([
 ]);
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/offline', [OfflineController::class, 'index'])->name('offline.index');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');

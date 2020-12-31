@@ -9,11 +9,9 @@ let urlsToCache = [
 ];
 
 self.addEventListener('install', function(event) {
-    // Perform install steps
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.log('Opened cache');
                 return cache.addAll(urlsToCache);
             })
     );
@@ -47,7 +45,7 @@ self.addEventListener('fetch', function(event) {
                     }
 
                     return fetch(event.request)
-                        .catch(function(error) {
+                        .catch(function() {
                             return caches.match(OFFLINE_URL);
                     });
             })

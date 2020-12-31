@@ -49,6 +49,7 @@
     <link href="icons/icon_96.png" rel="icon" type="image/png" sizes="96x96">
     <link href="icons/icon_144.png" rel="icon" type="image/png" sizes="144x144">
     <link href="icons/icon_192.png" rel="icon" type="image/png" sizes="192x192">
+    <link href="icons/icon_512.png" rel="icon" type="image/png" sizes="512x512">
 
     <!-- iOS  -->
     <link href="icons/icon_72.png" rel="apple-touch-icon">
@@ -69,10 +70,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/serviceworker.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Manifest -->

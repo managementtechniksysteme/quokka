@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class HelpController extends Controller
 {
@@ -38,7 +39,7 @@ class HelpController extends Controller
     public function show($slug)
     {
         if (! View::exists("help.{$slug}")) {
-            abort(404);
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         return view("help.{$slug}");

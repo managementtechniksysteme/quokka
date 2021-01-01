@@ -19,6 +19,7 @@ import ProjectDropdown from "./components/ProjectDropdown";
 import ServicesSelector from "./components/ServicesSelector";
 import SignaturePad from "./components/SignaturePad";
 import QrScanner from "./components/QrScanner";
+import WebpushManager from "./components/WebpushManager";
 import vSelect from 'vue-select';
 import VueEasymde from "vue-easymde";
 import { VueHammer } from 'vue2-hammer';
@@ -51,6 +52,7 @@ Vue.component('signature-pad', SignaturePad);
 Vue.component('vue-easymde', VueEasymde);
 Vue.component('v-select', vSelect);
 Vue.component('qr-scanner', QrScanner);
+Vue.component('webpush-manager', WebpushManager);
 
 Vue.use(VueHammer);
 Vue.use(VueSignaturePad);
@@ -91,9 +93,3 @@ const app = new Vue({
         });
     }, false);
 })();
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/serviceworker.js');
-    });
-}

@@ -27,6 +27,7 @@ use App\Http\Controllers\QrScanController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\WebpushController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,8 +76,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
+    Route::post('/webpush', [WebpushController::class, 'store'])->name('webpush.store');
+    Route::delete('/webpush', [WebpushController::class, 'destroy'])->name('webpush.destroy');
 });
 
 Route::get('/mail', function () {
     return new App\Mail\ServiceReportMail(\App\Models\ServiceReport::find(3)->load('project')->load('employee.person')->load('services'));
 });
+
+Route::get('/webpush/test', [WebpushController::class, 'test'])->name('webpush.test');

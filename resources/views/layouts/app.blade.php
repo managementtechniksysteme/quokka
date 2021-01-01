@@ -74,6 +74,13 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @auth
+        <script defer>
+            let VAPID_PUBLIC_KEY = {!! json_encode(env('VAPID_PUBLIC_KEY')) !!}
+        </script>
+        <script src="{{ asset('js/init.js') }}" defer></script>
+        <script src="{{ asset('js/webpush.js') }}" defer></script>
+    @endauth
 
     <!-- Manifest -->
     <link rel="manifest" href="/manifest.json">

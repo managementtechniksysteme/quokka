@@ -51,3 +51,31 @@ self.addEventListener('fetch', function(event) {
             })
     );
 });
+
+self.addEventListener('push', function (event) {
+    if (self.Notification && self.Notification.permission === 'granted' && event.data) {
+        let msg = event.data.json();
+
+        event.waitUntil(self.registration.showNotification(msg.title, {
+            body: msg.body,
+            icon: msg.icon,
+            tag: msg.tag,
+            data: msg.data,
+            badge: msg.badge,
+            dir: msg.dir,
+            image: msg.image,
+            renotify: msg.renotify,
+            requireInteraction: msg.requireInteraction,
+            actions: msg.actions,
+            vibrate: msg.vibrate
+        }));
+    }
+});
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+
+    if (clients.openWindow && event.notification.data.url) {
+        event.waitUntil(clients.openWindow(event.notification.data.url));
+    }
+}, false);

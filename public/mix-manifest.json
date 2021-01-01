@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/init.js": "/js/init.js",
+    "/js/webpush.js": "/js/webpush.js",
     "/serviceworker.js": "/serviceworker.js",
     "/svg/feather-sprite.svg": "/svg/feather-sprite.svg"
 }

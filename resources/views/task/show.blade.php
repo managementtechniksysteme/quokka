@@ -94,10 +94,6 @@
                 @forelse ($task->comments as $comment)
                     @component('comment.overview_card', [ 'comment' => $comment ])
                     @endcomponent
-
-                    @if(!$loop->last)
-                        <hr class="m-0" />
-                    @endif
                 @empty
                     <div class="text-center">
                         <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />

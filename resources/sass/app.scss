@@ -249,3 +249,14 @@ button.dropdown-item-delete:active {
     min-height: 32px;
     max-height: 32px;
 }
+
+.scroll-x {
+    overflow-x: auto;
+    white-space: nowrap;
+    //-ms-overflow-style: none;
+    //scrollbar-width: none;
+}
+
+//.scroll-x::-webkit-scrollbar {
+//    display: none;
+//}

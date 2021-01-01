@@ -111,7 +111,7 @@
             </div>
 
             <div class="menu d-block d-lg-none col mb-4">
-                <div class="border-bottom pb-2">
+                <div class="scroll-x border-bottom pb-1">
                     <a class="menu-item @if (request()->tab == 'overview') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'overview']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>

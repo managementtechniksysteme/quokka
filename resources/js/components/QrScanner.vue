@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <notification v-if="qr_url_error !== null" type="warning" v-cloak>
+        <notification v-if="qr_url_error !== null" type="warning" :key="notification_key" v-cloak>
             <div class="d-inline-flex align-items-center">
                 <svg class="feather feather-24 mr-2">
                     <use xlink:href="svg/feather-sprite.svg#alert-triangle"></use>
@@ -37,6 +37,7 @@
             return {
                 qr_scanner_error: null,
                 qr_url_error: null,
+                notification_key: 1,
                 vibration_duration: 100,
             }
         },
@@ -73,6 +74,7 @@
                     window.location = decodedString;
                 } else {
                     this.qr_url_error = 'Der eingescannte QR-Code wurde nicht von dieser Applikation generiert.'
+                    this.notification_key++;
                 }
             }
         },

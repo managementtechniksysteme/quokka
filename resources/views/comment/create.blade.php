@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('comments.store') }}" method="post" novalidate>
             @component('comment.fields', [ 'task' => $task, 'comment' => $comment, 'currentAttachments' => $currentAttachments ])
             @endcomponent

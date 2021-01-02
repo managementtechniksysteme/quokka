@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Mail\MemoMail;
+use App\Mail\TaskMail;
 use App\Models\Employee;
+use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Task;
@@ -12,6 +16,8 @@ use App\Models\TaskComment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
+use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
 {
@@ -201,5 +207,54 @@ class TaskController extends Controller
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich entfernt.');
+    }
+
+    public function showEmail(Request $request, Task $task)
+    {
+        $currentTo = $task->involvedEmployees->pluck('person');
+        $people = Person::whereNotNull('email')->order()->get();
+
+        return view('task.email')
+            ->with('task', $task)
+            ->with('people', $people->toJson())
+            ->with('currentTo', $currentTo->toJson())
+            ->with('currentCC', null)
+            ->with('currentBCC', null);
+    }
+
+    public function email(EmailRequest $request, Task $task)
+    {
+        $validatedData = $request->validated();
+
+        $task
+            ->load('project')
+            ->load('responsibleEmployee')
+            ->load('invovledEmployees');
+
+        $mail = Mail::to($request->email_to);
+        if ($request->email_cc) {
+            $mail = $mail->cc($request->email_cc);
+        }
+        if ($request->email_bcc) {
+            $mail = $mail->bcc($request->email_bcc);
+        }
+
+        $mail->send(new TaskMail($task));
+
+        return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich gesendet.');
+    }
+
+    public function download(Request $request, Memo $memo)
+    {
+        $task
+            ->load('project')
+            ->load('responsibleEmployee')
+            ->load('invovledEmployees');
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.service_report', ['task' => $task])
+            ->download('AU ' . $task->name . '.pdf');
     }
 }

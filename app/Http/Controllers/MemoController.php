@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailRequest;
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
+use App\Mail\MemoMail;
+use App\Mail\ServiceReportMail;
 use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
+use App\Models\ServiceReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use ZsgsDesign\PDFConverter\Latex;
 
 class MemoController extends Controller
 {
@@ -200,5 +206,59 @@ class MemoController extends Controller
         $memo->delete();
 
         return redirect()->route('memos.index')->with('success', 'Die Aktenvermerk wurde erfolgreich entfernt.');
+    }
+
+    public function showEmail(Request $request, Memo $memo)
+    {
+        $currentTo = collect([$memo->personRecipient]);
+        $currentCC = $memo->notifiedPeople;
+        $people = Person::whereNotNull('email')->order()->get();
+
+        return view('memo.email')
+            ->with('memo', $memo)
+            ->with('people', $people->toJson())
+            ->with('currentTo', $currentTo->toJson())
+            ->with('currentCC', $currentCC->toJson())
+            ->with('currentBCC', null);
+    }
+
+    public function email(EmailRequest $request, Memo $memo)
+    {
+        $validatedData = $request->validated();
+
+        $memo
+            ->load('project')
+            ->load('employeeComposer')
+            ->load('personRecipient')
+            ->load(('presentPeople'))
+            ->load('notifiedPeople');
+
+        $mail = Mail::to($request->email_to);
+        if ($request->email_cc) {
+            $mail = $mail->cc($request->email_cc);
+        }
+        if ($request->email_bcc) {
+            $mail = $mail->bcc($request->email_bcc);
+        }
+
+        $mail->send(new MemoMail($memo));
+
+        return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich gesendet.');
+    }
+
+    public function download(Request $request, Memo $memo)
+    {
+        $memo
+            ->load('project')
+            ->load('employeeComposer')
+            ->load('personRecipient')
+            ->load(('presentPeople'))
+            ->load('notifiedPeople');
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.memo', ['memo' => $memo])
+            ->download('AV ' . $memo->project->name . ' #' . $memo->number . '.pdf');
     }
 }

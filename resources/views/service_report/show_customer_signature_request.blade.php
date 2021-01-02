@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="container mt-4">
+        <div class="container my-4">
             <p class="lead d-flex align-items-center">
                 <svg class="text-muted feather feather-20 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
@@ -55,7 +55,7 @@
             Am Computer unterschreiben Sie mid der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für ihr Gerät passenden Eingabestift.<br />
             Klicken Sie danach auf den <strong>Servicebericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.</p>
 
-            <form action="{{ route('service-reports.sign', $serviceReport->signatureRequest->token) }}" method="post">
+            <form action="{{ route('service-reports.customer-sign', $serviceReport->signatureRequest->token) }}" method="post">
                 @csrf
 
                 <signature-pad></signature-pad>

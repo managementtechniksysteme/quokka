@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('tasks.update', $task) }}" method="post" novalidate>
             @method('PATCH')
             @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentAttachments' => $currentAttachments ])

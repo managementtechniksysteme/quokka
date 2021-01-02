@@ -2,21 +2,23 @@
 
 @section('content')
     <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
+        <div class="container pt-4">
             <h3>Firmen</h3>
+
+            <div class="scroll-x d-flex">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('companies.create') }}">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                    </svg>
+                    Firma anlegen
+                </a>
+            </div>
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         @unless ($companies->isEmpty() && !Request::get('search'))
-            <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('companies.create') }}">
-                <svg class="feather feather-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                </svg>
-                Firma anlegen
-            </a>
-
-            <div class="row mt-4">
+            <div class="row">
 
                 <div class="col col-md-6">
 

@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('memos.store') }}" method="post" novalidate>
             @component('memo.fields', [ 'memo' => $memo, 'currentProject' => $currentProject, 'projects' => $projects, 'currentEmployeeComposer' => $currentEmployeeComposer, 'employees' => $employees, 'currentPersonRecipient' => $currentPersonRecipient, 'currentPresentPeople' => $currentPresentPeople, 'currentNotifiedPeople' => $currentNotifiedPeople, 'people' => $people, 'currentAttachments' => $currentAttachments ])
             @endcomponent

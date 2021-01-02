@@ -58,7 +58,7 @@
                         Favorisieren
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', $serviceReport) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                         </svg>

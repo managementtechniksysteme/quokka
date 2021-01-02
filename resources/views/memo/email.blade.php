@@ -15,17 +15,17 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
-            @include('service_report.breadcrumb')
+            @include('memo.breadcrumb')
 
             <h3>
-                Servicebericht per Email senden
-                <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>
+                Aktenvermerk per Email senden
+                <small class="text-muted">{{ $memo->title }}</small>
             </h3>
         </div>
     </div>
 
     <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('service-reports.email', $serviceReport) }}" method="post" novalidate>
+        <form class="needs-validation mt-4" action="{{ route('memos.email', $memo) }}" method="post" novalidate>
             @csrf
 
             <div class="row">
@@ -77,7 +77,7 @@
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
-                        Servicebericht senden
+                        Aktenvermerk senden
                     </button>
                 </div>
             </div>

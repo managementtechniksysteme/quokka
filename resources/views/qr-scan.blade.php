@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <qr-scanner url_whitelist="{{ env('APP_URL') }}"></qr-scanner>
     </div>
 @endsection

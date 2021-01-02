@@ -24,7 +24,7 @@
                     </svg>
                     Bearbeiten
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.email', $memo) }}">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                     </svg>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         @include ('memo.show_overview')
     </div>
 @endsection

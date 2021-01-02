@@ -218,7 +218,7 @@ class ServiceReportController extends Controller
 
         return view('service_report.email')
             ->with('serviceReport', $serviceReport)
-            ->with('people', $people)
+            ->with('people', $people->toJson())
             ->with('currentTo', null)
             ->with('currentCC', null)
             ->with('currentBCC', null);
@@ -227,6 +227,11 @@ class ServiceReportController extends Controller
     public function email(EmailRequest $request, ServiceReport $serviceReport)
     {
         $validatedData = $request->validated();
+
+        $serviceReport
+            ->load('project')
+            ->load('employee.person')
+            ->load('services');
 
         $mail = Mail::to($request->email_to);
         if ($request->email_cc) {
@@ -254,7 +259,6 @@ class ServiceReportController extends Controller
         $validatedData = $request->validated();
 
         $serviceReport->generateSignatureRequest();
-        $serviceReport->load('signatureRequest');
 
         $serviceReport
             ->load('project')
@@ -271,7 +275,15 @@ class ServiceReportController extends Controller
         return redirect()->route('service-reports.index')->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
-    public function showSignRequest(Request $request, string $token)
+    public function showSignatureRequest(Request $request, ServiceReport $serviceReport)
+    {
+        $serviceReport
+            ->load('project');
+
+        return view('service_report.show_signature_request')->with(compact('serviceReport'));
+    }
+
+    public function customerShowSignatureRequest(Request $request, string $token)
     {
         $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $request->token);
 
@@ -281,22 +293,32 @@ class ServiceReportController extends Controller
             $request->session()->flash('warning', 'Kein Servicebericht zum Unterschreiben und Herunterladen vorhanden.');
         }
 
-        return view('service_report.sign')->with(compact('serviceReport'));
+        return view('service_report.show_customer_signature_request')->with(compact('serviceReport'));
     }
 
-    public function sign(ServiceReportSignRequest $request, string $token)
+    public function sign(ServiceReportSignRequest $request, ServiceReport $serviceReport)
+    {
+        $validatedData = $request->validated();
+
+        $this->addSignature($serviceReport, $request->signature);
+
+        if ($request->send_download_request) {
+            return redirect()->route('service-reports.email-download-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
+        }
+        else {
+            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
+        }
+
+    }
+
+    public function customerSign(ServiceReportSignRequest $request, string $token)
     {
         $validatedData = $request->validated();
 
         $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $token);
 
         if ($serviceReport) {
-            $serviceReport->addSignature($request->signature);
-
-            $serviceReport->status = 'signed';
-            $serviceReport->save();
-
-            $serviceReport->deleteSignatureRequest();
+            $this->addSignature($serviceReport, $request->signature);
 
             $serviceReport->generateDownloadRequest();
             $serviceReport->load('downloadRequest')->load('project.company');
@@ -309,6 +331,16 @@ class ServiceReportController extends Controller
 
             return view('service_report.sign')->with('serviceReport', null);
         }
+    }
+
+    private function addSignature(ServiceReport $serviceReport, string $signature)
+    {
+        $serviceReport->addSignature($signature);
+
+        $serviceReport->status = 'signed';
+        $serviceReport->save();
+
+        $serviceReport->deleteSignatureRequest();
     }
 
     public function showEmailDownloadRequest(Request $request, ServiceReport $serviceReport)
@@ -324,7 +356,6 @@ class ServiceReportController extends Controller
         $validatedData = $request->validated();
 
         $serviceReport->generateDownloadRequest();
-        $serviceReport->load('downloadRequest');
 
         $this->sendDownloadRequest($serviceReport, $request->email);
 
@@ -338,6 +369,7 @@ class ServiceReportController extends Controller
         $serviceReport = DownloadRequest::fromToken(ServiceReport::class, $token);
 
         if ($serviceReport) {
+            $serviceReport->generateDownloadRequest();
             $this->sendDownloadRequest($serviceReport, $request->email);
 
             $request->session()->flash('success', 'Der Link zum Herunterladen wurde erfolgreich gesendet.');
@@ -397,6 +429,6 @@ class ServiceReportController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.service_report', ['serviceReport' => $serviceReport])
-            ->download('SB '.$serviceReport->project->name.' #'.$serviceReport->number.'.pdf');
+            ->download('SB ' . $serviceReport->project->name . ' #' . $serviceReport->number . '.pdf');
     }
 }

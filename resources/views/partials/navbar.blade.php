@@ -29,6 +29,12 @@
                                 </svg>
                                 Personen
                             </a>
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('addresses.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
+                                </svg>
+                                Adressen
+                            </a>
                         </div>
                     </li>
 

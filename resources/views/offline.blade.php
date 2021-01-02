@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <div class="text-center mt-4">
             <img class="empty-state" src="{{ asset('svg/offline.svg') }}" alt="offline" />
             <p class="lead text-muted mt-1">Das Gerät kann momentan keine Verbindung zum Internet herstellen.</p>

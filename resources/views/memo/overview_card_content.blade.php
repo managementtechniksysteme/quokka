@@ -98,7 +98,7 @@
                         </svg>
                         Bearbeiten
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.email', $memo) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>

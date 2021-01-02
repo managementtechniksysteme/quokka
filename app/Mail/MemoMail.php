@@ -2,26 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\ServiceReport;
+use App\Models\Memo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ServiceReportMail extends Mailable implements ShouldQueue
+class MemoMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $serviceReport;
+    public $memo;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(ServiceReport $serviceReport)
+    public function __construct(Memo $memo)
     {
-        $this->serviceReport = $serviceReport;
+        $this->memo = $memo;
     }
 
     /**
@@ -32,7 +32,7 @@ class ServiceReportMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Servicebericht ' . $this->serviceReport->project->name . ' #' . $this->serviceReport->number)
-            ->markdown('emails.service_report.service_report');
+            ->subject('Aktenvermerk ' . $this->memo->title . '(' . $this->memo->project->name . ' #'. $this->memo->number . ')')
+            ->markdown('emails.memo.memo');
     }
 }

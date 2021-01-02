@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <div class="text-center mt-4">
             <img class="empty-state" src="{{ asset('svg/approve.svg') }}" alt="done" />
             <p class="lead text-muted mt-1">Vielen Dank, dass Sie den Servicebericht unterschrieben haben.</p>
@@ -46,7 +46,7 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-outline-secondary d-inline-flex align-items-center">
                     <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                     </svg>
                     Link als Email senden
                 </button>

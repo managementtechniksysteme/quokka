@@ -6,8 +6,8 @@ Klicken Sie bitte auf den folgenden Button um den Servicebericht herunterzuladen
 
 @include("emails.service_report.service_report_content_request")
 
-@component('mail::button', ['url' => route('service-reports.sign', $serviceReport->signatureRequest->token)])
-Servicebericht herunterladen und unterschreiben
+@component('mail::button', ['url' => route('service-reports.customer-sign', $serviceReport->signatureRequest->token)])
+    Servicebericht herunterladen und unterschreiben
 @endcomponent
 
 Danke,<br />

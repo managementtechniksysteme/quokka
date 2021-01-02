@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('people.update', $person) }}" method="post" novalidate>
             @method('PATCH')
             @component('person.fields', [ 'person' => $person, 'currentAddress' => $currentAddress,

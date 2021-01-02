@@ -3,7 +3,7 @@
 
 **Techniker:** {{ $serviceReport->employee->person->name }}<br />
 **Status:**
-{{ __($serviceReport->status) }}
+{{ trans($serviceReport->status) }}
 @switch($serviceReport->status)
 @case('new')
 (erstellt am {{ $serviceReport->created_at }})
@@ -16,8 +16,7 @@ am {{ $serviceReport->updated_at }}
 @break
 @endswitch
 
-## Vollbrachte Leistungen
-
+**Vollbrachte Leistungen**
 @component('mail::table')
 | Datum                       | Stunden               | Diäten                     | gefahrene Kilometer        |
 |:--------------------------- |:--------------------- |:-------------------------- |:-------------------------- |
@@ -26,8 +25,7 @@ am {{ $serviceReport->updated_at }}
 @endforeach
 @endcomponent
 
-## Kurzbericht
-
+**Kurzbericht**<br />
 {!! $serviceReport->comment !!}
 
 @component('mail::button', ['url' => route('service-reports.show', $serviceReport)])
@@ -35,5 +33,8 @@ am {{ $serviceReport->updated_at }}
 @endcomponent
 
 Danke,<br />
-{{ config('app.name') }}
+{{ $serviceReport->employee->person->name }}<br />
+MTS Management Technik Systeme GmbH & CO KG
+
+@include('emails.partials.info_footer')
 @endcomponent

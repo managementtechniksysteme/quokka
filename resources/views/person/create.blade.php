@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('people.store') }}" method="post" novalidate>
             @component('person.fields', [ 'person' => $person, 'currentAddress' => $currentAddress,
                 'addresses' => $addresses, 'currentCompany' => $currentCompany, 'companies' => $companies ])

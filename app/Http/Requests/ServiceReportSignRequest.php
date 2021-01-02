@@ -17,7 +17,7 @@ class ServiceReportSignRequest extends FormRequest
         // TODO: proper base64 image validation?
         return [
             'signature' => 'required',
-
+            'send_download_request' => 'accepted|sometimes',
         ];
     }
 }

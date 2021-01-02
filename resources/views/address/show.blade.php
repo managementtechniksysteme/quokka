@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container my-4">
         <div class="text-muted d-flex align-items-center mt-4">
             <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>

@@ -8,7 +8,7 @@
             <h3>Hilfe</h3>
         </div>
     </div>
-    <div class="container mt-4">
+    <div class="container my-4">
         @if(count($names) > 0)
             <p>Für folgenden Themen ist eine Hilfeseite vorhanden.</p>
             <ul>

@@ -23,7 +23,7 @@
 
             <div class="menu d-block d-lg-none col mb-4">
                 <div class="scroll-x border-bottom pb-1">
-                    <a class="menu-item @if (request()->tab == 'notificaitons') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
+                    <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                         </svg>

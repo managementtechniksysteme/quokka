@@ -30,6 +30,6 @@ class WebpushController extends Controller
     {
         Notification::send(Auth::user(), new WebpushTestNotification());
 
-        return redirect()->route('home')->with('success', 'Die Test Benachrichtigung wurde erfolgreich gesendet');
+        return redirect()->route('user-settings.edit', ['tab' => 'notifications'])->with('success', 'Die Test Benachrichtigung wurde erfolgreich gesendet');
     }
 }

@@ -148,7 +148,7 @@
                                 </svg>
                                 Übersicht
                             </a>
-                            <a class="dropdown-item  d-inline-flex align-items-center" href="#">
+                            <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('user-settings.edit') }}">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                                 </svg>

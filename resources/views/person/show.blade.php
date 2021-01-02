@@ -9,9 +9,11 @@
                 Person
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}
-                    <svg class="feather feather-16 text-yellow ml-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                    </svg>
+                    @if(false)
+                        <svg class="feather feather-16 text-yellow ml-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        </svg>
+                    @endif
                 </small>
             </h3>
 

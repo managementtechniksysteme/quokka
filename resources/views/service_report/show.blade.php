@@ -9,9 +9,11 @@
                 Servicebericht
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $serviceReport->project->name }} #{{ $serviceReport->number }}
-                    <svg class="feather feather-16 text-yellow ml-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                    </svg>
+                    @if(false)
+                        <svg class="feather feather-16 text-yellow ml-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        </svg>
+                    @endif
                 </small>
             </h3>
 

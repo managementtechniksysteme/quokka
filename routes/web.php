@@ -27,6 +27,7 @@ use App\Http\Controllers\QrScanController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\WebpushController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +74,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('tasks', TaskController::class);
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
+
+    Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
 
     Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');

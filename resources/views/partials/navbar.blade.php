@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
-            {{ config('app.name', 'Laravel') }}
+            {{ config('app.name') }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -83,6 +83,27 @@
                             </svg>
                             Verwaltung
                         </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('help.index') }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
+                            </svg>
+                            Hilfe
+                        </a>
+                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret h-20"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                                </svg>
+                                {{ config('app.name') }} v0.1.1
+                            </a>
+                        </div>
                     </li>
                 @endauth
 

@@ -15,7 +15,7 @@ class HelpController extends Controller
      */
     public function index()
     {
-        $files = File::allFiles(resource_path('views/help'));
+        $files = File::allFiles(resource_path('views/help/topic'));
 
         $names = array_map(function ($element) {
             return $element->getBasename('.blade.php');
@@ -38,10 +38,10 @@ class HelpController extends Controller
      */
     public function show($slug)
     {
-        if (! View::exists("help.{$slug}")) {
+        if (! View::exists("help.topic.{$slug}")) {
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        return view("help.{$slug}");
+        return view("help.topic.{$slug}");
     }
 }

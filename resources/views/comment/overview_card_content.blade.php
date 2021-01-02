@@ -1,4 +1,4 @@
-<div class="rounded px-1 py-2">
+<div class="py-2">
     <div class="row">
         <div class="col-auto d-none d-md-block pr-0">
             <div class="avatar bg-primary rounded-circle d-inline-flex align-items-center justify-content-center">
@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="rounded-top border border-gray-300 bg-gray-100 px-2 py-1">
+            <div class="rounded-top border bg-gray-100 px-2 py-1">
                 <div class="row">
                     <div class="col-auto mr-auto">
                         <div class="lead">{{ $comment->employee->person->name }}</div>
@@ -20,14 +20,14 @@
 
                     <div class="col-auto d-inline-flex align-items-center">
                         <div class="dropdown d-inline">
-                            <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="companyOverviewDropdown" data-toggle="dropdown"></button>
+                            <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="commentOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                            <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentOverviewDropdown">
                                 <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
                                     <svg class="feather feather-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                                     </svg>
-                                    Kommentar bearbeiten
+                                    Bearbeiten
                                 </a>
 
                                 <form action="{{ route('comments.destroy', $comment) }}" method="post">
@@ -38,7 +38,7 @@
                                         <svg class="feather feather-16 mr-2">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                         </svg>
-                                        Kommentar entfernen
+                                        Entfernen
                                     </button>
                                 </form>
                             </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <div class="rounded-botom border-left border-right border-bottom border-gray-300 px-2 py-2">
+            <div class="rounded-botom border border-top-0 px-2 py-2">
                 <div class="row">
                     <div class="col">
                         @markdown ($comment->comment)
@@ -76,7 +76,7 @@
                         <div class="row">
                             @foreach($comment->attachments() as $attachment)
                                 <div class="col-12 col-md-6 col-lg-3 mt-1">
-                                    <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                                    <div class="attachment bg-gray-100 border d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                         <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         <div class="min-w-0">
                                             <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
@@ -92,7 +92,7 @@
                         <div class="row">
                             @foreach($comment->attachments() as $attachment)
                                 <div class="col-12 col-md-6 col-lg-3 mt-1">
-                                    <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                                    <div class="attachment bg-gray-100 border d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                         <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         <div class="min-w-0">
                                             <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>

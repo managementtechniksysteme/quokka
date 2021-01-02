@@ -29,7 +29,10 @@ class ServiceReport extends Model implements HasMedia
     ];
 
     protected $filterKeys = [
-        'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'ist:neu' => ['status', 'new'],
+        'ist:unterschrieben' => ['status', 'signed'],
+        'ist:u' => ['status', 'signed'],
+        'ist:erledigt' => ['status', 'finished'],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
         'projekt:(.*)' => ['project.name', '{value}'],

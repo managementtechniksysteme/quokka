@@ -2,78 +2,61 @@
 
 @section('content')
     <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
+        <div class="container pt-4">
             @include('person.breadcrumb')
 
             <h3>
                 Person
-                <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
+                <small class="text-muted d-inline-flex align-items-center">
+                    {{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}
+                    <svg class="feather feather-16 text-yellow ml-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    </svg>
+                </small>
             </h3>
+
+            <div class="scroll-x d-flex">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                    </svg>
+                    Bearbeiten
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                    </svg>
+                    Email versenden
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                    </svg>
+                    PDF erstellen
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    </svg>
+                    Favorisieren
+                </a>
+                <form action="{{ route('people.destroy', $person) }}" method="post" >
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                        </svg>
+                        Entfernen
+                    </button>
+                </form>
+            </div>
+
         </div>
     </div>
 
     <div class="container mt-4">
-        <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-            </svg>
-            Person bearbeiten
-        </a>
-        <a class="btn btn-outline-warning d-none d-lg-inline-flex align-items-center" href="#">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-            </svg>
-            Person zu Favoriten hinzufügen
-        </a>
-        <a class="btn btn-outline-secondary d-none d-lg-inline-flex align-items-center" href="#">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-            </svg>
-            Stammblatt PDF erstellen
-        </a>
-        <form action="{{ route('people.destroy', $person) }}" method="post" class="d-none d-lg-inline">
-            @csrf
-            @method('DELETE')
-
-            <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                </svg>
-                Person entfernen
-            </button>
-        </form>
-
-        <div class="dropdown d-inline d-lg-none">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownActionsButton" data-toggle="dropdown">
-                Weitere Aktionen
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                    </svg>
-                    Person zu Favoriten hinzufügen
-                </a>
-                <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                    </svg>
-                    Stammblatt PDF erstellen
-                </a>
-                <form action="{{ route('people.destroy', $person) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                        </svg>
-                        Person entfernen
-                    </button>
-                </form>
-            </div>
-        </div>
-
         <div class="row mt-4">
             <div class="col-lg">
                 <div class="row">

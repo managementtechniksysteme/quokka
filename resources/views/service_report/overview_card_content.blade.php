@@ -30,16 +30,53 @@
 
         <div class="col-md-auto d-none d-md-block">
             <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="companyOverviewDropdown" data-toggle="dropdown"></button>
+                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="serviceReportOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="serviceReportOverviewDropdown">
                     <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
-                        Servicebericht bearbeiten
+                        Bearbeiten
                     </a>
-
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', $serviceReport) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        </svg>
+                        Email senden
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                        </svg>
+                        PDF erstellen
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        </svg>
+                        Favorisieren
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
+                        </svg>
+                        Unterschreiben lassen
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', $serviceReport) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        </svg>
+                        Unterschrift Anfrage sendeen
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', $serviceReport) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
+                        </svg>
+                        Download Link senden
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post">
                         @csrf
                         @method('DELETE')
@@ -48,7 +85,7 @@
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
-                            Servicebericht entfernen
+                            Entfernen
                         </button>
                     </form>
                 </div>

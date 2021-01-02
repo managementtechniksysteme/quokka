@@ -73,5 +73,6 @@
   "private": "privat",
   "yes": "ja",
   "no": "nein",
-  "signed": "unterschrieben"
+  "signed": "unterschrieben",
+  "filters": "Filter"
 }

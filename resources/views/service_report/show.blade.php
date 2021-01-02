@@ -2,79 +2,91 @@
 
 @section('content')
     <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
+        <div class="container pt-4">
             @include('service_report.breadcrumb')
 
             <h3>
                 Servicebericht
-                <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>
+                <small class="text-muted d-inline-flex align-items-center">
+                    {{ $serviceReport->project->name }} #{{ $serviceReport->number }}
+                    <svg class="feather feather-16 text-yellow ml-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    </svg>
+                </small>
             </h3>
+
+            <div class="scroll-x d-flex">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                    </svg>
+                    Bearbeiten
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                    </svg>
+                    Email versenden
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                    </svg>
+                    PDF erstellen
+                </a>
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    </svg>
+                    Favorisieren
+                </a>
+                <div class="dropdown">
+                <button class="btn btn-outline-secondary border-0 dropdown-toggle d-inline-flex align-items-center" type="button" id="dropdownCustomerInteractionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    </svg>
+                    Kundeninteraktion
+                </button>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownCustomerInteractionButton">
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
+                            </svg>
+                            Unterschreiben lassen
+                        </a>
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', $serviceReport) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                            </svg>
+                            Unterschrift Anfrage sendeen
+                        </a>
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', $serviceReport) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
+                            </svg>
+                            Download Link senden
+                        </a>
+                    </div>
+                </div>
+                <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post" >
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                        </svg>
+                        Entfernen
+                    </button>
+                </form>
+            </div>
+
         </div>
     </div>
 
     <div class="container mt-4">
-        <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-            </svg>
-            Servicebericht bearbeiten
-        </a>
-        <a class="btn btn-outline-warning d-none d-lg-inline-flex align-items-center" href="#">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-            </svg>
-            Servicebericht zu Favoriten hinzufügen
-        </a>
-        <a class="btn btn-outline-secondary d-none d-lg-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-            </svg>
-            PDF des Serviceberichtes erstellen
-        </a>
-        <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post" class="d-none d-lg-inline">
-            @csrf
-            @method('DELETE')
-
-            <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                </svg>
-                Servicebericht entfernen
-            </button>
-        </form>
-
-        <div class="dropdown d-inline d-lg-none">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownActionsButton" data-toggle="dropdown">
-                Weitere Aktionen
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                    </svg>
-                    Servicebericht zu Favoriten hinzufügen
-                </a>
-                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                    </svg>
-                    PDF des Serviceberichtes erstellen
-                </a>
-                <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                        </svg>
-                        Servicebericht entfernen
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <div class="row mt-3 mt-md-4">
+                <div class="row mt-3 mt-md-4">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
                     <svg class="feather feather-16 mr-2">

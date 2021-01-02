@@ -33,16 +33,33 @@
 
         <div class="col-md-auto d-none d-md-block">
             <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="companyOverviewDropdown" data-toggle="dropdown"></button>
+                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="personOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personOverviewDropdown">
                     <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
-                        Person bearbeiten
+                        Bearbeiten
                     </a>
-
+                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        </svg>
+                        Email senden
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                        </svg>
+                        PDF erstellen
+                    </a>
+                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        </svg>
+                        Favorisieren
+                    </a>
                     <form action="{{ route('people.destroy', $person) }}" method="post">
                         @csrf
                         @method('DELETE')
@@ -51,7 +68,7 @@
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
-                            Person entfernen
+                            Entfernen
                         </button>
                     </form>
                 </div>

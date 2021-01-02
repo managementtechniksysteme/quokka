@@ -36,14 +36,16 @@
 
     @if(Auth::user()->push_subscriptions_count > 0)
 
-        <div class="row mt-3">
+        <div class="row mt-4">
             <div class="col">
-                Push Benachrichtigungen testen. Es wird eine Test Benachrichtigung an
-                {{ Auth::user()->push_subscriptions_count }} registrierten Geräte gesendet.
+                <p>
+                    Push Benachrichtigungen testen. Es wird eine Test Benachrichtigung an
+                    {{ Auth::user()->push_subscriptions_count }} registrierten Geräte gesendet.
+                </p>
             </div>
         </div>
 
-        <div class="row mt-2">
+        <div class="row">
             <div class="col">
                 <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('webpush.test') }}">
                     <svg class="feather feather-16 mr-2">

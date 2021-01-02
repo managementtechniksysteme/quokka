@@ -101,7 +101,7 @@
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>
-                                {{ config('app.name') }} v0.1.1
+                                {{ config('app.name') }} @version('compact')
                             </a>
                         </div>
                     </li>

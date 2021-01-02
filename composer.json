@@ -28,6 +28,7 @@
         "league/commonmark-ext-table": "^2.1",
         "league/commonmark-ext-task-list": "^1.0",
         "pragmarx/google2fa": "^5.0",
+        "pragmarx/version": "^1.2",
         "silvertipsoftware/laravel-pdf-latex": "^2.2.1",
         "spatie/laravel-medialibrary": "^9.0.0",
         "spatie/laravel-permission": "^3.0",

@@ -32,7 +32,7 @@ class ServiceReportMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Servicebericht ' . $this->serviceReport->project->name . ' #' . $this->serviceReport->number)
+            ->subject('Servicebericht '.$this->serviceReport->project->name.' #'.$this->serviceReport->number)
             ->markdown('emails.service_report.service_report');
     }
 }

@@ -32,7 +32,7 @@ class MemoMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Aktenvermerk ' . $this->memo->title . '(' . $this->memo->project->name . ' #'. $this->memo->number . ')')
+            ->subject('Aktenvermerk '.$this->memo->title.'('.$this->memo->project->name.' #'.$this->memo->number.')')
             ->markdown('emails.memo.memo');
     }
 }

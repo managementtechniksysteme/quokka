@@ -259,6 +259,6 @@ class MemoController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.memo', ['memo' => $memo])
-            ->download('AV ' . $memo->project->name . ' #' . $memo->number . '.pdf');
+            ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
     }
 }

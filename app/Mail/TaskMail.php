@@ -32,7 +32,7 @@ class TaskMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Aufgabe ' . $this->task->name . '(' . $this->task->project->name . ')')
+            ->subject('Aufgabe '.$this->task->name.'('.$this->task->project->name.')')
             ->markdown('emails.task.task');
     }
 }

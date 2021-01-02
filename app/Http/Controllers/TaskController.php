@@ -255,6 +255,6 @@ class TaskController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.service_report', ['task' => $task])
-            ->download('AU ' . $task->name . '.pdf');
+            ->download('AU '.$task->name.'.pdf');
     }
 }

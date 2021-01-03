@@ -58,7 +58,7 @@ class MemoController extends Controller
             ->with('currentPersonRecipient', null)
             ->with('currentPresentPeople', null)
             ->with('currentNotifiedPeople', null)
-            ->with('people', $people->toJson()
+            ->with('people', $people->toJson())
             ->with('currentAttachments', null));
     }
 

@@ -229,7 +229,7 @@ class TaskController extends Controller
         $task
             ->load('project')
             ->load('responsibleEmployee')
-            ->load('invovledEmployees');
+            ->load('involvedEmployees');
 
         $mail = Mail::to($request->email_to);
         if ($request->email_cc) {

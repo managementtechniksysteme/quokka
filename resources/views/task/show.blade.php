@@ -30,7 +30,7 @@
                     </svg>
                     Email versenden
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                     </svg>

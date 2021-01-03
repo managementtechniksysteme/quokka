@@ -5,12 +5,13 @@
 **Von:** {{ $memo->employeeComposer->person->name }}<br />
 **An:** {{ $memo->personRecipient->name }}<br />
 **Besprechungsdatum:** {{ $memo->meeting_held_on }}<br />
+**Verfassungsdatum:** {{ $memo->created_at }}<br />
 @if($memo->next_meeting_on)
 **Nächster Termin:** {{ $memo->next_meeting_on }}<br />
 @endif
 
 @if($memo->presentPeople->count() > 0)
-**Beteiligte Personen:**<br />
+**Anwesende Personen:**<br />
 @foreach($memo->presentPeople as $person)
 {{ $person->name }}@unless($loop->last), @endunless
 @endforeach

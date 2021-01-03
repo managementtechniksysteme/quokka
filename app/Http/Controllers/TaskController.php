@@ -7,7 +7,6 @@ use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Mail\TaskMail;
 use App\Models\Employee;
-use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Task;
@@ -245,17 +244,17 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich gesendet.');
     }
 
-    public function download(Request $request, Memo $memo)
+    public function download(Request $request, Task $task)
     {
         $task
             ->load('project')
             ->load('responsibleEmployee')
-            ->load('invovledEmployees');
+            ->load('involvedEmployees');
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
-            ->view('latex.service_report', ['task' => $task])
+            ->view('latex.task', ['task' => $task])
             ->download('AU '.$task->name.'.pdf');
     }
 }

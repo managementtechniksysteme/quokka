@@ -104,7 +104,7 @@
                         </svg>
                         Email senden
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.download', $memo) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>

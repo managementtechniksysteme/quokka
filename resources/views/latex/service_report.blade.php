@@ -2,7 +2,7 @@
 
 @include('latex.partials.header')
 
-\fancyfoot[L]{\footnotesize{Servicebericht Nr. {!! Latex::escape($serviceReport->number) !!}, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
+\fancyfoot[L]{\footnotesize{Servicebericht Nr. {!! Latex::escape($serviceReport->number) !!} ({!! Latex::escape($serviceReport->project->name) !!}), erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
 \fancyfoot[R]{\footnotesize{Seite \thepage\ von \pageref{LastPage}}}
 
 \begin{document}

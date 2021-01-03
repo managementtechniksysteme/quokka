@@ -104,7 +104,3 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/webpush', [WebpushController::class, 'destroy'])->name('webpush.destroy');
     Route::get('/webpush/test', [WebpushController::class, 'test'])->name('webpush.test');
 });
-
-Route::get('/mail', function () {
-    return new App\Mail\TaskMail(\App\Models\Task::find(1)->load('project')->load('responsibleEmployee.person')->load('involvedEmployees.person')->load('comments.employee.person'));
-});

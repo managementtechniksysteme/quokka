@@ -76,7 +76,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     @auth
         <script defer>
-            let VAPID_PUBLIC_KEY = {!! json_encode(env('VAPID_PUBLIC_KEY')) !!}
+            let VAPID_PUBLIC_KEY = {!! json_encode(config('webpush.vapid.public_key')) !!}
         </script>
         <script src="{{ asset('js/init.js') }}" defer></script>
         <script src="{{ asset('js/webpush.js') }}" defer></script>

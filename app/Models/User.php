@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasPushSubscriptions;
+    use InteractsWithMedia;
     use Notifiable;
     use SoftDeletes;
 
@@ -48,6 +51,16 @@ class User extends Authenticatable
         return $this->employee->person;
     }
 
+    public function signature()
+    {
+        return $this->getFirstMedia('signature');
+    }
+
+    public function settings()
+    {
+        return $this->hasOne(UserSettings::class, 'user_id');
+    }
+
     public function routeNotificationForMail()
     {
         return $this->person->email;
@@ -61,5 +74,24 @@ class User extends Authenticatable
     public function getUsernameAvatarStringAttribute()
     {
         return strtoupper($this->username);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('signature')->singleFile()->useDisk('local');
+    }
+
+    public function addSignature(string $signature)
+    {
+        $this->addMediaFromBase64($signature)->usingFileName('signature.png')->toMediaCollection('signature');
+    }
+
+    public function deleteSignature()
+    {
+        $signature = $this->signature();
+
+        if ($signature) {
+            $signature->delete();
+        }
     }
 }

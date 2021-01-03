@@ -5,6 +5,7 @@ let urlsToCache = [
     OFFLINE_URL,
     '/css/app.css',
     '/js/app.js',
+    '/svg/feather-sprite.svg',
     '/svg/offline.svg'
 ];
 

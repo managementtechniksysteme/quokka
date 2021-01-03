@@ -20,9 +20,10 @@
         2. [Aktenvermerke](#aktenvermerke)
         3. [Aufgaben](#aufgaben)
         4. [Firmen](#firmen)
-        5. [Personen](#personen)
-        6. [Projekte](#projekte)
-        7. [Serviceberichte](#serviceberichte)
+        5. [Mitarbeiter](#mitarbeiter)
+        6. [Personen](#personen)
+        7. [Projekte](#projekte)
+        8. [Serviceberichte](#serviceberichte)
         @endmarkdown
 
         @markdown
@@ -325,6 +326,57 @@
             * MTS Management Technik Systeme GmbH & CO KG
             @endmarkdown
         </div>
+
+        <a id="mitarbeiter"></a>
+        <h4 class="mt-4">Mitarbeiter</h4>
+
+        @markdown
+        **Standardattribute**
+        * keine
+
+        **Spezielle Suchbegriffe**
+        * `name:<Mitarbeiter Name>` oder `n:<Mitarbeiter Name>`  
+        Der Mitarbeiter hat den Namen `<Mitarbeiter Name>`.
+        
+        * `benutzer:<Quokka Benutzername>` oder `b:<Quokka Benutzername>`  
+        Der Mitarbeiter hat den Quokka Benutzernamen `<Quokka Benutzername>`.
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            name:Steiner
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Mitarbeiter, die im Namen den Begriff `Steiner` aufweisen.
+            Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
+
+            Mögliche Ergebnisse
+            * Martin Steiner
+            * Angelika Steiner
+            @endmarkdown
+        </div>
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            benutzer: mst
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Mitarbeiter, die den Quokka Benutzernamen `mst` besitzen.
+        
+            Mögliche Ergebnisse
+            * Martin Steiner
+            @endmarkdown
+        </div>
                                             
         <a id="personen"></a>
         <h4 class="mt-4">Personen</h4>
@@ -373,7 +425,7 @@
             Filtert Personen, die der Firma mit dem Namen `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
             @endmarkdown
         </div>
-        
+                                                                                                                                                
         <a id="projekte"></a>
         <h4 class="mt-4">Projekte</h4>
 

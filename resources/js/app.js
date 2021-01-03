@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import AddressDropdown from './components/AddressDropdown';
 import AttachmentsSelector from './components/AttachmentsSelector';
+import AvatarColourSelector from './components/AvatarColourSelector';
 import CompanyDropdown from './components/CompanyDropdown';
 import EmailSelector from "./components/EmailSelector";
 import GestureLinks from './components/GestureLinks';
@@ -40,6 +41,7 @@ import VueQrcodeReader from "vue-qrcode-reader";
 
 Vue.component('address-dropdown', AddressDropdown);
 Vue.component('attachments-selector', AttachmentsSelector);
+Vue.component('avatar-colour-selector', AvatarColourSelector);
 Vue.component('company-dropdown', CompanyDropdown);
 Vue.component('email-selector', EmailSelector);
 Vue.component('gesture-links', GestureLinks);

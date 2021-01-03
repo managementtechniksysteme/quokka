@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
-            <h3>Einstellungen</h3>
+            <h3>{{ config('app.name') }} Einstellungen</h3>
         </div>
     </div>
 
@@ -13,15 +13,9 @@
                 <div class="menu border-right pr-3">
                     <a class="menu-item @if (request()->tab == 'general') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'general']) }}">
                         <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
                         Allgemeines
-                    </a>
-                    <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
-                        </svg>
-                        Benachrichtigungen
                     </a>
 
                 </div>
@@ -31,15 +25,9 @@
                 <div class="scroll-x border-bottom pb-1">
                     <a class="menu-item @if (request()->tab == 'general') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'general']) }}">
                         <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
-                        Allgemeines
-                    </a>
-                    <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
-                        </svg>
-                        Benachrichtigungen
+                        Allgeimeines
                     </a>
 
                 </div>

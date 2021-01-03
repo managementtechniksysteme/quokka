@@ -43,18 +43,18 @@
 \begin{minipage}[t][2.5cm]{0.5\textwidth}
 \vfill
 \centering
-{{--
 @if($serviceReport->employee->user->signature())
 \includegraphics[height=2cm]{{!! Latex::escape($serviceReport->employee->user->signature()->getPath()) !!}}
+\\
 @endif
---}}
-\footnotesize{Unterschrift Techniker{{-- @if($serviceReport->employee->user->signature())vom {!! Latex::escape($serviceReport->created_at) !!} @endif--}}}
+\footnotesize{Unterschrift Techniker @if($serviceReport->employee->user->signature())vom {!! Latex::escape($serviceReport->created_at) !!} @endif}
 \end{minipage}
 \begin{minipage}[t][2.5cm]{0.5\textwidth}
 \vfill
 \centering
 @if($serviceReport->signature())
 \includegraphics[height=2cm]{{!! Latex::escape($serviceReport->signature()->getPath()) !!}}
+\\
 @endif
 \footnotesize{Unterschrift Kunde @if($serviceReport->signature())vom {!! Latex::escape($serviceReport->signature()->created_at) !!} @endif}
 \end{minipage}

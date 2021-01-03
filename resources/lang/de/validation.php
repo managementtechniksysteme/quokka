@@ -196,5 +196,6 @@ return [
         'email_bcc'             => 'Email BCC',
         'new_attachments'       => 'Anhänge (neu)',
         'remove_attachments'    => 'Anhänge (zu entfernen)',
+        'avatar_colour'         => 'Avatar Farbe',
     ],
 ];

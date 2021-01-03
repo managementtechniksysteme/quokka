@@ -88,7 +88,7 @@
     </div>
 
     <div class="container my-4">
-                <div class="row mt-3 mt-md-4">
+        <div class="row mt-3 mt-md-4">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
                     <svg class="feather feather-16 mr-2">

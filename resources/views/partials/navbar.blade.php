@@ -82,13 +82,32 @@
                             Stunden
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="#">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('application-settings.edit') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                             </svg>
-                            Verwaltung
+                            Einstellungen
                         </a>
+                        <a id="navbarSettingssDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret h-20"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarSettingsDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                                </svg>
+                                Mitarbeiter
+                            </a>
+                            <a class="dropdown-item d-inline-flex align-items-center" href="">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                                </svg>
+                                Leistungen
+                            </a>
+                        </div>
                     </li>
 
                     <li class="nav-item dropdown">

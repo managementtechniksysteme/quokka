@@ -304,11 +304,9 @@ class ServiceReportController extends Controller
 
         if ($request->send_download_request) {
             return redirect()->route('service-reports.email-download-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
-        }
-        else {
+        } else {
             return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
         }
-
     }
 
     public function customerSign(ServiceReportSignRequest $request, string $token)
@@ -429,6 +427,6 @@ class ServiceReportController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.service_report', ['serviceReport' => $serviceReport])
-            ->download('SB ' . $serviceReport->project->name . ' #' . $serviceReport->number . '.pdf');
+            ->download('SB '.$serviceReport->project->name.' #'.$serviceReport->number.'.pdf');
     }
 }

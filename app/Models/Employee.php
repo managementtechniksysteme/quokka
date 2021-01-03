@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersResults;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    use FiltersResults;
+
     protected $casts = [
         'person_id' => 'int',
         'entered_on' => 'date',
@@ -15,6 +18,15 @@ class Employee extends Model
 
     protected $fillable = [
         'person_id', 'entered_on', 'left_on', 'holidays',
+    ];
+
+    protected $filterFields = [];
+
+    protected $filterKeys = [
+        'name:(.*)' => ['hasraw' => ['person', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
+        'n:(.*)' => ['hasraw' => ['person', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
+        'benutzer:(.*)' => ['user.username', '{value}'],
+        'b:(.*)' => ['user.username', '{value}'],
     ];
 
     protected $primaryKey = 'person_id';
@@ -27,7 +39,7 @@ class Employee extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'employee_id');
+        return $this->hasOne(User::class, 'employee_id')->withTrashed();
     }
 
     public function tasksResponsibleFor()

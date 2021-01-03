@@ -12,11 +12,13 @@ use App\Http\Controllers\AddressController;
 |
 */
 
+use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
 use App\Http\Controllers\Auth\SecondFactorController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemoController;
@@ -58,6 +60,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('addresses', AddressController::class);
     Route::resource('companies', CompanyController::class);
+
+    Route::resource('employees', EmployeeController::class);
+    Route::get('/employees/{employee}/access-grant', [EmployeeController::class, 'grantAccess'])->name('employees.access-grant');
+    Route::get('/employees/{employee}/access-deny', [EmployeeController::class, 'denyAccess'])->name('employees.access-deny');
+
     Route::resource('help', HelpController::class)->only(['index', 'show']);
 
     Route::resource('memos', MemoController::class);
@@ -86,15 +93,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
+    Route::post('user-settings/signature', [UserSettingsController::class, 'updateSignature'])->name('user-settings.update-signature');
+
+    Route::get('application-settings', [ApplicationSettingsController::class, 'edit'])->name('application-settings.edit');
+    Route::post('application-settings/general', [ApplicationSettingsController::class, 'updateGeneral'])->name('application-settings.update-general');
 
     Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
     Route::post('/webpush', [WebpushController::class, 'store'])->name('webpush.store');
     Route::delete('/webpush', [WebpushController::class, 'destroy'])->name('webpush.destroy');
+    Route::get('/webpush/test', [WebpushController::class, 'test'])->name('webpush.test');
 });
 
 Route::get('/mail', function () {
     return new App\Mail\TaskMail(\App\Models\Task::find(1)->load('project')->load('responsibleEmployee.person')->load('involvedEmployees.person')->load('comments.employee.person'));
 });
-
-Route::get('/webpush/test', [WebpushController::class, 'test'])->name('webpush.test');

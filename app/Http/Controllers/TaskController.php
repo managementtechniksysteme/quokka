@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
-use App\Mail\MemoMail;
 use App\Mail\TaskMail;
 use App\Models\Employee;
 use App\Models\Memo;
@@ -116,7 +115,9 @@ class TaskController extends Controller
             ->load('involvedEmployees.person')
             ->load(['comments' => function ($query) {
                 $query->order();
-            }]);
+            }])
+            ->load('comments.employee.user.settings')
+            ->load('comments.media');
 
         return view('task.show')->with(compact('task'));
     }
@@ -255,6 +256,6 @@ class TaskController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.service_report', ['task' => $task])
-            ->download('AU ' . $task->name . '.pdf');
+            ->download('AU '.$task->name.'.pdf');
     }
 }

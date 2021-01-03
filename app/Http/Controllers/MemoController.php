@@ -6,11 +6,9 @@ use App\Http\Requests\EmailRequest;
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
 use App\Mail\MemoMail;
-use App\Mail\ServiceReportMail;
 use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
-use App\Models\ServiceReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use ZsgsDesign\PDFConverter\Latex;
@@ -259,6 +257,6 @@ class MemoController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.memo', ['memo' => $memo])
-            ->download('AV ' . $memo->project->name . ' #' . $memo->number . '.pdf');
+            ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
     }
 }

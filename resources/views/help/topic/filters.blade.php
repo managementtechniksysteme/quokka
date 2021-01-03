@@ -7,7 +7,7 @@
 
             <h3>
                 Hilfe
-                <small class="text-muted">Markdown</small>
+                <small class="text-muted">Filter</small>
             </h3>
         </div>
     </div>

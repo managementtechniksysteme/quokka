@@ -493,7 +493,7 @@
         * `ist:erledigt`  
         Der Servicebericht hat den Status `erledigt`.
         
-        * `nummber:<Nummer>` oder `n:<Nummer>`  
+        * `nummer:<Nummer>` oder `n:<Nummer>`  
         Der Servicebericht hat die Nummer `<Nummer>`
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  

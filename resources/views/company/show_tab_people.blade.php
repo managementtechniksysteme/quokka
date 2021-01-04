@@ -119,4 +119,5 @@
             </div>
         @endforelse
     </div>
+
 @endsection

@@ -121,7 +121,12 @@ class CompanyController extends Controller
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
                 $company->load(['projects' => function ($query) use ($input) {
-                    $query->filter($input)->order($input)->withCount('tasks')->withCount('memos');
+                    $query
+                        ->filter($input)
+                        ->order($input)
+                        ->withCount('tasks')
+                        ->withCount('memos')
+                        ->withCount('serviceReports');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('company.show_tab_projects')->with(compact('company'));

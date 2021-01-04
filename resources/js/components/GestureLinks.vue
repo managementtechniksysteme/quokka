@@ -86,6 +86,6 @@
     }
 
     .overlay {
-        opacity: calc(var(--opacity, 0) * 20%);
+        opacity: calc(var(--opacity, 0) * 0.2);
     }
 </style>

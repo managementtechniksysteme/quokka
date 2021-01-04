@@ -84,6 +84,24 @@
                     </li>
 
                     <li class="nav-item dropdown">
+                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
+                            </svg>
+                            Tools
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('qr-scan.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
+                                </svg>
+                                QR-Code scannen
+                            </a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
                         <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('application-settings.edit') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>

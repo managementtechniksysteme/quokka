@@ -40,7 +40,8 @@
             <div class="col">
                 <p>
                     Push Benachrichtigungen testen. Es wird eine Test Benachrichtigung an
-                    {{ Auth::user()->push_subscriptions_count }} registrierten Geräte gesendet.
+                    {{ trans_choice('messages.devices', Auth::user()->push_subscriptions_count, ['number' => Auth::user()->push_subscriptions_count]) }}
+                    gesendet.
                 </p>
             </div>
         </div>

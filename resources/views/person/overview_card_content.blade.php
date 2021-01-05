@@ -3,7 +3,7 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('people.show', $person) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 {{ $person->name }}
             </div>
             <div class="text-muted d-inline-flex align-items-center">
@@ -13,20 +13,26 @@
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                             </svg>
-                            {{ optional($person->address)->first()->address_line ?? 'keine Adresse angegeben' }}
+                            <span class="mw-100 text-truncate">
+                                {{ optional($person->address)->first()->address_line ?? 'keine Adresse angegeben' }}
+                            </span>
                             @break
                         @default
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
-                            {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                            <span class="mw-100 text-truncate">
+                                {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                            </span>
                             @break
                     @endswitch()
                 @else
                     <svg class="feather feather-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
-                    {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                    <span class="mw-100 text-truncate">
+                        {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                    </span>
                 @endif
             </div>
         </div>

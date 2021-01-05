@@ -13,17 +13,17 @@
                         {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on) }}@endif)
             </div>
             <div class="text-muted">
-                <div class="d-flex d-md-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                    </svg>
-                    {{ $serviceReport->employee->person->name }}
-                </div>
-                <div class="d-flex d-md-inline-flex align-items-center">
-                    <svg class="feather feather-16 ml-lg-2 mr-1">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="feather feather-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
                     {{ $serviceReport->services_sum_hours }}
+                    <svg class="feather feather-16 mr-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                    </svg>
+                    <span class="mw-100 text-truncate">
+                        {{ $serviceReport->employee->person->name }}
+                    </span>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 
         <div class="col test=muted flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('employees.show', $employee) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 {{ $employee->person->name }}
             </div>
             <div class="text-muted d-flex d-md-inline-flex align-items-center">

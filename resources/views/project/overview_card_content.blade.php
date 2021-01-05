@@ -3,7 +3,7 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('projects.show', $project) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 {{ $project->name }}
             </div>
             <div class="text-muted d-inline-flex align-items-center">
@@ -23,14 +23,18 @@
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
-                            {{ $project->company->name }}
+                            <span class="mw-100 text-truncate">
+                                {{ $project->company->name }}
+                            </span>
                             @break
                     @endswitch()
                 @else
                     <svg class="feather feather-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
-                    {{ $project->company->name }}
+                    <span class="mw-100 text-truncate">
+                        {{ $project->company->name }}
+                    </span>
                 @endif
             </div>
         </div>

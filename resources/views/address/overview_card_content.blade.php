@@ -3,10 +3,10 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('addresses.show', $address) }}"></a>
-            <p class="m-0">
+            <p class="m-0 ms-100 text-truncate">
                 {{ $address->name }}
             </p>
-            <p class="text-muted m-0">
+            <p class="text-muted m-0 ms-100 text-truncate">
                 {{ $address->address_line }}
             </p>
         </div>

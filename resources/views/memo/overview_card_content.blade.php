@@ -3,7 +3,7 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('memos.show', $memo) }}"></a>
-            <div>
+            <div class="min-w-100 text-truncate">
                 {{ $memo->title }}
             </div>
             <div class="text-muted">
@@ -28,7 +28,9 @@
                                 <svg class="feather feather-16 mx-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
-                                {{ optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                <span class="min-w-0 text-truncate">
+                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                </span>
                             </div>
                             @break
                         @default
@@ -40,7 +42,9 @@
                                 <svg class="feather feather-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
-                                {{ $memo->project->name }}
+                                <span class="min-w-0 text-truncate">
+                                    {{ $memo->project->name }}
+                                </span>
                             </div>
                             <div class="d-flex d-md-inline-flex align-items-center">
                                 <svg class="text-muted feather feather-16 ml-md-2 mr-1">
@@ -54,7 +58,9 @@
                                 <svg class="feather feather-16 mx-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
-                                {{ optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                <span class="min-w-0 text-truncate">
+                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                </span>
                             </div>
                             @break
                     @endswitch()
@@ -67,7 +73,9 @@
                         <svg class="feather feather-16 ml-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                         </svg>
-                        {{ $memo->project->name }}
+                        <span class="min-w-0 text-truncate">
+                            {{ $memo->project->name }}
+                        </span>
                     </div>
                     <div class="d-flex d-md-inline-flex align-items-center">
                         <svg class="text-muted feather feather-16 ml-md-2 mr-1">
@@ -81,7 +89,9 @@
                         <svg class="feather feather-16 mx-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
-                        {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                        <span class="min-w-0 text-truncate">
+                            {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                        </span>
                     </div>
                 @endif
             </div>

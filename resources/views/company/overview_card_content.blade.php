@@ -3,14 +3,16 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('companies.show', $company) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 {{ $company->full_name }}
             </div>
             <div class="text-muted d-inline-flex align-items-center">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
-                {{ optional($company->address->first())->address_line ?? 'keine Adresse angegeben' }}
+                <span class="mw-100 text-truncate">
+                    {{ optional($company->address->first())->address_line ?? 'keine Adresse angegeben' }}
+                </span>
             </div>
         </div>
 

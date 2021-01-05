@@ -63,7 +63,7 @@ class CommentMentionNotification extends Notification implements ShouldQueue
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
             ->body('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
-            ->tag(Task::class . ':' . $this->comment->task->id . '-' . CommentMentionNotification::class)
+            ->tag(Task::class.':'.$this->comment->task->id.'-'.CommentMentionNotification::class)
             ->data(['url' => route('tasks.show', $this->comment->task)])
             ->vibrate($this->vibrationDuration);
     }

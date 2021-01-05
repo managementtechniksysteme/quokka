@@ -16,7 +16,6 @@
 \usepackage{hyperref}
 \usepackage{lastpage}
 \usepackage{longtable}
-\usepackage{ngerman}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}

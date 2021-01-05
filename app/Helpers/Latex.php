@@ -47,6 +47,7 @@ class Latex
         return (new Pandoc())
             ->input($text)
             ->execute([
+                '-V', 'lang=de',
                 '--from', 'markdown_github',
                 '--to', 'latex',
             ]);

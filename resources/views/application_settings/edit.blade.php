@@ -27,7 +27,7 @@
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
-                        Allgeimeines
+                        Allgemeines
                     </a>
 
                 </div>

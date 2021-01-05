@@ -268,7 +268,7 @@
         @markdown
         Nummerierungen werden analog zu Aufzählungen angelegt. Jedoch werden einzelne Elemente durch eine Nummmer,
         gefolgt von einem Punkt (`1.`) und einem Leerzeichen eingeleitet. Die Nummerierung muss nicht durchgängig in
-        seqüntieller Reihung erfolgen.
+        sequentieller Reihung erfolgen.
         @endmarkdown
 
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">

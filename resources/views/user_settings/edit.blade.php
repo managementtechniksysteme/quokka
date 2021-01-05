@@ -31,7 +31,7 @@
                 <div class="scroll-x border-bottom pb-1">
                     <a class="menu-item @if (request()->tab == 'general') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'general']) }}">
                         <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
                         Allgemeines
                     </a>

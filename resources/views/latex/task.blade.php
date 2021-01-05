@@ -15,7 +15,7 @@
 \\\\\\
 \begin{tabular}{@{}lp{13.5cm}@{}}
 @if($task->starts_on || $task->ends_on)
-\footnotesize{\textbf{Zeitraum:}} & \footnotesize{{!! $task->starts_on ? Latex::escape($task->starts_on) : 'nicht angegeben' !!}}@if($task->ends_on)\footnotesize{ - {!! Latex::escape($task->ends_on) !!} @endif \\
+\footnotesize{\textbf{Zeitraum:}} & \footnotesize{{!! $task->starts_on ? Latex::escape($task->starts_on) : 'nicht angegeben' !!}}@if($task->ends_on)\footnotesize{ - {!! Latex::escape($task->ends_on) !!}} @endif \\
 @endif
 @if($task->due_on)
 \footnotesize{\textbf{Fälligkeitsdatum:}} & \footnotesize{{!! Latex::escape($task->due_on) !!}} \\
@@ -27,7 +27,7 @@
 @if($task->involvedEmployees->count() > 0)
 \footnotesize{\textbf{Beteiligte:}} &
 @foreach($task->involvedEmployees as $employee)
-    \footnotesize{{!! Latex::escape($employee->person->name) !!}}@unless($loop->last)\footnotesize{, }@endunless
+\footnotesize{{!! Latex::escape($employee->person->name) !!}}@unless($loop->last)\footnotesize{, }@endunless
 @endforeach
 \\
 @endif

@@ -11,7 +11,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class WebpushTestNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    private $vibrationDuration = '100';
+    private $vibrationDuration = ['100'];
 
     /**
      * Create a new notification instance.

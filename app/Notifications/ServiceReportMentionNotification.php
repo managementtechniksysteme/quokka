@@ -2,8 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Task;
-use App\Models\TaskComment;
+use App\Models\ServiceReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\MailChannel;
@@ -12,11 +11,11 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class CommentMentionNotification extends Notification implements ShouldQueue
+class ServiceReportMentionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public TaskComment $comment;
+    public ServiceReport $serviceReport;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -24,9 +23,9 @@ class CommentMentionNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(TaskComment $comment)
+    public function __construct(ServiceReport $serviceReport)
     {
-        $this->comment = $comment;
+        $this->serviceReport = $serviceReport;
     }
 
     /**
@@ -52,19 +51,19 @@ class CommentMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
-                    ->markdown('emails.task.notification_comment_mention', ['comment' => $this->comment]);
+            ->subject('Du wurdst in einem Servicebericht erwähnt (Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.')')
+            ->markdown('emails.service_report.notification_mention', ['serviceReport' => $this->serviceReport]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Kommentar erwähnt')
+            ->title('Du wurdst in einem Servicebericht erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
-            ->tag(Task::class.':'.$this->comment->task->id.'-'.CommentMentionNotification::class)
-            ->data(['url' => route('tasks.show', $this->comment->task)])
+            ->body('Du wurdst im Servicebericht Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.' erwähnt')
+            ->tag(ServiceReport::class.':'.$this->serviceReport->id)
+            ->data(['url' => route('service-reports.show', $this->serviceReport)])
             ->vibrate($this->vibrationDuration);
     }
 }

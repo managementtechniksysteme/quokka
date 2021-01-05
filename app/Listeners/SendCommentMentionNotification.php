@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\CommentCreatedEvent;
 use App\Events\CommentUpdatedEvent;
-use App\Models\User;
+use App\Helpers\Mentions;
 use App\Notifications\CommentMentionNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,14 +31,14 @@ class SendCommentMentionNotification implements ShouldQueue
      */
     public function handleCommentCreated(CommentCreatedEvent $event)
     {
-        foreach ($this->extractMentionedUsers($event->comment->comment) as $mentionedUser) {
+        foreach (Mentions::extractMentionedUsers($event->comment->comment) as $mentionedUser) {
             $mentionedUser->notify(new CommentMentionNotification($event->comment));
         }
     }
 
     public function handleCommentUpdated(CommentUpdatedEvent $event)
     {
-        foreach ($this->extractMentionedUsers($event->comment->comment) as $mentionedUser) {
+        foreach (Mentions::extractMentionedUsers($event->comment->comment) as $mentionedUser) {
             $mentionedUser->notify(new CommentMentionNotification($event->comment));
         }
     }
@@ -54,16 +54,5 @@ class SendCommentMentionNotification implements ShouldQueue
             CommentUpdatedEvent::class,
             [SendCommentMentionNotification::class, 'handleCommentUpdated']
         );
-    }
-
-    private function extractMentionedUsers(string $text)
-    {
-        preg_match_all('/(?:^|[^a-zA-Z0-9_＠!@#$%&*])(?:(?:@|＠)(?!\/))([a-zA-Z0-9\/_]{1,15})(?:\b(?!@|＠)|$)/', $text, $matches);
-
-        $usernames = $matches[1];
-
-        $mentionedUsers = User::whereIn('username', $usernames)->get();
-
-        return $mentionedUsers;
     }
 }

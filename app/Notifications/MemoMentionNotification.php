@@ -2,8 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Task;
-use App\Models\TaskComment;
+use App\Models\Memo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\MailChannel;
@@ -12,11 +11,11 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class CommentMentionNotification extends Notification implements ShouldQueue
+class MemoMentionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public TaskComment $comment;
+    public Memo $memo;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -24,9 +23,9 @@ class CommentMentionNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(TaskComment $comment)
+    public function __construct(Memo $memo)
     {
-        $this->comment = $comment;
+        $this->memo = $memo;
     }
 
     /**
@@ -52,19 +51,19 @@ class CommentMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
-                    ->markdown('emails.task.notification_comment_mention', ['comment' => $this->comment]);
+                    ->subject('Du wurdst in einem Aktenvermerk erwähnt (Projekt '.$this->memo->project->name.' #'.$this->memo->number.')')
+                    ->markdown('emails.memo.notification_mention', ['memo' => $this->memo]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Kommentar erwähnt')
+            ->title('Du wurdst in einem Aktenvermerk erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
-            ->tag(Task::class.':'.$this->comment->task->id.'-'.CommentMentionNotification::class)
-            ->data(['url' => route('tasks.show', $this->comment->task)])
+            ->body('Du wurdst im Aktenvermerk '.$this->memo->title.' (Projekt '.$this->memo->project->name.' #'.$this->memo->number.') erwähnt.')
+            ->tag(Memo::class.':'.$this->memo->id)
+            ->data(['url' => route('memos.show', $this->memo)])
             ->vibrate($this->vibrationDuration);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskCreatedEvent;
+use App\Events\TaskUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
@@ -98,6 +100,8 @@ class TaskController extends Controller
             $task->addAttachments($request->new_attachments);
         }
 
+        event(new TaskCreatedEvent($task));
+
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
     }
 
@@ -192,6 +196,8 @@ class TaskController extends Controller
         if ($request->new_attachments) {
             $task->addAttachments($request->new_attachments);
         }
+
+        event(new TaskUpdatedEvent($task));
 
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
     }

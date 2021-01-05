@@ -40,7 +40,6 @@
 \\
 @endif
 \end{tabular}
-\\\\\\\\
-\footnotesize{\textbf{Vermerk}} \\
+\section{Vermerk}
 \footnotesize{{!! Latex::fromMarkdown($memo->comment) !!}}
 \end{document}

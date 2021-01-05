@@ -24,11 +24,9 @@
 @endif
 \footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if($serviceReport->status === 'finished')erledigt am: @endif & @if($serviceReport->status === 'finished'){!! Latex::escape($service->updated_on) !!} @endif \\
 \end{tabular}
-\\\\\\\\
-\footnotesize{\textbf{Kurzbericht}} \\
+\section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}
-\\\\
-\footnotesize{\textbf{Vollbrachte Leistungen}}
+\section{Vollbrachte Leistungen}
 \begin{longtable}{@{}|p{3.06cm}|p{3.06cm}|p{3.06cm}|p{3.06cm}|p{3.06cm}|@{}}
 \hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{Diäten} & \footnotesize{gefahrene KM} \\
 \hline

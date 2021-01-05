@@ -20,8 +20,15 @@
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}
+\usepackage[compact]{titlesec}
 \usepackage{upquote}
 \usepackage{xcolor}
+
+% Heading formats
+\titleformat{\section}{\footnotesize\bfseries}{\thesection}{2em}{}
+\titlespacing*{\section}{0ex}{3ex}{1ex}
+\titleformat{\subsection}{\footnotesize\bfseries}{\thesection}{2em}{}
+\titlespacing*{\subsection}{0ex}{2ex}{1ex}
 
 % hide url borders in pdf
 \hypersetup{hidelinks}

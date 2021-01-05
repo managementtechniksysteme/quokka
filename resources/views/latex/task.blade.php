@@ -32,18 +32,15 @@
 \\
 @endif
 \end{tabular}
-\\\\\\
 @if($task->comment)
-\footnotesize{\textbf{Bemerkungen}} \\
+\section{Bemerkungen}
 \footnotesize{{!! Latex::fromMarkdown($task->comment) !!}}
-\\\\\\
 @endif
 @if($task->comments->count() > 0)
-\footnotesize{\textbf{Kommentare}} \\
+\section{Kommentare}
 @foreach($task->comments as $comment)
-\footnotesize{\textbf{{!! Latex::escape($comment->employee->person->name) !!}} am {!! Latex::escape($comment->created_at) !!}} \\
+\subsection{\footnotesize{{!! Latex::escape($comment->employee->person->name) !!}} am {!! Latex::escape($comment->created_at) !!}}
 \footnotesize{{!! Latex::fromMarkdown($comment->comment) !!}}
-\\\\
 @endforeach
 @endif
 \end{document}

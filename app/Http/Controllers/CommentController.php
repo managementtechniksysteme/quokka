@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentCreatedEvent;
+use App\Events\CommentUpdatedEvent;
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Models\Task;
@@ -47,6 +49,8 @@ class CommentController extends Controller
             $comment->addAttachments($request->new_attachments);
         }
 
+        event(new CommentCreatedEvent($comment));
+
         return redirect()
             ->route('tasks.show', $task)
             ->with('success', 'Der Kommentar wurde erfolgreich angelegt.');
@@ -88,6 +92,8 @@ class CommentController extends Controller
         if ($request->new_attachments) {
             $comment->addAttachments($request->new_attachments);
         }
+
+        event(new CommentUpdatedEvent($comment));
 
         return redirect()
             ->route('tasks.show', $comment->task)

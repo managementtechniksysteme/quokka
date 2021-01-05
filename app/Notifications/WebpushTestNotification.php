@@ -11,6 +11,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class WebpushTestNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    private $vibrationDuration = '100';
 
     /**
      * Create a new notification instance.
@@ -41,6 +42,7 @@ class WebpushTestNotification extends Notification implements ShouldQueue
             ->badge('/icons/icon_alpha_512.png')
             ->body('Dies ist die angeforderte Test Benachrichtigung.')
             ->tag(WebpushTestNotification::class)
-            ->data(['url' => route('home')]);
+            ->data(['url' => route('home')])
+            ->vibrate($this->vibrationDuration);
     }
 }

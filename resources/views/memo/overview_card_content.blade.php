@@ -29,7 +29,7 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
                                 <span class="min-w-0 text-truncate">
-                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                                 </span>
                             </div>
                             @break
@@ -59,7 +59,7 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
                                 <span class="min-w-0 text-truncate">
-                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                                    {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                                 </span>
                             </div>
                             @break
@@ -90,7 +90,7 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
                         <span class="min-w-0 text-truncate">
-                            {{  optional($memo->personRecipient)->name ?? 'kein Empfänger angegeben' }}
+                            {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                         </span>
                     </div>
                 @endif

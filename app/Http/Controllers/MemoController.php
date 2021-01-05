@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MemoCreatedEvent;
+use App\Events\MemoUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
@@ -95,6 +97,8 @@ class MemoController extends Controller
             $memo->addAttachments($request->new_attachments);
         }
 
+        event(new MemoCreatedEvent($memo));
+
         return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
     }
 
@@ -187,6 +191,8 @@ class MemoController extends Controller
         if ($request->new_attachments) {
             $memo->addAttachments($request->new_attachments);
         }
+
+        event(new MemoUpdatedEvent($memo));
 
         return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');
     }

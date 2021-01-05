@@ -2,7 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\ServiceReportSignedEvent;
 use App\Listeners\SendCommentMentionNotification;
+use App\Listeners\SendMemoInvolvedNotification;
+use App\Listeners\SendMemoMentionNotification;
+use App\Listeners\SendServiceReportMentionNotification;
+use App\Listeners\SendServiceReportSignedNotification;
+use App\Listeners\SendTaskInvolvedNotification;
+use App\Listeners\SendTaskMentionNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -19,6 +26,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        ServiceReportSignedEvent::class => [
+            SendServiceReportSignedNotification::class,
+        ],
     ];
 
     /**
@@ -28,6 +39,11 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $subscribe = [
         SendCommentMentionNotification::class,
+        SendMemoInvolvedNotification::class,
+        SendMemoMentionNotification::class,
+        SendServiceReportMentionNotification::class,
+        SendTaskInvolvedNotification::class,
+        SendTaskMentionNotification::class,
     ];
 
     /**

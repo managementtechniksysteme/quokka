@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ServiceReportCreatedEvent;
+use App\Events\ServiceReportSignedEvent;
+use App\Events\ServiceReportUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\ServiceReportSignRequest;
 use App\Http\Requests\ServiceReportStoreRequest;
@@ -98,6 +101,8 @@ class ServiceReportController extends Controller
             $serviceReport->addAttachments($request->new_attachments);
         }
 
+        event(new ServiceReportCreatedEvent($serviceReport));
+
         if ($request->send_signature_request) {
             return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         } else {
@@ -182,6 +187,8 @@ class ServiceReportController extends Controller
         }
 
         $serviceReport->deleteSignatureRequest();
+
+        event(new ServiceReportUpdatedEvent($serviceReport));
 
         if ($request->send_signature_request) {
             return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
@@ -339,6 +346,8 @@ class ServiceReportController extends Controller
         $serviceReport->save();
 
         $serviceReport->deleteSignatureRequest();
+
+        event(new ServiceReportSignedEvent($serviceReport));
     }
 
     public function showEmailDownloadRequest(Request $request, ServiceReport $serviceReport)

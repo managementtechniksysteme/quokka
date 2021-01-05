@@ -1,7 +1,7 @@
 @component('mail::message')
 Hallo,
 
-du wurdst von {{ $comment->employee->person->name }} in einem Kommentar der Aufgabe {{ $comment->task->name }} (Projekt
+du wurdest von {{ $comment->employee->person->name }} in einem Kommentar der Aufgabe {{ $comment->task->name }} (Projekt
 {{ $comment->task->project->name }}) erwähnt.
 
 **{{ $comment->employee->person->name }}** am {{ $comment->created_at }}<br />

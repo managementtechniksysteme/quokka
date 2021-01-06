@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\ServiceReportSignedEvent;
+use App\Listeners\SendCommentInvolvedNotification;
 use App\Listeners\SendCommentMentionNotification;
 use App\Listeners\SendMemoInvolvedNotification;
 use App\Listeners\SendMemoMentionNotification;
@@ -38,6 +39,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
+        SendCommentInvolvedNotification::class,
         SendCommentMentionNotification::class,
         SendMemoInvolvedNotification::class,
         SendMemoMentionNotification::class,

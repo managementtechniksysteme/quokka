@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ServiceReportSignedEvent;
+use App\Models\ApplicationSettings;
 use App\Models\User;
 use App\Notifications\ServiceReportSignedNotification;
 use Illuminate\Bus\Queueable;
@@ -32,9 +33,12 @@ class SendServiceReportSignedNotification implements ShouldQueue
     {
         $serviceReport = $event->serviceReport;
 
-        $serviceReport->employee->notify(new ServiceReportSignedNotification($serviceReport));
+        $serviceReport->employee->user->notify(new ServiceReportSignedNotification($serviceReport));
 
-        // TODO: make dynamic
-        User::whereUsername('mst')->first()->notify(new ServiceReportSignedNotification($serviceReport));
+        $user = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
+
+        if($user) {
+            $user->notify(new ServiceReportSignedNotification($serviceReport));
+        }
     }
 }

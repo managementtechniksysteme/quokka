@@ -3,7 +3,7 @@ Hallo,
 
 der Servicebericht Projekt {{ $serviceReport->project->name }} #{{ $serviceReport->number }} wurde unterschrieben.
 
-**Kurzbericht<br />
+**Kurzbericht**<br />
 {{ $serviceReport->comment }}
 
 @component('mail::button', ['url' => route('service-reports.show', $serviceReport)])

@@ -31,7 +31,7 @@ class SendMemoInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($memo);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new MemoInvolvedNotification($event->memo, true));
+            $involvedUser->notify(new MemoInvolvedNotification($memo, true));
         }
     }
 
@@ -42,7 +42,7 @@ class SendMemoInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($memo);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new MemoInvolvedNotification($event->memo, false));
+            $involvedUser->notify(new MemoInvolvedNotification($memo, false));
         }
     }
 

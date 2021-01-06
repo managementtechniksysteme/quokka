@@ -77,8 +77,8 @@
                 @error('holidays')
                     {{ $message }}
                 @else
-                    Gib bitte die Anzahl der Urlaubstage ein.
-                    @enderror
+                    Gib bitte die Anzahl der Urlaubstage (mindestens 0) ein.
+                @enderror
             </div>
         </div>
 

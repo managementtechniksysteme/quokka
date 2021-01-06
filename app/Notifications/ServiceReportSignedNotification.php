@@ -52,7 +52,7 @@ class ServiceReportSignedNotification extends Notification implements ShouldQueu
     {
         return (new MailMessage)
             ->subject('Ein Servicebericht wurde unterschrieben (Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.')')
-            ->markdown('emails.service_report.notification_mention', ['serviceReport' => $this->serviceReport]);
+            ->markdown('emails.service_report.notification_signed', ['serviceReport' => $this->serviceReport]);
     }
 
     public function toWebPush($notifiable, $notification)

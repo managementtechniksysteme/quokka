@@ -16,6 +16,8 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
     {
         return [
             'company_id' => 'required|exists:companies,id',
+            'signature_notify_user_id' => 'exists:users,employee_id|nullable',
+            'task_due_soon_days' => 'required|integer|min:1',
         ];
     }
 }

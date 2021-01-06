@@ -16,6 +16,7 @@ use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
 use App\Http\Controllers\Auth\SecondFactorController;
+use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
@@ -66,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employees/{employee}/access-deny', [EmployeeController::class, 'denyAccess'])->name('employees.access-deny');
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
+    Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
 
     Route::resource('memos', MemoController::class);
     Route::get('/memos/{memo}/download', [MemoController::class, 'download'])->name('memos.download');

@@ -10,28 +10,28 @@
                 @if(isset($secondaryInformation))
                     @switch($secondaryInformation)
                         @case('withoutProject')
-                            <div class="d-flex d-md-inline-flex align-items-center">
+                            <div class="d-inline-flex align-items-center">
                                 <svg class="feather feather-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
                             </div>
-                            <div class="d-flex d-md-inline-flex align-items-center">
-                                <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-md-2 mr-1">
+                            <div class="d-inline-flex align-items-center">
+                                <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
                                 {{ $task->due_on ?? 'kein Datum angegeben' }}
                             </div>
                             @break
                         @default
-                            <div class="d-flex d-lg-inline-flex align-items-center">
+                            <div class="d-flex d-md-inline-flex align-items-center">
                                 <svg class="feather feather-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
                                 {{ $task->project->name }}
                             </div>
-                            <div class="d-inline-flex align-items-center">
-                                <svg class="feather feather-16 ml-lg-2 mr-1">
+                            <div class="d-flex d-md-inline-flex align-items-center">
+                                <svg class="feather feather-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}

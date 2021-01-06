@@ -19,7 +19,7 @@
                     <svg class="feather feather-24 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
-                    Push Benachrichtigungen müssen aus technschen Gründen auf jedem Gerät separat aktiviert beziehungsweise
+                    Push Benachrichtigungen müssen aus technischen Gründen auf jedem Gerät separat aktiviert beziehungsweise
                     deaktiviert werden.
                 </div>
             </div>

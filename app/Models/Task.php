@@ -45,7 +45,6 @@ class Task extends Model implements HasMedia
         'ist:nv' => ['billed', 'no'],
         'ist:garantie' => ['billed', 'warranty'],
         'ist:überfällig' => ['due_on', 'curdate()', '>', '<='],
-        'ist:bald_fällig' => ['raw' => ['due_on between curdate() and date_add(curdate(), interval 7 day)', 'due_on not between curdate() and date_add(curdate(), interval 7 day)']],
         'projekt:(.*)' => ['project.name', '{value}'],
         'p:(.*)' => ['project.name', '{value}'],
         'verantwortlich:(.*)' => ['responsibleEmployee.user.username', '{value}'],
@@ -65,6 +64,20 @@ class Task extends Model implements HasMedia
         'priority-asc' => ['raw' => 'field(priority, "low", "medium", "high")'],
         'priority-desc' => ['raw' => 'field(priority, "high", "medium", "low")'],
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->filterKeys['ist:bald_fällig'] = [
+            'raw' => [
+                'due_on between curdate() and date_add(curdate(), interval '.
+                ApplicationSettings::get()->task_due_soon_days . ' day)',
+                'due_on not between curdate() and date_add(curdate(), interval ' .
+                ApplicationSettings::get()->task_due_soon_days . ' day)'
+            ]
+        ];
+    }
 
     public function project()
     {
@@ -119,7 +132,7 @@ class Task extends Model implements HasMedia
         return $this->status !== 'finished'
             && $this->due_on
             && $this->due_on->gt($today)
-            && $this->due_on->diffInDays($today) <= 7;
+            && $this->due_on->diffInDays($today) <= ApplicationSettings::get()->task_due_soon_days;
     }
 
     public function isOverdue()

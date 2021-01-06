@@ -62,7 +62,7 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
             ->title('Eine neue Quokka Version ist verfügbar')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Quokka Version ' . $version->compact() . ' ist nun zur Verwendung verfügbar.')
+            ->body('Quokka Version '.$version->compact().' ist nun zur Verwendung verfügbar.')
             ->tag(ApplicationVersionUpdateNotification::class)
             ->data(['url' => route('changelog.show')])
             ->vibrate($this->vibrationDuration);

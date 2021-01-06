@@ -145,4 +145,13 @@
             </div>
         @endforelse
     </div>
+
+    @if($project->tasks->count() > 0)
+        <p class="mt-3">
+            Der linke farbliche Rand zeigt den Status der jeweiligen Aufgabe:
+            <span class="badge badge-blue-100 text-blue-800">neu</span>
+            <span class="badge badge-yellow-100 text-yellow-800">in Bearbeitung</span>
+            <span class="badge badge-green-100 text-green-800">erledigt</span>
+        </p>
+    @endif
 @endsection

@@ -140,7 +140,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('changelog') }}">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('changelog.show') }}">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>

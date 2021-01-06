@@ -30,7 +30,7 @@
                                 </svg>
                                 {{ $task->project->name }}
                             </div>
-                            <div class="d-flex d-lg-inline-flex align-items-center">
+                            <div class="d-inline-flex align-items-center">
                                 <svg class="feather feather-16 ml-lg-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>

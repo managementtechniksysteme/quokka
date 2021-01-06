@@ -16,6 +16,6 @@ class ChangelogController extends Controller
      */
     public function show()
     {
-        return view("help.changelog");
+        return view('help.changelog');
     }
 }

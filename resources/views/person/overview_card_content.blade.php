@@ -14,7 +14,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                             </svg>
                             <span class="mw-100 text-truncate">
-                                {{ optional($person->address)->first()->address_line ?? 'keine Adresse angegeben' }}
+                                {{ optional($person->address)->first()->address_line ?? 'keine Adresse' }}
                             </span>
                             @break
                         @default
@@ -22,7 +22,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
                             <span class="mw-100 text-truncate">
-                                {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                                {{ optional($person->company)->name ?? 'keine Firma' }}
                             </span>
                             @break
                     @endswitch()
@@ -31,7 +31,7 @@
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
                     <span class="mw-100 text-truncate">
-                        {{ optional($person->company)->name ?? 'keine Firma angegeben' }}
+                        {{ optional($person->company)->name ?? 'keine Firma' }}
                     </span>
                 @endif
             </div>

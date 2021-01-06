@@ -11,7 +11,7 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 <span class="mw-100 text-truncate">
-                    {{ optional($company->address->first())->address_line ?? 'keine Adresse angegeben' }}
+                    {{ optional($company->address->first())->address_line ?? 'keine Adresse' }}
                 </span>
             </div>
         </div>

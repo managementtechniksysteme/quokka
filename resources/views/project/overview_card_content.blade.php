@@ -13,11 +13,11 @@
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
-                            {{ $project->starts_on ?? 'kein Start angegeben' }}
+                            {{ $project->starts_on ?? 'kein Start' }}
                             <svg class="feather feather-16 mx-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                             </svg>
-                            {{ $project->ends_on ?? 'kein Ende angegeben' }}
+                            {{ $project->ends_on ?? 'kein Ende' }}
                             @break
                         @default
                             <svg class="feather feather-16 mr-1">

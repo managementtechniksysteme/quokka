@@ -37,7 +37,7 @@ class SendServiceReportSignedNotification implements ShouldQueue
 
         $user = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
 
-        if($user) {
+        if ($user) {
             $user->notify(new ServiceReportSignedNotification($serviceReport));
         }
     }

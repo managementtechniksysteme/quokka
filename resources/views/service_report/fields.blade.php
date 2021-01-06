@@ -31,7 +31,7 @@
     <div class="col-md-8">
         <div class="form-group">
             <label for="employee">Techniker</label>
-            <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ Auth::user()->person->name }}" disabled />
+            <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($serviceReport)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
         <div class="form-group">

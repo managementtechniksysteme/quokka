@@ -28,7 +28,12 @@
                         </svg>
                         Benachrichtigungen
                     </a>
-
+                    <a class="menu-item @if (request()->tab == 'security') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'security']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
+                        </svg>
+                        Sicherheit
+                    </a>
                 </div>
             </div>
 
@@ -51,7 +56,12 @@
                         </svg>
                         Benachrichtigungen
                     </a>
-
+                    <a class="menu-item @if (request()->tab == 'security') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'security']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
+                        </svg>
+                        Sicherheit
+                    </a>
                 </div>
             </div>
 

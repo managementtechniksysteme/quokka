@@ -100,8 +100,7 @@
 
         <p class="text-muted">
             Es muss kein Zugang angelegt werden, wenn der Mitarbeiter nur im System gespeichert werden soll, aber nicht
-            aktiv in Quokka arbeitet. Wenn Benutzername und Passwort nicht angegenben sind, wird der Zugang eines bereits
-            bestehenden Benutzers deaktiviert. Wenn das Passwort beim Bearbeiten leer gelassen wird, bleibt das alte
+            aktiv in Quokka arbeitet. Wenn das Passwort beim Bearbeiten leer gelassen wird, bleibt das alte
             Passwort bestehen.
         </p>
     </div>

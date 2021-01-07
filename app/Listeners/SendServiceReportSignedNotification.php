@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ServiceReportSignedEvent;
 use App\Models\ApplicationSettings;
-use App\Models\User;
 use App\Notifications\ServiceReportSignedNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -37,7 +36,7 @@ class SendServiceReportSignedNotification implements ShouldQueue
 
         $user = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
 
-        if($user) {
+        if ($user) {
             $user->notify(new ServiceReportSignedNotification($serviceReport));
         }
     }

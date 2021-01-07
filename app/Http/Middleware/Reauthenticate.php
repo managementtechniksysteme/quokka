@@ -4,15 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Reauthenticate
 {
     public function handle(Request $request, Closure $next)
     {
-        if (session()->pull('reauth.reauthenticated')) {
+        if (Session::pull('reauth.reauthenticated')) {
+            Session::remove('reauth');
+
             return $next($request);
         } else {
-            session()->flash('reauth.requested_url', $request->url());
+            Session::flash('reauth.requested_url', $request->fullUrl());
 
             return redirect()->route('reauthenticate');
         }

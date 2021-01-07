@@ -53,7 +53,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/reauthenticate', [ReauthenticateController::class.'index'])->name('reauthenticate');
+    Route::get('/reauthenticate', [ReauthenticateController::class, 'index'])->name('reauthenticate');
     Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -96,12 +96,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
     Route::post('user-settings/signature', [UserSettingsController::class, 'updateSignature'])->name('user-settings.update-signature');
+    Route::post('user-settings/password', [UserSettingsController::class, 'updatePassword'])->name('user-settings.update-password');
+    Route::post('user-settings/otp-enable', [UserSettingsController::class, 'enableOtp'])->name('user-settings.otp-enable');
+    Route::post('user-settings/otp-confirm', [UserSettingsController::class, 'confirmOtp'])->name('user-settings.otp-confirm');
+    Route::post('user-settings/otp-disable', [UserSettingsController::class, 'disableOtp'])->name('user-settings.otp-disable');
 
     Route::get('application-settings', [ApplicationSettingsController::class, 'edit'])->name('application-settings.edit');
     Route::post('application-settings/general', [ApplicationSettingsController::class, 'updateGeneral'])->name('application-settings.update-general');
 
     Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
+
     Route::post('/webpush', [WebpushController::class, 'store'])->name('webpush.store');
     Route::delete('/webpush', [WebpushController::class, 'destroy'])->name('webpush.destroy');
     Route::get('/webpush/test', [WebpushController::class, 'test'])->name('webpush.test');

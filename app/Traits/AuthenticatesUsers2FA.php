@@ -67,7 +67,7 @@ trait AuthenticatesUsers2FA
         $google2fa = new Google2FA();
 
         if ($google2fa->verifyKey(
-            decrypt($user->{config('auth2fa.otp_secret_column')}),
+            decrypt($user[config('auth2fa.otp_secret_column')]),
             $validatedData[config('auth2fa.otp_input')],
             config('auth2fa.window')
         )) {

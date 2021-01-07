@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
 use PragmaRX\Google2FA\Google2FA;
 
 class ReauthenticateController extends Controller
@@ -22,7 +23,7 @@ class ReauthenticateController extends Controller
 
     public function index()
     {
-        session()->reflash();
+        Session::reflash();
 
         return view('auth.reauthenticate');
     }
@@ -37,7 +38,7 @@ class ReauthenticateController extends Controller
         $user = auth()->user();
 
         if (! Hash::check($validatedData['password'], $user->password)) {
-            session()->reflash();
+            Session::reflash();
 
             return back()->withErrors(['password' => Lang::get('auth.password_failed')]);
         }
@@ -50,14 +51,14 @@ class ReauthenticateController extends Controller
                 $validatedData[config('auth2fa.otp_input')],
                 config('auth2fa.window')
             )) {
-                session()->reflash();
+                Session::reflash();
 
                 return back()->withErrors([config('auth2fa.otp_input') => Lang::get('auth2fa.otp_failed')]);
             }
         }
 
-        session()->flash('reauth.reauthenticated', true);
+        Session::flash('reauth.reauthenticated', true);
 
-        return redirect(session()->pull('reauth.requested_url'));
+        return redirect(Session::pull('reauth.requested_url'));
     }
 }

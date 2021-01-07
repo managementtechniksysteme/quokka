@@ -138,6 +138,7 @@ class EmployeeController extends Controller
             if ($request->filled('password')) {
                 $user->update([
                     'password' => Hash::make($request->password),
+                    config('auth2fa.otp_secret_column') => null,
                 ]);
             }
 

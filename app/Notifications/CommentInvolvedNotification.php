@@ -54,9 +54,9 @@ class CommentInvolvedNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         if ($this->isNew) {
-            $subject = 'Es wurde ein Kommentar in einer Aufgabe erstellt, an der du beteiligt bist (Projekt ' . $this->comment->task->project->name . ')';
+            $subject = 'Es wurde ein Kommentar in einer Aufgabe erstellt, an der du beteiligt bist (Projekt '.$this->comment->task->project->name.')';
         } else {
-            $subject = 'Es wurde ein Kommentar in einer Aufgabe bearbeitet, an der du beteiligt bist (Projekt ' . $this->comment->task->project->name . ')';
+            $subject = 'Es wurde ein Kommentar in einer Aufgabe bearbeitet, an der du beteiligt bist (Projekt '.$this->comment->task->project->name.')';
         }
 
         return (new MailMessage)
@@ -68,10 +68,10 @@ class CommentInvolvedNotification extends Notification implements ShouldQueue
     {
         if ($this->isNew) {
             $title = 'Ein Kommentar in einer Aufgabe wurde erstellt';
-            $body = 'Ein Kommentar in der Aufgabe '. $this->comment->task->name . ' (Projekt '.$this->comment->task->project->name . '), an der du beteiligt bist, wurde erstellt.';
+            $body = 'Ein Kommentar in der Aufgabe '.$this->comment->task->name.' (Projekt '.$this->comment->task->project->name.'), an der du beteiligt bist, wurde erstellt.';
         } else {
             $title = 'Ein Aktenvermerk wurde bearbbeitet';
-            $body = 'Ein Kommentar in der Aufgabe '. $this->comment->task->name . ' (Projekt '.$this->comment->task->project->name . '), an der du beteiligt bist, wurde bearbeitet.';
+            $body = 'Ein Kommentar in der Aufgabe '.$this->comment->task->name.' (Projekt '.$this->comment->task->project->name.'), an der du beteiligt bist, wurde bearbeitet.';
         }
 
         return (new WebPushMessage)

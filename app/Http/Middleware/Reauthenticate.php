@@ -10,12 +10,13 @@ class Reauthenticate
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Session::pull('reauth.reauthenticated')) {
-            Session::remove('reauth');
+        if (Session::get('reauthenticated')) {
+            Session::remove('reauthenticated');
+            Session::remove('requested_url');
 
             return $next($request);
         } else {
-            Session::flash('reauth.requested_url', $request->fullUrl());
+            Session::put('requested_url', $request->fullUrl());
 
             return redirect()->route('reauthenticate');
         }

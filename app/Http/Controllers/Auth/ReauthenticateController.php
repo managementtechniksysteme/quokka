@@ -58,8 +58,8 @@ class ReauthenticateController extends Controller
             }
         }
 
-        Session::flash('reauth.reauthenticated', true);
+        Session::put('reauthenticated', true);
 
-        return redirect(Session::pull('reauth.requested_url'));
+        return redirect(Session::get('requested_url'), route('home'));
     }
 }

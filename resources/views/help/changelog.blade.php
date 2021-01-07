@@ -12,7 +12,7 @@
     <div class="container my-4">
         @markdown
         # Quokka v0.1.2-5b3df57 (07.01.2021)
-        * Mit Authentisierung geschützte Sicherheitseinstellungen wurden für Benutzern hinzugefügt. Der Benutzer kann
+        * Mit Authentisierung geschützte Sicherheitseinstellungen wurden für Benutzer hinzugefügt. Der Benutzer kann
         sein Passowrt nun selbst ändern.
         * Die Möglichkeit, sich mittels Zwei-Faktor-Authentisierung anzumelden, wurde implementiert. Hierzu ist eine
         entsprechende Applikation am Smartphone notwendig. Geeignete Applikationen sind etwa die Google Authenticator

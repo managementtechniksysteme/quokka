@@ -16,8 +16,8 @@
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
                             </div>
-                            <div class="d-inline-flex align-items-center">
-                                <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
+                            <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                                <svg class="feather feather-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
                                 {{ $task->due_on ?? 'kein Datum' }}
@@ -35,10 +35,12 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
-                                <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                                </svg>
-                                {{ $task->due_on ?? 'kein Datum' }}
+                                <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                                    <svg class="feather feather-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                    </svg>
+                                    {{ $task->due_on ?? 'kein Datum' }}
+                                </div>
                             </div>
                             @break
                     @endswitch()
@@ -54,10 +56,12 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         {{ $task->responsibleEmployee->person->name }}
-                        <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 ml-2 mr-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                        </svg>
-                        {{ $task->due_on ?? 'kein Datum' }}
+                        <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                            <svg class="feather feather-16 mr-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                            </svg>
+                            {{ $task->due_on ?? 'kein Datum' }}
+                        </div>
                     </div>
                 @endif
             </div>

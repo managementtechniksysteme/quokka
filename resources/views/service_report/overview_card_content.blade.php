@@ -4,9 +4,8 @@
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('service-reports.show', $serviceReport) }}"></a>
             <div>
-                @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} @endif#{{ $serviceReport->number }}
-                    ({{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on) }}
-                    @if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
+                @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} @endunless#{{ $serviceReport->number }}
+                    ({{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on) }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
                         <svg class="feather feather-16 mx-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
@@ -18,6 +17,12 @@
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
                     {{ $serviceReport->services_sum_hours }}
+                    <div class="mx-1">·</div>
+                    {{ $serviceReport->services_sum_allowances }}
+                    <svg class="feather feather-16 ml-2 mr-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
+                    </svg>
+                    {{ $serviceReport->services_sum_kilometres }}
                     <svg class="feather feather-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>

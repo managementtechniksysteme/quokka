@@ -6,17 +6,15 @@
             <div class="mw-100 text-truncate">
                 {{ $employee->person->name }}
             </div>
-            <div class="text-muted d-flex d-md-inline-flex align-items-center">
+            <div class="text-muted d-inline-flex align-items-center">
                 <svg class="feather feather-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                </svg>
-                {{ optional($employee->user)->username ?? 'keine Quokka Benutzer angelegt' }}
-            </div>
-            <div class="text-muted d-flex d-md-inline-flex d-flex d-md-inline-flex align-items-center">
-                <svg class="feather feather-16 ml-2 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                 </svg>
                 {{ $employee->holidays }}
+                <svg class="feather feather-16 ml-2 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                </svg>
+                {{ optional($employee->user)->username ?? 'keine Quokka Benutzer angelegt' }}
             </div>
         </div>
 

@@ -39,6 +39,8 @@ class ServiceReportController extends Controller
             ->withMin('services', 'provided_on')
             ->withMax('services', 'provided_on')
             ->withSum('services', 'hours')
+            ->withSum('services', 'allowances')
+            ->withSum('services', 'kilometres')
             ->paginate(15)
             ->appends($request->except('page'));
 

@@ -89,7 +89,7 @@
                 @endcomponent
 
                 @if(!$loop->last)
-                    <hr class="m-0" />
+                    <hr class="m-0 mx-1" />
                 @endif
             @empty
                 <div class="text-center mt-4">

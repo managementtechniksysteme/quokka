@@ -109,7 +109,9 @@ class ProjectController extends Controller
                         ->with('employee.person')
                         ->withMin('services', 'provided_on')
                         ->withMax('services', 'provided_on')
-                        ->withSum('services', 'hours');
+                        ->withSum('services', 'hours')
+                        ->withSum('services', 'allowances')
+                        ->withSum('services', 'kilometres');
                 }])->paginate(15)->appends($request->except('page'));
 
                 return view('project.show_tab_service_reports')->with(compact('project'));

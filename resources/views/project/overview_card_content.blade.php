@@ -54,7 +54,7 @@
                 {{ $project->memos_count }}
             </a>
 
-            <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('projects.show', [$project, 'tab' => 'serviceReports']) }}">
+            <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                 </svg>

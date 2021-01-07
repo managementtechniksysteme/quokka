@@ -103,7 +103,7 @@
                 @endcomponent
 
                 @if(!$loop->last)
-                    <hr class="m-0" />
+                    <hr class="m-0 mx-1" />
                 @endif
             @empty
                 <div class="text-center mt-4">
@@ -130,7 +130,7 @@
 
         @if($serviceReports->count() > 0)
             <p class="mt-3">
-                Der linke farbliche Rand zeigt den Status der jeweiligen Aufgabe:
+                Der linke farbliche Rand zeigt den Status des jeweiligen Serviceberichtes:
                 <span class="badge badge-blue-100 text-blue-800">neu</span>
                 <span class="badge badge-yellow-100 text-yellow-800">unterschrieben</span>
                 <span class="badge badge-green-100 text-green-800">erledigt</span>

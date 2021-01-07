@@ -12,6 +12,22 @@
 
 @csrf
 
+@unless(Auth::user()->signature())
+    <div class="alert alert-warning mt-1" role="alert">
+        <div class="d-inline-flex align-items-center">
+            <svg class="feather feather-24 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+            </svg>
+            <p class="m-0">
+                Du hast noch keine Unterschrift im System hinterlegt. Es kann nicht automatisch
+                eine Unterschrift in PDF Ausdrucke von Berichten eingefügt werden. Füge bitte eine Unterschrift in den
+                <a href="{{ route('user-settings.edit', ['tab' => 'general']) }}">allgemeinen Einstellungen</a>
+                hinzu.
+            </p>
+        </div>
+    </div>
+@endunless
+
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">

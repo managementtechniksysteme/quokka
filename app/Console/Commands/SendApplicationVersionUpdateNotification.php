@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Notifications\ApplicationVersionUpdateNotification;
 use App\Models\User;
+use App\Notifications\ApplicationVersionUpdateNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
 

@@ -132,7 +132,7 @@ class Task extends Model implements HasMedia
         return $this->status !== 'finished'
             && $this->due_on
             && $this->due_on->gt($today)
-            && $this->due_on->diffInDays($today) <= ApplicationSettings::get()->task_due_soon_days;
+            && $this->due_on->diffInDays($today) < ApplicationSettings::get()->task_due_soon_days;
     }
 
     public function isOverdue()

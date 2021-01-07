@@ -16,7 +16,7 @@
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
                             </div>
-                            <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                            <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                                 <svg class="feather feather-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
@@ -35,7 +35,7 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
-                                <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                                <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                                     <svg class="feather feather-16 mr-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                     </svg>
@@ -56,7 +56,7 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         {{ $task->responsibleEmployee->person->name }}
-                        <div class="@if($task->isOverdue()) bg-red-100 text-red-800 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 @else text-muted @endif rounded ml-2 px-1 d-inline-flex align-items-center">
+                        <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                             <svg class="feather feather-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>

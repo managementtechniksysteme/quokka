@@ -25,7 +25,7 @@ class ReauthenticateController extends Controller
     public function index()
     {
         if(!Session::has('requested_url')) {
-            return redirect('home');
+            return redirect()->route('home');
         }
 
         Session::reflash();

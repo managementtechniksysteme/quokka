@@ -24,6 +24,10 @@ class ReauthenticateController extends Controller
 
     public function index()
     {
+        if(Session::has('requested_url')) {
+            return redirect('home');
+        }
+
         Session::reflash();
 
         return view('auth.reauthenticate');
@@ -60,6 +64,6 @@ class ReauthenticateController extends Controller
 
         Session::put('reauthenticated', true);
 
-        return redirect(Session::get('requested_url'), route('home'));
+        return redirect(Session::get('requested_url'));
     }
 }

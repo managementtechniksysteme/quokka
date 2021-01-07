@@ -72,10 +72,10 @@ class Task extends Model implements HasMedia
         $this->filterKeys['ist:bald_fällig'] = [
             'raw' => [
                 'due_on between curdate() and date_add(curdate(), interval '.
-                ApplicationSettings::get()->task_due_soon_days . ' day)',
-                'due_on not between curdate() and date_add(curdate(), interval ' .
-                ApplicationSettings::get()->task_due_soon_days . ' day)'
-            ]
+                ApplicationSettings::get()->task_due_soon_days.' day)',
+                'due_on not between curdate() and date_add(curdate(), interval '.
+                ApplicationSettings::get()->task_due_soon_days.' day)',
+            ],
         ];
     }
 

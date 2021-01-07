@@ -28,8 +28,6 @@ class ReauthenticateController extends Controller
             return redirect()->route('home');
         }
 
-        Session::reflash();
-
         return view('auth.reauthenticate');
     }
 
@@ -43,8 +41,6 @@ class ReauthenticateController extends Controller
         $user = Auth::user();
 
         if (! Hash::check($validatedData['password'], $user->password)) {
-            Session::reflash();
-
             return back()->withErrors(['password' => Lang::get('auth.password_failed')]);
         }
 
@@ -56,8 +52,6 @@ class ReauthenticateController extends Controller
                 $validatedData[config('auth2fa.otp_input')],
                 config('auth2fa.window')
             )) {
-                Session::reflash();
-
                 return back()->withErrors([config('auth2fa.otp_input') => Lang::get('auth2fa.otp_failed')]);
             }
         }

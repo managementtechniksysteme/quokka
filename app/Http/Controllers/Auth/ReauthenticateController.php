@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +36,7 @@ class ReauthenticateController extends Controller
             config('auth2fa.otp_input') => 'sometimes|required|digits:6',
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! Hash::check($validatedData['password'], $user->password)) {
             Session::reflash();
@@ -43,11 +44,11 @@ class ReauthenticateController extends Controller
             return back()->withErrors(['password' => Lang::get('auth.password_failed')]);
         }
 
-        if ($user->{config('auth2fa.otp_secret_column')}) {
+        if ($user[config('auth2fa.otp_secret_column')]) {
             $google2fa = new Google2FA();
 
             if (! $google2fa->verifyKey(
-                decrypt($user->{config('auth2fa.otp_secret_column')}),
+                decrypt($user[config('auth2fa.otp_secret_column')]),
                 $validatedData[config('auth2fa.otp_input')],
                 config('auth2fa.window')
             )) {

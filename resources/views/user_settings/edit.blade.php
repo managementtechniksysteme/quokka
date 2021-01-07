@@ -16,6 +16,11 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                         </svg>
                         Allgemeines
+                        @unless(Auth::user()->signature())
+                            <svg class="text-red feather feather-16 ml-auto">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                            </svg>
+                        @endunless
                     </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
                         <svg class="feather feather-16 mr-2">
@@ -34,6 +39,11 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
                         Allgemeines
+                        @unless(Auth::user()->signature())
+                            <svg class="text-red feather feather-16 ml-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                            </svg>
+                        @endunless
                     </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
                         <svg class="feather feather-16 mr-2">

@@ -12,6 +12,20 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-info mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="feather feather-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                    </svg>
+                    Nach dem Setzen eines neuen Passwortes werden alle Sitzungen mit Ausnahme der aktuellen (in welcher
+                    das Passowrt geändert wurde) abgemeldet.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form class="needs-validation" action="{{ route('user-settings.update-password') }}" method="post" novalidate>
         @csrf
 

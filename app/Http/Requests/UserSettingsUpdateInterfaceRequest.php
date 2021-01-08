@@ -17,7 +17,7 @@ class UserSettingsUpdateInterfaceRequest extends FormRequest
         return [
             'list_pagination_size' => 'required|integer|in:5,10,15,20,25,30',
             'show_finished_items' => 'required|boolean',
-            'task_comments_sort_newest_first' => 'required|boolean'
+            'task_comments_sort_newest_first' => 'required|boolean',
         ];
     }
 }

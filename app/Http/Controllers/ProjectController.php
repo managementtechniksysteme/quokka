@@ -84,7 +84,7 @@ class ProjectController extends Controller
                 return view('project.show_tab_overview')->with(compact('project'));
 
             case 'tasks':
-                if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+                if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
                     $request->request->add(['search' => '!ist:erledigt']);
                 } elseif ($request->has('search') && $request->search === '') {
                     $request->request->remove('search');
@@ -111,7 +111,7 @@ class ProjectController extends Controller
                 return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
 
             case 'service_reports':
-                if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+                if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
                     $request->request->add(['search' => '!ist:erledigt']);
                 } elseif ($request->has('search') && $request->search === '') {
                     $request->request->remove('search');

@@ -29,7 +29,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+        if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
             $request->request->add(['search' => '!ist:erledigt']);
         } elseif ($request->has('search') && $request->search === '') {
             $request->request->remove('search');

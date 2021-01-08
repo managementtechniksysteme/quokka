@@ -5,8 +5,6 @@ namespace App\Providers;
 use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use PragmaRX\Google2FAQRCode\Google2FA;
-use PragmaRX\Google2FAQRCode\QRCode\Chillerlan;
 
 class AppServiceProvider extends ServiceProvider
 {

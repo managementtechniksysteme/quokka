@@ -198,6 +198,6 @@ return [
         'remove_attachments'              => 'Anhänge (zu entfernen)',
         'avatar_colour'                   => 'Avatar Farbe',
         'show finished items'             => 'Anzeige von erledigten Elementen',
-        'task_comments_sort_newest_first' => 'Sortierreiehenfolge von Kommentaren'
+        'task_comments_sort_newest_first' => 'Sortierreiehenfolge von Kommentaren',
     ],
 ];

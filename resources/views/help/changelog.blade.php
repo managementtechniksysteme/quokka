@@ -11,6 +11,15 @@
 
     <div class="container my-4">
         @markdown
+        # Quokka v0.1.3-7fbd636 (08.01.2021)
+        * Quokka Benutzern stehen nun verschiedene Einstellungen zum Aussehen der Applikation bereit. So kann die Anzahl
+        von Listenelementen, die Sortierung von Kommentaren in Aufgaben und die Anzeige von erledigten Elementen
+        angepasst werden.
+        * Die Suchfunktion bei Aufgaben, Aktenvermerken und Serviceberichten wurde um sinnvolle Vorlagen erweitert. Diese
+        sind mit einem Klick auf das Menü neben dem Such Button erreichbar.
+        @endmarkdown
+
+        @markdown
         # Quokka v0.1.2-5b3df57 (07.01.2021)
         * Mit Authentisierung geschützte Sicherheitseinstellungen wurden für Benutzer hinzugefügt. Der Benutzer kann
         sein Passowrt nun selbst ändern.

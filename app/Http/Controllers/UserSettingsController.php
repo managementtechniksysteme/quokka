@@ -75,6 +75,8 @@ class UserSettingsController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        Auth::logoutOtherDevices($request->password);
+
         return redirect()->route('user-settings.edit', ['tab' => 'security'])->with('success', 'Das Passwort wurde erfolgreich gepseichert.');
     }
 

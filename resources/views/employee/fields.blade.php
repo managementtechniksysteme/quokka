@@ -17,7 +17,7 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
             </svg>
             Stammdaten
         </p>

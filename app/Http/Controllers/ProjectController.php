@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Company;
+use App\Models\Memo;
 use App\Models\Project;
+use App\Models\ServiceReport;
+use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -23,7 +27,7 @@ class ProjectController extends Controller
             ->withCount('tasks')
             ->withCount('memos')
             ->withCount('serviceReports')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('project.index')->with(compact('projects'));
@@ -73,7 +77,6 @@ class ProjectController extends Controller
      */
     public function show(Project $project, Request $request)
     {
-        $input = $request->input();
         $project->loadCount('tasks')->loadCount('memos')->loadCount('serviceReports');
 
         switch ($request->tab) {
@@ -81,40 +84,52 @@ class ProjectController extends Controller
                 return view('project.show_tab_overview')->with(compact('project'));
 
             case 'tasks':
-                $project->load(['tasks' => function ($query) use ($input) {
-                    $query
-                        ->filter($input)
-                        ->order($input)
-                        ->with('responsibleEmployee.person');
-                }])->paginate(15)->appends($request->except('page'));
+                if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+                    $request->request->add(['search' => '!ist:erledigt']);
+                } elseif ($request->has('search') && $request->search === '') {
+                    $request->request->remove('search');
+                }
 
-                return view('project.show_tab_tasks')->with(compact('project'));
+                $tasks = Task::where('project_id', $project->id)
+                    ->filter($request->input())
+                    ->order($request->input())
+                    ->with('responsibleEmployee.person')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_tasks')->with(compact('project'))->with(compact('tasks'));
 
             case 'memos':
-                $project->load(['memos' => function ($query) use ($input) {
-                    $query
-                        ->filter($input)
-                        ->order($input)
-                        ->with('employeeComposer.person')
-                        ->with('personRecipient');
-                }])->paginate(15)->appends($request->except('page'));
+                $memos = Memo::where('project_id', $project->id)
+                    ->filter($request->input())
+                    ->order($request->input())
+                    ->with('employeeComposer.person')
+                    ->with('personRecipient')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
 
-                return view('project.show_tab_memos')->with(compact('project'));
+                return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
 
             case 'service_reports':
-                $project->load(['serviceReports' => function ($query) use ($input) {
-                    $query
-                        ->filter($input)
-                        ->order($input)
-                        ->with('employee.person')
-                        ->withMin('services', 'provided_on')
-                        ->withMax('services', 'provided_on')
-                        ->withSum('services', 'hours')
-                        ->withSum('services', 'allowances')
-                        ->withSum('services', 'kilometres');
-                }])->paginate(15)->appends($request->except('page'));
+                if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+                    $request->request->add(['search' => '!ist:erledigt']);
+                } elseif ($request->has('search') && $request->search === '') {
+                    $request->request->remove('search');
+                }
 
-                return view('project.show_tab_service_reports')->with(compact('project'));
+                $serviceReports = ServiceReport::where('project_id', $project->id)
+                    ->filter($request->input())
+                    ->order($request->input())
+                    ->with('employee.person')
+                    ->withMin('services', 'provided_on')
+                    ->withMax('services', 'provided_on')
+                    ->withSum('services', 'hours')
+                    ->withSum('services', 'allowances')
+                    ->withSum('services', 'kilometres')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_service_reports')->with(compact('project'))->with(compact('serviceReports'));
 
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);

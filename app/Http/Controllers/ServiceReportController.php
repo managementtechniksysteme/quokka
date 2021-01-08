@@ -20,6 +20,7 @@ use App\Models\ServiceReport;
 use App\Models\ServiceReportService;
 use App\Models\SignatureRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -32,6 +33,12 @@ class ServiceReportController extends Controller
      */
     public function index(Request $request)
     {
+        if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+            $request->request->add(['search' => '!ist:erledigt']);
+        } elseif ($request->has('search') && $request->search === '') {
+            $request->request->remove('search');
+        }
+
         $serviceReports = ServiceReport::filter($request->input())
             ->order($request->input())
             ->with('project')
@@ -41,7 +48,7 @@ class ServiceReportController extends Controller
             ->withSum('services', 'hours')
             ->withSum('services', 'allowances')
             ->withSum('services', 'kilometres')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('service_report.index')->with(compact('serviceReports'));

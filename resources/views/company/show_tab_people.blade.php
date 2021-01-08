@@ -94,7 +94,7 @@
 
 
     <div class="mt-3">
-        @forelse ($company->people as $person)
+        @forelse ($people as $person)
             @component('person.overview_card', [ 'person' => $person, 'secondaryInformation' => 'address' ])
             @endcomponent
 
@@ -118,6 +118,10 @@
                 @endif
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-2">
+        {{ $people->links() }}
     </div>
 
 @endsection

@@ -31,13 +31,5 @@ class AppServiceProvider extends ServiceProvider
 
         Carbon::setlocale(config('app.name'));
         Carbon::setToStringFormat('d.m.Y');
-
-        $this->app->bind(Google2FA::class, function (): Google2FA {
-            $chillerlan = new class() extends Chillerlan {
-                protected $options = ['imageBase64' => false];
-            };
-
-            return new Google2FA($chillerlan);
-        });
     }
 }

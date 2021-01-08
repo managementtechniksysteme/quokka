@@ -6,9 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSettings extends Model
 {
+    protected $casts = [
+        'user_id' => 'int',
+        'list_pagination_size' => 'int',
+        'show_finished_items' => 'bool',
+        'task_comments_sort_newest_first' => 'bool',
+    ];
+
     protected $fillable = [
         'user_id',
         'avatar_colour',
+        'list_pagination_size',
+        'show_finished_items',
+        'task_comments_sort_newest_first',
     ];
 
     protected $primaryKey = 'user_id';

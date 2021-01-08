@@ -36,12 +36,41 @@
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
-                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
+                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
                                         <svg class="feather feather-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>
                                     </a>
                                 @endif
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=v:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=v:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
+                                       @endif>
+                                       Meine Aufgaben
+                                    </a>
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=v:' . Auth::user()->username . ' ist:bald_fällig' . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=v:' . Auth::user()->username . ' ist:bald_fällig' }}"
+                                       @endif>
+                                       Meine bald fälligen Aufgaben
+                                    </a>
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=v:' . Auth::user()->username . ' ist:überfällig' . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=v:' . Auth::user()->username . ' ist:überfällig' }}"
+                                       @endif>
+                                       Meine überfälligen Aufgaben
+                                    </a>
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
+                                       @endif>
+                                       Beteiligte Aufgabe
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -59,8 +88,8 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right w-100">
                             <form action="{{ route('tasks.index') }}" method="get">
-                                @if(request()->search)
-                                    <input type="hidden" id="search" name="search" value="{{ request()->search }}">
+                                @if(request()->has('search'))
+                                    <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
                                 @endif
 
                                 <button type="submit" name="sort" value="due_on-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">

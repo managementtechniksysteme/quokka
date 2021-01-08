@@ -30,12 +30,29 @@
                                 </svg>
                             </button>
                             @if (Request::get('search'))
-                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
+                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=' }}" @endif>
                                     <svg class="feather feather-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                     </svg>
                                 </a>
                             @endif
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
+                                   @endif>
+                                   Meine Serviceberichte
+                                </a>
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . ' ist:neu' . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . ' ist:neu' }}"
+                                   @endif>
+                                   Meine nicht unterschriebenen Serviceberichte
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -56,8 +73,8 @@
                             @if(request()->tab)
                                 <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
                             @endif
-                            @if(request()->search)
-                                <input type="hidden" id="search" name="search" value="{{ request()->search }}">
+                            @if(request()->has('search'))
+                                <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
                             @endif
 
                             <button type="submit" name="sort" value="number-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
@@ -94,7 +111,7 @@
     @endunless
 
     <div class="mt-3">
-        @forelse ($project->serviceReports as $serviceReport)
+        @forelse ($serviceReports as $serviceReport)
             @component('service_report.overview_card', [ 'serviceReport' => $serviceReport, 'secondaryInformation' => 'withoutProject' ])
             @endcomponent
 
@@ -120,7 +137,11 @@
         @endforelse
     </div>
 
-    @if($project->serviceReports->count() > 0)
+    <div class="mt-2">
+        {{ $serviceReports->links() }}
+    </div>
+
+    @if($serviceReports->count() > 0)
         <p class="mt-3">
             Der linke farbliche Rand zeigt den Status des jeweiligen Serviceberichtes:
             <span class="badge badge-blue-100 text-blue-800">neu</span>
@@ -128,4 +149,5 @@
             <span class="badge badge-green-100 text-green-800">erledigt</span>
         </p>
     @endif
+
 @endsection

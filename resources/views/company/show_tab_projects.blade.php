@@ -81,7 +81,7 @@
     @endunless
 
     <div class="mt-3">
-        @forelse ($company->projects as $project)
+        @forelse ($projects as $project)
             @component('project.overview_card', [ 'project' => $project, 'secondaryInformation' => 'dates' ])
             @endcomponent
 
@@ -105,5 +105,9 @@
                 @endif
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-2">
+        {{ $projects->links() }}
     </div>
 @endsection

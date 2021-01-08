@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class PersonController extends Controller
 {
@@ -22,7 +23,7 @@ class PersonController extends Controller
         $people = Person::filter($request->input())
             ->order($request->input())
             ->with('address')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('person.index')->with(compact('people'));

@@ -42,6 +42,23 @@
                                         </svg>
                                     </a>
                                 @endif
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=von:' . Auth::user()->username . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=von:' . Auth::user()->username }}"
+                                       @endif>
+                                       Meine Aktenvermerke
+                                    </a>
+                                    <a class="dropdown-item"
+                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=bm:' . Auth::user()->username . '&sort=' . Request::get('sort') }}"
+                                       @else href="{{ Request::url() . '?search=bm:' . Auth::user()->username }}"
+                                       @endif>
+                                       Beteiligte Aktenvermerke
+                                    </a>
+                                </div>
                             </div>
                         </div>
 

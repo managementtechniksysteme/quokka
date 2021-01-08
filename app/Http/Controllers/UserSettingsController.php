@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\Reauthenticate;
 use App\Http\Requests\UserSettingsConfirmOtpRequest;
+use App\Http\Requests\UserSettingsUpdateInterfaceRequest;
 use App\Http\Requests\UserSettingsUpdatePasswordRequest;
 use App\Http\Requests\UserSettingsUpdateSignatureRequest;
 use chillerlan\QRCode\QRCode;
@@ -26,9 +27,13 @@ class UserSettingsController extends Controller
 
     public function edit(Request $request)
     {
+        Auth::user()->load('settings');
+
         switch ($request->tab) {
             case 'general':
                 return view('user_settings.edit_general');
+            case 'interface':
+                return view('user_settings.edit_interface');
             case 'notifications':
                 Auth::user()->loadCount('pushSubscriptions');
 
@@ -51,6 +56,15 @@ class UserSettingsController extends Controller
         Auth::user()->addSignature($request->signature);
 
         return redirect()->route('user-settings.edit', ['tab' => 'general'])->with('success', 'Die Unterschrift wurde erfolgreich gepseichert.');
+    }
+
+    public function updateInterface(UserSettingsUpdateInterfaceRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        Auth::user()->settings->update($validatedData);
+
+        return redirect()->route('user-settings.edit', ['tab' => 'interface'])->with('success', 'Die Einstellungen wurde erfolgreich gepseichert.');
     }
 
     public function updatePassword(UserSettingsUpdatePasswordRequest $request)

@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserSettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
@@ -22,7 +23,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::filter($request->input())
             ->with('person')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('employee.index')->with(compact('employees'));

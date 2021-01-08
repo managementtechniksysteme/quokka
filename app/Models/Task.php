@@ -44,7 +44,7 @@ class Task extends Model implements HasMedia
         'ist:nicht_verrechnet' => ['billed', 'no'],
         'ist:nv' => ['billed', 'no'],
         'ist:garantie' => ['billed', 'warranty'],
-        'ist:überfällig' => ['due_on', 'curdate()', '>', '<='],
+        'ist:überfällig' => ['raw' => ['due_on < curdate() and status != "finished"', 'due_on <= curdate() or (due_on > curdate() and status = "finished")']],
         'projekt:(.*)' => ['project.name', '{value}'],
         'p:(.*)' => ['project.name', '{value}'],
         'verantwortlich:(.*)' => ['responsibleEmployee.user.username', '{value}'],

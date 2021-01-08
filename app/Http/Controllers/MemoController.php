@@ -12,6 +12,7 @@ use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -28,7 +29,7 @@ class MemoController extends Controller
             ->order($request->input())
             ->with('employeeComposer.person')
             ->with('personRecipient')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('memo.index')->with(compact('memos'));

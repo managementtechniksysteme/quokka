@@ -30,12 +30,41 @@
                                 </svg>
                             </button>
                             @if (Request::get('search'))
-                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
+                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=' }}" @endif>
                                     <svg class="feather feather-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                     </svg>
                                 </a>
                             @endif
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
+                                   @endif>
+                                   Meine Aufgaben
+                                </a>
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . ' ist:bald_fällig' . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . ' ist:bald_fällig' }}"
+                                   @endif>
+                                   Meine bald fälligen Aufgaben
+                                </a>
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . ' ist:überfällig' . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=v:' . Auth::user()->username . ' ist:überfällig' }}"
+                                   @endif>
+                                   Meine überfälligen Aufgaben
+                                </a>
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
+                                   @endif>
+                                   Beteiligte Aufgabe
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -56,8 +85,8 @@
                             @if(request()->tab)
                                 <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
                             @endif
-                            @if(request()->search)
-                                <input type="hidden" id="search" name="search" value="{{ request()->search }}">
+                            @if(request()->has('search'))
+                                <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
                             @endif
 
                             <button type="submit" name="sort" value="due_on-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
@@ -120,7 +149,7 @@
     @endunless
 
     <div class="mt-3">
-        @forelse ($project->tasks as $task)
+        @forelse ($tasks as $task)
             @component('task.overview_card', [ 'task' => $task, 'secondaryInformation' => 'withoutProject' ])
             @endcomponent
 
@@ -146,7 +175,11 @@
         @endforelse
     </div>
 
-    @if($project->tasks->count() > 0)
+    <div class="mt-2">
+        {{ $tasks->links() }}
+    </div>
+
+    @if($tasks->count() > 0)
         <p class="mt-3">
             Der linke farbliche Rand zeigt den Status der jeweiligen Aufgabe:
             <span class="badge badge-blue-100 text-blue-800">neu</span>

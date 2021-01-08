@@ -16,6 +16,7 @@ use App\Models\TaskComment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -28,10 +29,16 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
+        if(!$request->has('search') && !Auth::user()->settings->show_finished_items) {
+            $request->request->add(['search' => '!ist:erledigt']);
+        } elseif ($request->has('search') && $request->search === '') {
+            $request->request->remove('search');
+        }
+
         $tasks = Task::filter($request->input())->order($request->input())
             ->with('project')
             ->with('responsibleEmployee.person')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('task.index')->with(compact('tasks'));
@@ -115,14 +122,19 @@ class TaskController extends Controller
     {
         $task->load('project')
             ->load('responsibleEmployee.person')
-            ->load('involvedEmployees.person')
-            ->load(['comments' => function ($query) {
-                $query->order();
-            }])
-            ->load('comments.employee.user.settings')
-            ->load('comments.media');
+            ->load('involvedEmployees.person');
 
-        return view('task.show')->with(compact('task'));
+        $commentSortKey =
+            Auth::user()->settings->task_comments_sort_newest_first ?
+                ['sort' => 'created_at-desc'] : ['sort' => 'created_at-asc'];
+
+        $comments = TaskComment::where('task_id', $task->id)
+            ->order($commentSortKey)
+            ->with('employee.user.settings')
+            ->with('media')
+            ->paginate(Auth::user()->settings->list_pagination_size);
+
+        return view('task.show')->with(compact('task'))->with(compact('comments'));
     }
 
     /**

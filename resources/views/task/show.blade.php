@@ -76,7 +76,7 @@
             @endunless
 
             <div class="mt-3">
-                @forelse ($task->comments as $comment)
+                @forelse ($comments as $comment)
                     @component('comment.overview_card', [ 'comment' => $comment ])
                     @endcomponent
                 @empty
@@ -93,6 +93,11 @@
                     </div>
                 @endforelse
             </div>
+
+            <div class="mt-2">
+                {{ $comments->links() }}
+            </div>
+
         </div>
     </div>
 @endsection

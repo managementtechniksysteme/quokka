@@ -18,6 +18,8 @@ class TaskComment extends Model implements HasMedia
 
     protected $orderKeys = [
         'default' => ['created_at'],
+        'created_at-asc' => ['created_at'],
+        'created_at-desc' => [['created_at', 'desc']],
     ];
 
     public function task()

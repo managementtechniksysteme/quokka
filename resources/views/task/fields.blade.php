@@ -81,7 +81,7 @@
 
         <div class="form-group">
             <div>
-                <label for="gender">Priorität</label>
+                <label for="priority">Priorität</label>
             </div>
             <div class="btn-group btn-group-toggle @error('priority') is-invalid @enderror" data-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('priority', optional($task)->priority) == 'low') active @endif">

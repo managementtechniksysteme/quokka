@@ -22,6 +22,12 @@
                             </svg>
                         @endunless
                     </a>
+                    <a class="menu-item @if (request()->tab == 'interface') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'interface']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#layout"></use>
+                        </svg>
+                        Aussehen
+                    </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
@@ -49,6 +55,12 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                             </svg>
                         @endunless
+                    </a>
+                    <a class="menu-item @if (request()->tab == 'interface') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'interface']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#layout"></use>
+                        </svg>
+                        Aussehen
                     </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
                         <svg class="feather feather-16 mr-2">

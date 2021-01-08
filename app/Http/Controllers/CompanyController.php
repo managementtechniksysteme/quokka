@@ -6,8 +6,11 @@ use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use App\Models\Address;
 use App\Models\Company;
+use App\Models\Person;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -34,7 +37,7 @@ class CompanyController extends Controller
             ->with('operatorAddress')
             ->withCount('people')
             ->withCount('projects')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('company.index')->with(compact('companies'));
@@ -120,22 +123,24 @@ class CompanyController extends Controller
 
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
-                $company->load(['projects' => function ($query) use ($input) {
-                    $query
-                        ->filter($input)
-                        ->order($input)
-                        ->withCount('tasks')
-                        ->withCount('memos')
-                        ->withCount('serviceReports');
-                }])->paginate(15)->appends($request->except('page'));
+                $projects = Project::where('company_id', $company->id)
+                    ->filter($input)
+                    ->order($input)
+                    ->withCount('tasks')
+                    ->withCount('memos')
+                    ->withCount('serviceReports')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
 
-                return view('company.show_tab_projects')->with(compact('company'));
+                return view('company.show_tab_projects')->with(compact('company'))->with(compact('projects'));
             case 'people':
-                $company->load(['people' => function ($query) use ($input) {
-                    $query->filter($input)->order($input);
-                }])->paginate(15)->appends($request->except('page'));
+                $people = Person::where('company_id', $company->id)
+                    ->filter($input)
+                    ->order($input)
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
 
-                return view('company.show_tab_people')->with(compact('company'));
+                return view('company.show_tab_people')->with(compact('company'))->with(compact('people'));
             default:
                 return redirect()->route('companies.show', [$company, 'tab' => 'overview']);
         }

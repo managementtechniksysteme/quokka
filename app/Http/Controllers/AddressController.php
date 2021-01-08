@@ -6,6 +6,7 @@ use App\Http\Requests\AddressStoreRequest;
 use App\Http\Requests\AddressUpdateRequest;
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
@@ -19,7 +20,7 @@ class AddressController extends Controller
         $addresses = Address::order($request->input())
             ->withCount('companies')
             ->withCount('people')
-            ->paginate(15)
+            ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
         return view('address.index')->with(compact('addresses'));

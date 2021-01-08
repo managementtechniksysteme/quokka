@@ -36,6 +36,23 @@
                                     </svg>
                                 </a>
                             @endif
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=von:' . Auth::user()->username . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=von:' . Auth::user()->username }}"
+                                   @endif>
+                                   Meine Aktenvermerke
+                                </a>
+                                <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=bm:' . Auth::user()->username . '&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=bm:' . Auth::user()->username }}"
+                                   @endif>
+                                   Beteiligte Aktenvermerke
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -107,7 +124,7 @@
     @endunless
 
     <div class="mt-3">
-        @forelse ($project->memos as $memo)
+        @forelse ($memos as $memo)
             @component('memo.overview_card', [ 'memo' => $memo, 'secondaryInformation' => 'withoutProject' ])
             @endcomponent
 
@@ -131,5 +148,9 @@
                 @endif
             </div>
         @endforelse
+    </div>
+
+    <div class="mt-2">
+        {{ $memos->links() }}
     </div>
 @endsection

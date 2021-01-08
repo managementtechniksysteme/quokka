@@ -62,7 +62,7 @@
                                    @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
                                    @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=b:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
                                    @endif>
-                                   Beteiligte Aufgabe
+                                   Beteiligte Aufgaben
                                 </a>
                             </div>
                         </div>

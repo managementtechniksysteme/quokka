@@ -141,6 +141,13 @@ class EmployeeController extends Controller
                     'password' => Hash::make($request->password),
                     config('auth2fa.otp_secret_column') => null,
                 ]);
+
+                $currentUser = Auth::user();
+
+                Auth::setUser($user);
+                Auth::logoutOtherDevices($request->password);
+
+                Auth::setUser($currentUser);
             }
 
             $user->settings->update([

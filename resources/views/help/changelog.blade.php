@@ -24,9 +24,9 @@
         * Mit Authentisierung geschützte Sicherheitseinstellungen wurden für Benutzer hinzugefügt. Der Benutzer kann
         sein Passowrt nun selbst ändern.
         * Die Möglichkeit, sich mittels Zwei-Faktor-Authentisierung anzumelden, wurde implementiert. Hierzu ist eine
-        entsprechende Applikation am Smartphone notwendig. Geeignete Applikationen sind etwa die Google Authenticator
-        Applikation (https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2) oder andOTP
-        (https://play.google.com/store/apps/details?id=org.shadowice.flocke.andotp).
+        entsprechende Applikation am Smartphone notwendig. Geeignete Applikationen sind etwa Aegis
+        (https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis) oder die Google Authenticator
+        Applikation (https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2).
         @endmarkdown
 
         @markdown

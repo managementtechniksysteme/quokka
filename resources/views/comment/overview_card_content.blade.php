@@ -15,6 +15,12 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $comment->created_at->format('d.m.Y, H:i') }}
+                            @if($comment->created_at->lt($comment->updated_at))
+                                <svg class="feather feather-16 ml-2 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit-2"></use>
+                                </svg>
+                                {{ $comment->updated_at->format('d.m.Y, H:i') }}
+                            @endif
                         </p>
                     </div>
 

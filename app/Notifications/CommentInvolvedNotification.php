@@ -70,7 +70,7 @@ class CommentInvolvedNotification extends Notification implements ShouldQueue
             $title = 'Ein Kommentar in einer Aufgabe wurde erstellt';
             $body = 'Ein Kommentar in der Aufgabe '.$this->comment->task->name.' (Projekt '.$this->comment->task->project->name.'), an der du beteiligt bist, wurde erstellt.';
         } else {
-            $title = 'Ein Aktenvermerk wurde bearbbeitet';
+            $title = 'Ein Kommentar in einer Aufgabe wurde bearbbeitet';
             $body = 'Ein Kommentar in der Aufgabe '.$this->comment->task->name.' (Projekt '.$this->comment->task->project->name.'), an der du beteiligt bist, wurde bearbeitet.';
         }
 

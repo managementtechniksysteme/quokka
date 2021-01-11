@@ -22,7 +22,7 @@
 @endif
 \footnotesize{\textbf{Priorität:}} & \footnotesize{{!! Latex::escape(trans($task->priority)) !!}} \\
 \footnotesize{\textbf{Status:}} & \footnotesize{{!! Latex::escape(trans($task->status)) !!}} \\
-\footnotesize{\textbf{Verrechnugnstatus:}} & \footnotesize{{!! Latex::escape(trans($task->billed_string)) !!}} \\
+\footnotesize{\textbf{Verrechnungsstatus:}} & \footnotesize{{!! Latex::escape(trans($task->billed_string)) !!}} \\
 \footnotesize{\textbf{Verantwortlich:}} & \footnotesize{{!! Latex::escape($task->responsibleEmployee->person->name) !!}} \\
 @if($task->involvedEmployees->count() > 0)
 \footnotesize{\textbf{Beteiligte:}} &

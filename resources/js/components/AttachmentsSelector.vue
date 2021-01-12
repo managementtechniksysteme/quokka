@@ -13,7 +13,10 @@
 
             <div v-if="existing_attachments.length" class="row my-2 align-items-center" v-for="attachment in existing_attachments">
                 <div class="col d-inline-flex align-items-center">
-                    <img class="attachment-img-preview mr-2" :src="attachment.url" :alt="attachment.file_name" />
+                    <img v-if="attachment.url !== null" class="attachment-img-preview mr-2" :src="attachment.url" :alt="attachment.file_name" />
+                    <svg v-else class="feather attachment-img-preview mr-2">
+                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    </svg>
                     <div>
                         <div>{{attachment.file_name}}</div>
                         <div class="text-muted">{{humanFileSize(attachment.size)}}</div>
@@ -26,7 +29,10 @@
 
             <div v-if="new_attachments.length" class="row my-2 align-items-center" v-for="attachment in new_attachments">
                 <div class="col d-inline-flex align-items-center">
-                    <img class="attachment-img-preview mr-2" :src="attachment.preview" :alt="attachment.file_name" />
+                    <img v-if="attachment.preview !== null" class="attachment-img-preview mr-2" :src="attachment.preview" :alt="attachment.file_name" />
+                    <svg v-else class="feather attachment-img-preview mr-2">
+                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    </svg>
                     <div>
                         <div contenteditable="true" @keydown.enter.prevent @blur="changeNewAttachmentName($event, attachment)" v-html="attachment.file_name"></div>
                         <div class="text-muted">{{humanFileSize(attachment.file.size)}}</div>
@@ -58,14 +64,32 @@
             addNewAttachments(event) {
                 if(event.target.files) {
                     Array.from(event.target.files).forEach((file) => {
-                        if(file.type.match(this.accept)) {
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                                let attachment = {file: file, preview: String(reader.result), file_name: file.name, extension: this.fileNameExtension(file.name)};
+                        if(file.type.match(this.accept.replace(/\s*,\s*|\s+,/g, '|'))) {
+                            if(file.type.match('image/*')) {
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                    let attachment = {
+                                        file: file,
+                                        preview: String(reader.result),
+                                        file_name: file.name,
+                                        extension: this.fileNameExtension(file.name)
+                                    };
+                                    this.new_attachments.push(attachment);
+                                    this.refreshNewAttachments();
+                                }
+                                reader.readAsDataURL(file);
+                            }
+                            else {
+                                let attachment = {
+                                    file: file,
+                                    preview: null,
+                                    file_name: file.name,
+                                    extension: this.fileNameExtension(file.name)
+                                };
                                 this.new_attachments.push(attachment);
                                 this.refreshNewAttachments();
                             }
-                            reader.readAsDataURL(file);
+
                         }
                     });
                 }
@@ -114,6 +138,7 @@
                 });
 
                 document.getElementById('new_attachments').files = attachments.files;
+                console.log(document.getElementById('new_attachments').files);
             },
 
             humanFileSize(size) {
@@ -131,7 +156,7 @@
             accept: {
                 type: String,
                 default() {
-                    return 'image/*';
+                    return 'image/*, application/pdf';
                 }
             },
             current_attachments: {

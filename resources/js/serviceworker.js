@@ -1,4 +1,4 @@
-let CACHE_NAME = 'quokka-cache-v1';
+let CACHE_NAME = 'quokka-cache-v0.1.4';
 let OFFLINE_URL = '/offline';
 
 let urlsToCache = [
@@ -11,7 +11,7 @@ let urlsToCache = [
 
 self.addEventListener('install', function(event) {
     self.skipWaiting();
-    
+
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {

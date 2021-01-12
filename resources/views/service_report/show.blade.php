@@ -180,7 +180,13 @@
                     @foreach($serviceReport->attachments() as $attachment)
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
-                                <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                @if($attachment->hasGeneratedConversion('thumbnail'))
+                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                @else
+                                    <svg class="feather attachment-img-preview mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                                    </svg>
+                                @endif
                                 <div class="min-w-0">
                                     <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
                                     <div class="text-muted">{{ $attachment->human_readable_size }}</div>
@@ -196,7 +202,13 @@
                     @foreach($serviceReport->attachments() as $attachment)
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
-                                <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                @if($attachment->hasGeneratedConversion('thumbnail'))
+                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                @else
+                                    <svg class="feather attachment-img-preview mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                                    </svg>
+                                @endif
                                 <div class="min-w-0">
                                     <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
                                     <div class="text-muted">{{ $attachment->human_readable_size }}</div>

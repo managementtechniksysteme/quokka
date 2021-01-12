@@ -188,7 +188,7 @@
             Anhänge
         </p>
         <p class="text-muted">
-            Dem Aktenvermerk zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat.
+            Dem Aktenvermerk zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
         </p>
         <p class="text-muted">
             Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
@@ -200,7 +200,7 @@
             <label>
                 Anhänge
             </label>
-            <attachments-selector accept="image/*" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+            <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
             <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
                 @error('remove_attachments')
                     {{ $message }}

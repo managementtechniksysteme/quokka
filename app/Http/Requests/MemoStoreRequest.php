@@ -36,7 +36,7 @@ class MemoStoreRequest extends FormRequest
             'notified_ids.*' => 'exists:people,id',
             'comment' => 'required',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'image',
+            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
     }
 }

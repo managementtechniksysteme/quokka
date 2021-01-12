@@ -29,7 +29,12 @@ trait HasAttachments
         $attachments = collect();
 
         foreach ($this->attachments() as $attachment) {
-            $attachment->setAttribute('url', $attachment->getUrl('thumbnail'));
+            if ($attachment->hasGeneratedConversion('thumbnail')) {
+                $attachment->setAttribute('url', $attachment->getUrl('thumbnail'));
+            } else {
+                $attachment->setAttribute('url', null);
+            }
+
             $attachments->push($attachment);
         }
 

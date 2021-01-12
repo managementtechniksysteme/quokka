@@ -24,7 +24,7 @@ class ServiceReportStoreRequest extends FormRequest
             'services.*.allowances' => 'required|numeric|min:0|multiple_of:0.5',
             'services.*.kilometres' => 'required|integer|min:0',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'image',
+            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
     }
 }

@@ -195,9 +195,8 @@ class TaskController extends Controller
             } else {
                 $employees = Employee::find($request->involved_ids);
             }
-            $pivotData = array_fill(0, $employees->count(), ['employee_type' => 'involved']);
 
-            $task->involvedEmployees()->sync(array_combine($employees->pluck('person_id')->toArray(), $pivotData));
+            $task->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
         } else {
             $task->involvedEmployees()->detach();
         }

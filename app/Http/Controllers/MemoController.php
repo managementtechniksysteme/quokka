@@ -172,15 +172,13 @@ class MemoController extends Controller
         $memo->update($validatedData);
 
         if ($request->filled('present_ids')) {
-            $pivotData = array_fill(0, count($request->present_ids), ['person_type' => 'present']);
-            $memo->presentPeople()->sync(array_combine($request->present_ids, $pivotData));
+            $memo->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
         } else {
             $memo->presentPeople()->detach();
         }
 
         if ($request->filled('notified_ids')) {
-            $pivotData = array_fill(0, count($request->notified_ids), ['person_type' => 'notified']);
-            $memo->notifiedPeople()->sync(array_combine($request->notified_ids, $pivotData));
+            $memo->notifiedPeople()->syncWithPivotValues($request->notified_ids, ['person_type' => 'notified']);
         } else {
             $memo->notifiedPeople()->detach();
         }

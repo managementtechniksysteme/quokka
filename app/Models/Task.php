@@ -91,7 +91,7 @@ class Task extends Model implements HasMedia
 
     public function involvedEmployees()
     {
-        return $this->belongsToMany(Employee::class, 'employee_task', 'task_id', 'employee_id');
+        return $this->morphToMany(Employee::class, 'employeeable', null, 'employeeable_id', 'employee_id')->wherePivot('employee_type', 'involved');
     }
 
     public function comments()

@@ -51,7 +51,7 @@ class Employee extends Model
 
     public function tasksInvolvedIn()
     {
-        return $this->belongsToMany(Task::class, 'employee_task', 'employee_id', 'task_id');
+        return $this->morphedByMany(Task::class, 'employeeable', null, 'employee_id', 'employeeable_id')->wherePivot('employee_type', 'involved');
     }
 
     public function composedMemos()

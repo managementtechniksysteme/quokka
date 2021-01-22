@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Traits\FiltersResults;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 class Person extends Model
 {
     use FiltersResults;
+    use HasFactory;
     use Notifiable;
     use OrdersResults;
 

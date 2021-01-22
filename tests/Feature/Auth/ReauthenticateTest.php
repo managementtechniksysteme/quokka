@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +25,11 @@ class ReauthenticateTest extends TestCase
     protected function loginGetRoute()
     {
         return route('login');
+    }
+
+    protected function homeGetRoute()
+    {
+        return route('home');
     }
 
     protected function reauthenticateGetRoute()
@@ -63,18 +68,28 @@ class ReauthenticateTest extends TestCase
 
     public function test_user_is_redirected_to_the_reauthenticate_page_when_required_and_authenticated()
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->actingAs($user)->get($this->reauthenticateRequiredRoute());
 
         $response->assertRedirect($this->reauthenticateGetRoute());
     }
 
-    public function test_user_can_view_a_reauthenticate_form_when_authenticated()
+    public function test_user_is_redirected_to_home_when_logged_in_and_trying_to_access_reauthentication_form()
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->actingAs($user)->get($this->reauthenticateGetRoute());
+
+        $response->assertRedirect($this->homeGetRoute());
+        //$response->assertViewIs('home');
+    }
+
+    public function test_user_sees_password_field_in_reauthenticate_form()
+    {
+        $user = User::factory()->make();
+
+        $response = $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response->assertSuccessful();
         $response->assertViewIs('auth.reauthenticate');
@@ -83,11 +98,11 @@ class ReauthenticateTest extends TestCase
 
     public function test_user_sees_otp_field_in_reauthenticate_form_when_otp_is_enabled()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'otp_secret' => encrypt('MZUWY3DFMQWW65LU'),
         ]);
 
-        $response = $this->actingAs($user)->get($this->reauthenticateGetRoute());
+        $response = $this->actingAs($user)->followingRedirects()->get($this->reauthenticateRequiredRoute());
 
         $response->assertSuccessful();
         $response->assertViewIs('auth.reauthenticate');
@@ -96,7 +111,7 @@ class ReauthenticateTest extends TestCase
 
     public function test_user_can_reauthenticate_with_correct_credentials()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -115,7 +130,7 @@ class ReauthenticateTest extends TestCase
 
         $otp_secret = $google2fa->generateSecretKey();
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
             'otp_secret' => encrypt($otp_secret),
         ]);
@@ -132,7 +147,7 @@ class ReauthenticateTest extends TestCase
 
     public function test_user_can_not_reauthenticate_with_incorrect_password()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -149,7 +164,7 @@ class ReauthenticateTest extends TestCase
 
     public function test_user_can_not_reauthenticate_in_two_steps_with_incorrect_otp()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
             'otp_secret' => encrypt('MZUWY3DFMQWW65LU'),
         ]);

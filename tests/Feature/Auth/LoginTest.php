@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
@@ -69,7 +69,7 @@ class LoginTest extends TestCase
 
     public function test_user_cannot_view_a_login_form_when_authenticated()
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->actingAs($user)->get($this->loginGetRoute());
 
@@ -78,7 +78,7 @@ class LoginTest extends TestCase
 
     public function test_user_can_login_with_correct_credentials()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -102,7 +102,7 @@ class LoginTest extends TestCase
 
     public function test_user_cannot_view_otp_form_when_authenticated()
     {
-        $user = factory(User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->actingAs($user)->get($this->otpGetRoute());
 
@@ -112,7 +112,7 @@ class LoginTest extends TestCase
     // TODO: auth logout not ideal (is done automatically by auth once)
     public function test_user_is_redirected_to_otp_form_when_otp_is_enabled_and_correct_credentials_are_provided()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
             'otp_secret' => encrypt('MZUWY3DFMQWW65LU'),
         ]);
@@ -139,7 +139,7 @@ class LoginTest extends TestCase
 
         $otp_secret = $google2fa->generateSecretKey();
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
             'otp_secret' => encrypt($otp_secret),
         ]);
@@ -167,7 +167,7 @@ class LoginTest extends TestCase
 
     public function test_remember_me_functionality()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -190,7 +190,7 @@ class LoginTest extends TestCase
 
     public function test_user_cannot_login_with_incorrect_password()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make('i-love-laravel'),
         ]);
 
@@ -210,7 +210,7 @@ class LoginTest extends TestCase
     // TODO: query parameters are switched in signed url --> how to check redirect?
     public function test_user_cannot_login_in_two_steps_with_incorrect_otp()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
             'otp_secret' => encrypt('MZUWY3DFMQWW65LU'),
         ]);
@@ -256,7 +256,7 @@ class LoginTest extends TestCase
 
     public function test_user_can_logout()
     {
-        $this->be(factory(User::class)->create());
+        $this->be(User::factory()->create());
 
         $response = $this->post($this->logoutRoute());
 
@@ -274,7 +274,7 @@ class LoginTest extends TestCase
 
     public function test_user_cannot_make_more_than_five_attempts_in_one_minute()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make($password = 'i-love-laravel'),
         ]);
 
@@ -287,7 +287,7 @@ class LoginTest extends TestCase
 
         $response->assertRedirect($this->loginGetRoute());
         $response->assertSessionHasErrors('username');
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             $this->getTooManyLoginAttemptsMessage(),
             collect(
                 $response

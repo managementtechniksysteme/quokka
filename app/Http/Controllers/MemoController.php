@@ -175,14 +175,14 @@ class MemoController extends Controller
             $pivotData = array_fill(0, count($request->present_ids), ['person_type' => 'present']);
             $memo->presentPeople()->sync(array_combine($request->present_ids, $pivotData));
         } else {
-            $memo->presentPeople()->detach($memo->presentPeople, ['person_type' => 'present']);
+            $memo->presentPeople()->detach();
         }
 
         if ($request->filled('notified_ids')) {
             $pivotData = array_fill(0, count($request->notified_ids), ['person_type' => 'notified']);
             $memo->notifiedPeople()->sync(array_combine($request->notified_ids, $pivotData));
         } else {
-            $memo->notifiedPeople()->detach($memo->notifiedPeople, ['person_type' => 'notified']);
+            $memo->notifiedPeople()->detach();
         }
 
         if ($request->remove_attachments) {

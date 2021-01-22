@@ -100,7 +100,7 @@ class TaskController extends Controller
                 $employees = Employee::find($request->involved_ids);
             }
 
-            $task->involvedEmployees()->attach($employees);
+            $task->involvedEmployees()->attach($employees, ['employee_type' => 'involved']);
         }
 
         if ($request->new_attachments) {
@@ -195,8 +195,9 @@ class TaskController extends Controller
             } else {
                 $employees = Employee::find($request->involved_ids);
             }
+            $pivotData = array_fill(0, $employees->count(), ['employee_type' => 'involved']);
 
-            $task->involvedEmployees()->sync($employees);
+            $task->involvedEmployees()->sync(array_combine($employees->pluck('person_id')->toArray(), $pivotData));
         } else {
             $task->involvedEmployees()->detach();
         }
@@ -222,6 +223,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        $task->involvedEmployees()->detach();
         $task->delete();
 
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich entfernt.');

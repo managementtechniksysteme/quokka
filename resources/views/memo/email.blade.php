@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@php dd(Request::old()) @endphp
-
 @if (old('email_to'))
     @php $currentTo = json_encode(old('email_to')); @endphp
 @endif
@@ -109,7 +107,7 @@
                                     </div>
                                     <div class="col-auto ml-auto">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input @error('attachment_ids[]') is-invalid @enderror" name="attachment_ids[]" id="attachment_ids[{{ $attachment->id }}]" value="{{ $attachment->id }}" @if(is_array(old('attachment_ids')) && in_array($attachment->id, old('attachment_ids'))) checked @endif>
+                                            <input type="checkbox" class="custom-control-input @error('attachment_ids[]') is-invalid @enderror" name="attachment_ids[]" id="attachment_ids[{{ $attachment->id }}]" value="{{ $attachment->id }}" @if(empty(Request::old()) || (is_array(old('attachment_ids')) && in_array($attachment->id, old('attachment_ids')))) checked @endif>
                                             <label class="custom-control-label" for="attachment_ids[{{ $attachment->id }}]">&nbsp;</label>
                                         </div>
                                         <div class="invalid-feedback @error('send_signature_request') d-block @enderror">

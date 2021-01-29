@@ -11,6 +11,12 @@
 
     <div class="container my-4">
         @markdown
+        ### Quokka v0.1.5-b85c62a (29.01.2021)
+        * Anhänge von Aktenvermerke und Serviceberichten werden per Email mitversendet, falls ausgewählt. Per Default
+        sind alle Anhänge zum Versand vorgemerkt. Anhänge sin einzeln an- oder abwählbar.
+        @endmarkdown
+
+        @markdown
         ### Quokka v0.1.4-bcc44b5 (12.01.2021)
         * Neben Bilddateien sind nun auch Anhänge im PDF Format erlaubt.
         @endmarkdown

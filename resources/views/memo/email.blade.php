@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@php dd(Request::old()) @endphp
+
 @if (old('email_to'))
     @php $currentTo = json_encode(old('email_to')); @endphp
 @endif

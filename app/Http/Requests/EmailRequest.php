@@ -21,6 +21,8 @@ class EmailRequest extends FormRequest
             'email_cc.*.email' => 'email',
             'email_bcc' => 'array',
             'email_bcc.*.email' => 'email',
+            'attachment_ids' => 'array|nullable',
+            'attachment_ids.*' => 'exists:media,id',
         ];
     }
 }

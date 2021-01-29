@@ -14,6 +14,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use ZsgsDesign\PDFConverter\Latex;
 
 class MemoController extends Controller
@@ -119,7 +120,8 @@ class MemoController extends Controller
             }])
             ->load(['notifiedPeople' => function ($query) {
                 $query->order();
-            }]);
+            }])
+            ->load('media');
 
         return view('memo.show')->with(compact('memo'));
     }
@@ -213,6 +215,8 @@ class MemoController extends Controller
 
     public function showEmail(Request $request, Memo $memo)
     {
+        $memo->load('media');
+
         $currentTo = collect([$memo->personRecipient]);
         $currentCC = $memo->notifiedPeople;
         $people = Person::whereNotNull('email')->order()->get();
@@ -229,6 +233,8 @@ class MemoController extends Controller
     {
         $validatedData = $request->validated();
 
+        $attachments = $request->attachment_ids ? Media::find($request->attachment_ids) : null;
+
         $memo
             ->load('project')
             ->load('employeeComposer')
@@ -244,7 +250,7 @@ class MemoController extends Controller
             $mail = $mail->bcc($request->email_bcc);
         }
 
-        $mail->send(new MemoMail($memo));
+        $mail->send(new MemoMail($memo, $attachments));
 
         return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich gesendet.');
     }

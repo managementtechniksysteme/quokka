@@ -71,6 +71,57 @@
                 </div>
             </div>
 
+            @if($memo->attachments()->count() > 0)
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <p class="d-inline-flex align-items-center mb-1">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
+                            </svg>
+                            Anhänge
+                        </p>
+                        <p class="text-muted">
+                            Hier können die gewünschten Anhänge ausgewählt werden, welche dem Email angefügt werden sollen.
+                        </p>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label>
+                                Anhänge
+                            </label>
+                            @foreach($memo->attachments() as $attachment)
+                                <div class="row my-2 align-items-center">
+                                    <div class="col d-inline-flex align-items-center">
+                                        @if($attachment->hasGeneratedConversion('thumbnail'))
+                                            <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                        @else
+                                            <svg class="feather attachment-img-preview mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                                            </svg>
+                                        @endif
+                                        <div>
+                                            <div>{{ $attachment->file_name }}</div>
+                                            <div class="text-muted">{{ $attachment->human_readable_size }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto ml-auto">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input @error('attachment_ids[]') is-invalid @enderror" name="attachment_ids[]" id="attachment_ids[{{ $attachment->id }}]" value="{{ $attachment->id }}" @if(!old('attachment_ids') || (is_array(old('attachment_ids')) && in_array($attachment->id, old('attachment_ids')))) checked @endif>
+                                            <label class="custom-control-label" for="attachment_ids[{{ $attachment->id }}]">&nbsp;</label>
+                                        </div>
+                                        <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            @error('attachment_ids[]')
+                                {{ $message }}
+                            @enderror
+                    </div>
+                </div>
+            @endif
+
             <div class="row mt-4">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">

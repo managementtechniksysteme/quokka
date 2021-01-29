@@ -22,6 +22,7 @@ use App\Models\SignatureRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use ZsgsDesign\PDFConverter\Latex;
 
 class ServiceReportController extends Controller
@@ -130,7 +131,8 @@ class ServiceReportController extends Controller
         $serviceReport
             ->load('project')
             ->load('employee.person')
-            ->load('services');
+            ->load('services')
+            ->load('media');
 
         return view('service_report.show')
             ->with(compact('serviceReport'));
@@ -228,7 +230,8 @@ class ServiceReportController extends Controller
     public function showEmail(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
-            ->load('project');
+            ->load('project')
+            ->load('media');
 
         $people = Person::whereNotNull('email')->order()->get();
 
@@ -244,6 +247,8 @@ class ServiceReportController extends Controller
     {
         $validatedData = $request->validated();
 
+        $attachments = $request->attachment_ids ? Media::find($request->attachment_ids) : null;
+
         $serviceReport
             ->load('project')
             ->load('employee.person')
@@ -257,7 +262,7 @@ class ServiceReportController extends Controller
             $mail = $mail->bcc($request->email_bcc);
         }
 
-        $mail->send(new ServiceReportMail($serviceReport));
+        $mail->send(new ServiceReportMail($serviceReport, $attachments));
 
         return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich gesendet.');
     }

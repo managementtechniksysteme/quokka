@@ -14,6 +14,8 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskComment;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -22,12 +24,7 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
             $request->request->add(['search' => '!ist:erledigt']);
@@ -44,12 +41,7 @@ class TaskController extends Controller
         return view('task.index')->with(compact('tasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         $currentProject = null;
 
@@ -70,13 +62,7 @@ class TaskController extends Controller
             ->with('currentAttachments', null);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(TaskStoreRequest $request)
+    public function store(TaskStoreRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -112,13 +98,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task, TaskComment $comment)
+    public function show(Task $task, TaskComment $comment): View
     {
         $task->load('project')
             ->load('responsibleEmployee.person')
@@ -137,13 +117,7 @@ class TaskController extends Controller
         return view('task.show')->with(compact('task'))->with(compact('comments'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
+    public function edit(Task $task): View
     {
         $currentProject = $task->project;
         $projects = Project::order()->get();
@@ -165,14 +139,7 @@ class TaskController extends Controller
             ->with('currentAttachments', $currentAttachments->toJson());
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(TaskUpdateRequest $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -214,13 +181,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
         $task->involvedEmployees()->detach();
         $task->delete();
@@ -228,7 +189,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich entfernt.');
     }
 
-    public function showEmail(Request $request, Task $task)
+    public function showEmail(Request $request, Task $task): View
     {
         $currentTo = $task->involvedEmployees->pluck('person');
         $people = Person::whereNotNull('email')->order()->get();
@@ -241,7 +202,7 @@ class TaskController extends Controller
             ->with('currentBCC', null);
     }
 
-    public function email(EmailRequest $request, Task $task)
+    public function email(EmailRequest $request, Task $task): RedirectResponse
     {
         $validatedData = $request->validated();
 
@@ -263,7 +224,7 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich gesendet.');
     }
 
-    public function download(Request $request, Task $task)
+    public function download(Request $request, Task $task): \ZsgsDesign\PDFConverter\Illuminate\Http\Response
     {
         $task
             ->load('project')

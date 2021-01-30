@@ -104,6 +104,7 @@
                                             <div>{{ $attachment->file_name }}</div>
                                             <div class="text-muted">{{ $attachment->human_readable_size }}</div>
                                         </div>
+                                        <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
                                     </div>
                                     <div class="col-auto ml-auto">
                                         <div class="custom-control custom-switch">

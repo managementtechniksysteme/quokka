@@ -12,6 +12,7 @@ use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -92,7 +93,13 @@ class MemoController extends Controller
         }
 
         if ($request->filled('notified_ids')) {
-            $memo->notifiedPeople()->attach(Person::find($request->notified_ids), ['person_type' => 'notified']);
+            if (($recipient = array_search($memo->person_id, $request->notified_ids)) !== false) {
+                $notifiedPeople = Person::find(Arr::except($request->notified_ids, $recipient));
+            } else {
+                $notifiedPeople = Person::find($request->notified_ids);
+            }
+
+            $memo->notifiedPeople()->attach($notifiedPeople, ['person_type' => 'notified']);
         }
 
         if ($request->new_attachments) {
@@ -180,7 +187,13 @@ class MemoController extends Controller
         }
 
         if ($request->filled('notified_ids')) {
-            $memo->notifiedPeople()->syncWithPivotValues($request->notified_ids, ['person_type' => 'notified']);
+            if (($recipient = array_search($memo->person_id, $request->notified_ids)) !== false) {
+                $notifiedPeople = Person::find(Arr::except($request->notified_ids, $recipient));
+            } else {
+                $notifiedPeople = Person::find($request->notified_ids);
+            }
+
+            $memo->notifiedPeople()->syncWithPivotValues($notifiedPeople, ['person_type' => 'notified']);
         } else {
             $memo->notifiedPeople()->detach();
         }

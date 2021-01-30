@@ -180,6 +180,11 @@ class MemoController extends Controller
 
         $memo->update($validatedData);
 
+        if (! $request->filled('person_id')) {
+            $memo->personRecipient()->disassociate();
+            $memo->save();
+        }
+
         if ($request->filled('present_ids')) {
             $memo->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
         } else {
@@ -230,7 +235,7 @@ class MemoController extends Controller
     {
         $memo->load('media');
 
-        $currentTo = collect([$memo->personRecipient]);
+        $currentTo = collect($memo->personRecipient ? [$memo->personRecipient] : []);
         $currentCC = $memo->notifiedPeople;
         $people = Person::whereNotNull('email')->order()->get();
 

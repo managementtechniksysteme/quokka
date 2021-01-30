@@ -29,10 +29,6 @@
 **Vermerk**<br />
 {!! $memo->comment !!}
 
-@component('mail::button', ['url' => route('memos.show', $memo)])
-    Aktenvermerk in {{ config('app.name') }} öffnen
-@endcomponent
-
 Danke,<br />
 {{ $memo->employeeComposer->person->name }}<br />
 MTS Management Technik Systeme GmbH & CO KG

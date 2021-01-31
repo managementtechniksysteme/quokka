@@ -1,6 +1,7 @@
 \documentclass[a4paper, 11pt]{article}
 \usepackage[singlelinecheck=false]{caption}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amssymb}
 \usepackage{array}
 \usepackage{booktabs}

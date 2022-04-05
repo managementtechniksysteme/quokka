@@ -42,10 +42,10 @@ return [
     */
 
     'extensions' => [
-        'League\CommonMark\Ext\Autolink\AutolinkExtension',
-        'League\CommonMark\Ext\Strikethrough\StrikethroughExtension',
-        'League\CommonMark\Ext\TaskList\TaskListExtension',
-        'League\CommonMark\Ext\Table\TableExtension',
+        'League\CommonMark\Extension\Autolink\AutolinkExtension',
+        'League\CommonMark\Extension\Strikethrough\StrikethroughExtension',
+        'League\CommonMark\Extension\TaskList\TaskListExtension',
+        'League\CommonMark\Extension\Table\TableExtension',
     ],
 
     /*

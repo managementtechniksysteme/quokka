@@ -29,9 +29,10 @@ class MigrateTaskEmployeeables extends Migration
             ]);
         }
 
+        DB::commit();
+
         Schema::dropIfExists('employee_task');
 
-        DB::commit();
     }
 
     /**

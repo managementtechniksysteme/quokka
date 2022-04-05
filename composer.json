@@ -24,24 +24,20 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
-        "league/commonmark-ext-autolink": "^1.0",
-        "league/commonmark-ext-strikethrough": "^1.0",
-        "league/commonmark-ext-table": "^2.1",
-        "league/commonmark-ext-task-list": "^1.0",
         "pragmarx/google2fa": "^5.0",
         "pragmarx/version": "^1.2",
         "silvertipsoftware/laravel-pdf-latex": "^2.2.1",
         "spatie/laravel-medialibrary": "^9.0.0",
         "spatie/laravel-permission": "^3.0",
-        "ueberdosis/pandoc": "^0.5.0"
+        "ueberdosis/pandoc": "^0.7.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
         "barryvdh/laravel-ide-helper": "^2.6",
         "beyondcode/laravel-dump-server": "^1.0",
-        "filp/whoops": "^2.0",
         "fakerphp/faker": "^1.9.1",
-        "matt-allan/laravel-code-style": "dev-master",
+        "filp/whoops": "^2.0",
+        "jubeki/laravel-code-style": "^1.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"

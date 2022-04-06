@@ -13,7 +13,7 @@
         @markdown
         ### Quokka v0.1.5-b85c62a (29.01.2021)
         * Anhänge von Aktenvermerke und Serviceberichten werden per Email mitversendet, falls ausgewählt. Per Default
-        sind alle Anhänge zum Versand vorgemerkt. Anhänge sin einzeln an- oder abwählbar.
+        sind alle Anhänge zum Versand vorgemerkt. Anhänge sind einzeln an- oder abwählbar.
         @endmarkdown
 
         @markdown

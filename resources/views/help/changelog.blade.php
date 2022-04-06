@@ -48,7 +48,7 @@
         benachrichtigt.
         * Einzelne Mitarbeiter können in Bemerkungen von Aufgaben, Kommentaren von Aufgaben, Vermerken von
         Aktenvermerken und Kurzberichten von Serviceberichten erwähnt werden. Dies funktioniert durch tippen von
-        `@<Benutzername>` im Text. Erwähnte Benutzer werden automatisch benachrichtigt.
+        `@<{{ config('app.name') }} Benutzername>` im Text. Erwähnte Benutzer werden automatisch benachrichtigt.
         * In den Applikationseinstellungen kann ein Benutzer angegeben werden, der immer benachrichtigt wird,
         sobald ein Bericht unterschrieben wurde. Der Techniker, welcher den Bericht verfasst hat, wird ebenfalls
         automatisch über eine Unterschrift benachrichtigt.

@@ -27,7 +27,7 @@
         @endmarkdown
 
         @markdown
-        Die in Quokka implementierte Suche zum Filtern von Listen kann mit speziellen Suchbegriffen verwendet werden.
+        Die in {{ config('app.name') }} implementierte Suche zum Filtern von Listen kann mit speziellen Suchbegriffen verwendet werden.
         Diese filtern Attribute nach angegebenen Werten. Somit ist eine genauere Suche möglich. Die Verwendung dieser
         Begriffe ist kontextabhängig.
 
@@ -122,8 +122,8 @@
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Aktenvermerk ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
                         
-        * `von:<Quokka Benutzername>`  
-        Der Aktenvermerk wurde vom Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` verfasst.
+        * `von:<{{ config('app.name') }} Benutzername>`  
+        Der Aktenvermerk wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
         
         * `an:<Name>`  
         Der Aktenvermerk wurde an die Person mit dem Namen `<Name>` verfasst.
@@ -131,14 +131,14 @@
         * `beteiligt:<Name>` oder `b:<Name>`  
         Die Person mit dem Namen `<Name>` ist am Aktenvermerk beteiligt.
         
-        * `beteiligt_mitarbeiter:<Quokka Benutzername>` oder `bm:<Quokka Benutzername>`  
-        Der Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` ist am Aktenvermerk beteiligt.
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Aktenvermerk beteiligt.
         
         * `verständigt:<Name>` oder `v:<Name>`  
         Die Person mit dem Namen `<Name>` wird über dem Aktenvermerk verständigt.
         
-        * `verständigt_mitarbeiter:<Quokka Benutzername>` oder `vm:<Quokka Benutzername>`  
-        Der Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` wird über dem Aktenvermerk verständigt.
+        * `verständigt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `vm:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` wird über dem Aktenvermerk verständigt.
         
 
         **Beispiele**
@@ -173,7 +173,7 @@
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dieser
-            Reiehnfolge im Titel befinden, der Verfasser den Quokka Benutzernamen `mst` hat und der Empfänger den Namen 
+            Reiehnfolge im Titel befinden, der Verfasser den {{ config('app.name') }} Benutzernamen `mst` hat und der Empfänger den Namen 
             `Angelika Steiner` hat.
             @endmarkdown
         </div>
@@ -239,11 +239,11 @@
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Die Aufgabe ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
                     
-        * `verantwortlich:<Quokka Benutzername>` oder `v:<Quokka Benutzername>`  
-        Der Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` ist für die Aufgabe verantwortlich.
+        * `verantwortlich:<{{ config('app.name') }} Benutzername>` oder `v:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist für die Aufgabe verantwortlich.
                                 
-        * `beteiligt:<Quokka Benutzername>` oder `b:<Quokka Banutzername>`  
-        Der Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` ist an der Aufgabe beteiligt.
+        * `beteiligt:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Banutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist an der Aufgabe beteiligt.
 
         **Beispiele**
         @endmarkdown
@@ -276,7 +276,7 @@
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Filtert Aufgaben, in denen sich die Begriffe Material und Einkauf in dieser Reihenfolge im Namen befinden,
-            der verantwortliche Mitarbeiter den Quokka Benutzernamen `mst` hat und der Mitarbeiter mit dem Quokka
+            der verantwortliche Mitarbeiter den {{ config('app.name') }} Benutzernamen `mst` hat und der Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` an der Aufgabe beteiligt ist.
             @endmarkdown
         </div>
@@ -338,8 +338,8 @@
         * `name:<Mitarbeiter Name>` oder `n:<Mitarbeiter Name>`  
         Der Mitarbeiter hat den Namen `<Mitarbeiter Name>`.
         
-        * `benutzer:<Quokka Benutzername>` oder `b:<Quokka Benutzername>`  
-        Der Mitarbeiter hat den Quokka Benutzernamen `<Quokka Benutzername>`.
+        * `benutzer:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter hat den {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>`.
 
         **Beispiele**
         @endmarkdown
@@ -371,7 +371,7 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Mitarbeiter, die den Quokka Benutzernamen `mst` besitzen.
+            Filtert Mitarbeiter, die den {{ config('app.name') }} Benutzernamen `mst` besitzen.
         
             Mögliche Ergebnisse
             * Martin Steiner
@@ -499,8 +499,8 @@
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Servicebericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
                                 
-        * `techniker:<Quokka Benutzername>` oder `t:<Quokka Benutzername>`  
-        Der Servicebericht ist dem Mitarbeiter mit dem Quokka Benutzernamen `<Quokka Benutzername>` zugeordnet.        
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+        Der Servicebericht ist dem Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` zugeordnet.        
 
         **Beispiele**
         @endmarkdown
@@ -532,7 +532,7 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Serviceberichte, die dem Projekt `MTS000000 [Intern]` und dem Mitarbeiter mit dem Quokka 
+            Filtert Serviceberichte, die dem Projekt `MTS000000 [Intern]` und dem Mitarbeiter mit dem {{ config('app.name') }} 
             Benutzernamen `aw` zugeordnet sind.
             @endmarkdown
         </div>

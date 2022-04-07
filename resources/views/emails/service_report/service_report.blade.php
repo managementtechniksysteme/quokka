@@ -18,10 +18,10 @@ am {{ $serviceReport->updated_at }}
 
 **Vollbrachte Leistungen**
 @component('mail::table')
-| Datum                       | Stunden               | Diäten                     | gefahrene Kilometer        |
-|:--------------------------- |:--------------------- |:-------------------------- |:-------------------------- |
+| Datum                       | Stunden               | gefahrene Kilometer        |
+|:--------------------------- |:--------------------- |:-------------------------- |
 @foreach($serviceReport->services as $service)
-| {{ $service->provided_on }} | {{ $service->hours }} | {{ $service->allowances }} | {{ $service->kilometres }} |
+| {{ $service->provided_on }} | {{ $service->hours }} | {{ $service->kilometres }} |
 @endforeach
 @endcomponent
 

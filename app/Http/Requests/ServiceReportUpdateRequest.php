@@ -21,7 +21,6 @@ class ServiceReportUpdateRequest extends FormRequest
             'services' => 'required|array|min:1',
             'services.*.provided_on' => 'required|date|distinct',
             'services.*.hours' => 'required|numeric|min:0|multiple_of:0.5',
-            'services.*.allowances' => 'required|numeric|min:0|multiple_of:0.5',
             'services.*.kilometres' => 'required|integer|min:0',
             'remove_attachments' => 'array|nullable',
             'remove_attachments.*' => 'exists:media,id',

@@ -32,7 +32,6 @@ class ServiceReportSignatureRequestMail extends Mailable implements ShouldQueue
         $this->services_min_provided_on = Carbon::parse($serviceReport->services_min_provided_on);
         $this->services_max_provided_on = Carbon::parse($serviceReport->services_max_provided_on);
         $this->services_sum_hours = $serviceReport->services_sum_hours;
-        $this->services_sum_allowances = $serviceReport->services_sum_allowances;
         $this->services_sum_kilometres = $serviceReport->services_sum_kilometres;
     }
 

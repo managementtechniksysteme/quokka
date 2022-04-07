@@ -17,7 +17,6 @@ class ServiceReportDownloadRequestMail extends Mailable implements ShouldQueue
     public $services_min_provided_on;
     public $services_max_provided_on;
     public $services_sum_hours;
-    public $services_sum_allowances;
     public $services_sum_kilometres;
 
     /**
@@ -32,7 +31,6 @@ class ServiceReportDownloadRequestMail extends Mailable implements ShouldQueue
         $this->services_min_provided_on = Carbon::parse($serviceReport->services_min_provided_on);
         $this->services_max_provided_on = Carbon::parse($serviceReport->services_max_provided_on);
         $this->services_sum_hours = $serviceReport->services_sum_hours;
-        $this->services_sum_allowances = $serviceReport->services_sum_allowances;
         $this->services_sum_kilometres = $serviceReport->services_sum_kilometres;
     }
 

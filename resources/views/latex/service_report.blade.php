@@ -13,10 +13,10 @@
 \large{\textbf{Servicebericht Nr. {!! Latex::escape($serviceReport->number) !!}}} \\ \large{\textbf{ {!! Latex::escape($serviceReport->project->name) !!}}}
 \end{minipage}
 \\\\\\
-\begin{tabular}{@{}p{3cm}p{5.5cm}p{3cm}p{5.5cm}@{}}
+\begin{tabular}{@{}p{2.5cm}p{5.5cm}p{2.5cm}p{5.5cm}@{}}
 @if($serviceReport->project->company->address->first())
 \footnotesize{\textbf{Kunde:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->name) !!}} & \footnotesize{\textbf{Betreiber:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->name ?? $serviceReport->project->company->address->first()->name) !!}} \\
-\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->postcode) !!}, {!! Latex::escape($serviceReport->project->company->address->first()->city) !!}} & \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->postcode ?? $serviceReport->project->company->address->first()->postcode) !!}, {!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->city ?? $serviceReport->project->company->address->first()->city) !!}} \\
+\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->postcode) !!} {!! Latex::escape($serviceReport->project->company->address->first()->city) !!}} & \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->postcode ?? $serviceReport->project->company->address->first()->postcode) !!} {!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->city ?? $serviceReport->project->company->address->first()->city) !!}} \\
 \footnotesize{\textbf{Straße, Nr:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->street_number) !!}} & \footnotesize{\textbf{Straße, Nr:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->street_number ?? $serviceReport->project->company->address->first()->street_number) !!}} \\
 &&& \\
 @else
@@ -27,12 +27,12 @@
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}
 \section{Vollbrachte Leistungen}
-\begin{longtable}{@{}|p{3.06cm}|p{3.06cm}|p{3.06cm}|p{3.06cm}|p{3.06cm}|@{}}
-\hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{Diäten} & \footnotesize{gefahrene KM} \\
+\begin{longtable}{@{}|p{3.76cm}|p{3.76cm}|p{3.76cm}|p{3.76cm}|@{}}
+\hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{gefahrene KM} \\
 \hline
 \hline
 @foreach($serviceReport->services as $service)
-{!! Latex::escape($service->provided_on->translatedFormat("l")) !!} & \footnotesize{{!! Latex::escape($service->provided_on) !!}} & \footnotesize{{!! Latex::escape($service->hours) !!}} & \footnotesize{{!! Latex::escape($service->allowances) !!}} & \footnotesize{{!! Latex::escape($service->kilometres) !!}} \\
+{!! Latex::escape($service->provided_on->translatedFormat("l")) !!} & \footnotesize{{!! Latex::escape($service->provided_on) !!}} & \footnotesize{{!! Latex::escape($service->hours) !!}} & \footnotesize{{!! Latex::escape($service->kilometres) !!}} \\
 \hline
 @endforeach
 \caption*{\footnotesize{Stunden inklusive Rückreiseaufwand}}\\

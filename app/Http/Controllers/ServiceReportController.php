@@ -47,7 +47,6 @@ class ServiceReportController extends Controller
             ->withMin('services', 'provided_on')
             ->withMax('services', 'provided_on')
             ->withSum('services', 'hours')
-            ->withSum('services', 'allowances')
             ->withSum('services', 'kilometres')
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
@@ -288,7 +287,6 @@ class ServiceReportController extends Controller
             ->loadMin('services', 'provided_on')
             ->loadMax('services', 'provided_on')
             ->loadSum('services', 'hours')
-            ->loadSum('services', 'allowances')
             ->loadSum('services', 'kilometres');
 
         Mail::to($request->email)->send(new ServiceReportSignatureRequestMail($serviceReport));
@@ -412,7 +410,6 @@ class ServiceReportController extends Controller
             ->loadMin('services', 'provided_on')
             ->loadMax('services', 'provided_on')
             ->loadSum('services', 'hours')
-            ->loadSum('services', 'allowances')
             ->loadSum('services', 'kilometres');
 
         Mail::to($email)->send(new ServiceReportDownloadRequestMail($serviceReport));

@@ -17,8 +17,6 @@
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
                     {{ $serviceReport->services_sum_hours }}
-                    <div class="mx-1">·</div>
-                    {{ $serviceReport->services_sum_allowances }}
                     <svg class="feather feather-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>

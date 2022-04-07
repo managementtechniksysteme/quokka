@@ -12,12 +12,11 @@ class ServiceReportService extends Model
     protected $casts = [
         'provided_on' => 'date',
         'hours' => 'double',
-        'allowances' => 'double',
         'kilometres' => 'double',
     ];
 
     protected $fillable = [
-        'provided_on', 'hours', 'allowances', 'kilometres', 'service_report_id',
+        'provided_on', 'hours', 'kilometres', 'service_report_id',
     ];
 
     protected $orderKeys = [

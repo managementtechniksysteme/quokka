@@ -53,6 +53,36 @@
         </div>
 
         <div class="form-group">
+            <label for="wage_costs">Lohnkosten</label>
+            <div class="input-group">
+                <input type="number" min="0" step="0.1" class="form-control @error('wage_costs') is-invalid @enderror" id="wage_costs" name="wage_costs" placeholder="" value="{{ old('wage_costs', optional($project)->wage_costs) }}" />
+                <div class="input-group-append">
+                    <span class="input-group-text">€</span>
+                </div>
+            </div>
+            <div class="invalid-feedback">
+                @error('wage_costs')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="material_costs">Materialkosten</label>
+            <div class="input-group">
+                <input type="number" min="0" step="0.1" class="form-control @error('material_costs') is-invalid @enderror" id="material_costs" name="material_costs" placeholder="" value="{{ old('material_costs', optional($project)->material_costs) }}" />
+                <div class="input-group-append">
+                    <span class="input-group-text">€</span>
+                </div>
+            </div>
+            <div class="invalid-feedback">
+                @error('material_costs')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="company_id">Firma</label>
             <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}" v-cloak></company-dropdown>
             <div class="invalid-feedback @error('company_id') d-block @enderror">

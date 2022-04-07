@@ -17,7 +17,7 @@ class Project extends Model
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'comment', 'company_id',
+        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'comment', 'company_id',
     ];
 
     protected $filterFields = [
@@ -34,6 +34,10 @@ class Project extends Model
         'default' => ['name'],
         'name-asc' => ['name'],
         'name-desc' => [['name', 'desc']],
+        'material-costs-asc' => ['material_costs'],
+        'material-costs-desc' => [['material_costs', 'desc']],
+        'wage-costs-asc' => ['wage_costs'],
+        'wage-costs-desc' => [['wage_costs', 'desc']],
     ];
 
     public function company()

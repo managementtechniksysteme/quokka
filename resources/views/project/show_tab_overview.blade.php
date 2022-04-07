@@ -34,6 +34,32 @@
             </div>
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col-sm-2">
+            <div class="text-muted d-flex align-items-center">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                </svg>
+                Lohnkosten
+            </div>
+        </div>
+        <div class="col">
+            {{ $project->wage_costs ? '€ ' . $project->wage_costs : 'nicht angegeben' }}
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-2">
+            <div class="text-muted d-flex align-items-center">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                </svg>
+                Materialkosten
+            </div>
+        </div>
+        <div class="col">
+            {{ $project->material_costs ? '€ ' . $project->material_costs :  'nicht angegeben' }}
+        </div>
+    </div>
 
     <div class="text-muted d-flex align-items-center mt-4">
         <svg class="feather feather-16 mr-2">

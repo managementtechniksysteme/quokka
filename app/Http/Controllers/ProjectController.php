@@ -64,9 +64,9 @@ class ProjectController extends Controller
     {
         $validatedData = $request->validated();
 
-        Project::create($validatedData);
+        $project = Project::create($validatedData);
 
-        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich angelegt.');
+        return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich angelegt.');
     }
 
     /**
@@ -124,7 +124,6 @@ class ProjectController extends Controller
                     ->withMin('services', 'provided_on')
                     ->withMax('services', 'provided_on')
                     ->withSum('services', 'hours')
-                    ->withSum('services', 'allowances')
                     ->withSum('services', 'kilometres')
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
@@ -166,7 +165,7 @@ class ProjectController extends Controller
 
         $project->update($validatedData);
 
-        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
+        return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -175,10 +174,32 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Request $request, Project $project)
     {
+        $redirect = $this->getConditionalRedirect($request->redirect, $project);
+
         $project->delete();
 
-        return redirect()->route('projects.index')->with('success', 'Das Projekt wurde erfolgreich entfernt.');
+        return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');
+    }
+
+    private function getConditionalRedirect($target, $project)
+    {
+        switch ($target) {
+            case 'company':
+                $route = 'companies.show';
+                $parameters = ['company' => $project->company, 'tab' => 'projects'];
+                break;
+            case 'show':
+                $route = 'projects.show';
+                $parameters = ['project' => $project];
+                break;
+            default:
+                $route = 'projects.index';
+                $parameters = [];
+                break;
+        }
+
+        return redirect()->route($route, $parameters);
     }
 }

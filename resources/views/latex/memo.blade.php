@@ -10,7 +10,7 @@
 \qrcode[height=1cm]{ {!! Latex::escape(route('memos.show', $memo)) !!} }
 \end{minipage}
 \begin{minipage}{0.93\textwidth}
-\large{\textbf{Aktenvermek Nr. {!! Latex::escape($memo->number) !!}}} \\ \large{\textbf{ {!! Latex::escape($memo->project->name) !!}}}
+\large{\textbf{Aktenvermerk Nr. {!! Latex::escape($memo->number) !!}}} \\ \large{\textbf{ {!! Latex::escape($memo->project->name) !!}}}
 \end{minipage}
 \\\\\\
 \begin{tabular}{@{}lp{13.5cm}@{}}

@@ -24,13 +24,13 @@
                     </svg>
                     Bearbeiten
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.email', $memo) }}">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.email', ['memo' => $memo, 'redirect' => 'show']) }}">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                     </svg>
                     Email versenden
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.download', $memo) }}">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.download', $memo) }}" target="_blank">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                     </svg>
@@ -42,7 +42,7 @@
                     </svg>
                     Favorisieren
                 </a>
-                <form action="{{ route('memos.destroy', $memo) }}" method="post" >
+                <form action="{{ route('memos.destroy', $memo) }}" method="post">
                     @csrf
                     @method('DELETE')
 

@@ -103,7 +103,7 @@ class CompanyController extends Controller
             $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
         }
 
-        return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich angelegt.');
+        return redirect()->route('companies.show', $company)->with('success', 'Die Firma wurde erfolgreich angelegt.');
     }
 
     /**
@@ -214,7 +214,7 @@ class CompanyController extends Controller
             $company->operatorAddress()->detach();
         }
 
-        return redirect()->route('companies.index')->with('success', 'Die Firma wurde erfolgreich bearbeitet.');
+        return redirect()->route('companies.show', $company)->with('success', 'Die Firma wurde erfolgreich bearbeitet.');
     }
 
     /**

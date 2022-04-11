@@ -80,7 +80,7 @@ class PersonController extends Controller
             $person->address()->sync(array_combine([$address->id], $pivotData));
         }
 
-        return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich angelegt.');
+        return redirect()->route('people.show', $person)->with('success', 'Die Person wurde erfolgreich angelegt.');
     }
 
     /**
@@ -147,7 +147,7 @@ class PersonController extends Controller
             $person->address()->detach();
         }
 
-        return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich bearbeitet.');
+        return redirect()->route('people.show', $person)->with('success', 'Die Person wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -156,8 +156,10 @@ class PersonController extends Controller
      * @param  \App\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Person $person)
+    public function destroy(Request $request, Person $person)
     {
+        $redirect = $this->getConditionalRedirect($request->redirect, $person);
+
         $address = $person->address()->withCount('companies')->withCount('people')->first();
 
         $person->address()->detach();
@@ -167,6 +169,26 @@ class PersonController extends Controller
             $address->delete();
         }
 
-        return redirect()->route('people.index')->with('success', 'Die Person wurde erfolgreich entfernt.');
+        return $redirect->with('success', 'Die Person wurde erfolgreich entfernt.');
+    }
+
+    private function getConditionalRedirect($target, $person)
+    {
+        switch ($target) {
+            case 'company':
+                $route = 'companies.show';
+                $parameters = ['company' => $person->company, 'tab' => 'people'];
+                break;
+            case 'show':
+                $route = 'people.show';
+                $parameters = ['person' => $person];
+                break;
+            default:
+                $route = 'people.index';
+                $parameters = [];
+                break;
+        }
+
+        return redirect()->route($route, $parameters);
     }
 }

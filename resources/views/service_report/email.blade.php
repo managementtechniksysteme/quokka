@@ -25,7 +25,7 @@
     </div>
 
     <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('service-reports.email', $serviceReport) }}" method="post" novalidate>
+        <form class="needs-validation mt-4" action="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => request()->redirect]) }}" method="post" novalidate>
             @csrf
 
             <div class="row">

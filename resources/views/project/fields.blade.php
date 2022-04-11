@@ -55,10 +55,10 @@
         <div class="form-group">
             <label for="wage_costs">Lohnkosten</label>
             <div class="input-group">
-                <input type="number" min="0" step="0.1" class="form-control @error('wage_costs') is-invalid @enderror" id="wage_costs" name="wage_costs" placeholder="" value="{{ old('wage_costs', optional($project)->wage_costs) }}" />
-                <div class="input-group-append">
+                <div class="input-group-prepend">
                     <span class="input-group-text">€</span>
                 </div>
+                <input type="number" min="0" step="0.1" class="form-control @error('wage_costs') is-invalid @enderror" id="wage_costs" name="wage_costs" placeholder="" value="{{ old('wage_costs', optional($project)->wage_costs) }}" />
             </div>
             <div class="invalid-feedback">
                 @error('wage_costs')
@@ -70,10 +70,10 @@
         <div class="form-group">
             <label for="material_costs">Materialkosten</label>
             <div class="input-group">
-                <input type="number" min="0" step="0.1" class="form-control @error('material_costs') is-invalid @enderror" id="material_costs" name="material_costs" placeholder="" value="{{ old('material_costs', optional($project)->material_costs) }}" />
-                <div class="input-group-append">
+                <div class="input-group-prepend">
                     <span class="input-group-text">€</span>
                 </div>
+                <input type="number" min="0" step="0.1" class="form-control @error('material_costs') is-invalid @enderror" id="material_costs" name="material_costs" placeholder="" value="{{ old('material_costs', optional($project)->material_costs) }}" />
             </div>
             <div class="invalid-feedback">
                 @error('material_costs')
@@ -114,7 +114,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Projekt"  value="{{ old('comment', optional($project)->comment) }}" v-cloak></vue-easymde>
+            <vue-easymde :configs="{maxHeight: '300px', spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zum Projekt"  value="{{ old('comment', optional($project)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="feather feather-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>

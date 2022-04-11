@@ -67,7 +67,7 @@ class EmployeeController extends Controller
             );
         }
 
-        return redirect()->route('employees.index')->with('success', 'Der Mitarbeiter wurde erfolgreich angelegt.');
+        return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich angelegt.');
     }
 
     /**
@@ -155,7 +155,7 @@ class EmployeeController extends Controller
             ]);
         }
 
-        return redirect()->route('employees.index')->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');
+        return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');
     }
 
     /**

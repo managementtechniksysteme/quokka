@@ -115,7 +115,7 @@ class ServiceReportController extends Controller
         if ($request->send_signature_request) {
             return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         } else {
-            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+            return redirect()->route('service-reports.show', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         }
     }
 
@@ -203,7 +203,7 @@ class ServiceReportController extends Controller
         if ($request->send_signature_request) {
             return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
         } else {
-            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+            return redirect()->route('service-reports.show', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
         }
     }
 
@@ -213,7 +213,7 @@ class ServiceReportController extends Controller
      * @param  \App\ServiceReport  $serviceReport
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ServiceReport $serviceReport)
+    public function destroy(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport->deleteDownloadRequest();
 
@@ -223,7 +223,8 @@ class ServiceReportController extends Controller
         $serviceReport->services()->delete();
         $serviceReport->delete();
 
-        return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich entfernt.');
+        return $this->getConditionalRedirect($request->redirect, $serviceReport)
+            ->with('success', 'Der Servicebericht wurde erfolgreich entfernt.');
     }
 
     public function showEmail(Request $request, ServiceReport $serviceReport)
@@ -263,7 +264,8 @@ class ServiceReportController extends Controller
 
         $mail->send(new ServiceReportMail($serviceReport, $attachments));
 
-        return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich gesendet.');
+        return $this->getConditionalRedirect($request->redirect, $serviceReport)
+            ->with('success', 'Der Servicebericht wurde erfolgreich gesendet.');
     }
 
     public function showEmailSignatureRequest(Request $request, ServiceReport $serviceReport)
@@ -291,7 +293,8 @@ class ServiceReportController extends Controller
 
         Mail::to($request->email)->send(new ServiceReportSignatureRequestMail($serviceReport));
 
-        return redirect()->route('service-reports.index')->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
+        return $this->getConditionalRedirect($request->redirect, $serviceReport)
+            ->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
     public function showSignatureRequest(Request $request, ServiceReport $serviceReport)
@@ -322,9 +325,13 @@ class ServiceReportController extends Controller
         $this->addSignature($serviceReport, $request->signature);
 
         if ($request->send_download_request) {
-            return redirect()->route('service-reports.email-download-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
+            return redirect()
+                ->route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $request->redirect])
+                ->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
         } else {
-            return redirect()->route('service-reports.index')->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
+            return redirect()
+                ->route($this->getRedirectRouteName($request->redirect), $this->getRedirectRouteParameters($request->redirect, $serviceReport))
+                ->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
         }
     }
 
@@ -350,18 +357,6 @@ class ServiceReportController extends Controller
         }
     }
 
-    private function addSignature(ServiceReport $serviceReport, string $signature)
-    {
-        $serviceReport->addSignature($signature);
-
-        $serviceReport->status = 'signed';
-        $serviceReport->save();
-
-        $serviceReport->deleteSignatureRequest();
-
-        event(new ServiceReportSignedEvent($serviceReport));
-    }
-
     public function showEmailDownloadRequest(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
@@ -378,7 +373,8 @@ class ServiceReportController extends Controller
 
         $this->sendDownloadRequest($serviceReport, $request->email);
 
-        return redirect()->route('service-reports.index')->with('success', 'Der Link zum Herunterladen wurde erfolgreich gesendet.');
+        return $this->getConditionalRedirect($request->redirect, $serviceReport)
+            ->with('success', 'Der Link zum Herunterladen wurde erfolgreich gesendet.');
     }
 
     public function customerEmailDownloadRequest(SingleEmailRequest $request, string $token)
@@ -401,20 +397,6 @@ class ServiceReportController extends Controller
         }
     }
 
-    private function sendDownloadRequest(ServiceReport $serviceReport, string $email)
-    {
-        $serviceReport
-            ->load('project')
-            ->load('employee.person')
-            ->load('downloadRequest')
-            ->loadMin('services', 'provided_on')
-            ->loadMax('services', 'provided_on')
-            ->loadSum('services', 'hours')
-            ->loadSum('services', 'kilometres');
-
-        Mail::to($email)->send(new ServiceReportDownloadRequestMail($serviceReport));
-    }
-
     public function download(Request $request, ServiceReport $serviceReport)
     {
         return $this->downloadPDF(@$serviceReport);
@@ -435,6 +417,20 @@ class ServiceReportController extends Controller
         }
     }
 
+    private function sendDownloadRequest(ServiceReport $serviceReport, string $email)
+    {
+        $serviceReport
+            ->load('project')
+            ->load('employee.person')
+            ->load('downloadRequest')
+            ->loadMin('services', 'provided_on')
+            ->loadMax('services', 'provided_on')
+            ->loadSum('services', 'hours')
+            ->loadSum('services', 'kilometres');
+
+        Mail::to($email)->send(new ServiceReportDownloadRequestMail($serviceReport));
+    }
+
     private function downloadPDF(ServiceReport $serviceReport)
     {
         $serviceReport
@@ -448,5 +444,37 @@ class ServiceReportController extends Controller
             ->untilAuxSettles()
             ->view('latex.service_report', ['serviceReport' => $serviceReport])
             ->download('SB '.$serviceReport->project->name.' #'.$serviceReport->number.'.pdf');
+    }
+
+    private function addSignature(ServiceReport $serviceReport, string $signature)
+    {
+        $serviceReport->addSignature($signature);
+
+        $serviceReport->status = 'signed';
+        $serviceReport->save();
+
+        $serviceReport->deleteSignatureRequest();
+
+        event(new ServiceReportSignedEvent($serviceReport));
+    }
+
+    private function getConditionalRedirect($target, $serviceReport)
+    {
+        switch ($target) {
+            case 'project':
+                $route = 'projects.show';
+                $parameters = ['project' => $serviceReport->project, 'tab' => 'service_reports'];
+                break;
+            case 'show':
+                $route = 'service-reports.show';
+                $parameters = ['service_report' => $serviceReport];
+                break;
+            default:
+                $route = 'service-reports.index';
+                $parameters = [];
+                break;
+        }
+
+        return redirect()->route($route, $parameters);
     }
 }

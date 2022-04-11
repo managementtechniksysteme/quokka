@@ -96,7 +96,7 @@ class TaskController extends Controller
 
         event(new TaskCreatedEvent($task));
 
-        return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
+        return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
     }
 
     public function show(Task $task, TaskComment $comment): View
@@ -179,15 +179,16 @@ class TaskController extends Controller
 
         event(new TaskUpdatedEvent($task));
 
-        return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
+        return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
     }
 
-    public function destroy(Task $task): RedirectResponse
+    public function destroy(Request $request, Task $task): RedirectResponse
     {
         $task->involvedEmployees()->detach();
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich entfernt.');
+        return $this->getConditionalRedirect($request->redirect, $task)
+            ->with('success', 'Die Aufgabe wurde erfolgreich entfernt.');
     }
 
     public function showEmail(Request $request, Task $task): View
@@ -222,7 +223,8 @@ class TaskController extends Controller
 
         $mail->send(new TaskMail($task));
 
-        return redirect()->route('tasks.index')->with('success', 'Die Aufgabe wurde erfolgreich gesendet.');
+        return $this->getConditionalRedirect($request->redirect, $task)
+            ->with('success', 'Die Aufgabe wurde erfolgreich gesendet.');
     }
 
     public function download(Request $request, Task $task)
@@ -237,5 +239,25 @@ class TaskController extends Controller
             ->untilAuxSettles()
             ->view('latex.task', ['task' => $task])
             ->download('AU '.$task->name.'.pdf');
+    }
+
+    private function getConditionalRedirect($target, $task)
+    {
+        switch ($target) {
+            case 'project':
+                $route = 'projects.show';
+                $parameters = ['project' => $task->project, 'tab' => 'tasks'];
+                break;
+            case 'show':
+                $route = 'tasks.show';
+                $parameters = ['task' => $task];
+                break;
+            default:
+                $route = 'tasks.index';
+                $parameters = [];
+                break;
+        }
+
+        return redirect()->route($route, $parameters);
     }
 }

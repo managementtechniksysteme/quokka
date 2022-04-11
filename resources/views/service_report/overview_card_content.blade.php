@@ -42,13 +42,13 @@
                         </svg>
                         Bearbeiten
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', $serviceReport) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email senden
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
@@ -61,26 +61,26 @@
                         Favorisieren
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', $serviceReport) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                         </svg>
                         Unterschreiben lassen
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', $serviceReport) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Unterschrift Anfrage sendeen
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', $serviceReport) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                         </svg>
                         Download Link senden
                     </a>
                     <div class="dropdown-divider"></div>
-                    <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post">
+                    <form action="{{ route('service-reports.destroy', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
                         @csrf
                         @method('DELETE')
 

@@ -153,7 +153,7 @@
 
         <div class="mt-3">
             @forelse ($tasks as $task)
-                @component('task.overview_card', [ 'task' => $task ])
+                @component('task.overview_card', [ 'task' => $task, 'actionRedirect' => 'index' ])
                 @endcomponent
 
                 @if(!$loop->last)

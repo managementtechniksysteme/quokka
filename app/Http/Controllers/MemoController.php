@@ -108,7 +108,7 @@ class MemoController extends Controller
 
         event(new MemoCreatedEvent($memo));
 
-        return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
+        return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
     }
 
     /**
@@ -213,7 +213,7 @@ class MemoController extends Controller
 
         event(new MemoUpdatedEvent($memo));
 
-        return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');
+        return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -222,13 +222,14 @@ class MemoController extends Controller
      * @param  \App\Memo  $memo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Memo $memo)
+    public function destroy(Request $request, Memo $memo)
     {
         $memo->presentPeople()->detach();
         $memo->notifiedPeople()->detach();
         $memo->delete();
 
-        return redirect()->route('memos.index')->with('success', 'Die Aktenvermerk wurde erfolgreich entfernt.');
+        return $this->getConditionalRedirect($request->redirect, $memo)
+            ->with('success', 'Die Aktenvermerk wurde erfolgreich entfernt.');
     }
 
     public function showEmail(Request $request, Memo $memo)
@@ -270,7 +271,8 @@ class MemoController extends Controller
 
         $mail->send(new MemoMail($memo, $attachments));
 
-        return redirect()->route('memos.index')->with('success', 'Der Aktenvermerk wurde erfolgreich gesendet.');
+        return $this->getConditionalRedirect($request->redirect, $memo)
+            ->with('success', 'Der Aktenvermerk wurde erfolgreich gesendet.');
     }
 
     public function download(Request $request, Memo $memo)
@@ -279,7 +281,7 @@ class MemoController extends Controller
             ->load('project')
             ->load('employeeComposer')
             ->load('personRecipient')
-            ->load(('presentPeople'))
+            ->load('presentPeople')
             ->load('notifiedPeople');
 
         return (new Latex())
@@ -287,5 +289,25 @@ class MemoController extends Controller
             ->untilAuxSettles()
             ->view('latex.memo', ['memo' => $memo])
             ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
+    }
+
+    private function getConditionalRedirect($target, $memo)
+    {
+        switch ($target) {
+            case 'project':
+                $route = 'projects.show';
+                $parameters = ['project' => $memo->project, 'tab' => 'memos'];
+                break;
+            case 'show':
+                $route = 'memos.show';
+                $parameters = ['memo' => $memo];
+                break;
+            default:
+                $route = 'memos.index';
+                $parameters = [];
+                break;
+        }
+
+        return redirect()->route($route, $parameters);
     }
 }

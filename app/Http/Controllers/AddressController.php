@@ -44,9 +44,9 @@ class AddressController extends Controller
      */
     public function store(AddressStoreRequest $request)
     {
-        Address::create($request->validated());
+        $address = Address::create($request->validated());
 
-        return redirect()->route('addresses.index')->with('success', 'Die Adresse wurde erfolgreich angelegt.');
+        return redirect()->route('addresses.show', $address)->with('success', 'Die Adresse wurde erfolgreich angelegt.');
     }
 
     /**
@@ -82,7 +82,7 @@ class AddressController extends Controller
     {
         $address->update($request->validated());
 
-        return redirect()->route('addresses.index')->with('success', 'Die Adresse wurde erfolgreich bearbeitet.');
+        return redirect()->route('addresses.show', $address)->with('success', 'Die Adresse wurde erfolgreich bearbeitet.');
     }
 
     /**

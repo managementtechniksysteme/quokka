@@ -90,13 +90,13 @@
                         </svg>
                         Bearbeiten
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.email', $task) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email senden
                     </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}" target="_blank">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
@@ -108,7 +108,7 @@
                         </svg>
                         Favorisieren
                     </a>
-                    <form action="{{ route('tasks.destroy', $task) }}" method="post">
+                    <form action="{{ route('tasks.destroy', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
                         @csrf
                         @method('DELETE')
 

@@ -42,7 +42,7 @@
                     </svg>
                     Favorisieren
                 </a>
-                <form action="{{ route('people.destroy', $person) }}" method="post" >
+                <form action="{{ route('people.destroy', ['person' => $person, 'redirect' => $actionRedirect ?? 'index']) }}" method="post" >
                     @csrf
                     @method('DELETE')
 

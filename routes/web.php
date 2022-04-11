@@ -22,6 +22,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserSettingsController;
+use App\Http\Controllers\WageServiceController;
 use App\Http\Controllers\WebpushController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
+
+    Route::resource('material-services', MaterialServiceController::class);
 
     Route::resource('memos', MemoController::class);
     Route::get('/memos/{memo}/download', [MemoController::class, 'download'])->name('memos.download');
@@ -107,6 +111,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/qr-scan', [QrScanController::class, 'index'])->name('qr-scan.index');
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
+
+    Route::resource('wage-services', WageServiceController::class);
 
     Route::post('/webpush', [WebpushController::class, 'store'])->name('webpush.store');
     Route::delete('/webpush', [WebpushController::class, 'destroy'])->name('webpush.destroy');

@@ -125,7 +125,7 @@
 
     <div class="mt-3">
         @forelse ($memos as $memo)
-            @component('memo.overview_card', [ 'memo' => $memo, 'secondaryInformation' => 'withoutProject' ])
+            @component('memo.overview_card', [ 'memo' => $memo, 'secondaryInformation' => 'withoutProject', 'actionRedirect' => 'project' ])
             @endcomponent
 
             @if(!$loop->last)

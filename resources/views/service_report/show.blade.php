@@ -24,13 +24,13 @@
                     </svg>
                     Bearbeiten
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email', $serviceReport) }}">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                     </svg>
                     Email versenden
                 </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                     </svg>
@@ -51,19 +51,19 @@
                 </button>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownCustomerInteractionButton">
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', $serviceReport) }}">
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Unterschreiben lassen
                         </a>
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', $serviceReport) }}">
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Unterschrift Anfrage sendeen
                         </a>
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', $serviceReport) }}">
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                             </svg>

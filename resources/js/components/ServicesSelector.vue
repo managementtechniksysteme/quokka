@@ -45,8 +45,8 @@
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][kilometres]'" :name="'services['+index+'][kilometres]'" :value="service.kilometres" />
 
                         <th scope="row">{{service.provided_on.toLocaleDateString("de")}}</th>
-                        <td>{{service.hours}}</td>
-                        <td>{{service.kilometres}}</td>
+                        <td contenteditable="true" @keydown.enter.prevent @blur="changeServiceHours($event, service)" v-html="service.hours"></td>
+                        <td contenteditable="true" @keydown.enter.prevent @blur="changeServiceKilometres($event, service)" v-html="service.kilometres"></td>
                         <td class="text-right"><button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button></td>
                     </tr>
                 </tbody>
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+    const ERROR_CLASS = "text-red"
+
     export default {
         name: "ServicesSelector",
 
@@ -84,12 +86,12 @@
         methods: {
             addService() {
                 let date = new Date(this.date);
-                let hours = this.hours === null ? 0 : parseFloat(this.hours);
-                let kilometres = this.kilometres === null ? 0 : parseInt(this.kilometres);
+                let hours = this.hours === null ? 0 : Number(this.hours);
+                let kilometres = this.kilometres === null ? 0 : Number(this.kilometres);
 
                 this.provided_on_invalid = isNaN(date.getTime());
-                this.hours_invalid = hours !== 0 && (isNaN(hours) || hours < 0.5);
-                this.kilometres_invalid = kilometres !== 0 && (isNaN(kilometres) || kilometres < 1);
+                this.hours_invalid = Number.isNaN(hours) || hours % 0.5 !== 0 || (hours !== 0 && hours < 0.5); // hours !== 0 && (isNaN(hours) || hours < 0.5);
+                this.kilometres_invalid = !Number.isInteger(kilometres) || (kilometres !== 0 && kilometres < 1); // kilometres !== 0 && (isNaN(kilometres) || kilometres < 1);
 
                 if(this.provided_on_invalid || this.hours_invalid || this.kilometres_invalid) {
                     return;
@@ -130,7 +132,55 @@
                 services.sort((a, b) => {
                     return a.provided_on - b.provided_on;
                 });
-            }
+            },
+
+            changeServiceHours(event, changedService) {
+                this.removeEventTargetErrorIndicator(event.target, ERROR_CLASS);
+
+                let existingService = this.services.find(service => service.provided_on.getDate() === changedService.provided_on.getDate());
+
+                existingService.hours = event.target.innerText;
+
+                let hours = Number(event.target.innerText);
+
+                if(!Number.isNaN(hours)) {
+                    existingService.hours = hours;
+                }
+
+                if(Number.isNaN(hours) || hours % 0.5 !== 0 || (hours !== 0 && hours < 0.5)) {
+                    this.addEventTargetErrorIndicator(event.target, ERROR_CLASS);
+                }
+            },
+
+            changeServiceKilometres(event, changedService) {
+                this.removeEventTargetErrorIndicator(event.target, ERROR_CLASS);
+
+                let existingService = this.services.find(service => service.provided_on.getDate() === changedService.provided_on.getDate());
+
+                existingService.kilometres = event.target.innerText;
+
+                let kilometres = Number(event.target.innerText);
+
+                if(!Number.isNaN(kilometres)) {
+                    existingService.kilometres = kilometres;
+                }
+
+                if(!Number.isInteger(kilometres) || (kilometres !== 0 && kilometres < 1)) {
+                    this.addEventTargetErrorIndicator(event.target, ERROR_CLASS);
+                }
+            },
+
+            addEventTargetErrorIndicator(target, class_name) {
+                if(!target.classList.contains(class_name)) {
+                    target.classList.add(class_name);
+                }
+            },
+
+            removeEventTargetErrorIndicator(target, class_name) {
+                if(target.classList.contains(class_name)) {
+                    target.classList.remove(class_name);
+                }
+            },
         },
 
         props: {

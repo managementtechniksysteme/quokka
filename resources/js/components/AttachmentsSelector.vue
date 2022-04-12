@@ -98,8 +98,6 @@
             changeNewAttachmentName(event, value) {
                 var file_name = event.target.innerText.replace(/(\r\n|\n|\r)/gm, "");
 
-                console.log(file_name);
-
                 if(file_name === '' || file_name === value.extension) {
                     event.target.innerHTML = value.file_name;
                     return;

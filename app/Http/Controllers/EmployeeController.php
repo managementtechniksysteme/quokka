@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\HolidayAllowanceAdjustedEvent;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\ApplicationSettings;
@@ -118,6 +119,8 @@ class EmployeeController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldHolidayAllowance = $employee->holidays;
+
         $employee->update($validatedData);
 
         $user = $employee->user;
@@ -153,6 +156,10 @@ class EmployeeController extends Controller
             $user->settings->update([
                 'avatar_colour' => UserSettings::avatarColourFromHex($request->avatar_colour)['label'],
             ]);
+        }
+
+        if($employee->holidays !== $oldHolidayAllowance) {
+            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays));
         }
 
         return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');

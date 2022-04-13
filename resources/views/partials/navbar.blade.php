@@ -79,7 +79,7 @@
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>
-                            Stunden
+                            Abrechnung
                         </a>
                     </li>
 

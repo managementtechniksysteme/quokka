@@ -1,13 +1,18 @@
 @extends('application_settings.edit')
 
 @php
-    use \App\Models\ApplicationSettings;
-    use \App\Models\Company;
-    use \App\Models\Person;
+    use App\Models\ApplicationSettings;
+    use App\Models\Company;
+    use App\Models\Person;
+    use App\Models\WageService
 @endphp
 
 @if (old('company_id'))
     @php $currentCompany = Company::find(old('company_id')); @endphp
+@endif
+
+@if (old('holiday_service_id'))
+    @php $currentHolidayService = WageService::find(old('holiday_service_id')); @endphp
 @endif
 
 @if (old('signature_notify_user_id'))
@@ -43,7 +48,6 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col">
                 <div class="form-group">
@@ -58,7 +62,59 @@
             </div>
         </div>
 
+        <div class="row mt-4">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
+                    </svg>
+                    Automatische Anpassung sowie Gutschreibung von Urlaub
+                </p>
+            </div>
+        </div>
+
         <div class="row">
+            <div class="col">
+                <div class="alert alert-info mt-1" role="alert">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="feather feather-24 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                        </svg>
+                        Diese Einstellungen sind erforderlich, um verfügbaren Urlaub von Mitarbeitern automatisch
+                        basierend auf Abrechnungen anzupassen sowie das jährliche Urlaubspensum am Eintrittstag
+                        gutzuschreiben.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="holiday_service_id">Urlaubsleistung</label>
+                    <service-dropdown inputname="holiday_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentHolidayService ?? 'null' }}" v-cloak></service-dropdown>
+                    <div class="invalid-feedback @error('holiday_service_id') d-block @enderror">
+                        @error('holiday_service_id')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="holiday_yearly_allowance">Jährlich gutzuschreibende Urlaubsmenge</label>
+                    <input type="number" min="1" class="form-control @error('holiday_yearly_allowance') is-invalid @enderror" id="holiday_yearly_allowance" name="holiday_yearly_allowance" placeholder="25" value="{{ old('holiday_yearly_allowance', ApplicationSettings::get()->holiday_yearly_allowance) }}" />
+                    <div class="invalid-feedback @error('holiday_yearly_allowance') d-block @enderror">
+                        @error('holiday_yearly_allowance')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
                     <svg class="feather feather-16 mr-2">
@@ -98,7 +154,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
                     <svg class="feather feather-16 mr-2">

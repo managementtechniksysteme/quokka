@@ -199,5 +199,7 @@ return [
         'avatar_colour'                   => 'Avatar Farbe',
         'show finished items'             => 'Anzeige von erledigten Elementen',
         'task_comments_sort_newest_first' => 'Sortierreiehenfolge von Kommentaren',
+        'holiday_service_id'              => 'Urlaubsleistung',
+        'holiday_yearly_allowance'        => 'Jährliche gutgeschriebener Urlaub',
     ],
 ];

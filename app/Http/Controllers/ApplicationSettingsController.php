@@ -6,6 +6,7 @@ use App\Http\Requests\ApplicationSettingsUpdateGeneralRequest;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\Person;
+use App\Models\WageService;
 use Illuminate\Http\Request;
 
 class ApplicationSettingsController extends Controller
@@ -17,6 +18,9 @@ class ApplicationSettingsController extends Controller
                 $currentCompany = ApplicationSettings::get()->company ?? null;
                 $companies = Company::order()->get();
 
+                $currentHolidayService = ApplicationSettings::get()->holidayService ?? null;
+                $wageServices = WageService::order()->get();
+
                 $currentSignatureNotifyPerson = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
                 $userPeople = Person::whereHas('employee', function ($query) {
                     return $query->has('user');
@@ -25,6 +29,8 @@ class ApplicationSettingsController extends Controller
                 return view('application_settings.edit_general')
                     ->with('currentCompany', $currentCompany)
                     ->with('companies', $companies->toJson())
+                    ->with('currentHolidayService', $currentHolidayService)
+                    ->with('wageServices', $wageServices->toJson())
                     ->with('currentSignatureNotifyPerson', $currentSignatureNotifyPerson)
                     ->with('userPeople', $userPeople->toJson());
             default:
@@ -39,6 +45,11 @@ class ApplicationSettingsController extends Controller
         $settings = ApplicationSettings::firstOrCreate();
 
         $settings->update($validatedData);
+
+        if(!$request->filled('holiday_service_id')) {
+            $settings->holidayService()->disassociate();
+            $settings->save();
+        }
 
         return redirect()->route('application-settings.edit', ['tab' => 'general'])->with('success', 'Die Einstellungen erfolgreich bearbeitet.');
     }

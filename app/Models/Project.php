@@ -59,4 +59,9 @@ class Project extends Model
     {
         return $this->hasMany(ServiceReport::class);
     }
+
+    public function accounting()
+    {
+        return $this->hasMany(Accounting::class);
+    }
 }

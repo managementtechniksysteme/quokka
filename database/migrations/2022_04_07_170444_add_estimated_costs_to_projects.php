@@ -8,17 +8,31 @@ class AddEstimatedCostsToProjects extends Migration
 {
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->double('material_costs')->after('ends_on')->nullable();
-            $table->double('wage_costs')->after('material_costs')->nullable();
-        });
+        if (!Schema::hasColumn('projects', 'material_costs')) {
+            Schema::table('projects', function (Blueprint $table) {
+                $table->double('material_costs')->after('ends_on')->nullable();
+            });
+        }
+
+        if (!Schema::hasColumn('projects', 'wage_costs')) {
+            Schema::table('projects', function (Blueprint $table) {
+                $table->double('wage_costs')->after('material_costs')->nullable();
+            });
+        }
     }
 
     public function down()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('material_costs');
-            $table->dropColumn('wage_costs');
-        });
+        if (Schema::hasColumn('projects', 'material_costs')) {
+            Schema::table('projects', function (Blueprint $table) {
+                $table->dropColumn('material_costs');
+            });
+        }
+
+        if (Schema::hasColumn('projects', 'wage_costs')) {
+            Schema::table('projects', function (Blueprint $table) {
+                $table->dropColumn('wage_costs');
+            });
+        }
     }
 }

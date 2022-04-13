@@ -108,6 +108,8 @@
                     <div class="invalid-feedback @error('holiday_yearly_allowance') d-block @enderror">
                         @error('holiday_yearly_allowance')
                             {{ $message }}
+                        @else
+                            Jährlich gutzuschreibende Urlaubsmenge muss mindestens 1 sein.
                         @enderror
                     </div>
                 </div>

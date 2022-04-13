@@ -18,6 +18,10 @@ class WageService extends Model
         'type' => 'wage',
     ];
 
+    protected $appends = [
+        'name_with_unit',
+    ];
+
     protected $fillable = [
         'name', 'description', 'unit', 'costs',
     ];
@@ -37,6 +41,11 @@ class WageService extends Model
     public function accounting()
     {
         return $this->hasMany(Accounting::class);
+    }
+
+    public function getNameWithUnitAttribute()
+    {
+        return "{$this->name} ({$this->unit})";
     }
 
     protected static function booted()

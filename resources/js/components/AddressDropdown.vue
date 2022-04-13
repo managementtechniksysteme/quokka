@@ -2,7 +2,7 @@
     <div>
         <input v-if="selected" type="hidden" :id="input_name" :name="input_name" :value="selected.id" />
         <v-select :options="addresses" label="address_line" placeholder="Addresse auswählen" :value="selected" @input="setSelected">
-            <template slot="option" slot-scope="option">
+            <template v-slot:option="option">
                 <span class="text-muted">{{ option.name }}</span> <br />
                 {{ option.address_line }}
             </template>

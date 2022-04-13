@@ -1,7 +1,7 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" :id="inputname" :name="inputname"  :value="selected.id" />
-        <v-select :options="services" label="name" placeholder="Leistung auswählen" :value="selected" @input="setSelected"></v-select>
+        <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="selected" @input="setSelected"></v-select>
     </div>
 </template>
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Accounting extends Model
 {
@@ -46,5 +47,30 @@ class Accounting extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function scopeFilter($query, $params = null)
+    {
+        if (isset($params['start'])) {
+            $query = $query->whereDate('service_provided_on', '>=', $params['start']);
+        }
+
+        if (isset($params['end'])) {
+            $query = $query->whereDate('service_provided_on', '<=', $params['end']);
+        }
+
+        if (isset($params['project_id'])) {
+            $query = $query->where('project_id', $params['project_id']);
+        }
+
+        if (isset($params['service_id'])) {
+            $query = $query->where('service_id', $params['service_id']);
+        }
+
+        if (isset($params['only_own'])) {
+            $query = $query->where('employee_id', Auth::user()->employee_id);
+        }
+
+        return $query;
     }
 }

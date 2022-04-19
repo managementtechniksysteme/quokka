@@ -18,7 +18,7 @@
                             </svg>
                             Firmen
                         </a>
-                        <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret h-20"></span>
                         </a>
 
@@ -54,7 +54,7 @@
                             </svg>
                             Aufgaben
                         </a>
-                        <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret h-20"></span>
                         </a>
 
@@ -75,7 +75,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="#">
+                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('accounting.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>
@@ -108,7 +108,7 @@
                             </svg>
                             Einstellungen
                         </a>
-                        <a id="navbarSettingssDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="navbarSettingssDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret h-20"></span>
                         </a>
 
@@ -135,7 +135,7 @@
                             </svg>
                             Hilfe
                         </a>
-                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret h-20"></span>
                         </a>
 

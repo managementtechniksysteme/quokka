@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input v-if="selected" type="hidden" :id="input_name" :name="input_name" :value="selected.id" />
+        <input v-if="selected" type="hidden" :id="inputname" :name="inputname" :value="selected.id" />
         <v-select :options="addresses" label="address_line" placeholder="Addresse auswählen" :value="selected" @input="setSelected">
             <template v-slot:option="option">
                 <span class="text-muted">{{ option.name }}</span> <br />
@@ -27,22 +27,24 @@
         },
 
         props: {
+            inputname: {
+                type: String,
+                default() {
+                    return 'address_id';
+                }
+            },
+
             addresses: {
                 type: Array,
                 default() {
                     return [];
                 }
             },
+
             current_address: {
                 type: Object,
                 default() {
                     return null;
-                }
-            },
-            input_name: {
-                type: Array,
-                default() {
-                    return 'address_id';
                 }
             },
         }

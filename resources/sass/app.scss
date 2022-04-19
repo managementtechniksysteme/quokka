@@ -26,6 +26,11 @@
 // Vue: wait for components to fully load before showing content
 [v-cloak] {display: none}
 
+// Always show scroll bars to avoid content shifting
+body {
+    overflow-y: scroll;
+}
+
 // Fixes for EasyMDE (hide editor preview in edit mode, smaller toolbar)
 .CodeMirror > .editor-preview {
   display: none;
@@ -66,6 +71,14 @@
   margin-top: 0;
   margin-left: 0;
   padding-left: 0;
+}
+
+// Small vue select
+.dropdown-sm > .vs__dropdown-toggle {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+  padding: 0.25rem 0.5rem  !important;
+  font-size: 0.7875rem  !important;
+  line-height: 1.5  !important;
 }
 
 // Feather icons
@@ -149,8 +162,27 @@ button.dropdown-item-delete:active {
   background-color: $danger !important;
 }
 
+// Checkbox toggle buttons
+button.checkboxtoggle:focus,
+button.checkboxtoggle:active {
+    box-shadow:none !important;
+    outline:0px !important;
+}
+
+// Checkbox toggle buttons
+button.outline-none:focus,
+button.outline-none:active {
+    box-shadow:none !important;
+    outline:0px !important;
+}
+
+button.checkboxtoggle:hover {
+    color: $blue-500 !important;
+}
+
+
 // No link outlines (e.g. quick menu dropdowns)
-.outline-none {
+a.outline-none {
   outline: none;
 }
 
@@ -263,4 +295,20 @@ button.dropdown-item-delete:active {
 
 .z-10 {
     z-index: 10;
+}
+
+.col-1-5 {
+    flex: 0 0 12.3%;
+    max-width: 12.3%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.collapse-enter-active, .collapse-leave-active {
+    transition: opacity .5s;
+}
+.collapse-enter, .collapse-leave-to {
+    opacity: 0
 }

@@ -11,6 +11,7 @@ class UserSettings extends Model
         'list_pagination_size' => 'int',
         'show_finished_items' => 'bool',
         'task_comments_sort_newest_first' => 'bool',
+        'accounting_expand_errors' => 'bool',
     ];
 
     protected $fillable = [
@@ -19,6 +20,7 @@ class UserSettings extends Model
         'list_pagination_size',
         'show_finished_items',
         'task_comments_sort_newest_first',
+        'accounting_expand_errors',
     ];
 
     protected $primaryKey = 'user_id';

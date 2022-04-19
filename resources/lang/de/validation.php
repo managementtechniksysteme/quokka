@@ -201,5 +201,9 @@ return [
         'task_comments_sort_newest_first' => 'Sortierreiehenfolge von Kommentaren',
         'holiday_service_id'              => 'Urlaubsleistung',
         'holiday_yearly_allowance'        => 'Jährliche gutgeschriebener Urlaubsmenge',
+        'service_provided_on'             => 'Datum',
+        'service_provided_started_at'     => 'Start',
+        'service_provided_ended_at'       => 'Ende',
+        'service_id'                      => 'Leistung',
     ],
 ];

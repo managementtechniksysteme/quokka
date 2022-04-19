@@ -11,6 +11,30 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.6-5d10293 (19.04.2022)
+        * Leistungsverzeichnisse wurden implementiert. Diese sind aufgeteilt in Materialleistungen sowie
+        Lohndienstleistungen mit extra Feldern für Einheit und Kosten pro Einheit.
+        * Projekten können nun erwartete Lohn- sowie Materialkosten hinzugefügt werden.
+        * Die Abrechnung zum Buchen von Leistungen auf Projekte wurde implementiert.
+        * Leistungsbuchungen können basierend auf Datum, Projekt, Leistung sowie Mitarbeiter gefiltert werden.
+        * Neue Leistungenbuchungen können über ein Formular hinzugefügt werden.
+        * Leistungsbuchungen sind in der angezeigten Tabelle bearbeitbar, mittles Knopfdruck löschbar oder
+        von de Löschung wiederherstellbar.
+        * Mehrere oder alle Leistungsbuchungen können selektiert werden um Lösch- oder Wiederherstellungsfunktionen
+        auf alle selektierten Zeilen anzuwenden.
+        * Probleme mit Eingaben werden visuell angezeigt. Durch ein Klick auf das Warnsymbol am linken Rand werden
+        Details zu Problemen mit einer Zeile aufgeklappt.
+        * In der Detailansicht befinden sich ebenfalls die Bemerkungen. Gibt es keine Probleme mit einer Zeile, kann
+        die Zeile durch Klick auf den Pfeil links aufgeklappt werden.
+        * Per Default werden beim Speichern von Änderungen werden alle Zeilen mit Problemen aufgeklappt, um Hinweise
+        anzuzeigen. Dieses Verhalten kann durch eine Benutzereinstellung geändert werden.
+        * Eine Einstellung zur Urlaubsleistung wurde in den allgemeinen Applikationseinstellungen implementiert. Dadurch
+        wird bei der Buchung von Urlaub der verfügbare Urlaub des jeweiligen Mitarbeiters automatisch angepasst. Am Tag
+        des Eintrittsdatums wird einmal jährlich die Urlaubsmenge um die in den Einstellungen gepseicherte Menge
+        erhöht.
+        @endmarkdown
+
+        @markdown
         ### v0.1.5-b85c62a (29.01.2021)
         * Anhänge von Aktenvermerke und Serviceberichten werden per Email mitversendet, falls ausgewählt. Per Default
         sind alle Anhänge zum Versand vorgemerkt. Anhänge sind einzeln an- oder abwählbar.

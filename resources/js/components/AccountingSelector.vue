@@ -354,6 +354,17 @@
                     });
                 });
             }
+
+            else if(this.show_days > 0) {
+                let today = new Date();
+                let date = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000);
+                
+                date.setDate(date.getDate() - this.show_days)
+
+                this.filter_start = this.getDateStringForInputField(date);
+
+                this.filterData();
+            }
         },
 
         methods: {
@@ -938,6 +949,13 @@
                 type: Boolean,
                 default() {
                     return true;
+                }
+            },
+
+            show_days: {
+                type: Number,
+                default() {
+                    return 3;
                 }
             }
         }

@@ -16,7 +16,6 @@ class AccountingController extends Controller
 {
     public function index(AccountingIndexRequest $request)
     {
-        //dd($request->only_own);
         if($request->ajax()) {
             $currentAccounting = Accounting::filter($request->validated())->order()->get();
 

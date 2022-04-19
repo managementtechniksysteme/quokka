@@ -1,22 +1,17 @@
 <template>
     <div>
-        <input v-if="selected" type="hidden" :id="inputname" :name="inputname" :value="selected.id" />
-        <v-select :options="addresses" label="address_line" placeholder="Addresse auswählen" :value="selected" @input="setSelected">
-            <template v-slot:option="option">
-                <span class="text-muted">{{ option.name }}</span> <br />
-                {{ option.address_line }}
-            </template>
-        </v-select>
+        <input v-if="selected" type="hidden" :id="inputname" :name="inputname"  :value="selected.id" />
+        <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="selected" @input="setSelected"></v-select>
     </div>
 </template>
 
 <script>
     export default {
-        name: "AddressDropdown",
+        name: "ServiceDropdown",
 
         data() {
             return {
-                selected: this.current_address,
+                selected: this.current_service,
             }
         },
 
@@ -30,23 +25,21 @@
             inputname: {
                 type: String,
                 default() {
-                    return 'address_id';
+                    return 'service_id';
                 }
             },
-
-            addresses: {
+            services: {
                 type: Array,
                 default() {
                     return [];
                 }
             },
-
-            current_address: {
+            current_service: {
                 type: Object,
                 default() {
                     return null;
                 }
-            },
+            }
         }
 
     }

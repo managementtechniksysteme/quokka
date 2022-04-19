@@ -54,13 +54,18 @@ class Employee extends Model
         return $this->morphedByMany(Task::class, 'employeeable', null, 'employee_id', 'employeeable_id')->wherePivot('employee_type', 'involved');
     }
 
+    public function taskComments()
+    {
+        return $this->hasMany(TaskComment::class, 'employee_id');
+    }
+
     public function composedMemos()
     {
         return $this->hasMany(Memo::class);
     }
 
-    public function taskComments()
+    public function accounting()
     {
-        return $this->hasMany(TaskComment::class, 'employee_id');
+        return $this->hasMany(Accounting::class, 'employee_id');
     }
 }

@@ -7,6 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import AccountingSelector from './components/AccountingSelector';
 import AddressDropdown from './components/AddressDropdown';
 import AttachmentsSelector from './components/AttachmentsSelector';
 import AvatarColourSelector from './components/AvatarColourSelector';
@@ -17,8 +18,9 @@ import Notification from './components/Notification';
 import PeopleSelector from './components/PeopleSelector';
 import PersonDropdown from './components/PersonDropdown';
 import ProjectDropdown from "./components/ProjectDropdown";
-import ServiceUnitDropdown from "./components/ServiceUnitDropdown";
+import ServiceDropdown from "./components/ServiceDropdown";
 import ServicesSelector from "./components/ServicesSelector";
+import ServiceUnitDropdown from "./components/ServiceUnitDropdown";
 import SignaturePad from "./components/SignaturePad";
 import QrScanner from "./components/QrScanner";
 import WebpushManager from "./components/WebpushManager";
@@ -40,6 +42,7 @@ import VueQrcodeReader from "vue-qrcode-reader";
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.component('accounting-selector', AccountingSelector);
 Vue.component('address-dropdown', AddressDropdown);
 Vue.component('attachments-selector', AttachmentsSelector);
 Vue.component('avatar-colour-selector', AvatarColourSelector);
@@ -50,6 +53,7 @@ Vue.component('notification', Notification);
 Vue.component('people-selector', PeopleSelector);
 Vue.component('person-dropdown', PersonDropdown);
 Vue.component('project-dropdown', ProjectDropdown);
+Vue.component('service-dropdown', ServiceDropdown);
 Vue.component("services-selector", ServicesSelector);
 Vue.component("service-unit-dropdown", ServiceUnitDropdown);
 Vue.component('signature-pad', SignaturePad);

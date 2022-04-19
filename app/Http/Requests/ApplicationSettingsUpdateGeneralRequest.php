@@ -16,6 +16,8 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
     {
         return [
             'company_id' => 'required|exists:companies,id',
+            'holiday_service_id' => 'required_with:holiday_yearly_allowance|exists:App\Models\WageService,id',
+            'holiday_yearly_allowance' => 'integer|min:1|nullable',
             'signature_notify_user_id' => 'exists:users,employee_id|nullable',
             'task_due_soon_days' => 'required|integer|min:1',
         ];

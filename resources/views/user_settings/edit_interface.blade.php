@@ -110,6 +110,45 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1 mt-4">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                    </svg>
+                    Automatisches Anzeigen von Problemen bei der Abrechnung
+                </p>
+                <p class="text-muted">
+                    Hier kann eingestellt werden, ob Zeilen in der Tabelle auf der Abrechnungsseite automatisch
+                    aufgeklappt werden. Dies ermöglicht, Probleme mit der jeweiligen Zeile beim Speichern rasch zu
+                    einzusehen.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <div>
+                        <label for="accounting_expand_errors">Automatisches Anzeigen von Fehlern</label>
+                    </div>
+                    <div class="btn-group btn-group-toggle @error('accounting_expand_errors') is-invalid @enderror" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == true) active @endif">
+                            <input type="radio" name="accounting_expand_errors" id="1" value="1" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == true) checked @endif> Probleme automatisch anzeigen
+                        </label>
+                        <label class="btn btn-outline-secondary @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == false) active @endif">
+                            <input type="radio" name="accounting_expand_errors" id="0" value="0" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == false) checked @endif> Probleme nicht automatisch anzeigen
+                        </label>
+                    </div>
+                    <div class="invalid-feedback @error('accounting_expand_errors') d-block @enderror">
+                        @error('accounting_expand_errors')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mt-4">
             <div class="col">
                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center">

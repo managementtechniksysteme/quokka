@@ -39,7 +39,7 @@
 @if($task->comments->count() > 0)
 \section{Kommentare}
 @foreach($task->comments as $comment)
-\subsection{\footnotesize{{!! Latex::escape($comment->employee->person->name) !!}} am {!! Latex::escape($comment->created_at) !!}}
+\subparagraph{{!! Latex::escape($comment->employee->person->name) !!} am {!! Latex::escape($comment->created_at) !!}}
 \footnotesize{{!! Latex::fromMarkdown($comment->comment) !!}}
 @endforeach
 @endif

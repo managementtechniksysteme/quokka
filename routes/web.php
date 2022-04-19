@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AddressController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +15,8 @@ use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
 use App\Http\Controllers\Auth\SecondFactorController;
+use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
@@ -60,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('/home', [HomeController::class, 'post']);
+
+    Route::resource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('addresses', AddressController::class);
     Route::resource('companies', CompanyController::class);

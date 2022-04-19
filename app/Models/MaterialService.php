@@ -34,6 +34,11 @@ class MaterialService extends Model
         'name-desc' => [['name', 'desc']],
     ];
 
+    public function accounting()
+    {
+        return $this->hasMany(Accounting::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope('type', function (Builder $builder) {

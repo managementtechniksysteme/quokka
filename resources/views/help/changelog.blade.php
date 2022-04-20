@@ -10,7 +10,6 @@
     </div>
 
     <div class="container my-4">
-        e251193
         @markdown
         ### v0.1.9-e251193 (20.04.2022)
         * Falls beim Hinzufügen oder Bearbeiten von Leistungsabrechnungen zwei der drei Werte Start, Ende und Menge

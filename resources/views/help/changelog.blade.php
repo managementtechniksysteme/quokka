@@ -11,6 +11,12 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.7-e345043 (20.04.2022)
+        * Ein Fehler beim Setzen von Stunden in der Tabelle bei Serviceberichten auf 0 wurde behoben.
+        * Die Darstellung von Buttons zur Anzeige von Details und Problemen in der Abrechnungstabelle wurde analog
+        zur Selektierung von Zeilen angepasst.
+        @endmarkdown
+        @markdown
         ### v0.1.6-5d10293 (19.04.2022)
         * Leistungsverzeichnisse wurden implementiert. Diese sind aufgeteilt in Materialleistungen sowie
         Lohndienstleistungen mit extra Feldern für Einheit und Kosten pro Einheit.

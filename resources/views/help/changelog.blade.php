@@ -10,6 +10,16 @@
     </div>
 
     <div class="container my-4">
+        e251193
+        @markdown
+        ### v0.1.9-e251193 (20.04.2022)
+        * Falls beim Hinzufügen oder Bearbeiten von Leistungsabrechnungen zwei der drei Werte Start, Ende und Menge
+        angegeben werden und der dritte Werte noch nicht gesetzt ist, wird dieser automatisch berechnet. Dies
+        funktioniert für Leistungen mit der Mengeneinheit Stunden (h). Die Menge wird dabei auf die maximal mögliche
+        halbe Stunde gesetzt, welche in den Zeitraum passt (z.B. wenn für Start `10:30` und Ende `12:15` eingegeben ist,
+        dann wird für die Menge ein Wert von `1.5` gesetzt.
+        @endmarkdown
+
         @markdown
         ### v0.1.8-95f3390 (20.04.2022)
         * Eine Benutzereinstellung für die Anzahl der vergangenen Tage, welche standardmäßig beim Abrechnungsftiler

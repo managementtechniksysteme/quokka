@@ -50,11 +50,11 @@
                         </th>
                         <td class="col-2" @click="setEdit(service, 'hours')">
                             <span v-if="service.edit !== 'hours'">{{ service.hours }}</span>
-                            <input v-if="service.edit === 'hours'" type="number" min="0.5" step="0.5" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_hours_invalid}" ref="table_input" id="table_hours" name="table_hours" :value="service.hours" placeholder="5" @blur="changeServiceHours($event, service)" />
+                            <input v-if="service.edit === 'hours'" type="number" min="0" step="0.5" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_hours_invalid}" ref="table_input" id="table_hours" name="table_hours" :value="service.hours" placeholder="5" @blur="changeServiceHours($event, service)" />
                         </td>
                         <td class="col-3 col-lg-5" @click="setEdit(service, 'kilometres')">
                             <span v-if="service.edit !== 'kilometres'">{{ service.kilometres }}</span>
-                            <input v-if="service.edit === 'kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_kilometres_invalid}" ref="table_input" id="table_kilometres" name="table_kilometres" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
+                            <input v-if="service.edit === 'kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_kilometres_invalid}" ref="table_input" id="table_kilometres" name="table_kilometres" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
                         </td>
                         <td class="col-auto text-right"><button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button></td>
                     </tr>
@@ -169,7 +169,7 @@
             changeServiceHours(event, changedService) {
                 let hours = Number(event.target.value);
 
-                if(Number.isNaN(hours) || hours % 0.5 !== 0 || hours < 0.5) {
+                if(Number.isNaN(hours) || hours % 0.5 !== 0 || (hours !== 0 && hours < 0.5)) {
                     this.table_hours_invalid = true;
                     return;
                 }
@@ -181,11 +181,6 @@
 
             changeServiceKilometres(event, changedService) {
                 let kilometres = Number(event.target.value);
-
-                console.log(Number.isInteger(event.target.value));
-                console.log(Number.isNaN(event.target.value));
-                console.log(Number.isInteger(kilometres));
-                console.log(Number.isNaN(kilometres));
 
                 if(!Number.isInteger(kilometres) || (kilometres !== 0 && kilometres < 1)) {
                     this.table_kilometres_invalid = true;

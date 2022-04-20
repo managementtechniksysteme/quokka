@@ -132,8 +132,8 @@
                   <thead>
                       <tr>
                           <th scope="col" class="col-auto">
-                              <button type="button" class="btn btn-sm outline-none" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
-                                  <svg class="feather feather-16" v-bind:class="{'text-danger': getErrorAccounting().length}">
+                              <button type="button" class="btn btn-sm outline-none" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
+                                  <svg class="feather feather-16">
                                       <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                   </svg>
                               </button>
@@ -174,15 +174,11 @@
                       <template v-for="acc in accounting">
                           <tr v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                               <td class="col-auto">
-                                  <button type="button" class="btn btn-sm outline-none" @click="toggleShowDetails(acc)">
-                                      <svg v-if="!acc.errors && !acc.show_details" class="feather feather-16">
-                                          <use xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
-                                      </svg>
-                                      <svg v-if="acc.errors && !acc.show_details" class="feather feather-16 text-danger">
-                                          <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                                      </svg>
-                                      <svg v-if="acc.show_details" class="feather feather-16" v-bind:class="{'text-danger': acc.errors}">
-                                          <use xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
+                                  <button type="button" class="btn btn-sm outline-none" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
+                                      <svg class="feather feather-16">
+                                          <use v-if="!acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
+                                          <use v-if="acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                                          <use v-if="acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
                                       </svg>
                                   </button>
                               </td>
@@ -222,13 +218,13 @@
                                           <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                       </svg>
                                   </button>
-                                  <button v-if="!acc.selected" type="button" class="btn btn-sm checkboxtoggle text-blue-100" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                  <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
                                       <svg class="feather feather-16">
                                           <use v-if="!acc.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                           <use v-if="acc.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                       </svg>
                                   </button>
-                                  <button v-if="acc.selected" type="button" class="btn btn-sm checkboxtoggle text-blue-500" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                  <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
                                       <svg class="feather feather-16">
                                           <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                       </svg>
@@ -358,7 +354,7 @@
             else if(this.show_days > 0) {
                 let today = new Date();
                 let date = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000);
-                
+
                 date.setDate(date.getDate() - this.show_days)
 
                 this.filter_start = this.getDateStringForInputField(date);

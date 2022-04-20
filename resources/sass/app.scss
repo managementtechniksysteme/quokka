@@ -162,24 +162,27 @@ button.dropdown-item-delete:active {
   background-color: $danger !important;
 }
 
-// Checkbox toggle buttons
-button.checkboxtoggle:focus,
-button.checkboxtoggle:active {
-    box-shadow:none !important;
-    outline:0px !important;
-}
-
-// Checkbox toggle buttons
+// No outline buttons
 button.outline-none:focus,
 button.outline-none:active {
     box-shadow:none !important;
     outline:0px !important;
 }
 
+// Checkbox toggle buttons
 button.checkboxtoggle:hover {
     color: $blue-500 !important;
 }
 
+// Details toggle buttons
+button.detailstoggle:hover {
+    color: $dark !important;
+}
+
+// Errors toggle buttons
+button.errorstoggle:hover {
+    color: $red-500 !important;
+}
 
 // No link outlines (e.g. quick menu dropdowns)
 a.outline-none {
@@ -306,6 +309,7 @@ a.outline-none {
     padding-left: 15px;
 }
 
+// Collapse animation
 .collapse-enter-active, .collapse-leave-active {
     transition: opacity .5s;
 }

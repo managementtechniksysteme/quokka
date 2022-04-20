@@ -19,6 +19,7 @@ class UserSettingsUpdateInterfaceRequest extends FormRequest
             'show_finished_items' => 'required|boolean',
             'task_comments_sort_newest_first' => 'required|boolean',
             'accounting_expand_errors' => 'required|boolean',
+            'accounting_filter_default_days' => 'nullable|integer|min:1',
         ];
     }
 }

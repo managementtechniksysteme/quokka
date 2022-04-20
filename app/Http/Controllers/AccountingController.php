@@ -27,6 +27,7 @@ class AccountingController extends Controller
         $employees = Person::has('employee')->order()->get();
         $currentEmployee = Auth::user()->employee->person;
         $expandErrors = Auth::user()->settings->accounting_expand_errors;
+        $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;
 
         return view('accounting.index')
             ->with('currentAccounting', null)
@@ -34,7 +35,8 @@ class AccountingController extends Controller
             ->with('services', $services->toJson())
             ->with('employees', $employees->toJson())
             ->with('currentEmployee', $currentEmployee->toJson())
-            ->with('expandErrors', json_encode($expandErrors));
+            ->with('expandErrors', json_encode($expandErrors))
+            ->with('filterDefaultDays', json_encode($filterDefaultDays));
     }
 
 

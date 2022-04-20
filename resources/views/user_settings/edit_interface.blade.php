@@ -20,7 +20,9 @@
         </div>
 
         <div class="row">
+
             <div class="col">
+
                 <div class="form-group">
                     <div>
                         <label for="list_pagination_size">Anzahl der Listenelemente pro Seite</label>
@@ -70,7 +72,9 @@
                         @enderror
                     </div>
                 </div>
+
             </div>
+
         </div>
 
         <div class="row">
@@ -114,20 +118,22 @@
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1 mt-4">
                     <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
-                    Automatisches Anzeigen von Problemen bei der Abrechnung
+                    Einstellungen zur Anzeige bei der Abrechnung
                 </p>
                 <p class="text-muted">
                     Hier kann eingestellt werden, ob Zeilen in der Tabelle auf der Abrechnungsseite automatisch
                     aufgeklappt werden. Dies ermöglicht, Probleme mit der jeweiligen Zeile beim Speichern rasch zu
-                    einzusehen.
+                    einzusehen. Weiters kann die Anzahl der letzten Tage für die Standardfilterung eingestellt werden.
                 </p>
             </div>
         </div>
 
         <div class="row">
+
             <div class="col">
+
                 <div class="form-group">
                     <div>
                         <label for="accounting_expand_errors">Automatisches Anzeigen von Fehlern</label>
@@ -146,7 +152,21 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="accounting_filter_default_days">Anzahl der letzten Tage für den Standard Filter</label>
+                    <input type="number" min="1" class="form-control @error('accounting_filter_default_days') is-invalid @enderror" id="accounting_filter_default_days" name="accounting_filter_default_days" placeholder="3" value="{{ old('accounting_filter_default_days', Auth::user()->settings->accounting_filter_default_days) }}" />
+                    <div class="invalid-feedback @error('accounting_filter_default_days') d-block @enderror">
+                        @error('accounting_filter_default_days')
+                            {{ $message }}
+                        @else
+                            Anzahl der Tage muss mindestens 1 sein.
+                        @enderror
+                    </div>
+                </div>
+
             </div>
+
         </div>
 
         <div class="row mt-4">

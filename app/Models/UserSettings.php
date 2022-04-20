@@ -12,6 +12,7 @@ class UserSettings extends Model
         'show_finished_items' => 'bool',
         'task_comments_sort_newest_first' => 'bool',
         'accounting_expand_errors' => 'bool',
+        'accounting_filter_default_days' => 'int',
     ];
 
     protected $fillable = [
@@ -21,6 +22,7 @@ class UserSettings extends Model
         'show_finished_items',
         'task_comments_sort_newest_first',
         'accounting_expand_errors',
+        'accounting_filter_default_days',
     ];
 
     protected $primaryKey = 'user_id';

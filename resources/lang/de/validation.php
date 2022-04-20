@@ -205,5 +205,7 @@ return [
         'service_provided_started_at'     => 'Start',
         'service_provided_ended_at'       => 'Ende',
         'service_id'                      => 'Leistung',
+        'start'                           => 'Start',
+        'end'                             => 'Ende',
     ],
 ];

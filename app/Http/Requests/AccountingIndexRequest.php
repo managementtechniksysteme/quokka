@@ -8,12 +8,19 @@ class AccountingIndexRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
-            'start' => 'date|nullable',
-            'end' => 'date|nullable',
-            'project_id' => 'exists:projects,id|nullable',
-            'service_id' => 'exists:services,id|nullable',
-            'only_own' => 'accepted|sometimes',
+        $rules = [
+            'start' => 'sometimes|date',
+            'end' => 'sometimes|date',
+            'project_id' => 'sometimes|exists:projects,id',
+            'service_id' => 'sometimes|exists:services,id',
+            'only_own' => 'sometimes|accepted',
         ];
+
+        if($this->input('start') !== null && $this->input('end') !== null) {
+            $rules['start'] = $rules['start'] . '|before_or_equal:end';
+            $rules['end'] = $rules['end'] . '|after_or_equal:start';
+        }
+
+        return $rules;
     }
 }

@@ -67,7 +67,7 @@
         padding: 16px;
         position: fixed;
         font-size: 18px;
-        z-index: 1;
+        z-index: 999;
     }
 
     #notification.show {

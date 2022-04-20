@@ -1,5 +1,24 @@
 <template>
   <div>
+      <vue-topprogress ref="top_progress" color="#007BFF" errorColor="#DC3545"></vue-topprogress>
+
+      <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
+          <div class="d-inline-flex align-items-center">
+              <svg class="feather feather-24 mr-2">
+                  <use xlink:href="/svg/feather-sprite.svg#check"></use>
+              </svg>
+              {{ this.dataResult.success }}
+          </div>
+      </notification>
+      <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
+          <div class="d-inline-flex align-items-center">
+              <svg class="feather feather-24 mr-2">
+                  <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
+              </svg>
+              {{ this.dataResult.danger }}
+          </div>
+      </notification>
+
       <h3>Anzeigefilter</h3>
 
       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
@@ -279,6 +298,9 @@
 </template>
 
 <script>
+    const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
+    const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
+    const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
 
     export default {
         name: "AccountingsSelector",
@@ -320,10 +342,11 @@
 
                 selectAllHover: false,
 
+                dataResult: null,
             }
         },
 
-        created() {
+        mounted() {
             if(this.current_accounting) {
                 let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
@@ -365,6 +388,9 @@
 
         methods: {
             filterData() {
+                this.dataResult = null;
+                this.$refs.top_progress.start();
+
                 let params = {};
 
                 if(this.filter_start) {
@@ -385,7 +411,9 @@
 
                 axios.get('/accounting', {params: params})
                 .then(response => {
-                    this.updateLocalAccounting(response.data)
+                    this.updateLocalAccounting(response.data);
+
+                    this.$refs.top_progress.done();
 
                     this.filter_start_errors = null;
                     this.filter_end_errors = null;
@@ -394,7 +422,18 @@
                     this.filter_only_own_errors = null;
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.$refs.top_progress.fail();
+
+                    if(error.response.status === 422) {
+                        this.filter_start_errors = this.extractErrorMessages(error.response, 'start');
+                        this.filter_end_errors = this.extractErrorMessages(error.response, 'end');
+                        this.filter_project_errors = this.extractErrorMessages(error.response, 'project_id');
+                        this.filter_service_errors = this.extractErrorMessages(error.response, 'service_id');
+                        this.filter_only_own_errors = this.extractErrorMessages(error.response, 'only_own');
+                    }
+                    else {
+                        this.dataResult = {'danger': FETCH_ERROR_MESSAGE};
+                    }
                 });
             },
 
@@ -444,21 +483,22 @@
             },
 
             saveData() {
-                this.save_result = null;
+                this.dataResult = null;
 
                 let _accounting = this.getUnsavedAccounting();
+                let promisses = [];
 
                 _accounting.forEach(acc => {
                     switch (acc.action) {
                         case 'store':
-                            this.storeAccounting(acc);
+                            promisses.push(this.storeAccounting(acc));
                             break;
                         case 'update':
-                            this.updateAccounting(acc);
+                            promisses.push(this.updateAccounting(acc));
                             break;
                         case 'destroy':
                             if(acc.id !== null) {
-                                this.destroyAccounting(acc);
+                                promisses.push(this.destroyAccounting(acc));
                             }
                             else {
                                 this.accounting = this.removeFromArray(this.accounting, acc);
@@ -466,10 +506,19 @@
                             break;
                     }
                 });
+
+                Promise.all(promisses).then(() => {
+                    if(this.getErrorAccounting().length) {
+                        this.dataResult = {'danger': SAVE_ERROR_MESSAGE};
+                    }
+                    else {
+                        this.dataResult = {'success': SAVE_SUCCESS_MESSAGE};
+                    }
+                });
             },
 
             storeAccounting(accounting) {
-                axios.post('/accounting', {
+                return axios.post('/accounting', {
                     service_provided_on: accounting.service_provided_on,
                     service_provided_started_at: accounting.service_provided_started_at,
                     service_provided_ended_at: accounting.service_provided_ended_at,
@@ -487,13 +536,15 @@
                     accounting.show_details = false;
                 })
                 .catch(error => {
-                    accounting.errors = this.extractErrorMessages(error.response);
-                    accounting.show_details = this.expand_errors;
+                    if(error.response.status === 422) {
+                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.show_details = this.expand_errors;
+                    }
                 });
             },
 
             updateAccounting(accounting) {
-                axios.post('/accounting/' + accounting.id, {
+                return axios.post('/accounting/' + accounting.id, {
                     _method: 'PATCH',
 
                     id: accounting.id,
@@ -505,39 +556,45 @@
                     amount: accounting.amount,
                     comment: accounting.comment,
                 })
-                .then(response => {
+                .then(() => {
                     accounting.action = null;
                     accounting.action_old = null;
                     accounting.errors = null;
                     accounting.show_details = false;
                 })
                 .catch(error => {
-                    accounting.errors = this.extractErrorMessages(error.response);
-                    accounting.show_details = this.expand_errors;
+                    if(error.response.status === 422) {
+                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.show_details = this.expand_errors;
+                    }
                 });
             },
 
             destroyAccounting(accounting) {
-                axios.post('/accounting/' + accounting.id, {
+                return axios.post('/accounting/' + accounting.id, {
                     _method: 'DELETE'
                 })
-                .then(response => {
+                .then(() => {
                     this.accounting = this.removeFromArray(this.accounting, accounting);
                     accounting.errors = null;
                     accounting.show_details = false;
                 })
                 .catch(error => {
-                    accounting.errors = this.extractErrorMessages(error.response);
-                    accounting.show_details = this.expand_errors;
+                    if(error.response.status === 422) {
+                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.show_details = this.expand_errors;
+                    }
                 });
             },
 
-            extractErrorMessages(response) {
+            extractErrorMessages(response, field) {
                 let messages = [];
 
                 Object.keys(response.data.errors).forEach(item => {
                     response.data.errors[item].forEach(message => {
-                        messages.push(message);
+                        if(field === null || item === field) {
+                            messages.push(message);
+                        }
                     });
                 });
 

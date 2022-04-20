@@ -30,6 +30,7 @@ import { VueHammer } from 'vue2-hammer';
 import VueSignaturePad from 'vue-signature-pad';
 import "easymde/dist/easymde.min.css";
 import VueQrcodeReader from "vue-qrcode-reader";
+import vueTopprogress from 'vue-top-progress'
 
 /**
  * The following block of code may be used to automatically register your
@@ -65,6 +66,7 @@ Vue.component('webpush-manager', WebpushManager);
 Vue.use(VueHammer);
 Vue.use(VueSignaturePad);
 Vue.use(VueQrcodeReader);
+Vue.use(vueTopprogress);
 
 VueHammer.config.pan = {
     direction: 'horizontal'

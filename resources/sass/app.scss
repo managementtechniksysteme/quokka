@@ -196,6 +196,7 @@ a.outline-none {
 
 // Side menu
 .menu-item.active {
+  background-color: $hover-bg;
   color: $primary !important;
   font-weight: bold;
 }

@@ -96,14 +96,14 @@
               </div>
               <div class="form-group col-3 col-md-4 col-lg-3">
                   <label for="service_provided_started_at">Start</label>
-                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" v-model="service_provided_started_at" />
+                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" v-model="service_provided_started_at" @blur="autofill()" />
                   <div class="invalid-feedback">
                       Start muss eine gültige Uhrzeit sein.
                   </div>
               </div>
               <div class="form-group col-3 col-md-4 col-lg-3">
                   <label for="service_provided_ended_at">Ende</label>
-                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" v-model="service_provided_ended_at" />
+                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" v-model="service_provided_ended_at"  @blur="autofill()" />
                   <div class="invalid-feedback">
                       Ende muss eine gültige Uhrzeit sein.
                   </div>
@@ -124,7 +124,7 @@
               </div>
               <div class="form-group col-md-4 col-lg-3">
                   <label for="amount">Menge</label>
-                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" min="0.5" step="0.5" id="amount" name="amount" placeholder="5" v-model="amount" />
+                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" min="0.5" step="0.5" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
                   <div class="invalid-feedback">
                       Menge muss mindestens 0.5 sein.
                   </div>
@@ -537,7 +537,7 @@
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.errors = this.extractErrorMessages(error.response);
                         accounting.show_details = this.expand_errors;
                     }
                 });
@@ -564,7 +564,7 @@
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.errors = this.extractErrorMessages(error.response);
                         accounting.show_details = this.expand_errors;
                     }
                 });
@@ -581,13 +581,13 @@
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response, null);
+                        accounting.errors = this.extractErrorMessages(error.response);
                         accounting.show_details = this.expand_errors;
                     }
                 });
             },
 
-            extractErrorMessages(response, field) {
+            extractErrorMessages(response, field = null) {
                 let messages = [];
 
                 Object.keys(response.data.errors).forEach(item => {
@@ -648,6 +648,7 @@
 
             setService(value) {
                 this.service = value;
+                this.autofill();
             },
 
             addAccounting() {
@@ -758,6 +759,10 @@
 
                 changedAccounting.service_provided_started_at = time;
 
+                if(time) {
+                    this.autofill(changedAccounting);
+                }
+
                 this.setChangedAccountingStatus(changedAccounting);
 
                 changedAccounting.edit = null;
@@ -772,6 +777,10 @@
                 }
 
                 changedAccounting.service_provided_ended_at = time;
+
+                if(time) {
+                    this.autofill(changedAccounting);
+                }
 
                 this.setChangedAccountingStatus(changedAccounting);
 
@@ -799,6 +808,8 @@
 
                 changedAccounting.servie_id = this.value.id;
 
+                this.autofill(changedAccounting);
+
                 this.setChangedAccountingStatus(changedAccounting);
 
                 changedAccounting.edit = null;
@@ -818,6 +829,8 @@
                 }
 
                 changedAccounting.amount = amount;
+
+                this.autofill(changedAccounting);
 
                 this.setChangedAccountingStatus(changedAccounting);
 
@@ -960,6 +973,99 @@
             getDateStringForInputField(date) {
                 return date.toISOString().substr(0, 10);
             },
+
+            getTwentyFourHourTimeString(date) {
+                return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+            },
+
+            autofill(accounting = null) {
+                let start = accounting === null ? this.service_provided_started_at : accounting.service_provided_started_at;
+                let end = accounting === null ? this.service_provided_ended_at : accounting.service_provided_ended_at;
+                let amount = accounting === null ? this.amount : accounting.amount;
+                let service = accounting === null ? this.service : this.getService(accounting.service_id);
+
+                if(service === null || service.unit !== 'h') {
+                    return;
+                }
+
+                if(start && end && !amount) {
+                    this.autofillAmount(accounting, start, end);
+                }
+                else if(start && amount && !end) {
+                    this.autofillEnd(accounting, start, amount);
+                }
+                else if(end && amount && !start) {
+                    this.autofillStart(accounting, end, amount);
+                }
+            },
+
+            autofillAmount(accounting = null, start, end) {
+                let today = new Date();
+                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+
+                let startDate = new Date(date + ' ' + start);
+                let endDate = new Date(date + ' ' + end);
+
+                let timeStartMinutes = startDate.getHours() * 60 + startDate.getMinutes();
+                let timeEndMinutes = endDate.getHours() * 60 + endDate.getMinutes();
+
+                let differenceMinutes = timeEndMinutes - timeStartMinutes;
+
+                if(differenceMinutes < 30) {
+                    return;
+                }
+
+                // round down to nearest 30 minutes
+                differenceMinutes = differenceMinutes - differenceMinutes%30;
+
+                let differenceHours = differenceMinutes/60;
+
+                if(accounting === null) {
+                    this.amount = differenceHours;
+                }
+                else {
+                    accounting.amount = differenceHours;
+                }
+            },
+
+            autofillEnd(accounting = null, start, amount) {
+                let today = new Date();
+                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+
+                let amountMilliseconds = amount * 60 * 60 * 1000;
+
+                let timeStart = new Date(date + ' ' + start);
+                let timeEnd = new Date(timeStart.getTime() + amountMilliseconds);
+
+                let timeEndString = this.getTwentyFourHourTimeString(timeEnd);
+
+                if(accounting === null) {
+                    this.service_provided_ended_at = timeEndString;
+                }
+                else {
+                    accounting.service_provided_ended_at = timeEndString;
+                }
+            },
+
+            autofillStart(accounting = null, end, amount) {
+                let today = new Date();
+                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+
+                let amountMilliseconds = amount * 60 * 60 * 1000;
+
+                let timeEnd = new Date(date + ' ' + end);
+                let timeStart = new Date(timeEnd.getTime() - amountMilliseconds);
+
+                let timeStartString = this.getTwentyFourHourTimeString(timeStart);
+
+                if(accounting === null) {
+                    this.service_provided_started_at = timeStartString;
+                }
+                else {
+                    accounting.service_provided_started_at = timeStartString;
+                }
+            },
+
         },
 
         props: {

@@ -11,11 +11,21 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.8-95f3390 (20.04.2022)
+        * Eine Benutzereinstellung für die Anzahl der vergangenen Tage, welche standardmäßig beim Abrechnungsftiler
+        angewendet werden, wurde hinzugefügt.
+        * Beim Filtern der Abrechnungsdaten werden Probleme korrekt bei den Eingabefeldern angezeigt.
+        * Beim Filtern der Abrechnungsdaten erscheint ein Ladebalken um den Fortschritt zu visualisieren.
+        * Erfolgs- sowie Fehlermeldungen werden nun beim Filtern oder Speichern von Abrechnungsdaten angezeigt.
+        @endmarkdown
+
+        @markdown
         ### v0.1.7-e345043 (20.04.2022)
         * Ein Fehler beim Setzen von Stunden in der Tabelle bei Serviceberichten auf 0 wurde behoben.
         * Die Darstellung von Buttons zur Anzeige von Details und Problemen in der Abrechnungstabelle wurde analog
         zur Selektierung von Zeilen angepasst.
         @endmarkdown
+
         @markdown
         ### v0.1.6-5d10293 (19.04.2022)
         * Leistungsverzeichnisse wurden implementiert. Diese sind aufgeteilt in Materialleistungen sowie

@@ -4,10 +4,10 @@ current:
   label: v
   major: 0
   minor: 1
-  patch: 7
+  patch: 8
   prerelease: beta
   buildmetadata:
-  commit: e345043
+  commit: 95f3390
   timestamp:
     mode: absorb
     year:

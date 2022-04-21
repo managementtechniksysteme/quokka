@@ -26,11 +26,15 @@ class Service extends Model
 
     public function getNameWithUnitAttribute()
     {
-        if ($this->unit === null) {
-            return "{$this->name}";
+        if ($this->type === 'material') {
+            $currency_unit = ApplicationSettings::get()->currency_unit;
+            return "$this->name ($currency_unit)";
+        }
+        else if ($this->unit === null) {
+            return "$this->name";
         }
         else {
-            return "{$this->name} ({$this->unit})";
+            return "$this->name ($this->unit)";
         }
     }
 }

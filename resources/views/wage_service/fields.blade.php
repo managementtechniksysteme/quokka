@@ -23,10 +23,6 @@
         <div class="form-group">
             <label for="unit">Einheit</label>
             <service-unit-dropdown :units="{{ $units }}" current_unit="{{ $currentUnit ?? "''" }}" v-cloak></service-unit-dropdown>
-            <!--
-            <v-select :options="{{ $units }}" :value="" taggable label="unit" placeholder="Einheit"></v-select>
-            <input type="text" class="form-control @error('unit') is-invalid @enderror" id="unit" name="unit" placeholder="h" value="{{ old('unit', optional($wageService)->unit) }}" required />
-            -->
             <div class="invalid-feedback">
                 @error('unit')
                     {{ $message }}

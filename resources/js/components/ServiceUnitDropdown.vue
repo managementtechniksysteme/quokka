@@ -1,7 +1,7 @@
 <template>
     <div>
-        <input v-if="selected" type="hidden" id="unit" name="unit"  :value="selected" />
-        <v-select :options="units" placeholder="Einheit auswählen" :value="selected" @input="setSelected" taggable></v-select>
+        <input v-if="selected" type="hidden" :id="inputname" :name="inputname" :value="selected" />
+        <v-select :options="units" placeholder="Einheit auswählen" :value="selected" @input="setSelected" :taggable="taggable"></v-select>
     </div>
 </template>
 
@@ -22,6 +22,13 @@
         },
 
         props: {
+            inputname: {
+                type: String,
+                default() {
+                    return 'unit';
+                }
+            },
+
             units: {
                 type: Array,
                 default() {
@@ -32,6 +39,13 @@
                 type: String,
                 default() {
                     return '';
+                }
+            },
+
+            taggable: {
+                type: Boolean,
+                default() {
+                    return true;
                 }
             }
         }

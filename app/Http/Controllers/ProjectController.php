@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\Memo;
 use App\Models\Project;
@@ -42,6 +43,8 @@ class ProjectController extends Controller
     {
         $currentCompany = null;
 
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
         if ($request->filled('company')) {
             $currentCompany = Company::find($request->company);
         }
@@ -50,6 +53,7 @@ class ProjectController extends Controller
 
         return view('project.create')
             ->with('project', null)
+            ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson());
     }
@@ -81,7 +85,8 @@ class ProjectController extends Controller
 
         switch ($request->tab) {
             case 'overview':
-                return view('project.show_tab_overview')->with(compact('project'));
+                $currencyUnit = ApplicationSettings::get()->currency_unit;
+                return view('project.show_tab_overview')->with(compact('project'))->with(compact('currencyUnit'));
 
             case 'tasks':
                 if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
@@ -143,11 +148,14 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
         $currentCompany = $project->company;
         $companies = Company::order()->get();
 
         return view('project.edit')
-            ->with('project', $project)
+            ->with(compact('project'))
+            ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson());
     }

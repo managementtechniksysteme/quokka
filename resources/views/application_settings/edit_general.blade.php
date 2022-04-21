@@ -15,6 +15,10 @@
     @php $currentHolidayService = WageService::find(old('holiday_service_id')); @endphp
 @endif
 
+@if (old('accounting_time_mandatory_unit'))
+    @php $currentServicesHourUnit = old('services_hour_unit'); @endphp
+@endif
+
 @if (old('signature_notify_user_id'))
     @php $currentSignatureNotifyPerson = Person::find(old('signature_notify_user_id')); @endphp
 @endif
@@ -56,6 +60,70 @@
                     <div class="invalid-feedback @error('company_id') d-block @enderror">
                         @error('company_id')
                             {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                    </svg>
+                    Einstellungen zu Leistungen und Abrechnungen
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info mt-1" role="alert">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="feather feather-24 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                        </svg>
+                        Diese Einstellungen sind für die Validierung sowie automatische Berechnung von Stunden sowie
+                        Start oder Ende bei der Eingabe von Abrechnungen erforderlich. Weiters können
+                        Anzeigeeinstellungen vorgenommen werden.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="currency_unit">Währungseinheit (z.B. für Materialleistungen)</label>
+                    <input type="text" class="form-control @error('currency_unit') is-invalid @enderror" id="currency_unit" name="currency_unit" placeholder="€" value="{{ old('currency_unit', ApplicationSettings::get()->currency_unit) }}" required />
+                    <div class="invalid-feedback @error('currency_unit') d-block @enderror">
+                        @error('currency_unit')
+                            {{ $message }}
+                        @else
+                            Gib bitte die Währungseinheit ein.
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="services_hour_unit">Stundenbasierte Einheitsbezeichnung (z.B. für Techniker Stunden)</label>
+                    <service-unit-dropdown :inputname="'services_hour_unit'" :units="{{ $wageServiceUnits }}" current_unit="{{ $currentServicesHourUnit ?? null }}" :taggable="false" v-cloak></service-unit-dropdown>
+                    <div class="invalid-feedback">
+                        @error('services_hour_unit')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="accounting_min_amount">Minimale Menge (und Multiplikator) bei Abrechnungen</label>
+                    <input type="number" min="0" step=".01" class="form-control @error('accounting_min_amount') is-invalid @enderror" id="accounting_min_amount" name="accounting_min_amount" placeholder="0.5" value="{{ old('accounting_min_amount', ApplicationSettings::get()->accounting_min_amount) }}" required />
+                    <div class="invalid-feedback @error('accounting_min_amount') d-block @enderror">
+                        @error('accounting_min_amount')
+                            {{ $message }}
+                        @else
+                            Gib bitte die minimale Menge ein.
                         @enderror
                     </div>
                 </div>

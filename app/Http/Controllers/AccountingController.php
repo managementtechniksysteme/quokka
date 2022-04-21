@@ -6,6 +6,7 @@ use App\Http\Requests\AccountingIndexRequest;
 use App\Http\Requests\AccountingStoreRequest;
 use App\Http\Requests\AccountingUpdateRequest;
 use App\Models\Accounting;
+use App\Models\ApplicationSettings;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Service;
@@ -26,6 +27,8 @@ class AccountingController extends Controller
         $services = Service::order()->get();
         $employees = Person::has('employee')->order()->get();
         $currentEmployee = Auth::user()->employee->person;
+        $servicesHourUnit = ApplicationSettings::get()->services_hour_unit ?? null;
+        $minAccountingAmount = ApplicationSettings::get()->accounting_min_amount;
         $expandErrors = Auth::user()->settings->accounting_expand_errors;
         $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;
 
@@ -35,6 +38,8 @@ class AccountingController extends Controller
             ->with('services', $services->toJson())
             ->with('employees', $employees->toJson())
             ->with('currentEmployee', $currentEmployee->toJson())
+            ->with('servicesHourUnit', $servicesHourUnit)
+            ->with('minAccountingAmount', $minAccountingAmount)
             ->with('expandErrors', json_encode($expandErrors))
             ->with('filterDefaultDays', json_encode($filterDefaultDays));
     }

@@ -15,6 +15,9 @@ class ApplicationSettings extends Model
         'company_id',
         'holiday_service_id',
         'holiday_yearly_allowance',
+        'currency_unit',
+        'services_hour_unit',
+        'accounting_min_amount',
         'signature_notify_user_id',
         'task_due_soon_days',
     ];

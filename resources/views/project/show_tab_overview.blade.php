@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="col">
-            {{ $project->wage_costs ? '€ ' . $project->wage_costs : 'nicht angegeben' }}
+            {{ $project->wage_costs ? $currencyUnit . ' ' . $project->wage_costs : 'nicht angegeben' }}
         </div>
     </div>
     <div class="row mt-3">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="col">
-            {{ $project->material_costs ? '€ ' . $project->material_costs :  'nicht angegeben' }}
+            {{ $project->material_costs ? $currencyUnit . ' ' . $project->material_costs :  'nicht angegeben' }}
         </div>
     </div>
 

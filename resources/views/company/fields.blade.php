@@ -126,7 +126,7 @@
         <div class="form-row">
             <div class="form-group col">
                 <label for="address_id">Adresse des Betreibers</label>
-                <address-dropdown input_name="operator_address_id" :addresses="{{ $addresses }}" :current_address="{{ $currentOperatorAddress ?? 'null' }}"></address-dropdown>
+                <address-dropdown :inputname="'operator_address_id'" :addresses="{{ $addresses }}" :current_address="{{ $currentOperatorAddress ?? 'null' }}"></address-dropdown>
                 <div class="invalid-feedback @error('operator_address_id') d-block @enderror">
                     @error('operator_address_id')
                         {{ $message }}

@@ -96,14 +96,14 @@
               </div>
               <div class="form-group col-3 col-md-4 col-lg-3">
                   <label for="service_provided_started_at">Start</label>
-                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" v-model="service_provided_started_at" @blur="autofill()" />
+                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" :disabled="this.service !== null && this.service.unit !== services_hour_unit" required v-model="service_provided_started_at" @blur="autofill()" />
                   <div class="invalid-feedback">
                       Start muss eine gültige Uhrzeit sein.
                   </div>
               </div>
               <div class="form-group col-3 col-md-4 col-lg-3">
                   <label for="service_provided_ended_at">Ende</label>
-                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" v-model="service_provided_ended_at"  @blur="autofill()" />
+                  <input type="time" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" required :disabled="this.service !== null && this.service.unit !== services_hour_unit" v-model="service_provided_ended_at"  @blur="autofill()" />
                   <div class="invalid-feedback">
                       Ende muss eine gültige Uhrzeit sein.
                   </div>
@@ -124,9 +124,9 @@
               </div>
               <div class="form-group col-md-4 col-lg-3">
                   <label for="amount">Menge</label>
-                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" min="0.5" step="0.5" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
+                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="min_amount" :step="min_amount" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
                   <div class="invalid-feedback">
-                      Menge muss mindestens 0.5 sein.
+                      Menge muss mindestens {{min_amount}} sein.
                   </div>
               </div>
               <div class="form-group col-lg-3">
@@ -207,11 +207,11 @@
                               </td>
                               <td class="col-1" @click="setEdit(acc, 'service_provided_started_at')">
                                   <span v-if="acc.edit !== 'service_provided_started_at'">{{ acc.service_provided_started_at }}</span>
-                                  <input v-if="acc.edit === 'service_provided_started_at'" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_started_at_invalid}" ref="table_input" id="table_service_provided_started_at" name="table_service_provided_started_at" :value="acc.service_provided_started_at ? acc.service_provided_started_at : ''" placeholder="08:00" @blur="changeAccountingServiceProvidedStartedAt($event, acc)" />
+                                  <input v-if="acc.edit === 'service_provided_started_at'" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_started_at_invalid}" ref="table_input" id="table_service_provided_started_at" name="table_service_provided_started_at" :value="acc.service_provided_started_at ? acc.service_provided_started_at : ''" placeholder="08:00" required @blur="changeAccountingServiceProvidedStartedAt($event, acc)" />
                               </td>
                               <td class="col-1" @click="setEdit(acc, 'service_provided_ended_at')">
                                   <span v-if="acc.edit !== 'service_provided_ended_at'">{{ acc.service_provided_ended_at }}</span>
-                                  <input v-if="acc.edit === 'service_provided_ended_at'" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" @blur="changeAccountingServiceProvidedEndedAt($event, acc)" />
+                                  <input v-if="acc.edit === 'service_provided_ended_at'" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" required @blur="changeAccountingServiceProvidedEndedAt($event, acc)" />
                               </td>
                               <td class="col-2" @click="setEdit(acc, 'project')">
                                   <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
@@ -223,7 +223,7 @@
                               </td>
                               <td class="col-1" @click="setEdit(acc, 'amount')">
                                   <span v-if="acc.edit !== 'amount'">{{ acc.amount }}</span>
-                                  <input v-if="acc.edit === 'amount'" type="number" min="0.5" step="0.5" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" />
+                                  <input v-if="acc.edit === 'amount'" type="number" :min="min_amount" :step="min_amount" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" />
                               </td>
                               <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                               <td class="col-auto text-right">
@@ -254,10 +254,10 @@
                           <transition name="collapse">
                               <tr v-if="acc.show_details"  v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                                   <td class="border-0" ></td>
-                                  <td colspan="7" class="border-0"  @click="setEdit(acc, 'comment')">
+                                  <td colspan="7" class="border-0">
                                       <div class="form-group">
                                           <label for="table_comment">Bemerkungen</label>
-                                          <div v-if="acc.edit !== 'comment'" class="text-s">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</div>
+                                          <p v-if="acc.edit !== 'comment'" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
                                           <input v-if="acc.edit === 'comment'" type="text" class="form-control form-control-sm" ref="table_input" id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
                                       </div>
                                       <div v-if="acc.errors" class="alert alert-danger" role="alert">
@@ -486,19 +486,19 @@
                 this.dataResult = null;
 
                 let _accounting = this.getUnsavedAccounting();
-                let promisses = [];
+                let promises = [];
 
                 _accounting.forEach(acc => {
                     switch (acc.action) {
                         case 'store':
-                            promisses.push(this.storeAccounting(acc));
+                            promises.push(this.storeAccounting(acc));
                             break;
                         case 'update':
-                            promisses.push(this.updateAccounting(acc));
+                            promises.push(this.updateAccounting(acc));
                             break;
                         case 'destroy':
                             if(acc.id !== null) {
-                                promisses.push(this.destroyAccounting(acc));
+                                promises.push(this.destroyAccounting(acc));
                             }
                             else {
                                 this.accounting = this.removeFromArray(this.accounting, acc);
@@ -507,7 +507,7 @@
                     }
                 });
 
-                Promise.all(promisses).then(() => {
+                Promise.all(promises).then(() => {
                     if(this.getErrorAccounting().length) {
                         this.dataResult = {'danger': SAVE_ERROR_MESSAGE};
                     }
@@ -610,15 +610,8 @@
                     if(a.service_provided_on.getTime() !== b.service_provided_on.getTime()) {
                         return a.service_provided_on - b.service_provided_on;
                     }
-                    else if(a.service_provided_started_at !== null && b.service_provided_started_at !== null &&
-                        a.service_provided_started_at !== b.service_provided_started_at) {
+                    else if(a.service_provided_started_at !== b.service_provided_started_at) {
                         return a.service_provided_started_at < b.service_provided_started_at ? -1 : 1;
-                    }
-                    else if(a.service_provided_started_at === null && b.service_provided_started_at !== null) {
-                        return -1;
-                    }
-                    else if(a.service_provided_started_at !== null && b.service_provided_started_at === null) {
-                        return 1;
                     }
                     else {
                         return 0;
@@ -656,13 +649,13 @@
                 let amount = this.amount === null ? 0 : Number(this.amount);
 
                 this.service_provided_on_invalid = isNaN(date.getTime());
-                this.service_provided_started_at_invalid = this.service_provided_started_at !== null &&
-                    (this.service_provided_ended_at === null || !this.isTwentyFourHourTimeFormat(this.service_provided_started_at));
-                this.service_provided_ended_at_invalid = this.service_provided_ended_at !== null &&
-                    (this.service_provided_started_at === null || !this.isTwentyFourHourTimeFormat(this.service_provided_ended_at));
+                this.service_provided_started_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
+                    !this.isTwentyFourHourTimeFormat(this.service_provided_started_at);
+                this.service_provided_ended_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
+                    !this.isTwentyFourHourTimeFormat(this.service_provided_ended_at);
                 this.project_invalid = this.project === null;
                 this.service_invalid = this.service === null;
-                this.amount_invalid = Number.isNaN(amount) || amount % 0.5 !== 0 || amount < 0.5;
+                this.amount_invalid = Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount;
 
                 if(this.service_provided_on_invalid || this.service_provided_started_at_invalid ||
                     this.service_provided_ended_at_invalid || this.project_invalid || this.service_invalid ||
@@ -750,18 +743,30 @@
             },
 
             changeAccountingServiceProvidedStartedAt(event, changedAccounting) {
+                let service = this.getService(changedAccounting.service_id);
+
+                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
+                    return;
+                }
+
                 let time = event.target.value ? event.target.value : null;
 
-                if(time !== null && !this.isTwentyFourHourTimeFormat(time)) {
+                // try to autofill if no value given and set new value
+                // for checking - seems like a bit of a hack
+                if(!time) {
+                    changedAccounting.service_provided_started_at = null;
+                    this.autofill(changedAccounting);
+                    time = changedAccounting.service_provided_started_at;
+                }
+
+                if(!this.isTwentyFourHourTimeFormat(time)) {
                     this.table_service_provided_started_at_invalid = true;
                     return;
                 }
 
                 changedAccounting.service_provided_started_at = time;
 
-                if(time) {
-                    this.autofill(changedAccounting);
-                }
+                this.autofill(changedAccounting);
 
                 this.setChangedAccountingStatus(changedAccounting);
 
@@ -769,18 +774,28 @@
             },
 
             changeAccountingServiceProvidedEndedAt(event, changedAccounting) {
+                let service = this.getService(changedAccounting.service_id);
+
+                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
+                    return;
+                }
+
                 let time = event.target.value ? event.target.value : null;
 
-                if(time !== null && !this.isTwentyFourHourTimeFormat(time)) {
+                // try to autofill if no value given and set new value
+                // for checking - seems like a bit of a hack
+                if(!time) {
+                    changedAccounting.service_provided_ended_at = null;
+                    this.autofill(changedAccounting);
+                    time = changedAccounting.service_provided_ended_at;
+                }
+
+                if(!this.isTwentyFourHourTimeFormat(time)) {
                     this.table_service_provided_ended_at_invalid = true;
                     return;
                 }
 
                 changedAccounting.service_provided_ended_at = time;
-
-                if(time) {
-                    this.autofill(changedAccounting);
-                }
 
                 this.setChangedAccountingStatus(changedAccounting);
 
@@ -806,7 +821,7 @@
                     return;
                 }
 
-                changedAccounting.servie_id = this.value.id;
+                changedAccounting.service_id = value.id;
 
                 this.autofill(changedAccounting);
 
@@ -823,14 +838,20 @@
             changeAccountingAmount(event, changedAccounting) {
                 let amount = Number(event.target.value);
 
-                if(Number.isNaN(amount) || amount % 0.5 !== 0 || amount < 0.5) {
+                // try to autofill if no value given and set new value
+                // for checking - seems like a bit of a hack
+                if(!amount) {
+                    changedAccounting.amount  = null;
+                    this.autofill(changedAccounting);
+                    amount = changedAccounting.amount;
+                }
+
+                if(Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount) {
                     this.table_amount_invalid = true;
                     return;
                 }
 
                 changedAccounting.amount = amount;
-
-                this.autofill(changedAccounting);
 
                 this.setChangedAccountingStatus(changedAccounting);
 
@@ -911,6 +932,13 @@
             },
 
             setEdit(accounting, field) {
+                let service = this.getService(accounting.service_id);
+
+                if((field === 'service_provided_started_at' || field === 'service_provided_ended_at') &&
+                    (service.type !== 'wage' || service.unit !== this.services_hour_unit)) {
+                    return;
+                }
+
                 this.getEditAccounting().forEach(editAccounting => {
                     editAccounting.edit = null;
                 });
@@ -984,11 +1012,14 @@
                 let amount = accounting === null ? this.amount : accounting.amount;
                 let service = accounting === null ? this.service : this.getService(accounting.service_id);
 
-                if(service === null || service.unit !== 'h') {
+                if(service === null) {
                     return;
                 }
 
-                if(start && end && !amount) {
+                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
+                    this.removeTimes(accounting);
+                }
+                else if(start && end && !amount) {
                     this.autofillAmount(accounting, start, end);
                 }
                 else if(start && amount && !end) {
@@ -999,7 +1030,19 @@
                 }
             },
 
+            removeTimes(accounting = null) {
+                if(accounting) {
+                    accounting.service_provided_started_at = null;
+                    accounting.service_provided_ended_at = null;
+                }
+                else {
+                    this.service_provided_started_at = null;
+                    this.service_provided_ended_at = null;
+                }
+            },
+
             autofillAmount(accounting = null, start, end) {
+                let minAmountMinutes = this.min_amount * 30;
                 let today = new Date();
                 let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
 
@@ -1011,14 +1054,14 @@
 
                 let differenceMinutes = timeEndMinutes - timeStartMinutes;
 
-                if(differenceMinutes < 30) {
+                if(differenceMinutes < minAmountMinutes) {
                     return;
                 }
 
-                // round down to nearest 30 minutes
-                differenceMinutes = differenceMinutes - differenceMinutes%30;
+                // round down to nearest amount of minimum units that fit into the duration
+                differenceMinutes = differenceMinutes - differenceMinutes % minAmountMinutes;
 
-                let differenceHours = differenceMinutes/60;
+                let differenceHours = differenceMinutes / 60;
 
                 if(accounting === null) {
                     this.amount = differenceHours;
@@ -1101,6 +1144,20 @@
                 type: Object,
                 default() {
                     return null;
+                }
+            },
+
+            services_hour_unit: {
+                type: String,
+                default() {
+                    return null;
+                }
+            },
+
+            min_amount: {
+                type: Number,
+                default() {
+                    return 0.5;
                 }
             },
 

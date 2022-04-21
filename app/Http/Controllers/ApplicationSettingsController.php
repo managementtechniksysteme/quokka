@@ -21,6 +21,9 @@ class ApplicationSettingsController extends Controller
                 $currentHolidayService = ApplicationSettings::get()->holidayService ?? null;
                 $wageServices = WageService::order()->get();
 
+                $wageServiceUnits = WageService::distinct('unit')->pluck('unit');
+                $currentServicesHourUnit = ApplicationSettings::get()->services_hour_unit;
+
                 $currentSignatureNotifyPerson = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
                 $userPeople = Person::whereHas('employee', function ($query) {
                     return $query->has('user');
@@ -31,6 +34,8 @@ class ApplicationSettingsController extends Controller
                     ->with('companies', $companies->toJson())
                     ->with('currentHolidayService', $currentHolidayService)
                     ->with('wageServices', $wageServices->toJson())
+                    ->with('wageServiceUnits', $wageServiceUnits->toJson())
+                    ->with('currentServicesHourUnit', $currentServicesHourUnit)
                     ->with('currentSignatureNotifyPerson', $currentSignatureNotifyPerson)
                     ->with('userPeople', $userPeople->toJson());
             default:

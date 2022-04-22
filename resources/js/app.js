@@ -14,6 +14,7 @@ import AvatarColourSelector from './components/AvatarColourSelector';
 import CompanyDropdown from './components/CompanyDropdown';
 import EmailSelector from "./components/EmailSelector";
 import GestureLinks from './components/GestureLinks';
+import JwPagination from 'jw-vue-pagination';
 import Notification from './components/Notification';
 import PeopleSelector from './components/PeopleSelector';
 import PersonDropdown from './components/PersonDropdown';
@@ -27,6 +28,7 @@ import WebpushManager from "./components/WebpushManager";
 import vSelect from 'vue-select';
 import VueEasymde from "vue-easymde";
 import { VueHammer } from 'vue2-hammer';
+import VueScreen from 'vue-screen';
 import VueSignaturePad from 'vue-signature-pad';
 import "easymde/dist/easymde.min.css";
 import VueQrcodeReader from "vue-qrcode-reader";
@@ -50,6 +52,7 @@ Vue.component('avatar-colour-selector', AvatarColourSelector);
 Vue.component('company-dropdown', CompanyDropdown);
 Vue.component('email-selector', EmailSelector);
 Vue.component('gesture-links', GestureLinks);
+Vue.component('jw-pagination', JwPagination);
 Vue.component('notification', Notification);
 Vue.component('people-selector', PeopleSelector);
 Vue.component('person-dropdown', PersonDropdown);
@@ -64,8 +67,9 @@ Vue.component('qr-scanner', QrScanner);
 Vue.component('webpush-manager', WebpushManager);
 
 Vue.use(VueHammer);
-Vue.use(VueSignaturePad);
 Vue.use(VueQrcodeReader);
+Vue.use(VueScreen, 'bootstrap');
+Vue.use(VueSignaturePad);
 Vue.use(vueTopprogress);
 
 VueHammer.config.pan = {

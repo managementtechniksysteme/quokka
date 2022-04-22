@@ -1,7 +1,7 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" :id="inputname" :name="inputname" :value="selected" />
-        <v-select :options="units" placeholder="Einheit auswählen" :value="selected" @input="setSelected" :taggable="taggable"></v-select>
+        <v-select :options="units" placeholder="Einheit auswählen" :value="selected" :selectOnTab="true" @input="setSelected" :taggable="taggable"></v-select>
     </div>
 </template>
 

@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container-xl">
         <a class="navbar-brand" href="{{ route('home') }}">
             {{ config('app.name') }}
         </a>

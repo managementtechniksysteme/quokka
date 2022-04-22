@@ -61,13 +61,16 @@
 <style scoped>
     #notification {
         width: 100%;
+        height: 3.5rem;
         top: 0;
         left: 0;
         text-align: center;
-        padding: 16px;
         position: fixed;
         font-size: 18px;
-        z-index: 999;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     #notification.show {

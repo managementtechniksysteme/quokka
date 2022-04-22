@@ -1,7 +1,7 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" id="company_id" name="company_id" :value="selected.id" />
-        <v-select :options="companies" label="full_name" placeholder="Firma auswählen" :value="selected" @input="setSelected"></v-select>
+        <v-select :options="companies" label="full_name" placeholder="Firma auswählen" :value="selected" :selectOnTab="true" @input="setSelected"></v-select>
     </div>
 </template>
 

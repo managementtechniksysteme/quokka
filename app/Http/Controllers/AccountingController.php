@@ -31,6 +31,7 @@ class AccountingController extends Controller
         $minAccountingAmount = ApplicationSettings::get()->accounting_min_amount;
         $expandErrors = Auth::user()->settings->accounting_expand_errors;
         $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;
+        $pageSize = Auth::user()->settings->list_pagination_size;
 
         return view('accounting.index')
             ->with('currentAccounting', null)
@@ -41,7 +42,8 @@ class AccountingController extends Controller
             ->with('servicesHourUnit', $servicesHourUnit)
             ->with('minAccountingAmount', $minAccountingAmount)
             ->with('expandErrors', json_encode($expandErrors))
-            ->with('filterDefaultDays', json_encode($filterDefaultDays));
+            ->with('filterDefaultDays', json_encode($filterDefaultDays))
+            ->with('pageSize', json_encode($pageSize));
     }
 
 

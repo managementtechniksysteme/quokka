@@ -11,6 +11,12 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.10-21b2904 (22.04.2022)
+        * Das Ausehen der Abrechnungsseite für größere Bildschirme wurde optimierte.
+        * Komfortfunktionen bei den Eingabemöglichkeiten auf der Abrechnungsseite wurden hinzugefügt.
+        @endmarkdown
+
+        @markdown
         ### v0.1.9-e251193 (20.04.2022)
         * Falls beim Hinzufügen oder Bearbeiten von Leistungsabrechnungen zwei der drei Werte Start, Ende und Menge
         angegeben werden und der dritte Werte noch nicht gesetzt ist, wird dieser automatisch berechnet. Dies

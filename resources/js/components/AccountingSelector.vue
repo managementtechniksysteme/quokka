@@ -209,13 +209,13 @@
                                           <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                       </svg>
                                   </button>
-                                  <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm checkboxtoggle text-blue-100" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                  <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                       <svg class="feather feather-16">
                                           <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                           <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                       </svg>
                                   </button>
-                                  <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm checkboxtoggle text-blue-500" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                  <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                       <svg class="feather feather-16">
                                           <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                       </svg>

@@ -10,6 +10,15 @@
     </div>
 
     <div class="container my-4">
+
+        @markdown
+        ### v0.1.11-8b177cf (25.04.2022)
+        * Bei Abrechnungen können nun mehrzeilige Kommentare eingegeben werden.
+        * Die Anzahl von neuen, geänderten und gelöschten Kommentaren wird bei der Abrechnungstabelle nun angezeigt.
+        * Das Datum für neue Zeilen in der Abrechnung bleibt nun von vorherigen Eingaben für eine schnellere Eingabe erhalten.
+        * Diverse Anzeigeelemente wurden vereinheitlicht, sowie Darstellungsfehler behoben.
+        @endmarkdown
+
         @markdown
         ### v0.1.10-21b2904 (22.04.2022)
         * Das Ausehen der Abrechnungsseite für größere Bildschirme wurde optimierte.

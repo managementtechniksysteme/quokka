@@ -25,7 +25,7 @@
       <div v-bind:class="{'container': !$screen.xl, 'container-fluid h-100': $screen.xl}">
           <div class="row" v-bind:class="{'h-100': $screen.xl}">
 
-              <div class="order-1" v-bind:class="{'col-12': !$screen.xl, 'col-xl-2 h-100 bg-gray-100': $screen.xl}">
+              <div class="order-1" v-bind:class="{'col-12': !$screen.xl, 'col-xl-2 bg-gray-100': $screen.xl}">
                   <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
                       <h3>Anzeigefilter</h3>
 
@@ -86,7 +86,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 h-100 sticky-top bg-gray-100': $screen.xl}">
+              <div v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
                   <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
                       <h3>Leistungen abrechnen</h3>
 

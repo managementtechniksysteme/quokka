@@ -73,6 +73,10 @@ main {
     opacity: 1;
 }
 
+.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::-ms-input-placeholder  {
+    color: #495057;
+}
+
 .v-select.vs--disabled > .vs__dropdown-toggle > .vs__selected-options > .vs__search {
     background-color: #e9ecef;
 }

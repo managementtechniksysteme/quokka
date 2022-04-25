@@ -62,7 +62,22 @@ main {
 }
 
 // Fixes for Vue Select to display correctly with Bootstrap CSS
-.v-select .vs__dropdown-toggle {
+.v-select.vs--disabled > .vs__dropdown-toggle {
+    @extend .form-control;
+    display: flex;
+    background-color: #e9ecef;
+}
+
+.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::placeholder {
+    color: #495057;
+    opacity: 1;
+}
+
+.v-select.vs--disabled > .vs__dropdown-toggle > .vs__selected-options > .vs__search {
+    background-color: #e9ecef;
+}
+
+.v-select > .vs__dropdown-toggle {
     @extend .form-control;
     display: flex;
 }

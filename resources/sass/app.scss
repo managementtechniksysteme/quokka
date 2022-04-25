@@ -306,6 +306,16 @@ a.outline-none {
     max-height: 32px;
 }
 
+// Single line height textarea for form controls
+.textarea-h1 {
+    height: calc(1.6em + 0.75rem + 2px) !important;
+}
+
+// Display textarea line breaks correctly
+.whitespace-preline {
+    white-space: pre-line;
+}
+
 .scroll-x {
     overflow-x: auto;
     white-space: nowrap;

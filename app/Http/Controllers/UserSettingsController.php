@@ -55,7 +55,7 @@ class UserSettingsController extends Controller
 
         Auth::user()->addSignature($request->signature);
 
-        return redirect()->route('user-settings.edit', ['tab' => 'general'])->with('success', 'Die Unterschrift wurde erfolgreich gepseichert.');
+        return redirect()->route('user-settings.edit', ['tab' => 'general'])->with('success', 'Die Unterschrift wurde erfolgreich gespeichert.');
     }
 
     public function updateInterface(UserSettingsUpdateInterfaceRequest $request)
@@ -64,7 +64,7 @@ class UserSettingsController extends Controller
 
         Auth::user()->settings->update($validatedData);
 
-        return redirect()->route('user-settings.edit', ['tab' => 'interface'])->with('success', 'Die Einstellungen wurde erfolgreich gepseichert.');
+        return redirect()->route('user-settings.edit', ['tab' => 'interface'])->with('success', 'Die Einstellungen wurde erfolgreich gespeichert.');
     }
 
     public function updatePassword(UserSettingsUpdatePasswordRequest $request)
@@ -77,7 +77,7 @@ class UserSettingsController extends Controller
 
         Auth::logoutOtherDevices($request->password);
 
-        return redirect()->route('user-settings.edit', ['tab' => 'security'])->with('success', 'Das Passwort wurde erfolgreich gepseichert.');
+        return redirect()->route('user-settings.edit', ['tab' => 'security'])->with('success', 'Das Passwort wurde erfolgreich gespeichert.');
     }
 
     public function enableOtp()

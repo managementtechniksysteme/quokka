@@ -61,7 +61,7 @@
         anzuzeigen. Dieses Verhalten kann durch eine Benutzereinstellung geändert werden.
         * Eine Einstellung zur Urlaubsleistung wurde in den allgemeinen Applikationseinstellungen implementiert. Dadurch
         wird bei der Buchung von Urlaub der verfügbare Urlaub des jeweiligen Mitarbeiters automatisch angepasst. Am Tag
-        des Eintrittsdatums wird einmal jährlich die Urlaubsmenge um die in den Einstellungen gepseicherte Menge
+        des Eintrittsdatums wird einmal jährlich die Urlaubsmenge um die in den Einstellungen gespeicherte Menge
         erhöht.
         @endmarkdown
 

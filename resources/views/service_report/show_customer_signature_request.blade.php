@@ -38,7 +38,7 @@
                 <span class="text-muted mr-3">Kurzbericht</span>
             </p>
 
-            @markdown ($serviceReport->comment)
+            {!! Html::fromMarkdown($serviceReport->comment) !!}
 
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">

@@ -147,7 +147,7 @@
         </svg>
         Vermerk
     </div>
-        @markdown ($memo->comment)
+    {!! Html::fromMarkdown($memo->comment) !!}
     @endif
 
     @if($memo->attachments()->count() > 0)

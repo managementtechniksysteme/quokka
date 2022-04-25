@@ -24,6 +24,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.0",
+        "league/commonmark": "1.6",
         "pragmarx/google2fa": "^5.0",
         "pragmarx/version": "^1.2",
         "silvertipsoftware/laravel-pdf-latex": "^2.2.1",

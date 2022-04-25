@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of Laravel Markdown.
+ * This file is part of Laravel Html.
  *
  * (c) Graham Campbell <graham@alt-three.com>
  *
@@ -53,7 +53,7 @@ return [
     | Renderer Configuration
     |--------------------------------------------------------------------------
     |
-    | This option specifies an array of options for rendering HTML.
+    | This option specifies an array of options for rendering Html.
     |
     | Default: [
     |              'block_separator' => "\n",
@@ -123,10 +123,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | HTML Input
+    | Html Input
     |--------------------------------------------------------------------------
     |
-    | This option specifies how to handle untrusted HTML input.
+    | This option specifies how to handle untrusted Html input.
     |
     | Default: 'strip'
     |

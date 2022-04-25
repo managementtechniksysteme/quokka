@@ -68,7 +68,7 @@
         Bemerkungen
     </div>
     @if ($project->comment)
-        @markdown ($project->comment)
+        {!! Html::fromMarkdown($project->comment) !!}
     @else
         keine Bemerkungen angegeben
     @endif

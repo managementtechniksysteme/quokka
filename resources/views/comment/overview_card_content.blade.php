@@ -57,7 +57,7 @@
             <div class="rounded-botom border border-top-0 px-2 py-2">
                 <div class="row">
                     <div class="col">
-                        @markdown ($comment->comment)
+                        {!! Html::fromMarkdown($comment->comment) !!}
                     </div>
                 </div>
 

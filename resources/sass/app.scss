@@ -214,6 +214,10 @@ a.outline-none {
     background-color: $hover-bg;
 }
 
+.table > tbody.hover-highlight > tr:hover {
+    background-color: $hover-bg;
+}
+
 // Side menu
 .menu-item.active {
     background-color: $hover-bg;

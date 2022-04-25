@@ -10,7 +10,6 @@
     </div>
 
     <div class="container my-4">
-
         @markdown
         ### v0.1.11-8b177cf (25.04.2022)
         * Bei Abrechnungen können nun mehrzeilige Kommentare eingegeben werden.

@@ -164,7 +164,18 @@
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           Leistungsabrechnung
-                          <small v-if="accounting.length" class="text-muted">{{ accounting.length }} Einträge</small>
+                          <small v-if="accounting.length" class="text-muted">
+                              {{ accounting.length }} Einträge
+                              <span v-if="getNewAccounting().length" class="text-success">
+                                  +{{ getNewAccounting().length }}
+                              </span>
+                              <span v-if="getChangedAccounting().length" class="text-warning">
+                                  ±{{ getChangedAccounting().length }}
+                              </span>
+                              <span v-if="getDestroyedAccounting().length" class="text-danger">
+                                  -{{ getDestroyedAccounting().length }}
+                              </span>
+                          </small>
                       </h3>
 
                       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
@@ -716,6 +727,18 @@
 
             getUnsavedAccounting() {
                 return this.accounting.filter(acc => acc.action !== null);
+            },
+
+            getNewAccounting() {
+                return this.accounting.filter(acc => acc.action === 'store');
+            },
+
+            getChangedAccounting() {
+                return this.accounting.filter(acc => acc.action === 'update');
+            },
+
+            getDestroyedAccounting() {
+                return this.accounting.filter(acc => acc.action === 'destroy');
             },
 
             setFilterProject(value) {

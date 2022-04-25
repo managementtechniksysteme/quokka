@@ -166,15 +166,9 @@
                           Leistungsabrechnung
                           <small v-if="accounting.length" class="text-muted">
                               {{ accounting.length }} Einträge
-                              <span v-if="getNewAccounting().length" class="text-success">
-                                  +{{ getNewAccounting().length }}
-                              </span>
-                              <span v-if="getChangedAccounting().length" class="text-warning">
-                                  ±{{ getChangedAccounting().length }}
-                              </span>
-                              <span v-if="getDestroyedAccounting().length" class="text-danger">
-                                  -{{ getDestroyedAccounting().length }}
-                              </span>
+                              <span v-if="getNewAccounting().length" class="text-success">+{{ getNewAccounting().length }}</span>
+                              <span v-if="getChangedAccounting().length" class="text-warning">±{{ getChangedAccounting().length }}</span>
+                              <span v-if="getDestroyedAccounting().length" class="text-danger">-{{ getDestroyedAccounting().length }}</span>
                           </small>
                       </h3>
 

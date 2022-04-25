@@ -7,12 +7,12 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($serviceReport->services as $service)
-        <tr>
-            <th scope="row">{{ $service->provided_on }}</th>
-            <td>{{ $service->hours }}</td>
-            <td>{{ $service->kilometres }}</td>
-        </tr>
-    @endforeach
+        @foreach($serviceReport->services as $service)
+            <tr>
+                <th scope="row">{{ $service->provided_on }}</th>
+                <td>{{ $service->hours }}</td>
+                <td>{{ $service->kilometres }}</td>
+            </tr>
+        @endforeach
     </tbody>
 </table>

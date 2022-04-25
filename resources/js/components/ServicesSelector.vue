@@ -38,7 +38,7 @@
                         <th scope="col" class="col-auto text-right"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="hover-highlight">
                     <tr v-for="(service, index) in services">
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][provided_on]'" :name="'services['+index+'][provided_on]'" :value="service.provided_on.toISOString().substr(0, 10)" />
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][hours]'" :name="'services['+index+'][hours]'" :value="service.hours" />

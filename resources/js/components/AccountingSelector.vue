@@ -160,7 +160,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="accountingOverview">
+              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="accounting_overview">
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           Leistungsabrechnung
@@ -323,7 +323,7 @@
                       <p class="lead">Rechne neue Leistungen mithilfe des Formulars ab.</p>
                   </div>
 
-                  <button v-if="accounting.length" ref="saveButton" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
+                  <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
                       <svg class="feather feather-16 mr-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
@@ -393,6 +393,7 @@
                 pageOfItems: [],
 
                 initialPage: 1,
+                scrollToNewEntry: false,
 
                 selectAllHover: false,
 
@@ -446,7 +447,14 @@
                 this.pageOfItems = pageOfItems;
 
                 this.$nextTick(() => {
-                    this.$refs.accountingOverview.scrollIntoView({behavior: 'smooth'});
+                    if(this.scrollToNewEntry) {
+                        this.$refs.save_button.scrollIntoView({behavior: 'smooth'});
+                    }
+                    else {
+                        this.$refs.accounting_overview.scrollIntoView({behavior: 'smooth'});
+                    }
+
+                    this.scrollToNewEntry = false;
                 });
             },
 
@@ -772,7 +780,7 @@
                     amount: amount,
                     comment: this.comment,
                 });
-                
+
                 this.service_provided_on_invalid = false;
                 this.service_provided_started_at = null;
                 this.service_provided_started_at_invalid = false;
@@ -786,9 +794,7 @@
 
                 this.initialPage = this.getLastPage();
 
-                this.$nextTick(() => {
-                    this.$refs.saveButton.scrollIntoView({behavior: 'smooth'});
-                })
+                this.scrollToNewEntry = true;
             },
 
             removeAccounting(accounting) {

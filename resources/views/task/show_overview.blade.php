@@ -144,7 +144,7 @@
             </svg>
             Bemerkungen
         </div>
-        @markdown ($task->comment)
+        {!! Html::fromMarkdown($task->comment) !!}
     @endif
 
     @if($task->attachments()->count() > 0)

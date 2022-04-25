@@ -21,6 +21,7 @@
 \usepackage{setspace}
 \usepackage{textcomp}
 \usepackage[compact]{titlesec}
+\usepackage[normalem]{ulem}
 \usepackage{upquote}
 \usepackage{xcolor}
 

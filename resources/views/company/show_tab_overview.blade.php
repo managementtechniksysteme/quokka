@@ -97,7 +97,7 @@
         Bemerkungen
     </div>
     @if ($company->comment)
-        @markdown ($company->comment)
+        {!! Html::fromMarkdown($company->comment) !!}
     @else
         keine Bemerkungen angegeben
     @endif

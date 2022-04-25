@@ -49,7 +49,7 @@ class Latex
             ->input($text)
             ->execute([
                 '-V', 'lang=de',
-                '--from', 'markdown_github',
+                '--from', 'gfm',
                 '--to', 'latex',
             ]);
     }

@@ -355,7 +355,7 @@
     };
 
     export default {
-        name: "AccountingsSelector",
+        name: "AccountingSelector",
 
         data() {
             let today = new Date();

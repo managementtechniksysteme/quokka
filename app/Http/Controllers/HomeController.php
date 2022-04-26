@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Accounting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -11,8 +12,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(Auth::user()->employee->isCurrentlyOnHoliday() && !$request->has('skip-holiday')) {
+            return view('holiday');
+        }
+
         return view('home');
     }
 }

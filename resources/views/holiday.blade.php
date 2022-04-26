@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container my-4 h-100 d-flex align-items-center justify-content-center">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="text-center">
             <img class="empty-state" src="{{ asset('svg/chilling.svg') }}" alt="relax" />
             <p class="lead mt-4">Hey, du solltest eigentlich gar nicht hier sein!?<br />

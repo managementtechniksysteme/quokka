@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\FiltersResults;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -72,5 +73,13 @@ class Employee extends Model
     public function logbook()
     {
         return $this->hasMany(Logbook::class, 'employee_id');
+    }
+
+    public function isCurrentlyOnHoliday() {
+        $currentHolidayAccounting = $this->accounting()
+            ->whereServiceProvidedOn(Carbon::today())
+            ->whereServiceId(ApplicationSettings::get()->holiday_service_id);
+
+        return $currentHolidayAccounting->exists();
     }
 }

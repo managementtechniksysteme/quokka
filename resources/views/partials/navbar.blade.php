@@ -38,7 +38,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-itemr">
+                    <li class="nav-item">
                         <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
@@ -74,13 +74,25 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('accounting.index') }}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('accounting.index') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>
                             Abrechnung
                         </a>
+                        <a id="navbarAccountingDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret h-20"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarAccountingDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('logbook.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+                                </svg>
+                                Fahrtenbuch
+                            </a>
+                        </div>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -108,7 +120,7 @@
                             </svg>
                             Einstellungen
                         </a>
-                        <a id="navbarSettingssDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="navbarSettingsDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret h-20"></span>
                         </a>
 

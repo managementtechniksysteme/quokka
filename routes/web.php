@@ -44,10 +44,11 @@ Auth::routes([
     'register' => false,
 ]);
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/offline', [OfflineController::class, 'index'])->name('offline.index');
 
 Route::middleware(['guest'])->group(function () {
+    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
     Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
     Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);
 

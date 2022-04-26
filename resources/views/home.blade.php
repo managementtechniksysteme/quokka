@@ -7,7 +7,7 @@
             <p class="lead text-muted mt-4">Hier entsteht in Kürze deine persönliche Übersicht.<br />
                 Bitte gedulde dich noch ein wenig.</p>
 
-            <p class="lead">Du kannst einstweilen andere Bereiche von {{ config('app.name') }} erkunden.</p>
+            <p class="lead">Du kannst einstweile andere Bereiche von {{ config('app.name') }} erkunden.</p>
             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('companies.index') }}">
                 <svg class="feather feather-20 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>

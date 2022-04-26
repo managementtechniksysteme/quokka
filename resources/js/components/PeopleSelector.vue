@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-select :options="unselected" label="name" placeholder="Person auswählen" value="" :selectOnTab="true" @input="addSelected"></v-select>
-        <div v-if="selected.length" class="mt-2">
-            <div class="row my-2 align-items-center" v-for="person in selected">
+        <div v-if="selected.length" class="container-fluid mt-2">
+            <div class="row py-2 align-items-center hover-highlight" v-for="person in selected">
                 <input v-if="selected.length" type="hidden" :id="person.id" :name="inputname" :value="person.id" />
                 <div class="col">
                     {{person.name}}

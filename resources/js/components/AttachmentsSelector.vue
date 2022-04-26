@@ -9,9 +9,9 @@
             <input v-if="remove_attachments.length" type="hidden" :id="attachment.id" name="remove_attachments[]" :value="attachment.id" />
         </div>
 
-        <div v-if="existing_attachments.length || new_attachments.length" class="mt-2">
+        <div v-if="existing_attachments.length || new_attachments.length" class="container-fluid mt-2">
 
-            <div v-if="existing_attachments.length" class="row my-2 align-items-center" v-for="attachment in existing_attachments">
+            <div v-if="existing_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in existing_attachments">
                 <div class="col d-inline-flex align-items-center">
                     <img v-if="attachment.url !== null" class="attachment-img-preview mr-2" :src="attachment.url" :alt="attachment.file_name" />
                     <svg v-else class="feather attachment-img-preview mr-2">
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div v-if="new_attachments.length" class="row my-2 align-items-center" v-for="attachment in new_attachments">
+            <div v-if="new_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in new_attachments">
                 <div class="col d-inline-flex align-items-center">
                     <img v-if="attachment.preview !== null" class="attachment-img-preview mr-2" :src="attachment.preview" :alt="attachment.file_name" />
                     <svg v-else class="feather attachment-img-preview mr-2">

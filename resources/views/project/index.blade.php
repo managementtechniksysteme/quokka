@@ -95,7 +95,7 @@
                                     </svg>
                                     Materialkosten
                                 </button>
-                                <button type="submit" name="sort" value="material-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
+                                <button type="submit" name="sort" value="material-costs-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
                                     <svg class="feather feather-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                     </svg>

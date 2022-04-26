@@ -90,16 +90,14 @@
         </div>
     </div>
 
-    <div class="text-muted d-flex align-items-center mt-4">
-        <svg class="feather feather-16 mr-2">
-            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-        </svg>
-        Bemerkungen
-    </div>
     @if ($company->comment)
+        <div class="text-muted d-flex align-items-center mt-4">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+            </svg>
+            Bemerkungen
+        </div>
         {!! Html::fromMarkdown($company->comment) !!}
-    @else
-        keine Bemerkungen angegeben
     @endif
 
 @endsection

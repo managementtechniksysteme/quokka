@@ -24,15 +24,17 @@ import ServicesSelector from "./components/ServicesSelector";
 import ServiceUnitDropdown from "./components/ServiceUnitDropdown";
 import SignaturePad from "./components/SignaturePad";
 import QrScanner from "./components/QrScanner";
-import WebpushManager from "./components/WebpushManager";
+import VehicleDropdown from "./components/VehicleDropdown";
 import vSelect from 'vue-select';
 import VueEasymde from "vue-easymde";
 import { VueHammer } from 'vue2-hammer';
 import VueScreen from 'vue-screen';
 import VueSignaturePad from 'vue-signature-pad';
-import "easymde/dist/easymde.min.css";
 import VueQrcodeReader from "vue-qrcode-reader";
 import vueTopprogress from 'vue-top-progress'
+import WebpushManager from "./components/WebpushManager";
+
+import "easymde/dist/easymde.min.css";
 
 /**
  * The following block of code may be used to automatically register your
@@ -61,6 +63,7 @@ Vue.component('service-dropdown', ServiceDropdown);
 Vue.component("services-selector", ServicesSelector);
 Vue.component("service-unit-dropdown", ServiceUnitDropdown);
 Vue.component('signature-pad', SignaturePad);
+Vue.component('vehicle-dropdown', VehicleDropdown);
 Vue.component('vue-easymde', VueEasymde);
 Vue.component('v-select', vSelect);
 Vue.component('qr-scanner', QrScanner);

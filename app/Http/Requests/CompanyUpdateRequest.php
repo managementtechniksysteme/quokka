@@ -14,10 +14,6 @@ class CompanyUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $street_number = $request->street_number;
-        $postcode = $request->postcode;
-        $city = $request->city;
-
         return [
             'name' => 'required|unique:companies,name,'.$this->company->id,
             'name_2' => 'nullable',

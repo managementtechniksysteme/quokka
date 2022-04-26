@@ -125,6 +125,12 @@
                                 </svg>
                                 Leistungen
                             </a>
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
+                                </svg>
+                                Fuhrpark
+                            </a>
                         </div>
                     </li>
 

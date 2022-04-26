@@ -14,15 +14,6 @@ class CompanyStoreRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $address_name = $request->address_name;
-        $street_number = $request->street_number;
-        $postcode = $request->postcode;
-        $city = $request->city;
-        $operator_address_name = $request->operator_address_name;
-        $operator_street_number = $request->operator_street_number;
-        $operator_postcode = $request->operator_postcode;
-        $operator_city = $request->operator_city;
-
         return [
             'name' => 'required|unique:companies',
             'name_2' => 'nullable',

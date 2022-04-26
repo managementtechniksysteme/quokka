@@ -2,32 +2,34 @@
     <div class="row align-items-center px-3">
 
         <div class="col flex-grow-1 h-100 py-3">
-            <a class="stretched-link outline-none" href="{{ route('wage-services.show', $wageService) }}"></a>
+            <a class="stretched-link outline-none" href="{{ route('vehicles.show', $vehicle) }}"></a>
             <div class="mw-100 text-truncate">
-                {{ $wageService->name }}
+                {{ $vehicle->registration_identifier }}
             </div>
             <div class="text-muted">
                 <div class="d-inline-flex align-items-center">
                     <svg class="feather feather-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#circle"></use>
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
-                    {{ $wageService->unit }}
-                    <svg class="feather feather-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                    </svg>
-                    <span class="mw-100 text-truncate">
-                        {{ $wageService->description }}
-                    </span>
+                    {{ $vehicle->make_model }}
+
+                    @if($vehicle->current_kilometres)
+                        <svg class="feather feather-16 ml-2 mr-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#database"></use>
+                        </svg>
+                        {{ $vehicle->current_kilometres_string }}
+                    @endif
+
                 </div>
             </div>
         </div>
 
         <div class="col-md-auto d-none d-md-block">
             <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="wageServiceOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="vehicleOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="wageServiceOverviewDropdown">
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('wage-services.edit', $wageService) }}">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="vehicleOverviewDropdown">
+                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.edit', $vehicle) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
@@ -51,7 +53,7 @@
                         </svg>
                         Favorisieren
                     </a>
-                    <form action="{{ route('wage-services.destroy', $wageService) }}" method="post">
+                    <form action="{{ route('vehicles.destroy', $vehicle) }}" method="post">
                         @csrf
                         @method('DELETE')
 

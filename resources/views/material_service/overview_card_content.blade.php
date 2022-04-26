@@ -20,9 +20,9 @@
 
         <div class="col-md-auto d-none d-md-block">
             <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="projectOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="materialServiceOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="projectOverviewDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="materialServiceOverviewDropdown">
                     <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('material-services.edit', $materialService) }}">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>

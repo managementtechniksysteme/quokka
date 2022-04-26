@@ -68,4 +68,9 @@ class Employee extends Model
     {
         return $this->hasMany(Accounting::class, 'employee_id');
     }
+
+    public function logbook()
+    {
+        return $this->hasMany(Logbook::class, 'employee_id');
+    }
 }

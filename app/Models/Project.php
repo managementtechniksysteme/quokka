@@ -64,4 +64,9 @@ class Project extends Model
     {
         return $this->hasMany(Accounting::class);
     }
+
+    public function logbook()
+    {
+        return $this->hasMany(Logbook::class);
+    }
 }

@@ -12,7 +12,7 @@ class Vehicle extends Model
     use OrdersResults;
 
     protected $appends = [
-        'make_model',
+        'make_model', 'current_kilometres'
     ];
 
     protected $fillable = [

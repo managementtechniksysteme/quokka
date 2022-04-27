@@ -23,6 +23,9 @@ class CreateLogbookTable extends Migration
             $table->unsignedBigInteger('vehicle_id');
             $table->timestamps();
 
+            $table->index('origin');
+            $table->index('destination');
+
             $table->foreign('employee_id')->references('person_id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('restrict')->onUpdate('cascade');

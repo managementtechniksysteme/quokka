@@ -12,7 +12,7 @@ class LogbookIndexRequest extends FormRequest
             'start' => 'sometimes|date',
             'end' => 'sometimes|date',
             'project_id' => 'sometimes|exists:projects,id',
-            'vehicle_id' => 'sometimes|exists:vehicle,id',
+            'vehicle_id' => 'sometimes|exists:vehicles,id',
             'only_own' => 'sometimes|accepted',
         ];
 

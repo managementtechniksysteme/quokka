@@ -47,17 +47,17 @@
                                   </div>
                               </div>
                               <div class="form-group col-md-6 col-lg-3 col-xl-12">
+                                  <label>Fahrzeug</label>
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle"></v-select>
+                                  <div v-if="filter_vehicle_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_vehicle_errors}">
+                                      {{ filter_vehicle_errors[0] }}
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
                                   <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject"></v-select>
                                   <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">
                                       {{ filter_project_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
-                                  <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :value="filter_service" :selectOnTab="true" @input="setFilterService"></v-select>
-                                  <div v-if="filter_service_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_service_errors}">
-                                      {{ filter_service_errors[0] }}
                                   </div>
                               </div>
                               <div class="form-group col-12">
@@ -88,29 +88,64 @@
 
               <div v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
                   <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
-                      <h3>Leistungen abrechnen</h3>
+                      <h3>Fahrt eintragen</h3>
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
                           <div class="form-row">
+                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                                  <label>Fahrzeug</label>
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle"></v-select>
+                                  <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">
+                                      Fahrzeug muss ausgefüllt sein.
+                                  </div>
+                              </div>
                               <div class="form-group col-6 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_on">Datum</label>
-                                  <input type="date" class="form-control" v-bind:class="{'is-invalid': service_provided_on_invalid}" id="service_provided_on" name="service_provided_on" placeholder="" required v-model="date" />
+                                  <label for="driven_on">Datum</label>
+                                  <input type="date" class="form-control" v-bind:class="{'is-invalid': driven_on_invalid}" id="driven_on" name="driven_on" placeholder="" required v-model="driven_on" />
                                   <div class="invalid-feedback">
                                       Datum muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_started_at">Start</label>
-                                  <input type="time" :max="service_provided_ended_at" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" :disabled="this.service !== null && this.service.unit !== services_hour_unit" required v-model="service_provided_started_at" @blur="autofill()" />
+                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                                  <label for="start_kilometres">Start Kilometer</label>
+                                  <input type="number" :min="0" step="1" class="form-control" v-bind:class="{'is-invalid': start_kilometres_invalid}" id="start_kilometres" name="start_kilometres" placeholder="131337" required v-model="start_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
-                                      Start muss eine gültige Uhrzeit sein.
+                                      Start Kilometer müssen mindestens 0 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_ended_at">Ende</label>
-                                  <input type="time" :min="service_provided_started_at" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" required :disabled="this.service !== null && this.service.unit !== services_hour_unit" v-model="service_provided_ended_at"  @blur="autofill()" />
+                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                                  <label for="end_kilometres">Ende Kilometer</label>
+                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
-                                      Ende muss eine gültige Uhrzeit sein.
+                                      Ende Kilometer müssen mindestens 1 sein.
+                                  </div>
+                              </div>
+                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                                  <label for="driven_kilometres">gefahrene KM</label>
+                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
+                                  <div class="invalid-feedback">
+                                      gefahrene Kilometer müssen mindestens 1 sein.
+                                  </div>
+                              </div>
+                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                                  <label for="litres_refuelled">getankte Liter</label>
+                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" required v-model="litres_refuelled" />
+                                  <div class="invalid-feedback">
+                                      getankte Liter müssen mindestens 1 sein.
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                                  <label>Start</label>
+                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin"></v-select>
+                                  <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
+                                      Start muss ausgefüllt sein.
+                                  </div>
+                              </div>
+                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                                  <label>Ziel</label>
+                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination"></v-select>
+                                  <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
+                                      Ziel muss ausgefüllt sein.
                                   </div>
                               </div>
                               <div class="form-group col-md-4 col-lg-3 col-xl-12">
@@ -120,27 +155,13 @@
                                       Projekt muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
-                                  <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="service" :selectOnTab="true" @input="setService"></v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': service_invalid}">
-                                      Leistung muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
-                                  <label for="amount">Menge</label>
-                                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="min_amount" :step="min_amount" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      Menge muss mindestens {{min_amount}} sein.
-                                  </div>
-                              </div>
                               <div class="form-group col-lg-3 col-xl-12">
                                   <label for="comment">Bemerkungen</label>
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
                               <div class="form-group d-none d-lg-block d-xl-none col-lg-3">
-                                  <label for="addservice">&nbsp;</label>
-                                  <button id="addservice" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
+                                  <label for="addlogbook">&nbsp;</label>
+                                  <button id="addlogbook" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addLogbook()">
                                       <svg class="feather feather-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                       </svg>
@@ -149,7 +170,7 @@
                               </div>
                           </div>
                           <div class="d-block d-lg-none d-xl-block mt-4">
-                              <button id="addservice" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
+                              <button id="addlogbook" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addLogbook()">
                                   <svg class="feather feather-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
@@ -163,16 +184,16 @@
               <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="accounting_overview">
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
-                          Leistungsabrechnung
-                          <small v-if="accounting.length" class="text-muted">
-                              {{ accounting.length }} Einträge
-                              <span v-if="getNewAccounting().length" class="text-success">+{{ getNewAccounting().length }}</span>
-                              <span v-if="getChangedAccounting().length" class="text-warning">±{{ getChangedAccounting().length }}</span>
-                              <span v-if="getDestroyedAccounting().length" class="text-danger">-{{ getDestroyedAccounting().length }}</span>
+                          Fahrtenbuch
+                          <small v-if="logbook.length" class="text-muted">
+                              {{ logbook.length }} Einträge
+                              <span v-if="getNewLogbook().length" class="text-success">+{{ getNewLogbook().length }}</span>
+                              <span v-if="getChangedLogbook().length" class="text-warning">±{{ getChangedLogbook().length }}</span>
+                              <span v-if="getDestroyedLogbook().length" class="text-danger">-{{ getDestroyedLogbook().length }}</span>
                           </small>
                       </h3>
 
-                      <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
+                      <div v-if="getUnsavedLogbook().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
                               <svg class="feather feather-24 mr-2">
                                   <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
@@ -185,7 +206,8 @@
                       </div>
                   </div>
 
-                  <div v-if="accounting.length" class="mt-4 p-1">
+                  <!--
+                  <div v-if="logbook.length" class="mt-4 p-1">
                       <table class="table table-sm">
                           <thead>
                               <tr>
@@ -322,18 +344,21 @@
                       </p>
                   </div>
 
-                  <div v-if="!accounting.length" class="text-center mt-4">
+                  -->
+
+                  <div v-if="!logbook.length" class="text-center mt-4">
                       <img class="empty-state" src="/svg/no-data.svg" alt="no data" />
-                      <p class="lead text-muted">Es sind keine Abrechnungen passend zum Anzeigefilter vorhanden.</p>
-                      <p class="lead">Rechne neue Leistungen mithilfe des Formulars ab.</p>
+                      <p class="lead text-muted">Es sind keine Fahrtenbuch Einträge passend zum Anzeigefilter vorhanden.</p>
+                      <p class="lead">Trage neue Fahrten mithilfe des Formulars ein.</p>
                   </div>
 
-                  <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
+                  <button v-if="logbook.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedLogbook().length" @click="saveData()">
                       <svg class="feather feather-16 mr-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
                       Änderungen speichern
                   </button>
+
               </div>
 
           </div>
@@ -355,7 +380,7 @@
     };
 
     export default {
-        name: "AccountingSelector",
+        name: "LogbookSelector",
 
         data() {
             let today = new Date();
@@ -366,36 +391,47 @@
                 filter_start_errors: null,
                 filter_end: null,
                 filter_end_errors:null,
+                filter_vehicle: null,
+                filter_vehicle_errors: null,
                 filter_project: null,
                 filter_project_errors: null,
-                filter_service: null,
-                filter_service_errors: null,
                 filter_only_own: true,
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
-                date: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
-                service_provided_on_invalid: false,
-                table_service_provided_on_invalid: false,
-                service_provided_started_at: null,
-                service_provided_started_at_invalid: false,
-                table_service_provided_started_at_invalid: false,
-                service_provided_ended_at: null,
-                service_provided_ended_at_invalid: false,
-                table_service_provided_ended_at_invalid: false,
+                driven_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                driven_on_invalid: false,
+                table_driven_on_invalid: false,
+                start_kilometres: null,
+                start_kilometres_invalid: false,
+                table_start_kilometres_invalid: false,
+                end_kilometres: null,
+                end_kilometres_invalid: false,
+                table_end_kilometres_invalid: false,
+                driven_kilometres: null,
+                driven_kilometres_invalid: false,
+                table_driven_kilometres_invalid: false,
+                litres_refuelled: null,
+                litres_refuelled_invalid: false,
+                table_litres_refuelled_invalid: false,
+                origin: null,
+                origin_invalid: false,
+                table_origin_invalid: false,
+                destination: null,
+                destination_invalid: false,
+                table_destination_invalid: false,
+                vehicle: null,
+                vehicle_invalid: false,
+                table_vehicle_invalid: false,
                 project: null,
                 project_invalid: false,
                 table_project_invalid: false,
-                service: null,
-                service_invalid: false,
-                table_service_invalid: false,
-                amount: null,
-                amount_invalid: false,
-                table_amount_invalid: false,
                 comment: null,
 
-                accounting: [],
+                logbook: [],
                 pageOfItems: [],
+
+                placesList: this.places,
 
                 initialPage: 1,
                 scrollToNewEntry: false,
@@ -407,11 +443,11 @@
         },
 
         mounted() {
-            if(this.current_accounting) {
+            if(this.current_logbook) {
                 let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
-                this.current_accounting.forEach(acc => {
-                    let date = Date.parse(acc.service_provided_on);
+                this.current_logbook.forEach(book => {
+                    let date = Date.parse(book.driven_on);
 
                     this.accounting.push({
                         action: null,
@@ -421,15 +457,18 @@
                         show_details: false,
                         hover: false,
                         edit: null,
-                        id: acc.id,
-                        service_provided_on: new Date(date - userTimezoneOffset),
-                        service_provided_started_at: acc.service_provided_started_at,
-                        service_provided_ended_at: acc.service_provided_ended_at,
-                        project_id: acc.project_id,
-                        service_id: acc.service_id,
-                        employee_id: acc.employee_id,
-                        amount: acc.amount,
-                        comment: acc.comment,
+                        id: book.id,
+                        driven_on: new Date(date - userTimezoneOffset),
+                        start_kilometres: book.start_kilometres,
+                        end_kilometres: book.end_kilometres,
+                        driven_kilometres: book.driven_kilometres,
+                        litres_refuelled: book.litres_refuelled,
+                        origin: book.origin,
+                        destination: book.destination,
+                        vehicle_id: book.vehicle_id,
+                        project_id: book.project_id,
+                        employee_id: book.employee_id,
+                        comment: book.comment,
                     });
                 });
             }
@@ -456,7 +495,7 @@
                         this.$refs.save_button.scrollIntoView({behavior: 'smooth'});
                     }
                     else {
-                        this.$refs.accounting_overview.scrollIntoView({behavior: 'smooth'});
+                        this.$refs.logbook_overview.scrollIntoView({behavior: 'smooth'});
                     }
 
                     this.scrollToNewEntry = false;
@@ -470,7 +509,7 @@
                 this.initialPage = 1;
 
                 if(this.filter_only_unsaved) {
-                    this.accounting = this.getUnsavedAccounting();
+                    this.logbook = this.getUnsavedLogbook();
 
                     // Add a bit of timeout to progress bar because otherwise it runs forever if state is changed
                     // too quickly.
@@ -482,8 +521,8 @@
 
                     this.filter_start_errors = null;
                     this.filter_end_errors = null;
+                    this.filter_vehicle_errors = null;
                     this.filter_project_errors = null;
-                    this.filter_service_errors = null;
                     this.filter_only_own_errors = null;
 
                     return;
@@ -497,36 +536,38 @@
                 if(this.filter_end) {
                     params.end = this.filter_end;
                 }
+                if(this.filter_vehicle) {
+                    params.vehicle_id = this.filter_vehicle.id;
+                }
                 if(this.filter_project) {
                     params.project_id = this.filter_project.id;
-                }
-                if(this.filter_service) {
-                    params.service_id = this.filter_service.id;
                 }
                 if(this.filter_only_own) {
                     params.only_own = this.filter_only_own;
                 }
 
-                axios.get('/accounting', {params: params})
+                axios.get('/logbook', {params: params})
                 .then(response => {
-                    this.updateLocalAccounting(response.data);
+                    this.updateLocalLogbook(response.data);
 
                     this.$refs.top_progress.done();
 
                     this.filter_start_errors = null;
                     this.filter_end_errors = null;
+                    this.filter_vehicle_errors = null;
                     this.filter_project_errors = null;
-                    this.filter_service_errors = null;
                     this.filter_only_own_errors = null;
                 })
                 .catch(error => {
                     this.$refs.top_progress.fail();
 
+                    console.log(error);
+
                     if(error.response.status === 422) {
                         this.filter_start_errors = this.extractErrorMessages(error.response, 'start');
                         this.filter_end_errors = this.extractErrorMessages(error.response, 'end');
+                        this.filter_vehicle_errors = this.extractErrorMessages(error.response, 'vehicle_id');
                         this.filter_project_errors = this.extractErrorMessages(error.response, 'project_id');
-                        this.filter_service_errors = this.extractErrorMessages(error.response, 'service_id');
                         this.filter_only_own_errors = this.extractErrorMessages(error.response, 'only_own');
                     }
                     else {
@@ -535,25 +576,25 @@
                 });
             },
 
-            updateLocalAccounting(fetchedAccounting) {
+            updateLocalLogbook(fetchedLogbook) {
                 let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
-                let newAccounting = fetchedAccounting.filter(
-                    fetchedAccounting => !this.accounting.some(
-                        localAccounting => localAccounting.id === fetchedAccounting.id
+                let newLogbook = fetchedLogbook.filter(
+                    fetchedLogbook => !this.logbook.some(
+                        localLogbook => localLogbook.id === fetchedLogbook.id
                     )
                 );
 
-                let removedUnchangedAccounting = this.accounting.filter(
-                    localAccounting => !fetchedAccounting.some(
-                        fetchedAccounting => fetchedAccounting.id === localAccounting.id
-                    ) && localAccounting.action === null && localAccounting.action_old === null
+                let removedUnchangedLogbook = this.logbook.filter(
+                    localLogbook => !fetchedLogbook.some(
+                        fetchedLogbook => fetchedLogbook.id === localLogbook.id
+                    ) && localLogbook.action === null && localLogbook.action_old === null
                 );
 
-                newAccounting.forEach(acc => {
-                    let date = Date.parse(acc.service_provided_on);
+                newLogbook.forEach(book => {
+                    let date = Date.parse(book.driven_on);
 
-                    this.accounting.push({
+                    this.logbook.push({
                         action: null,
                         action_old: null,
                         errors: null,
@@ -561,52 +602,55 @@
                         show_details: false,
                         hover: false,
                         edit: null,
-                        id: acc.id,
-                        service_provided_on: new Date(date - userTimezoneOffset),
-                        service_provided_started_at: acc.service_provided_started_at,
-                        service_provided_ended_at: acc.service_provided_ended_at,
-                        project_id: acc.project_id,
-                        service_id: acc.service_id,
-                        employee_id: acc.employee_id,
-                        amount: acc.amount,
-                        comment: acc.comment,
+                        id: book.id,
+                        driven_on: new Date(date - userTimezoneOffset),
+                        start_kilometres: book.start_kilometres,
+                        end_kilometres: book.end_kilometres,
+                        driven_kilometres: book.driven_kilometres,
+                        litres_refuelled: book.litres_refuelled,
+                        origin: book.origin,
+                        destination: book.destination,
+                        vehicle_id: book.vehicle_id,
+                        project_id: book.project_id,
+                        employee_id: book.employee_id,
+                        comment: book.comment,
                     });
                 });
 
-                removedUnchangedAccounting.forEach(acc => {
-                    this.accounting = this.removeFromArray(this.accounting, acc);
+                removedUnchangedLogbook.forEach(book => {
+                    this.logbook = this.removeFromArray(this.logbook, book);
                 });
 
-                this.sortArrayByDateTime(this.accounting);
+                this.sortArrayByDateVehicleStartKilometres(this.logbook);
             },
 
             saveData() {
                 this.dataResult = null;
 
-                let unsavedAccounting = this.getUnsavedAccounting();
+                let unsavedLogbook = this.getUnsavedLogbook();
                 let promises = [];
 
-                unsavedAccounting.forEach(acc => {
-                    switch (acc.action) {
+                unsavedLogbook.forEach(book => {
+                    switch (book.action) {
                         case 'store':
-                            promises.push(this.storeAccounting(acc));
+                            promises.push(this.storeLogbook(book));
                             break;
                         case 'update':
-                            promises.push(this.updateAccounting(acc));
+                            promises.push(this.updateLogbook(book));
                             break;
                         case 'destroy':
-                            if(acc.id !== null) {
-                                promises.push(this.destroyAccounting(acc));
+                            if(book.id !== null) {
+                                promises.push(this.destroyLogbook(book));
                             }
                             else {
-                                this.accounting = this.removeFromArray(this.accounting, acc);
+                                this.logbook = this.removeFromArray(this.logbook, book);
                             }
                             break;
                     }
                 });
 
                 Promise.all(promises).then(() => {
-                    if(this.getErrorAccounting().length) {
+                    if(this.getErrorLogbook().length) {
                         this.dataResult = {'danger': SAVE_ERROR_MESSAGE};
                     }
                     else {
@@ -618,70 +662,77 @@
                 });
             },
 
-            storeAccounting(accounting) {
-                return axios.post('/accounting', {
-                    service_provided_on: accounting.service_provided_on,
-                    service_provided_started_at: accounting.service_provided_started_at,
-                    service_provided_ended_at: accounting.service_provided_ended_at,
-                    project_id: accounting.project_id,
-                    service_id: accounting.service_id,
-                    amount: accounting.amount,
-                    comment: accounting.comment,
+            storeLogbook(logbook) {
+                return axios.post('/logbook', {
+                    driven_on: logbook.driven_on,
+                    start_kilometres: logbook.start_kilometres,
+                    end_kilometres: logbook.end_kilometres,
+                    driven_kilometres: logbook.driven_kilometres,
+                    litres_refuelled: logbook.litres_refuelled,
+                    origin: logbook.origin,
+                    destination: logbook.destination,
+                    vehicle_id: logbook.vehicle_id,
+                    project_id: logbook.project_id,
+                    comment: logbook.comment,
                 })
                 .then(response => {
-                    accounting.id = response.data.id;
-                    accounting.employee_id = response.data.employee_id;
-                    accounting.action = null;
-                    accounting.action_old = null;
-                    accounting.errors = null;
-                    accounting.show_details = false;
+                    logbook.id = response.data.id;
+                    logbook.employee_id = response.data.employee_id;
+                    logbook.action = null;
+                    logbook.action_old = null;
+                    logbook.errors = null;
+                    logbook.show_details = false;
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
+                        logbook.errors = this.extractErrorMessages(error.response);
+                        logbook.show_details = this.expand_errors;
                     }
                 });
             },
 
-            updateAccounting(accounting) {
-                return axios.post('/accounting/' + accounting.id, {
+            updateLogbook(logbook) {
+                return axios.post('/logbook/' + logbook.id, {
                     _method: 'PATCH',
 
-                    id: accounting.id,
-                    service_provided_on: accounting.service_provided_on,
-                    service_provided_started_at: accounting.service_provided_started_at,
-                    service_provided_ended_at: accounting.service_provided_ended_at,
-                    project_id: accounting.project_id,
-                    service_id: accounting.service_id,
-                    amount: accounting.amount,
-                    comment: accounting.comment,
+                    id: logbook.id,
+                    driven_on: logbook.driven_on,
+                    start_kilometres: logbook.start_kilometres,
+                    end_kilometres: logbook.end_kilometres,
+                    driven_kilometres: logbook.driven_kilometres,
+                    litres_refuelled: logbook.litres_refuelled,
+                    origin: logbook.origin,
+                    destination: logbook.destination,
+                    vehicle_id: logbook.vehicle_id,
+                    project_id: logbook.project_id,
+                    employee_id: logbook.employee_id,
+                    comment: logbook.comment,
                 })
                 .then(() => {
-                    accounting.action = null;
-                    accounting.action_old = null;
-                    accounting.errors = null;
-                    accounting.show_details = false;
+                    logbook.action = null;
+                    logbook.action_old = null;
+                    logbook.errors = null;
+                    logbook.show_details = false;
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
+                        logbook.errors = this.extractErrorMessages(error.response);
+                        logbook.show_details = this.expand_errors;
                     }
                 });
             },
 
-            destroyAccounting(accounting) {
-                return axios.post('/accounting/' + accounting.id, {
+            destroyLogbook(logbook) {
+                return axios.post('/logbook/' + logbook.id, {
                     _method: 'DELETE'
                 })
                 .then(() => {
-                    this.accounting = this.removeFromArray(this.accounting, accounting);
+                    this.logbook = this.removeFromArray(this.logbook, logbook);
                 })
                 .catch(error => {
                     if(error.response.status === 422) {
-                        accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
+                        logbook.errors = this.extractErrorMessages(error.response);
+                        logbook.show_details = this.expand_errors;
                     }
                 });
             },
@@ -700,17 +751,22 @@
                 return messages.length ? messages : null;
             },
 
-            removeFromArray(accounting, value) {
-                return accounting.filter(accounting => accounting.id !== value.id);
+            removeFromArray(logbook, value) {
+                return logbook.filter(book => book.id !== value.id);
             },
 
-            sortArrayByDateTime(accounting) {
-                accounting.sort((a, b) => {
-                    if(a.service_provided_on.getTime() !== b.service_provided_on.getTime()) {
-                        return a.service_provided_on - b.service_provided_on;
+            sortArrayByDateVehicleStartKilometres(logbook) {
+                logbook.sort((a, b) => {
+                    if(a.driven_on.getTime() !== b.driven_on.getTime()) {
+                        return a.driven_on - b.driven_on;
                     }
-                    else if(a.service_provided_started_at !== b.service_provided_started_at) {
-                        return a.service_provided_started_at < b.service_provided_started_at ? -1 : 1;
+                    else if(a.vehicle_id !== b.vehicle_id) {
+                        return this.getVehicleRegistrationIdentifier(a.vehicle_id).localeCompare(
+                            this.getVehicleRegistrationIdentifier(b.vehicle_id)
+                        );
+                    }
+                    else if(a.start_kilometres !== b.start_kilometres) {
+                        return a.start_kilometres - b.start_kilometres;
                     }
                     else {
                         return 0;
@@ -718,28 +774,28 @@
                 });
             },
 
-            getUnsavedAccounting() {
-                return this.accounting.filter(acc => acc.action !== null);
+            getUnsavedLogbook() {
+                return this.logbook.filter(book => book.action !== null);
             },
 
-            getNewAccounting() {
-                return this.accounting.filter(acc => acc.action === 'store');
+            getNewLogbook() {
+                return this.logbook.filter(book => book.action === 'store');
             },
 
-            getChangedAccounting() {
-                return this.accounting.filter(acc => acc.action === 'update');
+            getChangedLogbook() {
+                return this.logbook.filter(book => book.action === 'update');
             },
 
-            getDestroyedAccounting() {
-                return this.accounting.filter(acc => acc.action === 'destroy');
+            getDestroyedLogbook() {
+                return this.logbook.filter(book => book.action === 'destroy');
+            },
+
+            setFilterVehicle(value) {
+                this.filter_vehicle = value;
             },
 
             setFilterProject(value) {
                 this.filter_project = value;
-            },
-
-            setFilterService(value) {
-                this.filter_service = value;
             },
 
             toggleFilterOnlyOwn() {
@@ -750,35 +806,61 @@
                 this.filter_only_unsaved = !this.filter_only_unsaved;
             },
 
+            setOrigin(value) {
+                this.origin = value;
+            },
+
+            setDestination(value) {
+                this.destination = value;
+            },
+
+            getPlace(place) {
+                return this.placesList.find(listPlace => listPlace === place);
+            },
+
+            addPlaces(places) {
+                [].concat(places).forEach(place => {
+                    if(!this.getPlace(place)) {
+                        this.placesList.push(place);
+                    }
+                });
+
+                this.placesList.sort();
+            },
+
+            setVehicle(value) {
+                this.vehicle = value;
+                this.autofill();
+            },
+
             setProject(value) {
                 this.project = value;
             },
 
-            setService(value) {
-                this.service = value;
-                this.autofill();
-            },
+            addLogbook() {
+                let date = new Date(this.driven_on);
+                let startKilometres = this.start_kilometres === null ? null : Number(this.start_kilometres);
+                let endKilometres = this.end_kilometres === null ? null : Number(this.end_kilometres);
+                let drivenKilometres = this.driven_kilometres === null ? null : Number(this.driven_kilometres);
+                let litresRefuelled = this.litres_refuelled === null ? null : Number(this.litres_refuelled);
 
-            addAccounting() {
-                let date = new Date(this.date);
-                let amount = this.amount === null ? 0 : Number(this.amount);
+                this.driven_on_invalid = isNaN(date.getTime());
+                this.start_kilometres_invalid = !Number.isInteger(startKilometres) || startKilometres < 0;
+                this.end_kilometres_invalid = !Number.isInteger(endKilometres) || endKilometres < 1;
+                this.driven_kilometres_invalid = !Number.isInteger(drivenKilometres) || drivenKilometres < 1;
+                this.litres_refuelled_invalid = litresRefuelled !== null && (!Number.isInteger(litresRefuelled) || litresRefuelled < 1);
+                this.origin_invalid = !this.origin;
+                this.destination_invalid = !this.destination;
+                this.vehicle_invalid = this.vehicle === null;
 
-                this.service_provided_on_invalid = isNaN(date.getTime());
-                this.service_provided_started_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
-                    !this.isTwentyFourHourTimeFormat(this.service_provided_started_at);
-                this.service_provided_ended_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
-                    !this.isTwentyFourHourTimeFormat(this.service_provided_ended_at);
-                this.project_invalid = this.project === null;
-                this.service_invalid = this.service === null;
-                this.amount_invalid = Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount;
 
-                if(this.service_provided_on_invalid || this.service_provided_started_at_invalid ||
-                    this.service_provided_ended_at_invalid || this.project_invalid || this.service_invalid ||
-                    this.amount_invalid) {
+                if(this.driven_on_invalid || this.start_kilometres_invalid || this.end_kilometres_invalid ||
+                    this.driven_kilometres_invalid || this.litres_refuelled_invalid || this.origin_invalid ||
+                    this.destination_invalid || this.vehicle_invalid) {
                     return;
                 }
 
-                this.accounting.push({
+                this.logbook.push({
                     action: 'store',
                     action_old: 'store',
                     errors: null,
@@ -787,249 +869,303 @@
                     hover: false,
                     edit: null,
                     id: null,
-                    service_provided_on: date,
-                    service_provided_started_at: this.service_provided_started_at,
-                    service_provided_ended_at: this.service_provided_ended_at,
-                    project_id: this.project.id,
-                    service_id: this.service.id,
+                    driven_on: date,
+                    start_kilometres: startKilometres,
+                    end_kilometres: endKilometres,
+                    driven_kilometres: drivenKilometres,
+                    litres_refuelled: litresRefuelled,
+                    origin: this.origin,
+                    destination: this.destination,
+                    vehicle_id: this.vehicle.id,
+                    project_id: this.project !== null ? this.project.id : null,
                     employee_id: null,
-                    amount: amount,
                     comment: this.comment,
                 });
 
-                this.service_provided_on_invalid = false;
-                this.service_provided_started_at = null;
-                this.service_provided_started_at_invalid = false;
-                this.service_provided_ended_at = null;
-                this.service_provided_ended_at_invalid = false;
+                this.addPlaces([this.origin, this.destination]);
+
+                this.driven_on_invalid = false;
+                this.start_kilometres = null;
+                this.start_kilometres_invalid = false;
+                this.end_kilometres = null;
+                this.end_kilometres_invalid = false;
+                this.driven_kilometres = null;
+                this.driven_kilometres_invalid = false;
+                this.litres_refuelled = null;
+                this.litres_refuelled_invalid = false;
+                this.origin = this.destination;
+                this.origin_invalid = false;
+                this.destination = null;
+                this.destination_invalid = null;
+                this.vehicle_invalid  = false;
                 this.project_invalid = false;
-                this.service_invalid = false;
-                this.amount = null;
-                this.amount_invalid = false;
                 this.comment = null;
+
+                this.autofillStartKilometresFromBooked(null, this.vehicle);
 
                 this.initialPage = this.getLastPage();
 
                 this.scrollToNewEntry = true;
             },
 
-            removeAccounting(accounting) {
-                if(accounting.action !== 'destroy') {
-                    accounting.action_old = accounting.action;
+            removeLogbook(logbook) {
+                if(logbook.action !== 'destroy') {
+                    logbook.action_old = logbook.action;
                 }
 
-                accounting.action = 'destroy';
+                logbook.action = 'destroy';
             },
 
-            restoreAccounting(accounting) {
-                accounting.action = accounting.action_old ? accounting.action_old : null;
+            restoreLogbook(logbook) {
+                logbook.action = logbook.action_old ? logbook.action_old : null;
             },
 
-            removeSelectedAccounting() {
-                let selectedAccounting = this.getSelectedAccounting();
+            removeSelectedLogbook() {
+                let selectedLogbook = this.getSelectedLogbook();
 
-                selectedAccounting.forEach(selected => {
-                    this.removeAccounting(selected);
+                selectedLogbook.forEach(selected => {
+                    this.removeLogbook(selected);
                     selected.selected = false;
                 });
             },
 
-            restoreSelectedAccounting() {
-                let selectedAccounting = this.getSelectedAccounting();
+            restoreSelectedLogbook() {
+                let selectedLogbook = this.getSelectedLogbook();
 
-                selectedAccounting.forEach(selected => {
-                    this.restoreAccounting(selected);
+                selectedLogbook.forEach(selected => {
+                    this.restoreLogbook(selected);
                     selected.selected = false;
                 });
             },
 
-            changeAccountingServiceProvidedOn(event, changedAccounting) {
+
+            changeLogbookDrivenOn(event, changedLogbook) {
                 let date = new Date(event.target.value);
 
                 if(isNaN(date.getTime())) {
-                    this.table_service_provided_on_invalid = true;
+                    this.table_driven_on_invalid = true;
                     return;
                 }
 
-                changedAccounting.service_provided_on = date;
+                changedLogbook.driven_on = date;
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.setChangedAccountingStatus(changedLogbook);
 
-                changedAccounting.edit = null;
+                changedLogbook.edit = null;
             },
 
-            changeAccountingServiceProvidedStartedAt(event, changedAccounting) {
-                let service = this.getService(changedAccounting.service_id);
-
-                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
-                    return;
-                }
-
-                let time = event.target.value ? event.target.value : null;
+            changeLogbookStartKilometres(event, changedLogbook) {
+                let startKilometres = Number(event.target.value);
 
                 // try to autofill if no value given and set new value
                 // for checking - seems like a bit of a hack
-                if(!time) {
-                    changedAccounting.service_provided_started_at = null;
-                    this.autofill(changedAccounting);
-                    time = changedAccounting.service_provided_started_at;
+                if(!startKilometres) {
+                    changedLogbook.start_kilometres = null;
+                    this.autofill(changedLogbook);
+                    startKilometres = changedLogbook.start_kilometres;
                 }
 
-                if(!this.isTwentyFourHourTimeFormat(time)) {
-                    this.table_service_provided_started_at_invalid = true;
+                if(!Number.isInteger(startKilometres) || startKilometres < 0) {
+                    this.table_start_kilometres_invalid = true;
                     return;
                 }
 
-                changedAccounting.service_provided_started_at = time;
+                changedLogbook.start_kilometres = startKilometres;
 
-                this.autofill(changedAccounting);
+                this.autofill(changedLogbook);
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.setChangedAccountingStatus(changedLogbook);
 
-                changedAccounting.edit = null;
+                changedLogbook.edit = null;
             },
 
-            changeAccountingServiceProvidedEndedAt(event, changedAccounting) {
-                let service = this.getService(changedAccounting.service_id);
-
-                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
-                    return;
-                }
-
-                let time = event.target.value ? event.target.value : null;
+            changeLogbookEndKilometres(event, changedLogbook) {
+                let endKilometres = Number(event.target.value);
 
                 // try to autofill if no value given and set new value
                 // for checking - seems like a bit of a hack
-                if(!time) {
-                    changedAccounting.service_provided_ended_at = null;
-                    this.autofill(changedAccounting);
-                    time = changedAccounting.service_provided_ended_at;
+                if(!endKilometres) {
+                    changedLogbook.end_kilometres = null;
+                    this.autofill(changedLogbook);
+                    endKilometres = changedLogbook.end_kilometres;
                 }
 
-                if(!this.isTwentyFourHourTimeFormat(time)) {
-                    this.table_service_provided_ended_at_invalid = true;
+                if(!Number.isInteger(endKilometres) || endKilometres < 1) {
+                    this.table_end_kilometres_invalid = true;
                     return;
                 }
 
-                changedAccounting.service_provided_ended_at = time;
+                changedLogbook.end_kilometres = endKilometres;
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.autofill(changedLogbook);
 
-                changedAccounting.edit = null;
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
             },
 
-            changeAccountingProject(value, changedAccounting) {
+            changeLogbookDrivenKilometres(event, changedLogbook) {
+                let drivenKilometres = Number(event.target.value);
+
+                // try to autofill if no value given and set new value
+                // for checking - seems like a bit of a hack
+                if(!drivenKilometres) {
+                    changedLogbook.driven_kilometres = null;
+                    this.autofill(changedLogbook);
+                    drivenKilometres = changedLogbook.driven_kilometres;
+                }
+
+                if(!Number.isInteger(drivenKilometres) || drivenKilometres < 1) {
+                    this.table_driven_kilometres_invalid = true;
+                    return;
+                }
+
+                changedLogbook.driven_kilometres = drivenKilometres;
+
+                this.autofill(changedLogbook);
+
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
+            },
+
+            changeLogbookLitresRefuelled(event, changedLogbook) {
+                let litresRefuelled = Number(event.target.value);
+
+                // try to autofill if no value given and set new value
+                // for checking - seems like a bit of a hack
+                if(!litresRefuelled) {
+                    changedLogbook.litres_refuelled = null;
+                    this.autofill(changedLogbook);
+                    litresRefuelled = changedLogbook.litres_refuelled;
+                }
+
+                if(litresRefuelled !== null && (!Number.isInteger(litresRefuelled) || litresRefuelled < 1)) {
+                    this.table_litres_refuelled_invalid = true;
+                    return;
+                }
+
+                changedLogbook.litres_refuelled = litresRefuelled;
+
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
+            },
+
+            changeLogbookOrigin(value, changedLogbook) {
                 if(!value) {
-                    this.table_project_invalid = true;
+                    this.table_origin_invalid = true;
                     return;
                 }
 
-                changedAccounting.project_id = value.id;
+                changedLogbook.origin = value;
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.addPlaces(value);
 
-                changedAccounting.edit = null;
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
             },
 
-            changeAccountingService(value, changedAccounting) {
+            changeLogbookDestination(value, changedLogbook) {
                 if(!value) {
-                    this.table_service_invalid = true;
+                    this.table_destination_invalid = true;
                     return;
                 }
 
-                changedAccounting.service_id = value.id;
+                changedLogbook.destination = value;
 
-                this.autofill(changedAccounting);
+                this.addPlaces(destination);
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.setChangedAccountingStatus(changedLogbook);
 
-                changedAccounting.edit = null;
+                changedLogbook.edit = null;
             },
 
-            changeAccountingDropdownValueToSame(changedAccounting) {
-                this.setChangedAccountingStatus(changedAccounting);
-                this.unsetEdit(changedAccounting);
-            },
-
-            changeAccountingAmount(event, changedAccounting) {
-                let amount = Number(event.target.value);
-
-                // try to autofill if no value given and set new value
-                // for checking - seems like a bit of a hack
-                if(!amount) {
-                    changedAccounting.amount  = null;
-                    this.autofill(changedAccounting);
-                    amount = changedAccounting.amount;
-                }
-
-                if(Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount) {
-                    this.table_amount_invalid = true;
+            changeLogbookVehicle(value, changedLogbook) {
+                if(!value) {
+                    this.table_vehicle_invalid = true;
                     return;
                 }
 
-                changedAccounting.amount = amount;
+                changedLogbook.vehicle_id = value.id;
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.autofill(changedLogbook);
 
-                changedAccounting.edit = null;
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
             },
 
-            changeAccountingComment(event, changedAccounting) {
-                changedAccounting.comment = event.target.value;
+            changeLogbookProject(value, changedLogbook) {
+                changedLogbook.project_id = value.id;
 
-                this.setChangedAccountingStatus(changedAccounting);
+                this.setChangedAccountingStatus(changedLogbook);
 
-                changedAccounting.edit = null;
+                changedLogbook.edit = null;
             },
 
-            setChangedAccountingStatus(changedAccounting) {
-                if(changedAccounting.action === 'destroy') {
-                    changedAccounting.action = changedAccounting.action_old;
+            changeLogbookDropdownValueToSame(changedLogbook) {
+                this.setChangedLogbookStatus(changedLogbook);
+                this.unsetEdit(changedLogbook);
+            },
+
+            changeLogbookComment(event, changedLogbook) {
+                changedLogbook.comment = event.target.value;
+
+                this.setChangedAccountingStatus(changedLogbook);
+
+                changedLogbook.edit = null;
+            },
+
+            setChangedLogbookStatus(changedLogbook) {
+                if(changedLogbook.action === 'destroy') {
+                    changedLogbook.action = changedLogbook.action_old;
                 }
 
-                if(changedAccounting.action !== 'store') {
-                    changedAccounting.action = 'update';
+                if(changedLogbook.action !== 'store') {
+                    changedLogbook.action = 'update';
                 }
 
-                if(!changedAccounting.action_old) {
-                    changedAccounting.action_old = 'update';
+                if(!changedLogbook.action_old) {
+                    changedLogbook.action_old = 'update';
                 }
             },
 
-            toggleSelected(accounting) {
-                accounting.selected = !accounting.selected;
+            toggleSelected(logbook) {
+                logbook.selected = !logbook.selected;
             },
 
             toggleSelectAll() {
-                let selectedAccounting = this.getSelectedAccounting();
+                let selectedLogbook = this.getSelectedLogbook();
 
-                let selected = selectedAccounting.length !== this.pageOfItems.length
+                let selected = selectedLogbook.length !== this.pageOfItems.length
 
-                this.pageOfItems.forEach(acc => {
-                    acc.selected = selected;
+                this.pageOfItems.forEach(book => {
+                    book.selected = selected;
                 });
             },
 
             deselectAll() {
-                this.getSelectedAccounting().forEach(acc => {
-                    acc.selected = false;
+                this.getSelectedLogbook().forEach(book => {
+                    book.selected = false;
                 });
             },
 
-            getSelectedAccounting() {
-                return this.accounting.filter(acc => acc.selected === true);
+            getSelectedLogbook() {
+                return this.logbook.filter(book => book.selected === true);
             },
 
-            toggleShowDetails(accounting) {
-                accounting.show_details = !accounting.show_details;
+            toggleShowDetails(logbook) {
+                logbook.show_details = !logbook.show_details;
             },
 
             toggleShowDetailsError() {
-                let showNoDetailsErrorAccounting = this.getShowNoDetailsErrorAccounting();
+                let showNoDetailsErrorLogbook = this.getShowNoDetailsErrorLogbook();
 
-                if(showNoDetailsErrorAccounting.length) {
-                    showNoDetailsErrorAccounting.forEach(acc => {
-                        acc.show_details = true;
+                if(showNoDetailsErrorLogbook.length) {
+                    showNoDetailsErrorLogbook.forEach(book => {
+                        book.show_details = true;
                     });
                 }
                 else {
@@ -1041,52 +1177,45 @@
                 }
             },
 
-            getErrorAccounting() {
-                return this.accounting.filter(acc => acc.errors !== null);
+            getErrorLogbook() {
+                return this.logbook.filter(book => book.errors !== null);
             },
 
-            getShowDetailsErrorAccounting() {
-                return this.accounting.filter(acc => acc.errors !== null && acc.show_details === true);
+            getShowDetailsErrorLogbook() {
+                return this.logbook.filter(book => book.errors !== null && book.show_details === true);
             },
 
-            getShowNoDetailsErrorAccounting() {
-                return this.accounting.filter(acc => acc.errors !== null && acc.show_details === false);
+            getShowNoDetailsErrorLogbook() {
+                return this.logbook.filter(book => book.errors !== null && book.show_details === false);
             },
 
-            setEdit(accounting, field) {
-                let service = this.getService(accounting.service_id);
-
-                if((field === 'service_provided_started_at' || field === 'service_provided_ended_at') &&
-                    (service.type !== 'wage' || service.unit !== this.services_hour_unit)) {
-                    return;
-                }
-
-                this.getEditAccounting().forEach(editAccounting => {
-                    this.blurTableInput(editAccounting.edit);
-                    editAccounting.edit = null;
+            setEdit(logbook, field) {
+                this.getEditLogbook().forEach(editLogbook => {
+                    this.blurTableInput(editLogbook.edit);
+                    editLogbook.edit = null;
                 });
 
-                accounting.edit = field;
+                logbook.edit = field;
 
                 this.$nextTick(() => {
                     this.focusTableInput(field);
                 });
 
 
-                this.table_service_provided_on_invalid = false;
-                this.table_service_provided_started_at_invalid = false;
-                this.table_service_provided_ended_at_invalid = false;
-                this.table_project_invalid = false;
+                this.table_driven_on_invalid = false;
+                this.table_start_kilometres_invalid = false;
+                this.table_end_kilometres_invalid = false;
+                this.table_driven_kilometres_invalid = false;
                 this.table_service_invalid = false;
                 this.table_amount_invalid = false;
             },
 
-            unsetEdit(accounting) {
-                this.setEdit(accounting, null);
+            unsetEdit(logbook) {
+                this.setEdit(logbook, null);
             },
 
             focusTableInput(field) {
-                if(field === 'project' || field === 'service') {
+                if(field === 'origin' || field === 'destination' || field === 'project' || field === 'vehicle') {
                     this.$refs.table_input[0].$refs.search.focus();
                 }
                 else if(field !== null) {
@@ -1095,7 +1224,7 @@
             },
 
             blurTableInput(field) {
-                if(field === 'project' || field === 'service') {
+                if(field === 'origin' || field === 'destination' || field === 'project' || field === 'vehicle') {
                     this.$refs.table_input[0].$refs.search.blur();
                 }
                 else if(field !== null) {
@@ -1103,29 +1232,41 @@
                 }
             },
 
-            getEditAccounting() {
-                return this.accounting.filter(acc => acc.edit !== null);
+            getEditLogbook() {
+                return this.logbook.filter(book => book.edit !== null);
             },
 
-            onTableInputTab(event, accounting, field) {
+            onTableInputTab(event, logbook, field) {
                 switch (field) {
-                    case 'service_provided_on':
-                        this.setEdit(accounting, 'service_provided_started_at');
+                    case 'driven_on':
+                        this.setEdit(logbook, 'start_kilometres');
                         break;
-                    case 'service_provided_started_at':
-                        this.setEdit(accounting, 'service_provided_ended_at');
+                    case 'start_kilometres':
+                        this.setEdit(logbook, 'end_kilometres');
                         break;
-                    case 'service_provided_ended_at':
-                        this.setEdit(accounting, 'project');
+                    case 'end_kilometres':
+                        this.setEdit(logbook, 'driven_kilometres');
+                        break;
+                    case 'driven_kilometres':
+                        this.setEdit(logbook, 'litres_refuelled');
+                        break;
+                    case 'litres_refuelled':
+                        this.setEdit(logbook, 'origin');
+                        break;
+                    case 'origin':
+                        this.setEdit(logbook, 'destination');
+                        break;
+                    case 'destination':
+                        this.setEdit(logbook, 'vehicle');
+                        break;
+                    case 'vehicle':
+                        this.setEdit(logbook, 'project');
                         break;
                     case 'project':
-                        this.setEdit(accounting, 'service');
+                        this.setEdit(logbook, 'comment');
                         break;
-                    case 'service':
-                        this.setEdit(accounting, 'amount');
-                        break;
-                    case 'amount':
-                        this.unsetEdit(accounting);
+                    case 'comment':
+                        this.unsetEdit(logbook);
                         break;
                 }
             },
@@ -1135,17 +1276,30 @@
             },
 
             getProjectName(projectId) {
-                let project = this.projects.find(project => project.id === projectId);
+                let project = this.getProject(projectId);
                 return project ? project.name : '';
             },
 
-            getService(serviceId) {
-                return this.services.find(service => service.id === serviceId);
+            getVehicle(vehicleId) {
+                return this.vehicles.find(vehicle => vehicle.id === vehicleId);
             },
 
-            getServiceName(serviceId) {
-                let service = this.services.find(service => service.id === serviceId);
-                return service ? service.name_with_unit : '';
+            getVehicleRegistrationIdentifier(vehicleId) {
+                let vehicle = this.getVehicle(vehicleId);
+                return vehicle ? vehicle.registration_identifier : '';
+            },
+
+            getHighestVehicleEndKilometres(vehicle) {
+                let vehicleLogbook = this.getVehicleLogbook(vehicle);
+
+                return vehicleLogbook.length ?
+                    vehicleLogbook.reduce((prev, current) =>
+                        (prev.end_kilometres > current.end_kilometres) ? prev : current).end_kilometres :
+                    null;
+            },
+
+            getVehicleLogbook(vehicle) {
+                return this.logbook.filter(book => book.vehicle_id = vehicle.id);
             },
 
             getEmployeeName(employeeId) {
@@ -1153,129 +1307,104 @@
                 return employee ? employee.name : this.current_employee.name;
             },
 
-            isTwentyFourHourTimeFormat(text) {
-                return /^([01]\d|2[0123]):[012345]\d$/.test(text);
-            },
-
             getDateStringForInputField(date) {
                 return date !== null ? date.toISOString().substr(0, 10) : null;
             },
 
-            getTwentyFourHourTimeString(date) {
-                return date !== null ? ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) : null;
-            },
+            autofill(logbook = null) {
+                let startKilometres =
+                    logbook === null ? Number(this.start_kilometres) : Number(logbook.start_kilometres);
+                let endKilometres =
+                    logbook === null ? Number(this.end_kilometres) : Number(logbook.end_kilometres);
+                let drivenKilometres =
+                    logbook === null ? Number(this.driven_kilometres) : Number(logbook.driven_kilometres);
+                let vehicle = logbook === null ? this.vehicle : this.getVehicle(logbook.service_id);
 
-            autofill(accounting = null) {
-                let start = accounting === null ? this.service_provided_started_at : accounting.service_provided_started_at;
-                let end = accounting === null ? this.service_provided_ended_at : accounting.service_provided_ended_at;
-                let amount = accounting === null ? this.amount : accounting.amount;
-                let service = accounting === null ? this.service : this.getService(accounting.service_id);
-
-                if(service === null) {
-                    return;
+                if(vehicle !== null && !startKilometres && !endKilometres && !drivenKilometres) {
+                    this.autofillStartKilometresFromBooked(logbook, vehicle);
                 }
-
-                if(service.type !== 'wage' || service.unit !== this.services_hour_unit) {
-                    this.removeTimes(accounting);
+                else if(startKilometres && endKilometres && !drivenKilometres) {
+                    this.autofillDrivenKilometres(logbook, startKilometres, endKilometres);
                 }
-                else if(start && end && !amount) {
-                    this.autofillAmount(accounting, start, end);
+                else if(startKilometres && drivenKilometres && !endKilometres) {
+                    this.autofillEndKilometres(logbook, startKilometres, drivenKilometres);
                 }
-                else if(start && amount && !end) {
-                    this.autofillEnd(accounting, start, amount);
-                }
-                else if(end && amount && !start) {
-                    this.autofillStart(accounting, end, amount);
+                else if(endKilometres && drivenKilometres && !startKilometres) {
+                    this.autofillStartKilometres(logbook, endKilometres, drivenKilometres);
                 }
             },
 
-            removeTimes(accounting = null) {
-                if(accounting) {
-                    accounting.service_provided_started_at = null;
-                    accounting.service_provided_ended_at = null;
+            autofillDrivenKilometres(logbook = null, startKilometres, endKilometres) {
+                let drivenKilometres = endKilometres - startKilometres;
+
+                if(logbook === null) {
+                    this.driven_kilometres = drivenKilometres;
                 }
                 else {
-                    this.service_provided_started_at = null;
-                    this.service_provided_ended_at = null;
+                    logbook.driven_kilometres = drivenKilometres;
                 }
             },
 
-            autofillAmount(accounting = null, start, end) {
-                let minAmountMinutes = this.min_amount * 30;
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+            autofillEndKilometres(logbook = null, startKilometres, drivenKilometres) {
+                let endKilometres = startKilometres + drivenKilometres;
 
-                let startDate = new Date(date + ' ' + start);
-                let endDate = new Date(date + ' ' + end);
-
-                let timeStartMinutes = startDate.getHours() * 60 + startDate.getMinutes();
-                let timeEndMinutes = endDate.getHours() * 60 + endDate.getMinutes();
-
-                let differenceMinutes = timeEndMinutes - timeStartMinutes;
-
-                if(differenceMinutes < minAmountMinutes) {
-                    return;
-                }
-
-                // round down to nearest amount of minimum units that fit into the duration
-                differenceMinutes = differenceMinutes - differenceMinutes % minAmountMinutes;
-
-                let differenceHours = differenceMinutes / 60;
-
-                if(accounting === null) {
-                    this.amount = differenceHours;
+                if(logbook === null) {
+                    this.end_kilometres = endKilometres;
                 }
                 else {
-                    accounting.amount = differenceHours;
+                    logbook.end_kilometres = endKilometres;
                 }
             },
 
-            autofillEnd(accounting = null, start, amount) {
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+            autofillStartKilometres(logbook = null, endKilometres, drivenKilometres) {
+                let startKilometres = endKilometres - drivenKilometres;
 
-                let amountMilliseconds = amount * 60 * 60 * 1000;
-
-                let timeStart = new Date(date + ' ' + start);
-                let timeEnd = new Date(timeStart.getTime() + amountMilliseconds);
-
-                let timeEndString = this.getTwentyFourHourTimeString(timeEnd);
-
-                if(accounting === null) {
-                    this.service_provided_ended_at = timeEndString;
+                if(logbook === null) {
+                    this.start_kilometres = startKilometres;
                 }
                 else {
-                    accounting.service_provided_ended_at = timeEndString;
+                    logbook.start_kilometres = startKilometres;
                 }
             },
 
-            autofillStart(accounting = null, end, amount) {
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+            autofillStartKilometresFromBooked(logbook = null, vehicle) {
+                let startKilometres = vehicle.current_kilometres ? vehicle.current_kilometres : 0;
+                let highestVehicleEndKilometres = this.getHighestVehicleEndKilometres(vehicle);
 
-                let amountMilliseconds = amount * 60 * 60 * 1000;
+                if(highestVehicleEndKilometres && highestVehicleEndKilometres > startKilometres) {
+                    startKilometres = highestVehicleEndKilometres
+                }
 
-                let timeEnd = new Date(date + ' ' + end);
-                let timeStart = new Date(timeEnd.getTime() - amountMilliseconds);
-
-                let timeStartString = this.getTwentyFourHourTimeString(timeStart);
-
-                if(accounting === null) {
-                    this.service_provided_started_at = timeStartString;
+                if(logbook === null) {
+                    this.start_kilometres = startKilometres;
                 }
                 else {
-                    accounting.service_provided_started_at = timeStartString;
+                    logbook.start_kilometres = startKilometres;
                 }
             },
 
             getLastPage() {
-                return this.accounting.length ? Math.ceil(this.accounting.length / this.page_size) : 0;
+                return this.logbook.length ? Math.ceil(this.logbook.length / this.page_size) : 0;
             }
 
         },
 
         props: {
-            current_accounting: {
+            current_logbook: {
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+
+            places: {
+                type: Array,
+                default() {
+                    return [];
+                }
+            },
+
+            vehicles: {
                 type: Array,
                 default() {
                     return [];
@@ -1289,38 +1418,10 @@
                 }
             },
 
-            services: {
-                type: Array,
-                default() {
-                    return [];
-                }
-            },
-
             employees: {
                 type: Array,
                 default() {
                     return [];
-                }
-            },
-
-            current_employee: {
-                type: Object,
-                default() {
-                    return null;
-                }
-            },
-
-            services_hour_unit: {
-                type: String,
-                default() {
-                    return null;
-                }
-            },
-
-            min_amount: {
-                type: Number,
-                default() {
-                    return 0.5;
                 }
             },
 

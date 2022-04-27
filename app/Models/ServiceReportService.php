@@ -12,7 +12,7 @@ class ServiceReportService extends Model
     protected $casts = [
         'provided_on' => 'date',
         'hours' => 'double',
-        'kilometres' => 'double',
+        'kilometres' => 'int',
     ];
 
     protected $fillable = [

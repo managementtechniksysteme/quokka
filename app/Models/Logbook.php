@@ -12,6 +12,14 @@ class Logbook extends Model
 
     protected $table = 'logbook';
 
+    protected $casts = [
+        'driven_on' => 'date',
+        'start_kilometres' => 'int',
+        'end_kilometres' => 'int',
+        'driven_kilometres' => 'int',
+        'litres_refuelled' => 'int',
+    ];
+
     protected $fillable = [
         'driven_on',
         'start_kilometres',
@@ -27,7 +35,7 @@ class Logbook extends Model
     ];
 
     protected $orderKeys = [
-        'default' => [['driven_on', 'desc'], ['start_kilometres', 'desc']],
+        'default' => ['driven_on', 'start_kilometres'],
     ];
 
     public function employee()
@@ -55,12 +63,12 @@ class Logbook extends Model
             $query = $query->whereDate('driven_on', '<=', $params['end']);
         }
 
-        if (isset($params['project_id'])) {
-            $query = $query->where('project_id', $params['project_id']);
+        if (isset($params['vehicle_id'])) {
+            $query = $query->where('vehicle_id', $params['vehicle_id']);
         }
 
-        if (isset($params['vehicle_id'])) {
-            $query = $query->where('vehicle_id', $params['service_id']);
+        if (isset($params['project_id'])) {
+            $query = $query->where('project_id', $params['project_id']);
         }
 
         if (isset($params['only_own'])) {

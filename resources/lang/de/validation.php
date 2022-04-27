@@ -212,5 +212,12 @@ return [
         'make'                            => 'Marke',
         'model'                           => 'Modell',
         'registration_identifier'         => 'Kennzeichen',
+        'driven_on'                       => 'Datum',
+        'start_kilometres'                => 'Start Kilometer',
+        'end_kilometres'                  => 'Ende Kilometer',
+        'driven_kilometres'               => 'gefahrene Kilometer',
+        'litres_refuelled'                => 'getankte Liter',
+        'origin'                          => 'Start',
+        'destination'                     => 'Ziel',
     ],
 ];

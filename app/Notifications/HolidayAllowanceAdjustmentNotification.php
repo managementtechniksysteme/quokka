@@ -21,6 +21,8 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
     public string $holidayServiceUnit;
     public string $directionString;
 
+    private array $vibrationDuration = ['100'];
+
     public function __construct(int $oldHolidayAllowance, int $currentHolidayAllowance)
     {
         $holidayAllowanceDifference = $currentHolidayAllowance-$oldHolidayAllowance;

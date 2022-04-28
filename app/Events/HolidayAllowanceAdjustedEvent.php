@@ -14,16 +14,18 @@ class HolidayAllowanceAdjustedEvent
     public Employee $employee;
     public float $oldHolidayAllowance;
     public float $currentHolidayAllowance;
+    public bool $manualAdjustment;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Employee $employee, float $oldHolidayAllowance, float $currentHolidayAllowance)
+    public function __construct(Employee $employee, float $oldHolidayAllowance, float $currentHolidayAllowance, bool $manualAdjustment = false)
     {
         $this->employee = $employee;
         $this->oldHolidayAllowance = $oldHolidayAllowance;
         $this->currentHolidayAllowance = $currentHolidayAllowance;
+        $this->manualAdjustment = $manualAdjustment;
     }
 }

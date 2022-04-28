@@ -26,9 +26,14 @@ class SendHolidayAllowanceAdjustmentNotification implements ShouldQueue
         $employee = $event->employee;
         $oldHolidayAllowance = $event->oldHolidayAllowance;
         $currentHolidayAllowance = $event->currentHolidayAllowance;
+        $manualAdjustment = $event->manualAdjustment;
 
 
-        $employee->user->notify(new HolidayAllowanceAdjustmentNotification($oldHolidayAllowance, $currentHolidayAllowance));
+        $employee->user->notify(
+            new HolidayAllowanceAdjustmentNotification(
+                $oldHolidayAllowance, $currentHolidayAllowance, $manualAdjustment
+            )
+        );
     }
 
     public function subscribe($events)

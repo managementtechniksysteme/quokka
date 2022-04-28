@@ -7,7 +7,7 @@ current:
   patch: 12
   prerelease: beta
   buildmetadata:
-  commit: 369bda8
+  commit: e1a3664
   timestamp:
     mode: absorb
     year:

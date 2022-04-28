@@ -6,6 +6,7 @@
                 <span class="text-muted">{{ option.name }}</span> <br />
                 {{ option.address_line }}
             </template>
+            <template v-slot:no-options>Keine passenden Einträge.</template>
         </v-select>
     </div>
 </template>

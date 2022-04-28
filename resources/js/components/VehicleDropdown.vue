@@ -1,7 +1,9 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" :id="inputname" :name="inputname"  :value="selected.id" />
-        <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="selected" :selectOnTab="true" @input="setSelected"></v-select>
+        <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="selected" :selectOnTab="true" @input="setSelected">
+            <template v-slot:no-options>Keine passenden Einträge.</template>
+        </v-select>
     </div>
 </template>
 

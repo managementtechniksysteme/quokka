@@ -16,14 +16,14 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
 {
     use Queueable;
 
-    public int $holidayAllowanceDifference;
-    public int $currentHolidayAllowance;
+    public float $holidayAllowanceDifference;
+    public float $currentHolidayAllowance;
     public string $holidayServiceUnit;
     public string $directionString;
 
     private array $vibrationDuration = ['100'];
 
-    public function __construct(int $oldHolidayAllowance, int $currentHolidayAllowance)
+    public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance)
     {
         $holidayAllowanceDifference = $currentHolidayAllowance-$oldHolidayAllowance;
 

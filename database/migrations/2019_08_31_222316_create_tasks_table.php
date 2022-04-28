@@ -28,8 +28,6 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->timestamps();
 
-            $table->unique(['name', 'project_id']);
-
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('employee_id')->references('person_id')->on('employees')->onDelete('restrict')->onUpdate('cascade');
         });

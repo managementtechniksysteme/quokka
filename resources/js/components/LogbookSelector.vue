@@ -92,56 +92,56 @@
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
                           <div class="form-row">
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Fahrzeug</label>
                                   <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle"></v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">
                                       Fahrzeug muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-6 col-md-4 col-lg-3 col-xl-12">
+                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-12">
                                   <label for="driven_on">Datum</label>
                                   <input type="date" class="form-control" v-bind:class="{'is-invalid': driven_on_invalid}" id="driven_on" name="driven_on" placeholder="" required v-model="driven_on" />
                                   <div class="invalid-feedback">
                                       Datum muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
                                   <label for="start_kilometres">Start Kilometer</label>
                                   <input type="number" :min="0" step="1" class="form-control" v-bind:class="{'is-invalid': start_kilometres_invalid}" id="start_kilometres" name="start_kilometres" placeholder="131337" required v-model="start_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Start Kilometer müssen mindestens 0 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
                                   <label for="end_kilometres">Ende Kilometer</label>
-                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
+                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Ende Kilometer müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
                                   <label for="driven_kilometres">gefahrene KM</label>
-                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
+                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       gefahrene Kilometer müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-6">
+                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
                                   <label for="litres_refuelled">getankte Liter</label>
-                                  <input type="number" :min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" required v-model="litres_refuelled" />
+                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" required v-model="litres_refuelled" />
                                   <div class="invalid-feedback">
                                       getankte Liter müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Start</label>
                                   <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin"></v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
                                       Start muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Ziel</label>
                                   <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination"></v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
@@ -159,7 +159,7 @@
                                   <label for="comment">Bemerkungen</label>
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
-                              <div class="form-group d-none d-lg-block d-xl-none col-lg-3">
+                              <div class="form-group d-none d-lg-block d-xl-none col-lg-2">
                                   <label for="addlogbook">&nbsp;</label>
                                   <button id="addlogbook" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addLogbook()">
                                       <svg class="feather feather-16 mr-2">
@@ -181,7 +181,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="accounting_overview">
+              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="logbook_overview">
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           Fahrtenbuch
@@ -206,43 +206,43 @@
                       </div>
                   </div>
 
-                  <!--
                   <div v-if="logbook.length" class="mt-4 p-1">
                       <table class="table table-sm">
                           <thead>
                               <tr>
                                   <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
+                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorLogbook().length, 'errorstoggle text-red-100': getErrorLogbook().length, 'text-red-500': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
                                       </button>
                                   </th>
+                                  <th scope="col" class="col-1-5">Fahrzeug</th>
                                   <th scope="col" class="col-1-5">Datum</th>
-                                  <th scope="col" class="col-1">Start</th>
-                                  <th scope="col" class="col-1">Ende</th>
-                                  <th scope="col" class="col-2">Projekt</th>
-                                  <th scope="col" class="col-2">Leistung</th>
-                                  <th scope="col" class="col-1">Menge</th>
-                                  <th scope="col" class="col-1-5">Mitarbeiter</th>
+                                  <th scope="col" class="col-1">Start KM</th>
+                                  <th scope="col" class="col-1">Ende KM</th>
+                                  <th scope="col" class="col-1">gef. KM</th>
+                                  <th scope="col" class="col-1">get. L</th>
+                                  <th scope="col" class="col-1-5">Start</th>
+                                  <th scope="col" class="col-1-5">Ziel</th>
                                   <th scope="col" class="col-auto text-right">
-                                      <button type="button" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
+                                      <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="removeSelectedLogbook()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                           </svg>
                                       </button>
-                                      <button type="button" class="btn btn-sm btn-outline-success d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
+                                      <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="restoreSelectedLogbook()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                           </svg>
                                       </button>
-                                      <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                      <button v-if="(getSelectedLogbook().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                           <svg class="feather feather-16">
                                               <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                               <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
-                                      <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                      <button v-if="getSelectedLogbook().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
@@ -251,60 +251,69 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <template v-for="acc in pageOfItems">
-                                  <tr class="hover-highlight" v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
+                              <template v-for="book in pageOfItems">
+                                  <tr class="hover-highlight" v-bind:class="{'border-status border-success': book.action === 'store' && !book.selected, 'border-status border-warning': book.action === 'update' && !book.selected, 'text-muted ': book.action === 'destroy', 'border-status border-danger': book.action === 'destroy' && !book.selected, 'border-status border-primary': book.selected}">
                                       <td class="col-auto">
-                                          <button type="button" class="btn btn-sm outline-none" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
+                                          <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !book.errors && !book.show_details, 'errorstoggle text-red-100': book.errors && !book.show_details, 'text-dark': !book.errors && book.show_details, 'text-red-500': book.errors && book.show_details}" @click="toggleShowDetails(book)">
                                               <svg class="feather feather-16">
-                                                  <use v-if="!acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
-                                                  <use v-if="acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                                                  <use v-if="acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
+                                                  <use v-if="!book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
+                                                  <use v-if="book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                                                  <use v-if="book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
                                               </svg>
                                           </button>
                                       </td>
-                                      <td class="col-1-5" @click="setEdit(acc, 'service_provided_on')">
-                                          <span v-if="acc.edit !== 'service_provided_on'">{{ acc.service_provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                                          <input v-if="acc.edit === 'service_provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_on_invalid}" ref="table_input" id="table_service_provided_on" name="table_service_provided_on" :value="getDateStringForInputField(acc.service_provided_on)" placeholder="" required @blur="changeAccountingServiceProvidedOn($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedOn($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_on')" />
+
+                                      <td class="col-1-5" @click="setEdit(book, 'vehicle')">
+                                          <span v-if="book.edit !== 'vehicle'">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</span>
+                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :value="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @input="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)"></v-select>
                                       </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service_provided_started_at')">
-                                          <span v-if="acc.edit !== 'service_provided_started_at'">{{ acc.service_provided_started_at }}</span>
-                                          <input v-if="acc.edit === 'service_provided_started_at'" type="time" :max="acc.service_provided_ended_at" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_started_at_invalid}" ref="table_input" id="table_service_provided_started_at" name="table_service_provided_started_at" :value="acc.service_provided_started_at ? acc.service_provided_started_at : ''" placeholder="08:00" required @blur="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_started_at')" />
+                                      <td class="col-1-5" @click="setEdit(book, 'driven_on')">
+                                          <span v-if="book.edit !== 'driven_on'">{{ book.driven_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
+                                          <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="getDateStringForInputField(book.driven_on)" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
                                       </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service_provided_ended_at')">
-                                          <span v-if="acc.edit !== 'service_provided_ended_at'">{{ acc.service_provided_ended_at }}</span>
-                                          <input v-if="acc.edit === 'service_provided_ended_at'" :min="acc.service_provided_started_at" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" required @blur="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_ended_at')" />
+                                      <td class="col-1" @click="setEdit(book, 'start_kilometres')">
+                                          <span v-if="book.edit !== 'start_kilometres'">{{ book.start_kilometres }}</span>
+                                          <input v-if="book.edit === 'start_kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_start_kilometres_invalid}" ref="table_input" id="table_start_kilometres" name="table_start_kilometres" placeholder="131337" :value="book.start_kilometres" @blur="changeLogbookStartKilometres($event, book)" @keydown.enter.prevent="changeLogbookStartKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'start_kilometres')" />
                                       </td>
-                                      <td class="col-2" @click="setEdit(acc, 'project')">
-                                          <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
-                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(acc.project_id)" :selectOnTab="true" @input="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)"></v-select>
+                                      <td class="col-1" @click="setEdit(book, 'end_kilometres')">
+                                          <span v-if="book.edit !== 'end_kilometres'">{{ book.end_kilometres }}</span>
+                                          <input v-if="book.edit === 'end_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_end_kilometres_invalid}" ref="table_input" id="table_end_kilometres" name="table_end_kilometres" placeholder="131415" :value="book.end_kilometres" @blur="changeLogbookEndKilometres($event, book)" @keydown.enter.prevent="changeLogbookEndKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'end_kilometres')" />
                                       </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service')">
-                                          <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
-                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :value="getService(acc.service_id)" :selectOnTab="true" @input="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)"></v-select>
+                                      <td class="col-1" @click="setEdit(book, 'driven_kilometres')">
+                                          <span v-if="book.edit !== 'driven_kilometres'">{{ book.driven_kilometres }}</span>
+                                          <input v-if="book.edit === 'driven_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_kilometres_invalid}" ref="table_input" id="table_driven_kilometres" name="table_driven_kilometres" placeholder="78" :value="book.driven_kilometres" @blur="changeLogbookDrivenKilometres($event, book)" @keydown.enter.prevent="changeLogbookDrivenKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_kilometres')" />
                                       </td>
-                                      <td class="col-1" @click="setEdit(acc, 'amount')">
-                                          <span v-if="acc.edit !== 'amount'">{{ acc.amount }}</span>
-                                          <input v-if="acc.edit === 'amount'" type="number" :min="min_amount" :step="min_amount" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
+                                      <td class="col-1" @click="setEdit(book, 'litres_refuelled')">
+                                          <span v-if="book.edit !== 'litres_refuelled'">{{ book.litres_refuelled }}</span>
+                                          <input v-if="book.edit === 'litres_refuelled'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_litres_refuelled_invalid}" ref="table_input" id="table_litres_refuelled" name="table_litres_refuelled" placeholder="54" :value="book.litres_refuelled" @blur="changeLogbookLitresRefuelled($event, book)" @keydown.enter.prevent="changeLogbookLitresRefuelled($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'litres_refuelled')" />
                                       </td>
-                                      <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
+                                      <td class="col-1-5" @click="setEdit(book, 'origin')">
+                                          <span v-if="book.edit !== 'origin'">{{ book.origin }}</span>
+                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" @input="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)"></v-select>
+                                      </td>
+                                      <td class="col-1-5" @click="setEdit(book, 'destination')">
+                                          <span v-if="book.edit !== 'destination'">{{ book.destination }}</span>
+                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" @input="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)"></v-select>
+                                      </td>
+
                                       <td class="col-auto text-right">
-                                          <button v-if="!(acc.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger" @click="removeAccounting(acc)">
+                                          <button v-if="!(book.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="acc.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success" @click="restoreAccounting(acc)">
+                                          <button v-if="book.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                          <button v-if="!book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)" @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
                                               <svg class="feather feather-16">
-                                                  <use v-if="!acc.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
-                                                  <use v-if="acc.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
+                                                  <use v-if="!book.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
+                                                  <use v-if="book.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                          <button v-if="book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)"  @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
@@ -313,38 +322,49 @@
                                   </tr>
 
                                   <transition name="collapse">
-                                      <tr v-if="acc.show_details"  v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
+                                      <tr v-if="book.show_details"  v-bind:class="{'border-status border-success': book.action === 'store' && !book.selected, 'border-status border-warning': book.action === 'update' && !book.selected, 'text-muted ': book.action === 'destroy', 'border-status border-danger': book.action === 'destroy' && !book.selected, 'border-status border-primary': book.selected}">
                                           <td class="border-0" ></td>
                                           <td colspan="7" class="border-0">
-                                              <div class="form-group">
-                                                  <label for="table_comment">Bemerkungen</label>
-                                                  <p v-if="acc.edit !== 'comment'" class="whitespace-preline" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
-                                                  <textarea v-if="acc.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
+                                              <div class="row">
+                                                  <div class="col-2 font-weight-bold">Projekt:</div>
+                                                  <div class="col-4">
+                                                      <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
+                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)"></v-select>
+                                                  </div>
                                               </div>
-                                              <div v-if="acc.errors" class="alert alert-danger" role="alert">
+                                              <div class="row mt-2">
+                                                  <div class="col-2 font-weight-bold">Mitarbeiter:</div>
+                                                  <div class="col-4">{{ getEmployeeName(book.employee_id) }}</div>
+                                              </div>
+                                              <div class="form-group mt-2">
+                                                  <label for="table_comment"><span class="font-weight-bold">Bemerkungen:</span></label>
+                                                  <p v-if="book.edit !== 'comment'" class="whitespace-preline" @click="setEdit(book, 'comment')">{{ book.comment ? book.comment : 'nicht angegeben' }}</p>
+                                                  <textarea v-if="book.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="book.comment" @blur="changeLogbookComment($event, book)" />
+                                              </div>
+
+                                              <div v-if="book.errors" class="alert alert-danger" role="alert">
                                                   <p class="mb-0">Probleme in dieser Zeile</p>
                                                   <ul class="mb-0">
-                                                      <li v-for="error in acc.errors">{{ error }}</li>
+                                                      <li v-for="error in book.errors">{{ error }}</li>
                                                   </ul>
                                               </div>
                                           </td>
                                       </tr>
                                   </transition>
+
                               </template>
                           </tbody>
                       </table>
 
-                      <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
+                      <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
 
-                      <p v-if="accounting.length" class="mt-3">
+                      <p v-if="logbook.length" class="mt-3">
                           Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
                           <span class="badge badge-green-100 text-green-800">wird angelegt</span>
                           <span class="badge badge-yellow-100 text-yellow-800">wird bearbeitet</span>
                           <span class="badge badge-red-100 text-red-800">wird entfernt</span>
                       </p>
                   </div>
-
-                  -->
 
                   <div v-if="!logbook.length" class="text-center mt-4">
                       <img class="empty-state" src="/svg/no-data.svg" alt="no data" />
@@ -395,7 +415,7 @@
                 filter_vehicle_errors: null,
                 filter_project: null,
                 filter_project_errors: null,
-                filter_only_own: true,
+                filter_only_own: false,
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
@@ -560,8 +580,6 @@
                 })
                 .catch(error => {
                     this.$refs.top_progress.fail();
-
-                    console.log(error);
 
                     if(error.response.status === 422) {
                         this.filter_start_errors = this.extractErrorMessages(error.response, 'start');
@@ -949,7 +967,7 @@
 
                 changedLogbook.driven_on = date;
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -974,7 +992,7 @@
 
                 this.autofill(changedLogbook);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -999,7 +1017,7 @@
 
                 this.autofill(changedLogbook);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1024,7 +1042,7 @@
 
                 this.autofill(changedLogbook);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1047,7 +1065,7 @@
 
                 changedLogbook.litres_refuelled = litresRefuelled;
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1062,7 +1080,7 @@
 
                 this.addPlaces(value);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1075,9 +1093,9 @@
 
                 changedLogbook.destination = value;
 
-                this.addPlaces(destination);
+                this.addPlaces(value);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1092,16 +1110,17 @@
 
                 this.autofill(changedLogbook);
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
 
             changeLogbookProject(value, changedLogbook) {
-                changedLogbook.project_id = value.id;
+                changedLogbook.project_id = value ? value.id : null;
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
+                // leave edit active so value can be cleared
                 changedLogbook.edit = null;
             },
 
@@ -1113,7 +1132,7 @@
             changeLogbookComment(event, changedLogbook) {
                 changedLogbook.comment = event.target.value;
 
-                this.setChangedAccountingStatus(changedLogbook);
+                this.setChangedLogbookStatus(changedLogbook);
 
                 changedLogbook.edit = null;
             },
@@ -1169,10 +1188,10 @@
                     });
                 }
                 else {
-                    let showDetailsErrorAccounting = this.getShowDetailsErrorAccounting();
+                    let showDetailsErrorLogbook = this.getShowDetailsErrorLogbook();
 
-                    showDetailsErrorAccounting.forEach(acc => {
-                        acc.show_details = false;
+                    showDetailsErrorLogbook.forEach(book => {
+                        book.show_details = false;
                     });
                 }
             },
@@ -1238,6 +1257,9 @@
 
             onTableInputTab(event, logbook, field) {
                 switch (field) {
+                    case 'vehicle':
+                        this.setEdit(logbook, 'driven_on');
+                        break;
                     case 'driven_on':
                         this.setEdit(logbook, 'start_kilometres');
                         break;
@@ -1257,12 +1279,11 @@
                         this.setEdit(logbook, 'destination');
                         break;
                     case 'destination':
-                        this.setEdit(logbook, 'vehicle');
-                        break;
-                    case 'vehicle':
+                        logbook.show_details = true;
                         this.setEdit(logbook, 'project');
                         break;
                     case 'project':
+                        logbook.show_details = true;
                         this.setEdit(logbook, 'comment');
                         break;
                     case 'comment':
@@ -1286,6 +1307,7 @@
 
             getVehicleRegistrationIdentifier(vehicleId) {
                 let vehicle = this.getVehicle(vehicleId);
+
                 return vehicle ? vehicle.registration_identifier : '';
             },
 
@@ -1299,7 +1321,7 @@
             },
 
             getVehicleLogbook(vehicle) {
-                return this.logbook.filter(book => book.vehicle_id = vehicle.id);
+                return this.logbook.filter(book => book.vehicle_id === vehicle.id);
             },
 
             getEmployeeName(employeeId) {
@@ -1308,7 +1330,7 @@
             },
 
             getDateStringForInputField(date) {
-                return date !== null ? date.toISOString().substr(0, 10) : null;
+                return date !== null ? date.toISOString().slice(0, 10) : null;
             },
 
             autofill(logbook = null) {
@@ -1368,7 +1390,7 @@
             },
 
             autofillStartKilometresFromBooked(logbook = null, vehicle) {
-                let startKilometres = vehicle.current_kilometres ? vehicle.current_kilometres : 0;
+                let startKilometres = vehicle.current_kilometres ? vehicle.current_kilometres : null;
                 let highestVehicleEndKilometres = this.getHighestVehicleEndKilometres(vehicle);
 
                 if(highestVehicleEndKilometres && highestVehicleEndKilometres > startKilometres) {

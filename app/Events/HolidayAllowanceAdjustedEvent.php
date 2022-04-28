@@ -20,7 +20,7 @@ class HolidayAllowanceAdjustedEvent
      *
      * @return void
      */
-    public function __construct(Employee $employee, int $oldHolidayAllowance, int $currentHolidayAllowance)
+    public function __construct(Employee $employee, float $oldHolidayAllowance, float $currentHolidayAllowance)
     {
         $this->employee = $employee;
         $this->oldHolidayAllowance = $oldHolidayAllowance;

@@ -38,11 +38,13 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         $people = ApplicationSettings::get()->company->people()->doesntHave('employee')->order()->get();
+        $holidaysSteps = ApplicationSettings::get()->accounting_min_amount;
 
         return view('employee.create')
             ->with('employee', null)
             ->with('currentPerson', null)
             ->with('people', $people->toJson())
+            ->with(compact('holidaysSteps'))
             ->with('currentAvatarColour', null)
             ->with('avatarColours', json_encode(UserSettings::avatarColours));
     }
@@ -93,6 +95,7 @@ class EmployeeController extends Controller
     public function edit(Request $request, Employee $employee)
     {
         $employee->load('person')->load('user.settings');
+        $holidaysSteps = ApplicationSettings::get()->accounting_min_amount;
 
         $currentPerson = $employee->person;
         $people = ApplicationSettings::get()->company->people()->doesntHave('employee')->order()->get();
@@ -104,6 +107,7 @@ class EmployeeController extends Controller
             ->with('employee', $employee)
             ->with('currentPerson', $currentPerson->toJson())
             ->with('people', $people->toJson())
+            ->with(compact('holidaysSteps'))
             ->with('currentAvatarColour', json_encode($currentAvatarColour))
             ->with('avatarColours', json_encode(UserSettings::avatarColours));
     }

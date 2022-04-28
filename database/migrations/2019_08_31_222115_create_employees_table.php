@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->unsignedBigInteger('person_id');
             $table->date('entered_on');
             $table->date('left_on')->nullable();
-            $table->unsignedTinyInteger('holidays');
+            $table->double('holidays');
             $table->timestamps();
 
             $table->primary('person_id');

@@ -9,7 +9,7 @@
 
     <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('employees.store') }}" method="post" novalidate>
-            @component('employee.fields', [ 'employee' => $employee, 'currentPerson' => $currentPerson, 'people' => $people, 'currentAvatarColour' => $currentAvatarColour, 'avatarColours' => $avatarColours ])
+            @component('employee.fields', [ 'employee' => $employee, 'currentPerson' => $currentPerson, 'people' => $people, 'holidaysSteps' => $holidaysSteps, 'currentAvatarColour' => $currentAvatarColour, 'avatarColours' => $avatarColours ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">

@@ -16,7 +16,7 @@ class Employee extends Model
         'person_id' => 'int',
         'entered_on' => 'date',
         'left_on' => 'date',
-        'holidays' => 'int',
+        'holidays' => 'double',
     ];
 
     protected $fillable = [

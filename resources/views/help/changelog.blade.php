@@ -11,6 +11,30 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.12-369bda8 (28.04.2022)
+        * Der Fuhrpark zum Verwalten von Fahrzeugen wurde implementiert.
+        * Das Fahrtenbuch zum Eintragen von Fahrten mit Fahrzeugen wurde implementiert. Der Start Kilometerstand wird
+        beim Auswählen eines Fahrzeuges für den Eintrag einer neuen Fahrt automatisch aus den bisher gepspeicherten
+        Fahrten ermittelt. Bei Fehlen eines der drei Werte Start Kilometerstand, Ende Kilometerstand und gefahrene
+        Kilometer wird dieser automatisch berechnet und in das jeweilige Feld eingetragen. Nach dem Hinzufügen einer
+        Fahrt wird der eingegebene Ziel Ort automatisch in das Start Feld übernommen. Die Werte können jederzeit
+        händisch in der Eingabe überschrieben werden.
+        * Der Kilometerstand zur Anzeige im Fuhrpark wird aus den eingetragenen Fahrten ermittelt (höchster Ende
+        Kilometerstand aller Fahrten für das Fahrzeug).
+        * In der Abrechnung sowie im Fahrtenbuch werden die aktuell in der Tabelle vorhandenen Einträge sowie die Anzahl
+        der neuen, geänderten und zu löschenden Datensätze neben der Überschrift angezeigt.
+        * In der Abrechnung können nun mehrzeilige Kommentare eingegeben werden.
+        * Aufgaben müssen innerhalb eines Projektes nun nicht mehr einen eindeutigen Namen besitzen. Dadurch können
+        Materialbestellungen im entsprechenden Projekt gleich betitelt werden.
+        * Die Konvertierung von Markdown zur Anzeige in der Applikation sowie zur Erstellung von PDF Dateien wird nun
+        einheitlich von der selben Funktion durchgeführt. Somit sollte die Wahrschreinlichkeit zu Abweichungen
+        verringert sein. In der Echtzeit Vorschau des Editors kann es nach wie vor zu kleinen Unterschieden kommen weil
+        dieser eine eigene Vorschaufunktion verwendet.
+        * Bei der Benachrichtgung für Anpassungen von Urlaub wurde ein Problem behoben (die Push Benachrichtigung
+        funktionierte nicht korrekt).
+        @endmarkdown
+
+        @markdown
         ### v0.1.11-8b177cf (25.04.2022)
         * Bei Abrechnungen können nun mehrzeilige Kommentare eingegeben werden.
         * Die Anzahl von neuen, geänderten und gelöschten Kommentaren wird bei der Abrechnungstabelle nun angezeigt.

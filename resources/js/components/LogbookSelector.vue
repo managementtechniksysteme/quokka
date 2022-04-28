@@ -48,14 +48,18 @@
                               </div>
                               <div class="form-group col-md-6 col-lg-3 col-xl-12">
                                   <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle"></v-select>
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div v-if="filter_vehicle_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_vehicle_errors}">
                                       {{ filter_vehicle_errors[0] }}
                                   </div>
                               </div>
                               <div class="form-group col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject"></v-select>
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">
                                       {{ filter_project_errors[0] }}
                                   </div>
@@ -94,7 +98,9 @@
                           <div class="form-row">
                               <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle"></v-select>
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">
                                       Fahrzeug muss ausgefüllt sein.
                                   </div>
@@ -136,21 +142,27 @@
                               </div>
                               <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Start</label>
-                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin"></v-select>
+                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
                                       Start muss ausgefüllt sein.
                                   </div>
                               </div>
                               <div class="form-group col-md-4 col-lg-2 col-xl-12">
                                   <label>Ziel</label>
-                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination"></v-select>
+                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
                                       Ziel muss ausgefüllt sein.
                                   </div>
                               </div>
                               <div class="form-group col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject"></v-select>
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
                                       Projekt muss ausgefüllt sein.
                                   </div>
@@ -265,7 +277,9 @@
 
                                       <td class="col-1-5" @click="setEdit(book, 'vehicle')">
                                           <span v-if="book.edit !== 'vehicle'">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</span>
-                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :value="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @input="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)"></v-select>
+                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :value="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @input="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)">
+                                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                                          </v-select>
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'driven_on')">
                                           <span v-if="book.edit !== 'driven_on'">{{ book.driven_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
@@ -289,11 +303,15 @@
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'origin')">
                                           <span v-if="book.edit !== 'origin'">{{ book.origin }}</span>
-                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" @input="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)"></v-select>
+                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" @input="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
+                                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                                          </v-select>
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'destination')">
                                           <span v-if="book.edit !== 'destination'">{{ book.destination }}</span>
-                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" @input="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)"></v-select>
+                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" @input="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)">
+                                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                                          </v-select>
                                       </td>
 
                                       <td class="col-auto text-right">
@@ -329,7 +347,9 @@
                                                   <div class="col-2 font-weight-bold">Projekt:</div>
                                                   <div class="col-4">
                                                       <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
-                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)"></v-select>
+                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
+                                                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                                                      </v-select>
                                                   </div>
                                               </div>
                                               <div class="row mt-2">

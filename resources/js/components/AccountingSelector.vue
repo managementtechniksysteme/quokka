@@ -48,14 +48,18 @@
                               </div>
                               <div class="form-group col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject"></v-select>
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">
                                       {{ filter_project_errors[0] }}
                                   </div>
                               </div>
                               <div class="form-group col-md-6 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :value="filter_service" :selectOnTab="true" @input="setFilterService"></v-select>
+                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :value="filter_service" :selectOnTab="true" @input="setFilterService">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div v-if="filter_service_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_service_errors}">
                                       {{ filter_service_errors[0] }}
                                   </div>
@@ -115,14 +119,18 @@
                               </div>
                               <div class="form-group col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject"></v-select>
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
                                       Projekt muss ausgefüllt sein.
                                   </div>
                               </div>
                               <div class="form-group col-md-4 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="service" :selectOnTab="true" @input="setService"></v-select>
+                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="service" :selectOnTab="true" @input="setService">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': service_invalid}">
                                       Leistung muss ausgefüllt sein.
                                   </div>
@@ -254,11 +262,15 @@
                                       </td>
                                       <td class="col-2" @click="setEdit(acc, 'project')">
                                           <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
-                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(acc.project_id)" :selectOnTab="true" @input="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)"></v-select>
+                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(acc.project_id)" :selectOnTab="true" @input="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
+                                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                                          </v-select>
                                       </td>
                                       <td class="col-1" @click="setEdit(acc, 'service')">
                                           <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
-                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :value="getService(acc.service_id)" :selectOnTab="true" @input="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)"></v-select>
+                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :value="getService(acc.service_id)" :selectOnTab="true" @input="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)">
+                                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                                          </v-select>
                                       </td>
                                       <td class="col-1" @click="setEdit(acc, 'amount')">
                                           <span v-if="acc.edit !== 'amount'">{{ acc.amount }}</span>

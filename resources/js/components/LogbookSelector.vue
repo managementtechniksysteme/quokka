@@ -1447,6 +1447,13 @@
                 }
             },
 
+            current_employee: {
+                type: Object,
+                default() {
+                    return null;
+                }
+            },
+
             expand_errors: {
                 type: Boolean,
                 default() {

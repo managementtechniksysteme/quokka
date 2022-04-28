@@ -40,20 +40,20 @@ class AccountingObserver
         if(!ApplicationSettings::get()->holidayService()->exists()) {
             return;
         }
-        
+
         if($this->wasHolidayService($accounting)) {
             $this->addHolidayToEmployee($accounting, $accounting->amount);
         }
     }
 
-    private function addHolidayToEmployee(Accounting $accounting, int $amount)
+    private function addHolidayToEmployee(Accounting $accounting, float $amount)
     {
         $accounting->employee->update(['holidays' => $accounting->employee->holidays + $amount]);
     }
 
-    private function removeHolidayFromEmployee(Accounting $accounting, int $amount)
+    private function removeHolidayFromEmployee(Accounting $accounting, float $amount)
     {
-        $accounting->employee->update(['holidays' => $accounting->employee->holidays - $accounting->amount]);
+        $accounting->employee->update(['holidays' => $accounting->employee->holidays - $amount]);
     }
 
     private function wasHolidayService(Accounting $accounting)

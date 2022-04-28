@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ApplicationSettings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,6 +16,8 @@ class EmployeeUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+        $minAmount = ApplicationSettings::get()->accounting_min_amount;
+
         $employee = $this->employee;
         $employee->load('user');
 
@@ -26,7 +29,7 @@ class EmployeeUpdateRequest extends FormRequest
             ],
             'entered_on' => 'required|date',
             'left_on' => 'date|nullable',
-            'holidays' => 'required|integer',
+            'holidays' => "required|numeric|multiple_of:$minAmount",
             'username' => [
                 Rule::unique('users', 'username')->ignore($employee->user),
                 'required_with:password,avatar_colour',

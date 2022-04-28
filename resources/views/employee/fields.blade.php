@@ -72,7 +72,7 @@
 
         <div class="form-group">
             <label for="holidays">Urlaubstage</label>
-            <input type="number" min="0" class="form-control @error('holidays') is-invalid @enderror" id="holidays" name="holidays" placeholder="25" value="{{ old('holidays', optional($employee)->holidays) }}" required />
+            <input type="number" step="{{ $holidaysSteps }}" class="form-control @error('holidays') is-invalid @enderror" id="holidays" name="holidays" placeholder="25" value="{{ old('holidays', optional($employee)->holidays) }}" required />
             <div class="invalid-feedback">
                 @error('holidays')
                     {{ $message }}

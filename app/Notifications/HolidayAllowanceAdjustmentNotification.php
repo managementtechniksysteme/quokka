@@ -18,14 +18,21 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
 
     public float $holidayAllowanceDifference;
     public float $currentHolidayAllowance;
+    public string $titleMail;
+    public string $titleWebpush;
     public string $holidayServiceUnit;
     public string $directionString;
 
     private array $vibrationDuration = ['100'];
 
-    public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance)
+    public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance, bool $manualAdjustment)
     {
         $holidayAllowanceDifference = $currentHolidayAllowance-$oldHolidayAllowance;
+
+        $this->titleMail =
+            $manualAdjustment ? "Anpassung deines verfügbaren Urlaubes" :
+                "Automatische Anpassung deines verfügbaren Urlaubes";
+        $this->titleWebpush = $manualAdjustment ? "Urlaubsanpassung" : "Automatische Urlaubsanpassung";
 
         $this->currentHolidayAllowance = $currentHolidayAllowance;
         $this->holidayAllowanceDifference = abs($holidayAllowanceDifference);
@@ -44,7 +51,7 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Anpassung deines verfügbaren Urlaubes')
+            ->subject($this->titleMail)
             ->markdown('emails.notification_holiday_allowance_adjustment', [
                 'currentHolidayAllowance' => $this->currentHolidayAllowance,
                 'holidayAllowanceDifference' => $this->holidayAllowanceDifference,
@@ -56,7 +63,7 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Jährliche Urlaubsanpassung')
+            ->title($this->titleWebpush)
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
             ->body('Dein verfügbarer Urlaub wurde um ' .

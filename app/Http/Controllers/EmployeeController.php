@@ -163,7 +163,7 @@ class EmployeeController extends Controller
         }
 
         if($employee->holidays !== $oldHolidayAllowance) {
-            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays));
+            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, true));
         }
 
         return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');

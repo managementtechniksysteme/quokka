@@ -12,8 +12,8 @@ class HolidayAllowanceAdjustedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Employee $employee;
-    public int $oldHolidayAllowance;
-    public int $currentHolidayAllowance;
+    public float $oldHolidayAllowance;
+    public float $currentHolidayAllowance;
 
     /**
      * Create a new event instance.

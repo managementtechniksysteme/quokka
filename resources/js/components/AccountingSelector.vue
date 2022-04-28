@@ -190,7 +190,7 @@
                           <thead>
                               <tr>
                                   <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
+                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
@@ -204,23 +204,23 @@
                                   <th scope="col" class="col-1">Menge</th>
                                   <th scope="col" class="col-1-5">Mitarbeiter</th>
                                   <th scope="col" class="col-auto text-right">
-                                      <button type="button" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
+                                      <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                           </svg>
                                       </button>
-                                      <button type="button" class="btn btn-sm btn-outline-success d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
+                                      <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                           </svg>
                                       </button>
-                                      <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                      <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                           <svg class="feather feather-16">
                                               <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                               <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
-                                      <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
+                                      <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
                                           <svg class="feather feather-16">
                                               <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
@@ -232,7 +232,7 @@
                               <template v-for="acc in pageOfItems">
                                   <tr class="hover-highlight" v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                                       <td class="col-auto">
-                                          <button type="button" class="btn btn-sm outline-none" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
+                                          <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
                                               <svg class="feather feather-16">
                                                   <use v-if="!acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
                                                   <use v-if="acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
@@ -266,23 +266,23 @@
                                       </td>
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                                       <td class="col-auto text-right">
-                                          <button v-if="!(acc.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger" @click="removeAccounting(acc)">
+                                          <button v-if="!(acc.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="acc.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success" @click="restoreAccounting(acc)">
+                                          <button v-if="acc.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                          <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
                                               <svg class="feather feather-16">
                                                   <use v-if="!acc.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                                   <use v-if="acc.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
+                                          <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
@@ -295,7 +295,7 @@
                                           <td class="border-0" ></td>
                                           <td colspan="7" class="border-0">
                                               <div class="form-group">
-                                                  <label for="table_comment">Bemerkungen</label>
+                                                  <label for="table_comment"><span class="font-weight-bold">Bemerkungen:</span></label>
                                                   <p v-if="acc.edit !== 'comment'" class="whitespace-preline" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
                                                   <textarea v-if="acc.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
                                               </div>
@@ -1125,6 +1125,10 @@
                         this.setEdit(accounting, 'amount');
                         break;
                     case 'amount':
+                        accounting.show_details = true;
+                        this.setEdit(accounting, 'comment');
+                        break;
+                    case 'comment':
                         this.unsetEdit(accounting);
                         break;
                 }
@@ -1158,7 +1162,7 @@
             },
 
             getDateStringForInputField(date) {
-                return date !== null ? date.toISOString().substr(0, 10) : null;
+                return date !== null ? date.toISOString().slice(0, 10) : null;
             },
 
             getTwentyFourHourTimeString(date) {

@@ -23,6 +23,17 @@
 
     <div class="container my-4">
         @unless ($roles->isEmpty() && !Request::get('search'))
+            <div class="alert alert-warning mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="feather feather-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                    </svg>
+                    Bearbeitete oder gelöschte Rollen wirken sich nicht auf Benutzer aus. Benutzer sind direkt mit
+                    Berechtigungen, nicht mit Rollen, verknüpft! Bei gewünschten Änderungen müssen einem Benutzer
+                    entweder eine Rolle als Vorlage oder individuelle Berechtigungen vergeben werden.
+                </div>
+            </div>
+
             <div class="row">
 
                 <div class="col">

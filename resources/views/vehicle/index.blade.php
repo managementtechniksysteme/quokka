@@ -5,8 +5,8 @@
         <div class="container pt-4">
             <h3>
                 Fuhrpark
-                @if(count($vehicle))
-                    <small class="text-muted">{{ count($vehicle) }} Einträge</small>
+                @if(count($vehicles))
+                    <small class="text-muted">{{ count($vehicles) }} Einträge</small>
                 @endif
             </h3>
 

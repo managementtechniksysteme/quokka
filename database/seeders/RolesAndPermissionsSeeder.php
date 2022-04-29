@@ -123,6 +123,14 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'projects.email']);
         Permission::firstOrCreate(['name' => 'projects.createpdf']);
 
+        // roles
+        Permission::firstOrCreate(['name' => 'roles.view']);
+        Permission::firstOrCreate(['name' => 'roles.create']);
+        Permission::firstOrCreate(['name' => 'roles.update']);
+        Permission::firstOrCreate(['name' => 'roles.delete']);
+        Permission::firstOrCreate(['name' => 'roles.email']);
+        Permission::firstOrCreate(['name' => 'roles.createpdf']);
+
         // service reports
         Permission::firstOrCreate(['name' => 'service-reports.view.own']);
         Permission::firstOrCreate(['name' => 'service-reports.view.other']);

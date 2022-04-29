@@ -131,6 +131,12 @@
                                 </svg>
                                 Mitarbeiter
                             </a>
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.index') }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
+                                </svg>
+                                Rollen
+                            </a>
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('wage-services.index') }}">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>

@@ -210,11 +210,12 @@ class RolesAndPermissionsSeeder extends Seeder
         // ***
 
         // Administrator role template
-        $admin = Role::create(['name' => 'Administrator']);
+        $admin = Role::firstOrCreate(['name' => 'Administrator']);
         $admin->givePermissionTo(Permission::all());
 
         // Empployee role template
-        $employee = Role::create(['name' => 'Mitarbeiter']);
+        $employee = Role::firstOrCreate(['name' => 'Mitarbeiter']);
+        $employee->revokePermissionTo(Permission::all());
 
         // accounting
         $employee->givePermissionTo('accounting.view.own');

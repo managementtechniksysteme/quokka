@@ -30,6 +30,7 @@ use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
@@ -88,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('people', PersonController::class);
     Route::resource('projects', ProjectController::class);
+    Route::resource('roles', RoleController::class);
 
     Route::resource('service-reports', ServiceReportController::class);
     Route::get('/service-reports/{service_report}/download', [ServiceReportController::class, 'download'])->name('service-reports.download');

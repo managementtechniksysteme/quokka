@@ -4,32 +4,32 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
-                Mitarbeiter
-                @if(count($employees))
-                    <small class="text-muted">{{ count($employees) }} Einträge</small>
+                Rollen
+                @if(count($roles))
+                    <small class="text-muted">{{ count($roles) }} Einträge</small>
                 @endif
             </h3>
 
             <div class="scroll-x d-flex">
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.create') }}">
+                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('roles.create') }}">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                     </svg>
-                    Mitarbeiter anlegen
+                    Rolle anlegen
                 </a>
             </div>
         </div>
     </div>
 
     <div class="container my-4">
-        @unless ($employees->isEmpty() && !Request::get('search'))
+        @unless ($roles->isEmpty() && !Request::get('search'))
             <div class="row">
 
                 <div class="col">
 
-                    <form action="{{ route('employees.index') }}" method="get">
+                    <form action="{{ route('roles.index') }}" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen" autocomplete="off" />
+                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Rollen suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="feather feather-16">
@@ -50,12 +50,13 @@
 
                 </div>
 
+
             </div>
         @endunless
 
         <div class="mt-3">
-            @forelse ($employees as $employee)
-                @component('employee.overview_card', [ 'employee' => $employee ])
+            @forelse ($roles as $role)
+                @component('role.overview_card', [ 'role' => $role ])
                 @endcomponent
 
                 @if(!$loop->last)
@@ -65,15 +66,15 @@
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                     @if(Request::get('search'))
-                        <p class="lead text-muted">Es wurden keine Mitarbeiteer passend zur Suche gefunden.</p>
+                        <p class="lead text-muted">Es wurden keine Rollen passend zur Suche gefunden.</p>
                     @else
-                        <p class="lead text-muted">Es sind keine Mitarbeiter im System vorhanden.</p>
-                        <p class="lead">Lege einen neuen Mitarbeiter an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('employees.create') }}">
+                        <p class="lead text-muted">Es sind keine Rollen im System vorhanden.</p>
+                        <p class="lead">Lege eine neue Rolle an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('roles.create') }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                             </svg>
-                            Mitarbeiter anlegen
+                            Rolle anlegen
                         </a>
                     @endif
                 </div>
@@ -81,7 +82,7 @@
         </div>
 
         <div class="mt-2">
-            {{ $employees->links() }}
+            {{ $roles->links() }}
         </div>
 
     </div>

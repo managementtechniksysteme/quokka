@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -33,7 +34,9 @@ class TaskController extends Controller
             $request->request->remove('search');
         }
 
-        $tasks = Task::filterSearch($request->input())->order($request->input())
+        $tasks = Task::filterPermissions()
+            ->filterSearch($request->input())
+            ->order($request->input())
             ->with('project')
             ->with('responsibleEmployee.person')
             ->paginate(Auth::user()->settings->list_pagination_size)

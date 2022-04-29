@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\FiltersResults;
+use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Memo extends Model implements HasMedia
 {
     use HasAttachments;
-    use FiltersResults;
+    use FiltersSearch;
     use OrdersResults;
 
     protected $casts = [

@@ -62,7 +62,12 @@
         @include ('task.show_overview')
 
         <div class="mt-4">
-            <h4>Diskussion</h4>
+            <h4>
+                Diskussion
+                @if(count($task->comments))
+                    <small class="text-muted">{{ count($task->comments) }} Einträge</small>
+                @endif
+            </h4>
 
             @unless($task->comments->isEmpty())
                 <div class="mb-2">

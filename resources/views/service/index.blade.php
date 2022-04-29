@@ -3,7 +3,9 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
-            <h3>Leistungen</h3>
+            <h3>
+                Leistungen
+            </h3>
         </div>
     </div>
 

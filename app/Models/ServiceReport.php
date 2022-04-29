@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\FiltersResults;
+use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class ServiceReport extends Model implements HasMedia
 {
-    use FiltersResults;
+    use FiltersSearch;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
     use OrdersResults;

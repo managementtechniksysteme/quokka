@@ -20,7 +20,7 @@ class PersonController extends Controller
      */
     public function index(Request $request)
     {
-        $people = Person::filter($request->input())
+        $people = Person::filterSearch($request->input())
             ->order($request->input())
             ->with('address')
             ->paginate(Auth::user()->settings->list_pagination_size)

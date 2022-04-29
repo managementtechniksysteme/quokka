@@ -13,7 +13,7 @@ class MaterialServiceController extends Controller
 {
     public function index(Request $request)
     {
-        $materialServices = MaterialService::filter($request->input())
+        $materialServices = MaterialService::filterSearch($request->input())
             ->order($request->input())
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));

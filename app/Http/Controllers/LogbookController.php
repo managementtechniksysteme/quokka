@@ -18,7 +18,7 @@ class LogbookController extends Controller
     public function index(LogbookIndexRequest $request)
     {
         if($request->ajax()) {
-            $currentLogbook = Logbook::filter($request->validated())->order()->get();
+            $currentLogbook = Logbook::filterSearch($request->validated())->order()->get();
 
             return response()->json($currentLogbook, Response::HTTP_OK);
         }

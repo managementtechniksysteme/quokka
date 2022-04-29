@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\FiltersResults;
+use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements HasMedia
 {
-    use FiltersResults;
+    use FiltersSearch;
     use HasAttachments;
     use OrdersResults;
 

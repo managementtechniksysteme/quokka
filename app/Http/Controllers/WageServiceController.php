@@ -13,7 +13,7 @@ class WageServiceController extends Controller
 {
     public function index(Request $request)
     {
-        $wageServices = WageService::filter($request->input())
+        $wageServices = WageService::filterSearch($request->input())
             ->order($request->input())
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));

@@ -53,7 +53,7 @@ class Logbook extends Model
         return $this->belongsTo(Vehicle::class);
     }
 
-    public function scopeFilter($query, $params = null)
+    public function scopeFilterSearch($query, $params = null)
     {
         if (isset($params['start'])) {
             $query = $query->whereDate('driven_on', '>=', $params['start']);

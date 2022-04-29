@@ -11,10 +11,16 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                 </svg>
                 {{ $employee->holidays }}
-                <svg class="feather feather-16 ml-2 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                </svg>
-                {{ optional($employee->user)->username ?? 'keine Quokka Benutzer angelegt' }}
+                @if($employee->user)
+                    <svg class="feather feather-16 ml-2 mr-1 @if($employee->user->trashed()) text-warning @endif">
+                        @if($employee->user->trashed())
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-x"></use>
+                        @else
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        @endif
+                    </svg>
+                    {{ $employee->user->username }}
+                @endif
             </div>
         </div>
 

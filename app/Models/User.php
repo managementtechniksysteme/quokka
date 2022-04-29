@@ -9,11 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
     use HasFactory;
     use HasPushSubscriptions;
+    use HasRoles;
     use InteractsWithMedia;
     use Notifiable;
     use SoftDeletes;

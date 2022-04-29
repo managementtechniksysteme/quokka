@@ -14,6 +14,7 @@
 
     <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
+            @method('PATCH')
             @component('employee.fields_role', [ 'employee' => $employee, 'roles' => $roles ])
             @endcomponent
 

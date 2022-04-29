@@ -3,7 +3,12 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
-            <h3>Personen</h3>
+            <h3>
+                Personen
+                @if(count($people))
+                    <small class="text-muted">{{ count($people) }} Einträge</small>
+                @endif
+            </h3>
 
             <div class="scroll-x d-flex">
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('people.create') }}">

@@ -49,7 +49,7 @@ class Accounting extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function scopeFilter($query, $params = null)
+    public function scopeFilterSearch($query, $params = null)
     {
         if (isset($params['start'])) {
             $query = $query->whereDate('service_provided_on', '>=', $params['start']);

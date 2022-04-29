@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\FiltersResults;
+use App\Traits\FiltersSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    use FiltersResults;
+    use FiltersSearch;
     use HasFactory;
 
     protected $casts = [

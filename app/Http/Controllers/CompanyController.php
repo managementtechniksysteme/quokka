@@ -31,7 +31,7 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = Company::filter($request->input())
+        $companies = Company::filterSearch($request->input())
             ->order($request->input())
             ->with('address')
             ->with('operatorAddress')
@@ -124,7 +124,7 @@ class CompanyController extends Controller
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
                 $projects = Project::where('company_id', $company->id)
-                    ->filter($input)
+                    ->filterSearch($input)
                     ->order($input)
                     ->withCount('tasks')
                     ->withCount('memos')
@@ -135,7 +135,7 @@ class CompanyController extends Controller
                 return view('company.show_tab_projects')->with(compact('company'))->with(compact('projects'));
             case 'people':
                 $people = Person::where('company_id', $company->id)
-                    ->filter($input)
+                    ->filterSearch($input)
                     ->order($input)
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));

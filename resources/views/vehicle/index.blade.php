@@ -3,7 +3,12 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
-            <h3>Fuhrpark</h3>
+            <h3>
+                Fuhrpark
+                @if(count($vehicle))
+                    <small class="text-muted">{{ count($vehicle) }} Einträge</small>
+                @endif
+            </h3>
 
             <div class="scroll-x d-flex">
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('vehicles.create') }}">

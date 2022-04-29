@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\FiltersResults;
+use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class MaterialService extends Model
 {
-    use FiltersResults;
+    use FiltersSearch;
     use OrdersResults;
 
     protected $table = 'services';

@@ -22,7 +22,7 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::filter($request->input())
+        $projects = Project::filterSearch($request->input())
             ->order($request->input())
             ->with('company')
             ->withCount('tasks')
@@ -96,7 +96,7 @@ class ProjectController extends Controller
                 }
 
                 $tasks = Task::where('project_id', $project->id)
-                    ->filter($request->input())
+                    ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('responsibleEmployee.person')
                     ->paginate(Auth::user()->settings->list_pagination_size)
@@ -106,7 +106,7 @@ class ProjectController extends Controller
 
             case 'memos':
                 $memos = Memo::where('project_id', $project->id)
-                    ->filter($request->input())
+                    ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('employeeComposer.person')
                     ->with('personRecipient')
@@ -123,7 +123,7 @@ class ProjectController extends Controller
                 }
 
                 $serviceReports = ServiceReport::where('project_id', $project->id)
-                    ->filter($request->input())
+                    ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('employee.person')
                     ->withMin('services', 'provided_on')

@@ -17,7 +17,8 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        $addresses = Address::order($request->input())
+        $addresses = Address::filterSearch($request->input())
+            ->order($request->input())
             ->withCount('companies')
             ->withCount('people')
             ->paginate(Auth::user()->settings->list_pagination_size)

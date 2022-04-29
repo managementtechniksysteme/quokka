@@ -12,7 +12,7 @@ class VehicleController extends Controller
 {
     public function index(Request $request)
     {
-        $vehicles = Vehicle::filter($request->input())
+        $vehicles = Vehicle::filterSearch($request->input())
             ->with('logbook')
             ->order($request->input())
             ->paginate(Auth::user()->settings->list_pagination_size)

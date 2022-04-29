@@ -4,9 +4,9 @@ namespace App\Traits;
 
 use Illuminate\Support\Arr;
 
-trait FiltersResults
+trait FiltersSearch
 {
-    public function scopeFilter($query, $params = null)
+    public function scopeFilterSearch($query, $params = null)
     {
         if (! (isset($params['search']) && isset($this->filterKeys))) {
             return $query;
@@ -66,8 +66,8 @@ trait FiltersResults
 
     private function handleFilterKey($query, $key, $match, $parameter = null)
     {
-        $raw = isset($this->filterKeys[$key]['raw']) ? true : false;
-        $hasraw = isset($this->filterKeys[$key]['hasraw']) ? true : false;
+        $raw = isset($this->filterKeys[$key]['raw']);
+        $hasraw = isset($this->filterKeys[$key]['hasraw']);
 
         $values = $this->filterKeys[$key]['raw'] ?? $this->filterKeys[$key]['hasraw'] ?? $this->filterKeys[$key];
 

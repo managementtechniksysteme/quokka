@@ -33,7 +33,7 @@ class TaskController extends Controller
             $request->request->remove('search');
         }
 
-        $tasks = Task::filter($request->input())->order($request->input())
+        $tasks = Task::filterSearch($request->input())->order($request->input())
             ->with('project')
             ->with('responsibleEmployee.person')
             ->paginate(Auth::user()->settings->list_pagination_size)

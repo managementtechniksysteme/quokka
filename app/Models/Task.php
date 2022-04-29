@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Task extends Model implements HasMedia
 {
     use FiltersSearch;
-    use FiltersPermissions;
+    //use FiltersPermissions;
     use HasAttachments;
     use OrdersResults;
 
@@ -67,14 +67,14 @@ class Task extends Model implements HasMedia
         'priority-desc' => ['raw' => 'field(priority, "high", "medium", "low")'],
     ];
 
-    protected $permissionFilters = [
-        'tasks.view.responsible' => [['private', false], ['responsibleEmployee.person_id', '{user}']],
-        'tasks.view.involved' => [['private', false], ['involvedEmployees.person_id', '{user}']],
-        'tasks.view.other' => [['private', false], ['!responsibleEmployee.person_id', '{user}'], ['!involvedEmployees.person_id', '{user}']],
-        'tasks.view.private.responsible' => [['private', true], ['responsibleEmployee.person_id', '{user}']],
-        'tasks.view.private.involved' => [['private', true], ['involvedEmployees.person_id', '{user}']],
-        'tasks.view.private.other' => [['private', true], ['!responsibleEmployee.person_id', '{user}'], ['!involvedEmployees.person_id', '{user}']],
-    ];
+    //protected $permissionFilters = [
+    //    'tasks.view.responsible' => [['private', false], ['responsibleEmployee.person_id', '{user}']],
+    //    'tasks.view.involved' => [['private', false], ['involvedEmployees.person_id', '{user}']],
+    //    'tasks.view.other' => [['private', false], ['!responsibleEmployee.person_id', '{user}'], ['!involvedEmployees.person_id', '{user}']],
+    //    'tasks.view.private.responsible' => [['private', true], ['responsibleEmployee.person_id', '{user}']],
+    //    'tasks.view.private.involved' => [['private', true], ['involvedEmployees.person_id', '{user}']],
+    //    'tasks.view.private.other' => [['private', true], ['!responsibleEmployee.person_id', '{user}'], ['!involvedEmployees.person_id', '{user}']],
+    //];
 
     public function __construct(array $attributes = [])
     {

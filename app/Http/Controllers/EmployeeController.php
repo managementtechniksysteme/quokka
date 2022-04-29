@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\HolidayAllowanceAdjustedEvent;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Http\Requests\PermissionsUpdateRequest;
 use App\Models\ApplicationSettings;
 use App\Models\Employee;
 use App\Models\User;
@@ -12,6 +13,8 @@ use App\Models\UserSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -94,7 +97,7 @@ class EmployeeController extends Controller
      */
     public function edit(Request $request, Employee $employee)
     {
-        $employee->load('person')->load('user.settings');
+        $employee->load('person')->load('user.settings')->load('user.permissions');
         $holidaysSteps = ApplicationSettings::get()->accounting_min_amount;
 
         $currentPerson = $employee->person;
@@ -219,5 +222,45 @@ class EmployeeController extends Controller
         $employee->user->delete();
 
         return redirect()->route('employees.index')->with('success', 'Der Zugang wurde erfolgreich gesperrt.');
+    }
+
+    public function editPermissions(Employee $employee)
+    {
+        $employee->load('person')->load('user.permissions');
+
+        $roles = Role::orderBy('name')->get();
+
+        return view('employee.edit_permissions')
+            ->with(compact('employee'))
+            ->with(compact('roles'))
+            ->with('currentRole', null);
+    }
+
+    public function updatePermissions(PermissionsUpdateRequest $request, Employee $employee)
+    {
+        $user = $employee->user;
+
+        $validatedData = $request->validated();
+
+        if(isset($validatedData['role_id'])) {
+            $permissions = Role::find($validatedData['role_id'])->permissions;
+
+            $employee->user->syncPermissions($permissions);
+
+            return redirect()->route('employees.edit-permissions', $employee)->with('success', 'Die Berechtigungen der Rolle wurden erfolgreich zugewiesen.');
+        }
+
+        foreach (Permission::select('name')->pluck('name') as $permission) {
+            $permissionField = str_replace('.', '_', $permission);
+
+            if(isset($validatedData[$permissionField])) {
+                $user->givePermissionTo($permission);
+            }
+            else {
+                $user->revokePermissionTo($permission);
+            }
+        }
+
+        return redirect()->route('employees.show', $employee)->with('success', 'Die Berechtigungen wurden erfolgreich bearbeitet.');
     }
 }

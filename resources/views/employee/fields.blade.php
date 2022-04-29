@@ -142,6 +142,13 @@
             <avatar-colour-selector :avatar_colours="{{ $avatarColours ?? '[]' }}" :current_avatar_colour="{{ $currentAvatarColour ?? 'null' }}" v-cloak></avatar-colour-selector>
         </div>
 
+        <a class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" href="{{ route('employees.edit-permissions', $employee) }}">
+            <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
+            </svg>
+            Berechtigungen bearbeiten
+        </a>
+
     </div>
 
 </div>

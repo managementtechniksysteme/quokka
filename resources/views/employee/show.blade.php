@@ -147,5 +147,26 @@
             </div>
         </div>
 
+        @if(count($employee->user->permissions))
+            <h4 class="mt-5">
+                Berechtigungen
+                <small class="text-muted">
+                    {{ count($employee->user->permissions) }} Einträge
+                    <a class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center ml-2" type="button"  data-toggle="collapse" data-target="#permissions">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                        </svg>
+                        Anzeigen
+                    </a>
+                </small>
+            </h4>
+
+            <div class="collapse" id="permissions">
+                <fieldset disabled>
+                    @component('permission.fields', [ 'permissions' => $employee->user ])
+                    @endcomponent
+                </fieldset>
+            </div>
+        @endif
     </div>
 @endsection

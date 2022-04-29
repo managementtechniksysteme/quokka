@@ -108,6 +108,14 @@ return [
     'projects.email' => 'Projekte per E-Mail versenden',
     'projects.createpdf' => 'PDF Dateien von Projekten erstellen',
 
+    // roles
+    'roles.view' => 'Rollen (Sammlung von Berechtigungen) ansehen',
+    'roles.create' => 'Rollen (Sammlung von Berechtigungen) erstellen',
+    'roles.update' => 'Rollen (Sammlung von Berechtigungen) bearbeiten',
+    'roles.delete' => 'Rollen (Sammlung von Berechtigungen) entfernen',
+    'roles.email' => 'Rollen (Sammlung von Berechtigungen) per E-Mail versenden',
+    'roles.createpdf' => 'PDF Dateien von Rollen (Sammlung von Berechtigungen) erstellen',
+
     // service reports
     'service-reports.view.own' => 'Eigene Serviceberichte ansehen',
     'service-reports.view.other' => 'Andere Serviceberichte ansehen',

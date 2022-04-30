@@ -11,12 +11,14 @@
             </h3>
 
             <div class="scroll-x d-flex">
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                    </svg>
-                    Mitarbeiter anlegen
-                </a>
+                @can('create', \App\Models\Employee::class)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.create') }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                        </svg>
+                        Mitarbeiter anlegen
+                    </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -68,13 +70,15 @@
                         <p class="lead text-muted">Es wurden keine Mitarbeiteer passend zur Suche gefunden.</p>
                     @else
                         <p class="lead text-muted">Es sind keine Mitarbeiter im System vorhanden.</p>
-                        <p class="lead">Lege einen neuen Mitarbeiter an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Mitarbeiter anlegen
-                        </a>
+                        @can('create', \App\Models\Employee::class)
+                            <p class="lead">Lege einen neuen Mitarbeiter an.</p>
+                            <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('employees.create') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                </svg>
+                                Mitarbeiter anlegen
+                            </a>
+                        @endcan
                     @endif
                 </div>
             @endforelse

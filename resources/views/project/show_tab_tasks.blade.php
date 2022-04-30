@@ -2,12 +2,14 @@
 
 @section('tab')
     @unless ($project->tasks->isEmpty() && !Request::get('search'))
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.create', ['project' => $project->id]) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-            </svg>
-            Aufgabe anlegen
-        </a>
+        @can('create', \App\Models\Task::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.create', ['project' => $project->id]) }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                </svg>
+                Aufgabe anlegen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 
@@ -163,13 +165,15 @@
                     <p class="lead text-muted">Es wurden keine Aufgaben passend zur Suche gefunden.</p>
                 @else
                     <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Aufgaben zugeordnet.</p>
-                    <p class="lead">Lege eine neue Aufgabe an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create', ['project' => $project->id]) }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Aufgabe anlegen
-                    </a>
+                    @can('create', \App\Models\Task::class)
+                        <p class="lead">Lege eine neue Aufgabe an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create', ['project' => $project->id]) }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Aufgabe anlegen
+                        </a>
+                    @endcan
                 @endif
             </div>
         @endforelse

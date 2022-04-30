@@ -29,24 +29,30 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="employeeOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="employeeOverviewDropdown">
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.edit', $employee) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                        </svg>
-                        Bearbeiten
-                    </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                        </svg>
-                        Email senden
-                    </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                        </svg>
-                        PDF erstellen
-                    </a>
+                    @can('update', $employee)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.edit', $employee) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                            </svg>
+                            Bearbeiten
+                        </a>
+                    @endcan
+                    @can('email', $employee)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                            </svg>
+                            Email senden
+                        </a>
+                    @endcan
+                    @can('createPdf', $employee)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                            </svg>
+                            PDF erstellen
+                        </a>
+                    @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
@@ -54,31 +60,37 @@
                         Favorisieren
                     </a>
                     @if($employee->user && $employee->user->trashed())
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.access-grant', $employee) }}">
-                            <svg class="feather feather-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#unlock"></use>
-                            </svg>
-                            Quokka Zugang entsperren
-                        </a>
+                        @can('update', $employee)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.access-grant', $employee) }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#unlock"></use>
+                                </svg>
+                                Quokka Zugang entsperren
+                            </a>
+                        @endcan
                     @elseif($employee->user)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.access-deny', $employee) }}">
-                            <svg class="feather feather-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
-                            </svg>
-                            Quokka Zugang sperren
-                        </a>
+                        @can('update', $employee)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.access-deny', $employee) }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
+                                </svg>
+                                Quokka Zugang sperren
+                            </a>
+                        @endcan
                     @endif
-                    <form action="{{ route('employees.destroy', $employee) }}" method="post">
-                        @csrf
-                        @method('DELETE')
+                    @can('delete', $employee)
+                        <form action="{{ route('employees.destroy', $employee) }}" method="post">
+                            @csrf
+                            @method('DELETE')
 
-                        <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                            </svg>
-                            Entfernen
-                        </button>
-                    </form>
+                            <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                                </svg>
+                                Entfernen
+                            </button>
+                        </form>
+                    @endcan
                 </div>
             </div>
         </div>

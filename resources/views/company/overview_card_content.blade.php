@@ -17,19 +17,23 @@
         </div>
 
         <div class="d-none d-sm-block col-sm-auto text-right">
-            <a class="text-muted d-inline-flex align-items-center" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
-                <svg class="feather feather-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                </svg>
-                {{ $company->projects_count }}
-            </a>
+            @can('viewAny', \App\Models\Project::class)
+                <a class="text-muted d-inline-flex align-items-center" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
+                    <svg class="feather feather-16 mr-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
+                    </svg>
+                    {{ $company->projects_count }}
+                </a>
+            @endcan
 
-            <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
-                <svg class="feather feather-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                </svg>
-                {{ $company->people_count }}
-            </a>
+            @can('viewAny', \App\Models\People::class)
+                <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
+                    <svg class="feather feather-16 mr-1">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                    </svg>
+                    {{ $company->people_count }}
+                </a>
+            @endcan
         </div>
 
         <div class="col-md-auto d-none d-md-block">
@@ -37,41 +41,49 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="companyOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="companyOverviewDropdown">
-                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('companies.edit', $company) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                        </svg>
-                        Bearbeiten
-                    </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                        </svg>
-                        Email senden
-                    </a>
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                        </svg>
-                        PDF erstellen
-                    </a>
+                    @can('update', $company)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('companies.edit', $company) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                            </svg>
+                            Bearbeiten
+                        </a>
+                    @endcan
+                    @can('email', $company)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                            </svg>
+                            Email senden
+                        </a>
+                    @endcan
+                    @can('createPdf', $company)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                            </svg>
+                            PDF erstellen
+                        </a>
+                    @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
                         <svg class="feather feather-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                         Favorisieren
                     </a>
-                    <form action="{{ route('companies.destroy', $company) }}" method="post">
-                        @csrf
-                        @method('DELETE')
+                    @can('delete', $company)
+                        <form action="{{ route('companies.destroy', $company) }}" method="post">
+                            @csrf
+                            @method('DELETE')
 
-                        <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                            </svg>
-                            Entfernen
-                        </button>
-                    </form>
+                            <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                                </svg>
+                                Entfernen
+                            </button>
+                        </form>
+                    @endcan
                 </div>
             </div>
         </div>

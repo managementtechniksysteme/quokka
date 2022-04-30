@@ -2,12 +2,14 @@
 
 @section('tab')
     @unless ($project->serviceReports->isEmpty() && !Request::get('search'))
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-            </svg>
-            Servicebericht anlegen
-        </a>
+        @can('create', \App\Models\ServiceReport::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                </svg>
+                Servicebericht anlegen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 
@@ -125,13 +127,15 @@
                     <p class="lead text-muted">Es wurden keine Serviceberichte passend zur Suche gefunden.</p>
                 @else
                     <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Serviceberichte zugeordnet.</p>
-                    <p class="lead">Lege einen neuen Servicebericht an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Servicebericht anlegen
-                    </a>
+                    @can('create', \App\Models\ServiceReport::class)
+                        <p class="lead">Lege einen neuen Servicebericht an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Servicebericht anlegen
+                        </a>
+                    @endcan
                 @endif
             </div>
         @endforelse

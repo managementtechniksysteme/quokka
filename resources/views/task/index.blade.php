@@ -11,12 +11,14 @@
             </h3>
 
             <div class="scroll-x d-flex">
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                    </svg>
-                    Aufgabe anlegen
-                </a>
+                @can('create', \App\Models\Task::class)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                        </svg>
+                        Aufgabe anlegen
+                    </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -171,13 +173,15 @@
                         <p class="lead text-muted">Es wurden keine Aufgaben passend zur Suche gefunden.</p>
                     @else
                         <p class="lead text-muted">Es sind keine Aufgaben im System vorhanden.</p>
-                        <p class="lead">Lege eine neue Aufgabe an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Aufgabe anlegen
-                        </a>
+                        @can('create', \App\Models\Task::class)
+                            <p class="lead">Lege eine neue Aufgabe an.</p>
+                            <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('tasks.create') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                </svg>
+                                Aufgabe anlegen
+                            </a>
+                        @endcan
                     @endif
                 </div>
             @endforelse

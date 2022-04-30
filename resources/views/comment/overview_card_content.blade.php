@@ -24,32 +24,37 @@
                         </p>
                     </div>
 
-                    <div class="col-auto d-inline-flex align-items-center">
-                        <div class="dropdown d-inline">
-                            <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="commentOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
+                        <div class="col-auto d-inline-flex align-items-center">
+                            <div class="dropdown d-inline">
+                                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="commentOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentOverviewDropdown">
-                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
-                                    <svg class="feather feather-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                                    </svg>
-                                    Bearbeiten
-                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentOverviewDropdown">
+                                    @can('update', $comment)
+                                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                                            </svg>
+                                            Bearbeiten
+                                        </a>
+                                    @endcan
+                                    @can('delete', $comment)
+                                        <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
 
-                                <form action="{{ route('comments.destroy', $comment) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
-                                        <svg class="feather feather-16 mr-2">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                                        </svg>
-                                        Entfernen
-                                    </button>
-                                </form>
+                                            <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
+                                                <svg class="feather feather-16 mr-2">
+                                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                                                </svg>
+                                                Entfernen
+                                            </button>
+                                        </form>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                 </div>
             </div>

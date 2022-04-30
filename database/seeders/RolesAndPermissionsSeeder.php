@@ -145,6 +145,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'service-reports.createpdf.other']);
         Permission::firstOrCreate(['name' => 'service-reports.send-signature-request.own']);
         Permission::firstOrCreate(['name' => 'service-reports.send-signature-request.other']);
+        Permission::firstOrCreate(['name' => 'service-reports.send-download-request.own']);
+        Permission::firstOrCreate(['name' => 'service-reports.send-download-request.other']);
         Permission::firstOrCreate(['name' => 'service-reports.get-signature.own']);
         Permission::firstOrCreate(['name' => 'service-reports.get-signature.other']);
         Permission::firstOrCreate(['name' => 'service-reports.approve']);
@@ -295,6 +297,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('service-reports.createpdf.other');
         $employee->givePermissionTo('service-reports.send-signature-request.own');
         $employee->givePermissionTo('service-reports.send-signature-request.other');
+        $employee->givePermissionTo('service-reports.send-download-request.own');
+        $employee->givePermissionTo('service-reports.send-download-request.other');
         $employee->givePermissionTo('service-reports.get-signature.own');
         $employee->givePermissionTo('service-reports.get-signature.other');
 

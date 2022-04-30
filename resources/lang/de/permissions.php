@@ -130,6 +130,8 @@ return [
     'service-reports.createpdf.other' => 'PDF Dateien von anderen Serviceberichten erstellen',
     'service-reports.send-signature-request.own' => 'Anfrage zur Unterschrift von eigenen Serviceberichten per E-Mail versenden',
     'service-reports.send-signature-request.other' => 'Anfrage zur Unterschrift von anderen Serviceberichten per E-Mail versenden',
+    'service-reports.send-download-request.own' => 'Anfrage zum Herunterladen von eigenen Serviceberichten per E-Mail versenden',
+    'service-reports.send-download-request.other' => 'Anfrage zum Herunterladen von anderen Serviceberichten per E-Mail versenden',
     'service-reports.get-signature.own' => 'Eigene Serviceberichte unterschreiben lassen',
     'service-reports.get-signature.other' => 'Andere Serviceberichte unterschreiben lassen',
     'service-reports.approve' => 'Serviceberichte als erledigt markieren',

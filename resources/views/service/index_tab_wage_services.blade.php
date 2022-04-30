@@ -2,12 +2,14 @@
 
 @section('tab')
     @unless ($wageServices->isEmpty() && !Request::get('search'))
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('wage-services.create') }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-            </svg>
-            Lohndienstleistung anlegen
-        </a>
+        @can('create', \App\Models\WageService::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('wage-services.create') }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                </svg>
+                Lohndienstleistung anlegen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 
@@ -89,13 +91,15 @@
                     <p class="lead text-muted">Es wurden keine Lohndienstleistungen passend zur Suche gefunden.</p>
                 @else
                     <p class="lead text-muted">Es sind keine Lohndienstleistungen im System vorhanden.</p>
-                    <p class="lead">Lege eine neue Lohndienstleistung an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('wage-services.create') }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Lohndienstleistung anlegen
-                    </a>
+                    @can('create', \App\Models\WageService::class)
+                        <p class="lead">Lege eine neue Lohndienstleistung an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('wage-services.create') }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Lohndienstleistung anlegen
+                        </a>
+                    @endcan
                 @endif
             </div>
         @endforelse

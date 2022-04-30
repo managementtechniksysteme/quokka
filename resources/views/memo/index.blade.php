@@ -11,12 +11,14 @@
             </h3>
 
             <div class="scroll-x d-flex">
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.create') }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                    </svg>
-                    Aktenvermerk anlegen
-                </a>
+                @can('create', \App\Models\Memo::class)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.create') }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                        </svg>
+                        Aktenvermerk anlegen
+                    </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -146,13 +148,15 @@
                         <p class="lead text-muted">Es wurden keine Aktenvermerke passend zur Suche gefunden.</p>
                     @else
                         <p class="lead text-muted">Es sind keine Aktenvermerke im System vorhanden.</p>
-                        <p class="lead">Lege ein neuen Aktenvermerk an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('memos.create') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Aktenvermerk anlegen
-                        </a>
+                        @can('create', \App\Models\Memo::class)
+                            <p class="lead">Lege ein neuen Aktenvermerk an.</p>
+                            <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('memos.create') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                </svg>
+                                Aktenvermerk anlegen
+                            </a>
+                        @endcan
                     @endif
                 </div>
             @endforelse

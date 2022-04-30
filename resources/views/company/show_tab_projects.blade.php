@@ -2,12 +2,14 @@
 
 @section('tab')
     @unless ($company->projects->isEmpty() && !Request::get('search'))
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-            </svg>
-            Projekt anlegen
-        </a>
+        @can('create', \App\Models\Project::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                </svg>
+                Projekt anlegen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 
@@ -121,13 +123,15 @@
                     <p class="lead text-muted">Es wurden keine Projekte passend zur Suche gefunden.</p>
                 @else
                     <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
-                    <p class="lead">Lege ein neues Projekt an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Projekt anlegen
-                    </a>
+                    @can('create', \App\Models\Project::class)
+                        <p class="lead">Lege ein neues Projekt an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Projekt anlegen
+                        </a>
+                    @endcan
                 @endif
             </div>
         @endforelse

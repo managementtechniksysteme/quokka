@@ -18,41 +18,49 @@
             </h3>
 
             <div class="scroll-x d-flex">
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.edit', $task) }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                    </svg>
-                    Bearbeiten
-                </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => 'show']) }}">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                    </svg>
-                    Email versenden
-                </a>
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}" target="_blank">
-                    <svg class="feather feather-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                    </svg>
-                    PDF erstellen
-                </a>
+                @can('update', $task)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.edit', $task) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                        </svg>
+                        Bearbeiten
+                    </a>
+                @endcan
+                @can('email', $task)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => 'show']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        </svg>
+                        Email versenden
+                    </a>
+                @endcan
+                @can('createPdf', $task)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}" target="_blank">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                        </svg>
+                        PDF erstellen
+                    </a>
+                @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
                     <svg class="feather feather-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
                 </a>
-                <form action="{{ route('tasks.destroy', $task) }}" method="post" >
-                    @csrf
-                    @method('DELETE')
+                @can('delete', $task)
+                    <form action="{{ route('tasks.destroy', $task) }}" method="post" >
+                        @csrf
+                        @method('DELETE')
 
-                    <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                        </svg>
-                        Entfernen
-                    </button>
-                </form>
+                        <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                            </svg>
+                            Entfernen
+                        </button>
+                    </form>
+                @endcan
             </div>
 
         </div>
@@ -71,12 +79,14 @@
 
             @unless($task->comments->isEmpty())
                 <div class="mb-2">
-                    <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Kommentar anlegen
-                    </a>
+                    @can('create', \App\Models\TaskComment::class)
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Kommentar anlegen
+                        </a>
+                    @endcan
                 </div>
             @endunless
 
@@ -88,13 +98,15 @@
                     <div class="text-center">
                         <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                         <p class="lead text-muted">Zu der Aufgabe {{ $task->name }} gibt es noch keine Diskussion.</p>
-                        <p class="lead">Lege einen neuen Kommentar an.</p>
-                        <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Kommentar anlegen
-                        </a>
+                        @can('create', \App\Models\TaskComment::class)
+                            <p class="lead">Lege einen neuen Kommentar an.</p>
+                            <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                </svg>
+                                Kommentar anlegen
+                            </a>
+                        @endcan
                     </div>
                 @endforelse
             </div>

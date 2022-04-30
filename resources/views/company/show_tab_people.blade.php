@@ -2,12 +2,14 @@
 
 @section('tab')
     @unless ($company->people->isEmpty() && !Request::get('search'))
-        <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
-            <svg class="feather feather-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-            </svg>
-            Person anlegen
-        </a>
+        @can('create', \App\Models\Person::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
+                <svg class="feather feather-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                </svg>
+                Person anlegen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 
@@ -108,13 +110,15 @@
                     <p class="lead text-muted">Es wurden keine Personen passend zur Suche gefunden.</p>
                 @else
                     <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Personen zugeordnet.</p>
-                    <p class="lead">Lege eine neue Person an.</p>
-                    <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
-                        <svg class="feather feather-20 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Person anlegen
-                    </a>
+                    @can('create', \App\Models\Person::class)
+                        <p class="lead">Lege eine neue Person an.</p>
+                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
+                            <svg class="feather feather-20 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                            </svg>
+                            Person anlegen
+                        </a>
+                    @endcan
                 @endif
             </div>
         @endforelse

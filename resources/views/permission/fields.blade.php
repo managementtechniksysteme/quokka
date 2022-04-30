@@ -1864,6 +1864,28 @@
         </div>
         <div class="form-group">
             <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('service-reports_send-download-request_own') is-invalid @enderror" name="service-reports_send-download-request_own" id="service-reports_send-download-request_own" value="true" @if(old('service-reports_send-download-request_own', optional($permissions)->hasPermissionTo('service-reports.send-download-request.own'))) checked @endif>
+                <label class="custom-control-label" for="service-reports_send-download-request_own">Anfrage zum Herunterladen von eigenen Serviceberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('service-reports_send-download-request_own') d-block @enderror">
+                @error('service-reports_send-download-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('service-reports_send-download-request_other') is-invalid @enderror" name="service-reports_send-download-request_other" id="service-reports_send-download-request_other" value="true" @if(old('service-reports_send-download-request_other', optional($permissions)->hasPermissionTo('service-reports.send-download-request.other'))) checked @endif>
+                <label class="custom-control-label" for="service-reports_send-download-request_other">Anfrage zum Herunterladen von anderen Serviceberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('service-reports_send-download-request_other') d-block @enderror">
+                @error('service-reports_send-download-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('service-reports_get-signature_own') is-invalid @enderror" name="service-reports_get-signature_own" id="service-reports_get-signature_own" value="true" @if(old('service-reports_get-signature_own', optional($permissions)->hasPermissionTo('service-reports.get-signature.own'))) checked @endif>
                 <label class="custom-control-label" for="service-reports_get-signature_own">Eigene Serviceberichte unterschreiben lassen</label>
             </div>

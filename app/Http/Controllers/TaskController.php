@@ -258,6 +258,21 @@ class TaskController extends Controller
             ->download('AU '.$task->name.'.pdf');
     }
 
+    public function finish(Request $request, Task $task)
+    {
+        $task->status = 'finished';
+
+        if(!$task->ends_on) {
+            $task->starts_on = $task->starts_on ?? Carbon::now();
+            $task->ends_on = Carbon::now();
+        }
+        
+        $task->save();
+
+        return $this->getConditionalRedirect($request->redirect, $task)
+            ->with('success', 'Die Aufgabe wurde erfolgreich erledigt.');
+    }
+
     private function getConditionalRedirect($target, $task)
     {
         switch ($target) {

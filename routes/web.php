@@ -103,11 +103,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/service-reports/{service_report}/email-download-request', [ServiceReportController::class, 'emailDownloadRequest']);
     Route::get('/service-reports/{service_report}/email-signature-request', [ServiceReportController::class, 'showEmailSignatureRequest'])->name('service-reports.email-signature-request');
     Route::post('/service-reports/{service_report}/email-signature-request', [ServiceReportController::class, 'emailSignatureRequest']);
+    Route::get('/service-reports/{service_report}/finish', [ServiceReportController::class, 'finish'])->name('service-reports.finish');
 
     Route::resource('tasks', TaskController::class);
     Route::get('/tasks/{task}/download', [TaskController::class, 'download'])->name('tasks.download');
     Route::get('/tasks/{task}/email', [TaskController::class, 'showEmail'])->name('tasks.email');
     Route::post('/tasks/{task}/email', [TaskController::class, 'email']);
+    Route::get('/tasks/{task}/finish', [TaskController::class, 'finish'])->name('tasks.finish');
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');

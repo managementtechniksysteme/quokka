@@ -84,6 +84,16 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="taskOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="taskOverviewDropdown">
+                    @unless($task->status === 'finished')
+                        @can('update', $task)
+                            <a class="dropdown-item dropdown-item-finish d-inline-flex align-items-center" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}">
+                                <svg class="feather feather-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                                </svg>
+                                Erledigen
+                            </a>
+                        @endcan
+                    @endunless
                     @can('update', $task)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.edit', $task) }}">
                             <svg class="feather feather-16 mr-2">

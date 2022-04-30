@@ -18,6 +18,16 @@
             </h3>
 
             <div class="scroll-x d-flex">
+                @unless($task->status === 'finished')
+                    @can('update', $task)
+                        <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => 'show']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                            </svg>
+                            Erledigen
+                        </a>
+                    @endcan
+                @endunless
                 @can('update', $task)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.edit', $task) }}">
                         <svg class="feather feather-16 mr-2">

@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Auth;
 
 class PersonController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Person::class, 'person');
+    }
+
     /**
      * Display a listing of the resource.
      *

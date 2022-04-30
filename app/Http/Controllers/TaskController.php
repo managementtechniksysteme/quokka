@@ -26,6 +26,20 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
+
     public function index(Request $request): View
     {
         if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {

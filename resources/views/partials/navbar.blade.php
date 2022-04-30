@@ -11,167 +11,203 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @auth
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('companies.index') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
-                            </svg>
-                            Firmen
-                        </a>
-                        <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret h-20"></span>
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('people.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                    @if(auth()->user()->can('viewAny', \App\Models\Company::class) || auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('viewAny', \App\Models\Company::class) disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('companies.index') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                                 </svg>
-                                Personen
+                                Firmen
                             </a>
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('addresses.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
+                            @if(auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
+                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
+                                @can('viewAny', \App\Models\Person::class)
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('people.index') }}">
+                                        <svg class="feather feather-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                                        </svg>
+                                        Personen
+                                    </a>
+                                @endcan
+                                @can('viewAny', \App\Models\Address::class)
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('addresses.index') }}">
+                                        <svg class="feather feather-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
+                                        </svg>
+                                        Adressen
+                                    </a>
+                                @endcan
+                                </div>
+                            @endif
+                        </li>
+                    @endif
+
+                    @can('viewAny', \App\Models\Project::class)
+                        <li class="nav-item">
+                            <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
-                                Adressen
+                                Projekte
                             </a>
-                        </div>
-                    </li>
+                        </li>
+                    @endcan
 
-                    <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                            </svg>
-                            Projekte
-                        </a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('tasks.index') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                            </svg>
-                            Aufgaben
-                        </a>
-                        <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret h-20"></span>
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarTasksDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                    @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('viewAny', \App\Models\Task::class) disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('tasks.index') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
-                                Aktenvermerke
+                                Aufgaben
                             </a>
-                            <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('service-reports.index') }}">
-                                <svg class="feather feather-16 mr-2">
+                            @if(auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class))
+                                <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarTasksDropdown">
+                                    @can('viewAny', \App\Models\Memo::class)
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.index') }}">
+                                        <svg class="feather feather-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                                        </svg>
+                                        Aktenvermerke
+                                    </a>
+                                    @endcan
+                                    @can('viewAny', \App\Models\ServiceReport::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('service-reports.index') }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                                            </svg>
+                                            Serviceberichte
+                                        </a>
+                                    @endcan
+                                </div>
+                            @endif
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->can('viewAny', \App\Models\Accounting::class) || auth()->user()->can('viewAny', \App\Models\Logbook::class))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('viewAny', \App\Models\Accounting::class) disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('accounting.index') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                </svg>
+                                Abrechnung
+                            </a>
+                            @can('viewAny', \App\Models\Logbook::class)
+                                <a id="navbarAccountingDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarAccountingDropdown">
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('logbook.index') }}">
+                                        <svg class="feather feather-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+                                        </svg>
+                                        Fahrtenbuch
+                                    </a>
+                                </div>
+                            @endcan
+                        </li>
+                    @endif
+
+                    @can('tools-scanqr')
+                        <li class="nav-item dropdown">
+                            <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
+                                </svg>
+                                Tools
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('qr-scan.index') }}">
+                                    <svg class="feather feather-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
+                                    </svg>
+                                    QR-Code scannen
+                                </a>
+                            </div>
+                        </li>
+                    @endcan
+
+                    @if(auth()->user()->can('application-settings-update') || auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('application-settings-update') disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('application-settings.edit') }}">
+                                <svg class="feather feather-20 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                                 </svg>
-                                Serviceberichte
+                                Einstellungen
                             </a>
-                        </div>
-                    </li>
+                            @if(auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
+                                <a id="navbarSettingsDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('accounting.index') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                            </svg>
-                            Abrechnung
-                        </a>
-                        <a id="navbarAccountingDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret h-20"></span>
-                        </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarSettingsDropdown">
+                                    @can('viewAny', \App\Models\Employee::class)
+                                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.index') }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                                            </svg>
+                                            Mitarbeiter
+                                        </a>
+                                    @endcan
+                                    @can('viewAny', \Spatie\Permission\Models\Role::class)
+                                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.index') }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
+                                            </svg>
+                                            Rollen
+                                        </a>
+                                    @endcan
+                                    @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
+                                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route( auth()->user()->can('viewAny', \App\Models\WageService::class) ? 'wage-services.index' : 'material-services.index') }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                                            </svg>
+                                            Leistungen
+                                        </a>
+                                    @endif
+                                    @can('viewAny', \App\Models\Vehicle::class)
+                                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.index') }}">
+                                            <svg class="feather feather-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
+                                            </svg>
+                                            Fuhrpark
+                                        </a>
+                                    @endcan
+                                </div>
+                            @endif
+                        </li>
+                    @endif
 
-                        <div class="dropdown-menu" aria-labelledby="navbarAccountingDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('logbook.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+                    @can('help-view')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('help.index') }}">
+                                <svg class="feather feather-20 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                                 </svg>
-                                Fahrtenbuch
+                                Hilfe
                             </a>
-                        </div>
-                    </li>
+                            <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret h-20"></span>
+                            </a>
 
-                    <li class="nav-item dropdown">
-                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
-                            </svg>
-                            Tools
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('qr-scan.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
-                                </svg>
-                                QR-Code scannen
-                            </a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('application-settings.edit') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
-                            </svg>
-                            Einstellungen
-                        </a>
-                        <a id="navbarSettingsDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret h-20"></span>
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarSettingsDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                                </svg>
-                                Mitarbeiter
-                            </a>
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
-                                </svg>
-                                Rollen
-                            </a>
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('wage-services.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                                </svg>
-                                Leistungen
-                            </a>
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.index') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
-                                </svg>
-                                Fuhrpark
-                            </a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-inline-flex align-items-center pr-0" href="{{ route('help.index') }}">
-                            <svg class="feather feather-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
-                            </svg>
-                            Hilfe
-                        </a>
-                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret h-20"></span>
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('changelog.show') }}">
-                                <svg class="feather feather-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                                </svg>
-                                {{ config('app.name') }} @version('compact')
-                            </a>
-                        </div>
-                    </li>
+                            <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('changelog.show') }}">
+                                    <svg class="feather feather-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                                    </svg>
+                                    {{ config('app.name') }} @version('compact')
+                                </a>
+                            </div>
+                        </li>
+                    @endcan
                 @endauth
 
             </ul>

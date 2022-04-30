@@ -131,7 +131,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('addresses_view') is-invalid @enderror" name="addresses_view" id="addresses_view" value="true" @if(old('addresses_view', optional($permissions)->hasPermissionTo('addresses.view'))) checked @endif>
-                <label class="custom-control-label" for="addresses_view">Addressen ansehen</label>
+                <label class="custom-control-label" for="addresses_view">Adressen ansehen</label>
             </div>
             <div class="invalid-feedback @error('addresses_view') d-block @enderror">
                 @error('addresses_view')

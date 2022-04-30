@@ -11,6 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class MaterialServiceController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(MaterialService::class, 'material_service');
+    }
+
     public function index(Request $request)
     {
         $materialServices = MaterialService::filterSearch($request->input())

@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Address::class, 'address');
+    }
+
     /**
      * Display a listing of the resource.
      *

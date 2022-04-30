@@ -27,6 +27,26 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class ServiceReportController extends Controller
 {
+    //protected function resourceAbilityMap()
+    //{
+    //    return array_merge(parent::resourceAbilityMap(), [
+    //        'showEmail' => 'email',
+    //        'email' => 'email',
+    //        'download' => 'createPdf',
+    //        'showEmailSignatureRequest' => 'emailSignatureRequest',
+    //        'emailSignatureRequest' => 'emailSignatureRequest',
+    //        'showEmailDownloadRequest' => 'emailDownloadRequest',
+    //        'emailDownloadRequest' => 'emailDownloadRequest',
+    //        'showSignatureRequest' => 'sign',
+    //        'sign' => 'sign',
+    //    ]);
+    //}
+
+    public function __construct()
+    {
+        $this->authorizeResource(ServiceReport::class, 'service_report');
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -11,6 +11,20 @@ use Illuminate\Support\Facades\Auth;
 
 class WageServiceController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(WageService::class, 'wage_service');
+    }
+
     public function index(Request $request)
     {
         $wageServices = WageService::filterSearch($request->input())

@@ -70,21 +70,25 @@
                         Stammdaten
                     </a>
 
-                    <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                        </svg>
-                        Projekte
-                        <span class="ml-auto">{{ $company->projects_count }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\Project::class)
+                        <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
+                            </svg>
+                            Projekte
+                            <span class="ml-auto">{{ $company->projects_count }}</span>
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->tab == 'people') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                        </svg>
-                        Personen
-                        <span class="ml-auto">{{ $company->people_count }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\Person::class)
+                        <a class="menu-item @if (request()->tab == 'people') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                            </svg>
+                            Personen
+                            <span class="ml-auto">{{ $company->people_count }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -97,19 +101,23 @@
                         Stammdaten
                     </a>
 
-                    <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                        </svg>
-                        Projekte
-                    </a>
+                    @can('viewAny', \App\Models\Project::class)
+                        <a class="menu-item @if (request()->tab == 'projects') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
+                            </svg>
+                            Projekte
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->tab == 'people') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                        </svg>
-                        Personen
-                    </a>
+                    @can('viewAny', \App\Models\Person::class)
+                        <a class="menu-item @if (request()->tab == 'people') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                            </svg>
+                            Personen
+                        </a>
+                    @endcan
                 </div>
             </div>
 

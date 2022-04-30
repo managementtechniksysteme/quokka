@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TaskComment::class, 'comment');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

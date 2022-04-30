@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HelpController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:help-view');
+    }
+
     /**
      * Display a listing of the resource.
      *

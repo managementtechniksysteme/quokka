@@ -234,9 +234,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('addresses.email');
         $employee->givePermissionTo('addresses.createpdf');
 
-        // application settings
-        $employee->givePermissionTo('application-settings.update.general');
-
         // comments
         // permissions on task comments are based on task permissions for now
 

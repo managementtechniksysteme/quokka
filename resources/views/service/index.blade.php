@@ -13,39 +13,47 @@
         <div class="row mt-4">
             <div class="d-none d-lg-block col-lg-3">
                 <div class="menu border-right pr-3">
-                    <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                        </svg>
-                        Lohndienstleistungen
-                        <span class="ml-auto">{{ $wageServicesCount }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\WageService::class)
+                        <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                            </svg>
+                            Lohndienstleistungen
+                            <span class="ml-auto">{{ $wageServicesCount }}</span>
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                        </svg>
-                        Materialleistungen
-                        <span class="ml-auto">{{ $materialServicesCount }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\MaterialService::class)
+                        <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('material-services.index') }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
+                            </svg>
+                            Materialleistungen
+                            <span class="ml-auto">{{ $materialServicesCount }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 
             <div class="menu d-block d-lg-none col mb-4">
                 <div class="scroll-x border-bottom pb-1">
-                    <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                        </svg>
-                        Lohndienstleistungen
-                    </a>
+                    @can('viewAny', \App\Models\WageService::class)
+                        <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                            </svg>
+                            Lohndienstleistungen
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                        </svg>
-                        Materialleistungen
-                    </a>
+                    @can('viewAny', \App\Models\MaterialService::class)
+                        <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('material-services.index') }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
+                            </svg>
+                            Materialleistungen
+                        </a>
+                    @endcan
                 </div>
             </div>
 

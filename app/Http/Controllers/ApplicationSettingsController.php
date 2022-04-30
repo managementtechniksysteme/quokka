@@ -11,6 +11,16 @@ use Illuminate\Http\Request;
 
 class ApplicationSettingsController extends Controller
 {
+    protected function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['edit', 'updateGeneral']);
+    }
+
+    public function __construct()
+    {
+        $this->middleware('can:application-settings-update');
+    }
+
     public function edit(Request $request)
     {
         switch ($request->tab) {

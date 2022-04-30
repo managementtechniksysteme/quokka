@@ -18,6 +18,20 @@ use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Employee::class, 'employee');
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class VehicleController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Vehicle::class, 'vehicle');
+    }
+
     public function index(Request $request)
     {
         $vehicles = Vehicle::filterSearch($request->input())

@@ -13,7 +13,7 @@ return [
     'accounting.createpdf' => 'PDF Dateien von Abrechnungen erstellen',
 
     // addresses
-    'addresses.view' => 'Addressen ansehen',
+    'addresses.view' => 'Adressen ansehen',
     'addresses.create' => 'Adressen anlegen',
     'addresses.update' => 'Adressen bearbeiten',
     'addresses.delete' => 'Adressen entfernen',

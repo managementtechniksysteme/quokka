@@ -20,6 +20,20 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class MemoController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Memo::class, 'memo');
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -15,6 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LogbookController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Logbook::class, 'logbook');
+    }
+
     public function index(LogbookIndexRequest $request)
     {
         if($request->ajax()) {

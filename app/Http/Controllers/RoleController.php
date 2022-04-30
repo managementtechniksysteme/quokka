@@ -11,6 +11,20 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Role::class, 'role');
+    }
+
     public function index(Request $request)
     {
         $roles = Role::orderBy('name')->withCount('permissions')

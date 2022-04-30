@@ -15,6 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountingController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
+    public function __construct()
+    {
+        $this->authorizeResource(Accounting::class, 'accounting');
+    }
+
     public function index(AccountingIndexRequest $request)
     {
         if($request->ajax()) {

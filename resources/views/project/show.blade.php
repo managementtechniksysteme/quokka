@@ -69,29 +69,35 @@
                         Stammdaten
                     </a>
 
-                    <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                        </svg>
-                        Aufgaben
-                        <span class="ml-auto">{{ $project->tasks_count }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\Task::class)
+                        <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                            </svg>
+                            Aufgaben
+                            <span class="ml-auto">{{ $project->tasks_count }}</span>
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->tab == 'memos') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'memos']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
-                        </svg>
-                        Aktenvermerke
-                        <span class="ml-auto">{{ $project->memos_count }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\Memo::class)
+                        <a class="menu-item @if (request()->tab == 'memos') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'memos']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                            </svg>
+                            Aktenvermerke
+                            <span class="ml-auto">{{ $project->memos_count }}</span>
+                        </a>
+                    @endcan
 
-                    <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
-                        <svg class="feather feather-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
-                        </svg>
-                        Serviceberichte
-                        <span class="ml-auto">{{ $project->service_reports_count }}</span>
-                    </a>
+                    @can('viewAny', \App\Models\ServiceReport::class)
+                        <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                            </svg>
+                            Serviceberichte
+                            <span class="ml-auto">{{ $project->service_reports_count }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 

@@ -14,14 +14,18 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+        ]);
+    }
+
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->authorizeResource(Company::class, 'company');
     }
 
     /**

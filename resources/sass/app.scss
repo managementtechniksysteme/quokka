@@ -188,15 +188,29 @@ img.empty-state {
 }
 
 // Delete dropdown button with red text and white text with red background on hover
-button.dropdown-item-delete {
+.dropdown-item-finish {
+    color: $success !important;
+}
+
+.dropdown-item-finish:hover {
+    color: $success !important;
+}
+
+.dropdown-item-finish:active {
+    color: #ffffff !important;
+    background-color: $success !important;
+}
+
+// Delete dropdown button with red text and white text with red background on hover
+.dropdown-item-delete {
     color: $danger !important;
 }
 
-button.dropdown-item-delete:hover {
+.dropdown-item-delete:hover {
     color: $danger !important;
 }
 
-button.dropdown-item-delete:active {
+.dropdown-item-delete:active {
     color: #ffffff !important;
     background-color: $danger !important;
 }

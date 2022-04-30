@@ -27,20 +27,21 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class ServiceReportController extends Controller
 {
-    //protected function resourceAbilityMap()
-    //{
-    //    return array_merge(parent::resourceAbilityMap(), [
-    //        'showEmail' => 'email',
-    //        'email' => 'email',
-    //        'download' => 'createPdf',
-    //        'showEmailSignatureRequest' => 'emailSignatureRequest',
-    //        'emailSignatureRequest' => 'emailSignatureRequest',
-    //        'showEmailDownloadRequest' => 'emailDownloadRequest',
-    //        'emailDownloadRequest' => 'emailDownloadRequest',
-    //        'showSignatureRequest' => 'sign',
-    //        'sign' => 'sign',
-    //    ]);
-    //}
+    protected function resourceAbilityMap()
+    {
+        return array_merge(parent::resourceAbilityMap(), [
+            'showEmail' => 'email',
+            'email' => 'email',
+            'download' => 'createPdf',
+            'showEmailSignatureRequest' => 'emailSignatureRequest',
+            'emailSignatureRequest' => 'emailSignatureRequest',
+            'showEmailDownloadRequest' => 'emailDownloadRequest',
+            'emailDownloadRequest' => 'emailDownloadRequest',
+            'showSignatureRequest' => 'sign',
+            'sign' => 'sign',
+            'approve' => 'approve',
+        ]);
+    }
 
     public function __construct()
     {
@@ -435,6 +436,14 @@ class ServiceReportController extends Controller
 
             return view('service_report.download_invalid');
         }
+    }
+
+    public function finish(Request $request, ServiceReport $serviceReport)
+    {
+        $serviceReport->update(['status' => 'finished']);
+
+        return $this->getConditionalRedirect($request->redirect, $serviceReport)
+            ->with('success', 'Der Servicebericht wurde erfolgreich erledigt.');
     }
 
     private function sendDownloadRequest(ServiceReport $serviceReport, string $email)

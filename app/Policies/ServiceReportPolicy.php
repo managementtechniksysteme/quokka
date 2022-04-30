@@ -59,4 +59,9 @@ class ServiceReportPolicy
     {
         return true;
     }
+
+    public function approve(User $user, ServiceReport $serviceReport): bool
+    {
+        return true;
+    }
 }

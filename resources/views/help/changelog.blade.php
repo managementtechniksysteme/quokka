@@ -11,6 +11,14 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.13-f5e1b01 (01.05.2022)
+        * Das Berechtigungssystem wurde implementiert.
+        * Rollen als Vorlagen (Sammlung von Berechtigungen) können verwaltet werden.
+        * Benutzern können alle Berechtigungen einer Rolle oder individuelle Berechtigungen zugewiesen werden.
+        Hinweis: Geänderte Berechtigungen von Rollen (Vorlagen) wirken sich lediglich auf die Vorlage und nicht auf
+        bereits vergebene Benutzerberechtigungen aus.
+        @endmarkdown
+        @markdown
         ### v0.1.12-e1a3664 (28.04.2022)
         * Der Fuhrpark zum Verwalten von Fahrzeugen wurde implementiert.
         * Das Fahrtenbuch zum Eintragen von Fahrten mit Fahrzeugen wurde implementiert. Der Start Kilometerstand wird

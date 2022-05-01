@@ -50,12 +50,19 @@ class AccountingController extends Controller
         $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;
         $pageSize = Auth::user()->settings->list_pagination_size;
 
+        $accountingPermissions = Auth::user()
+            ->permissions()
+            ->where('name', 'LIKE', 'accounting%')
+            ->select('name')
+            ->pluck('name');
+
         return view('accounting.index')
             ->with('currentAccounting', null)
             ->with('projects', $projects->toJson())
             ->with('services', $services->toJson())
             ->with('employees', $employees->toJson())
             ->with('currentEmployee', $currentEmployee->toJson())
+            ->with('permissions', $accountingPermissions->toJson())
             ->with('servicesHourUnit', $servicesHourUnit)
             ->with('minAccountingAmount', $minAccountingAmount)
             ->with('expandErrors', json_encode($expandErrors))

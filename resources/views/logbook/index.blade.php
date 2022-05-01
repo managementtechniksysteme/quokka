@@ -7,6 +7,6 @@
         </div>
     </div>
     <div class="my-4 my-xl-0 h-100">
-        <logbook-selector :current_logbook="{{ $currentLogbook ?? 'null' }}" :places="{{ $places }}" :vehicles="{{ $vehicles }}" :projects="{{ $projects }}" :employees="{{ $employees }}" :current_employee="{{ $currentEmployee }}" :expand_errors="{{ $expandErrors }}" :show_days="{{ $filterDefaultDays ?? 0 }}" :page_size="{{ $pageSize }}"></logbook-selector>
+        <logbook-selector :current_logbook="{{ $currentLogbook ?? 'null' }}" :places="{{ $places }}" :vehicles="{{ $vehicles }}" :projects="{{ $projects }}" :employees="{{ $employees }}" :current_employee="{{ $currentEmployee }}" :permissions="{{ $permissions }}" :expand_errors="{{ $expandErrors }}" :show_days="{{ $filterDefaultDays ?? 0 }}" :page_size="{{ $pageSize }}"></logbook-selector>
     </div>
 @endsection

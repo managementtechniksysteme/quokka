@@ -7,6 +7,6 @@
         </div>
     </div>
     <div class="my-4 my-xl-0 h-100">
-        <accounting-selector :current_accounting="{{ $currentAccounting ?? 'null' }}" :projects="{{ $projects }}" :services="{{ $services }}" :employees="{{ $employees }}" :current_employee="{{ $currentEmployee }}" services_hour_unit="{{ $servicesHourUnit }}" :min_amount="{{ $minAccountingAmount }}" :expand_errors="{{ $expandErrors }}" :show_days="{{ $filterDefaultDays ?? 0 }}" :page_size="{{ $pageSize }}"></accounting-selector>
+        <accounting-selector :current_accounting="{{ $currentAccounting ?? 'null' }}" :projects="{{ $projects }}" :services="{{ $services }}" :employees="{{ $employees }}" :current_employee="{{ $currentEmployee }}" :permissions="{{ $permissions }}" services_hour_unit="{{ $servicesHourUnit }}" :min_amount="{{ $minAccountingAmount }}" :expand_errors="{{ $expandErrors }}" :show_days="{{ $filterDefaultDays ?? 0 }}" :page_size="{{ $pageSize }}"></accounting-selector>
     </div>
 @endsection

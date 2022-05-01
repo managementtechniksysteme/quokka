@@ -64,7 +64,7 @@
                                       {{ filter_service_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-12">
+                              <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="form-group col-12">
                                   <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
                                       <label class="custom-control-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
@@ -90,7 +90,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
+              <div v-if="permissions.includes('accounting.create')" v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
                   <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
                       <h3>Leistungen abrechnen</h3>
 
@@ -168,7 +168,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="accounting_overview">
+              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('accounting.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('accounting.create')}"  ref="accounting_overview">
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           Leistungsabrechnung
@@ -278,12 +278,12 @@
                                       </td>
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                                       <td class="col-auto text-right">
-                                          <button v-if="!(acc.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
+                                          <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="acc.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
+                                          <button v-if="acc.action === 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
@@ -386,7 +386,7 @@
                 filter_project_errors: null,
                 filter_service: null,
                 filter_service_errors: null,
-                filter_only_own: true,
+                filter_only_own: this.permissions.includes('accounting.view.own'),
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
@@ -795,7 +795,10 @@
             },
 
             toggleFilterOnlyOwn() {
-                this.filter_only_own = !this.filter_only_own;
+                if((this.filter_only_own && this.permissions.includes('accounting.view.other')) ||
+                    (!this.filter_only_own && this.permissions.includes('accounting.view.own'))) {
+                    this.filter_only_own = !this.filter_only_own;
+                }
             },
 
             toggleFilterOnlyUnsaved() {
@@ -866,6 +869,10 @@
             },
 
             removeAccounting(accounting) {
+                if(!this.canRemoveAccounting(this.current_employee, accounting)) {
+                    return;
+                }
+
                 if(accounting.action !== 'destroy') {
                     accounting.action_old = accounting.action;
                 }
@@ -874,7 +881,16 @@
             },
 
             restoreAccounting(accounting) {
+                if(!this.canRemoveAccounting(this.current_employee, accounting)) {
+                    return;
+                }
+
                 accounting.action = accounting.action_old ? accounting.action_old : null;
+            },
+
+            canRemoveAccounting(employee, accounting) {
+                return (accounting.employee_id === employee.id && this.permissions.includes('accounting.delete.own')) ||
+                    (accounting.employee_id !== employee.id && this.permissions.includes('accounting.delete.other'));
             },
 
             removeSelectedAccounting() {
@@ -1106,6 +1122,10 @@
             },
 
             setEdit(accounting, field) {
+                if(!this.canEditAccounting(this.current_employee, accounting)) {
+                    return;
+                }
+
                 let service = this.getService(accounting.service_id);
 
                 if((field === 'service_provided_started_at' || field === 'service_provided_ended_at') &&
@@ -1135,6 +1155,11 @@
 
             unsetEdit(accounting) {
                 this.setEdit(accounting, null);
+            },
+
+            canEditAccounting(employee, accounting) {
+                return (accounting.employee_id === employee.id && this.permissions.includes('accounting.update.own')) ||
+                    (accounting.employee_id !== employee.id && this.permissions.includes('accounting.update.other'));
             },
 
             focusTableInput(field) {
@@ -1363,6 +1388,13 @@
                 type: Object,
                 default() {
                     return null;
+                }
+            },
+
+            permissions: {
+                type: Array,
+                default() {
+                    return [];
                 }
             },
 

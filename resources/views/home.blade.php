@@ -14,7 +14,7 @@
 
         <div class="row pb-4">
             <div class="col col-sm-6 col-md-4 col-xl-auto mt-2">
-                <a class="btn btn-primary btn-lg btn-block d-inline-flex align-items-center justify-content-center" href="{{ route('companies.index') }}">
+                <a class="btn btn-primary btn-lg btn-block @cannot('viewAny', \App\Models\Company::class) disabled @endcan d-inline-flex align-items-center justify-content-center" href="{{ route('companies.index') }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
@@ -22,7 +22,7 @@
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-auto  mt-2">
-                <a class="btn btn-primary btn-lg btn-block d-inline-flex align-items-center justify-content-center" href="{{ route('projects.index') }}">
+                <a class="btn btn-primary btn-lg btn-block @cannot('viewAny', \App\Models\Project::class) disabled @endcan d-inline-flex align-items-center justify-content-center" href="{{ route('projects.index') }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
@@ -30,7 +30,7 @@
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-auto  mt-2">
-                <a class="btn btn-primary btn-lg btn-block d-inline-flex align-items-center justify-content-center" href="{{ route('tasks.index') }}">
+                <a class="btn btn-primary btn-lg btn-block @cannot('viewAny', \App\Models\Task::class) disabled @endcan d-inline-flex align-items-center justify-content-center" href="{{ route('tasks.index') }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                     </svg>
@@ -38,7 +38,7 @@
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-auto  mt-2">
-                <a class="btn btn-primary btn-lg btn-block d-inline-flex align-items-center justify-content-center" href="{{ route('accounting.index') }}">
+                <a class="btn btn-primary btn-lg btn-block @cannot('viewAny', \App\Models\Accounting::class) disabled @endcan d-inline-flex align-items-center justify-content-center" href="{{ route('accounting.index') }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
@@ -46,7 +46,7 @@
                 </a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-auto  mt-2">
-                <a class="btn btn-primary btn-lg btn-block d-inline-flex align-items-center justify-content-center" href="{{ route('logbook.index') }}">
+                <a class="btn btn-primary btn-lg btn-block @cannot('viewAny', \App\Models\Logbook::class) disabled @endcan d-inline-flex align-items-center justify-content-center" href="{{ route('logbook.index') }}">
                     <svg class="feather feather-20 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
                     </svg>

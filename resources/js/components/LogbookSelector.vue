@@ -64,7 +64,7 @@
                                       {{ filter_project_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-12">
+                              <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="form-group col-12">
                                   <div class="custom-control custom-switch">
                                       <input type="checkbox" class="custom-control-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
                                       <label class="custom-control-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
@@ -90,7 +90,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
+              <div v-if="permissions.includes('logbook.create')"  v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
                   <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
                       <h3>Fahrt eintragen</h3>
 
@@ -193,7 +193,7 @@
                   </div>
               </div>
 
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl}"  ref="logbook_overview">
+              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('logbook.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('logbook.create')}"  ref="logbook_overview">
                   <div class="sticky-top bg-general">
                       <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           Fahrtenbuch
@@ -315,12 +315,12 @@
                                       </td>
 
                                       <td class="col-auto text-right">
-                                          <button v-if="!(book.action === 'destroy')" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
+                                          <button v-if="book.action !== 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
-                                          <button v-if="book.action === 'destroy'" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
+                                          <button v-if="book.action === 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
                                               <svg class="feather feather-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
@@ -439,7 +439,7 @@
                 filter_vehicle_errors: null,
                 filter_project: null,
                 filter_project_errors: null,
-                filter_only_own: false,
+                filter_only_own: !this.permissions.includes('logbook.view.other'),
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
@@ -877,7 +877,10 @@
             },
 
             toggleFilterOnlyOwn() {
-                this.filter_only_own = !this.filter_only_own;
+                if((this.filter_only_own && this.permissions.includes('logbook.view.other')) ||
+                    (!this.filter_only_own && this.permissions.includes('logbook.view.own'))) {
+                    this.filter_only_own = !this.filter_only_own;
+                }
             },
 
             toggleFilterOnlyUnsaved() {
@@ -987,6 +990,10 @@
             },
 
             removeLogbook(logbook) {
+                if(!this.canRemoveLogbook(this.current_employee, accounting)) {
+                    return;
+                }
+
                 if(logbook.action !== 'destroy') {
                     logbook.action_old = logbook.action;
                 }
@@ -995,7 +1002,16 @@
             },
 
             restoreLogbook(logbook) {
+                if(!this.canRemoveLogbook(this.current_employee, accounting)) {
+                    return;
+                }
+
                 logbook.action = logbook.action_old ? logbook.action_old : null;
+            },
+
+            canRemoveLogbook(employee, logbook) {
+                return (logbook.employee_id === employee.id && this.permissions.includes('logbook.delete.own')) ||
+                    (logbook.employee_id !== employee.id && this.permissions.includes('logbook.delete.other'));
             },
 
             removeSelectedLogbook() {
@@ -1269,6 +1285,10 @@
             },
 
             setEdit(logbook, field) {
+                if(!this.canEditLogbook(this.current_employee, logbook)) {
+                    return;
+                }
+
                 this.getEditLogbook().forEach(editLogbook => {
                     this.blurTableInput(editLogbook.edit);
                     editLogbook.edit = null;
@@ -1291,6 +1311,11 @@
 
             unsetEdit(logbook) {
                 this.setEdit(logbook, null);
+            },
+
+            canEditLogbook(employee, logbook) {
+                return (logbook.employee_id === employee.id && this.permissions.includes('logbook.update.own')) ||
+                    (logbook.employee_id !== employee.id && this.permissions.includes('logbook.update.other'));
             },
 
             focusTableInput(field) {
@@ -1511,6 +1536,13 @@
                 type: Object,
                 default() {
                     return null;
+                }
+            },
+
+            permissions: {
+                type: Array,
+                default() {
+                    return [];
                 }
             },
 

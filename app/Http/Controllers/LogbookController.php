@@ -55,12 +55,19 @@ class LogbookController extends Controller
         $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;
         $pageSize = Auth::user()->settings->list_pagination_size;
 
+        $logbookPermissions = Auth::user()
+            ->permissions()
+            ->where('name', 'LIKE', 'logbook%')
+            ->select('name')
+            ->pluck('name');
+
         return view('logbook.index')
             ->with('currentLogbook', null)
             ->with('places', $places->toJson())
             ->with('vehicles', $vehicles->toJson())
             ->with('projects', $projects->toJson())
             ->with('employees', $employees->toJson())
+            ->with('permissions', $logbookPermissions->toJson())
             ->with('currentEmployee', $currentEmployee->toJson())
             ->with('expandErrors', json_encode($expandErrors))
             ->with('filterDefaultDays', json_encode($filterDefaultDays))

@@ -31,6 +31,10 @@ class ServiceReportPolicy
 
     public function update(User $user, ServiceReport $serviceReport): bool
     {
+        if($serviceReport->status === 'finished') {
+            return false;
+        }
+
         if($serviceReport->employee_id === $user->employee_id) {
             return $user->can('service-reports.update.own');
         }
@@ -40,6 +44,10 @@ class ServiceReportPolicy
 
     public function delete(User $user, ServiceReport $serviceReport): bool
     {
+        if($serviceReport->status !== 'new') {
+            return false;
+        }
+
         if($serviceReport->employee_id === $user->employee_id) {
             return $user->can('service-reports.delete.own');
         }
@@ -67,6 +75,10 @@ class ServiceReportPolicy
 
     public function emailSignatureRequest(User $user, ServiceReport $serviceReport): bool
     {
+        if($serviceReport->status === 'finished') {
+            return false;
+        }
+
         if($serviceReport->employee_id === $user->employee_id) {
             return $user->can('service-reports.send-signature-request.own');
         }
@@ -76,6 +88,10 @@ class ServiceReportPolicy
 
     public function emailDownloadRequest(User $user, ServiceReport $serviceReport): bool
     {
+        if($serviceReport->status === 'finished') {
+            return false;
+        }
+
         if($serviceReport->employee_id === $user->employee_id) {
             return $user->can('service-reports.send-download-request.own');
         }
@@ -85,6 +101,10 @@ class ServiceReportPolicy
 
     public function sign(User $user, ServiceReport $serviceReport): bool
     {
+        if($serviceReport->status === 'finished') {
+            return false;
+        }
+
         if($serviceReport->employee_id === $user->employee_id) {
             return $user->can('service-reports.get-signature.own');
         }

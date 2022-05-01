@@ -10,6 +10,7 @@ use App\Models\ApplicationSettings;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Service;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,10 +30,12 @@ class AccountingController extends Controller
         $this->authorizeResource(Accounting::class, 'accounting');
     }
 
-    public function index(AccountingIndexRequest $request)
+    public function index(Request $request)
     {
         if($request->ajax()) {
-            $currentAccounting = Accounting::filterSearch($request->validated())->order()->get();
+            $currentAccounting = Accounting::filterSearch(
+                $request->validate((new AccountingIndexRequest)->rules())
+            )->order()->get();
 
             return response()->json($currentAccounting, Response::HTTP_OK);
         }

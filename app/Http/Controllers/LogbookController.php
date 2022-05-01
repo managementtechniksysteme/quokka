@@ -10,6 +10,7 @@ use App\Models\Logbook;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Vehicle;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,10 +30,12 @@ class LogbookController extends Controller
         $this->authorizeResource(Logbook::class, 'logbook');
     }
 
-    public function index(LogbookIndexRequest $request)
+    public function index(Request $request)
     {
         if($request->ajax()) {
-            $currentLogbook = Logbook::filterSearch($request->validated())->order()->get();
+            $currentLogbook = Logbook::filterSearch(
+                $request->validate((new LogbookIndexRequest)->rules())
+            )->order()->get();
 
             return response()->json($currentLogbook, Response::HTTP_OK);
         }

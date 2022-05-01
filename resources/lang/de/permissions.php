@@ -23,9 +23,6 @@ return [
     // application settings
     'application-settings.update.general' => 'Allgemeine Applikationseinstellungen bearbeiten',
 
-    // comments
-    // permissions on task comments are based on task permissions for now
-
     // companies
     'companies.view' => 'Firmen ansehen',
     'companies.create' => 'Firmen anlegen',
@@ -169,6 +166,13 @@ return [
     'tasks.createpdf.private.responsible' => 'PDF Dateien von privaten Aufgaben als Verantwortlicher erstellen',
     'tasks.createpdf.private.involved' => 'PDF Dateien von privaten Aufgaben als Beteiligter erstellen',
     'tasks.createpdf.private.other' => 'PDF Dateien von anderen privaten Aufgaben erstellen',
+
+    // task comments
+    'tasks.comments.create' => 'Kommentare in ansehbaren Aufgaben anlegen',
+    'tasks.comments.update.own' => 'Eigene Kommentare in ansehbaren Aufgaben bearbeiten',
+    'tasks.comments.update.other' => 'Andere Kommentare in ansehbaren Aufgaben bearbeiten',
+    'tasks.comments.delete.own' => 'Eigene Kommentare in ansehbaren Aufgben entfernen',
+    'tasks.com ments.delete.other' => 'Andere Kommentare in ansehbaren Aufgaben entfernen',
 
     // tools
     'tools.scanqr' => 'QR-Code Scanner verwenden',

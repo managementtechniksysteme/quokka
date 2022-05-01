@@ -11,7 +11,7 @@
 
     <div class="container my-4">
         @markdown
-        ### v0.1.13-f5e1b01 (01.05.2022)
+        ### v0.1.13-ce3aa07 (01.05.2022)
         * Das Berechtigungssystem wurde implementiert.
         * Rollen als Vorlagen (Sammlung von Berechtigungen) können verwaltet werden.
         * Benutzern können alle Berechtigungen einer Rolle oder individuelle Berechtigungen zugewiesen werden.

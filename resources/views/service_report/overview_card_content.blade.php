@@ -103,7 +103,7 @@
                             Download Link senden
                         </a>
                     @endcan
-                    @if(auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport))
+                    @if(auth()->user()->can('delete', $serviceReport) && (auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport)))
                         <div class="dropdown-divider"></div>
                     @endif
                     @can('delete', $serviceReport)

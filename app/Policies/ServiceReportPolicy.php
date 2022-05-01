@@ -75,7 +75,7 @@ class ServiceReportPolicy
 
     public function emailSignatureRequest(User $user, ServiceReport $serviceReport): bool
     {
-        if($serviceReport->status === 'finished') {
+        if($serviceReport->status !== 'new') {
             return false;
         }
 
@@ -88,7 +88,7 @@ class ServiceReportPolicy
 
     public function emailDownloadRequest(User $user, ServiceReport $serviceReport): bool
     {
-        if($serviceReport->status === 'finished') {
+        if($serviceReport->status === 'new') {
             return false;
         }
 
@@ -101,7 +101,7 @@ class ServiceReportPolicy
 
     public function sign(User $user, ServiceReport $serviceReport): bool
     {
-        if($serviceReport->status === 'finished') {
+        if($serviceReport->status !== 'new') {
             return false;
         }
 

@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    protected function resourceAbilityMap()
+    {
+        return array_diff(parent::resourceAbilityMap(), [
+            'create' => 'create',
+            'store' => 'create',
+        ]);
+    }
+
     public function __construct()
     {
         $this->authorizeResource(TaskComment::class, 'comment');
@@ -24,11 +32,9 @@ class CommentController extends Controller
      */
     public function create(Request $request)
     {
-        $task = Task::find($request->task);
+        $task = Task::findOrFail($request->task);
 
-        if (! $task) {
-            abort(404);
-        }
+        $this->authorize('create', [TaskComment::class, $task]);
 
         return view('comment.create')->with('comment', null)->with('task', $task)->with('currentAttachments', null);
     }
@@ -43,11 +49,14 @@ class CommentController extends Controller
     {
         $validatedData = $request->validated();
 
+        $task = Task::findOrFail($request->task_id);
+
+        $this->authorize('create', [TaskComment::class, $task]);
+
         $comment = TaskComment::create($validatedData);
 
         $comment->employee()->associate(auth()->user()->employee);
 
-        $task = Task::find($request->task_id);
         $task->comments()->save($comment);
 
         if ($request->new_attachments) {

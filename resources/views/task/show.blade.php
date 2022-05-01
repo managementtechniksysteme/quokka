@@ -89,7 +89,7 @@
 
             @unless($task->comments->isEmpty())
                 <div class="mb-2">
-                    @can('create', \App\Models\TaskComment::class)
+                    @can('create', [\App\Models\TaskComment::class, $task])
                         <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
                             <svg class="feather feather-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
@@ -108,7 +108,7 @@
                     <div class="text-center">
                         <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                         <p class="lead text-muted">Zu der Aufgabe {{ $task->name }} gibt es noch keine Diskussion.</p>
-                        @can('create', \App\Models\TaskComment::class)
+                        @can('create', [\App\Models\TaskComment::class, $task])
                             <p class="lead">Lege einen neuen Kommentar an.</p>
                             <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
                                 <svg class="feather feather-20 mr-2">

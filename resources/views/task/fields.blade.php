@@ -166,7 +166,8 @@
             Sichtbarkeitsstatus
         </p>
         <p class="text-muted">
-            Eine private Aufgabe kann nur vom verantwortlichen Mitarbeiter sowie weiteren beteiligten Mitarbeitern eingesehen, bearbeitet oder kommentiert werden.
+            Eine private Aufgabe kann nur vom verantwortlichen Mitarbeiter sowie weiteren beteiligten Mitarbeitern
+            eingesehen, bearbeitet oder kommentiert werden, falls entsprechende Berechtigungen zugewiesen wurden.
         </p>
     </div>
 
@@ -176,12 +177,16 @@
                 <label for="gender">Sichtbarkeitsstatus</label>
             </div>
             <div class="btn-group btn-group-toggle @error('private') is-invalid @enderror" data-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '0') active @endif">
-                    <input type="radio" name="private" id="0" value="0" autocomplete="off" @if(old('private', optional($task)->private) == '0') checked @endif> öffentlich
-                </label>
-                <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '1') active @endif">
-                    <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($task)->private) == '1') checked @endif> privat
-                </label>
+                @can('tasks.create')
+                    <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '0') active @endif">
+                        <input type="radio" name="private" id="0" value="0" autocomplete="off" @if(old('private', optional($task)->private) == '0' || auth()->user()->cannot('tasks.create.private')) checked @endif> öffentlich
+                    </label>
+                @endcan
+                @can('tasks.create.private')
+                    <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '1') active @endif">
+                        <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($task)->private) == '1' || auth()->user()->cannot('tasks.create')) checked @endif> privat
+                    </label>
+                @endcan
             </div>
             <div class="invalid-feedback @error('private') d-block @enderror">
                 @error('private')

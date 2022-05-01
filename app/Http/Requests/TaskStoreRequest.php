@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class TaskStoreRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class TaskStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required',
             'starts_on' => 'date|required_with:ends_on|nullable',
             'ends_on' => 'date|after_or_equal:starts_on|nullable',
@@ -30,5 +31,15 @@ class TaskStoreRequest extends FormRequest
             'new_attachments' => 'array|nullable',
             'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
+
+        if(Auth::user()->can('tasks.create') && Auth::user()->cannot('tasks.create.private')) {
+            $rules['private'] = $rules['private'].'|in:0';
+        }
+
+        if(Auth::user()->can('tasks.create.private') && Auth::user()->cannot('tasks.create')) {
+            $rules['private'] = $rules['private'].'|in:1';
+        }
+
+        return $rules;
     }
 }

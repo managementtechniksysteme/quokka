@@ -266,7 +266,7 @@ class TaskController extends Controller
             $task->starts_on = $task->starts_on ?? Carbon::now();
             $task->ends_on = Carbon::now();
         }
-        
+
         $task->save();
 
         return $this->getConditionalRedirect($request->redirect, $task)

@@ -12,31 +12,39 @@ class AccountingPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('accounting.view.own') || $user->can('accounting.view.other');
     }
 
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('acocunting.create');
     }
 
-    public function update(User $user, Accounting $address): bool
+    public function update(User $user, Accounting $accounting): bool
     {
-        return true;
+        if($accounting->employee_id === $user->employee_id) {
+            return $user->can('accounting.update.own');
+        }
+
+        return $user->can('accounting.update.other');
     }
 
-    public function delete(User $user, Accounting $address): bool
+    public function delete(User $user, Accounting $accounting): bool
     {
-        return true;
+        if($accounting->employee_id === $user->employee_id) {
+            return $user->can('accounting.delete.own');
+        }
+
+        return $user->can('accounting.delete.other');
     }
 
-    public function email(User $user, Accounting $address): bool
+    public function email(User $user, Accounting $accounting): bool
     {
-        return true;
+        return $user->can('acocunting.email');
     }
 
-    public function createPdf(User $user, Accounting $address): bool
+    public function createPdf(User $user, Accounting $accounting): bool
     {
-        return true;
+        return $user->can('acocunting.createpdf');
     }
 }

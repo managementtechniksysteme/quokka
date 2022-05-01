@@ -412,6 +412,10 @@
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
 
+    const STORE_UNAUTHORIZED_MESSAGE = "Das Anlegen dieser Zeile ist nicht authorisiert";
+    const UPDATE_UNAUTHORIZED_MESSAGE = "Das Bearbeiten dieser Zeile ist nicht authorisiert";
+    const DESTROY_UNAUTHORIZED_MESSAGE = "Das Entfernen dieser Zeile ist nicht authorisiert";
+
     const PAGINATION_LABELS = {
         first: '<<',
         last: '>>',
@@ -586,7 +590,13 @@
                     params.only_own = this.filter_only_own;
                 }
 
-                axios.get('/logbook', {params: params})
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                axiosInstance.get('/logbook', {params: params})
                 .then(response => {
                     this.updateLocalLogbook(response.data);
 
@@ -701,7 +711,13 @@
             },
 
             storeLogbook(logbook) {
-                return axios.post('/logbook', {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/logbook', {
                     driven_on: logbook.driven_on,
                     start_kilometres: logbook.start_kilometres,
                     end_kilometres: logbook.end_kilometres,
@@ -724,13 +740,23 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         logbook.errors = this.extractErrorMessages(error.response);
-                        logbook.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        logbook.errors = [STORE_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    logbook.show_details = this.expand_errors;
                 });
             },
 
             updateLogbook(logbook) {
-                return axios.post('/logbook/' + logbook.id, {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/logbook/' + logbook.id, {
                     _method: 'PATCH',
 
                     id: logbook.id,
@@ -755,13 +781,23 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         logbook.errors = this.extractErrorMessages(error.response);
-                        logbook.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        logbook.errors = [UPDATE_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    logbook.show_details = this.expand_errors;
                 });
             },
 
             destroyLogbook(logbook) {
-                return axios.post('/logbook/' + logbook.id, {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/logbook/' + logbook.id, {
                     _method: 'DELETE'
                 })
                 .then(() => {
@@ -770,8 +806,12 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         logbook.errors = this.extractErrorMessages(error.response);
-                        logbook.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        logbook.errors = [DESTROY_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    logbook.show_details = this.expand_errors;
                 });
             },
 

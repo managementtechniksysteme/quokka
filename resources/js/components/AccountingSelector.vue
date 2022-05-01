@@ -359,6 +359,10 @@
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
 
+    const STORE_UNAUTHORIZED_MESSAGE = "Das Anlegen dieser Zeile ist nicht authorisiert";
+    const UPDATE_UNAUTHORIZED_MESSAGE = "Das Bearbeiten dieser Zeile ist nicht authorisiert";
+    const DESTROY_UNAUTHORIZED_MESSAGE = "Das Entfernen dieser Zeile ist nicht authorisiert";
+
     const PAGINATION_LABELS = {
         first: '<<',
         last: '>>',
@@ -519,7 +523,13 @@
                     params.only_own = this.filter_only_own;
                 }
 
-                axios.get('/accounting', {params: params})
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                axiosInstance.get('/accounting', {params: params})
                 .then(response => {
                     this.updateLocalAccounting(response.data);
 
@@ -631,7 +641,13 @@
             },
 
             storeAccounting(accounting) {
-                return axios.post('/accounting', {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/accounting', {
                     service_provided_on: accounting.service_provided_on,
                     service_provided_started_at: accounting.service_provided_started_at,
                     service_provided_ended_at: accounting.service_provided_ended_at,
@@ -651,13 +667,23 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        accounting.errors = [STORE_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    accounting.show_details = this.expand_errors;
                 });
             },
 
             updateAccounting(accounting) {
-                return axios.post('/accounting/' + accounting.id, {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/accounting/' + accounting.id, {
                     _method: 'PATCH',
 
                     id: accounting.id,
@@ -678,13 +704,23 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        accounting.errors = [UPDATE_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    accounting.show_details = this.expand_errors;
                 });
             },
 
             destroyAccounting(accounting) {
-                return axios.post('/accounting/' + accounting.id, {
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                return axiosInstance.post('/accounting/' + accounting.id, {
                     _method: 'DELETE'
                 })
                 .then(() => {
@@ -693,8 +729,12 @@
                 .catch(error => {
                     if(error.response.status === 422) {
                         accounting.errors = this.extractErrorMessages(error.response);
-                        accounting.show_details = this.expand_errors;
                     }
+                    else if(error.response.status === 403) {
+                        accounting.errors = [DESTROY_UNAUTHORIZED_MESSAGE];
+                    }
+
+                    accounting.show_details = this.expand_errors;
                 });
             },
 

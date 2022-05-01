@@ -901,6 +901,78 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="feather feather-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+            </svg>
+            Aufgaben Kommentare
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Kommentare von Aufgaben.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tasks_comments_create') is-invalid @enderror" name="tasks_comments_create" id="tasks_comments_create" value="true" @if(old('tasks_comments_create', optional($permissions)->hasPermissionTo('tasks.comments.create'))) checked @endif>
+                <label class="custom-control-label" for="tasks_comments_create">Kommentare in ansehbaren Aufgaben anlegen</label>
+            </div>
+            <div class="invalid-feedback @error('tasks_comments_create') d-block @enderror">
+                @error('tasks_comments_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tasks_comments_update_own') is-invalid @enderror" name="tasks_comments_update_own" id="tasks_comments_update_own" value="true" @if(old('tasks_comments_update_own', optional($permissions)->hasPermissionTo('tasks.comments.update.own'))) checked @endif>
+                <label class="custom-control-label" for="tasks_comments_update_own">Eigene Kommentare in ansehbaren Aufgaben bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('tasks_comments_update_own') d-block @enderror">
+                @error('tasks_comments_update_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tasks_comments_update_other') is-invalid @enderror" name="tasks_comments_update_other" id="tasks_comments_update_other" value="true" @if(old('tasks_comments_update_other', optional($permissions)->hasPermissionTo('tasks.comments.update.other'))) checked @endif>
+                <label class="custom-control-label" for="tasks_comments_update_other">Andere Kommentare in ansehbaren Aufgaben bearbieten</label>
+            </div>
+            <div class="invalid-feedback @error('tasks_comments_update_other') d-block @enderror">
+                @error('tasks_comments_update_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tasks_comments_delete_own') is-invalid @enderror" name="tasks_comments_delete_own" id="tasks_comments_delete_own" value="true" @if(old('tasks_comments_delete_own', optional($permissions)->hasPermissionTo('tasks.comments.delete.own'))) checked @endif>
+                <label class="custom-control-label" for="tasks_comments_delete_own">Eigene Kommentare in ansehbaren Aufgaben entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('tasks_comments_delete_own') d-block @enderror">
+                @error('tasks_comments_delete_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tasks_comments_delete_other') is-invalid @enderror" name="tasks_comments_delete_other" id="tasks_comments_delete_other" value="true" @if(old('tasks_comments_delete_other', optional($permissions)->hasPermissionTo('tasks.comments.delete.other'))) checked @endif>
+                <label class="custom-control-label" for="tasks_comments_delete_other">Andere Kommentare in ansehbaren Aufgaben entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('tasks_comments_delete_other') d-block @enderror">
+                @error('tasks_comments_delete_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="feather feather-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
             </svg>
             Fahrtenbuch

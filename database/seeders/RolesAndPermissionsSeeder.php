@@ -38,9 +38,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // application settings
         Permission::firstOrCreate(['name' => 'application-settings.update.general']);
 
-        // comments
-        // permissions on task comments are based on task permissions for now
-
         // companies
         Permission::firstOrCreate(['name' => 'companies.view']);
         Permission::firstOrCreate(['name' => 'companies.create']);
@@ -185,6 +182,13 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'tasks.createpdf.private.involved']);
         Permission::firstOrCreate(['name' => 'tasks.createpdf.private.other']);
 
+        // task comments
+        Permission::firstOrCreate(['name' => 'tasks.comments.create']);
+        Permission::firstOrCreate(['name' => 'tasks.comments.update.own']);
+        Permission::firstOrCreate(['name' => 'tasks.comments.update.other']);
+        Permission::firstOrCreate(['name' => 'tasks.comments.delete.own']);
+        Permission::firstOrCreate(['name' => 'tasks.comments.delete.other']);
+
         // tools
         Permission::firstOrCreate(['name' => 'tools.scanqr']);
 
@@ -321,6 +325,10 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('tasks.createpdf.other');
         $employee->givePermissionTo('tasks.createpdf.private.responsible');
         $employee->givePermissionTo('tasks.createpdf.private.involved');
+
+        // task comments
+        $employee->givePermissionTo( 'tasks.comments.create');
+        $employee->givePermissionTo( 'tasks.comments.update.own');
 
         // tools
         $employee->givePermissionTo('tools.scanqr');

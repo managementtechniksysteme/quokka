@@ -359,9 +359,9 @@
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
 
-    const STORE_UNAUTHORIZED_MESSAGE = "Das Anlegen dieser Zeile ist nicht authorisiert";
-    const UPDATE_UNAUTHORIZED_MESSAGE = "Das Bearbeiten dieser Zeile ist nicht authorisiert";
-    const DESTROY_UNAUTHORIZED_MESSAGE = "Das Entfernen dieser Zeile ist nicht authorisiert";
+    const STORE_UNAUTHORIZED_MESSAGE = "Das Anlegen dieser Zeile ist nicht autorisiert";
+    const UPDATE_UNAUTHORIZED_MESSAGE = "Das Bearbeiten dieser Zeile ist nicht autorisiert";
+    const DESTROY_UNAUTHORIZED_MESSAGE = "Das Entfernen dieser Zeile ist nicht autorisiert";
 
     const PAGINATION_LABELS = {
         first: '<<',

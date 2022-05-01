@@ -17,7 +17,7 @@ class AccountingPolicy
 
     public function create(User $user): bool
     {
-        return $user->can('acocunting.create');
+        return $user->can('accounting.create');
     }
 
     public function update(User $user, Accounting $accounting): bool

@@ -54,7 +54,7 @@
                             Bearbeiten
                         </a>
                     @endcan
-                    @can('update', $serviceReport)
+                    @can('email', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                             <svg class="feather feather-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>

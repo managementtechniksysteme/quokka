@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LogbookIndexRequest extends FormRequest
 {
@@ -19,6 +20,14 @@ class LogbookIndexRequest extends FormRequest
         if($this->input('start') !== null && $this->input('end') !== null) {
             $rules['start'] = $rules['start'] . '|before_or_equal:end';
             $rules['end'] = $rules['end'] . '|after_or_equal:start';
+        }
+
+        if(Auth::user()->can('logbook.view.own') && Auth::user()->cannot('logbook.view.other')) {
+            $rules['only_own'] = 'required|accepted';
+        }
+
+        if(Auth::user()->can('logbook.view.other') && Auth::user()->cannot('logbook.view.own')) {
+            $rules['only_own'] = 'prohibited';
         }
 
         return $rules;

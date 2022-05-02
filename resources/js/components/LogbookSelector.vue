@@ -493,7 +493,7 @@
                 this.current_logbook.forEach(book => {
                     let date = Date.parse(book.driven_on);
 
-                    this.accounting.push({
+                    this.logbook.push({
                         action: null,
                         action_old: null,
                         errors: null,
@@ -990,7 +990,7 @@
             },
 
             removeLogbook(logbook) {
-                if(!this.canRemoveLogbook(this.current_employee, accounting)) {
+                if(!this.canRemoveLogbook(this.current_employee, logbook)) {
                     return;
                 }
 
@@ -1002,7 +1002,7 @@
             },
 
             restoreLogbook(logbook) {
-                if(!this.canRemoveLogbook(this.current_employee, accounting)) {
+                if(!this.canRemoveLogbook(this.current_employee, logbook)) {
                     return;
                 }
 
@@ -1010,6 +1010,10 @@
             },
 
             canRemoveLogbook(employee, logbook) {
+                if(logbook.action === 'store' || logbook.action_old === 'store') {
+                    return true;
+                }
+
                 return (logbook.employee_id === employee.id && this.permissions.includes('logbook.delete.own')) ||
                     (logbook.employee_id !== employee.id && this.permissions.includes('logbook.delete.other'));
             },
@@ -1314,6 +1318,10 @@
             },
 
             canEditLogbook(employee, logbook) {
+                if(logbook.action === 'store' || logbook.action_old === 'store') {
+                    return true;
+                }
+
                 return (logbook.employee_id === employee.id && this.permissions.includes('logbook.update.own')) ||
                     (logbook.employee_id !== employee.id && this.permissions.includes('logbook.update.other'));
             },

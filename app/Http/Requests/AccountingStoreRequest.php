@@ -16,12 +16,19 @@ class AccountingStoreRequest extends FormRequest
             'service_provided_on' => 'required|date',
             'project_id' => 'required|exists:projects,id',
             'service_id' => 'required|exists:services,id',
-            'amount' => "required|numeric|min:$minAmount|multiple_of:$minAmount",
+            'amount' => 'required|numeric',
             'comment' => 'nullable',
         ];
 
         if($this->input('service_id') !== null) {
             $service = Service::find($this->input('service_id'));
+
+            if($service && $service->type === 'material') {
+                $rules['amount'] = $rules['amount']."|min:0|multiple_of:0.01";
+            }
+            elseif($service && $service->type === 'wage') {
+                $rules['amount'] = $rules['amount']."|min:$minAmount|multiple_of:$minAmount";
+            }
 
             if($service && $service->type === 'wage' &&
                 $service->unit === ApplicationSettings::get()->services_hour_unit) {

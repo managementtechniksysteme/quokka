@@ -1,4 +1,4 @@
-let CACHE_NAME = 'quokka-cache-v0.1.14-7228f12';
+let CACHE_NAME = 'quokka-cache-v0.1.14-949f049';
 let OFFLINE_URL = '/offline';
 
 let urlsToCache = [

@@ -3,8 +3,6 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
-            @include('service_report.breadcrumb')
-
             <h3>
                 Servicebericht unterschreiben und herunterladen
                 <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>

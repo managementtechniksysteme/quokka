@@ -11,6 +11,41 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.14-7228f12 (02.05.2022)
+        * Materialleistungen können nun mit bis zu zwei Nachkommastellen angegeben werden. Lohndienstleistungen müssen
+        weiterhin ein Vielfaches des in den Einstellungen festgelegten Wertes sein.
+        * Aktenvermerke, Aufgaben und Rollen können nun kopiert werden um einfach eine neue Instanz mit vorgegebenen
+        Werten anzulegen,
+        * Dem Kunden werden beim Unterschreiben und Herunterladen von Serviceberichten keine internen Links mehr
+        angezeigt.
+        * Ein Fehler bei der Eingabe von Abrechnungen und Fahrten wurde behoben bei dem neu angelegte Zeilen nicht
+        bearbeitet oder gelöscht werden konnten bevor sie einmal gepspeichert wurden.
+        * Korrekturen an Texten mit Schreibfehlern wurden in Ansichten vorgenommen.
+        @endmarkdown
+        @markdown
+        ### v0.1.12-e1a3664 (28.04.2022)
+        * Der Fuhrpark zum Verwalten von Fahrzeugen wurde implementiert.
+        * Das Fahrtenbuch zum Eintragen von Fahrten mit Fahrzeugen wurde implementiert. Der Start Kilometerstand wird
+        beim Auswählen eines Fahrzeuges für den Eintrag einer neuen Fahrt automatisch aus den bisher gepspeicherten
+        Fahrten ermittelt. Bei Fehlen eines der drei Werte Start Kilometerstand, Ende Kilometerstand und gefahrene
+        Kilometer wird dieser automatisch berechnet und in das jeweilige Feld eingetragen. Nach dem Hinzufügen einer
+        Fahrt wird der eingegebene Ziel Ort automatisch in das Start Feld übernommen. Die Werte können jederzeit
+        händisch in der Eingabe überschrieben werden.
+        * Der Kilometerstand zur Anzeige im Fuhrpark wird aus den eingetragenen Fahrten ermittelt (höchster Ende
+        Kilometerstand aller Fahrten für das Fahrzeug).
+        * In der Abrechnung sowie im Fahrtenbuch werden die aktuell in der Tabelle vorhandenen Einträge sowie die Anzahl
+        der neuen, geänderten und zu löschenden Datensätze neben der Überschrift angezeigt.
+        * In der Abrechnung können nun mehrzeilige Kommentare eingegeben werden.
+        * Aufgaben müssen innerhalb eines Projektes nun nicht mehr einen eindeutigen Namen besitzen. Dadurch können
+        Materialbestellungen im entsprechenden Projekt gleich betitelt werden.
+        * Die Konvertierung von Markdown zur Anzeige in der Applikation sowie zur Erstellung von PDF Dateien wird nun
+        einheitlich von der selben Funktion durchgeführt. Somit sollte die Wahrschreinlichkeit zu Abweichungen
+        verringert sein. In der Echtzeit Vorschau des Editors kann es nach wie vor zu kleinen Unterschieden kommen weil
+        dieser eine eigene Vorschaufunktion verwendet.
+        * Bei der Benachrichtgung für Anpassungen von Urlaub wurde ein Problem behoben (die Push Benachrichtigung
+        funktionierte nicht korrekt).
+        @endmarkdown
+        @markdown
         ### v0.1.13-ce3aa07 (01.05.2022)
         * Das Berechtigungssystem wurde implementiert.
         * Rollen als Vorlagen (Sammlung von Berechtigungen) können verwaltet werden.

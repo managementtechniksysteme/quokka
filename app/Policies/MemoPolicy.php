@@ -44,7 +44,7 @@ class MemoPolicy
         }
 
         if($memo->employeeComposer->person_id !== $user->employee_id &&
-            $memo->personRecipient->id !== $user->employee_id &&
+            ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
@@ -84,7 +84,7 @@ class MemoPolicy
         }
 
         if($memo->employeeComposer->person_id !== $user->employee_id &&
-            $memo->personRecipient->id !== $user->employee_id &&
+            ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
@@ -119,7 +119,7 @@ class MemoPolicy
         }
 
         if($memo->employeeComposer->person_id !== $user->employee_id &&
-            $memo->personRecipient->id !== $user->employee_id &&
+            ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
@@ -154,7 +154,7 @@ class MemoPolicy
         }
 
         if($memo->employeeComposer->person_id !== $user->employee_id &&
-            $memo->personRecipient->id !== $user->employee_id &&
+            ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
@@ -189,7 +189,7 @@ class MemoPolicy
         }
 
         if($memo->employeeComposer->person_id !== $user->employee_id &&
-            $memo->personRecipient->id !== $user->employee_id &&
+            ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {

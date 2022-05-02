@@ -70,11 +70,6 @@ class User extends Authenticatable implements HasMedia
         return $this->person->email;
     }
 
-    public function routeNotificationForWebPush()
-    {
-        return null;
-    }
-
     public function getEmailForPasswordReset()
     {
         return $this->person->email;

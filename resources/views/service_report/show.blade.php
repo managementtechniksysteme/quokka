@@ -58,43 +58,30 @@
                     </svg>
                     Favorisieren
                 </a>
-                @if(auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport))
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary border-0 dropdown-toggle d-inline-flex align-items-center" type="button" id="dropdownCustomerInteractionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg class="feather feather-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                            </svg>
-                            Kundeninteraktion
-                        </button>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownCustomerInteractionButton">
-                            @can('sign', $serviceReport)
-                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                                    <svg class="feather feather-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                                    </svg>
-                                    Unterschreiben lassen
-                                </a>
-                            @endcan
-                            @can('emailSignatureRequest', $serviceReport)
-                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                                    <svg class="feather feather-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                                    </svg>
-                                    Unterschrift Anfrage sendeen
-                                </a>
-                            @endcan
-                            @can('emailDownloadRequest', $serviceReport)
-                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                                    <svg class="feather feather-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
-                                    </svg>
-                                    Download Link senden
-                                </a>
-                            @endcan
-                        </div>
-                    </div>
-                @endif
+                @can('sign', $serviceReport)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
+                        </svg>
+                        Unterschreiben lassen
+                    </a>
+                @endcan
+                @can('emailSignatureRequest', $serviceReport)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        </svg>
+                        Unterschrift Anfrage sendeen
+                    </a>
+                @endcan
+                @can('emailDownloadRequest', $serviceReport)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
+                        </svg>
+                        Download Link senden
+                    </a>
+                @endcan
                 @can('delete', $serviceReport)
                     <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post" >
                         @csrf

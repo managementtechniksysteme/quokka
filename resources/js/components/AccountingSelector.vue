@@ -137,9 +137,10 @@
                               </div>
                               <div class="form-group col-md-4 col-lg-3 col-xl-12">
                                   <label for="amount">Menge</label>
-                                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="min_amount" :step="min_amount" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
+                                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
                                   <div class="invalid-feedback">
-                                      Menge muss mindestens {{min_amount}} sein.
+                                      <span v-if="service !== null && this.service.type === 'wage'">Menge muss ein Vielfaches von {{min_amount}} sein.</span>
+                                      <span v-else>Menge muss mindestens 0.01 sein.</span>
                                   </div>
                               </div>
                               <div class="form-group col-lg-3 col-xl-12">
@@ -147,8 +148,8 @@
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
                               <div class="form-group d-none d-lg-block d-xl-none col-lg-3">
-                                  <label for="addservice">&nbsp;</label>
-                                  <button id="addservice" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
+                                  <label for="addaccounting">&nbsp;</label>
+                                  <button id="addaccounting" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
                                       <svg class="feather feather-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                       </svg>
@@ -157,7 +158,7 @@
                               </div>
                           </div>
                           <div class="d-block d-lg-none d-xl-block mt-4">
-                              <button id="addservice" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
+                              <button id="addaccounting" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
                                   <svg class="feather feather-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
@@ -274,7 +275,7 @@
                                       </td>
                                       <td class="col-1" @click="setEdit(acc, 'amount')">
                                           <span v-if="acc.edit !== 'amount'">{{ acc.amount }}</span>
-                                          <input v-if="acc.edit === 'amount'" type="number" :min="min_amount" :step="min_amount" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
+                                          <input v-if="acc.edit === 'amount'" type="number" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
                                       </td>
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                                       <td class="col-auto text-right">
@@ -825,7 +826,7 @@
                     !this.isTwentyFourHourTimeFormat(this.service_provided_ended_at);
                 this.project_invalid = this.project === null;
                 this.service_invalid = this.service === null;
-                this.amount_invalid = Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount;
+                this.amount_invalid = this.isAmountInvalid(amount, this.service);
 
                 if(this.service_provided_on_invalid || this.service_provided_started_at_invalid ||
                     this.service_provided_ended_at_invalid || this.project_invalid || this.service_invalid ||
@@ -861,7 +862,6 @@
                 this.service_invalid = false;
                 this.amount = null;
                 this.amount_invalid = false;
-                this.comment = null;
 
                 this.initialPage = this.getLastPage();
 
@@ -889,6 +889,10 @@
             },
 
             canRemoveAccounting(employee, accounting) {
+                if(accounting.action === 'store' || accounting.action_old === 'store') {
+                    return true;
+                }
+
                 return (accounting.employee_id === employee.id && this.permissions.includes('accounting.delete.own')) ||
                     (accounting.employee_id !== employee.id && this.permissions.includes('accounting.delete.other'));
             },
@@ -1030,7 +1034,7 @@
                     amount = changedAccounting.amount;
                 }
 
-                if(Number.isNaN(amount) || amount % this.min_amount !== 0 || amount < this.min_amount) {
+                if(this.isAmountInvalid(amount, this.getService(changedAccounting.service_id))) {
                     this.table_amount_invalid = true;
                     return;
                 }
@@ -1158,6 +1162,10 @@
             },
 
             canEditAccounting(employee, accounting) {
+                if(accounting.action === 'store' || accounting.action_old === 'store') {
+                    return true;
+                }
+
                 return (accounting.employee_id === employee.id && this.permissions.includes('accounting.update.own')) ||
                     (accounting.employee_id !== employee.id && this.permissions.includes('accounting.update.other'));
             },
@@ -1346,6 +1354,21 @@
                 }
                 else {
                     accounting.service_provided_started_at = timeStartString;
+                }
+            },
+
+            isAmountInvalid(amount, service) {
+
+                if(!service) {
+                    return true;
+                }
+
+                // do modulo as integers to get exact results
+                if(service.type === 'material') {
+                    return Number.isNaN(amount) || amount < 0.01 || (amount * 100) % 1 !== 0;
+                }
+                else if(service.type === 'wage') {
+                    return Number.isNaN(amount) || amount < this.min_amount || (amount * 100) % (this.min_amount * 100) !== 0;
                 }
             },
 

@@ -29,6 +29,14 @@
                             Bearbeiten
                         </a>
                     @endcan
+                    @can('create', \Spatie\Permission\Models\Role::class)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.create', ['template' => $role]) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
+                            </svg>
+                            Kopieren
+                        </a>
+                    @endcan
                     @can('email', $role)
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
                             <svg class="feather feather-16 mr-2">

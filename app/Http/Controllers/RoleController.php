@@ -37,9 +37,15 @@ class RoleController extends Controller
         return view('role.index')->with(compact('roles'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('role.create')->with('role', null);
+        $templateRole = null;
+
+        if($request->filled('template')) {
+            $templateRole = Role::find($request->template);
+        }
+
+        return view('role.create')->with('role', $templateRole);
     }
 
     public function store(RoleStoreRequest $request)

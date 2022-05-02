@@ -31,7 +31,7 @@ class MemoPolicy
             $sender = $user->can('memos.view.sender');
         }
 
-        if($memo->personRecipient->id === $user->employee_id) {
+        if($memo->personRecipient && $memo->personRecipient->id === $user->employee_id) {
             $recipient = $user->can('memos.view.recipient');
         }
 
@@ -71,7 +71,7 @@ class MemoPolicy
             $sender = $user->can('memos.update.sender');
         }
 
-        if($memo->personRecipient->id === $user->employee_id) {
+        if($memo->personRecipient && $memo->personRecipient->id === $user->employee_id) {
             $recipient = $user->can('memos.update.recipient');
         }
 
@@ -106,7 +106,7 @@ class MemoPolicy
             $sender = $user->can('memos.delete.sender');
         }
 
-        if($memo->personRecipient->id === $user->employee_id) {
+        if($memo->personRecipient && $memo->personRecipient->id === $user->employee_id) {
             $recipient = $user->can('memos.delete.recipient');
         }
 
@@ -141,7 +141,7 @@ class MemoPolicy
             $sender = $user->can('memos.email.sender');
         }
 
-        if($memo->personRecipient->id === $user->employee_id) {
+        if($memo->personRecipient && $memo->personRecipient->id === $user->employee_id) {
             $recipient = $user->can('memos.email.recipient');
         }
 
@@ -176,7 +176,7 @@ class MemoPolicy
             $sender = $user->can('memos.createpdf.sender');
         }
 
-        if($memo->personRecipient->id === $user->employee_id) {
+        if($memo->personRecipient && $memo->personRecipient->id === $user->employee_id) {
             $recipient = $user->can('memos.createpdf.recipient');
         }
 

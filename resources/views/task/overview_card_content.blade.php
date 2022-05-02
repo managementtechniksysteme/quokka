@@ -102,6 +102,14 @@
                             Bearbeiten
                         </a>
                     @endcan
+                    @can('create', \App\Models\Task::class)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.create', ['template' => $task]) }}">
+                            <svg class="feather feather-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
+                            </svg>
+                            Kopieren
+                        </a>
+                    @endcan
                     @can('email', $task)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}">
                             <svg class="feather feather-16 mr-2">

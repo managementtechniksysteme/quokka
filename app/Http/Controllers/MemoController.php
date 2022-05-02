@@ -58,9 +58,28 @@ class MemoController extends Controller
      */
     public function create(Request $request)
     {
+        $templateMemo = null;
         $currentProject = null;
+        $currentEmployeeComposer = null;
+        $currentPersonRecepient = null;
+        $currentPresentPeople = null;
+        $currentNotifiedPeople = null;
 
-        if ($request->filled('project')) {
+        if($request->filled('template')) {
+            $templateMemo = Memo::find($request->template)
+                ->load('project')
+                ->load('employeeComposer.person')
+                ->load('personRecipient')
+                ->load('presentPeople')
+                ->load('notifiedPeople');
+
+            $currentProject = $templateMemo->project;
+            $currentEmployeeComposer = $templateMemo->employeeComposer->person;
+            $currentPersonRecepient = $templateMemo->personRecipient;
+            $currentPresentPeople = $templateMemo->presentPeople;
+            $currentNotifiedPeople = $templateMemo->notifiedPeople;
+        }
+        else if ($request->filled('project')) {
             $currentProject = Project::find($request->project);
         }
 
@@ -69,14 +88,14 @@ class MemoController extends Controller
         $people = Person::order()->get();
 
         return view('memo.create')
-            ->with('memo', null)
+            ->with('memo', $templateMemo)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentEmployeeComposer', null)
+            ->with('currentEmployeeComposer', optional($currentEmployeeComposer)->toJson())
             ->with('employees', $employees->toJson())
-            ->with('currentPersonRecipient', null)
-            ->with('currentPresentPeople', null)
-            ->with('currentNotifiedPeople', null)
+            ->with('currentPersonRecipient', optional($currentPersonRecepient)->toJson())
+            ->with('currentPresentPeople', optional($currentPresentPeople)->toJson())
+            ->with('currentNotifiedPeople', optional($currentNotifiedPeople)->toJson())
             ->with('people', $people->toJson())
             ->with('currentAttachments', null);
     }

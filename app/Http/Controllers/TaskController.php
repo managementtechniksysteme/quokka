@@ -61,9 +61,22 @@ class TaskController extends Controller
 
     public function create(Request $request): View
     {
+        $templateTask = null;
         $currentProject = null;
+        $currentResponsibleEmployee = null;
+        $currentInvolvedEmployees = null;
 
-        if ($request->filled('project')) {
+        if($request->filled('template')) {
+            $templateTask = Task::find($request->template)
+                ->load('project')
+                ->load('responsibleEmployee.person')
+                ->load('involvedEmployees.person');
+
+            $currentProject = $templateTask->project;
+            $currentResponsibleEmployee = $templateTask->responsibleEmployee->person;
+            $currentInvolvedEmployees = Person::order()->find($templateTask->involvedEmployees->pluck('person_id')) ?? null;
+        }
+        elseif ($request->filled('project')) {
             $currentProject = Project::find($request->project);
         }
 
@@ -71,11 +84,11 @@ class TaskController extends Controller
         $employees = Person::has('employee')->order()->get();
 
         return view('task.create')
-            ->with('task', null)
+            ->with('task', $templateTask)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentResponsibleEmployee', null)
-            ->with('currentInvolvedEmployees', null)
+            ->with('currentResponsibleEmployee', optional($currentResponsibleEmployee)->toJson())
+            ->with('currentInvolvedEmployees', optional($currentInvolvedEmployees)->toJson())
             ->with('employees', $employees->toJson())
             ->with('currentAttachments', null);
     }

@@ -26,6 +26,14 @@
                         Bearbeiten
                     </a>
                 @endcan
+                @can('create', \App\Models\Memo::class)
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.create', ['template' => $memo]) }}">
+                        <svg class="feather feather-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
+                        </svg>
+                        Kopieren
+                    </a>
+                @endcan
                 @can('email', $memo)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.email', ['memo' => $memo, 'redirect' => 'show']) }}">
                         <svg class="feather feather-16 mr-2">

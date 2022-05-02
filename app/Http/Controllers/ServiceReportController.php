@@ -350,8 +350,7 @@ class ServiceReportController extends Controller
                 ->route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $request->redirect])
                 ->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
         } else {
-            return redirect()
-                ->route($this->getRedirectRouteName($request->redirect), $this->getRedirectRouteParameters($request->redirect, $serviceReport))
+            return $this->getConditionalRedirect($request->redirect, $serviceReport)
                 ->with('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
         }
     }

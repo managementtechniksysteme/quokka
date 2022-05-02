@@ -3,28 +3,28 @@
         <div class="form-row">
             <div class="form-group col-6 col-lg-3">
                 <label for="date">Datum</label>
-                <input type="date" class="form-control" v-bind:class="{'is-invalid': provided_on_invalid}" id="date" name="date" placeholder="" required v-model="date" />
+                <input type="date" class="form-control" v-bind:class="{'is-invalid': provided_on_invalid}" id="date" name="date" placeholder="" required v-model="date" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Datum muss ausgefüllt sein.
                 </div>
             </div>
             <div class="form-group col-6 col-lg-3">
                 <label for="hours">Stunden</label>
-                <input type="number" class="form-control" v-bind:class="{'is-invalid': hours_invalid}" min="0.5" step="0.5" id="hours" name="hours" placeholder="5" v-model="hours" />
+                <input type="number" class="form-control" v-bind:class="{'is-invalid': hours_invalid}" min="0.5" step="0.5" id="hours" name="hours" placeholder="5" v-model="hours" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Stunden muss mindestens 0.5 sein.
                 </div>
             </div>
             <div class="form-group col-6 col-lg-3">
                 <label for="kilometres">gefahrene KM</label>
-                <input type="number" class="form-control" v-bind:class="{'is-invalid': kilometres_invalid}" min="1" step="1" id="kilometres" name="kilometres" placeholder="12" v-model="kilometres" />
+                <input type="number" class="form-control" v-bind:class="{'is-invalid': kilometres_invalid}" min="1" step="1" id="kilometres" name="kilometres" placeholder="12" v-model="kilometres" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Kilometer muss mindestens 1 sein.
                 </div>
             </div>
             <div class="form-group col-6 col-lg-3">
                 <label for="submit">&nbsp;</label>
-                <button id="submit" type="button" class="form-control btn btn-outline-secondary" @click="addService()">Hinzufügen</button>
+                <button id="submit" type="button" class="form-control btn btn-outline-secondary" @click="addService()" @keydown.enter.prevent="addService()">Hinzufügen</button>
             </div>
         </div>
 

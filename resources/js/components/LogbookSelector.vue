@@ -171,17 +171,23 @@
                                   <label for="comment">Bemerkungen</label>
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
-                              <div class="form-group d-none d-lg-block d-xl-none col-lg-2">
-                                  <label for="addlogbook">&nbsp;</label>
-                                  <button id="addlogbook" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addLogbook()">
-                                      <svg class="feather feather-16 mr-2">
-                                          <use xlink:href="/svg/feather-sprite.svg#plus"></use>
-                                      </svg>
-                                      Hinzufügen
-                                  </button>
+                              <div class="form-group col-12">
+                                  <div class="custom-control custom-switch d-flex align-items-center">
+                                      <input type="checkbox" class="custom-control-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
+                                      <label class="custom-control-label" for="return_trip">Hin- und Rückfahrt</label>
+                                      <a data-toggle="collapse" href="#returnTripHelpCollapse">
+                                          <svg class="feather feather-16 ml-2 text-muted">
+                                              <use xlink:href="/svg/feather-sprite.svg#help-circle"></use>
+                                          </svg>
+                                      </a>
+                                  </div>
+                              </div>
+                              <div class="col collapse" id="returnTripHelpCollapse">
+                                  <p>Es werden zwei Fahrten mit halbierter Kilometeranzahl und vertauschtem Start sowie
+                                      Ziel angelegt. Getankte Liter werden beim ersten Eintrag hinzugefügt.</p>
                               </div>
                           </div>
-                          <div class="d-block d-lg-none d-xl-block mt-4">
+                          <div class="mt-4">
                               <button id="addlogbook" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addLogbook()">
                                   <svg class="feather feather-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
@@ -471,6 +477,7 @@
                 project_invalid: false,
                 table_project_invalid: false,
                 comment: null,
+                return_trip: false,
 
                 logbook: [],
                 pageOfItems: [],
@@ -918,6 +925,10 @@
                 this.project = value;
             },
 
+            toggleReturnTrip() {
+                this.return_trip = !this.return_trip
+            },
+
             addLogbook() {
                 let date = new Date(this.driven_on);
                 let startKilometres = this.start_kilometres === null ? null : Number(this.start_kilometres);
@@ -941,27 +952,80 @@
                     return;
                 }
 
-                this.logbook.push({
-                    action: 'store',
-                    action_old: 'store',
-                    errors: null,
-                    selected: false,
-                    show_details: false,
-                    hover: false,
-                    edit: null,
-                    id: null,
-                    driven_on: date,
-                    start_kilometres: startKilometres,
-                    end_kilometres: endKilometres,
-                    driven_kilometres: drivenKilometres,
-                    litres_refuelled: litresRefuelled,
-                    origin: this.origin,
-                    destination: this.destination,
-                    vehicle_id: this.vehicle.id,
-                    project_id: this.project !== null ? this.project.id : null,
-                    employee_id: null,
-                    comment: this.comment,
-                });
+                let legs = [];
+
+                if(this.return_trip) {
+                    let legKilometres = Math.floor(drivenKilometres / 2);
+                    let evenDrivenKilometres = drivenKilometres % 2 === 0;
+
+                    let firstLegStartKilometres = startKilometres;
+                    let firstLegEndKilometres =
+                        evenDrivenKilometres ? startKilometres + legKilometres : startKilometres + legKilometres + 1;
+                    let firstLegDrivenKilometres = firstLegEndKilometres - firstLegStartKilometres;
+                    let firstLegLitresRefuelled = litresRefuelled;
+                    let firstLegOrigin = this.origin;
+                    let firstLegDestination = this.destination;
+
+                    let secondLegStartKilometres = firstLegEndKilometres;
+                    let secondLegEndKilometres = endKilometres;
+                    let secondLegDrivenKilometres = legKilometres;
+                    let secondLegLitresRefuelled = null;
+                    let secondLegOrigin = this.destination;
+                    let secondLegDestination = this.origin;
+
+                    legs.push({
+                        start_kilometres: firstLegStartKilometres,
+                        end_kilometres: firstLegEndKilometres,
+                        driven_kilometres: firstLegDrivenKilometres,
+                        litres_refuelled: firstLegLitresRefuelled,
+                        origin: firstLegOrigin,
+                        destination: firstLegDestination,
+                    });
+
+                    legs.push({
+                        start_kilometres: secondLegStartKilometres,
+                        end_kilometres: secondLegEndKilometres,
+                        driven_kilometres: secondLegDrivenKilometres,
+                        litres_refuelled: secondLegLitresRefuelled,
+                        origin: secondLegOrigin,
+                        destination: secondLegDestination,
+                    });
+                }
+                else {
+                    legs.push({
+                        start_kilometres: startKilometres,
+                        end_kilometres: endKilometres,
+                        driven_kilometres: drivenKilometres,
+                        litres_refuelled: litresRefuelled,
+                        origin: this.origin,
+                        destination: this.destination,
+                    });
+                }
+
+
+                legs.forEach(leg => {
+                    this.logbook.push({
+                        action: 'store',
+                        action_old: 'store',
+                        errors: null,
+                        selected: false,
+                        show_details: false,
+                        hover: false,
+                        edit: null,
+                        id: null,
+                        driven_on: date,
+                        start_kilometres: leg.start_kilometres,
+                        end_kilometres: leg.end_kilometres,
+                        driven_kilometres: leg.driven_kilometres,
+                        litres_refuelled: leg.litres_refuelled,
+                        origin: leg.origin,
+                        destination: leg.destination,
+                        vehicle_id: this.vehicle.id,
+                        project_id: this.project !== null ? this.project.id : null,
+                        employee_id: null,
+                        comment: this.comment,
+                    });
+                })
 
                 this.addPlaces([this.origin, this.destination]);
 
@@ -974,13 +1038,14 @@
                 this.driven_kilometres_invalid = false;
                 this.litres_refuelled = null;
                 this.litres_refuelled_invalid = false;
-                this.origin = this.destination;
+                this.origin = legs.length === 1 ? this.destination : this.origin;
                 this.origin_invalid = false;
                 this.destination = null;
                 this.destination_invalid = null;
                 this.vehicle_invalid  = false;
                 this.project_invalid = false;
                 this.comment = null;
+                this.return_trip = false;
 
                 this.autofillStartKilometresFromBooked(null, this.vehicle);
 

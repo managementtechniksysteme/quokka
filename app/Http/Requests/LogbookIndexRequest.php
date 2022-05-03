@@ -17,7 +17,7 @@ class LogbookIndexRequest extends FormRequest
             'only_own' => 'sometimes|accepted',
         ];
 
-        if($this->input('start') !== null && $this->input('end') !== null) {
+        if($this->filled('start') && $this->filled('end')) {
             $rules['start'] = $rules['start'] . '|before_or_equal:end';
             $rules['end'] = $rules['end'] . '|after_or_equal:start';
         }

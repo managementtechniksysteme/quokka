@@ -34,7 +34,7 @@ class LogbookController extends Controller
     {
         if($request->ajax()) {
             $currentLogbook = Logbook::filterSearch(
-                $request->validate((new LogbookIndexRequest)->rules())
+                $request->validate((new LogbookIndexRequest($request->query()))->rules())
             )->order()->get();
 
             return response()->json($currentLogbook, Response::HTTP_OK);

@@ -1290,7 +1290,7 @@
             },
 
             autofillAmount(accounting = null, start, end) {
-                let minAmountMinutes = this.min_amount * 30;
+                let minAmountMinutes = this.min_amount * 60;
                 let today = new Date();
                 let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
 

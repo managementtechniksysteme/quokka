@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccountingDownloadRequest;
 use App\Http\Requests\AccountingIndexRequest;
 use App\Http\Requests\AccountingStoreRequest;
 use App\Http\Requests\AccountingUpdateRequest;
@@ -13,6 +14,7 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use ZsgsDesign\PDFConverter\Latex;
 
 class AccountingController extends Controller
 {
@@ -34,7 +36,7 @@ class AccountingController extends Controller
     {
         if($request->ajax()) {
             $currentAccounting = Accounting::filterSearch(
-                $request->validate((new AccountingIndexRequest)->rules())
+                $request->validate((new AccountingIndexRequest($request->query()))->rules())
             )->order()->get();
 
             return response()->json($currentAccounting, Response::HTTP_OK);
@@ -92,5 +94,16 @@ class AccountingController extends Controller
         $accounting->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function download(AccountingDownloadRequest $request)
+    {
+
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.memo', ['memo' => $memo])
+            ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
     }
 }

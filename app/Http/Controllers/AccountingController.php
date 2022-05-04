@@ -119,9 +119,9 @@ class AccountingController extends Controller
         $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : null;
         $end = isset($validatedData['end']) ? Carbon::parse($validatedData['end']) : null;
 
-        $startFormatted = optional($start)->format('ymd') ?? '';
-        $endFormatted = optional($end)->format('ymd') ?? '';
-        $rangeString = $startFormatted.($start||$end ? '-' : '').$endFormatted;
+        $startFormatted = optional($start)->format('Ymd') ?? '';
+        $endFormatted = optional($end)->format('Ymd') ?? '';
+        $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
 
         $report = Accounting::getReport($validatedData);
 

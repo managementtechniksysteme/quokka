@@ -40,11 +40,11 @@ class AccountingPolicy
 
     public function email(User $user, Accounting $accounting): bool
     {
-        return $user->can('acocunting.email');
+        return $user->can('accounting.email');
     }
 
-    public function createPdf(User $user, Accounting $accounting): bool
+    public function createPdf(User $user): bool
     {
-        return $user->can('acocunting.createpdf');
+        return $user->can('accounting.createpdf');
     }
 }

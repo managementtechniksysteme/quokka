@@ -38,7 +38,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="serviceReportOverviewDropdown">
                     @unless($serviceReport->status === 'finished')
                         @can('approve', $serviceReport)
-                            <a class="dropdown-item dropdown-item-finish d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                            <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
@@ -111,7 +111,7 @@
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
+                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>

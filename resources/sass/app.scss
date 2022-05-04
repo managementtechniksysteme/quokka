@@ -187,30 +187,58 @@ img.empty-state {
     text-decoration: none;
 }
 
-// Delete dropdown button with red text and white text with red background on hover
-.dropdown-item-finish {
+// Success dropdown button with blue text and white text with blue background on hover
+.dropdown-item-primary {
+    color: $primary !important;
+}
+
+.dropdown-item-primary:hover {
+    color: $primary !important;
+}
+
+.dropdown-item-primary:active {
+    color: #ffffff !important;
+    background-color: $primary !important;
+}
+
+// Success dropdown button with green text and white text with green background on hover
+.dropdown-item-success {
     color: $success !important;
 }
 
-.dropdown-item-finish:hover {
+.dropdown-item-success:hover {
     color: $success !important;
 }
 
-.dropdown-item-finish:active {
+.dropdown-item-success:active {
     color: #ffffff !important;
     background-color: $success !important;
 }
 
-// Delete dropdown button with red text and white text with red background on hover
-.dropdown-item-delete {
+// Success dropdown button with yellow text and yellow background on hover
+.dropdown-item-success {
+    color: $yellow !important;
+}
+
+.dropdown-item-success:hover {
+    color: $yellow !important;
+}
+
+.dropdown-item-success:active {
+    color: $dark !important;
+    background-color: $yellow !important;
+}
+
+// Danger dropdown button with red text and white text with red background on hover
+.dropdown-item-danger {
     color: $danger !important;
 }
 
-.dropdown-item-delete:hover {
+.dropdown-item-danger:hover {
     color: $danger !important;
 }
 
-.dropdown-item-delete:active {
+.dropdown-item-danger:active {
     color: #ffffff !important;
     background-color: $danger !important;
 }

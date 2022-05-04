@@ -171,15 +171,45 @@
 
               <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('accounting.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('accounting.create')}"  ref="accounting_overview">
                   <div class="sticky-top bg-general">
-                      <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
-                          Leistungsabrechnung
-                          <small v-if="accounting.length" class="text-muted">
-                              {{ accounting.length }} Einträge
-                              <span v-if="getNewAccounting().length" class="text-success">+{{ getNewAccounting().length }}</span>
-                              <span v-if="getChangedAccounting().length" class="text-warning">±{{ getChangedAccounting().length }}</span>
-                              <span v-if="getDestroyedAccounting().length" class="text-danger">-{{ getDestroyedAccounting().length }}</span>
-                          </small>
-                      </h3>
+                      <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
+                          <h3 class="d-inline-block">
+                              Leistungsabrechnung
+                              <small v-if="accounting.length" class="text-muted">
+                                  {{ accounting.length }} Einträge
+                                  <span v-if="getNewAccounting().length" class="text-success">+{{ getNewAccounting().length }}</span>
+                                  <span v-if="getChangedAccounting().length" class="text-warning">±{{ getChangedAccounting().length }}</span>
+                                  <span v-if="getDestroyedAccounting().length" class="text-danger">-{{ getDestroyedAccounting().length }}</span>
+                              </small>
+
+                          </h3>
+
+                          <div class="float-right">
+                              <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length === 1" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
+                                  <svg class="feather feather-16 mr-2">
+                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                  </svg>
+                                  Auswertung
+                              </button>
+                              <div class="dropdown">
+
+                                  <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+                                      <svg class="feather feather-16 mr-2">
+                                          <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                      </svg>
+                                      Auswertung
+                                  </button>
+
+                                  <div class="dropdown-menu dropdown-menu-right">
+                                      <button v-for="employeeId in this.getShownEmployeeIds()" class="dropdown-item" v-bind:class="{'dropdown-item-primary': employeeId === current_employee.id}" @click="createPdf(employeeId)" @keydown.enter.prevent="createPdf(current_employee.id)">
+                                          <svg class="feather feather-16 mr-2">
+                                              <use xlink:href="/svg/feather-sprite.svg#user"></use>
+                                          </svg>
+                                          {{ getEmployeeName(employeeId) }}
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
 
                       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
@@ -771,6 +801,31 @@
                 });
             },
 
+            createPdf(employeeId) {
+                let url = new URL(window.location.origin + '/accounting/download');
+
+                let params = {
+                    employee_id: employeeId,
+                }
+
+                if(this.filter_start) {
+                    params.start = this.filter_start;
+                }
+                if(this.filter_end) {
+                    params.end = this.filter_end;
+                }
+                if(this.filter_project) {
+                    params.project_id = this.filter_project.id;
+                }
+                if(this.filter_service) {
+                    params.service_id = this.filter_service.id;
+                }
+
+                url.search = new URLSearchParams(params).toString();
+
+                window.open(url).focus();
+            },
+
             getUnsavedAccounting() {
                 return this.accounting.filter(acc => acc.action !== null);
             },
@@ -1240,6 +1295,11 @@
             getEmployeeName(employeeId) {
                 let employee = this.employees.find(employee => employee.id === employeeId);
                 return employee ? employee.name : this.current_employee.name;
+            },
+
+            getShownEmployeeIds() {
+                return this.accounting.length ?
+                    Array.from(new Set(this.accounting.map(acc => acc.employee_id))) : [];
             },
 
             isTwentyFourHourTimeFormat(text) {

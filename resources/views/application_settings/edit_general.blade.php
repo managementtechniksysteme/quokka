@@ -11,6 +11,22 @@
     @php $currentCompany = Company::find(old('company_id')); @endphp
 @endif
 
+@if (old('allowances_service_id'))
+    @php $currentAllowancesService = WageService::find(old('allowances_service_id')); @endphp
+@endif
+
+@if (old('overtime_50_service_id'))
+    @php $currentOvertime50Service = WageService::find(old('overtime_50_service_id')); @endphp
+@endif
+
+@if (old('overtime_100_service_id'))
+    @php $currentOvertime100Service = WageService::find(old('overtime_100_service_id')); @endphp
+@endif
+
+@if (old('time_balance_service_id'))
+    @php $currentTimeBalanceService = WageService::find(old('time_balance_service_id')); @endphp
+@endif
+
 @if (old('holiday_service_id'))
     @php $currentHolidayService = WageService::find(old('holiday_service_id')); @endphp
 @endif
@@ -85,8 +101,8 @@
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Diese Einstellungen sind für die Validierung sowie automatische Berechnung von Stunden sowie
-                        Start oder Ende bei der Eingabe von Abrechnungen erforderlich. Weiters können
-                        Anzeigeeinstellungen vorgenommen werden.
+                        Start oder Ende bei der Eingabe von Abrechnungen und Erstellung von Berichten erforderlich.
+                        Weiters können Anzeigeeinstellungen vorgenommen werden.
                     </div>
                 </div>
             </div>
@@ -124,6 +140,46 @@
                             {{ $message }}
                         @else
                             Gib bitte die minimale Menge ein.
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="allowances_service_id">Diäten Leistung</label>
+                    <service-dropdown inputname="allowances_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentAllowancesService ?? 'null' }}" v-cloak></service-dropdown>
+                    <div class="invalid-feedback @error('allowances_service_id') d-block @enderror">
+                        @error('allowances_service_id')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="overtime_50_service_id">Überstunden 50% Leistung</label>
+                    <service-dropdown inputname="overtime_50_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentOvertime50Service ?? 'null' }}" v-cloak></service-dropdown>
+                    <div class="invalid-feedback @error('overtime_50_service_id') d-block @enderror">
+                        @error('overtime_50_service_id')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="overtime_100_service_id">Überstunden 100% Leistung</label>
+                    <service-dropdown inputname="overtime_100_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentOvertime100Service ?? 'null' }}" v-cloak></service-dropdown>
+                    <div class="invalid-feedback @error('overtime_100_service_id') d-block @enderror">
+                        @error('overtime_100_service_id')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="time_balance_service_id">Zeitausgleich Leistung</label>
+                    <service-dropdown inputname="time_balance_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentTimeBalanceService ?? 'null' }}" v-cloak></service-dropdown>
+                    <div class="invalid-feedback @error('time_balance_service_id') d-block @enderror">
+                        @error('time_balance_service_id')
+                        {{ $message }}
                         @enderror
                     </div>
                 </div>

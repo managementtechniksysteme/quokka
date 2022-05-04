@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/home', [HomeController::class, 'post']);
 
     Route::resource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/accounting/download', [AccountingController::class, 'download'])->name('accounting.download');
 
     Route::resource('addresses', AddressController::class);
     Route::resource('companies', CompanyController::class);

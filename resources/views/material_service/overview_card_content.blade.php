@@ -58,7 +58,7 @@
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="dropdown-item dropdown-item-delete d-inline-flex align-items-center">
+                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
                                 <svg class="feather feather-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>

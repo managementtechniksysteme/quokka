@@ -16,7 +16,11 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
     {
         return [
             'company_id' => 'required|exists:companies,id',
-            'holiday_service_id' => 'required_with:holiday_yearly_allowance|exists:App\Models\WageService,id',
+            'allowances_service_id' => 'exists:App\Models\WageService,id|different:overtime_50_service_id|different:overtime_100_service_id|different:time_balance_service_id|different:holiday_service_id|nullable',
+            'overtime_50_service_id' => 'exists:App\Models\WageService,id|different:allowances_service_id|different:overtime_100_service_id|different:time_balance_service_id|different:holiday_service_id|nullable',
+            'overtime_100_service_id' => 'exists:App\Models\WageService,id|different:allowances_service_id|different:overtime_50_service_id|different:time_balance_service_id|different:holiday_service_id|nullable',
+            'time_balance_service_id' => 'exists:App\Models\WageService,id|different:allowances_service_id|different:overtime_50_service_id|different:overtime_100_service_id|different:holiday_service_id|nullable',
+            'holiday_service_id' => 'required_with:holiday_yearly_allowance|different:allowances_service_id|different:overtime_50_service_id|different:overtime_100_service_id|different:time_balance_service_id|exists:App\Models\WageService,id',
             'holiday_yearly_allowance' => 'integer|min:1|nullable',
             'currency_unit' => 'required',
             'services_hour_unit' => 'exists:services,unit|nullable',

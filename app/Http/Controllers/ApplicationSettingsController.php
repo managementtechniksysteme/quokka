@@ -28,6 +28,10 @@ class ApplicationSettingsController extends Controller
                 $currentCompany = ApplicationSettings::get()->company ?? null;
                 $companies = Company::order()->get();
 
+                $currentAllowancesService = ApplicationSettings::get()->allowancesService ?? null;
+                $currentOvertime50Service = ApplicationSettings::get()->overtime50Service ?? null;
+                $currentOvertime100Service = ApplicationSettings::get()->overtime100Service ?? null;
+                $currentTimeBalanceService = ApplicationSettings::get()->timeBalanceService ?? null;
                 $currentHolidayService = ApplicationSettings::get()->holidayService ?? null;
                 $wageServices = WageService::order()->get();
 
@@ -42,6 +46,10 @@ class ApplicationSettingsController extends Controller
                 return view('application_settings.edit_general')
                     ->with('currentCompany', $currentCompany)
                     ->with('companies', $companies->toJson())
+                    ->with('currentAllowancesService', $currentAllowancesService)
+                    ->with('currentOvertime50Service', $currentOvertime50Service)
+                    ->with('currentOvertime100Service', $currentOvertime100Service)
+                    ->with('currentTimeBalanceService', $currentTimeBalanceService)
                     ->with('currentHolidayService', $currentHolidayService)
                     ->with('wageServices', $wageServices->toJson())
                     ->with('wageServiceUnits', $wageServiceUnits->toJson())

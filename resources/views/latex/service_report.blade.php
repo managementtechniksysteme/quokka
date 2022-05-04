@@ -32,7 +32,7 @@
 \hline
 \hline
 @foreach($serviceReport->services as $service)
-{!! Latex::escape($service->provided_on->translatedFormat("l")) !!} & \footnotesize{{!! Latex::escape($service->provided_on) !!}} & \footnotesize{{!! Latex::escape($service->hours) !!}} & \footnotesize{{!! Latex::escape($service->kilometres) !!}} \\
+\footnotesize{{!! Latex::escape($service->provided_on->translatedFormat("l")) !!}} & \footnotesize{{!! Latex::escape($service->provided_on) !!}} & \footnotesize{{!! Latex::escape($service->hours) !!}} & \footnotesize{{!! Latex::escape($service->kilometres) !!}} \\
 \hline
 @endforeach
 \caption*{\footnotesize{Stunden inklusive Rückreiseaufwand}}\\

@@ -25,9 +25,11 @@
 \footnotesize{\textbf{Verfügbarer Urlaub:} {!! Latex::escape($employee->holidays) !!} {!! Latex::escape($holidayService->unit) !!}}
 @if(count($report) > 0)
 \begin{longtable}{@{}|p{2.2cm}|p{4.5cm}|p{0.9cm}|p{1.6cm}|p{1.2cm}|p{1.4cm}|p{1cm}|p{1.2cm}|@{}}
-\hline \footnotesize{\textbf{Datum}} & \footnotesize{\textbf{Projekt}} & \footnotesize{\textbf{Std.}} & \footnotesize{\textbf{Diäten (h)}} & \footnotesize{\textbf{ÜS 50\%}} & \footnotesize{\textbf{ÜS 100\%}} & \footnotesize{\textbf{ZA (h)}} & \footnotesize{\textbf{Url. (T)}} \\
+\hline
+\footnotesize{\textbf{Datum}} & \footnotesize{\textbf{Projekt}} & \footnotesize{\textbf{Std.}} & \footnotesize{\textbf{Diäten (h)}} & \footnotesize{\textbf{ÜS 50\%}} & \footnotesize{\textbf{ÜS 100\%}} & \footnotesize{\textbf{ZA (h)}} & \footnotesize{\textbf{Url. (T)}} \\
 \hline
 \hline
+\endhead
 @foreach($report as $entry)
 \footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->date)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->project) !!}} & \footnotesize{{!! Latex::escape($entry->amount_hours ?? '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_allowances ?? '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_50 ?? '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_100 ?? '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_time_balance ?? '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_holidays ?? '') !!}}  \\
 \hline

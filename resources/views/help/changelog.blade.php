@@ -11,6 +11,14 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.14-99f2fda (04.05.2022)
+        * Auswertungen von Abrechnungen können nun erstellt werden. Die Auswertung wird automatisch basierend auf den im
+        Anzeigefilter angegebenen Kriterien erstellt. Für Monatsaauswertungen empfiehlt es sich daher, lediglich den
+        Zeitbereich im Anzeigefilter einzustellen.
+        * Mit entsprechenden Berechtigungen kann auch die Person gewählt werden, für welche die Auswertung durchgeführt
+        werden soll.
+        @endmarkdown
+        @markdown
         ### v0.1.14-7228f12 (02.05.2022)
         * Materialleistungen können nun mit bis zu zwei Nachkommastellen angegeben werden. Lohndienstleistungen müssen
         weiterhin ein Vielfaches des in den Einstellungen festgelegten Wertes sein.

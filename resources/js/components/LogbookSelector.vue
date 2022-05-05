@@ -292,19 +292,19 @@
                                           <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="getDateStringForInputField(book.driven_on)" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
                                       </td>
                                       <td class="col-1" @click="setEdit(book, 'start_kilometres')">
-                                          <span v-if="book.edit !== 'start_kilometres'">{{ book.start_kilometres }}</span>
+                                          <span v-if="book.edit !== 'start_kilometres'">{{ book.start_kilometres.toLocaleString() }}</span>
                                           <input v-if="book.edit === 'start_kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_start_kilometres_invalid}" ref="table_input" id="table_start_kilometres" name="table_start_kilometres" placeholder="131337" :value="book.start_kilometres" @blur="changeLogbookStartKilometres($event, book)" @keydown.enter.prevent="changeLogbookStartKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'start_kilometres')" />
                                       </td>
                                       <td class="col-1" @click="setEdit(book, 'end_kilometres')">
-                                          <span v-if="book.edit !== 'end_kilometres'">{{ book.end_kilometres }}</span>
+                                          <span v-if="book.edit !== 'end_kilometres'">{{ book.end_kilometres.toLocaleString() }}</span>
                                           <input v-if="book.edit === 'end_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_end_kilometres_invalid}" ref="table_input" id="table_end_kilometres" name="table_end_kilometres" placeholder="131415" :value="book.end_kilometres" @blur="changeLogbookEndKilometres($event, book)" @keydown.enter.prevent="changeLogbookEndKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'end_kilometres')" />
                                       </td>
                                       <td class="col-1" @click="setEdit(book, 'driven_kilometres')">
-                                          <span v-if="book.edit !== 'driven_kilometres'">{{ book.driven_kilometres }}</span>
+                                          <span v-if="book.edit !== 'driven_kilometres'">{{ book.driven_kilometres.toLocaleString() }}</span>
                                           <input v-if="book.edit === 'driven_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_kilometres_invalid}" ref="table_input" id="table_driven_kilometres" name="table_driven_kilometres" placeholder="78" :value="book.driven_kilometres" @blur="changeLogbookDrivenKilometres($event, book)" @keydown.enter.prevent="changeLogbookDrivenKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_kilometres')" />
                                       </td>
                                       <td class="col-1" @click="setEdit(book, 'litres_refuelled')">
-                                          <span v-if="book.edit !== 'litres_refuelled'">{{ book.litres_refuelled }}</span>
+                                          <span v-if="book.edit !== 'litres_refuelled'">{{ book.litres_refuelled ? book.litres_refuelled.toLocaleString() : '' }}</span>
                                           <input v-if="book.edit === 'litres_refuelled'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_litres_refuelled_invalid}" ref="table_input" id="table_litres_refuelled" name="table_litres_refuelled" placeholder="54" :value="book.litres_refuelled" @blur="changeLogbookLitresRefuelled($event, book)" @keydown.enter.prevent="changeLogbookLitresRefuelled($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'litres_refuelled')" />
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'origin')">

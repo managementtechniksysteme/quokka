@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        Carbon::setlocale(config('app.name'));
+        Carbon::setlocale(config('config.locale'));
         Carbon::setToStringFormat('d.m.Y');
     }
 }

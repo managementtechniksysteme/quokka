@@ -114,6 +114,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // projects
         Permission::firstOrCreate(['name' => 'projects.view']);
+        Permission::firstOrCreate(['name' => 'projects.view.estimates']);
         Permission::firstOrCreate(['name' => 'projects.create']);
         Permission::firstOrCreate(['name' => 'projects.update']);
         Permission::firstOrCreate(['name' => 'projects.delete']);

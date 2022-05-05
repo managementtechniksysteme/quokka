@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use App\Models\Address;
+use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\Person;
 use App\Models\Project;
@@ -136,7 +137,16 @@ class CompanyController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('company.show_tab_projects')->with(compact('company'))->with(compact('projects'));
+                $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+                $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
+                $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+
+                return view('company.show_tab_projects')
+                    ->with(compact('company'))
+                    ->with(compact('projects'))
+                    ->with(compact('projectOverwallCostsWarningPercentage'))
+                    ->with(compact('projectMaterialCostsWarningPercentage'))
+                    ->with(compact('projectWageCostsWarningPercentage'));
             case 'people':
                 $people = Person::where('company_id', $company->id)
                     ->filterSearch($input)

@@ -112,7 +112,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="currency_unit">Währungseinheit (z.B. für Materialleistungen)</label>
-                    <input type="text" class="form-control @error('currency_unit') is-invalid @enderror" id="currency_unit" name="currency_unit" placeholder="€" value="{{ old('currency_unit', ApplicationSettings::get()->currency_unit) }}" required />
+                    <input type="text" class="form-control @error('currency_unit') is-invalid @enderror" id="currency_unit" name="currency_unit" placeholder="€" value="{{ old('currency_unit', $applicationSettings->currency_unit) }}" required />
                     <div class="invalid-feedback @error('currency_unit') d-block @enderror">
                         @error('currency_unit')
                             {{ $message }}
@@ -134,7 +134,7 @@
 
                 <div class="form-group">
                     <label for="accounting_min_amount">Minimale Menge (und Multiplikator) bei Abrechnungen für Lohndienstleistungen</label>
-                    <input type="number" min="0" step=".01" class="form-control @error('accounting_min_amount') is-invalid @enderror" id="accounting_min_amount" name="accounting_min_amount" placeholder="0.5" value="{{ old('accounting_min_amount', ApplicationSettings::get()->accounting_min_amount) }}" required />
+                    <input type="number" min="0" step=".01" class="form-control @error('accounting_min_amount') is-invalid @enderror" id="accounting_min_amount" name="accounting_min_amount" placeholder="0.5" value="{{ old('accounting_min_amount', $applicationSettings->accounting_min_amount) }}" required />
                     <div class="invalid-feedback @error('accounting_min_amount') d-block @enderror">
                         @error('accounting_min_amount')
                             {{ $message }}
@@ -228,13 +228,82 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="holiday_yearly_allowance">Jährlich gutzuschreibende Urlaubsmenge</label>
-                    <input type="number" min="1" class="form-control @error('holiday_yearly_allowance') is-invalid @enderror" id="holiday_yearly_allowance" name="holiday_yearly_allowance" placeholder="25" value="{{ old('holiday_yearly_allowance', ApplicationSettings::get()->holiday_yearly_allowance) }}" />
+                    <input type="number" min="1" class="form-control @error('holiday_yearly_allowance') is-invalid @enderror" id="holiday_yearly_allowance" name="holiday_yearly_allowance" placeholder="25" value="{{ old('holiday_yearly_allowance', $applicationSettings->holiday_yearly_allowance) }}" />
                     <div class="invalid-feedback @error('holiday_yearly_allowance') d-block @enderror">
                         @error('holiday_yearly_allowance')
                             {{ $message }}
                         @else
                             Jährlich gutzuschreibende Urlaubsmenge muss mindestens 1 sein.
                         @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                    </svg>
+                    Warnung für Kostenschätzungen
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info mt-1" role="alert">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="feather feather-24 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                        </svg>
+                        Hier kann festgelgt werden, ab wie vielen Prozent der geschätzten Lohn- sowie Materialkosten eine
+                        Warnung beim entsprechenden Projekt angezeigt werden soll.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="project_wage_costs_warning_percentage">Warnschwelle für die Lohnkosten</label>
+                    <input type="number" min="1" step="1" max="99" class="form-control @error('project_wage_costs_warning_percentage') is-invalid @enderror" id="project_wage_costs_warning_percentage" name="project_wage_costs_warning_percentage" placeholder="80" value="{{ old('project_wage_costs_warning_percentage', $applicationSettings->project_wage_costs_warning_percentage) }}" />
+                    <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
+                        @error('project_wage_costs_warning_percentage')
+                        {{ $message }}
+                        @else
+                            Warnschwelle muss zwischen 1 und 99 liegen.
+                            @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="project_material_costs_warning_percentage">Warnschwelle für die Materialkosten</label>
+                    <input type="number" min="1" step="1" max="99" class="form-control @error('project_material_costs_warning_percentage') is-invalid @enderror" id="project_material_costs_warning_percentage" name="project_material_costs_warning_percentage" placeholder="80" value="{{ old('project_material_costs_warning_percentage', $applicationSettings->project_material_costs_warning_percentage) }}" />
+                    <div class="invalid-feedback @error('project_material_costs_warning_percentage') d-block @enderror">
+                        @error('project_material_costs_warning_percentage')
+                        {{ $message }}
+                        @else
+                            Warnschwelle muss zwischen 1 und 99 liegen.
+                            @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="project_overall_costs_warning_percentage">Warnschwelle für die Gesamtkosten</label>
+                    <input type="number" min="1" step="1" max="99" class="form-control @error('project_overall_costs_warning_percentage') is-invalid @enderror" id="project_overall_costs_warning_percentage" name="project_overall_costs_warning_percentage" placeholder="25" value="{{ old('project_overall_costs_warning_percentage', $applicationSettings->project_wage_costs_warning_percentage) }}" />
+                    <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
+                        @error('project_wage_costs_warning_percentage')
+                        {{ $message }}
+                        @else
+                            Warnschwelle muss zwischen 1 und 99 liegen.
+                            @enderror
                     </div>
                 </div>
             </div>
@@ -295,7 +364,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="task_due_soon_days">Anzahl der Tage, die eine Aufgabe als bald fällig markiert wird</label>
-                    <input type="number" min="1" class="form-control @error('task_due_soon_days') is-invalid @enderror" id="task_due_soon_days" name="task_due_soon_days" placeholder="7" value="{{ old('task_due_soon_days', ApplicationSettings::get()->task_due_soon_days) }}" required />
+                    <input type="number" min="1" class="form-control @error('task_due_soon_days') is-invalid @enderror" id="task_due_soon_days" name="task_due_soon_days" placeholder="7" value="{{ old('task_due_soon_days', $applicationSettings->task_due_soon_days) }}" required />
                     <div class="invalid-feedback @error('task_due_soon_days') d-block @enderror">
                         @error('task_due_soon_days')
                             {{ $message }}

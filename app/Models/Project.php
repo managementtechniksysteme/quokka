@@ -69,4 +69,105 @@ class Project extends Model
     {
         return $this->hasMany(Logbook::class);
     }
+
+    public function getCostsAttribute() {
+        return ($this->material_costs ?? 0) + ($this->wage_costs ?? 0);
+    }
+
+    public function getCurrentMaterialCostsAttribute() {
+        return $this->accounting()
+            ->whereIn('service_id', MaterialService::pluck('id'))
+            ->sum('amount');
+    }
+
+    public function getCurrentWageCostsAttribute() {
+        return $this->accounting()
+            ->selectRaw('accounting.amount*services.costs as costs')
+            ->whereIn('service_id', WageService::pluck('id'))
+            ->join('services', function ($join) {
+                $join->on('accounting.service_id', '=', 'services.id')
+                    ->whereNotNull('services.costs');
+            })
+            ->sum('costs');
+
+    }
+
+    public function getCurrentCostsAttribute() {
+        return $this->current_material_costs + $this->current_wage_costs;
+    }
+
+    public function getCurrentMaterialCostsPercentageAttribute() {
+        if(!$this->material_costs) {
+            return null;
+        }
+
+        return ($this->current_material_costs / $this->material_costs) * 100;
+    }
+
+    public function getCurrentWageCostsPercentageAttribute() {
+        if(!$this->wage_costs) {
+            return null;
+        }
+
+        return ($this->current_wage_costs / $this->wage_costs) * 100;
+    }
+
+    public function getCurrentCostsPercentageAttribute() {
+        if(!$this->material_costs && !$this->wage_costs) {
+            return null;
+        }
+
+        return ($this->current_costs / $this->costs) * 100;
+    }
+
+    public function getCurrentMaterialCostsStatusAttribute() {
+        $warningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
+        if(!($this->current_material_costs_percentage && $warningPercentage)) {
+            return null;
+        }
+
+        if($this->current_material_costs_percentage < $warningPercentage) {
+            return 'success';
+        }
+        elseif($this->current_material_costs_percentage < 100 ) {
+            return 'warning';
+        }
+        else {
+            return 'danger';
+        }
+    }
+
+    public function getCurrentWageCostsStatusAttribute() {
+        $warningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+        if(!($this->current_wage_costs_percentage && $warningPercentage)) {
+            return null;
+        }
+
+        if($this->current_wage_costs_percentage < $warningPercentage) {
+            return 'success';
+        }
+        elseif($this->current_wage_costs_percentage < 100 ) {
+            return 'warning';
+        }
+        else {
+            return 'danger';
+        }
+    }
+
+    public function getCurrentCostsStatusAttribute() {
+        $warningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        if(!($this->current_costs_percentage && $warningPercentage)) {
+            return null;
+        }
+
+        if($this->current_costs_percentage < $warningPercentage) {
+            return 'success';
+        }
+        elseif($this->current_costs_percentage < 100 ) {
+            return 'warning';
+        }
+        else {
+            return 'danger';
+        }
+    }
 }

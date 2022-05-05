@@ -216,15 +216,15 @@ img.empty-state {
 }
 
 // Success dropdown button with yellow text and yellow background on hover
-.dropdown-item-success {
+.dropdown-item-warning {
     color: $yellow !important;
 }
 
-.dropdown-item-success:hover {
+.dropdown-item-warning:hover {
     color: $yellow !important;
 }
 
-.dropdown-item-success:active {
+.dropdown-item-warning:active {
     color: $dark !important;
     background-color: $yellow !important;
 }

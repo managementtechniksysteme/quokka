@@ -99,6 +99,7 @@ return [
 
     // projects
     'projects.view' => 'Projekte ansehen',
+    'projects.view.estimates' => 'Projektkosten ansehen',
     'projects.create' => 'Projekte anlegen',
     'projects.update' => 'Projekte bearbeiten',
     'projects.delete' => 'Projekte entfernen',

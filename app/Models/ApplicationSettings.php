@@ -22,6 +22,9 @@ class ApplicationSettings extends Model
         'time_balance_service_id',
         'services_hour_unit',
         'accounting_min_amount',
+        'project_material_costs_warning_percentage',
+        'project_wage_costs_warning_percentage',
+        'project_overall_costs_warning_percentage',
         'signature_notify_user_id',
         'task_due_soon_days',
     ];

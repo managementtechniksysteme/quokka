@@ -284,7 +284,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="project_wage_costs_warning_percentage">Warnschwelle für die Lohnkosten</label>

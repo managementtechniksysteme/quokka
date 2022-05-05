@@ -146,7 +146,7 @@
     </div>
 
     @if($serviceReports->count() > 0)
-        <p class="mt-3">
+        <p class="mt-3 small">
             Der linke farbliche Rand zeigt den Status des jeweiligen Serviceberichtes:
             <span class="badge badge-blue-100 text-blue-800">neu</span>
             <span class="badge badge-yellow-100 text-yellow-800">unterschrieben</span>

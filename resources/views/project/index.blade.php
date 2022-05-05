@@ -151,9 +151,9 @@
 
         @can('projects.view.estimates')
             @if($projects->count() > 0 && ($projectOverwallCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
-                <p class="mt-3">
+                <p class="mt-3 small">
                     Die Pfeile für die
-                    <span class="font-weight-bold">G</span>esamt, <span class="font-weight-bold">L</span>ohn und <span class="font-weight-bold">M</span>aterialosten
+                    <span class="font-weight-bolder"><u>G</u></span>esamt, <span class="font-weight-bold"><u>L</u></span>ohn und <span class="font-weight-bold"><u>M</u></span>aterialosten
                     zeigen folgende Information:<br />
                     <svg class="feather feather-12 text-success">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>

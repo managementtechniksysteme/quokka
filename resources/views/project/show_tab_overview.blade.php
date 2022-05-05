@@ -141,6 +141,21 @@
             </div>
         @endif
     @endcan
+    @if($project->current_kilometres)
+        <div class="row mt-3">
+            <div class="col-sm-2">
+                <div class="text-muted d-flex align-items-center">
+                    <svg class="feather feather-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
+                    </svg>
+                    Kilometer
+                </div>
+            </div>
+            <div class="col">
+                {{ \App\Helpers\Number::toLocal($project->current_kilometres) }}
+            </div>
+        </div>
+    @endif
 
     @if ($project->comment)
         <div class="text-muted d-flex align-items-center mt-4">

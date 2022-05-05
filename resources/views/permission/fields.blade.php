@@ -1638,6 +1638,17 @@
         </div>
         <div class="form-group">
             <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('projects_view_estimates') is-invalid @enderror" name="projects_view_estimates" id="projects_view_estimates" value="true" @if(old('projects_view_estimates', optional($permissions)->hasPermissionTo('projects.view.estimates'))) checked @endif>
+                <label class="custom-control-label" for="projects_view_estimates">Projektkosten ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('projects_view_estimates') d-block @enderror">
+                @error('projects_view_estimates')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('projects_create') is-invalid @enderror" name="projects_create" id="projects_create" value="true" @if(old('projects_create', optional($permissions)->hasPermissionTo('projects.create'))) checked @endif>
                 <label class="custom-control-label" for="projects_create">Projekte anlegen</label>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WageServiceStoreRequest;
 use App\Http\Requests\WageServiceUpdateRequest;
+use App\Models\ApplicationSettings;
 use App\Models\MaterialService;
 use App\Models\WageService;
 use Illuminate\Http\Request;
@@ -60,7 +61,11 @@ class WageServiceController extends Controller
 
     public function show(WageService $wageService)
     {
-        return view('wage_service.show')->with(compact('wageService'));
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
+        return view('wage_service.show')
+            ->with(compact('wageService'))
+            ->with(compact('currencyUnit'));
     }
 
     public function edit(WageService $wageService)

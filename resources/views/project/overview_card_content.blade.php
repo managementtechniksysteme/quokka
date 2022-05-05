@@ -3,8 +3,67 @@
 
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('projects.show', $project) }}"></a>
-            <div class="mw-100 text-truncate">
-                {{ $project->name }}
+            <div class="mw-100 d-flex align-items-center">
+                <span class="mw-100 text-truncate">
+                    {{ $project->name }}
+                </span>
+                @can('projects.view.estimates')
+                    @if($project->current_wage_costs_status || $project->current_material_costs_status || $project->current_costs_status)
+                        <span class="d-none d-md-inline-flex align-items-center">
+                            <svg class="feather feather-12 ml-2 text-muted">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                            </svg>
+                            @if($project->current_wage_costs_status)
+                                <span class="text-muted ml-1">G</span>
+                                <svg class="feather feather-12 text-{{ $project->current_costs_status }}">
+                                    @switch($project->current_costs_status)
+                                        @case('success')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                            @break
+                                        @case('warning')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                                            @break
+                                        @case('danger')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                            @break
+                                    @endswitch
+                                </svg>
+                            @endif
+                            @if($project->current_wage_costs_status)
+                                <span class="text-muted ml-1">L</span>
+                                <svg class="feather feather-12 text-{{ $project->current_wage_costs_status }}">
+                                    @switch($project->current_wage_costs_status)
+                                        @case('success')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                            @break
+                                        @case('warning')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                                            @break
+                                        @case('danger')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                            @break
+                                    @endswitch
+                                </svg>
+                            @endif
+                            @if($project->current_wage_costs_status)
+                                <span class="text-muted ml-1">M</span>
+                                <svg class="feather feather-12 text-{{ $project->current_material_costs_status }}">
+                                    @switch($project->current_material_costs_status)
+                                        @case('success')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                            @break
+                                        @case('warning')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                                            @break
+                                        @case('danger')
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                            @break
+                                    @endswitch
+                                </svg>
+                            @endif
+                        </span>
+                    @endif
+                @endcan
             </div>
             <div class="text-muted d-inline-flex align-items-center">
                 @if(isset($secondaryInformation))

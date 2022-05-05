@@ -45,7 +45,15 @@ class ProjectController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('project.index')->with(compact('projects'));
+        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
+        $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+
+        return view('project.index')
+            ->with(compact('projects'))
+            ->with(compact('projectOverwallCostsWarningPercentage'))
+            ->with(compact('projectMaterialCostsWarningPercentage'))
+            ->with(compact('projectWageCostsWarningPercentage'));
     }
 
     /**

@@ -140,4 +140,30 @@
     <div class="mt-2">
         {{ $projects->links() }}
     </div>
+
+    @can('projects.view.estimates')
+        @if($projects->count() > 0 && ($projectOverwallCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
+            <p class="mt-3">
+                Die Pfeile für die
+                <span class="font-weight-bold">G</span>esamt, <span class="font-weight-bold">L</span>ohn und <span class="font-weight-bold">M</span>aterialosten
+                zeigen folgende Information:<br />
+                <svg class="feather feather-12 text-success">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                </svg>
+                Die aktuellen Kosten liegen unter der Warnschwelle.<br />
+                <svg class="feather feather-12 text-warning">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                </svg>
+                Die aktuellen Kosten liegen zwischen der Warnschwelle und den geschätzten Kosten.<br />
+                <svg class="feather feather-12 text-danger">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                </svg>
+                Die aktuellen Kosten liegen über den geschätzten Kosten.<br />
+                Warnschwellen:
+                @if($projectOverwallCostsWarningPercentage)Gesamtkosten: {{ $projectOverwallCostsWarningPercentage }}% @endif
+                @if($projectWageCostsWarningPercentage)Lohnkosten: {{ $projectWageCostsWarningPercentage }}% @endif
+                @if($projectMaterialCostsWarningPercentage)Materialkosten: {{ $projectMaterialCostsWarningPercentage }}% @endif
+            </p>
+        @endif
+    @endcan
 @endsection

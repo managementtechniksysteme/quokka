@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div class="col">
-                {{ $wageService->costs ?? 'nicht angegeben' }}
+                {{ $wageService->costs ? $currencyUnit . ' ' . Number::toLocal($wageService->costs) : 'nicht angegeben' }}
             </div>
         </div>
     </div>

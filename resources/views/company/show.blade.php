@@ -84,7 +84,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                             </svg>
                             Projekte
-                            <span class="ml-auto">{{ $company->projects_count }}</span>
+                            <span class="ml-auto">{{ $company->projects_count > 0 ? $company->projects_count : '' }}</span>
                         </a>
                     @endcan
 
@@ -94,7 +94,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                             </svg>
                             Personen
-                            <span class="ml-auto">{{ $company->people_count }}</span>
+                            <span class="ml-auto">{{ $company->people_count >0 ? $company->people_count : '' }}</span>
                         </a>
                     @endcan
                 </div>

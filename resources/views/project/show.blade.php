@@ -83,7 +83,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Aufgaben
-                            <span class="ml-auto">{{ $project->tasks_count }}</span>
+                            <span class="ml-auto">{{ $project->tasks_count > 0 ? $project->tasks_count : '' }}</span>
                         </a>
                     @endcan
 
@@ -93,7 +93,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                             </svg>
                             Aktenvermerke
-                            <span class="ml-auto">{{ $project->memos_count }}</span>
+                            <span class="ml-auto">{{ $project->memos_count > 0 ? $project->memos_count : '' }}</span>
                         </a>
                     @endcan
 
@@ -103,7 +103,7 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                             </svg>
                             Serviceberichte
-                            <span class="ml-auto">{{ $project->service_reports_count }}</span>
+                            <span class="ml-auto">{{ $project->service_reports_count > 0 ? $project->service_reports_count : '' }}</span>
                         </a>
                     @endcan
                 </div>

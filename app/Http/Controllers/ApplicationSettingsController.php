@@ -25,25 +25,28 @@ class ApplicationSettingsController extends Controller
     {
         switch ($request->tab) {
             case 'general':
-                $currentCompany = ApplicationSettings::get()->company ?? null;
+                $applicationSettings = ApplicationSettings::get();
+
+                $currentCompany = $applicationSettings->company ?? null;
                 $companies = Company::order()->get();
 
-                $currentAllowancesService = ApplicationSettings::get()->allowancesService ?? null;
-                $currentOvertime50Service = ApplicationSettings::get()->overtime50Service ?? null;
-                $currentOvertime100Service = ApplicationSettings::get()->overtime100Service ?? null;
-                $currentTimeBalanceService = ApplicationSettings::get()->timeBalanceService ?? null;
-                $currentHolidayService = ApplicationSettings::get()->holidayService ?? null;
+                $currentAllowancesService = $applicationSettings->allowancesService ?? null;
+                $currentOvertime50Service = $applicationSettings->overtime50Service ?? null;
+                $currentOvertime100Service = $applicationSettings->overtime100Service ?? null;
+                $currentTimeBalanceService = $applicationSettings->timeBalanceService ?? null;
+                $currentHolidayService = $applicationSettings->holidayService ?? null;
                 $wageServices = WageService::order()->get();
 
                 $wageServiceUnits = WageService::distinct('unit')->pluck('unit');
-                $currentServicesHourUnit = ApplicationSettings::get()->services_hour_unit;
+                $currentServicesHourUnit = $applicationSettings->services_hour_unit;
 
-                $currentSignatureNotifyPerson = optional(ApplicationSettings::get()->signatureNotifyUser)->employee->person ?? null;
+                $currentSignatureNotifyPerson = optional($applicationSettings->signatureNotifyUser)->employee->person ?? null;
                 $userPeople = Person::whereHas('employee', function ($query) {
                     return $query->has('user');
                 })->get();
 
                 return view('application_settings.edit_general')
+                    ->with('applicationSettings', $applicationSettings)
                     ->with('currentCompany', $currentCompany)
                     ->with('companies', $companies->toJson())
                     ->with('currentAllowancesService', $currentAllowancesService)

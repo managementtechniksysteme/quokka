@@ -1306,6 +1306,19 @@
                 return /^([01]\d|2[0123]):[012345]\d$/.test(text);
             },
 
+            isMultipleOf(value, multiplier) {
+                return value.toFixed(2).toString().replace('.', '') %
+                    multiplier.toFixed(2).toString().replace('.', '') === 0
+            },
+
+            hasAtMostDecimals(value, maxDecimals) {
+                let valueString = value.toString();
+
+                let decimals = valueString.includes('.') ? valueString.split('.')[1].length : 0
+
+                return decimals <= maxDecimals;
+            },
+
             getDateStringForInputField(date) {
                 return date !== null ? date.toISOString().slice(0, 10) : null;
             },
@@ -1418,17 +1431,15 @@
             },
 
             isAmountInvalid(amount, service) {
-
                 if(!service) {
                     return true;
                 }
 
-                // do modulo as integers to get exact results
                 if(service.type === 'material') {
-                    return Number.isNaN(amount) || amount < 0.01 || (amount * 100) % 1 !== 0;
+                    return Number.isNaN(amount) || amount < 0.01 || !this.hasAtMostDecimals(amount, 2) || !this.isMultipleOf(amount, 0.01);
                 }
                 else if(service.type === 'wage') {
-                    return Number.isNaN(amount) || amount < this.min_amount || (amount * 100) % (this.min_amount * 100) !== 0;
+                    return Number.isNaN(amount) || amount < this.min_amount || !this.hasAtMostDecimals(amount, 2) || !this.isMultipleOf(amount, this.min_amount);
                 }
             },
 

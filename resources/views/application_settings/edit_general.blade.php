@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="accounting_min_amount">Minimale Menge (und Multiplikator) bei Abrechnungen</label>
+                    <label for="accounting_min_amount">Minimale Menge (und Multiplikator) bei Abrechnungen für Lohndienstleistungen</label>
                     <input type="number" min="0" step=".01" class="form-control @error('accounting_min_amount') is-invalid @enderror" id="accounting_min_amount" name="accounting_min_amount" placeholder="0.5" value="{{ old('accounting_min_amount', ApplicationSettings::get()->accounting_min_amount) }}" required />
                     <div class="invalid-feedback @error('accounting_min_amount') d-block @enderror">
                         @error('accounting_min_amount')

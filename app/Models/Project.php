@@ -169,4 +169,8 @@ class Project extends Model
             return 'danger';
         }
     }
+
+    public function getCurrentKilometresAttribute() {
+        return $this->logbook()->sum('driven_kilometres');
+    }
 }

@@ -304,7 +304,7 @@
                                           </v-select>
                                       </td>
                                       <td class="col-1" @click="setEdit(acc, 'amount')">
-                                          <span v-if="acc.edit !== 'amount'">{{ acc.amount }}</span>
+                                          <span v-if="acc.edit !== 'amount'">{{ acc.amount.toLocaleString() }}</span>
                                           <input v-if="acc.edit === 'amount'" type="number" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
                                       </td>
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>

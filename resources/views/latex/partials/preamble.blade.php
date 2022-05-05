@@ -24,6 +24,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{upquote}
 \usepackage{xcolor}
+\usepackage{colortbl}
 
 % heading formats
 \titleformat{\section}{\Large\bfseries}{\thesection}{2em}{}

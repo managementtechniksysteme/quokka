@@ -89,7 +89,6 @@ class Project extends Model
                     ->whereNotNull('services.costs');
             })
             ->sum('costs');
-
     }
 
     public function getCurrentCostsAttribute() {

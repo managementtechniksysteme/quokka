@@ -11,9 +11,11 @@ use App\Models\Logbook;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Vehicle;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use ZsgsDesign\PDFConverter\Latex;
 
 class LogbookController extends Controller
 {
@@ -22,8 +24,12 @@ class LogbookController extends Controller
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
-            'download' => 'createPdf',
         ]);
+    }
+
+    public function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['download']);
     }
 
     public function __construct()
@@ -98,7 +104,50 @@ class LogbookController extends Controller
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function download(LogbookDownloadRequest $request) {
+    public function download(LogbookDownloadRequest $request)
+    {
+        $validatedData = $request->validated();
 
+        $employee = isset($validatedData['only_own']) ? Auth::user()->employee->load('person') : null;
+        $project = isset($validatedData['project_id']) ? Project::find($validatedData['project_id']) : null;
+        $vehicle = isset($validatedData['vehicle_id']) ? Vehicle::find($validatedData['vehicle_id']) : null;
+
+        $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : null;
+        $end = isset($validatedData['end']) ? Carbon::parse($validatedData['end']) : null;
+
+        $vehicleString = optional($vehicle)->registration_identifier ?? '';
+
+        $startFormatted = optional($start)->format('Ymd') ?? '';
+        $endFormatted = optional($end)->format('Ymd') ?? '';
+        $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
+
+        $fileName = 'FB' . ($vehicleString !== '' ? ' ' . $vehicleString : '') . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
+
+        $report = Logbook::filterSearch($validatedData)
+            ->order()
+            ->with('employee.user')
+            ->with('project')
+            ->with('vehicle')
+            ->get();
+
+        $people = Person::whereIn('id', $report->unique('employee_id')->pluck('employee_id'))
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->with('employee.user')
+            ->get();
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.logbook_report', [
+                'report' => $report,
+                'employee' => $employee,
+                'people' => $people,
+                'project' => $project,
+                'vehicle' => $vehicle,
+                'start' => $start,
+                'end' => $end
+            ])
+            ->download($fileName);
     }
 }

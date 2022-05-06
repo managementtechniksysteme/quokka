@@ -201,15 +201,26 @@
 
               <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('logbook.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('logbook.create')}"  ref="logbook_overview">
                   <div class="sticky-top bg-general">
-                      <h3 class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
-                          Fahrtenbuch
-                          <small v-if="logbook.length" class="text-muted">
-                              {{ logbook.length }} Einträge
-                              <span v-if="getNewLogbook().length" class="text-success">+{{ getNewLogbook().length }}</span>
-                              <span v-if="getChangedLogbook().length" class="text-warning">±{{ getChangedLogbook().length }}</span>
-                              <span v-if="getDestroyedLogbook().length" class="text-danger">-{{ getDestroyedLogbook().length }}</span>
-                          </small>
-                      </h3>
+                      <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
+                          <h3 class="d-inline-block">
+                              Fahrtenbuch
+                              <small v-if="logbook.length" class="text-muted">
+                                  {{ logbook.length }} Einträge
+                                  <span v-if="getNewLogbook().length" class="text-success">+{{ getNewLogbook().length }}</span>
+                                  <span v-if="getChangedLogbook().length" class="text-warning">±{{ getChangedLogbook().length }}</span>
+                                  <span v-if="getDestroyedLogbook().length" class="text-danger">-{{ getDestroyedLogbook().length }}</span>
+                              </small>
+                          </h3>
+
+                          <div class="float-right">
+                              <button v-if="permissions.includes('logbook.createpdf') && this.logbook.length" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf()" @keydown.enter.prevent="createPdf()">
+                                  <svg class="icon icon-16 mr-2">
+                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                  </svg>
+                                  Auswertung
+                              </button>
+                          </div>
+                      </div>
 
                       <div v-if="getUnsavedLogbook().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
@@ -857,6 +868,32 @@
                         return 0;
                     }
                 });
+            },
+
+            createPdf(employeeId) {
+                let url = new URL(window.location.origin + '/logbook/download');
+
+                let params = {}
+
+                if(this.filter_start) {
+                    params.start = this.filter_start;
+                }
+                if(this.filter_end) {
+                    params.end = this.filter_end;
+                }
+                if(this.filter_project) {
+                    params.project_id = this.filter_project.id;
+                }
+                if(this.filter_vehicle) {
+                    params.vehicle_id = this.filter_vehicle.id;
+                }
+                if(this.filter_only_own) {
+                    params.only_own = this.filter_only_own;
+                }
+
+                url.search = new URLSearchParams(params).toString();
+
+                window.open(url).focus();
             },
 
             getUnsavedLogbook() {

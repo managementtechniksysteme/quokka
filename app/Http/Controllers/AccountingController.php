@@ -123,6 +123,8 @@ class AccountingController extends Controller
         $endFormatted = optional($end)->format('Ymd') ?? '';
         $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
 
+        $fileName = 'AR ' . $username . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
+
         $report = Accounting::getReport($validatedData);
 
         return (new Latex())
@@ -139,6 +141,6 @@ class AccountingController extends Controller
                 'start' => $start,
                 'end' => $end
             ])
-            ->download('AR '.$username.' '.$rangeString.'.pdf');
+            ->download($fileName);
     }
 }

@@ -99,6 +99,6 @@ class LogbookController extends Controller
     }
 
     public function download(LogbookDownloadRequest $request) {
-        
+
     }
 }

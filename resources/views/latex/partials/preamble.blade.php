@@ -8,6 +8,7 @@
 \usepackage{calc}
 \usepackage{color}
 \usepackage{etoolbox}
+\usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \usepackage{framed}
@@ -17,6 +18,7 @@
 \usepackage{hyperref}
 \usepackage{lastpage}
 \usepackage{longtable}
+\usepackage{multirow}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}
@@ -25,6 +27,8 @@
 \usepackage{upquote}
 \usepackage{xcolor}
 \usepackage{colortbl}
+\usepackage[fit, breakall]{truncate}
+\usepackage{collcell}
 
 % heading formats
 \titleformat{\section}{\Large\bfseries}{\thesection}{2em}{}

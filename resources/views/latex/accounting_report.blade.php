@@ -13,7 +13,7 @@
 \begin{minipage}{0.93\textwidth}
 \large{\textbf{Abrechnung Auswertung {!! Latex::escape($employee->person->name) !!}}} \\ \large{\textbf{@unless($start || $end)gesamter @endunless Zeitraum @if($start) von {!! Latex::escape($start) !!}@endif @if($end)bis {!! Latex::escape($end) !!}@endif}}
 \end{minipage}
-\\\\\\
+\\\\
 @if($project || $service)\footnotesize{\textbf{Weitere Filter:}}
 @if($project)\footnotesize{Projekt: {!! Latex::escape($project->name) !!}}@endif
 @if($project && $service), @endif
@@ -29,7 +29,7 @@
 \hline
 \endhead
 @foreach($report as $entry)
-\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->date)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->project) !!}} & \footnotesize{{!! Latex::escape($entry->amount_hours ? Number::toLocal($entry->amount_hours) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_allowances ? Number::toLocal($entry->amount_allowances) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_50 ?Number::toLocal($entry->amount_overtime_50) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_100 ? Number::toLocal($entry->amount_overtime_100) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_time_balance ? Number::toLocal($entry->amount_time_balance) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_holidays ? Number::toLocal($entry->amount_holidays) : '') !!}}  \\
+\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->date)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->project) !!}} & \footnotesize{{!! Latex::escape($entry->amount_hours ? Number::toLocal($entry->amount_hours) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_allowances ? Number::toLocal($entry->amount_allowances) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_50 ?Number::toLocal($entry->amount_overtime_50) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_overtime_100 ? Number::toLocal($entry->amount_overtime_100) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_time_balance ? Number::toLocal($entry->amount_time_balance) : '') !!}} & \footnotesize{{!! Latex::escape($entry->amount_holidays ? Number::toLocal($entry->amount_holidays) : '') !!}} \\
 \hline
 @endforeach
 \footnotesize{\textbf{Summe}} & \footnotesize{} & \footnotesize{\textbf{{!! Latex::escape($report->sum('amount_hours') > 0 ? Number::toLocal($report->sum('amount_hours')) : '') !!}}} & \footnotesize{\textbf{@if($report->sum('amount_allowances') > 0){!! Latex::escape(Number::toLocal($report->sum('amount_allowances'))) !!} @if($allowancesService && $allowancesService->costs > 0) \newline ({!! Latex::escape(Number::toLocal($report->sum('amount_allowances') * $allowancesService->costs) . $currencyUnit) !!})@endif @endif}} & \footnotesize{\textbf{{!! Latex::escape($report->sum('amount_overtime_50') > 0 ? Number::toLocal($report->sum('amount_overtime_50')) : '') !!}}} & \footnotesize{\textbf{{!! Latex::escape($report->sum('amount_overtime_100') > 0 ? Number::toLocal($report->sum('amount_overtime_100')) : '') !!}}} & \footnotesize{\textbf{{!! Latex::escape($report->sum('amount_time_balance') > 0 ? Number::toLocal($report->sum('amount_time_balance')) : '') !!}}} & \footnotesize{\textbf{{!! Latex::escape($report->sum('amount_holidays') > 0 ? Number::toLocal($report->sum('amount_holidays')) : '') !!}}} \\

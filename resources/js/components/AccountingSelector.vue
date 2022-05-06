@@ -190,8 +190,8 @@
                                   </svg>
                                   Auswertung
                               </button>
-                              <div class="dropdown">
 
+                              <div class="dropdown">
                                   <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
                                       <svg class="icon icon-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#printer"></use>

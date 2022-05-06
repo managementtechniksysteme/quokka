@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
@@ -68,6 +69,10 @@ class Project extends Model
     public function logbook()
     {
         return $this->hasMany(Logbook::class);
+    }
+
+    public function getShortNameAttribute() {
+        return Str::beforeLast($this->name, ' [');
     }
 
     public function getCostsAttribute() {

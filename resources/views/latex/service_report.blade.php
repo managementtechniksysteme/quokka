@@ -22,7 +22,7 @@
 @else
 \footnotesize{\textbf{Kunde:}} & \footnotesize{nicht angegeben} & \footnotesize{\textbf{Betreiber:}} & \footnotesize{nicht angegeben} \\
 @endif
-\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if($serviceReport->status === 'finished')erledigt am: @endif & @if($serviceReport->status === 'finished'){!! Latex::escape($service->updated_at)!!} @endif \\
+\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if($serviceReport->status === 'finished')\footnotesize{erledigt am:} @endif & @if($serviceReport->status === 'finished')\footnotesize{{!! Latex::escape($serviceReport->updated_at)!!}} @endif \\
 \end{tabular}
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}

@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
 
     Route::resource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/accounting/download', [LogbookController::class, 'download'])->name('logbook.download');
 
     Route::resource('material-services', MaterialServiceController::class);
 

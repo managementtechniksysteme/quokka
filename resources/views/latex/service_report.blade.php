@@ -22,11 +22,11 @@
 @else
 \footnotesize{\textbf{Kunde:}} & \footnotesize{nicht angegeben} & \footnotesize{\textbf{Betreiber:}} & \footnotesize{nicht angegeben} \\
 @endif
-\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if($serviceReport->status === 'finished')erledigt am: @endif & @if($serviceReport->status === 'finished'){!! Latex::escape($service->updated_on) !!} @endif \\
+\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if($serviceReport->status === 'finished')erledigt am: @endif & @if($serviceReport->status === 'finished'){!! Latex::escape($service->updated_at)!!} @endif \\
 \end{tabular}
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}
-\section{Vollbrachte Leistungen}
+\section{Leistungen}
 \begin{longtable}{@{}|p{3.76cm}|p{3.76cm}|p{3.76cm}|p{3.76cm}|@{}}
 \hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{gefahrene KM} \\
 \hline

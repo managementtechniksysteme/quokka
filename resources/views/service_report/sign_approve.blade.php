@@ -22,7 +22,7 @@
 
         <div class="text-center">
             <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('service-reports.customer-download', $serviceReport->downloadRequest->token) }}">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>
                 Servicebericht als PDF herunterladen
@@ -43,7 +43,7 @@
 
             <div class="text-center">
                 <button type="submit" class="btn btn-outline-secondary d-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                     </svg>
                     Link als Email senden

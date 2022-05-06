@@ -11,13 +11,13 @@
                     @switch($secondaryInformation)
                         @case('withoutProject')
                             <div class="d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-1">
+                                <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
                             </div>
                             <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-1">
+                                <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                 </svg>
                                 {{ $task->due_on ?? 'kein Datum' }}
@@ -25,18 +25,18 @@
                             @break
                         @default
                             <div class="d-flex d-md-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-1">
+                                <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
                                 {{ $task->project->name }}
                             </div>
                             <div class="d-flex d-md-inline-flex align-items-center">
-                                <svg class="feather feather-16 ml-md-2 mr-1">
+                                <svg class="icon icon-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 {{ $task->responsibleEmployee->person->name }}
                                 <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-1">
+                                    <svg class="icon icon-16 mr-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                                     </svg>
                                     {{ $task->due_on ?? 'kein Datum' }}
@@ -46,18 +46,18 @@
                     @endswitch()
                 @else
                     <div class="d-flex d-md-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-1">
+                        <svg class="icon icon-16 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                         </svg>
                         {{ $task->project->name }}
                         </div>
                     <div class="d-flex d-md-inline-flex align-items-center">
-                        <svg class="feather feather-16 ml-md-2 mr-1">
+                        <svg class="icon icon-16 ml-md-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         {{ $task->responsibleEmployee->person->name }}
                         <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-1">
+                            <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>
                             {{ $task->due_on ?? 'kein Datum' }}
@@ -70,7 +70,7 @@
         @if($task->private)
             <div class="col-auto text-right">
                 <div class="text-warning d-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-md-1">
+                    <svg class="icon icon-16 mr-md-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
                     </svg>
                     <span class="text-muted d-none d-lg-inline-block">privat</span>
@@ -87,7 +87,7 @@
                     @unless($task->status === 'finished')
                         @can('update', $task)
                             <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
                                 Erledigen
@@ -96,7 +96,7 @@
                     @endunless
                     @can('update', $task)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.edit', $task) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                             </svg>
                             Bearbeiten
@@ -104,7 +104,7 @@
                     @endcan
                     @can('create', \App\Models\Task::class)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.create', ['template' => $task]) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
                             </svg>
                             Kopieren
@@ -112,7 +112,7 @@
                     @endcan
                     @can('email', $task)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email senden
@@ -120,14 +120,14 @@
                     @endcan
                     @can('createPdf', $task)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}" target="_blank">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             PDF erstellen
                         </a>
                     @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                         Favorisieren
@@ -138,7 +138,7 @@
                             @method('DELETE')
 
                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>
                                 Entfernen

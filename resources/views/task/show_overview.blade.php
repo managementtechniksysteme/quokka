@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-5 col-md-4 col-lg-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                 </svg>
                 Projekt
@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif feather feather-16 mr-2">
+                        <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                         </svg>
                         Fälligkeitsdatum
@@ -32,7 +32,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Zeitraum
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-sm-7 col-md col-lg-8">
                     {{ $task->starts_on ?? 'kein Start' }}
-                    <svg class="feather feather-16 mx-1">
+                    <svg class="icon icon-16 mx-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                     </svg>
                     {{ $task->ends_on ? $task->ends_on : 'kein Ende' }}
@@ -49,7 +49,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Priorität
@@ -62,7 +62,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->isNew()) text-primary @elseif($task->isInProgress()) text-warning @else text-success @endif feather feather-16 mr-2">
+                        <svg class="@if($task->isNew()) text-primary @elseif($task->isInProgress()) text-warning @else text-success @endif icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                         </svg>
                         Status
@@ -75,7 +75,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Verrechnungsstatus
@@ -88,7 +88,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->private) text-warning @else text-muted @endif feather feather-16 mr-2">
+                        <svg class="@if($task->private) text-warning @else text-muted @endif icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
                         </svg>
                         Sichtbarkeitsstatus
@@ -104,7 +104,7 @@
             <div class="row mt-3 mt-md-0">
                 <div class="col-sm-5 col-md-12 col-lg">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         Verantwortliche Person
@@ -117,7 +117,7 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md-12 col-lg">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                         </svg>
                         Mitwirkende Personen
@@ -139,7 +139,7 @@
 
     @if ($task->comment)
         <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -151,13 +151,13 @@
         <div class="row text-muted d-flex align-items-center mt-1">
             <div class="col">
                 <div class="d-none d-md-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                     </svg>
                     Anhänge
                 </div>
                 <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseTaskAttachments-{{ $task->id }}" role="button" aria-expanded="false" aria-controls="collapseTaskAttachments-{{ $task->id }}">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                     </svg>
                     Anhänge
@@ -172,7 +172,7 @@
                             @if($attachment->hasGeneratedConversion('thumbnail'))
                                 <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                             @else
-                                <svg class="feather attachment-img-preview mr-2">
+                                <svg class="icon attachment-img-preview mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                 </svg>
                             @endif
@@ -194,7 +194,7 @@
                             @if($attachment->hasGeneratedConversion('thumbnail'))
                                 <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                             @else
-                                <svg class="feather attachment-img-preview mr-2">
+                                <svg class="icon attachment-img-preview mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                 </svg>
                             @endif

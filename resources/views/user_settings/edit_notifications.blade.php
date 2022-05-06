@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <p class="text-muted d-inline-flex align-items-center mb-1">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
                 </svg>
                 Push Benachrichtigungen
@@ -16,7 +16,7 @@
         <div class="col">
             <div class="alert alert-info mt-1" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="feather feather-24 mr-2">
+                    <svg class="icon icon-24 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Push Benachrichtigungen müssen aus technischen Gründen auf jedem Gerät separat aktiviert beziehungsweise
@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col">
                 <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('webpush.test') }}">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                     </svg>
                     Test Benachrichtigung senden

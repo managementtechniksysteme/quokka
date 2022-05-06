@@ -4,7 +4,7 @@
     @unless ($company->projects->isEmpty() && !Request::get('search'))
         @can('create', \App\Models\Project::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                 </svg>
                 Projekt anlegen
@@ -27,13 +27,13 @@
                         <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Projekte suchen" autocomplete="off" />
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                <svg class="feather feather-16">
+                                <svg class="icon icon-16">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                 </svg>
                             </button>
                             @if (Request::get('search'))
                                 <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
-                                    <svg class="feather feather-16">
+                                    <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                     </svg>
                                 </a>
@@ -48,7 +48,7 @@
             <div class="col-auto ml-auto">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                         </svg>
                         Sortierung
@@ -63,39 +63,39 @@
                             @endif
 
                             <button type="submit" name="sort" value="name-asc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                 </svg>
                                 Name
                             </button>
                             <button type="submit" name="sort" value="name-desc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                 </svg>
                                 Name
                             </button>
 
                             <button type="submit" name="sort" value="wage-costs-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                 </svg>
                                 Lohnkosten
                             </button>
                             <button type="submit" name="sort" value="wage-costs-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                 </svg>
                                 Lohnkosten
                             </button>
 
                             <button type="submit" name="sort" value="material-costs-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                 </svg>
                                 Materialkosten
                             </button>
                             <button type="submit" name="sort" value="material-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                 </svg>
                                 Materialkosten
@@ -126,7 +126,7 @@
                     @can('create', \App\Models\Project::class)
                         <p class="lead">Lege ein neues Projekt an.</p>
                         <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                            <svg class="feather feather-20 mr-2">
+                            <svg class="icon icon-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                             </svg>
                             Projekt anlegen
@@ -147,15 +147,15 @@
                 Die Pfeile für die
                 <span class="font-weight-bolder"><u>G</u></span>esamt, <span class="font-weight-bold"><u>L</u></span>ohn und <span class="font-weight-bold"><u>M</u></span>aterialosten
                 zeigen folgende Information:<br />
-                <svg class="feather feather-12 text-success">
+                <svg class="icon icon-baseline text-success">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                 </svg>
                 Die aktuellen Kosten liegen unter der Warnschwelle.<br />
-                <svg class="feather feather-12 text-warning">
+                <svg class="icon icon-baseline text-warning">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
                 </svg>
                 Die aktuellen Kosten liegen zwischen der Warnschwelle und den geschätzten Kosten.<br />
-                <svg class="feather feather-12 text-danger">
+                <svg class="icon icon-baseline text-danger">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                 </svg>
                 Die aktuellen Kosten liegen über den geschätzten Kosten.<br />

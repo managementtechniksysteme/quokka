@@ -11,7 +11,7 @@
                     @error('username')
                         <notification type="danger" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="feather feather-24 mr-2">
+                                <svg class="icon icon-24 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>
                                 </svg>
                                 {{ $message }}
@@ -23,7 +23,7 @@
                     @if (session('status'))
                         <notification type="info" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="feather feather-24 mr-2">
+                                <svg class="icon icon-24 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>
                                 {{ session('status') }}

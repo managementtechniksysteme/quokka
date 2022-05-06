@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                         </svg>
                         Anfrage zur Unterschrift senden
@@ -52,7 +52,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                         </svg>
                         Anfrage senden

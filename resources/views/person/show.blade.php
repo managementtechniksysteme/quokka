@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}
                     @if(false)
-                        <svg class="feather feather-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ml-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
             <div class="scroll-x d-flex">
                 @can('update', $person)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('people.edit', $person) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -28,7 +28,7 @@
                 @endcan
                 @can('email', $person)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -36,14 +36,14 @@
                 @endcan
                 @can('createPdf', $person)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
@@ -54,7 +54,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -72,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                             </svg>
                             Firma
@@ -89,7 +89,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                             </svg>
                             Abteilung
@@ -102,7 +102,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                             </svg>
                             Rolle
@@ -115,7 +115,7 @@
                 <div class="row mt-4">
                     <div class="col">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                             </svg>
                             Privatadresse
@@ -125,7 +125,7 @@
                                 {{ $person->address->first()->street_number }} <br />
                                 {{ $person->address->first()->postcode }} {{ $person->address->first()->city }} <br />
                                 <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $person->address->first()->address_line }}">
-                                    <svg class="feather feather-16 mr-1">
+                                    <svg class="icon icon-16 mr-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
                                     Google Maps
@@ -142,7 +142,7 @@
                 <div class="row mt-4 mt-lg-0">
                     <div class="col-5 col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                             </svg>
                             Telefon geschäftlich
@@ -155,7 +155,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
                             </svg>
                             Telefon&nbsp;mobil
@@ -168,7 +168,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                             </svg>
                             Telefon&nbsp;privat
@@ -181,7 +181,7 @@
                 <div class="row mt-3">
                     <div class="col-5  col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             Fax
@@ -194,7 +194,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email
@@ -211,7 +211,7 @@
                 <div class="row mt-3">
                     <div class="col-5 col-md-4 col-lg-5">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use>
                             </svg>
                             Web<span class="d-none d-md-inline">seite</span>
@@ -230,7 +230,7 @@
 
         @if ($person->comment)
             <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                 </svg>
                 Bemerkungen

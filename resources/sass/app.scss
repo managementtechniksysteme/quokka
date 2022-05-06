@@ -120,51 +120,62 @@ main {
     line-height: 1.5  !important;
 }
 
-// Feather icons
-svg.feather {
+// Icons
+svg.icon {
     stroke: currentColor;
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
+    display: inline-flex;
+    align-self: center;
+    min-width: 1em;
+    min-height: 1em;
+    max-width: 1em;
+    max-height: 1em;
 }
 
-svg.feather-12 {
+svg.icon-baseline {
+    bottom: 0.125em;
+    position: relative;
+}
+
+svg.icon-12 {
     min-width: 12px;
     min-height: 12px;
     max-width: 12px;
     max-height: 12px;
 }
 
-svg.feather-16 {
+svg.icon-16 {
     min-width: 16px;
     min-height: 16px;
     max-width: 16px;
     max-height: 16px;
 }
 
-svg.feather-20 {
+svg.icon-20 {
     min-width: 20px;
     min-height: 20px;
     max-width: 20px;
     max-height: 20px;
 }
 
-svg.feather-24 {
+svg.icon-24 {
     min-width: 24px;
     min-height: 24px;
     max-width: 24px;
     max-height: 24px;
 }
 
-svg.feather-28 {
+svg.icon-28 {
     min-width: 28px;
     min-height: 28px;
     max-width: 28px;
     max-height: 28px;
 }
 
-svg.feather-32 {
+svg.icon-32 {
     min-width: 32px;
     min-height: 32px;
     max-width: 32px;

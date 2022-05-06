@@ -5,15 +5,15 @@
         <div class="container pt-4">
             <h3>
                 Serviceberichte
-                @if(count($serviceReports))
-                    <small class="text-muted">{{ count($serviceReports) }} Einträge</small>
+                @if($serviceReports)
+                    <small class="text-muted">{{ $serviceReports->total() }} Einträge</small>
                 @endif
             </h3>
 
             <div class="scroll-x d-flex">
                 @can('create', \App\Models\ServiceReport::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.create') }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Servicebericht anlegen
@@ -38,13 +38,13 @@
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Serviceberichte suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                    <svg class="feather feather-16">
+                                    <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
                                     <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
-                                        <svg class="feather feather-16">
+                                        <svg class="icon icon-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>
                                     </a>
@@ -76,7 +76,7 @@
                 <div class="col-auto ml-auto">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                             </svg>
                             Sortierung
@@ -88,26 +88,26 @@
                                 @endif
 
                                 <button type="submit" name="sort" value="number-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                     </svg>
                                     Nummer
                                 </button>
                                 <button type="submit" name="sort" value="number-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                     </svg>
                                     Nummer
                                 </button>
 
                                 <button type="submit" name="sort" value="status-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                     </svg>
                                     Status
                                 </button>
                                 <button type="submit" name="sort" value="status-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                     </svg>
                                     Status
@@ -139,7 +139,7 @@
                         @can('create', \App\Models\ServiceReport::class)
                             <p class="lead">Lege einen neuen Servicebericht an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('service-reports.create') }}">
-                                <svg class="feather feather-20 mr-2">
+                                <svg class="icon icon-20 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 Servicebericht anlegen

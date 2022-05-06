@@ -5,7 +5,7 @@
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="feather feather-24 mr-2">
+              <svg class="icon icon-24 mr-2">
                   <use xlink:href="/svg/feather-sprite.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
@@ -13,7 +13,7 @@
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="feather feather-24 mr-2">
+              <svg class="icon icon-24 mr-2">
                   <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
@@ -81,7 +81,7 @@
                               </div>
                           </div>
                           <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="feather feather-16 mr-2">
+                              <svg class="icon icon-16 mr-2">
                                   <use xlink:href="/svg/feather-sprite.svg#filter"></use>
                               </svg>
                               Einträge filtern
@@ -150,7 +150,7 @@
                               <div class="form-group d-none d-lg-block d-xl-none col-lg-3">
                                   <label for="addaccounting">&nbsp;</label>
                                   <button id="addaccounting" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
-                                      <svg class="feather feather-16 mr-2">
+                                      <svg class="icon icon-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                       </svg>
                                       Hinzufügen
@@ -159,7 +159,7 @@
                           </div>
                           <div class="d-block d-lg-none d-xl-block mt-4">
                               <button id="addaccounting" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
-                                  <svg class="feather feather-16 mr-2">
+                                  <svg class="icon icon-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
                                   Hinzufügen
@@ -185,7 +185,7 @@
 
                           <div class="float-right">
                               <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length === 1" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                  <svg class="feather feather-16 mr-2">
+                                  <svg class="icon icon-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                   </svg>
                                   Auswertung
@@ -193,7 +193,7 @@
                               <div class="dropdown">
 
                                   <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                                      <svg class="feather feather-16 mr-2">
+                                      <svg class="icon icon-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                       </svg>
                                       Auswertung
@@ -201,7 +201,7 @@
 
                                   <div class="dropdown-menu dropdown-menu-right">
                                       <button v-for="employeeId in this.getShownEmployeeIds()" class="dropdown-item" v-bind:class="{'dropdown-item-primary': employeeId === current_employee.id}" @click="createPdf(employeeId)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                          <svg class="feather feather-16 mr-2">
+                                          <svg class="icon icon-16 mr-2">
                                               <use xlink:href="/svg/feather-sprite.svg#user"></use>
                                           </svg>
                                           {{ getEmployeeName(employeeId) }}
@@ -213,7 +213,7 @@
 
                       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
-                              <svg class="feather feather-24 mr-2">
+                              <svg class="icon icon-24 mr-2">
                                   <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                               </svg>
                               <p class="m-0">
@@ -230,7 +230,7 @@
                               <tr>
                                   <th scope="col" class="col-auto">
                                       <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
                                       </button>
@@ -244,23 +244,23 @@
                                   <th scope="col" class="col-1-5">Mitarbeiter</th>
                                   <th scope="col" class="col-auto text-right">
                                       <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                           </svg>
                                       </button>
                                       <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                           </svg>
                                       </button>
                                       <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                               <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
                                       <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
@@ -272,7 +272,7 @@
                                   <tr class="hover-highlight" v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                                       <td class="col-auto">
                                           <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use v-if="!acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
                                                   <use v-if="acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                                   <use v-if="acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
@@ -310,23 +310,23 @@
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                                       <td class="col-auto text-right">
                                           <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
                                           <button v-if="acc.action === 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
                                           </button>
                                           <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use v-if="!acc.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                                   <use v-if="acc.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
                                           <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
@@ -372,7 +372,7 @@
                   </div>
 
                   <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
-                      <svg class="feather feather-16 mr-2">
+                      <svg class="icon icon-16 mr-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
                       Änderungen speichern

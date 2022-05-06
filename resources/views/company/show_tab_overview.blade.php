@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="text-muted d-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 Addresse
@@ -15,7 +15,7 @@
                     {{ $company->address->first()->street_number }} <br />
                     {{ $company->address->first()->postcode }} {{ $company->address->first()->city }} <br />
                     <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $company->address->first()->address_line }}">
-                        <svg class="feather feather-16 mr-1">
+                        <svg class="icon icon-16 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                         </svg>
                         Google Maps
@@ -30,7 +30,7 @@
             <div class="row mt-4 mt-md-0">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
                         </svg>
                         Telefon
@@ -43,7 +43,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         Fax
@@ -56,7 +56,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email
@@ -73,7 +73,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use>
                         </svg>
                         Webseite
@@ -92,7 +92,7 @@
 
     @if ($company->comment)
         <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen

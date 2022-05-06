@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                     </svg>
                     Eigene Firma
@@ -58,7 +58,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Diese Einstellung ist erforderlich, um Mitarbeiter und andere Objekte direkt der eigenen Firma
@@ -85,7 +85,7 @@
         <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
                     </svg>
                     Einstellungen zu Leistungen und Abrechnungen
@@ -97,7 +97,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Diese Einstellungen sind für die Validierung sowie automatische Berechnung von Stunden sowie
@@ -189,7 +189,7 @@
         <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                     </svg>
                     Automatische Anpassung sowie Gutschreibung von Urlaub
@@ -201,7 +201,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Diese Einstellungen sind erforderlich, um verfügbaren Urlaub von Mitarbeitern automatisch
@@ -243,7 +243,7 @@
         <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     Warnung für Kostenschätzungen
@@ -255,7 +255,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Hier kann festgelgt werden, ab wie vielen Prozent der geschätzten Lohn- sowie Materialkosten eine
@@ -327,7 +327,7 @@
         <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                     </svg>
                     Benachrichtigung bei unterschriebenen Berichten
@@ -339,7 +339,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Hier kann ein Quokka Benutzer festgelegt werden, der immer zusätzlich zum zuständigen Techniker
@@ -367,7 +367,7 @@
         <div class="row mt-4">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     Bald fällige Aufgaben
@@ -392,7 +392,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
             </svg>
             Einstellungen speichern

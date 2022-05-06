@@ -16,7 +16,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
             </svg>
             Stammdaten
@@ -42,7 +42,7 @@
                 <div class="form-group col-auto pl-0 ml-1">
                     <label>&nbsp;</label>
                     <a class="btn btn-outline-secondary d-flex align-items-center" href="{{ route('people.create') }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Person anlegen
@@ -89,7 +89,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
             </svg>
             Quokka Benutzer
@@ -143,7 +143,7 @@
         </div>
 
         <a class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" href="{{ route('employees.edit-permissions', $employee) }}">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
             </svg>
             Berechtigungen bearbeiten

@@ -12,30 +12,30 @@
             <div class="d-none d-lg-block col-lg-3">
                 <div class="menu border-right pr-3">
                     <a class="menu-item @if (request()->tab == 'general') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'general']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
                         Allgemeines
                         @unless(Auth::user()->signature())
-                            <svg class="text-red feather feather-16 ml-auto">
+                            <svg class="text-red icon icon-16 ml-auto">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                             </svg>
                         @endunless
                     </a>
                     <a class="menu-item @if (request()->tab == 'interface') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'interface']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#layout"></use>
                         </svg>
                         Aussehen
                     </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                         </svg>
                         Benachrichtigungen
                     </a>
                     <a class="menu-item @if (request()->tab == 'security') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'security']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
                         </svg>
                         Sicherheit
@@ -46,30 +46,30 @@
             <div class="menu d-block d-lg-none col mb-4">
                 <div class="scroll-x border-bottom pb-1">
                     <a class="menu-item @if (request()->tab == 'general') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'general']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                         </svg>
                         Allgemeines
                         @unless(Auth::user()->signature())
-                            <svg class="text-red feather feather-16 ml-1">
+                            <svg class="text-red icon icon-16 ml-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                             </svg>
                         @endunless
                     </a>
                     <a class="menu-item @if (request()->tab == 'interface') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'interface']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#layout"></use>
                         </svg>
                         Aussehen
                     </a>
                     <a class="menu-item @if (request()->tab == 'notifications') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'notifications']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                         </svg>
                         Benachrichtigungen
                     </a>
                     <a class="menu-item @if (request()->tab == 'security') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('user-settings.edit', ['tab' => 'security']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
                         </svg>
                         Sicherheit

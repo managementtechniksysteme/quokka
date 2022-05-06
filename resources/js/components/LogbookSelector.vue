@@ -5,7 +5,7 @@
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="feather feather-24 mr-2">
+              <svg class="icon icon-24 mr-2">
                   <use xlink:href="/svg/feather-sprite.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
@@ -13,7 +13,7 @@
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="feather feather-24 mr-2">
+              <svg class="icon icon-24 mr-2">
                   <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
@@ -81,7 +81,7 @@
                               </div>
                           </div>
                           <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="feather feather-16 mr-2">
+                              <svg class="icon icon-16 mr-2">
                                   <use xlink:href="/svg/feather-sprite.svg#filter"></use>
                               </svg>
                               Einträge filtern
@@ -176,7 +176,7 @@
                                       <input type="checkbox" class="custom-control-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
                                       <label class="custom-control-label" for="return_trip">Hin- und Rückfahrt</label>
                                       <a data-toggle="collapse" href="#returnTripHelpCollapse">
-                                          <svg class="feather feather-16 ml-2 text-muted">
+                                          <svg class="icon icon-16 ml-2 text-muted">
                                               <use xlink:href="/svg/feather-sprite.svg#help-circle"></use>
                                           </svg>
                                       </a>
@@ -189,7 +189,7 @@
                           </div>
                           <div class="mt-4">
                               <button id="addlogbook" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addLogbook()">
-                                  <svg class="feather feather-16 mr-2">
+                                  <svg class="icon icon-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
                                   Hinzufügen
@@ -213,7 +213,7 @@
 
                       <div v-if="getUnsavedLogbook().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
-                              <svg class="feather feather-24 mr-2">
+                              <svg class="icon icon-24 mr-2">
                                   <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                               </svg>
                               <p class="m-0">
@@ -230,7 +230,7 @@
                               <tr>
                                   <th scope="col" class="col-auto">
                                       <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorLogbook().length, 'errorstoggle text-red-100': getErrorLogbook().length, 'text-red-500': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
                                       </button>
@@ -245,23 +245,23 @@
                                   <th scope="col" class="col-1-5">Ziel</th>
                                   <th scope="col" class="col-auto text-right">
                                       <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="removeSelectedLogbook()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                           </svg>
                                       </button>
                                       <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="restoreSelectedLogbook()">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                           </svg>
                                       </button>
                                       <button v-if="(getSelectedLogbook().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                               <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
                                       <button v-if="getSelectedLogbook().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="feather feather-16">
+                                          <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                           </svg>
                                       </button>
@@ -273,7 +273,7 @@
                                   <tr class="hover-highlight" v-bind:class="{'border-status border-success': book.action === 'store' && !book.selected, 'border-status border-warning': book.action === 'update' && !book.selected, 'text-muted ': book.action === 'destroy', 'border-status border-danger': book.action === 'destroy' && !book.selected, 'border-status border-primary': book.selected}">
                                       <td class="col-auto">
                                           <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !book.errors && !book.show_details, 'errorstoggle text-red-100': book.errors && !book.show_details, 'text-dark': !book.errors && book.show_details, 'text-red-500': book.errors && book.show_details}" @click="toggleShowDetails(book)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use v-if="!book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
                                                   <use v-if="book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                                   <use v-if="book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
@@ -322,23 +322,23 @@
 
                                       <td class="col-auto text-right">
                                           <button v-if="book.action !== 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
                                               </svg>
                                           </button>
                                           <button v-if="book.action === 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
                                               </svg>
                                           </button>
                                           <button v-if="!book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)" @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use v-if="!book.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
                                                   <use v-if="book.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
                                           <button v-if="book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)"  @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
-                                              <svg class="feather feather-16">
+                                              <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
                                               </svg>
                                           </button>
@@ -399,7 +399,7 @@
                   </div>
 
                   <button v-if="logbook.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedLogbook().length" @click="saveData()">
-                      <svg class="feather feather-16 mr-2">
+                      <svg class="icon icon-16 mr-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
                       Änderungen speichern

@@ -5,7 +5,7 @@
             <div v-if="webpush_enabled === false">
                 <p>Push Benachrictungen sind auf diesem Gerät deaktiviert. Aktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
                 <button class="btn btn-primary d-inlin-flex align-items-center" @click="subscribeUser">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="svg/feather-sprite.svg#bell"></use>
                     </svg>
                     Push Benachrichtigungen aktivieren
@@ -14,7 +14,7 @@
             <div v-if="webpush_enabled === true">
                 <p>Push Benachrictungen sind auf diesem Gerät aktiviert. Deaktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
                 <button class="btn btn-outline-danger d-inline-flex align-items-center" @click="unsubscribeUser">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="svg/feather-sprite.svg#bell-off"></use>
                     </svg>
                     Push Benachrichtigungen deaktivieren
@@ -24,7 +24,7 @@
             <div v-if="success_notification !== null" :key="notification_key">
                 <notification type="success" v-cloak>
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="svg/feather-sprite.svg#check"></use>
                         </svg>
                         {{success_notification}}
@@ -34,7 +34,7 @@
             <div v-if="error_notification !== null" :key="notification_key">
                 <notification type="danger" v-cloak>
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="svg/feather-sprite.svg#alert-octagon"></use>
                         </svg>
                         {{error_notification}}

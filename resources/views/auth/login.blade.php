@@ -57,7 +57,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#log-in"></use>
                                     </svg>
                                     {{ __('Login') }}

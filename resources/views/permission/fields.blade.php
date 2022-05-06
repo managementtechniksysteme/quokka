@@ -1,7 +1,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
             Abrechnung
@@ -117,7 +117,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
             </svg>
             Adressen
@@ -200,7 +200,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
             </svg>
             Aktenvermerke
@@ -503,7 +503,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>
             Applikationseinstellungen
@@ -531,7 +531,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
             </svg>
             Aufgaben
@@ -900,7 +900,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Aufgaben Kommentare
@@ -972,7 +972,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
             </svg>
             Fahrtenbuch
@@ -1088,7 +1088,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
             </svg>
             Fahrzeuge
@@ -1171,7 +1171,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
             </svg>
             Firmen
@@ -1254,7 +1254,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
             </svg>
             Hilfe
@@ -1282,7 +1282,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
             </svg>
             Lohndienstleistungen
@@ -1365,7 +1365,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
             </svg>
             Materialleistungen
@@ -1448,7 +1448,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
             </svg>
             Mitarbeiter
@@ -1531,7 +1531,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
             </svg>
             Personen
@@ -1614,7 +1614,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
             </svg>
             Projekte
@@ -1708,7 +1708,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
             </svg>
             Rollen
@@ -1791,7 +1791,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>
             Serviceberichte
@@ -2006,7 +2006,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
             </svg>
             Tools

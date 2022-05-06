@@ -31,7 +31,7 @@
                 <div class="row mt-4">
                     <div class="col-md-4">
                         <p class="d-inline-flex align-items-center mb-1">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                             </svg>
                             Anfrage zum Download senden
@@ -44,7 +44,7 @@
                     <div class="col-md-8">
                         <div class="alert alert-info" role="alert">
                             <div class="d-inline-flex align-items-center">
-                                <svg class="feather feather-24 mr-2">
+                                <svg class="icon icon-24 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>
                                 Die Email Adresse kann im nächsten Schritt angegeben werden.
@@ -67,13 +67,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Servicebericht unterschreiben
                         </button>
                         <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

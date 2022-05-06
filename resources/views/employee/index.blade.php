@@ -5,15 +5,15 @@
         <div class="container pt-4">
             <h3>
                 Mitarbeiter
-                @if(count($employees))
-                    <small class="text-muted">{{ count($employees) }} Einträge</small>
+                @if($employees)
+                    <small class="text-muted">{{ $employees->total() }} Einträge</small>
                 @endif
             </h3>
 
             <div class="scroll-x d-flex">
                 @can('create', \App\Models\Employee::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Mitarbeiter anlegen
@@ -34,13 +34,13 @@
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                    <svg class="feather feather-16">
+                                    <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
                                     <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" href="{{ Request::url() }}">
-                                        <svg class="feather feather-16">
+                                        <svg class="icon icon-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>
                                     </a>
@@ -73,7 +73,7 @@
                         @can('create', \App\Models\Employee::class)
                             <p class="lead">Lege einen neuen Mitarbeiter an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                                <svg class="feather feather-20 mr-2">
+                                <svg class="icon icon-20 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 Mitarbeiter anlegen

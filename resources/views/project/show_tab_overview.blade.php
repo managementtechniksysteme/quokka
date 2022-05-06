@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                 </svg>
                 Firma
@@ -18,7 +18,7 @@
     <div class="row mt-3">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                 </svg>
                 Zeitraum
@@ -27,7 +27,7 @@
         <div class="col">
             <div class="d-flex align-items-center">
                 {{ $project->starts_on ? $project->starts_on : 'kein Start angegeben' }}
-                <svg class="feather feather-16 mx-1">
+                <svg class="icon icon-16 mx-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                 </svg>
                 {{ $project->ends_on ?? 'kein Ende angegeben' }}
@@ -39,7 +39,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Gesamtkosten
@@ -52,7 +52,7 @@
                         aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
                         @if($project->current_costs_percentage)
                             ({{ Number::toLocal($project->current_costs_percentage, 1) }}%)
-                            <svg class="feather feather-16 ml-2 text-{{ $project->current_costs_status }}">
+                            <svg class="icon icon-16 ml-2 text-{{ $project->current_costs_status }}">
                                 @switch($project->current_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -74,7 +74,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Lohnkosten
@@ -87,7 +87,7 @@
                         aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_wage_costs) }}
                         @if($project->current_wage_costs_percentage)
                             ({{ Number::toLocal($project->current_wage_costs_percentage, 1) }}%)
-                            <svg class="feather feather-16 ml-2 text-{{ $project->current_wage_costs_status }}">
+                            <svg class="icon icon-16 ml-2 text-{{ $project->current_wage_costs_status }}">
                                 @switch($project->current_wage_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -109,7 +109,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Materialkosten
@@ -122,7 +122,7 @@
                         aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_material_costs) }}
                         @if($project->current_material_costs_percentage)
                             ({{ Number::toLocal($project->current_material_costs_percentage, 1) }}%)
-                            <svg class="feather feather-16 ml-2 text-{{ $project->current_material_costs_status }}">
+                            <svg class="icon icon-16 ml-2 text-{{ $project->current_material_costs_status }}">
                                 @switch($project->current_material_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -145,7 +145,7 @@
         <div class="row mt-3">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
                     Kilometer
@@ -159,7 +159,7 @@
 
     @if ($project->comment)
         <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <p class="text-muted d-inline-flex align-items-center mb-1">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                 </svg>
                 Passwort ändern
@@ -16,7 +16,7 @@
         <div class="col">
             <div class="alert alert-info mt-1" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="feather feather-24 mr-2">
+                    <svg class="icon icon-24 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Nach dem Setzen eines neuen Passwortes werden alle Sitzungen mit Ausnahme der aktuellen (in welcher
@@ -56,7 +56,7 @@
         <div class="row mt-2">
             <div class="col">
                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                     </svg>
                     Passwort speichern
@@ -68,7 +68,7 @@
     <div class="row mt-4">
         <div class="col">
             <p class="text-muted d-inline-flex align-items-center mb-1">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
                 </svg>
                 Zwei-Faktor-Authentisierung
@@ -92,7 +92,7 @@
             <div class="row mt-2">
                 <div class="col">
                     <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield-off"></use>
                         </svg>
                         Zwei-Faktor-Authentisierung deaktivieren
@@ -107,7 +107,7 @@
             <div class="col">
                 <div class="alert alert-info mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
                         Scanne den folgenden QR-Code mit einer Zwei-Faktor-Autentisierung Applikation auf deinem
@@ -151,7 +151,7 @@
             <div class="row mt-2">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                         </svg>
                         Einmalpasswort bestätigen
@@ -176,7 +176,7 @@
             <div class="row mt-2">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#shield"></use>
                         </svg>
                         Zwei-Faktor-Authentisierung aktivieren

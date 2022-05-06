@@ -15,7 +15,7 @@
 @unless(Auth::user()->signature())
     <div class="alert alert-warning mt-1" role="alert">
         <div class="d-inline-flex align-items-center">
-            <svg class="feather feather-24 mr-2">
+            <svg class="icon icon-24 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
             </svg>
             <p class="m-0">
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>
             Stammdaten
@@ -68,7 +68,7 @@
             @if(optional($serviceReport)->status == 'signed')
                 <div class="alert alert-warning mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="feather feather-24 mr-2">
+                        <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
@@ -92,7 +92,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
             Vollbrachte Serviceleistungen
@@ -118,7 +118,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -135,7 +135,7 @@
             </label>
             <vue-easymde :configs="{maxHeight: '300px', tabSize: 4, indentWithTabs: false, spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($serviceReport)->comment) }}" v-cloak></vue-easymde>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="feather feather-16 mr-1">
+                <svg class="icon icon-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -152,7 +152,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Anhänge
@@ -192,7 +192,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
             </svg>
             Anfrage zur Unterschrift senden
@@ -205,7 +205,7 @@
     <div class="col-md-8">
         <div class="alert alert-info" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="feather feather-24 mr-2">
+                <svg class="icon icon-24 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 Die Email Adresse kann im nächsten Schritt angegeben werden.

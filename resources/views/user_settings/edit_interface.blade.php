@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#list"></use>
                     </svg>
                     Darstellung von Listen
@@ -80,7 +80,7 @@
         <div class="row">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1 mt-4">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                     </svg>
                     Sortierung von Kommentaren in Aufgaben
@@ -117,7 +117,7 @@
         <div class="row">
             <div class="col">
                 <p class="text-muted d-inline-flex align-items-center mb-1 mt-4">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
                     Einstellungen zur Anzeige bei der Abrechnung
@@ -172,7 +172,7 @@
         <div class="row mt-4">
             <div class="col">
                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                     </svg>
                     Einstellungen speichern

@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $employee->person->name }}
                     @if(false)
-                        <svg class="feather feather-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ml-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
             <div class="scroll-x d-flex">
                 @can('update', $employee)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.edit', $employee) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -28,7 +28,7 @@
                 @endcan
                 @can('email', $employee)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -36,14 +36,14 @@
                 @endcan
                 @can('createPdf', $employee)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
@@ -51,7 +51,7 @@
                 @if($employee->user && $employee->user->trashed())
                     @can('update', $employee)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.access-grant', $employee) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#unlock"></use>
                             </svg>
                             Quokka Zugang entsperren
@@ -60,7 +60,7 @@
                 @elseif($employee->user)
                     @can('update', $employee)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.access-deny', $employee) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
                             </svg>
                             Quokka Zugang sperren
@@ -73,7 +73,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -89,7 +89,7 @@
         <div class="row mt-3 mt-md-4">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     Person
@@ -102,7 +102,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     Quokka Benutzername
@@ -122,7 +122,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                     </svg>
                     Eintrittsdatum
@@ -135,7 +135,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                     </svg>
                     Austrittsdatum
@@ -148,7 +148,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                     </svg>
                     Urlaubstage
@@ -165,7 +165,7 @@
                 <small class="text-muted">
                     {{ count($employee->user->permissions) }} Einträge
                     <a class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center ml-2" type="button"  data-toggle="collapse" data-target="#permissions">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Anzeigen

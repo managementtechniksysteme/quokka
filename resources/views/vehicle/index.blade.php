@@ -5,15 +5,15 @@
         <div class="container pt-4">
             <h3>
                 Fuhrpark
-                @if(count($vehicles))
-                    <small class="text-muted">{{ count($vehicles) }} Einträge</small>
+                @if($vehicles)
+                    <small class="text-muted">{{ $vehicles->total() }} Einträge</small>
                 @endif
             </h3>
 
             <div class="scroll-x d-flex">
                 @can('create', \App\Models\Vehicle::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('vehicles.create') }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Fahrzeug anlegen
@@ -38,13 +38,13 @@
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Fahrzeuge suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                    <svg class="feather feather-16">
+                                    <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
                                     <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
-                                        <svg class="feather feather-16">
+                                        <svg class="icon icon-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>
                                     </a>
@@ -59,7 +59,7 @@
                 <div class="col-auto ml-auto">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                             </svg>
                             Sortierung
@@ -71,26 +71,26 @@
                                 @endif
 
                                 <button type="submit" name="sort" value="reg-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                     </svg>
                                     Kennzeichen
                                 </button>
                                 <button type="submit" name="sort" value="reg-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="feather feather-16 mr-2">
+                                    <svg class="icon icon-16 mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                     </svg>
                                     Kennzeichen
                                 </button>
 
                                     <button type="submit" name="sort" value="type-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                        <svg class="feather feather-16 mr-2">
+                                        <svg class="icon icon-16 mr-2">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                         </svg>
                                         Typ
                                     </button>
                                     <button type="submit" name="sort" value="type-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                        <svg class="feather feather-16 mr-2">
+                                        <svg class="icon icon-16 mr-2">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                         </svg>
                                         Typ
@@ -121,7 +121,7 @@
                         @can('create', \App\Models\Vehicle::class)
                             <p class="lead">Lege ein neues Fahrzeug an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('vehicles.create') }}">
-                                <svg class="feather feather-20 mr-2">
+                                <svg class="icon icon-20 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 Fahrzeug anlegen

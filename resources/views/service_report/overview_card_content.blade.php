@@ -6,22 +6,22 @@
             <div>
                 @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} @endunless#{{ $serviceReport->number }}
                     ({{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on) }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
-                        <svg class="feather feather-16 mx-1">
+                        <svg class="icon icon-16 mx-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
                         {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on) }}@endif)
             </div>
             <div class="text-muted">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="feather feather-16 mr-1">
+                    <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
                     {{ $serviceReport->services_sum_hours }}
-                    <svg class="feather feather-16 ml-2 mr-1">
+                    <svg class="icon icon-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
                     {{ $serviceReport->services_sum_kilometres }}
-                    <svg class="feather feather-16 ml-2 mr-1">
+                    <svg class="icon icon-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     <span class="mw-100 text-truncate">
@@ -39,7 +39,7 @@
                     @unless($serviceReport->status === 'finished')
                         @can('approve', $serviceReport)
                             <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
                                 Erledigen
@@ -48,7 +48,7 @@
                     @endunless
                     @can('update', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                             </svg>
                             Bearbeiten
@@ -56,7 +56,7 @@
                     @endcan
                     @can('email', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email senden
@@ -64,14 +64,14 @@
                     @endcan
                     @can('createPdf', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             PDF erstellen
                         </a>
                     @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                         Favorisieren
@@ -81,7 +81,7 @@
                     @endif
                     @can('sign', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Unterschreiben lassen
@@ -89,7 +89,7 @@
                     @endcan
                     @can('emailSignatureRequest', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Unterschrift Anfrage senden
@@ -97,7 +97,7 @@
                     @endcan
                     @can('emailDownloadRequest', $serviceReport)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                             </svg>
                             Download Link senden
@@ -112,7 +112,7 @@
                             @method('DELETE')
 
                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>
                                 Entfernen

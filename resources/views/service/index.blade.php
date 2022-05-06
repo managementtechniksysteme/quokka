@@ -15,7 +15,7 @@
                 <div class="menu border-right pr-3">
                     @can('viewAny', \App\Models\WageService::class)
                         <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
                             </svg>
                             Lohndienstleistungen
@@ -25,7 +25,7 @@
 
                     @can('viewAny', \App\Models\MaterialService::class)
                         <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
                             </svg>
                             Materialleistungen
@@ -39,7 +39,7 @@
                 <div class="scroll-x border-bottom pb-1">
                     @can('viewAny', \App\Models\WageService::class)
                         <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
                             </svg>
                             Lohndienstleistungen
@@ -48,7 +48,7 @@
 
                     @can('viewAny', \App\Models\MaterialService::class)
                         <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
                             </svg>
                             Materialleistungen

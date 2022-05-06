@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                         </svg>
                         Empfänger
@@ -75,7 +75,7 @@
                 <div class="row mt-4">
                     <div class="col-md-4">
                         <p class="d-inline-flex align-items-center mb-1">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                             </svg>
                             Anhänge
@@ -96,7 +96,7 @@
                                         @if($attachment->hasGeneratedConversion('thumbnail'))
                                             <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
-                                            <svg class="feather attachment-img-preview mr-2">
+                                            <svg class="icon attachment-img-preview mr-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                             </svg>
                                         @endif
@@ -126,7 +126,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Aktenvermerk senden

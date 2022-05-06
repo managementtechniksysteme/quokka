@@ -7,7 +7,7 @@
                 {{ $company->full_name }}
             </div>
             <div class="text-muted d-inline-flex align-items-center">
-                <svg class="feather feather-16 mr-1">
+                <svg class="icon icon-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 <span class="mw-100 text-truncate">
@@ -19,7 +19,7 @@
         <div class="d-none d-sm-block col-sm-auto text-right">
             @can('viewAny', \App\Models\Project::class)
                 <a class="text-muted d-inline-flex align-items-center" href="{{ route('companies.show', [$company, 'tab' => 'projects']) }}">
-                    <svg class="feather feather-16 mr-1">
+                    <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
                     {{ $company->projects_count }}
@@ -28,7 +28,7 @@
 
             @can('viewAny', \App\Models\People::class)
                 <a class="text-muted d-inline-flex align-items-center ml-2" href="{{ route('companies.show', [$company, 'tab' => 'people']) }}">
-                    <svg class="feather feather-16 mr-1">
+                    <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                     </svg>
                     {{ $company->people_count }}
@@ -43,7 +43,7 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="companyOverviewDropdown">
                     @can('update', $company)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('companies.edit', $company) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                             </svg>
                             Bearbeiten
@@ -51,7 +51,7 @@
                     @endcan
                     @can('email', $company)
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email senden
@@ -59,14 +59,14 @@
                     @endcan
                     @can('createPdf', $company)
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             PDF erstellen
                         </a>
                     @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                         Favorisieren
@@ -77,7 +77,7 @@
                             @method('DELETE')
 
                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>
                                 Entfernen

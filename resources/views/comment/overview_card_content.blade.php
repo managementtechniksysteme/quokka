@@ -11,12 +11,12 @@
                     <div class="col-auto mr-auto">
                         <div class="lead">{{ $comment->employee->person->name }}</div>
                         <p class="text-muted d-inline-flex align-items-center m-0">
-                            <svg class="feather feather-16 mr-1">
+                            <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $comment->created_at->format('d.m.Y, H:i') }}
                             @if($comment->created_at->lt($comment->updated_at))
-                                <svg class="feather feather-16 ml-2 mr-1">
+                                <svg class="icon icon-16 ml-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit-2"></use>
                                 </svg>
                                 {{ $comment->updated_at->format('d.m.Y, H:i') }}
@@ -32,7 +32,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentOverviewDropdown">
                                     @can('update', $comment)
                                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
-                                            <svg class="feather feather-16 mr-2">
+                                            <svg class="icon icon-16 mr-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                                             </svg>
                                             Bearbeiten
@@ -44,7 +44,7 @@
                                             @method('DELETE')
 
                                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                                <svg class="feather feather-16 mr-2">
+                                                <svg class="icon icon-16 mr-2">
                                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                                 </svg>
                                                 Entfernen
@@ -70,13 +70,13 @@
                     <div class="row text-muted d-flex align-items-center mt-1">
                         <div class="col">
                             <div class="d-none d-md-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                                 </svg>
                                 Anhänge
                             </div>
                             <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseCommentAttachments-{{ $comment->id }}" role="button" aria-expanded="false" aria-controls="collapseCommentAttachments-{{ $comment->id }}">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                                 </svg>
                                 Anhänge
@@ -91,7 +91,7 @@
                                         @if($attachment->hasGeneratedConversion('thumbnail'))
                                             <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
-                                            <svg class="feather attachment-img-preview mr-2">
+                                            <svg class="icon attachment-img-preview mr-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                             </svg>
                                         @endif
@@ -113,7 +113,7 @@
                                         @if($attachment->hasGeneratedConversion('thumbnail'))
                                             <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
-                                            <svg class="feather attachment-img-preview mr-2">
+                                            <svg class="icon attachment-img-preview mr-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                             </svg>
                                         @endif

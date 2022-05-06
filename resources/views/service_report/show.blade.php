@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $serviceReport->project->name }} #{{ $serviceReport->number }}
                     @if(false)
-                        <svg class="feather feather-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ml-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -21,7 +21,7 @@
                 @unless($serviceReport->status === 'finished')
                     @can('approve', $serviceReport)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Erledigen
@@ -30,7 +30,7 @@
                 @endunless
                 @can('update', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -38,7 +38,7 @@
                 @endcan
                 @can('email', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -46,21 +46,21 @@
                 @endcan
                 @can('createPdf', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
                 </a>
                 @can('sign', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                         </svg>
                         Unterschreiben lassen
@@ -68,7 +68,7 @@
                 @endcan
                 @can('emailSignatureRequest', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Unterschrift Anfrage sendeen
@@ -76,7 +76,7 @@
                 @endcan
                 @can('emailDownloadRequest', $serviceReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                         </svg>
                         Download Link senden
@@ -88,7 +88,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="feather feather-16 mr-2">
+                            <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -104,7 +104,7 @@
         <div class="row mt-3 mt-md-4">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
                     Projekt
@@ -117,7 +117,7 @@
         <div class="row mt-3">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="feather feather-16 mr-2">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     Techniker
@@ -130,7 +130,7 @@
         <div class="row mt-3">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="@if($serviceReport->isNew()) text-primary @elseif($serviceReport->isSigned()) text-warning @else text-success @endif feather feather-16 mr-2">
+                    <svg class="@if($serviceReport->isNew()) text-primary @elseif($serviceReport->isSigned()) text-warning @else text-success @endif icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                     </svg>
                     Status
@@ -153,7 +153,7 @@
         </div>
 
         <div class="text-muted d-flex align-items-center mt-4 mb-2">
-            <svg class="feather feather-16 mr-2">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
             Vollbrachte Leistungen
@@ -163,7 +163,7 @@
 
         @if ($serviceReport->comment)
             <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                 </svg>
                 Bemerkungen
@@ -175,13 +175,13 @@
             <div class="row text-muted d-flex align-items-center mt-1">
                 <div class="col">
                     <div class="d-none d-md-inline-flex align-items-center">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
                     </div>
                     <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseServiceReportAttachments-{{ $serviceReport->id }}" role="button" aria-expanded="false" aria-controls="collapseServiceReportAttachments-{{ $serviceReport->id }}">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
@@ -196,7 +196,7 @@
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
                                     <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="feather attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif
@@ -218,7 +218,7 @@
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
                                     <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="feather attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview mr-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif

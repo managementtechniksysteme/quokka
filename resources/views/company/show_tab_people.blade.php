@@ -4,7 +4,7 @@
     @unless ($company->people->isEmpty() && !Request::get('search'))
         @can('create', \App\Models\Person::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
-                <svg class="feather feather-16 mr-2">
+                <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                 </svg>
                 Person anlegen
@@ -27,13 +27,13 @@
                         <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Personen suchen" autocomplete="off" />
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                <svg class="feather feather-16">
+                                <svg class="icon icon-16">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                 </svg>
                             </button>
                             @if (Request::get('search'))
                                 <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
-                                    <svg class="feather feather-16">
+                                    <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                     </svg>
                                 </a>
@@ -48,7 +48,7 @@
             <div class="col-auto ml-auto">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                        <svg class="feather feather-16 mr-2">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                         </svg>
                         Sortierung
@@ -63,25 +63,25 @@
                             @endif
 
                             <button type="submit" name="sort" value="first-name-asc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                 </svg>
                                 Vorname
                             </button>
                             <button type="submit" name="sort" value="first-name-desc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                 </svg>
                                 Vorname
                             </button>
                             <button type="submit" name="sort" value="last-name-asc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
                                 </svg>
                                 Nachname
                             </button>
                             <button type="submit" name="sort" value="last-name-desc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="feather feather-16 mr-2">
+                                <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                 </svg>
                                 Nachname
@@ -113,7 +113,7 @@
                     @can('create', \App\Models\Person::class)
                         <p class="lead">Lege eine neue Person an.</p>
                         <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('people.create', ['company' => $company->id]) }}">
-                            <svg class="feather feather-20 mr-2">
+                            <svg class="icon icon-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                             </svg>
                             Person anlegen

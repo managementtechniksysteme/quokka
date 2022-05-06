@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LogbookDownloadRequest;
 use App\Http\Requests\LogbookIndexRequest;
 use App\Http\Requests\LogbookStoreRequest;
 use App\Http\Requests\LogbookUpdateRequest;
@@ -95,5 +96,9 @@ class LogbookController extends Controller
         $logbook->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function download(LogbookDownloadRequest $request) {
+        
     }
 }

@@ -54,6 +54,16 @@
             <div>
                 <label for="status">Status</label>
             </div>
+            @if(optional($serviceReport)->status === 'signed')
+                <div class="alert alert-warning mt-1" role="alert">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="icon icon-24 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                        </svg>
+                        Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
+                    </div>
+                </div>
+            @endif
             <div class="btn-group btn-group-toggle">
                 <label class="btn btn-outline-secondary @if(optional($serviceReport)->status == 'new' || !$serviceReport) active @else disabled @endif">
                     <input type="radio" name="status" id="new" @if(optional($serviceReport)->status == 'new' || !$serviceReport) checked @endif disabled> neu
@@ -65,16 +75,6 @@
                     <input type="radio" name="status" id="finished" @if(optional($serviceReport)->status == 'finished') checked @endif disabled> erledigt
                 </label>
             </div>
-            @if(optional($serviceReport)->status == 'signed')
-                <div class="alert alert-warning mt-1" role="alert">
-                    <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                        </svg>
-                        Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
-                    </div>
-                </div>
-            @endif
         </div>
 
         <div class="form-group">

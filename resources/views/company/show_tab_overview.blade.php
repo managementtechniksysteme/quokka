@@ -87,6 +87,23 @@
                     @endif
                 </div>
             </div>
+            <div class="row mt-3">
+                <div class="col-sm-3">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="icon icon-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        </svg>
+                        Ansprechperson
+                    </div>
+                </div>
+                <div class="col">
+                    @if ($company->contactPerson)
+                        <a href="{{ route('people.show', $company->contactPerson) }}">{{ $company->contactPerson->name }}</a>
+                    @else
+                        nicht angegeben
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 

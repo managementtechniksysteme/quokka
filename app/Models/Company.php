@@ -18,7 +18,14 @@ class Company extends Model
     ];
 
     protected $fillable = [
-        'name', 'name_2', 'phone', 'fax', 'email', 'website', 'comment',
+        'name',
+        'name_2',
+        'phone',
+        'fax',
+        'email',
+        'website',
+        'comment',
+        'contact_person_id'
     ];
 
     protected $filterFields = [
@@ -46,6 +53,11 @@ class Company extends Model
     public function people()
     {
         return $this->hasMany(Person::class);
+    }
+
+    public function contactPerson()
+    {
+        return $this->belongsTo(Person::class);
     }
 
     public function projects()

@@ -56,12 +56,15 @@ class CompanyController extends Controller
     public function create()
     {
         $addresses = Address::order()->get();
+        $people = Person::whereNull('company_id')->order()->get();
 
         return view('company.create')
             ->with('company', null)
             ->with('currentAddress', null)
             ->with('currentOperatorAddress', null)
-            ->with('addresses', $addresses->toJson());
+            ->with('addresses', $addresses->toJson())
+            ->with('currentContactPerson', null)
+            ->with('people', $people->toJson());
     }
 
     /**
@@ -108,6 +111,23 @@ class CompanyController extends Controller
             $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
         }
 
+        if (isset($validatedData['contact_person_id'])) {
+            $contactPerson = Person::find($validatedData['contact_person_id'])->load('company');
+
+            if ($contactPerson !== null && $contactPerson->company !== null) {
+                return redirect()
+                    ->route('companies.show', $company)
+                    ->with('warning', 'Die Firma wurde erfolgreich angelegt. Die Person ist bereits einer anderen Firma zugeordnet.');
+            }
+
+            elseif ($contactPerson->company === null) {
+                $contactPerson->company()->associate($company);
+                $contactPerson->save();
+                $company->contactPerson()->associate($contactPerson);
+                $company->save();
+            }
+        }
+
         return redirect()->route('companies.show', $company)->with('success', 'Die Firma wurde erfolgreich angelegt.');
     }
 
@@ -124,7 +144,7 @@ class CompanyController extends Controller
 
         switch ($request->tab) {
             case 'overview':
-                $company->load('address');
+                $company->load('address')->load('contactPerson');
 
                 return view('company.show_tab_overview')->with(compact('company'));
             case 'projects':
@@ -172,11 +192,16 @@ class CompanyController extends Controller
         $currentOperatorAddress = optional($company->operatorAddress)->first() ?? null;
         $addresses = Address::order()->get();
 
+        $currentContactPerson = $company->contactPerson;
+        $people = Person::where('company_id', $company->id)->orWhereNull('company_id')->order()->get();
+
         return view('company.edit')
             ->with(compact('company'))
             ->with('currentAddress', $currentAddress)
             ->with('currentOperatorAddress', $currentOperatorAddress)
-            ->with('addresses', $addresses->toJson());
+            ->with('addresses', $addresses->toJson())
+            ->with('currentContactPerson', $currentContactPerson)
+            ->with('people', $people->toJson());
     }
 
     /**
@@ -226,6 +251,27 @@ class CompanyController extends Controller
             $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
         } else {
             $company->operatorAddress()->detach();
+        }
+
+        if (isset($validatedData['contact_person_id'])) {
+            $contactPerson = Person::find($validatedData['contact_person_id'])->load('company');
+
+            if ($contactPerson->company !== null &&
+                $contactPerson->company_id !== $company->id) {
+                return redirect()
+                    ->route('companies.show', $company)
+                    ->with('warning', 'Die Firma wurde erfolgreich bearbeitet. Die Person ist bereits einer anderen Firma zugeordnet.');
+            } else {
+                if($contactPerson->company == null) {
+                    $contactPerson->company()->associate($company);
+                    $contactPerson->save();
+                }
+                $company->contactPerson()->associate($contactPerson);
+                $company->save();
+            }
+        } else {
+            $company->contactPerson()->disassociate();
+            $company->save();
         }
 
         return redirect()->route('companies.show', $company)->with('success', 'Die Firma wurde erfolgreich bearbeitet.');

@@ -15,7 +15,7 @@
     <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('companies.update', $company) }}" method="post" novalidate>
             @method('PATCH')
-            @component('company.fields', [ 'company' => $company, 'currentAddress' => $currentAddress, 'currentOperatorAddress' => $currentOperatorAddress, 'addresses' => $addresses ])
+            @component('company.fields', [ 'company' => $company, 'currentAddress' => $currentAddress, 'currentOperatorAddress' => $currentOperatorAddress, 'addresses' => $addresses, 'currentContactPerson' => $currentContactPerson, 'people' => $people ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">

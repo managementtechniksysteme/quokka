@@ -36,7 +36,7 @@
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="email@example.com" value="{{ old('email', $serviceReport->project->company->email) }}" />
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="email@example.com" value="{{ old('email', optional($serviceReport->project->company->contactPerson)->email ?? $serviceReport->project->company->email) }}" />
                         <div class="invalid-feedback">
                             @error('email')
                             {{ $message }}

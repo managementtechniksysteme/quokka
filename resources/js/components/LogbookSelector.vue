@@ -456,7 +456,7 @@
                 filter_vehicle_errors: null,
                 filter_project: null,
                 filter_project_errors: null,
-                filter_only_own: this.permissions.includes('logbook.view.own') && !this.permissions.includes('logbook.view.other'),
+                filter_only_own: this.permissions.includes('logbook.view.own'),
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 

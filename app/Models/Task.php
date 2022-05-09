@@ -8,6 +8,9 @@ use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Contracts\Activity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements HasMedia
@@ -15,6 +18,7 @@ class Task extends Model implements HasMedia
     use FiltersSearch;
     //use FiltersPermissions;
     use HasAttachments;
+    use LogsActivity;
     use OrdersResults;
 
     protected $casts = [
@@ -88,6 +92,25 @@ class Task extends Model implements HasMedia
                 ApplicationSettings::get()->task_due_soon_days.' day)',
             ],
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logaAll()
+            ->logOnlyDirty();
+    }
+
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        switch ($eventName) {
+            case 'created':
+                break;
+            case 'updated':
+                break;
+            case 'deleted':
+                break;
+        }
     }
 
     public function project()

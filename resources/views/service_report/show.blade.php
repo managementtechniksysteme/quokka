@@ -71,7 +71,7 @@
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
-                        Unterschrift Anfrage sendeen
+                        Unterschrift Anfrage senden
                     </a>
                 @endcan
                 @can('emailDownloadRequest', $serviceReport)

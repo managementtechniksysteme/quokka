@@ -16,7 +16,7 @@ am {{ $serviceReport->updated_at }}
 @break
 @endswitch
 
-**Vollbrachte Leistungen**
+**Serviceleistungen**
 @component('mail::table')
 | Datum                       | Stunden               | gefahrene Kilometer        |
 |:--------------------------- |:--------------------- |:-------------------------- |

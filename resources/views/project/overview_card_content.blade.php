@@ -13,7 +13,7 @@
                             <svg class="icon icon-12 ml-2 text-muted">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                             </svg>
-                            @if($project->current_wage_costs_status)
+                            @if($project->current_costs_status)
                                 <span class="text-muted ml-1">G</span>
                                 <svg class="icon icon-12 text-{{ $project->current_costs_status }}">
                                     @switch($project->current_costs_status)
@@ -45,7 +45,7 @@
                                     @endswitch
                                 </svg>
                             @endif
-                            @if($project->current_wage_costs_status)
+                            @if($project->current_material_costs_status)
                                 <span class="text-muted ml-1">M</span>
                                 <svg class="icon icon-12 text-{{ $project->current_material_costs_status }}">
                                     @switch($project->current_material_costs_status)

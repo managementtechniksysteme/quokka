@@ -18,7 +18,6 @@ class Task extends Model implements HasMedia
     use FiltersSearch;
     //use FiltersPermissions;
     use HasAttachments;
-    use LogsActivity;
     use OrdersResults;
 
     protected $casts = [

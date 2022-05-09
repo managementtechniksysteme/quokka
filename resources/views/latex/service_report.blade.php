@@ -26,7 +26,7 @@
 \end{tabular}
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}
-\section{Leistungen}
+\section{Serviceeistungen}
 \begin{longtable}{@{}|p{3.76cm}|p{3.76cm}|p{3.76cm}|p{3.76cm}|@{}}
 \hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{gefahrene KM} \\
 \hline

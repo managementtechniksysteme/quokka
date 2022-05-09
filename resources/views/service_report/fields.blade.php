@@ -95,7 +95,7 @@
             <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
-            Vollbrachte Serviceleistungen
+            Serviceleistungen
         </p>
         <p class="text-muted">
             Serviceleistungen werden automatisch nach Datum gruppiert und Werte entsprechend summiert.

@@ -24,7 +24,7 @@
                 <svg class="text-muted icon icon-20 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                 </svg>
-                <span class="text-muted mr-3">Vollbrachte Leistungen</span>
+                <span class="text-muted mr-3">Serviceleistungen</span>
             </p>
 
             @include("service_report.show_services")

@@ -156,7 +156,7 @@
             <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
-            Vollbrachte Leistungen
+            Serviceleistungen
         </div>
 
         @include('service_report.show_services')

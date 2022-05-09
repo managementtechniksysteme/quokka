@@ -94,25 +94,6 @@ class Task extends Model implements HasMedia
         ];
     }
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logaAll()
-            ->logOnlyDirty();
-    }
-
-    public function tapActivity(Activity $activity, string $eventName)
-    {
-        switch ($eventName) {
-            case 'created':
-                break;
-            case 'updated':
-                break;
-            case 'deleted':
-                break;
-        }
-    }
-
     public function project()
     {
         return $this->belongsTo(Project::class);

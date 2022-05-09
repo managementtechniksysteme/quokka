@@ -187,6 +187,20 @@
     </div>
 
     <div class="col-md-8">
+        @if($currentCompany && $currentCompany->contact_person_id === $person->id)
+            <div class="alert alert-info mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                    </svg>
+                    <p class="m-0">
+                        Die Person ist als Ansprechperson für diese Firma eingetragen. Bei Änderung oder Entfernung der
+                        Firmenzugehörigkeit wird die Ansprechperson der Firma entfernt.
+                    </p>
+                </div>
+            </div>
+        @endif
+
         <div class="form-group">
             <label for="company_id">Firma</label>
             <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}"></company-dropdown>

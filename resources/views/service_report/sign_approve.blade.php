@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 <div class="col col-md-6 offset-md-3">
-                    <input type="email" class="form-control" name="email" placeholder="Email Adresse" value="{{ $serviceReport->project->company->email }}" required />
+                    <input type="email" class="form-control" name="email" placeholder="Email Adresse" value="{{ optional($serviceReport->project->company->contactPerson)->email ?? $serviceReport->project->company->email }}" required />
                 </div>
             </div>
 

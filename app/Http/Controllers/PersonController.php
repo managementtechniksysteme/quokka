@@ -141,6 +141,8 @@ class PersonController extends Controller
      */
     public function update(PersonUpdateRequest $request, Person $person)
     {
+        $currentCompany = $person->company;
+
         $validatedData = $request->validated();
 
         $person->update($validatedData);
@@ -159,6 +161,20 @@ class PersonController extends Controller
             $person->address()->sync(array_combine([$address->id], $pivotData));
         } else {
             $person->address()->detach();
+        }
+
+        if(isset($validatedData['company_id'])) {
+            $company = Company::find($validatedData['company_id']);
+            $person->company()->associate($company);
+            $person->save();
+        } else {
+            $person->company()->disassociate();
+            $person->save();
+        }
+
+        if($currentCompany !== null && $person->company_id !== $currentCompany->id) {
+            $currentCompany->contactPerson()->disassociate();
+            $currentCompany->save();
         }
 
         return redirect()->route('people.show', $person)->with('success', 'Die Person wurde erfolgreich bearbeitet.');

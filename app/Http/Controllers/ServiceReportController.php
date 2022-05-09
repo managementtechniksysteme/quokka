@@ -292,7 +292,7 @@ class ServiceReportController extends Controller
     public function showEmailSignatureRequest(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
-            ->load('project.company');
+            ->load('project.company.contactPerson');
 
         return view('service_report.email_signature_request', $serviceReport)->with(compact('serviceReport'));
     }
@@ -321,7 +321,7 @@ class ServiceReportController extends Controller
     public function showSignatureRequest(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
-            ->load('project');
+            ->load('project.company.contactPerson');
 
         return view('service_report.show_signature_request')->with(compact('serviceReport'));
     }
@@ -331,7 +331,7 @@ class ServiceReportController extends Controller
         $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $request->token);
 
         if ($serviceReport) {
-            $serviceReport->load('employee.person')->load('project')->load('services')->load('signatureRequest');
+            $serviceReport->load('employee.person')->load('services')->load('signatureRequest');
         } else {
             $request->session()->flash('warning', 'Kein Servicebericht zum Unterschreiben und Herunterladen vorhanden.');
         }
@@ -365,7 +365,7 @@ class ServiceReportController extends Controller
             $this->addSignature($serviceReport, $request->signature);
 
             $serviceReport->generateDownloadRequest();
-            $serviceReport->load('downloadRequest')->load('project.company');
+            $serviceReport->load('downloadRequest')->load('project.company.contactPerson');
 
             $request->session()->flash('success', 'Der Servicebericht wurde erfolgreich unterschrieben.');
 
@@ -380,7 +380,7 @@ class ServiceReportController extends Controller
     public function showEmailDownloadRequest(Request $request, ServiceReport $serviceReport)
     {
         $serviceReport
-            ->load('project.company');
+            ->load('project.company.contactPerson');
 
         return view('service_report.email_download_request', $serviceReport)->with(compact('serviceReport'));
     }

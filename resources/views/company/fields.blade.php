@@ -8,6 +8,10 @@
     @php $currentOperatorAddress = Address::find(old('operator_address_id')); @endphp
 @endif
 
+@if (old('contact_person_id'))
+    @php $currentContactPerson = Person::find(old('contact_person_id')); @endphp
+@endif
+
 @csrf
 
 <div class="row">
@@ -198,6 +202,30 @@
                 </div>
             </div>
 
+        </div>
+
+        @if($company)
+            <div class="alert alert-info mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                    </svg>
+                    <p class="m-0">
+                        Die Ansprechperson wird dieser Firma zugeordnet, falls sie aktuell noch keiner anderen Firma zugeordnet
+                        ist.
+                    </p>
+                </div>
+            </div>
+        @endif
+
+        <div class="form-group">
+            <label for="employee_id">Ansprechperson</label>
+            <person-dropdown inputname="contact_person_id" :people="{{ $people }}" :current_person="{{ $currentContactPerson ?? 'null' }}" v-cloak></person-dropdown>
+            <div class="invalid-feedback @error('contact_person_id') d-block @enderror">
+                @error('contact_person_id')
+                {{ $message }}
+                @enderror
+            </div>
         </div>
 
     </div>

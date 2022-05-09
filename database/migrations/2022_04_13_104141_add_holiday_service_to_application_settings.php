@@ -10,7 +10,8 @@ class AddHolidayServiceToApplicationSettings extends Migration
     {
         if (!Schema::hasColumn('application_settings', 'holiday_service_id')) {
             Schema::table('application_settings', function (Blueprint $table) {
-                $table->unsignedBigInteger('holiday_service_id');
+                $table->unsignedBigInteger('holiday_service_id')->nullable();
+                $table->foreign('holiday_service_id')->references('id')->on('services')->onDelete('set null')->onUpdate('cascade');
             });
         }
 

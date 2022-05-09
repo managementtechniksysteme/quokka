@@ -31,6 +31,7 @@ class CompanyStoreRequest extends FormRequest
             'operator_street_number' => 'required_with:operator_address_name,operator_postcode,operator_city|nullable',
             'operator_postcode' => 'required_with:operator_address_name,operator_street_number,operator_city|digits_between:4,5|nullable',
             'operator_city' => 'required_with:operator_address_name,operator_street_number,operator_postcode|nullable',
+            'contact_person_id' => 'exists:people,id|nullable',
             'comment' => 'nullable',
         ];
     }

@@ -249,7 +249,8 @@
         <p class="small">
             <span class="font-weight-bold">Legende:</span>
             ver. - verantwortlich für die Aufgabe,
-            bet. - an der Aufgabe beteiligt
+            bet. - an der Aufgabe beteiligt,
+            MTD - Month to Date (seit Monatsbeginn)
         </p>
 
         <h4 class="mt-4">
@@ -464,7 +465,8 @@
             SB - Serviceberichte,
             RB - Regieberichte,
             PB - Prüfberichte,
-            BT - Bautagesberichte
+            BT - Bautagesberichte,
+            MTD - Month to Date (seit Monatsbeginn)
         </p>
 
         <h4 class="mt-4">

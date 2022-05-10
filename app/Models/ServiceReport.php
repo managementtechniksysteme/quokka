@@ -6,6 +6,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -83,5 +84,22 @@ class ServiceReport extends Model implements HasMedia
     public function isFinished()
     {
         return $this->status === 'finished';
+    }
+
+    public static function mtdSignedServiceReports()
+    {
+        $today = Carbon::today();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return ServiceReport::whereStatus('signed')
+            ->whereHas('media', function ($signature) use($firstOfMonth, $today) {
+                return $signature->whereBetween('created_at', [$firstOfMonth, $today]);
+            })
+            ->count();
+    }
+
+    public static function signedServiceReports()
+    {
+        return ServiceReport::whereStatus('signed')->count();
     }
 }

@@ -76,7 +76,7 @@ class Project extends Model
     }
 
     public function getCostsAttribute() {
-        return ($this->material_costs ?? 0) + ($this->wage_costs ?? 0);
+        return $this->material_costs ?? 0 + $this->wage_costs ?? 0;
     }
 
     public function getCurrentMaterialCostsAttribute() {

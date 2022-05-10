@@ -6,6 +6,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use function PHPUnit\Framework\matches;
 
 class WageService extends Model
 {
@@ -46,6 +47,19 @@ class WageService extends Model
     public function getNameWithUnitAttribute()
     {
         return "{$this->name} ({$this->unit})";
+    }
+
+    public function getUnitStringAttribute()
+    {
+        if(!$this->unit) {
+            return '';
+        }
+
+        return match (true) {
+            strlen($this->unit) === 1 => "{$this->unit}",
+            strlen($this->unit) > 1 => " {$this->unit}",
+            default => " {$this->unit}",
+        };
     }
 
     protected static function booted()

@@ -135,6 +135,16 @@ svg.icon {
     max-height: 1em;
 }
 
+svg.icon-bs {
+    fill: currentColor;
+    display: inline-flex;
+    align-self: center;
+    min-width: 1em;
+    min-height: 1em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
 svg.icon-baseline {
     bottom: 0.125em;
     position: relative;

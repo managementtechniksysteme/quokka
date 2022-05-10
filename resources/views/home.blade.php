@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-auto pl-0">
                                 <svg class="icon-bs icon-32 text-gray-500">
-                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#stopwatch"></use>
+                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use>
                                 </svg>
                             </div>
                         </div>

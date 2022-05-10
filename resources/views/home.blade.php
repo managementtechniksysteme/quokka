@@ -127,6 +127,7 @@
         <div class="row">
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('tasks.index', ['sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -155,6 +156,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('tasks.index', ['search' => 'ist:erledigt', 'sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
@@ -183,6 +185,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('tasks.index', ['search' => 'ist:überfällig', 'sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -211,6 +214,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('tasks.index', ['search' => 'ist:bald_fällig', 'sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -255,6 +259,7 @@
         <div class="row">
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('service-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -277,6 +282,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href=""></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
@@ -299,6 +305,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href=""></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -321,6 +328,7 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href=""></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
@@ -348,6 +356,7 @@
                 @can('service-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
+                            <a class="stretched-link outline-none" href="{{ route('service-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col pr-0">
@@ -372,6 +381,7 @@
                 @can('director-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
+                            <a class="stretched-link outline-none" href=""></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
@@ -396,6 +406,7 @@
                 @can('inspection-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
+                            <a class="stretched-link outline-none" href=""></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col pr-0">
@@ -420,6 +431,7 @@
                 @can('build-day-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
+                            <a class="stretched-link outline-none" href=""></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col pr-0">

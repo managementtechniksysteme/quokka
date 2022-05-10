@@ -18,7 +18,7 @@
         * Mit entsprechenden Berechtigungen kann auch die Person gewählt werden, für welche die Auswertung durchgeführt
         werden soll.
         @endmarkdown
-        
+
         @markdown
         ### v0.1.14-7228f12 (02.05.2022)
         * Materialleistungen können nun mit bis zu zwei Nachkommastellen angegeben werden. Lohndienstleistungen müssen

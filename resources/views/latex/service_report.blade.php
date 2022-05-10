@@ -26,11 +26,13 @@
 \end{tabular}
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}
-\section{Serviceeistungen}
-\begin{longtable}{@{}|p{3.76cm}|p{3.76cm}|p{3.76cm}|p{3.76cm}|@{}}
-\hline \footnotesize{Tag} & \footnotesize{Datum} & \footnotesize{Stunden} & \footnotesize{gefahrene KM} \\
+\section{Serviceleistungen}
+\begin{longtable}{@{}p{3.76cm}p{3.76cm}p{3.76cm}p{3.76cm}@{}}
+\hline
+\footnotesize{\textbf{Tag}} & \footnotesize{\textbf{Datum}} & \footnotesize{\textbf{Stunden}} & \footnotesize{\textbf{gefahrene KM}} \\
 \hline
 \hline
+\endhead
 @foreach($serviceReport->services as $service)
 \footnotesize{{!! Latex::escape($service->provided_on->translatedFormat("l")) !!}} & \footnotesize{{!! Latex::escape($service->provided_on) !!}} & \footnotesize{{!! Latex::escape($service->hours) !!}} & \footnotesize{{!! Latex::escape($service->kilometres) !!}} \\
 \hline

@@ -37,6 +37,58 @@
         "type": "image/png"
     }],
     "shortcuts": [{
+        "name": "Leistungen abrechnen",
+        "short_name": "Abrechnung",
+        "description": "Getätigte Leistungen abrechnen.",
+        "url": "/accounting",
+        "icons": [{
+            "src": "/icons/icon_shortcut_clock_48.png",
+            "sizes": "48x48"
+        },
+            {
+                "src": "/icons/icon_shortcut_clock_72.png",
+                "sizes": "72x72"
+            },
+            {
+                "src": "/icons/icon_shortcut_clock_96.png",
+                "sizes": "96x96"
+            },
+            {
+                "src": "/icons/icon_shortcut_clock_144.png",
+                "sizes": "144x144"
+            },
+            {
+                "src": "/icons/icon_shortcut_clock_192.png",
+                "sizes": "192x192"
+            }]
+    },
+    {
+        "name": "Fahrten eintragen",
+        "short_name": "Fahrtenbuch",
+        "description": "Gefahrene Strecken in das Fahrtenbuch eintragen.",
+        "url": "/logbook",
+        "icons": [{
+            "src": "/icons/icon_shortcut_book_48.png",
+            "sizes": "48x48"
+        },
+            {
+                "src": "/icons/icon_shortcut_book_72.png",
+                "sizes": "72x72"
+            },
+            {
+                "src": "/icons/icon_shortcut_book_96.png",
+                "sizes": "96x96"
+            },
+            {
+                "src": "/icons/icon_shortcut_book_144.png",
+                "sizes": "144x144"
+            },
+            {
+                "src": "/icons/icon_shortcut_book_192.png",
+                "sizes": "192x192"
+            }]
+    },
+    {
         "name": "QR-Code scannen",
         "short_name": "QR-Code",
         "description": "Einen QR-Code für Schnellzugriff scannen.",

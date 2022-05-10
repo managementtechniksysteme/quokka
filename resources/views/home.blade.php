@@ -134,7 +134,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
-                                <h5 class="card-title text-uppercase text-muted m-0">Neu MTD</h5>
+                                <h5 class="card-title text-uppercase text-muted m-0">Erstellt MTD</h5>
                                 <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_created_tasks) }}</span>
                             </div>
                             <div class="col-auto pl-0">

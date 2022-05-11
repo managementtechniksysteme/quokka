@@ -306,6 +306,6 @@ class EmployeeController extends Controller
 
         Auth::loginUsingId($userId);
 
-        return redirect()->route('home')->with('success', 'Du bist jetzt als wieder mit deinem Benutzer angemeldet.');
+        return redirect()->route('home')->with('success', 'Du bist jetzt wieder mit deinem Benutzer angemeldet.');
     }
 }

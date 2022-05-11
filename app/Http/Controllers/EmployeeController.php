@@ -13,6 +13,7 @@ use App\Models\UserSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -24,6 +25,8 @@ class EmployeeController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'startImpersonation' => 'impersonate',
+            'stopImpersonation' => 'impersonate',
         ]);
     }
 
@@ -276,5 +279,33 @@ class EmployeeController extends Controller
         }
 
         return redirect()->route('employees.show', $employee)->with('success', 'Die Berechtigungen wurden erfolgreich bearbeitet.');
+    }
+
+    public function startImpersonation(Employee $employee)
+    {
+        if(Auth::id() === $employee->person_id) {
+            return back()->with('info', 'Du bist bereits als dieser Benutzer angemeldet.');
+        }
+
+        if(!Session::has('impersonatorId')) {
+            Session::put('impersonatorId', Auth::id());
+        }
+
+        Auth::loginUsingId($employee->person_id);
+
+        return redirect()->route('home')->with('success', 'Du bist jetzt als dieser Benutzer angemeldet.');
+    }
+
+    public function stopImpersonation(Employee $employee)
+    {
+        if(!Session::has('impersonatorId') || Auth::id() !== $employee->person_id){
+            return back()->with('danger', 'Du bist nicht als dieser Benutzer angemeldet.');
+        }
+
+        $userId = Session::pull('impersonatorId');
+
+        Auth::loginUsingId($userId);
+
+        return redirect()->route('home')->with('success', 'Du bist jetzt als wieder mit deinem Benutzer angemeldet.');
     }
 }

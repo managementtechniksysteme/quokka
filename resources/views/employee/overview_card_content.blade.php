@@ -77,6 +77,30 @@
                                 Quokka Zugang sperren
                             </a>
                         @endcan
+                        @if(Session::has('impersonatorId') && Auth::id() === $employee->person_id)
+                            @can('impersonate', $employee)
+                                <form action="{{ route('employees.stop-impersonation', $employee) }}" method="post" >
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="dropdown-item d-inline-flex align-items-center">
+                                        <svg class="icon icon-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-minus"></use>
+                                        </svg>
+                                        Zurück zum eigenen Benutzer
+                                    </button>
+                                </form>
+                            @endcan
+                        @elseif(Auth::id() !== $employee->person_id)
+                            @can('impersonate', $employee)
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.start-impersonation', $employee) }}">
+                                    <svg class="icon icon-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-plus"></use>
+                                    </svg>
+                                    Als Quokka Benutzer anmelden
+                                </a>
+                            @endcan
+                        @endif
                     @endif
                     @can('delete', $employee)
                         <form action="{{ route('employees.destroy', $employee) }}" method="post">

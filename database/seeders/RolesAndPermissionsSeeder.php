@@ -53,6 +53,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'employees.delete']);
         Permission::firstOrCreate(['name' => 'employees.email']);
         Permission::firstOrCreate(['name' => 'employees.createpdf']);
+        Permission::firstOrCreate(['name' => 'employees.impersonate']);
 
         // help
         Permission::firstOrCreate(['name' => 'help.view']);

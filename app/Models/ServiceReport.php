@@ -86,6 +86,11 @@ class ServiceReport extends Model implements HasMedia
         return $this->status === 'finished';
     }
 
+    public static function newServiceReports()
+    {
+        return ServiceReport::whereStatus('new')->count();
+    }
+
     public static function mtdSignedServiceReports()
     {
         $today = Carbon::today();

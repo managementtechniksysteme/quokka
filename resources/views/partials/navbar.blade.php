@@ -238,7 +238,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                                @if(Session::has('impersonatorId'))
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-plus"></use>
+                                @else
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                                @endif
                             </svg>
                             {{ Auth::user()->person->first_name }}
                         </a>
@@ -258,7 +262,7 @@
                                 Einstellungen
                             </a>
                             @if(Session::has('impersonatorId'))
-                                @if(\App\Models\User::find(Session::get('impersonatorId'))->can('impersonate', Auth::user()->employee))
+                                @can('impersonate', Auth::user()->employee)
                                     <form action="{{ route('employees.stop-impersonation', Auth::user()->employee) }}" method="post" >
                                         @csrf
                                         @method('DELETE')
@@ -270,7 +274,7 @@
                                             Zurück zum eigenen Benutzer
                                         </button>
                                     </form>
-                                @endif
+                                @endcan
                             @else
                                 <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

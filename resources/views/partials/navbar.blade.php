@@ -236,7 +236,7 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-20 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                             </svg>
@@ -257,18 +257,34 @@
                                 </svg>
                                 Einstellungen
                             </a>
-                            <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#log-out"></use>
-                                </svg>
-                                {{ __('Logout') }}
-                            </a>
+                            @if(Session::has('impersonatorId'))
+                                @if(\App\Models\User::find(Session::get('impersonatorId'))->can('impersonate', Auth::user()->employee))
+                                    <form action="{{ route('employees.stop-impersonation', Auth::user()->employee) }}" method="post" >
+                                        @csrf
+                                        @method('DELETE')
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                        <button type="submit" class="dropdown-item d-inline-flex align-items-center">
+                                            <svg class="icon icon-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-minus"></use>
+                                            </svg>
+                                            Zurück zum eigenen Benutzer
+                                        </button>
+                                    </form>
+                                @endif
+                            @else
+                                <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    <svg class="icon icon-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#log-out"></use>
+                                    </svg>
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </li>
                 @endguest

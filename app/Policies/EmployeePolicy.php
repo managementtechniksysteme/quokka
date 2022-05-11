@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Session;
 
 class EmployeePolicy
 {
@@ -43,5 +44,15 @@ class EmployeePolicy
     public function createPdf(User $user, Employee $employee): bool
     {
         return $user->can('employees.createpdf');
+    }
+
+    public function impersonate(User $user, Employee $employee): bool
+    {
+        // see if original user can impersonate if already impersonating
+        if(Session::has('impersonatorId')) {
+            return User::find(\Session::get('impersonatorId'))->can('employees.impersonate');
+        }
+
+        return $user->can('employees.impersonate');
     }
 }

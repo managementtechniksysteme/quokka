@@ -1525,6 +1525,17 @@
                 @enderror
             </div>
         </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('employees_impersonate') is-invalid @enderror" name="employees_impersonate" id="employees_impersonate" value="true" @if(old('employees_impersonate', optional($permissions)->hasPermissionTo('employees.impersonate'))) checked @endif>
+                <label class="custom-control-label" for="employees_impersonate">Als anderer Mitarbeiter in {{ config('app.name') }} anmelden</label>
+            </div>
+            <div class="invalid-feedback @error('employees_impersonate') d-block @enderror">
+                @error('employees_impersonate')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
     </div>
 </div>
 

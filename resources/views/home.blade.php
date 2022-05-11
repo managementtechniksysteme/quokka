@@ -121,6 +121,7 @@
                 </div>
             </div>
         @endcan
+        
         <h4>
             <svg class="icon-bs icon-baseline text-muted mr-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>

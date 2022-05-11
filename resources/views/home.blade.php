@@ -121,7 +121,7 @@
                 </div>
             </div>
         @endcan
-        
+
         <h4>
             <svg class="icon-bs icon-baseline text-muted mr-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
@@ -282,12 +282,12 @@
                             <div class="col">
                                 <span class="text-muted">
                                     {{ Number::toLocal(Auth::user()->employee->mtd_new_service_reports) }} MTD
-                                    @can('service-reports.view.other')
+                                    @if(Auth::user()->can('service-reports.view.own') && Auth::user()->can('service-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
                                         {{ Number::toLocal(\App\Models\ServiceReport::newServiceReports()) }} ges.
-                                    @endcan
+                                    @endif
                                 </span>
                             </div>
                         </div>
@@ -313,12 +313,12 @@
                             <div class="col">
                                 <span class="text-muted">
                                     NA MTD
-                                    @can('director-reports.view.other')
+                                    @if(Auth::user()->can('director-reports.view.own') && Auth::user()->can('director-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
                                         ges.
-                                    @endcan
+                                    @endif
                                 </span>
                             </div>
                         </div>
@@ -344,12 +344,12 @@
                             <div class="col">
                                 <span class="text-muted">
                                     NA MTD
-                                    @can('inspection-reports.view.other')
+                                    @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('inspection-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
                                         ges.
-                                    @endcan
+                                    @endif
                                 </span>
                             </div>
                         </div>
@@ -375,12 +375,12 @@
                             <div class="col">
                                 <span class="text-muted">
                                     NA MTD
-                                    @can('build-day-reports.view.other')
+                                    @if(Auth::user()->can('build-day-reports.view.own') && Auth::user()->can('build-day-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
                                         ges.
-                                    @endcan
+                                    @endif
                                 </span>
                             </div>
                         </div>

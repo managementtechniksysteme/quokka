@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AccountingDownloadRequest extends FormRequest
@@ -37,6 +38,6 @@ class AccountingDownloadRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        abort(403);
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

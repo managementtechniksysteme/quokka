@@ -87,13 +87,14 @@ class Project extends Model
 
     public function getCurrentWageCostsAttribute() {
         return $this->accounting()
-            ->selectRaw('accounting.amount*services.costs as costs')
+            ->selectRaw('sum(accounting.amount*services.costs) as amount_costs')
             ->whereIn('service_id', WageService::pluck('id'))
             ->join('services', function ($join) {
                 $join->on('accounting.service_id', '=', 'services.id')
                     ->whereNotNull('services.costs');
             })
-            ->sum('costs');
+            ->first()
+            ->amount_costs ?? 0;
     }
 
     public function getCurrentCostsAttribute() {

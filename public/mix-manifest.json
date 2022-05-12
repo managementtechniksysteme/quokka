@@ -4,6 +4,7 @@
     "/js/init.js": "/js/init.js",
     "/js/webpush.js": "/js/webpush.js",
     "/serviceworker.js": "/serviceworker.js",
+    "/js/clipboard.min.js": "/js/clipboard.min.js",
     "/svg/feather-sprite.svg": "/svg/feather-sprite.svg",
     "/svg/bootstrap-icons.svg": "/svg/bootstrap-icons.svg"
 }

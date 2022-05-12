@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class LogbookDownloadRequest extends FormRequest
 {
@@ -36,6 +37,6 @@ class LogbookDownloadRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        abort(403);
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

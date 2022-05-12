@@ -1,10 +1,11 @@
-let CACHE_NAME = 'quokka-cache-v0.1.15-dd71f3c';
+let CACHE_NAME = 'quokka-cache-v0.1.15-de6c627';
 let OFFLINE_URL = '/offline';
 
 let urlsToCache = [
     OFFLINE_URL,
     '/css/app.css',
     '/js/app.js',
+    '/js/clipboard.min.js',
     '/svg/bootstrap-icons.svg',
     '/svg/feather-sprite.svg',
     '/svg/offline.svg'

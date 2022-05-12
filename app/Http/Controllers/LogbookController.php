@@ -40,9 +40,10 @@ class LogbookController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $currentLogbook = Logbook::filterSearch(
-                $request->validate((new LogbookIndexRequest($request->query()))->rules())
-            )->order()->get();
+            $currentLogbook = Logbook::filterPermissions()
+                ->filterSearch($request->validate((new LogbookIndexRequest($request->query()))->rules()))
+                ->order()
+                ->get();
 
             return response()->json($currentLogbook, Response::HTTP_OK);
         }
@@ -123,7 +124,8 @@ class LogbookController extends Controller
 
         $fileName = 'FB' . ($vehicleString !== '' ? ' ' . $vehicleString : '') . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
 
-        $report = Logbook::filterSearch($validatedData)
+        $report = Logbook::filterPermissions()
+            ->filterSearch($validatedData)
             ->order()
             ->with('employee.user')
             ->with('project')

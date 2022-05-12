@@ -90,7 +90,9 @@ class EmployeeController extends Controller
             );
         }
 
-        return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich angelegt.');
+        return redirect()
+            ->route('employees.show', $employee)
+            ->with('success', 'Der Mitarbeiter wurde erfolgreich angelegt.');
     }
 
     /**
@@ -121,7 +123,9 @@ class EmployeeController extends Controller
         $people = ApplicationSettings::get()->company->people()->doesntHave('employee')->order()->get();
 
         $currentAvatarColour =
-            optional($employee->user)->settings ? UserSettings::avatarColourFromName($employee->user->settings->avatar_colour) : null;
+            optional($employee->user)->settings ?
+                UserSettings::avatarColourFromName($employee->user->settings->avatar_colour) :
+                null;
 
         return view('employee.edit')
             ->with('employee', $employee)
@@ -186,7 +190,9 @@ class EmployeeController extends Controller
             event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, true));
         }
 
-        return redirect()->route('employees.show', $employee)->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');
+        return redirect()
+            ->route('employees.show', $employee)
+            ->with('success', 'Der Mitarbeiter wurde erfolgreich bearbeitet.');
     }
 
     /**
@@ -264,7 +270,9 @@ class EmployeeController extends Controller
 
             $employee->user->syncPermissions($permissions);
 
-            return redirect()->route('employees.edit-permissions', $employee)->with('success', 'Die Berechtigungen der Rolle wurden erfolgreich zugewiesen.');
+            return redirect()
+                ->route('employees.edit-permissions', $employee)
+                ->with('success', 'Die Berechtigungen der Rolle wurden erfolgreich zugewiesen.');
         }
 
         foreach (Permission::select('name')->pluck('name') as $permission) {
@@ -278,7 +286,9 @@ class EmployeeController extends Controller
             }
         }
 
-        return redirect()->route('employees.show', $employee)->with('success', 'Die Berechtigungen wurden erfolgreich bearbeitet.');
+        return redirect()
+            ->route('employees.show', $employee)
+            ->with('success', 'Die Berechtigungen wurden erfolgreich bearbeitet.');
     }
 
     public function startImpersonation(Employee $employee)

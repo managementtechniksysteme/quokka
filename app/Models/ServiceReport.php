@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
@@ -13,6 +14,7 @@ use Spatie\MediaLibrary\HasMedia;
 class ServiceReport extends Model implements HasMedia
 {
     use FiltersSearch;
+    use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
     use OrdersResults;
@@ -48,6 +50,11 @@ class ServiceReport extends Model implements HasMedia
         'number-desc' => [['number', 'desc']],
         'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],
         'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), number'],
+    ];
+
+    protected $permissionFilters = [
+        'service-reports.view.own' => ['employee.person_id', '{user}'],
+        'service-reports.view.other' => ['!employee.person_id', '{user}'],
     ];
 
     public function registerMediaCollections(): void

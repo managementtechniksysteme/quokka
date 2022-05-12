@@ -41,7 +41,8 @@ class MemoController extends Controller
      */
     public function index(Request $request)
     {
-        $memos = Memo::filterSearch($request->input())
+        $memos = Memo::filterPermissions()
+            ->filterSearch($request->input())
             ->order($request->input())
             ->with('employeeComposer.person')
             ->with('personRecipient')

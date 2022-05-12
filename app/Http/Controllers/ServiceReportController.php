@@ -61,7 +61,8 @@ class ServiceReportController extends Controller
             $request->request->remove('search');
         }
 
-        $serviceReports = ServiceReport::filterSearch($request->input())
+        $serviceReports = ServiceReport::filterPermissions()
+            ->filterSearch($request->input())
             ->order($request->input())
             ->with('project')
             ->with('employee.person')

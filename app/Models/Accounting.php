@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersPermissions;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class Accounting extends Model
 {
+    use FiltersPermissions;
     use OrdersResults;
 
     protected $table = 'accounting';
@@ -33,6 +35,11 @@ class Accounting extends Model
 
     protected $orderKeys = [
         'default' => ['service_provided_on', 'service_provided_started_at'],
+    ];
+
+    protected $permissionFilters = [
+        'accounting.view.own' => ['employee.person_id', '{user}'],
+        'accounting.view.other' => ['!employee.person_id', '{user}'],
     ];
 
     public function employee()

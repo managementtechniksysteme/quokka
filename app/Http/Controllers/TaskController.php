@@ -48,8 +48,8 @@ class TaskController extends Controller
             $request->request->remove('search');
         }
 
-        $tasks = //Task::filterPermissions()
-            Task::filterSearch($request->input())
+        $tasks = Task::filterPermissions()
+            ->filterSearch($request->input())
             ->order($request->input())
             ->with('project')
             ->with('responsibleEmployee.person')

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Project extends Model
@@ -87,14 +88,12 @@ class Project extends Model
 
     public function getCurrentWageCostsAttribute() {
         return $this->accounting()
-            ->selectRaw('sum(accounting.amount*services.costs) as amount_costs')
-            ->whereIn('service_id', WageService::pluck('id'))
-            ->join('services', function ($join) {
-                $join->on('accounting.service_id', '=', 'services.id')
-                    ->whereNotNull('services.costs');
-            })
-            ->first()
-            ->amount_costs ?? 0;
+                ->whereIn('service_id', WageService::pluck('id'))
+                ->join('services', function ($join) {
+                    $join->on('accounting.service_id', '=', 'services.id')
+                        ->whereNotNull('services.costs');
+                })
+                ->sum(DB::raw('accounting.amount*services.costs'));
     }
 
     public function getCurrentCostsAttribute() {

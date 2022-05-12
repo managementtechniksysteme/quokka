@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersPermissions;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Logbook extends Model
 {
+    use FiltersPermissions;
     use OrdersResults;
 
     protected $table = 'logbook';
@@ -36,6 +38,11 @@ class Logbook extends Model
 
     protected $orderKeys = [
         'default' => ['driven_on', 'start_kilometres'],
+    ];
+
+    protected $permissionFilters = [
+        'logbook.view.own' => ['employee.person_id', '{user}'],
+        'logbook.view.other' => ['!employee.person_id', '{user}'],
     ];
 
     public function employee()

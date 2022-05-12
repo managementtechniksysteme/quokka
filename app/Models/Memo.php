@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
@@ -11,6 +12,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Memo extends Model implements HasMedia
 {
     use HasAttachments;
+    use FiltersPermissions;
     use FiltersSearch;
     use OrdersResults;
 
@@ -55,6 +57,19 @@ class Memo extends Model implements HasMedia
         'meeting_held_on-desc' => [['meeting_held_on', 'desc']],
         'title-asc' => ['title'],
         'title-desc' => [['title', 'desc']],
+    ];
+
+    protected $permissionFilters = [
+        'memos.view.sender' => ['employeeComposer.person_id', '{user}'],
+        'memos.view.recipient' => ['personRecipient.id', '{user}'],
+        'memos.view.present' => ['presentPeople.id', '{user}'],
+        'memos.view.notified' => ['notifiedPeople.id', '{user}'],
+        'memos.view.other' => [
+            ['!employeeComposer.person_id', '{user}'],
+            ['!personRecipient.id', '{user}'],
+            ['!presentPeople.id', '{user}'],
+            ['!notifiedPeople.id', '{user}'],
+        ],
     ];
 
     public function project()

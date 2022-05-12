@@ -317,7 +317,7 @@
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        ges.
+                                        NA ges.
                                     @endif
                                 </span>
                             </div>
@@ -348,7 +348,7 @@
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        ges.
+                                        NA ges.
                                     @endif
                                 </span>
                             </div>
@@ -379,7 +379,7 @@
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        ges.
+                                        NA ges.
                                     @endif
                                 </span>
                             </div>

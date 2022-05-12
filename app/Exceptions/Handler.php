@@ -56,11 +56,11 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
 
-        if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
-            $folder = Handler::LOGFOLDER;
-            $exceptionLog = "{$folder}/{$this->context()['uuid']}.log";
-            Storage::put($exceptionLog, $exception->getTraceAsString());
-        }
+        //if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
+        //    $folder = Handler::LOGFOLDER;
+        //    $exceptionLog = "{$folder}/{$this->context()['uuid']}.log";
+        //    Storage::put($exceptionLog, $exception->getMessage() . '\n' . $exception->getTraceAsString());
+        //}
     }
 
     /**
@@ -74,14 +74,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
-            return response()
-                ->view('errors.500', [
-                    'exception' => $exception,
-                    'exceptionUuid' => $this->context()['uuid']
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        //if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
+        //    return response()
+        //        ->view('errors.500', [
+        //            'exception' => $exception,
+        //            'exceptionUuid' => $this->context()['uuid']
+        //        ],
+        //        Response::HTTP_INTERNAL_SERVER_ERROR);
+        //}
 
         return parent::render($request, $exception);
     }

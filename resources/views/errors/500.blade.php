@@ -27,3 +27,13 @@
 
     @endif
 @endsection
+@section('scripts')
+    <script src="{{ asset('js/clipboard.min.js') }}"></script>
+    <script type="text/javascript">
+        var clipboard = new ClipboardJS('#uuid-button');
+
+        clipboard.on('success', function(e) {
+            document.getElementById('uuid-button-text').innerHTML = "Kopiert!";
+        });
+    </script>
+@endsection

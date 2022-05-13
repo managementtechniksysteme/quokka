@@ -3,10 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,20 +26,6 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    private const LOGFOLDER = 'exceptions';
-
-    /**
-     * Define the execption context.
-     *
-     * @return array
-     */
-    protected function context()
-    {
-        return array_merge(parent::context(), [
-            'uuid' => Str::uuid(),
-        ]);
-    }
-
     /**
      * Report or log an exception.
      *
@@ -55,12 +37,6 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         parent::report($exception);
-
-        //if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
-        //    $folder = Handler::LOGFOLDER;
-        //    $exceptionLog = "{$folder}/{$this->context()['uuid']}.log";
-        //    Storage::put($exceptionLog, $exception->getMessage() . '\n' . $exception->getTraceAsString());
-        //}
     }
 
     /**
@@ -74,15 +50,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        //if(config('app.env') === 'production' && !$this->isHttpException($exception)) {
-        //    return response()
-        //        ->view('errors.500', [
-        //            'exception' => $exception,
-        //            'exceptionUuid' => $this->context()['uuid']
-        //        ],
-        //        Response::HTTP_INTERNAL_SERVER_ERROR);
-        //}
-
         return parent::render($request, $exception);
     }
 }

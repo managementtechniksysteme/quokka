@@ -61,28 +61,7 @@
             </div>
         </div>
     </div>
-    @if($exceptionUuid)
-        <div class="flex items-center mx-auto mt-4 sm:px-6 lg:px-8">
-            <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
-                @yield('support-message')
-            </div>
-        </div>
-
-        <div class="flex items-center pt-8 mt-2 sm:justify-start sm:pt-0">
-            <div class="px-4 text-lg text-gray-500 tracking-wider">
-                {{ $exceptionUuid }}
-            </div>
-        </div>
-
-
-        <button id="uuid-button" class="bg-gray-100 outline-none mt-2" data-clipboard-text="{{ $exceptionUuid }}">
-            <svg class="icon-bs icon-baseline text-gray-500 mr-2">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use>
-            </svg>
-            <span id="uuid-button-text" class="text-sm text-gray-500 uppercase tracking-wider">Kopieren</span>
-        </button>
-
-    @endif
+    @yield('support')
 </div>
 
 <script src="{{ asset('js/clipboard.min.js') }}"></script>

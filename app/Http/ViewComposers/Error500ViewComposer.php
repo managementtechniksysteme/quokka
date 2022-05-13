@@ -23,9 +23,11 @@ class Error500ViewComposer
 
             $postParameters = Request::post();
 
-            $postParametersString = rtrim(array_reduce(array_keys($postParameters), function ($string, $key) use ($postParameters) {
-               return $string . $key . ' => ' . $postParameters[$key] . ', ';
-            }), ', ');
+            $postParametersString = rtrim(
+                array_reduce(array_keys($postParameters), function ($string, $key) use ($postParameters) {
+                    return $string . $key . ' => ' . $postParameters[$key] . ', ';
+                }),
+                ', ');
 
             Storage::put($exceptionLog,
                 'Timestamp: ' . Carbon::now()->toDateTimeString() . PHP_EOL .

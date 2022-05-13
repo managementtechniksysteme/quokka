@@ -36,6 +36,10 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
 
         \Log::info('Processing holiday allowance adjustements for ' . $this->currentDate);
 
+        if($this->employees === null) {
+            return;
+        }
+
         $this->employees->each(function ($employee) {
             \Log::info('Increasing holiday allowance for employee ID ' .
                 $employee->person_id . ' by ' . $this->yearlyHolidayAllowance);

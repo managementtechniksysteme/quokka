@@ -64,13 +64,6 @@
     @yield('support')
 </div>
 
-<script src="{{ asset('js/clipboard.min.js') }}"></script>
-<script type="text/javascript">
-    var clipboard = new ClipboardJS('#uuid-button');
-
-    clipboard.on('success', function(e) {
-        document.getElementById('uuid-button-text').innerHTML = "Kopiert!";
-    });
-</script>
+@yield('scripts')
 </body>
 </html>

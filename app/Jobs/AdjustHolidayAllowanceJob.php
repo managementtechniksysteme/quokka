@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class AdjustHolidayAllowanceJob implements ShouldQueue
 {
@@ -34,14 +35,14 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
             return;
         }
 
-        \Log::info('Processing holiday allowance adjustements for ' . $this->currentDate);
+        Log::info('Processing holiday allowance adjustements for ' . $this->currentDate);
 
         if($this->employees === null) {
             return;
         }
 
         $this->employees->each(function ($employee) {
-            \Log::info('Increasing holiday allowance for employee ID ' .
+            Log::info('Increasing holiday allowance for employee ID ' .
                 $employee->person_id . ' by ' . $this->yearlyHolidayAllowance);
 
             $oldHolidayAllowance = $employee->holidays;
@@ -51,6 +52,6 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
             event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, false));
         });
 
-        \Log::info('Finished processing holiday allowance adjustements for ' . $this->currentDate);
+        Log::info('Finished processing holiday allowance adjustements for ' . $this->currentDate);
     }
 }

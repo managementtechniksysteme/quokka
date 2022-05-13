@@ -20,13 +20,14 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
 
     public Carbon $currentDate;
     public $yearlyHolidayAllowance;
+    public $employees;
 
     public function __construct()
     {
         $this->yearlyHolidayAllowance = ApplicationSettings::get()->holiday_yearly_allowance;
         $this->currentDate = Carbon::now();
         $this->employees = Employee::whereMonth('entered_on', $this->currentDate)
-            ->whereDay('entered_on', $this->currentDate);
+            ->whereDay('entered_on', $this->currentDate)->get();
     }
 
     public function handle()
@@ -36,10 +37,6 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
         }
 
         Log::info('Processing holiday allowance adjustements for ' . $this->currentDate);
-
-        if($this->employees === null) {
-            return;
-        }
 
         $this->employees->each(function ($employee) {
             Log::info('Increasing holiday allowance for employee ID ' .

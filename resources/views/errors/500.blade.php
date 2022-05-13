@@ -6,8 +6,8 @@
 @section('support')
     @if($exceptionUuid)
         <div class="flex items-center mx-auto mt-4 sm:px-6 lg:px-8">
-            <div class="px-4 text-sm text-gray-500 uppercase">
-                {{ __('Für Hilfe gib bitte folgende Fehler Identifikation an.') }}
+            <div class="px-4 text-sm text-gray-500 uppercase tracking-wider">
+                {{ __('Für Hilfe gib folgende Fehler Identifikation an') }}
             </div>
         </div>
 

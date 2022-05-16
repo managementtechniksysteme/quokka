@@ -313,7 +313,7 @@
                             <div class="col">
                                 <span class="text-muted">
                                     NA MTD
-                                    @if(Auth::user()->can('director-reports.view.own') && Auth::user()->can('director-reports.view.other'))
+                                    @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('director-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
@@ -389,7 +389,7 @@
             </div>
         </div>
 
-        @if(Auth::user()->can('service-reports.approve') || Auth::user()->can('director-reports.approve') || Auth::user()->can('inspection-reports.approve') || Auth::user()->can('build-day-reports.approve'))
+        @if(Auth::user()->can('service-reports.approve') || Auth::user()->can('additions-reports.approve') || Auth::user()->can('inspection-reports.approve') || Auth::user()->can('build-day-reports.approve'))
             <div class="row">
                 @can('service-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
@@ -416,7 +416,7 @@
                         </div>
                     </div>
                 @endcan
-                @can('director-reports.approve')
+                @can('additions-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
                             <a class="stretched-link outline-none" href=""></a>
@@ -500,7 +500,7 @@
             RB - Regieberichte,
             PB - Prüfberichte,
             BT - Bautagesberichte,
-            MTD - Month to Date (seit Monatsbeginn)@if(Auth::user()->can('service-reports.view.other') || Auth::user()->can('director-reports.view.other') || Auth::user()->can('inspection-reports.view.other') || Auth::user()->can('build-day-reports.view.other')),
+            MTD - Month to Date (seit Monatsbeginn)@if(Auth::user()->can('service-reports.view.other') || Auth::user()->can('additions-reports.view.other') || Auth::user()->can('inspection-reports.view.other') || Auth::user()->can('build-day-reports.view.other')),
             ges. - gesamt
             @endif
         </p>

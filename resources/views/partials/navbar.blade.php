@@ -85,6 +85,14 @@
                                             Serviceberichte
                                         </a>
                                     @endcan
+                                    @can('viewAny', \App\Models\AdditionsReport::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('additions-reports.index') }}">
+                                            <svg class="icon-bs icon-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
+                                            </svg>
+                                            Regieberichte
+                                        </a>
+                                    @endcan
                                 </div>
                             @endif
                         </li>

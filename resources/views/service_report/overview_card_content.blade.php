@@ -21,6 +21,33 @@
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
                     {{ $serviceReport->services_sum_kilometres }}
+                    @switch($serviceReport->status)
+                        @case('new')
+                            @if($serviceReport->signatureRequest)
+                                <svg class="icon icon-16 ml-2 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                                </svg>
+                                {{ $serviceReport->signatureRequest->created_at }}
+                            @else
+                                <svg class="icon icon-16 ml-2 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                </svg>
+                                {{ $serviceReport->created_at }}
+                            @endif
+                            @break
+                        @case('signed')
+                            <svg class="icon icon-16 ml-2 mr-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
+                            </svg>
+                            {{ $serviceReport->signature()->created_at }}
+                        @break
+                        @case('finished')
+                            <svg class="icon icon-16 ml-2 mr-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                            </svg>
+                            {{ $serviceReport->updated_at }}
+                        @break
+                    @endswitch
                     <svg class="icon icon-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>

@@ -140,7 +140,11 @@
                 {{ __($serviceReport->status) }}
                 @switch($serviceReport->status)
                     @case('new')
-                        (erstellt am {{ $serviceReport->created_at }})
+                        @if($serviceReport->signatureRequest)
+                            (Anfrage zur Unterschrift gesendet am {{ $serviceReport->signatureRequest->created_at }})
+                        @else
+                            (erstellt am {{ $serviceReport->created_at }})
+                        @endif
                         @break
                     @case('signed')
                         am {{ $serviceReport->signature()->created_at }}

@@ -287,12 +287,12 @@ class Employee extends Model
             ->count();
     }
 
-    public function getMTDNewDirectorReportsAttribute()
+    public function getMTDNewAdditionsReportsAttribute()
     {
         return 'NA';
     }
 
-    public function getNewDirectorReportsAttribute()
+    public function getNewAdditionsReportsAttribute()
     {
         return 'NA';
     }

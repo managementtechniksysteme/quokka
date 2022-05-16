@@ -81,6 +81,8 @@ class TaskController extends Controller
         }
 
         $projects = Project::order()->get();
+
+        $currentResponsibleEmployee = $currentResponsibleEmployee ?? Auth::user()->employee->person;
         $employees = Person::has('employee')->order()->get();
 
         return view('task.create')
@@ -132,8 +134,12 @@ class TaskController extends Controller
     public function show(Task $task, TaskComment $comment): View
     {
         $task->load('project')
-            ->load('responsibleEmployee.person')
-            ->load('involvedEmployees.person');
+            ->load(['responsibleEmployee.person' => function ($query) {
+                $query->order();
+            }])
+            ->load(['involvedEmployees.person' => function ($query) {
+                $query->order();
+            }]);
 
         $commentSortKey =
             Auth::user()->settings->task_comments_sort_newest_first ?

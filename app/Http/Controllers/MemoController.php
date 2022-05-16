@@ -85,7 +85,10 @@ class MemoController extends Controller
         }
 
         $projects = Project::order()->get();
+
+        $currentEmployeeComposer = $currentEmployeeComposer ?? Auth::user()->employee->person;
         $employees = Person::has('employee')->order()->get();
+
         $people = Person::order()->get();
 
         return view('memo.create')
@@ -271,7 +274,7 @@ class MemoController extends Controller
         $memo->load('media');
 
         $currentTo = collect($memo->personRecipient ? [$memo->personRecipient] : []);
-        $currentCC = $memo->notifiedPeople;
+        $currentCC = $memo->notifiedPeople()->order()->get();
         $people = Person::whereNotNull('email')->order()->get();
 
         return view('memo.email')
@@ -292,8 +295,12 @@ class MemoController extends Controller
             ->load('project')
             ->load('employeeComposer')
             ->load('personRecipient')
-            ->load(('presentPeople'))
-            ->load('notifiedPeople');
+            ->load(['presentPeople' => function ($query) {
+                $query->order();
+            }])
+            ->load(['notifiedPeople' => function ($query) {
+                $query->order();
+            }]);
 
         $mail = Mail::to($request->email_to);
         if ($request->email_cc) {
@@ -315,8 +322,12 @@ class MemoController extends Controller
             ->load('project')
             ->load('employeeComposer')
             ->load('personRecipient')
-            ->load('presentPeople')
-            ->load('notifiedPeople');
+            ->load(['presentPeople' => function ($query) {
+                $query->order();
+            }])
+            ->load(['notifiedPeople' => function ($query) {
+                $query->order();
+            }]);
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

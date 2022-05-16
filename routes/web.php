@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\AdditionsReportController;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
@@ -68,6 +69,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/accounting/download', [AccountingController::class, 'download'])->name('accounting.download');
+
+    Route::resource('additions-reports', AdditionsReportController::class);
+    Route::get('/additions-reports/{additions_report}/download', [AdditionsReportController::class, 'download'])->name('additions-reports.download');
+    Route::get('/additions-reports/{additions_report}/email', [AdditionsReportController::class, 'showEmail'])->name('additions-reports.email');
+    Route::post('/additions-reports/{additions_report}/email', [AdditionsReportController::class, 'email']);
+    Route::get('/additions-reports/{additions_report}/sign', [AdditionsReportController::class, 'showSignatureRequest'])->name('additions-reports.sign');
+    Route::post('/additions-reports/{additions_report}/sign', [AdditionsReportController::class, 'sign']);
+    Route::get('/additions-reports/{additions_report}/email-download-request', [AdditionsReportController::class, 'showEmailDownloadRequest'])->name('additions-reports.email-download-request');
+    Route::post('/additions-reports/{additions_report}/email-download-request', [AdditionsReportController::class, 'emailDownloadRequest']);
+    Route::get('/additions-reports/{additions_report}/email-signature-request', [AdditionsReportController::class, 'showEmailSignatureRequest'])->name('additions-reports.email-signature-request');
+    Route::post('/additions-reports/{additions_report}/email-signature-request', [AdditionsReportController::class, 'emailSignatureRequest']);
+    Route::get('/additions-reports/{additions_report}/finish', [AdditionsReportController::class, 'finish'])->name('additions-reports.finish');
 
     Route::resource('addresses', AddressController::class);
     Route::resource('companies', CompanyController::class);

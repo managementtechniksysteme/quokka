@@ -6,7 +6,7 @@ use App\Events\ServiceReportCreatedEvent;
 use App\Events\ServiceReportSignedEvent;
 use App\Events\ServiceReportUpdatedEvent;
 use App\Http\Requests\EmailRequest;
-use App\Http\Requests\ServiceReportSignRequest;
+use App\Http\Requests\SignRequest;
 use App\Http\Requests\ServiceReportStoreRequest;
 use App\Http\Requests\ServiceReportUpdateRequest;
 use App\Http\Requests\SingleEmailRequest;
@@ -110,7 +110,7 @@ class ServiceReportController extends Controller
         $validatedData = $request->validated();
 
         $serviceReport = ServiceReport::make($validatedData);
-        $serviceReport->employee_id = \Auth::user()->employee_id;
+        $serviceReport->employee_id = Auth::user()->employee_id;
         $serviceReport->status = 'new';
         $serviceReport->number = 1;
 
@@ -135,9 +135,13 @@ class ServiceReportController extends Controller
         event(new ServiceReportCreatedEvent($serviceReport));
 
         if ($request->send_signature_request) {
-            return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+            return redirect()
+                ->route('service-reports.email-signature-request', $serviceReport)
+                ->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         } else {
-            return redirect()->route('service-reports.show', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
+            return redirect()
+                ->route('service-reports.show', $serviceReport)
+                ->with('success', 'Der Servicebericht wurde erfolgreich angelegt.');
         }
     }
 
@@ -249,7 +253,7 @@ class ServiceReportController extends Controller
             ->with('success', 'Der Servicebericht wurde erfolgreich entfernt.');
     }
 
-    public function showEmail(Request $request, ServiceReport $serviceReport)
+    public function showEmail(ServiceReport $serviceReport)
     {
         $serviceReport
             ->load('project')
@@ -290,7 +294,7 @@ class ServiceReportController extends Controller
             ->with('success', 'Der Servicebericht wurde erfolgreich gesendet.');
     }
 
-    public function showEmailSignatureRequest(Request $request, ServiceReport $serviceReport)
+    public function showEmailSignatureRequest(ServiceReport $serviceReport)
     {
         $serviceReport
             ->load('project.company.contactPerson');
@@ -329,7 +333,7 @@ class ServiceReportController extends Controller
 
     public function customerShowSignatureRequest(Request $request, string $token)
     {
-        $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $request->token);
+        $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $token);
 
         if ($serviceReport) {
             $serviceReport->load('employee.person')->load('services')->load('signatureRequest');
@@ -340,7 +344,7 @@ class ServiceReportController extends Controller
         return view('service_report.show_customer_signature_request')->with(compact('serviceReport'));
     }
 
-    public function sign(ServiceReportSignRequest $request, ServiceReport $serviceReport)
+    public function sign(SignRequest $request, ServiceReport $serviceReport)
     {
         $validatedData = $request->validated();
 
@@ -356,7 +360,7 @@ class ServiceReportController extends Controller
         }
     }
 
-    public function customerSign(ServiceReportSignRequest $request, string $token)
+    public function customerSign(SignRequest $request, string $token)
     {
         $validatedData = $request->validated();
 
@@ -378,7 +382,7 @@ class ServiceReportController extends Controller
         }
     }
 
-    public function showEmailDownloadRequest(Request $request, ServiceReport $serviceReport)
+    public function showEmailDownloadRequest(ServiceReport $serviceReport)
     {
         $serviceReport
             ->load('project.company.contactPerson');
@@ -418,9 +422,9 @@ class ServiceReportController extends Controller
         }
     }
 
-    public function download(Request $request, ServiceReport $serviceReport)
+    public function download(ServiceReport $serviceReport)
     {
-        return $this->downloadPDF(@$serviceReport);
+        return $this->downloadPDF($serviceReport);
     }
 
     public function customerDownload(Request $request, string $token)
@@ -487,7 +491,7 @@ class ServiceReportController extends Controller
         event(new ServiceReportSignedEvent($serviceReport));
     }
 
-    private function getConditionalRedirect($target, $serviceReport)
+    private function getConditionalRedirect(string|null $target, ServiceReport $serviceReport)
     {
         switch ($target) {
             case 'project':

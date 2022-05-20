@@ -8,6 +8,7 @@ trait FiltersPermissions
 {
     public function scopeFilterPermissions($query)
     {
+        $query = $query->where(function ($query) {
             foreach ($this->permissionFilters as $permission => $filters) {
                 if(Auth::user()->can($permission)) {
                     if(!is_array($filters[0])) {
@@ -21,6 +22,7 @@ trait FiltersPermissions
             }
 
             return $query;
+        });
     }
 
     private function handlePermissionFilterKey($query, $filters)

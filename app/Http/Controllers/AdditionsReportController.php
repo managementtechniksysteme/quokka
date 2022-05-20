@@ -54,14 +54,15 @@ class AdditionsReportController extends Controller
         if (! $request->has('search')) {
             $search = '';
 
-            if (! Auth::user()->settings->show_finished_items) {
-                $search .= '!ist:erledigt ';
-            }
             if (Auth::user()->settings->show_only_own_reports) {
                 $search .= 't:' . Auth::user()->username . ' ';
             }
+            if (! Auth::user()->settings->show_finished_items) {
+                $search .= '!ist:erledigt ';
+            }
 
             $search = trim($search);
+
             if($search !== '') {
                 $request->request->add(['search' => $search]);
             }

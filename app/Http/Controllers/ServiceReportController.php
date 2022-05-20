@@ -55,8 +55,20 @@ class ServiceReportController extends Controller
      */
     public function index(Request $request)
     {
-        if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
-            $request->request->add(['search' => '!ist:erledigt']);
+        if (! $request->has('search')) {
+            $search = '';
+
+            if (! Auth::user()->settings->show_finished_items) {
+                $search .= '!ist:erledigt ';
+            }
+            if (Auth::user()->settings->show_only_own_reports) {
+                $search .= 't:' . Auth::user()->username . ' ';
+            }
+
+            $search = trim($search);
+            if($search !== '') {
+                $request->request->add(['search' => $search]);
+            }
         } elseif ($request->has('search') && $request->search === '') {
             $request->request->remove('search');
         }
@@ -378,7 +390,7 @@ class ServiceReportController extends Controller
         } else {
             $request->session()->flash('warning', 'Kein Servicebericht zum Unterschreiben vorhanden.');
 
-            return view('service_report.sign')->with('serviceReport', null);
+            return view('service_report.show_customer_signature_request')->with('serviceReport', null);
         }
     }
 

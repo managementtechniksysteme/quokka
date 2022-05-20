@@ -20,7 +20,7 @@
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Fälligkeitsdatum
                     </div>

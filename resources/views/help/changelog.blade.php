@@ -11,6 +11,32 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.16-8439059 (20.05.2022)
+        * Die persönliche Übersicht ist nun implementiert. Diese zeigt diverse nützliche Indikatoren.
+        * Regieberichte können nun analog zu Serviceberichten verwaltet werden.
+        * Auswertungen von Fahrten können erstellt werden. Die erstellte PDF Datei wird automatisch basierend auf dem
+        aktuellen Anzeigefilter erstellt.
+        * Für Firmen kann eine Ansprechperson angegeben werden. Die Email Adresse dieser Person wird dann automatisch
+        beim Versenden von Berichten in das Feld eingetragen. Falls keine Ansprechperson vorhanden ist, wird weiterhin
+        die Email Adresse der Firma eingetragen, falls eine angegeben ist.
+        * Bei unerwarteten Serverfehlern wird eine Identifikation angezeigt, welche für bessere Hilfe kopiert und
+        mitgeteilt werden kann.
+        * Bei entsprechender Berechtigung kann sich ein Benutzer als ein anderer Benutzer anmelden, um etwa bessere
+        Hilfe leisten zu können.
+        * Eine Einstellung zur standardmäßigen Filterung von eigenen Berichten ist nun in den Benutzereinstellungen
+        verfügbar.
+        * Eine Einstellung zur Anzeige oder zum Verstecken von Kostenindikatoren in Projektlisten ist nun verwendbar.
+        * Es werden standardmäßig nur eigene Fahrten im Fahrtenbuch angezeigt.
+        * Ein Fehler bei der automatischen Gutschrift von Urlaubstagen wurde behoben.
+        * Ein Fehler bei der Summierung von Abrechnungskosten auf Projekten zur Anzeige von aktuellen Indikatoren wurde
+        behoben.
+        * Ein Fehler, der verhinderte, dass PDF Dateien von erledigten Serviceberichten erstellt werden konnten, wurde
+        behoben.
+        * Ein Fehler, der die falsche Anzahl an Listenelementen in der Überschrift anzeigte, wurde behoben.
+        * Rechtschreibfehler wurden behoben.
+        @endmarkdown
+
+        @markdown
         ### v0.1.15-99f2fda (04.05.2022)
         * Auswertungen von Abrechnungen können nun erstellt werden. Die Auswertung wird automatisch basierend auf den im
         Anzeigefilter angegebenen Kriterien erstellt. Für Monatsaauswertungen empfiehlt es sich daher, lediglich den

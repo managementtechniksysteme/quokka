@@ -8,6 +8,7 @@ use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements HasMedia
@@ -96,6 +97,11 @@ class Task extends Model implements HasMedia
                 ApplicationSettings::get()->task_due_soon_days.' day)',
             ],
         ];
+    }
+
+    public static function defaultFilter() : ?string
+    {
+        return Auth::user()->settings->show_finished_items ? null : '!ist:erledigt';
     }
 
     public function project()

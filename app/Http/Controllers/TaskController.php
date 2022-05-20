@@ -20,8 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Permission\Models\Permission;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
@@ -42,11 +40,7 @@ class TaskController extends Controller
 
     public function index(Request $request): View
     {
-        if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
-            $request->request->add(['search' => '!ist:erledigt']);
-        } elseif ($request->has('search') && $request->search === '') {
-            $request->request->remove('search');
-        }
+        Task::handleDefaultFilter($request);
 
         $tasks = Task::filterPermissions()
             ->filterSearch($request->input())

@@ -9,6 +9,7 @@ use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
 class AdditionsReport extends Model implements HasMedia
@@ -90,6 +91,22 @@ class AdditionsReport extends Model implements HasMedia
             ['!involvedEmployees.person_id', '{user}']
         ],
     ];
+
+    public static function defaultFilter() : ?string
+    {
+        $filter = '';
+
+        if (Auth::user()->settings->show_only_own_reports) {
+            $filter .= 't:' . Auth::user()->username . ' ';
+        }
+        if (! Auth::user()->settings->show_finished_items) {
+            $filter .= '!ist:erledigt ';
+        }
+
+        $filter = trim($filter);
+
+        return $filter === '' ? null : $filter;
+    }
 
     public function registerMediaCollections(): void
     {

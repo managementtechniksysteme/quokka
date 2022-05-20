@@ -2,10 +2,26 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 trait FiltersSearch
 {
+    public static function defaultFilter() : ?string
+    {
+        return null;
+    }
+
+    public static function handleDefaultFilter(Request $request) {
+        $defaultFilter = self::defaultFilter();
+
+        if (! $request->has('search') && $defaultFilter !== null && $defaultFilter !== '') {
+            $request->request->add(['search' => $defaultFilter]);
+        } elseif ($request->has('search') && $request->search === '') {
+            $request->request->remove('search');
+        }
+    }
+
     public function scopeFilterSearch($query, $params = null)
     {
         if (! (isset($params['search']) && isset($this->filterKeys))) {

@@ -116,11 +116,7 @@ class ProjectController extends Controller
                 return view('project.show_tab_overview')->with(compact('project'))->with(compact('currencyUnit'));
 
             case 'tasks':
-                if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
-                    $request->request->add(['search' => '!ist:erledigt']);
-                } elseif ($request->has('search') && $request->search === '') {
-                    $request->request->remove('search');
-                }
+                Task::handleDefaultFilter($request);
 
                 $tasks = $project->tasks()
                     ->filterPermissions()
@@ -145,24 +141,7 @@ class ProjectController extends Controller
                 return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
 
             case 'service_reports':
-                if (! $request->has('search')) {
-                    $search = '';
-
-                    if (Auth::user()->settings->show_only_own_reports) {
-                        $search .= 't:' . Auth::user()->username . ' ';
-                    }
-                    if (! Auth::user()->settings->show_finished_items) {
-                        $search .= '!ist:erledigt ';
-                    }
-
-                    $search = trim($search);
-
-                    if($search !== '') {
-                        $request->request->add(['search' => $search]);
-                    }
-                } elseif ($request->has('search') && $request->search === '') {
-                    $request->request->remove('search');
-                }
+                ServiceReport::handleDefaultFilter($request);
 
                 $serviceReports = $project->serviceReports()
                     ->filterPermissions()
@@ -179,24 +158,7 @@ class ProjectController extends Controller
                 return view('project.show_tab_service_reports')->with(compact('project'))->with(compact('serviceReports'));
 
             case 'additions_reports':
-                if (! $request->has('search')) {
-                    $search = '';
-
-                    if (Auth::user()->settings->show_only_own_reports) {
-                        $search .= 't:' . Auth::user()->username . ' ';
-                    }
-                    if (! Auth::user()->settings->show_finished_items) {
-                        $search .= '!ist:erledigt ';
-                    }
-
-                    $search = trim($search);
-
-                    if($search !== '') {
-                        $request->request->add(['search' => $search]);
-                    }
-                } elseif ($request->has('search') && $request->search === '') {
-                    $request->request->remove('search');
-                }
+                AdditionsReport::handleDefaultFilter($request);
 
                 $additionsReports = $project->additionsReports()
                     ->filterPermissions()

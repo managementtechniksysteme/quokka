@@ -51,24 +51,7 @@ class AdditionsReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! $request->has('search')) {
-            $search = '';
-
-            if (Auth::user()->settings->show_only_own_reports) {
-                $search .= 't:' . Auth::user()->username . ' ';
-            }
-            if (! Auth::user()->settings->show_finished_items) {
-                $search .= '!ist:erledigt ';
-            }
-
-            $search = trim($search);
-
-            if($search !== '') {
-                $request->request->add(['search' => $search]);
-            }
-        } elseif ($request->has('search') && $request->search === '') {
-            $request->request->remove('search');
-        }
+        AdditionsReport::handleDefaultFilter($request);
 
         $additionsReports = AdditionsReport::filterPermissions()
             ->filterSearch($request->input())

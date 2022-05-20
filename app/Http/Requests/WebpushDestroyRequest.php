@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class WebpushDestroyRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class WebpushDestroyRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'endpoint' => 'required',

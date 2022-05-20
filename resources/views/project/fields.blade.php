@@ -59,11 +59,11 @@
                     <span class="input-group-text">{{ $currencyUnit }}</span>
                 </div>
                 <input type="number" min="0" step="0.01" class="form-control @error('wage_costs') is-invalid @enderror" id="wage_costs" name="wage_costs" placeholder="" value="{{ old('wage_costs', optional($project)->wage_costs) }}" />
-            </div>
-            <div class="invalid-feedback">
-                @error('wage_costs')
+                <div class="invalid-feedback @error('wage_costs') d-block @enderror">
+                    @error('wage_costs')
                     {{ $message }}
-                @enderror
+                    @enderror
+                </div>
             </div>
         </div>
 
@@ -74,11 +74,11 @@
                     <span class="input-group-text">{{ $currencyUnit }}</span>
                 </div>
                 <input type="number" min="0" step="0.01" class="form-control @error('material_costs') is-invalid @enderror" id="material_costs" name="material_costs" placeholder="" value="{{ old('material_costs', optional($project)->material_costs) }}" />
-            </div>
-            <div class="invalid-feedback">
-                @error('material_costs')
+                <div class="invalid-feedback @error('material_costs') d-block @enderror">
+                    @error('material_costs')
                     {{ $message }}
-                @enderror
+                    @enderror
+                </div>
             </div>
         </div>
 

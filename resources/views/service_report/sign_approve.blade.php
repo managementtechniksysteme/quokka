@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        <p class="mt-4">Alternativ können Sie sich einen Link zum Herunterladen per Email schicken lassen, falls Sie den Servicebericht auf einem anderen Gerät herunterladen möchten. Geben Sie hierzu bitte die gewünschte Email Adresse in folgendes Feld ein und klicken anschliessend auf den Button.</p>
+        <p class="mt-4">Alternativ können Sie sich einen Link zum Herunterladen per Email schicken lassen, falls Sie den Servicebericht auf einem anderen Gerät herunterladen möchten. Geben Sie hierzu bitte die gewünschte Email Adresse in folgendes Feld ein und klicken anschließend auf den Button.</p>
 
         <form class="needs-validation" action="{{ route('service-reports.customer-email-download-request', $serviceReport->downloadRequest->token) }}" method="post" novalidate>
             @csrf

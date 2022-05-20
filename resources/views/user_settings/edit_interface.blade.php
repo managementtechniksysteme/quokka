@@ -73,6 +73,46 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <div>
+                        <label for="show_finished_items">Nur eigene Elemente in Listen von Berichten anzeigen?</label>
+                    </div>
+                    <div class="btn-group btn-group-toggle @error('show_only_own_reports') is-invalid @enderror" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == true) active @endif">
+                            <input type="radio" name="show_only_own_reports" id="1" value="1" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == true) checked @endif> Nur eigene Elemente anzeigen
+                        </label>
+                        <label class="btn btn-outline-secondary @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == false) active @endif">
+                            <input type="radio" name="show_only_own_reports" id="0" value="0" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == false) checked @endif> Auch andere Elemente anzeigen
+                        </label>
+                    </div>
+                    <div class="invalid-feedback @error('show_only_own_reports') d-block @enderror">
+                        @error('show_only_own_reports')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                @can('projects.view.estimates')
+                    <div class="form-group">
+                        <div>
+                            <label for="show_finished_items">Kostenindikatoren in Projektlisten anzeigen?</label>
+                        </div>
+                        <div class="btn-group btn-group-toggle @error('show_cost_estimates') is-invalid @enderror" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == true) active @endif">
+                                <input type="radio" name="show_cost_estimates" id="1" value="1" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == true) checked @endif> Kostenindikatoren anzeigen
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == false) active @endif">
+                                <input type="radio" name="show_cost_estimates" id="0" value="0" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == false) checked @endif> Kostenindikatoren nicht anzeigen
+                            </label>
+                        </div>
+                        <div class="invalid-feedback @error('show_cost_estimates') d-block @enderror">
+                            @error('show_cost_estimates')
+                            {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                @endcan
+
             </div>
 
         </div>

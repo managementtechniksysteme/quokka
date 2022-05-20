@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class PersonStoreRequest extends FormRequest
 {
@@ -12,13 +11,8 @@ class PersonStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $address_name = $request->address_name;
-        $street_number = $request->street_number;
-        $postcode = $request->postcode;
-        $city = $request->city;
-
         return [
             'first_name' => 'required',
             'last_name' => 'required',

@@ -39,13 +39,11 @@
                     <span class="input-group-text">€</span>
                 </div>
                 <input type="number" min="0" step="0.1" class="form-control @error('costs') is-invalid @enderror" id="costs" name="costs" placeholder="" value="{{ old('costs', optional($wageService)->costs) }}" />
-            </div>
-            <div class="invalid-feedback">
-                @error('costs')
+                <div class="invalid-feedback @error('costs') d-block @enderror">
+                    @error('costs')
                     {{ $message }}
-                @else
-                    Gib bitte die Kosten der Leistung ein.
-                @enderror
+                    @enderror
+                </div>
             </div>
         </div>
 

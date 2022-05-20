@@ -121,7 +121,8 @@
                             @enderror
                         </div>
                     </div>
-                    @endif
+                </div>
+            @endif
 
             <div class="row mt-4">
                 <div class="col">

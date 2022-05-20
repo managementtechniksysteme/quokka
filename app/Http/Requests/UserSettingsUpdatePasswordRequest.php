@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
-
 class UserSettingsUpdatePasswordRequest extends FormRequest
 {
     /**
@@ -12,7 +10,7 @@ class UserSettingsUpdatePasswordRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'password' => 'required|confirmed',

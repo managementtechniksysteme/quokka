@@ -71,6 +71,11 @@ class Person extends Model
         return $this->hasMany(Memo::class);
     }
 
+    public function additionsReportsPresentIn()
+    {
+        return $this->morphedByMany(AdditionsReport::class, 'personable')->wherePivot('person_type', 'present');
+    }
+
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";

@@ -223,6 +223,7 @@ return [
         'litres_refuelled'                => 'getankte Liter',
         'origin'                          => 'Start',
         'destination'                     => 'Ziel',
-        'only_own'                        => 'Feld'
+        'only_own'                        => 'Feld',
+        'services_provided_on'            => 'Datum',
     ],
 ];

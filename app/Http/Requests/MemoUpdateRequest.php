@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class MemoUpdateRequest extends FormRequest
@@ -13,11 +12,11 @@ class MemoUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         $memo = $this->memo;
-        $title = $request->title;
-        $project_id = $request->project_id;
+        $title = $this->input('title');
+        $project_id = $this->input('project_id');
 
         return [
             'title' => [

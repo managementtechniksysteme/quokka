@@ -296,15 +296,15 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
-                    <a class="stretched-link outline-none" href=""></a>
+                    <a class="stretched-link outline-none" href="{{ route('additions-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene RB</h5>
-                                <span class="h2 font-weight-bold m-0">NA</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->new_additions_reports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 text-gray-500">
+                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->new_additions_reports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                 </svg>
                             </div>
@@ -312,12 +312,18 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    NA MTD
-                                    @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('director-reports.view.other'))
+                                    {{ Number::toLocal(Auth::user()->employee->mtd_new_additions_reports) }} MTD
+                                    @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('additions-reports.view.involved'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        NA ges.
+                                        {{ Number::toLocal(Auth::user()->employee->new_additions_reports_involved_in) }} bet.
+                                    @endif
+                                    @if(Auth::user()->can('additions-reports.view.own')&& Auth::user()->can('additions-reports.view.involved') && Auth::user()->can('additions-reports.view.other'))
+                                        <svg class="icon-bs icon-baseline text-muted">
+                                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
+                                        </svg>
+                                        {{ Number::toLocal(\App\Models\AdditionsReport::newAdditionsReports()) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -375,7 +381,7 @@
                             <div class="col">
                                 <span class="text-muted">
                                     NA MTD
-                                    @if(Auth::user()->can('build-day-reports.view.own') && Auth::user()->can('build-day-reports.view.other'))
+                                    @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
@@ -389,7 +395,7 @@
             </div>
         </div>
 
-        @if(Auth::user()->can('service-reports.approve') || Auth::user()->can('additions-reports.approve') || Auth::user()->can('inspection-reports.approve') || Auth::user()->can('build-day-reports.approve'))
+        @if(Auth::user()->can('service-reports.approve') || Auth::user()->can('additions-reports.approve') || Auth::user()->can('inspection-reports.approve') || Auth::user()->can('construction-reports.approve'))
             <div class="row">
                 @can('service-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
@@ -419,22 +425,22 @@
                 @can('additions-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
-                            <a class="stretched-link outline-none" href=""></a>
+                            <a class="stretched-link outline-none" href="{{ route('additions-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare RB</h5>
-                                        <span class="h2 font-weight-bold m-0">NA</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal(\App\Models\AdditionsReport::signedAdditionsReports()) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 text-gray-500">
+                                        <svg class="icon-bs icon-32 @if(\App\Models\AdditionsReport::signedAdditionsReports()) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">NA MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal(\App\Models\AdditionsReport::mtdSignedAdditionsReports()) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -466,7 +472,7 @@
                         </div>
                     </div>
                 @endcan
-                @can('build-day-reports.approve')
+                @can('construction-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
                             <a class="stretched-link outline-none" href=""></a>
@@ -500,7 +506,8 @@
             RB - Regieberichte,
             PB - Prüfberichte,
             BT - Bautagesberichte,
-            MTD - Month to Date (seit Monatsbeginn)@if(Auth::user()->can('service-reports.view.other') || Auth::user()->can('additions-reports.view.other') || Auth::user()->can('inspection-reports.view.other') || Auth::user()->can('build-day-reports.view.other')),
+            MTD - Month to Date (seit Monatsbeginn)@if(Auth::user()->can('additions-reports.view.involved') || Auth::user()->can('construction-reports.view.involved')),
+            bet. - beteiligt{{''}}@endif{{''}}@if(Auth::user()->can('service-reports.view.other') || Auth::user()->can('additions-reports.view.other') || Auth::user()->can('inspection-reports.view.other') || Auth::user()->can('construction-reports.view.other')),
             ges. - gesamt
             @endif
         </p>

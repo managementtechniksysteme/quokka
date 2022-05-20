@@ -18,7 +18,7 @@
             </h3>
 
             <div class="scroll-x d-flex">
-                @unless($serviceReport->status === 'finished')
+                @unless($serviceReport->isFinished())
                     @can('approve', $serviceReport)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
                             <svg class="icon icon-16 mr-2">

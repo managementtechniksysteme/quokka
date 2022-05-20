@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class ServiceReportStoreRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class ServiceReportStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             'project_id' => 'required|exists:projects,id',

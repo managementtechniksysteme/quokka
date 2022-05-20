@@ -16,11 +16,11 @@
                     <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
-                    {{ $serviceReport->services_sum_hours }}
+                    {{ Number::toLocal($serviceReport->services_sum_hours) }}
                     <svg class="icon icon-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
-                    {{ $serviceReport->services_sum_kilometres }}
+                    {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
                     @switch($serviceReport->status)
                         @case('new')
                             @if($serviceReport->signatureRequest)
@@ -63,7 +63,7 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="serviceReportOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="serviceReportOverviewDropdown">
-                    @unless($serviceReport->status === 'finished')
+                    @unless($serviceReport->isFinished())
                         @can('approve', $serviceReport)
                             <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
                                 <svg class="icon icon-16 mr-2">

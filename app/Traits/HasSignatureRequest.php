@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\SignatureRequest;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 trait HasSignatureRequest
@@ -29,7 +30,7 @@ trait HasSignatureRequest
         $signatureRequest = $this->signatureRequest ?? SignatureRequest::make();
 
         do {
-            $signatureRequest->token = \Str::random(64);
+            $signatureRequest->token = Str::random(64);
         } while (SignatureRequest::find($signatureRequest->token));
 
         $signatureRequest->requestable()->associate($this);

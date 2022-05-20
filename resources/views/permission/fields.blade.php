@@ -1720,6 +1720,309 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+            </svg>
+            Regieberichte
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Regieberichte.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_view_own') is-invalid @enderror" name="additions-reports_view_own" id="additions-reports_view_own" value="true" @if(old('additions-reports_view_own', optional($permissions)->hasPermissionTo('additions-reports.view.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_view_own">Eigene Regieberichte ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_view_own') d-block @enderror">
+                @error('additions-reports_view_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_view_involved') is-invalid @enderror" name="additions-reports_view_involved" id="additions-reports_view_involved" value="true" @if(old('additions-reports_view_involved', optional($permissions)->hasPermissionTo('additions-reports.view.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_view_involved">Regieberichte als Beteiligter ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_view_involved') d-block @enderror">
+                @error('additions-reports_view_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_view_other') is-invalid @enderror" name="additions-reports_view_other" id="additions-reports_view_other" value="true" @if(old('additions-reports_view_other', optional($permissions)->hasPermissionTo('additions-reports.view.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_view_other">Andere Regieberichte ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_view_other') d-block @enderror">
+                @error('additions-reports_view_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_create') is-invalid @enderror" name="additions-reports_create" id="additions-reports_create" value="true" @if(old('additions-reports_create', optional($permissions)->hasPermissionTo('additions-reports.create'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_create">Regieberichte erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_create') d-block @enderror">
+                @error('additions-reports_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_update_own') is-invalid @enderror" name="additions-reports_update_own" id="additions-reports_update_own" value="true" @if(old('additions-reports_update_own', optional($permissions)->hasPermissionTo('additions-reports.update.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_update_own">Eigene Regieberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_update_own') d-block @enderror">
+                @error('additions-reports_update_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_update_involved') is-invalid @enderror" name="additions-reports_update_involved" id="additions-reports_update_involved" value="true" @if(old('additions-reports_update_involved', optional($permissions)->hasPermissionTo('additions-reports.update.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_update_involved">Regieberichte als Beteiligter bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_update_involved') d-block @enderror">
+                @error('additions-reports_update_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_update_other') is-invalid @enderror" name="additions-reports_update_other" id="additions-reports_update_other" value="true" @if(old('additions-reports_update_other', optional($permissions)->hasPermissionTo('additions-reports.update.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_update_other">Andere Regieberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_update_other') d-block @enderror">
+                @error('additions-reports_update_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_delete_own') is-invalid @enderror" name="additions-reports_delete_own" id="additions-reports_delete_own" value="true" @if(old('additions-reports_delete_own', optional($permissions)->hasPermissionTo('additions-reports.delete.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_delete_own">Eigene Regieberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_delete_own') d-block @enderror">
+                @error('additions-reports_delete_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_delete_involved') is-invalid @enderror" name="additions-reports_delete_involved" id="additions-reports_delete_involved" value="true" @if(old('additions-reports_delete_involved', optional($permissions)->hasPermissionTo('additions-reports.delete.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_delete_involved">Regieberichte als Beteiligter entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_delete_involved') d-block @enderror">
+                @error('additions-reports_delete_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_delete_other') is-invalid @enderror" name="additions-reports_delete_other" id="additions-reports_delete_other" value="true" @if(old('additions-reports_delete_other', optional($permissions)->hasPermissionTo('additions-reports.delete.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_delete_other">Andere Regieberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_delete_other') d-block @enderror">
+                @error('additions-reports_delete_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_email_own') is-invalid @enderror" name="additions-reports_email_own" id="additions-reports_email_own" value="true" @if(old('additions-reports_email_own', optional($permissions)->hasPermissionTo('additions-reports.email.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_email_own">Eigene Regieberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_email_own') d-block @enderror">
+                @error('additions-reports_email_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_email_involved') is-invalid @enderror" name="additions-reports_email_involved" id="additions-reports_email_involved" value="true" @if(old('additions-reports_email_involved', optional($permissions)->hasPermissionTo('additions-reports.email.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_email_involved">Regieberichte als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_email_involved') d-block @enderror">
+                @error('additions-reports_email_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_email_other') is-invalid @enderror" name="additions-reports_email_other" id="additions-reports_email_other" value="true" @if(old('additions-reports_email_other', optional($permissions)->hasPermissionTo('additions-reports.email.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_email_other">Andere Regieberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_email_other') d-block @enderror">
+                @error('additions-reports_email_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_createpdf_own') is-invalid @enderror" name="additions-reports_createpdf_own" id="additions-reports_createpdf_own" value="true" @if(old('additions-reports_createpdf_own', optional($permissions)->hasPermissionTo('additions-reports.createpdf.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_createpdf_own">PDF Dateien von eigenen Regieberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_createpdf_own') d-block @enderror">
+                @error('additions-reports_createpdf_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_createpdf_involved') is-invalid @enderror" name="additions-reports_createpdf_involved" id="additions-reports_createpdf_involved" value="true" @if(old('additions-reports_createpdf_involved', optional($permissions)->hasPermissionTo('additions-reports.createpdf.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_createpdf_involved">PDF Dateien von Regieberichten als Beteiligter rstellen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_createpdf_involved') d-block @enderror">
+                @error('additions-reports_createpdf_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_createpdf_other') is-invalid @enderror" name="additions-reports_createpdf_other" id="additions-reports_createpdf_other" value="true" @if(old('additions-reports_createpdf_other', optional($permissions)->hasPermissionTo('additions-reports.createpdf.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_createpdf_other">PDF Dateien von anderen Regieberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_createpdf_other') d-block @enderror">
+                @error('additions-reports_createpdf_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-signature-request_own') is-invalid @enderror" name="additions-reports_send-signature-request_own" id="additions-reports_send-signature-request_own" value="true" @if(old('additions-reports_send-signature-request_own', optional($permissions)->hasPermissionTo('additions-reports.send-signature-request.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-signature-request_own">Anfrage zur Unterschrift von eigenen Regieberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-signature-request_own') d-block @enderror">
+                @error('additions-reports_send-signature-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-signature-request_involved') is-invalid @enderror" name="additions-reports_send-signature-request_involved" id="additions-reports_send-signature-request_involved" value="true" @if(old('additions-reports_send-signature-request_involved', optional($permissions)->hasPermissionTo('additions-reports.send-signature-request.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-signature-request_involved">Anfrage zur Unterschrift von Regieberichten als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-signature-request_involved') d-block @enderror">
+                @error('additions-reports_send-signature-request_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-signature-request_other') is-invalid @enderror" name="additions-reports_send-signature-request_other" id="additions-reports_send-signature-request_other" value="true" @if(old('additions-reports_send-signature-request_other', optional($permissions)->hasPermissionTo('additions-reports.send-signature-request.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-signature-request_other">Anfrage zur Unterschrift von anderen Regieberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-signature-request_other') d-block @enderror">
+                @error('additions-reports_send-signature-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-download-request_own') is-invalid @enderror" name="additions-reports_send-download-request_own" id="additions-reports_send-download-request_own" value="true" @if(old('additions-reports_send-download-request_own', optional($permissions)->hasPermissionTo('additions-reports.send-download-request.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-download-request_own">Anfrage zum Herunterladen von eigenen Regieberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-download-request_own') d-block @enderror">
+                @error('additions-reports_send-download-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-download-request_involved') is-invalid @enderror" name="additions-reports_send-download-request_involved" id="additions-reports_send-download-request_involved" value="true" @if(old('additions-reports_send-download-request_involved', optional($permissions)->hasPermissionTo('additions-reports.send-download-request.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-download-request_involved">Anfrage zum Herunterladen von Regieberichten als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-download-request_involved') d-block @enderror">
+                @error('additions-reports_send-download-request_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_send-download-request_other') is-invalid @enderror" name="additions-reports_send-download-request_other" id="additions-reports_send-download-request_other" value="true" @if(old('additions-reports_send-download-request_other', optional($permissions)->hasPermissionTo('additions-reports.send-download-request.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_send-download-request_other">Anfrage zum Herunterladen von anderen Regieberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_send-download-request_other') d-block @enderror">
+                @error('additions-reports_send-download-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_get-signature_own') is-invalid @enderror" name="additions-reports_get-signature_own" id="additions-reports_get-signature_own" value="true" @if(old('additions-reports_get-signature_own', optional($permissions)->hasPermissionTo('additions-reports.get-signature.own'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_get-signature_own">Eigene Regieberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_get-signature_own') d-block @enderror">
+                @error('additions-reports_get-signature_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_get-signature_involved') is-invalid @enderror" name="additions-reports_get-signature_involved" id="additions-reports_get-signature_involved" value="true" @if(old('additions-reports_get-signature_involved', optional($permissions)->hasPermissionTo('additions-reports.get-signature.involved'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_get-signature_involved">Regieberichte als Beteiligter unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_get-signature_involved') d-block @enderror">
+                @error('additions-reports_get-signature_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_get-signature_other') is-invalid @enderror" name="additions-reports_get-signature_other" id="additions-reports_get-signature_other" value="true" @if(old('additions-reports_get-signature_other', optional($permissions)->hasPermissionTo('additions-reports.get-signature.other'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_get-signature_other">Andere Regieberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_get-signature_other') d-block @enderror">
+                @error('additions-reports_get-signature_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('additions-reports_approve') is-invalid @enderror" name="additions-reports_approve" id="additions-reports_approve" value="true" @if(old('additions-reports_approve', optional($permissions)->hasPermissionTo('additions-reports.approve'))) checked @endif>
+                <label class="custom-control-label" for="additions-reports_approve">Regieberichte als erledigt markieren</label>
+            </div>
+            <div class="invalid-feedback @error('additions-reports_approve') d-block @enderror">
+                @error('additions-reports_approve')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
             </svg>
             Rollen

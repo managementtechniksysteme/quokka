@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Models\ApplicationSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class EmployeeUpdateRequest extends FormRequest
@@ -14,7 +13,7 @@ class EmployeeUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         $minAmount = ApplicationSettings::get()->accounting_min_amount;
 

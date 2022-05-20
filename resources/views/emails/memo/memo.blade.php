@@ -17,14 +17,12 @@
 @endforeach
 @endif
 
-
 @if($memo->notifiedPeople->count() > 0)
 **Verteiler:**<br />
 @foreach($memo->notifiedPeople as $person)
 {{ $person->name }}@unless($loop->last), @endunless
 @endforeach
 @endif
-
 
 **Vermerk**<br />
 {!! $memo->comment !!}

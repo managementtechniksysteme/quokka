@@ -46,7 +46,6 @@ class MemoPolicy
         if($memo->employeeComposer->person_id !== $user->employee_id &&
             ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
-            $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
             $other = $user->can('memos.view.other');
         }
@@ -86,7 +85,6 @@ class MemoPolicy
         if($memo->employeeComposer->person_id !== $user->employee_id &&
             ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
-            $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
             $other = $user->can('memos.update.other');
         }
@@ -121,7 +119,6 @@ class MemoPolicy
         if($memo->employeeComposer->person_id !== $user->employee_id &&
             ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
-            $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
             $other = $user->can('memos.delete.other');
         }
@@ -156,7 +153,6 @@ class MemoPolicy
         if($memo->employeeComposer->person_id !== $user->employee_id &&
             ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
-            $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
             $other = $user->can('memos.email.other');
         }
@@ -191,7 +187,6 @@ class MemoPolicy
         if($memo->employeeComposer->person_id !== $user->employee_id &&
             ($memo->personRecipient && $memo->personRecipient->id !== $user->employee_id) &&
             $memo->presentPeople->doesntContain($user->employee_id) &&
-            $memo->notifiedPeople->doesntContain($user->employee_id) &&
             $memo->notifiedPeople->doesntContain($user->employee_id)) {
             $other = $user->can('memos.createpdf.other');
         }

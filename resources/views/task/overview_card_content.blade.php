@@ -18,7 +18,7 @@
                             </div>
                             <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                                 <svg class="icon icon-16 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
                                 {{ $task->due_on ?? 'kein Datum' }}
                             </div>
@@ -37,7 +37,7 @@
                                 {{ $task->responsibleEmployee->person->name }}
                                 <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                                     <svg class="icon icon-16 mr-1">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                     </svg>
                                     {{ $task->due_on ?? 'kein Datum' }}
                                 </div>
@@ -58,7 +58,7 @@
                         {{ $task->responsibleEmployee->person->name }}
                         <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                             <svg class="icon icon-16 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $task->due_on ?? 'kein Datum' }}
                         </div>

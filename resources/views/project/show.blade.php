@@ -106,6 +106,15 @@
                             <span class="ml-auto">{{ $project->service_reports_count > 0 ? $project->service_reports_count : '' }}</span>
                         </a>
                     @endcan
+                    @can('viewAny', \App\Models\AdditionsReport::class)
+                        <a class="menu-item @if (request()->tab == 'additions_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'additions_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
+                            </svg>
+                            Regieberichte
+                            <span class="ml-auto">{{ $project->additions_reports_count > 0 ? $project->additions_reports_count : '' }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -142,6 +151,15 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                             </svg>
                             Serviceberichte
+                        </a>
+                    @endcan
+
+                    @can('viewAny', \App\Models\AdditionsReport::class)
+                        <a class="menu-item @if (request()->tab == 'additions_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'additions_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
+                            </svg>
+                            Regieberichte
                         </a>
                     @endcan
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\Memo;
@@ -103,7 +104,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project, Request $request)
     {
-        $project->loadCount('tasks')->loadCount('memos')->loadCount('serviceReports');
+        $project
+            ->loadCount('tasks')
+            ->loadCount('memos')
+            ->loadCount('serviceReports')
+            ->loadCount('additionsReports');
 
         switch ($request->tab) {
             case 'overview':
@@ -117,7 +122,8 @@ class ProjectController extends Controller
                     $request->request->remove('search');
                 }
 
-                $tasks = Task::where('project_id', $project->id)
+                $tasks = $project->tasks()
+                    ->filterPermissions()
                     ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('responsibleEmployee.person')
@@ -127,7 +133,8 @@ class ProjectController extends Controller
                 return view('project.show_tab_tasks')->with(compact('project'))->with(compact('tasks'));
 
             case 'memos':
-                $memos = Memo::where('project_id', $project->id)
+                $memos = $project->memos()
+                    ->filterPermissions()
                     ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('employeeComposer.person')
@@ -138,13 +145,26 @@ class ProjectController extends Controller
                 return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
 
             case 'service_reports':
-                if (! $request->has('search') && ! Auth::user()->settings->show_finished_items) {
-                    $request->request->add(['search' => '!ist:erledigt']);
+                if (! $request->has('search')) {
+                    $search = '';
+
+                    if (! Auth::user()->settings->show_finished_items) {
+                        $search .= '!ist:erledigt ';
+                    }
+                    if (Auth::user()->settings->show_only_own_reports) {
+                        $search .= 't:' . Auth::user()->username . ' ';
+                    }
+
+                    $search = trim($search);
+                    if($search !== '') {
+                        $request->request->add(['search' => $search]);
+                    }
                 } elseif ($request->has('search') && $request->search === '') {
                     $request->request->remove('search');
                 }
 
-                $serviceReports = ServiceReport::where('project_id', $project->id)
+                $serviceReports = $project->serviceReports()
+                    ->filterPermissions()
                     ->filterSearch($request->input())
                     ->order($request->input())
                     ->with('employee.person')
@@ -156,6 +176,35 @@ class ProjectController extends Controller
                     ->appends($request->except('page'));
 
                 return view('project.show_tab_service_reports')->with(compact('project'))->with(compact('serviceReports'));
+
+            case 'additions_reports':
+                if (! $request->has('search')) {
+                    $search = '';
+
+                    if (! Auth::user()->settings->show_finished_items) {
+                        $search .= '!ist:erledigt ';
+                    }
+                    if (Auth::user()->settings->show_only_own_reports) {
+                        $search .= 't:' . Auth::user()->username . ' ';
+                    }
+
+                    $search = trim($search);
+                    if($search !== '') {
+                        $request->request->add(['search' => $search]);
+                    }
+                } elseif ($request->has('search') && $request->search === '') {
+                    $request->request->remove('search');
+                }
+
+                $additionsReports = $project->additionsReports()
+                    ->filterPermissions()
+                    ->filterSearch($request->input())
+                    ->order($request->input())
+                    ->with('employee.person')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_additions_reports')->with(compact('project'))->with(compact('additionsReports'));
 
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);

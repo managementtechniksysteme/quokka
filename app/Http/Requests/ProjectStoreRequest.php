@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ProjectStoreRequest extends FormRequest
@@ -20,10 +19,10 @@ class ProjectStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $name = $request->name;
-        $company_id = $request->company_id;
+        $name = $this->input('name');
+        $company_id = $this->input('company_id');
 
         return [
             'name' => [

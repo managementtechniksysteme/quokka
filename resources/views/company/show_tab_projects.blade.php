@@ -141,7 +141,7 @@
         {{ $projects->links() }}
     </div>
 
-    @can('projects.view.estimates')
+    @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
         @if($projects->count() > 0 && ($projectOverwallCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
             <p class="mt-3 small">
                 Die Pfeile für die
@@ -165,5 +165,5 @@
                 @if($projectMaterialCostsWarningPercentage)Materialkosten: {{ $projectMaterialCostsWarningPercentage }}% @endif
             </p>
         @endif
-    @endcan
+    @endif
 @endsection

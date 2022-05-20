@@ -80,6 +80,14 @@ class Employee extends Model
         return $this->hasMany(Logbook::class, 'employee_id');
     }
 
+    public function additionsReports() {
+        return $this->hasMany(AdditionsReport::class, 'employee_id');
+    }
+
+    public function additionsReportsInvolvedIn() {
+        return $this->morphedByMany(AdditionsReport::class, 'employeeable', null, 'employee_id', 'employeeable_id')->wherePivot('employee_type', 'involved');
+    }
+
     public function isCurrentlyOnHoliday()
     {
         $currentHolidayAccounting = $this->accounting()
@@ -289,12 +297,27 @@ class Employee extends Model
 
     public function getMTDNewAdditionsReportsAttribute()
     {
-        return 'NA';
+        $today = Carbon::today();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->additionsReports()
+            ->whereStatus('new')
+            ->whereBetween('created_at', [$firstOfMonth, $today])
+            ->count();
     }
 
     public function getNewAdditionsReportsAttribute()
     {
-        return 'NA';
+        return $this->additionsReports()
+            ->whereStatus('new')
+            ->count();
+    }
+
+    public function getNewAdditionsReportsInvolvedInAttribute()
+    {
+        return $this->additionsReportsInvolvedIn()
+            ->whereStatus('new')
+            ->count();
     }
 
     public function getMTDNewInspectionReportsAttribute()

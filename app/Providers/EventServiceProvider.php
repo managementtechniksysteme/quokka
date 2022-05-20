@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\AdditionsReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
+use App\Listeners\SendAdditionsReportMentionNotification;
+use App\Listeners\SendAdditionsReportSignedNotification;
 use App\Listeners\SendCommentInvolvedNotification;
 use App\Listeners\SendCommentMentionNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
@@ -31,6 +34,10 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        AdditionsReportSignedEvent::class => [
+            SendAdditionsReportSignedNotification::class,
+        ],
+
         ServiceReportSignedEvent::class => [
             SendServiceReportSignedNotification::class,
         ],
@@ -51,6 +58,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
+        SendAdditionsReportMentionNotification::class,
         SendCommentInvolvedNotification::class,
         SendCommentMentionNotification::class,
         SendHolidayAllowanceAdjustmentNotification::class,

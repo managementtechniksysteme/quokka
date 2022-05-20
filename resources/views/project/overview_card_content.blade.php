@@ -7,7 +7,7 @@
                 <span class="mw-100 text-truncate">
                     {{ $project->name }}
                 </span>
-                @can('projects.view.estimates')
+                @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
                     @if($project->current_wage_costs_status || $project->current_material_costs_status || $project->current_costs_status)
                         <span class="d-none d-md-inline-flex align-items-center">
                             <svg class="icon icon-12 ml-2 text-muted">
@@ -63,7 +63,7 @@
                             @endif
                         </span>
                     @endif
-                @endcan
+                @endif
             </div>
             <div class="text-muted d-inline-flex align-items-center">
                 @if(isset($secondaryInformation))

@@ -21,7 +21,7 @@ am {{ $serviceReport->updated_at }}
 | Datum                       | Stunden               | gefahrene Kilometer        |
 |:--------------------------- |:--------------------- |:-------------------------- |
 @foreach($serviceReport->services as $service)
-| {{ $service->provided_on }} | {{ $service->hours }} | {{ $service->kilometres }} |
+| {{ $service->provided_on }} | {{ Number::toLocal($service->hours) }} | {{ Number::toLocal($service->kilometres) }} |
 @endforeach
 @endcomponent
 

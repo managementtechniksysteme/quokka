@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class AddressStoreRequest extends FormRequest
@@ -13,12 +12,11 @@ class AddressStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
-        $name = $request->name;
-        $street_number = $request->street_number;
-        $postcode = $request->postcode;
-        $city = $request->city;
+        $street_number = $this->input('street_number');
+        $postcode = $this->input('postcode');
+        $city = $this->input('city');
 
         return [
             'name' => [

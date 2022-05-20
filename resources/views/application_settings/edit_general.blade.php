@@ -274,13 +274,13 @@
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
-                    </div>
-                    <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
-                        @error('project_wage_costs_warning_percentage')
-                        {{ $message }}
-                        @else
-                            Warnschwelle muss zwischen 1 und 99 liegen.
-                            @enderror
+                        <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
+                            @error('project_wage_costs_warning_percentage')
+                            {{ $message }}
+                            @else
+                                Warnschwelle muss zwischen 1 und 99 liegen.
+                                @enderror
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,13 +293,13 @@
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
-                    </div>
-                    <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
-                        @error('project_wage_costs_warning_percentage')
-                        {{ $message }}
-                        @else
-                            Warnschwelle muss zwischen 1 und 99 liegen.
-                            @enderror
+                        <div class="invalid-feedback @error('project_wage_costs_warning_percentage') d-block @enderror">
+                            @error('project_wage_costs_warning_percentage')
+                            {{ $message }}
+                            @else
+                                Warnschwelle muss zwischen 1 und 99 liegen.
+                                @enderror
+                        </div>
                     </div>
                 </div>
             </div>
@@ -312,13 +312,13 @@
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
-                    </div>
-                    <div class="invalid-feedback @error('project_material_costs_warning_percentage') d-block @enderror">
-                        @error('project_material_costs_warning_percentage')
-                        {{ $message }}
-                        @else
-                            Warnschwelle muss zwischen 1 und 99 liegen.
-                            @enderror
+                        <div class="invalid-feedback @error('project_material_costs_warning_percentage') d-block @enderror">
+                            @error('project_material_costs_warning_percentage')
+                            {{ $message }}
+                            @else
+                                Warnschwelle muss zwischen 1 und 99 liegen.
+                                @enderror
+                        </div>
                     </div>
                 </div>
             </div>

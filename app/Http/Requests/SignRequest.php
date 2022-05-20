@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class SignRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class SignRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         // TODO: proper base64 image validation?
         return [

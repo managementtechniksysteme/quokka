@@ -74,5 +74,9 @@
   "yes": "ja",
   "no": "nein",
   "signed": "unterschrieben",
-  "filters": "Filter"
+  "filters": "Filter",
+  "sunny": "sonnig",
+  "cloudy": "bewölkt",
+  "rainy": "regnerisch",
+  "snowy": "Schnee"
 }

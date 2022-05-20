@@ -27,6 +27,34 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'accounting.email']);
         Permission::firstOrCreate(['name' => 'accounting.createpdf']);
 
+        // additions reports
+        Permission::firstOrCreate(['name' => 'additions-reports.view.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.view.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.view.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.create']);
+        Permission::firstOrCreate(['name' => 'additions-reports.update.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.update.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.update.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.delete.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.delete.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.delete.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.email.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.email.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.email.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.createpdf.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.createpdf.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.createpdf.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-signature-request.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-signature-request.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-signature-request.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-download-request.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-download-request.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.send-download-request.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.get-signature.own']);
+        Permission::firstOrCreate(['name' => 'additions-reports.get-signature.involved']);
+        Permission::firstOrCreate(['name' => 'additions-reports.get-signature.other']);
+        Permission::firstOrCreate(['name' => 'additions-reports.approve']);
+
         // addresses
         Permission::firstOrCreate(['name' => 'addresses.view']);
         Permission::firstOrCreate(['name' => 'addresses.create']);
@@ -221,7 +249,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'Administrator']);
         $admin->givePermissionTo(Permission::all());
 
-        // Empployee role template
+        // Employee role template
         $employee = Role::firstOrCreate(['name' => 'Mitarbeiter']);
         $employee->revokePermissionTo(Permission::all());
 
@@ -232,6 +260,29 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('accounting.delete.own');
         $employee->givePermissionTo('accounting.email');
         $employee->givePermissionTo('accounting.createpdf');
+
+        // additions reports
+        $employee->givePermissionTo('additions-reports.view.own');
+        $employee->givePermissionTo('additions-reports.view.involved');
+        $employee->givePermissionTo('additions-reports.view.other');
+        $employee->givePermissionTo('additions-reports.create');
+        $employee->givePermissionTo('additions-reports.update.own');
+        $employee->givePermissionTo('additions-reports.delete.own');
+        $employee->givePermissionTo('additions-reports.email.own');
+        $employee->givePermissionTo('additions-reports.email.involved');
+        $employee->givePermissionTo('additions-reports.email.other');
+        $employee->givePermissionTo('additions-reports.createpdf.own');
+        $employee->givePermissionTo('additions-reports.createpdf.involved');
+        $employee->givePermissionTo('additions-reports.createpdf.other');
+        $employee->givePermissionTo('additions-reports.send-signature-request.own');
+        $employee->givePermissionTo('additions-reports.send-signature-request.involved');
+        $employee->givePermissionTo('additions-reports.send-signature-request.other');
+        $employee->givePermissionTo('additions-reports.send-download-request.own');
+        $employee->givePermissionTo('additions-reports.send-download-request.involved');
+        $employee->givePermissionTo('additions-reports.send-download-request.other');
+        $employee->givePermissionTo('additions-reports.get-signature.own');
+        $employee->givePermissionTo('additions-reports.get-signature.involved');
+        $employee->givePermissionTo('additions-reports.get-signature.other');
 
         // addresses
         $employee->givePermissionTo('addresses.view');

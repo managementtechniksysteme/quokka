@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class UserSettingsConfirmOtpRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class UserSettingsConfirmOtpRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request)
+    public function rules()
     {
         return [
             config('auth2fa.otp_input') => 'required|digits:6',

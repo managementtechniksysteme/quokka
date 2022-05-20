@@ -54,6 +54,11 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
     Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);
 
+    Route::get('/additions-reports/sign/{token}', [AdditionsReportController::class, 'customerShowSignatureRequest'])->name('additions-reports.customer-sign');
+    Route::post('/additions-reports/sign/{token}', [AdditionsReportController::class, 'customerSign']);
+    Route::get('/additions-reports/download/{token}', [AdditionsReportController::class, 'customerDownload'])->name('additions-reports.customer-download');
+    Route::post('/additions-reports/email-download-request/{token}', [AdditionsReportController::class, 'customerEmailDownloadRequest'])->name('additions-reports.customer-email-download-request');
+
     Route::get('/service-reports/sign/{token}', [ServiceReportController::class, 'customerShowSignatureRequest'])->name('service-reports.customer-sign');
     Route::post('/service-reports/sign/{token}', [ServiceReportController::class, 'customerSign']);
     Route::get('/service-reports/download/{token}', [ServiceReportController::class, 'customerDownload'])->name('service-reports.customer-download');

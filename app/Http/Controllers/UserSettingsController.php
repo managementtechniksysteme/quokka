@@ -62,6 +62,11 @@ class UserSettingsController extends Controller
     {
         $validatedData = $request->validated();
 
+        if(Auth::user()->cannot('projects.view.estimates') &&
+            isset($validatedData['show_cost_estimates'])) {
+            $validatedData['show_cost_estimates'] = false;
+        }
+
         Auth::user()->settings->update($validatedData);
 
         return redirect()->route('user-settings.edit', ['tab' => 'interface'])->with('success', 'Die Einstellungen wurde erfolgreich gespeichert.');

@@ -77,6 +77,8 @@ class AdditionsReport extends Model implements HasMedia
 
     protected $orderKeys = [
         'default' => ['number'],
+        'services_provided_on-asc' => ['services_provided_on'],
+        'services_provided_on-desc' => [['services_provided_on', 'desc']],
         'number-asc' => ['number'],
         'number-desc' => [['number', 'desc']],
         'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],

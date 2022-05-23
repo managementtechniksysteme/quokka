@@ -25,7 +25,7 @@
                         Link zum Herunterladen senden
                     </p>
                     <p class="text-muted">
-                        Hier kann die gewünschte Email Adresse angegeben werden, an welche der Link zum Herunterladen per Email gesendeet werden soll.
+                        Hier kann die gewünschte Email Adresse angegeben werden, an welche der Link zum Herunterladen per Email gesendet werden soll.
                     </p>
                     <p class="text-muted">
                         Die Email Addresse der Firma, welcher der Servicebericht zugeordnet ist, wird automatisch eingetragen.

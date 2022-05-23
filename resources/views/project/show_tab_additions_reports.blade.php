@@ -79,6 +79,19 @@
                                 <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
                             @endif
 
+                            <button type="submit" name="sort" value="services_provided_on-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
+                                <svg class="icon icon-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                </svg>
+                                Datum
+                            </button>
+                            <button type="submit" name="sort" value="services_provided_on-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
+                                <svg class="icon icon-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                </svg>
+                                Datum
+                            </button>
+
                             <button type="submit" name="sort" value="number-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
                                 <svg class="icon icon-16 mr-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>

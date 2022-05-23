@@ -19,6 +19,7 @@
 \usepackage{lastpage}
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{parskip}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}
@@ -102,8 +103,6 @@
 \definecolor{grey}{rgb}{0.5, 0.5, 0.5}
 
 \pagenumbering{arabic}
-
-\setlength\parindent{0cm}
 
 \onehalfspacing
 

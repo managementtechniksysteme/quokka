@@ -223,9 +223,13 @@ class ServiceReportController extends Controller
         event(new ServiceReportUpdatedEvent($serviceReport));
 
         if ($request->send_signature_request) {
-            return redirect()->route('service-reports.email-signature-request', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+            return redirect()
+                ->route('service-reports.email-signature-request', $serviceReport)
+                ->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
         } else {
-            return redirect()->route('service-reports.show', $serviceReport)->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
+            return redirect()
+                ->route('service-reports.show', $serviceReport)
+                ->with('success', 'Der Servicebericht wurde erfolgreich bearbeitet.');
         }
     }
 
@@ -295,7 +299,8 @@ class ServiceReportController extends Controller
         $serviceReport
             ->load('project.company.contactPerson');
 
-        return view('service_report.email_signature_request', $serviceReport)->with(compact('serviceReport'));
+        return view('service_report.email_signature_request', $serviceReport)
+            ->with(compact('serviceReport'));
     }
 
     public function emailSignatureRequest(SingleEmailRequest $request, ServiceReport $serviceReport)
@@ -319,7 +324,7 @@ class ServiceReportController extends Controller
             ->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
-    public function showSignatureRequest(Request $request, ServiceReport $serviceReport)
+    public function showSignatureRequest(ServiceReport $serviceReport)
     {
         $serviceReport
             ->load('project.company.contactPerson');
@@ -332,7 +337,11 @@ class ServiceReportController extends Controller
         $serviceReport = SignatureRequest::fromToken(ServiceReport::class, $token);
 
         if ($serviceReport) {
-            $serviceReport->load('employee.person')->load('services')->load('signatureRequest');
+            $serviceReport
+                ->load('project')
+                ->load('employee.person')
+                ->load('services')
+                ->load('signatureRequest');
         } else {
             $request->session()->flash('warning', 'Kein Servicebericht zum Unterschreiben und Herunterladen vorhanden.');
         }
@@ -383,7 +392,8 @@ class ServiceReportController extends Controller
         $serviceReport
             ->load('project.company.contactPerson');
 
-        return view('service_report.email_download_request', $serviceReport)->with(compact('serviceReport'));
+        return view('service_report.email_download_request', $serviceReport)
+            ->with(compact('serviceReport'));
     }
 
     public function emailDownloadRequest(SingleEmailRequest $request, ServiceReport $serviceReport)
@@ -463,6 +473,7 @@ class ServiceReportController extends Controller
     private function downloadPDF(ServiceReport $serviceReport)
     {
         $serviceReport
+            ->load('project')
             ->load('employee.person')
             ->load('project.company.address')
             ->load('project.company.operatorAddress')
@@ -487,7 +498,7 @@ class ServiceReportController extends Controller
         event(new ServiceReportSignedEvent($serviceReport));
     }
 
-    private function getConditionalRedirect(string|null $target, ServiceReport $serviceReport)
+    private function getConditionalRedirect(?string $target, ServiceReport $serviceReport)
     {
         switch ($target) {
             case 'project':

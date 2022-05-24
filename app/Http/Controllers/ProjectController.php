@@ -226,7 +226,7 @@ class ProjectController extends Controller
         return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');
     }
 
-    private function getConditionalRedirect($target, $project)
+    private function getConditionalRedirect(?string $target, Project $project)
     {
         switch ($target) {
             case 'company':

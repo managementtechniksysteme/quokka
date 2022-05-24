@@ -286,7 +286,7 @@ class TaskController extends Controller
             ->with('success', 'Die Aufgabe wurde erfolgreich erledigt.');
     }
 
-    private function getConditionalRedirect($target, $task)
+    private function getConditionalRedirect(?string $target, Task $task)
     {
         switch ($target) {
             case 'project':

@@ -97,13 +97,18 @@
 
         <div class="form-group">
             <label for="hours">Regiestunden</label>
-            <input type="number" min="{{ $minAccountingAmount }}" step="{{ $minAccountingAmount }}" class="form-control @error('hours') is-invalid @enderror" id="hours" name="hours" placeholder="5" value="{{ old('hours', optional($additionsReport)->hours) }}" required />
-            <div class="invalid-feedback">
-                @error('hours')
-                    {{ $message }}
-                @else
-                    Gib bitte die Anzahl an Stunden an.
-                @enderror
+            <div class="input-group">
+                <input type="number" min="{{ $minAccountingAmount }}" step="{{ $minAccountingAmount }}" class="form-control @error('hours') is-invalid @enderror" id="hours" name="hours" placeholder="5" value="{{ old('hours', optional($additionsReport)->hours) }}" required />
+                <div class="input-group-append">
+                    <span class="input-group-text">%</span>
+                </div>
+                <div class="invalid-feedback">
+                    @error('hours')
+                        {{ $message }}
+                    @else
+                        Gib bitte die Anzahl an Stunden an.
+                    @enderror
+                </div>
             </div>
         </div>
 

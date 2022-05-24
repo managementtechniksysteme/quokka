@@ -211,9 +211,13 @@ class AdditionsReportController extends Controller
         event(new AdditionsReportUpdatedEvent($additionsReport));
 
         if ($request->send_signature_request) {
-            return redirect()->route('additions-reports.email-signature-request', $additionsReport)->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
+            return redirect()
+                ->route('additions-reports.email-signature-request', $additionsReport)
+                ->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
         } else {
-            return redirect()->route('additions-reports.show', $additionsReport)->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
+            return redirect()
+                ->route('additions-reports.show', $additionsReport)
+                ->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
         }
     }
 
@@ -254,6 +258,7 @@ class AdditionsReportController extends Controller
         $attachments = $request->attachment_ids ? Media::find($request->attachment_ids) : null;
 
         $additionsReport
+            ->load('project')
             ->load('employee.person')
             ->load(['involvedEmployees.person' => function ($query) {
                 $query->order();
@@ -281,7 +286,8 @@ class AdditionsReportController extends Controller
         $additionsReport
             ->load('project.company.contactPerson');
 
-        return view('additions_report.email_signature_request', $additionsReport)->with(compact('additionsReport'));
+        return view('additions_report.email_signature_request', $additionsReport)
+            ->with(compact('additionsReport'));
     }
 
     public function emailSignatureRequest(SingleEmailRequest $request, AdditionsReport $additionsReport)
@@ -306,7 +312,7 @@ class AdditionsReportController extends Controller
             ->with('success', 'Die Anfrage zur Unterschrift wurde erfolgreich gesendet.');
     }
 
-    public function showSignatureRequest(Request $request, AdditionsReport $additionsReport)
+    public function showSignatureRequest(AdditionsReport $additionsReport)
     {
         $additionsReport
             ->load('project.company.contactPerson');
@@ -320,6 +326,7 @@ class AdditionsReportController extends Controller
 
         if ($additionsReport) {
             $additionsReport
+                ->load('project')
                 ->load('employee.person')
                 ->load(['involvedEmployees.person' => function ($query) {
                     $query->order();
@@ -459,7 +466,9 @@ class AdditionsReportController extends Controller
 
     private function downloadPDF(AdditionsReport $additionsReport)
     {
-        $additionsReport->load('employee.person')
+        $additionsReport
+            ->load('project')
+            ->load('employee.person')
             ->load(['involvedEmployees.person' => function ($query) {
                 $query->order();
             }])
@@ -486,7 +495,7 @@ class AdditionsReportController extends Controller
         event(new AdditionsReportSignedEvent($additionsReport));
     }
 
-    private function getConditionalRedirect(string|null $target, AdditionsReport $additionsReport)
+    private function getConditionalRedirect(?string $target, AdditionsReport $additionsReport)
     {
         switch ($target) {
             case 'project':

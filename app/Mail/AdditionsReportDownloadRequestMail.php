@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Models\AdditionsReport;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;

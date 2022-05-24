@@ -279,7 +279,7 @@
                             {{ $message }}
                             @else
                                 Warnschwelle muss zwischen 1 und 99 liegen.
-                                @enderror
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -298,7 +298,7 @@
                             {{ $message }}
                             @else
                                 Warnschwelle muss zwischen 1 und 99 liegen.
-                                @enderror
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -317,7 +317,7 @@
                             {{ $message }}
                             @else
                                 Warnschwelle muss zwischen 1 und 99 liegen.
-                                @enderror
+                            @enderror
                         </div>
                     </div>
                 </div>

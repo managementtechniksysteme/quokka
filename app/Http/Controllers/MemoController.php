@@ -336,7 +336,7 @@ class MemoController extends Controller
             ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
     }
 
-    private function getConditionalRedirect($target, $memo)
+    private function getConditionalRedirect(?string $target, Memo $memo)
     {
         switch ($target) {
             case 'project':

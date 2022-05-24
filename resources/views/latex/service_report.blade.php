@@ -13,7 +13,7 @@
 \large{\textbf{Servicebericht Nr. {!! Latex::escape($serviceReport->number) !!}}} \\ \large{\textbf{ {!! Latex::escape($serviceReport->project->name) !!}}}
 \end{minipage}
 \\\\\\
-\begin{tabular}{@{}p{2.5cm}p{5.5cm}p{2.5cm}p{5.5cm}@{}}
+\begin{tabular}{@{}p{2.5cm}p{5.6cm}p{2.5cm}p{5.6cm}@{}}
 @if($serviceReport->project->company->address->first())
 \footnotesize{\textbf{Kunde:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->name) !!}} & \footnotesize{\textbf{Betreiber:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->name ?? $serviceReport->project->company->address->first()->name) !!}} \\
 \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($serviceReport->project->company->address->first()->postcode) !!} {!! Latex::escape($serviceReport->project->company->address->first()->city) !!}} & \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->postcode ?? $serviceReport->project->company->address->first()->postcode) !!} {!! Latex::escape(optional($serviceReport->project->company->operatorAddress->first())->city ?? $serviceReport->project->company->address->first()->city) !!}} \\

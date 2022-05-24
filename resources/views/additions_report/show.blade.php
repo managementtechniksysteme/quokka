@@ -121,7 +121,7 @@
                     <div class="col-sm-5 col-md col-lg-4">
                         <div class="text-muted d-flex align-items-center">
                             <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             Datum
                         </div>

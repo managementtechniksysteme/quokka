@@ -32,13 +32,13 @@
 \usepackage{collcell}
 
 % heading formats
-\titleformat{\section}{\Large\bfseries}{\thesection}{2em}{}
+\titleformat{\section}{\large\bfseries}{\thesection}{2em}{}
 \titlespacing*{\section}{0ex}{3ex}{1ex}
-\titleformat{\subsection}{\large\bfseries}{\thesection}{2em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesection}{2em}{}
 \titlespacing*{\subsection}{0ex}{2ex}{1ex}
-\titleformat{\subsubsection}{\normalsize\bfseries}{\thesection}{2em}{}
+\titleformat{\subsubsection}{\small\bfseries}{\thesection}{2em}{}
 \titlespacing*{\subsubsection}{0ex}{2ex}{1ex}
-\titleformat{\paragraph}{\small\bfseries}{\thesection}{2em}{}
+\titleformat{\paragraph}{\footnotesize\bfseries}{\thesection}{2em}{}
 \titlespacing*{\paragraph}{0ex}{2ex}{1ex}
 \titleformat{\subparagraph}{\footnotesize\bfseries}{\thesection}{2em}{}
 \titlespacing*{\subparagraph}{0ex}{2ex}{1ex}

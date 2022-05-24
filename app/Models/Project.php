@@ -67,6 +67,11 @@ class Project extends Model
         return $this->hasMany(AdditionsReport::class);
     }
 
+    public function inspectionReports()
+    {
+        return $this->hasMany(InspectionReport::class);
+    }
+
     public function accounting()
     {
         return $this->hasMany(Accounting::class);

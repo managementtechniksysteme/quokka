@@ -46,7 +46,7 @@ class SendAdditionsReportMentionNotification implements ShouldQueue
 
         $events->listen(
             AdditionsReportUpdatedEvent::class,
-            [SendAdditionsReportMentionNotification::class, 'handleadditionsReportUpdated']
+            [SendAdditionsReportMentionNotification::class, 'handleAdditionsReportUpdated']
         );
     }
 }

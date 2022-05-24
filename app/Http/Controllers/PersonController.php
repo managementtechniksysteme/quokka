@@ -202,7 +202,7 @@ class PersonController extends Controller
         return $redirect->with('success', 'Die Person wurde erfolgreich entfernt.');
     }
 
-    private function getConditionalRedirect($target, $person)
+    private function getConditionalRedirect(?string $target, Person $person)
     {
         switch ($target) {
             case 'company':

@@ -5,7 +5,7 @@
             <a class="stretched-link outline-none" href="{{ route('additions-reports.show', $additionsReport) }}"></a>
             <div>
                 @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $additionsReport->project->name }} @endunless#{{ $additionsReport->number }}
-                ({{ \Carbon\Carbon::parse($additionsReport->services_provided_on) }})
+                ({{ $additionsReport->services_provided_on }})
             </div>
             <div class="text-muted">
                 <div class="d-inline-flex align-items-center">

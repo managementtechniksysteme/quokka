@@ -123,6 +123,19 @@
                             <svg class="icon icon-16 mr-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                             </svg>
+                            Datum
+                        </div>
+                    </div>
+                    <div class="col-sm-7 col-md col-lg-8">
+                        {{ $additionsReport->services_provided_on }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-5 col-md col-lg-4">
+                        <div class="text-muted d-flex align-items-center">
+                            <svg class="icon icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                            </svg>
                             Regiestunden
                         </div>
                     </div>

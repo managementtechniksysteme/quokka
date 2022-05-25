@@ -38,7 +38,7 @@ class Latex
 
         // Clean up backslashes from before
         $text = str_replace('\\\\', '\\textbackslash{}', $text); // Substitute backslashes from first step.
-        $text = str_replace("\n", '\\\\', trim($text)); // Replace newlines (trim is in case of leading \\)
+        $text = str_replace("\n", '\\\\', str_starts_with(trim($text), '\\\\') ? trim($text) : $text); // Replace newlines (trim is in case of leading \\)
 
         return $text;
     }

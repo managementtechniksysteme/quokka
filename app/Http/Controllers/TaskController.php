@@ -53,7 +53,7 @@ class TaskController extends Controller
         return view('task.index')->with(compact('tasks'));
     }
 
-    public function create(Request $request): View
+    public function create(Request $request): RedirectResponse|View
     {
         $templateTask = null;
         $currentProject = null;
@@ -61,8 +61,21 @@ class TaskController extends Controller
         $currentInvolvedEmployees = null;
 
         if($request->filled('template')) {
-            $templateTask = Task::find($request->template)
-                ->load('project')
+            $templateTask = Task::find($request->template);
+
+            if(!$templateTask) {
+                return redirect()
+                    ->route('tasks.create')
+                    ->with('warning', 'Die angegebene Aufgabe existiert nicht.');
+            }
+
+            if(Auth::user()->cannot('view', $templateTask)) {
+                return redirect()
+                    ->route('inspection-reports.create')
+                    ->with('danger', 'Du kannst diese Aufgabe nicht kopieren.');
+            }
+
+            $templateTask->load('project')
                 ->load('responsibleEmployee.person')
                 ->load('involvedEmployees.person');
 
@@ -271,7 +284,7 @@ class TaskController extends Controller
             ->download('AU '.$task->name.'.pdf');
     }
 
-    public function finish(Request $request, Task $task)
+    public function finish(Request $request, Task $task): RedirectResponse
     {
         $task->status = 'finished';
 
@@ -286,7 +299,7 @@ class TaskController extends Controller
             ->with('success', 'Die Aufgabe wurde erfolgreich erledigt.');
     }
 
-    private function getConditionalRedirect(?string $target, Task $task)
+    private function getConditionalRedirect(?string $target, Task $task): RedirectResponse
     {
         switch ($target) {
             case 'project':

@@ -115,6 +115,15 @@
                             <span class="ml-auto">{{ $project->additions_reports_count > 0 ? $project->additions_reports_count : '' }}</span>
                         </a>
                     @endcan
+                    @can('viewAny', \App\Models\InspectionReport::class)
+                        <a class="menu-item @if (request()->tab == 'inspection_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'inspection_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                            </svg>
+                            Prüfberichte
+                            <span class="ml-auto">{{ $project->inspection_reports_count > 0 ? $project->inspection_reports_count : '' }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -160,6 +169,15 @@
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                             </svg>
                             Regieberichte
+                        </a>
+                    @endcan
+
+                    @can('viewAny', \App\Models\InspectionReport::class)
+                        <a class="menu-item @if (request()->tab == 'inspection_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'inspection_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                            </svg>
+                            Prüfberichte
                         </a>
                     @endcan
                 </div>

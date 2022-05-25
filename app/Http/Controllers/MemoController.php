@@ -67,8 +67,21 @@ class MemoController extends Controller
         $currentNotifiedPeople = null;
 
         if($request->filled('template')) {
-            $templateMemo = Memo::find($request->template)
-                ->load('project')
+            $templateMemo = Memo::find($request->template);
+
+            if(!$templateMemo) {
+                return redirect()
+                    ->route('memos.create')
+                    ->with('warning', 'Der angegebene Aktenvermerk existiert nicht.');
+            }
+
+            if(Auth::user()->cannot('view', $templateMemo)) {
+                return redirect()
+                    ->route('memos.create')
+                    ->with('danger', 'Du kannst diesen Aktenvermerk nicht kopieren.');
+            }
+
+            $templateMemo->load('project')
                 ->load('employeeComposer.person')
                 ->load('personRecipient')
                 ->load('presentPeople')

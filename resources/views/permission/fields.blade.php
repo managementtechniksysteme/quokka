@@ -1719,6 +1719,221 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon-bs icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+            </svg>
+            Prüfberichte
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Prüfberichte.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_view_own') is-invalid @enderror" name="inspection-reports_view_own" id="inspection-reports_view_own" value="true" @if(old('inspection-reports_view_own', optional($permissions)->hasPermissionTo('inspection-reports.view.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_view_own">Eigene Prüfberichte ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_view_own') d-block @enderror">
+                @error('inspection-reports_view_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_view_other') is-invalid @enderror" name="inspection-reports_view_other" id="inspection-reports_view_other" value="true" @if(old('inspection-reports_view_other', optional($permissions)->hasPermissionTo('inspection-reports.view.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_view_other">Andere Prüfberichte ansehen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_view_other') d-block @enderror">
+                @error('inspection-reports_view_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_create') is-invalid @enderror" name="inspection-reports_create" id="inspection-reports_create" value="true" @if(old('inspection-reports_create', optional($permissions)->hasPermissionTo('inspection-reports.create'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_create">Prüfberichte erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_create') d-block @enderror">
+                @error('inspection-reports_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_update_own') is-invalid @enderror" name="inspection-reports_update_own" id="inspection-reports_update_own" value="true" @if(old('inspection-reports_update_own', optional($permissions)->hasPermissionTo('inspection-reports.update.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_update_own">Eigene Prüfberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_update_own') d-block @enderror">
+                @error('inspection-reports_update_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_update_other') is-invalid @enderror" name="inspection-reports_update_other" id="inspection-reports_update_other" value="true" @if(old('inspection-reports_update_other', optional($permissions)->hasPermissionTo('inspection-reports.update.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_update_other">Andere Prüfberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_update_other') d-block @enderror">
+                @error('inspection-reports_update_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_delete_own') is-invalid @enderror" name="inspection-reports_delete_own" id="inspection-reports_delete_own" value="true" @if(old('inspection-reports_delete_own', optional($permissions)->hasPermissionTo('inspection-reports.delete.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_delete_own">Eigene Prüfberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_delete_own') d-block @enderror">
+                @error('inspection-reports_delete_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_delete_other') is-invalid @enderror" name="inspection-reports_delete_other" id="inspection-reports_delete_other" value="true" @if(old('inspection-reports_delete_other', optional($permissions)->hasPermissionTo('inspection-reports.delete.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_delete_other">Andere Prüfberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_delete_other') d-block @enderror">
+                @error('inspection-reports_delete_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_email_own') is-invalid @enderror" name="inspection-reports_email_own" id="inspection-reports_email_own" value="true" @if(old('inspection-reports_email_own', optional($permissions)->hasPermissionTo('inspection-reports.email.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_email_own">Eigene Prüfberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_email_own') d-block @enderror">
+                @error('inspection-reports_email_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_email_other') is-invalid @enderror" name="inspection-reports_email_other" id="inspection-reports_email_other" value="true" @if(old('inspection-reports_email_other', optional($permissions)->hasPermissionTo('inspection-reports.email.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_email_other">Andere Prüfberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_email_other') d-block @enderror">
+                @error('inspection-reports_email_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_createpdf_own') is-invalid @enderror" name="inspection-reports_createpdf_own" id="inspection-reports_createpdf_own" value="true" @if(old('inspection-reports_createpdf_own', optional($permissions)->hasPermissionTo('inspection-reports.createpdf.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_createpdf_own">PDF Dateien von eigenen Prüfberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_createpdf_own') d-block @enderror">
+                @error('inspection-reports_createpdf_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_createpdf_other') is-invalid @enderror" name="inspection-reports_createpdf_other" id="inspection-reports_createpdf_other" value="true" @if(old('inspection-reports_createpdf_other', optional($permissions)->hasPermissionTo('inspection-reports.createpdf.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_createpdf_other">PDF Dateien von anderen Prüfberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_createpdf_other') d-block @enderror">
+                @error('inspection-reports_createpdf_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_send-signature-request_own') is-invalid @enderror" name="inspection-reports_send-signature-request_own" id="inspection-reports_send-signature-request_own" value="true" @if(old('inspection-reports_send-signature-request_own', optional($permissions)->hasPermissionTo('inspection-reports.send-signature-request.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_send-signature-request_own">Anfrage zur Unterschrift von eigenen Prüfberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_send-signature-request_own') d-block @enderror">
+                @error('inspection-reports_send-signature-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_send-signature-request_other') is-invalid @enderror" name="inspection-reports_send-signature-request_other" id="inspection-reports_send-signature-request_other" value="true" @if(old('inspection-reports_send-signature-request_other', optional($permissions)->hasPermissionTo('inspection-reports.send-signature-request.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_send-signature-request_other">Anfrage zur Unterschrift von anderen Prüfberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_send-signature-request_other') d-block @enderror">
+                @error('inspection-reports_send-signature-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_send-download-request_own') is-invalid @enderror" name="inspection-reports_send-download-request_own" id="inspection-reports_send-download-request_own" value="true" @if(old('inspection-reports_send-download-request_own', optional($permissions)->hasPermissionTo('inspection-reports.send-download-request.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_send-download-request_own">Anfrage zum Herunterladen von eigenen Prüfberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_send-download-request_own') d-block @enderror">
+                @error('inspection-reports_send-download-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_send-download-request_other') is-invalid @enderror" name="inspection-reports_send-download-request_other" id="inspection-reports_send-download-request_other" value="true" @if(old('inspection-reports_send-download-request_other', optional($permissions)->hasPermissionTo('inspection-reports.send-download-request.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_send-download-request_other">Anfrage zum Herunterladen von anderen Prüfberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_send-download-request_other') d-block @enderror">
+                @error('inspection-reports_send-download-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_get-signature_own') is-invalid @enderror" name="inspection-reports_get-signature_own" id="inspection-reports_get-signature_own" value="true" @if(old('inspection-reports_get-signature_own', optional($permissions)->hasPermissionTo('inspection-reports.get-signature.own'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_get-signature_own">Eigene Prüfberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_get-signature_own') d-block @enderror">
+                @error('inspection-reports_get-signature_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_get-signature_other') is-invalid @enderror" name="inspection-reports_get-signature_other" id="inspection-reports_get-signature_other" value="true" @if(old('inspection-reports_get-signature_other', optional($permissions)->hasPermissionTo('inspection-reports.get-signature.other'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_get-signature_other">Andere Prüfberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_get-signature_other') d-block @enderror">
+                @error('inspection-reports_get-signature_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('inspection-reports_approve') is-invalid @enderror" name="inspection-reports_approve" id="inspection-reports_approve" value="true" @if(old('inspection-reports_approve', optional($permissions)->hasPermissionTo('inspection-reports.approve'))) checked @endif>
+                <label class="custom-control-label" for="inspection-reports_approve">Prüfberichte als erledigt markieren</label>
+            </div>
+            <div class="invalid-feedback @error('inspection-reports_approve') d-block @enderror">
+                @error('inspection-reports_approve')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>

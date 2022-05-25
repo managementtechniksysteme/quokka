@@ -78,5 +78,7 @@
   "sunny": "sonnig",
   "cloudy": "bewölkt",
   "rainy": "regnerisch",
-  "snowy": "Schnee"
+  "snowy": "Schnee",
+  "percent": "%",
+  "W_m2": "W/m²"
 }

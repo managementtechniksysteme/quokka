@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\AdditionsReport;
+use App\Models\InspectionReport;
 use App\Policies\AdditionsReportPolicy;
+use App\Policies\InspectionReportPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;

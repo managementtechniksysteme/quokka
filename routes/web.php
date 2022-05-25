@@ -24,6 +24,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InspectionReportController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
@@ -58,6 +59,11 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/additions-reports/sign/{token}', [AdditionsReportController::class, 'customerSign']);
     Route::get('/additions-reports/download/{token}', [AdditionsReportController::class, 'customerDownload'])->name('additions-reports.customer-download');
     Route::post('/additions-reports/email-download-request/{token}', [AdditionsReportController::class, 'customerEmailDownloadRequest'])->name('additions-reports.customer-email-download-request');
+
+    Route::get('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerShowSignatureRequest'])->name('inspection-reports.customer-sign');
+    Route::post('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerSign']);
+    Route::get('/inspection-reports/download/{token}', [InspectionReportController::class, 'customerDownload'])->name('inspection-reports.customer-download');
+    Route::post('/inspection-reports/email-download-request/{token}', [InspectionReportController::class, 'customerEmailDownloadRequest'])->name('inspection-reports.customer-email-download-request');
 
     Route::get('/service-reports/sign/{token}', [ServiceReportController::class, 'customerShowSignatureRequest'])->name('service-reports.customer-sign');
     Route::post('/service-reports/sign/{token}', [ServiceReportController::class, 'customerSign']);
@@ -100,6 +106,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
+
+    Route::resource('inspection-reports', InspectionReportController::class);
+    Route::get('/inspection-reports/{inspection_report}/download', [InspectionReportController::class, 'download'])->name('inspection-reports.download');
+    Route::get('/inspection-reports/{inspection_report}/email', [InspectionReportController::class, 'showEmail'])->name('inspection-reports.email');
+    Route::post('/inspection-reports/{inspection_report}/email', [InspectionReportController::class, 'email']);
+    Route::get('/inspection-reports/{inspection_report}/sign', [InspectionReportController::class, 'showSignatureRequest'])->name('inspection-reports.sign');
+    Route::post('/inspection-reports/{inspection_report}/sign', [InspectionReportController::class, 'sign']);
+    Route::get('/inspection-reports/{inspection_report}/email-download-request', [InspectionReportController::class, 'showEmailDownloadRequest'])->name('inspection-reports.email-download-request');
+    Route::post('/inspection-reports/{inspection_report}/email-download-request', [InspectionReportController::class, 'emailDownloadRequest']);
+    Route::get('/inspection-reports/{inspection_report}/email-signature-request', [InspectionReportController::class, 'showEmailSignatureRequest'])->name('inspection-reports.email-signature-request');
+    Route::post('/inspection-reports/{inspection_report}/email-signature-request', [InspectionReportController::class, 'emailSignatureRequest']);
+    Route::get('/inspection-reports/{inspection_report}/finish', [InspectionReportController::class, 'finish'])->name('inspection-reports.finish');
 
     Route::resource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/logbook/download', [LogbookController::class, 'download'])->name('logbook.download');

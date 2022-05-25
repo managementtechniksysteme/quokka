@@ -11,6 +11,16 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.17-39ad206 (25.05.2022)
+        * Prüfberichte können nun analog zu Serviceberichten verwaltet werden.
+        * Ein Fehler, der alle Aufgaben, Aktenvermerke, Serviceberichte oder Regieberichte bei Projekten anzeigte, wurde
+        behoben.
+        * Berechtigungskontrollen wurden gegen unabsichtliches eintippen von nicht anzeigbaren Elementen in der URL
+        Leiste erweitert (betrifft Kopieren von Elementen).
+        * Rechtschreibfehler wurden behoben.
+        @endmarkdown
+
+        @markdown
         ### v0.1.16-8439059 (20.05.2022)
         * Die persönliche Übersicht ist nun implementiert. Diese zeigt diverse nützliche Indikatoren.
         * Regieberichte können nun analog zu Serviceberichten verwaltet werden.

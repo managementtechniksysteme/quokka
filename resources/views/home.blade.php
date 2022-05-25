@@ -333,15 +333,15 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
-                    <a class="stretched-link outline-none" href=""></a>
+                    <a class="stretched-link outline-none" href="{{ route('inspection-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene PB</h5>
-                                <span class="h2 font-weight-bold m-0">NA</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->new_inspection_reports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 text-gray-500">
+                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->new_inspection_reports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                 </svg>
                             </div>
@@ -349,12 +349,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    NA MTD
+                                    {{ Number::toLocal(Auth::user()->employee->mtd_new_inspection_reports) }} MTD
                                     @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('inspection-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        NA ges.
+                                        {{ Number::toLocal(\App\Models\InspectionReport::newInspectionReports()) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -450,22 +450,22 @@
                 @can('inspection-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
-                            <a class="stretched-link outline-none" href=""></a>
+                            <a class="stretched-link outline-none" href="{{ route('inspection-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col pr-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare PB</h5>
-                                        <span class="h2 font-weight-bold m-0">NA</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal(\App\Models\InspectionReport::signedInspectionReports()) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 text-gray-500">
+                                        <svg class="icon-bs icon-32 @if(\App\Models\InspectionReport::signedInspectionReports()) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">NA MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal(\App\Models\InspectionReport::mtdSignedInspectionReports()) }} MTD</span>
                                     </div>
                                 </div>
                             </div>

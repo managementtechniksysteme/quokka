@@ -86,6 +86,26 @@ class RolesAndPermissionsSeeder extends Seeder
         // help
         Permission::firstOrCreate(['name' => 'help.view']);
 
+        // inspection reports
+        Permission::firstOrCreate(['name' => 'inspection-reports.view.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.view.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.create']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.update.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.update.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.delete.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.delete.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.email.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.email.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.createpdf.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.createpdf.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.send-signature-request.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.send-signature-request.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.send-download-request.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.send-download-request.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.get-signature.own']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.get-signature.other']);
+        Permission::firstOrCreate(['name' => 'inspection-reports.approve']);
+
         // logbook
         Permission::firstOrCreate(['name' => 'logbook.view.own']);
         Permission::firstOrCreate(['name' => 'logbook.view.other']);
@@ -303,6 +323,23 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // help
         $employee->givePermissionTo('help.view');
+
+        // inspection reports
+        $employee->givePermissionTo('inspection-reports.view.own');
+        $employee->givePermissionTo('inspection-reports.view.other');
+        $employee->givePermissionTo('inspection-reports.create');
+        $employee->givePermissionTo('inspection-reports.update.own');
+        $employee->givePermissionTo('inspection-reports.delete.own');
+        $employee->givePermissionTo('inspection-reports.email.own');
+        $employee->givePermissionTo('inspection-reports.email.other');
+        $employee->givePermissionTo('inspection-reports.createpdf.own');
+        $employee->givePermissionTo('inspection-reports.createpdf.other');
+        $employee->givePermissionTo('inspection-reports.send-signature-request.own');
+        $employee->givePermissionTo('inspection-reports.send-signature-request.other');
+        $employee->givePermissionTo('inspection-reports.send-download-request.own');
+        $employee->givePermissionTo('inspection-reports.send-download-request.other');
+        $employee->givePermissionTo('inspection-reports.get-signature.own');
+        $employee->givePermissionTo('inspection-reports.get-signature.other');
 
         // logbook
         $employee->givePermissionTo('logbook.view.own');

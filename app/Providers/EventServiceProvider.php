@@ -3,12 +3,15 @@
 namespace App\Providers;
 
 use App\Events\AdditionsReportSignedEvent;
+use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
 use App\Listeners\SendAdditionsReportMentionNotification;
 use App\Listeners\SendAdditionsReportSignedNotification;
 use App\Listeners\SendCommentInvolvedNotification;
 use App\Listeners\SendCommentMentionNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
+use App\Listeners\SendInspectionReportMentionNotification;
+use App\Listeners\SendInspectionReportSignedNotification;
 use App\Listeners\SendMemoInvolvedNotification;
 use App\Listeners\SendMemoMentionNotification;
 use App\Listeners\SendServiceReportMentionNotification;
@@ -20,7 +23,6 @@ use App\Observers\AccountingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,10 @@ class EventServiceProvider extends ServiceProvider
 
         AdditionsReportSignedEvent::class => [
             SendAdditionsReportSignedNotification::class,
+        ],
+
+        InspectionReportSignedEvent::class => [
+            SendInspectionReportSignedNotification::class,
         ],
 
         ServiceReportSignedEvent::class => [
@@ -62,6 +68,7 @@ class EventServiceProvider extends ServiceProvider
         SendCommentInvolvedNotification::class,
         SendCommentMentionNotification::class,
         SendHolidayAllowanceAdjustmentNotification::class,
+        SendInspectionReportMentionNotification::class,
         SendMemoInvolvedNotification::class,
         SendMemoMentionNotification::class,
         SendServiceReportMentionNotification::class,

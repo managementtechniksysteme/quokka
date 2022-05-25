@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
+use App\Models\InspectionReport;
 use App\Models\Memo;
 use App\Models\Project;
 use App\Models\ServiceReport;
@@ -108,7 +109,8 @@ class ProjectController extends Controller
             ->loadCount('tasks')
             ->loadCount('memos')
             ->loadCount('serviceReports')
-            ->loadCount('additionsReports');
+            ->loadCount('additionsReports')
+            ->loadCount('inspectionReports');
 
         switch ($request->tab) {
             case 'overview':
@@ -169,6 +171,19 @@ class ProjectController extends Controller
                     ->appends($request->except('page'));
 
                 return view('project.show_tab_additions_reports')->with(compact('project'))->with(compact('additionsReports'));
+
+            case 'inspection_reports':
+                InspectionReport::handleDefaultFilter($request);
+
+                $inspectionReports = $project->inspectionReports()
+                    ->filterPermissions()
+                    ->filterSearch($request->input())
+                    ->order($request->input())
+                    ->with('employee.person')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('inspectionReports'));
 
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);

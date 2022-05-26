@@ -279,17 +279,12 @@
                             </a>
                             @if(Session::has('impersonatorId'))
                                 @can('impersonate', Auth::user()->employee)
-                                    <form action="{{ route('employees.stop-impersonation', Auth::user()->employee) }}" method="post" >
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit" class="dropdown-item d-inline-flex align-items-center">
-                                            <svg class="icon icon-16 mr-2">
-                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-minus"></use>
-                                            </svg>
-                                            Zurück zum eigenen Benutzer
-                                        </button>
-                                    </form>
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.impersonate', Auth::user()->employee) }}">
+                                        <svg class="icon icon-16 mr-2">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-minus"></use>
+                                        </svg>
+                                        Zurück zum eigenen Benutzer
+                                    </a>
                                 @endcan
                             @else
                                 <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('logout') }}"

@@ -101,8 +101,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employees/{employee}/access-deny', [EmployeeController::class, 'denyAccess'])->name('employees.access-deny');
     Route::get('/employees/{employee}/edit-permissions', [EmployeeController::class, 'editPermissions'])->name('employees.edit-permissions');
     Route::patch('/employees/{employee}/edit-permissions', [EmployeeController::class, 'updatePermissions'])->name('employees.update-permissions');
-    Route::get('/employees/{employee}/impersonate', [EmployeeController::class, 'startImpersonation'])->name('employees.start-impersonation');
-    Route::delete('/employees/{employee}/impersonate', [EmployeeController::class, 'stopImpersonation'])->name('employees.stop-impersonation');
+    Route::get('/employees/{employee}/impersonate', [EmployeeController::class, 'impersonate'])->name('employees.impersonate');
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');

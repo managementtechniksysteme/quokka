@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "alpinejs": "^3.10.2",
         "bootstrap-icons": "^1.8.1",
         "clipboard": "^2.0.11",
         "feather-icons": "^4.28.0",

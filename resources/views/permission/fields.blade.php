@@ -15,7 +15,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('accounting_view_own') is-invalid @enderror" name="accounting_view_own" id="accounting_view_own" value="true" @if(old('accounting_view_own', optional($permissions)->hasPermissionTo('accounting.view.own'))) checked @endif>
-                <label class="custom-control-label" for="accounting_view_own">Eigene Abrechnungen ansehen</label>
+                <label class="custom-control-label" for="accounting_view_own">Eigene Abrechnungen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('accounting_view_own') d-block @enderror">
                 @error('accounting_view_own')
@@ -26,7 +26,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('accounting_view_other') is-invalid @enderror" name="accounting_view_other" id="accounting_view_other" value="true" @if(old('accounting_view_other', optional($permissions)->hasPermissionTo('accounting.view.other'))) checked @endif>
-                <label class="custom-control-label" for="accounting_view_other">Andere Abrechnungen ansehen</label>
+                <label class="custom-control-label" for="accounting_view_other">Andere Abrechnungen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('accounting_view_other') d-block @enderror">
                 @error('accounting_view_other')
@@ -131,7 +131,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('addresses_view') is-invalid @enderror" name="addresses_view" id="addresses_view" value="true" @if(old('addresses_view', optional($permissions)->hasPermissionTo('addresses.view'))) checked @endif>
-                <label class="custom-control-label" for="addresses_view">Adressen ansehen</label>
+                <label class="custom-control-label" for="addresses_view">Adressen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('addresses_view') d-block @enderror">
                 @error('addresses_view')
@@ -214,7 +214,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('memos_view_sender') is-invalid @enderror" name="memos_view_sender" id="memos_view_sender" value="true" @if(old('memos_view_sender', optional($permissions)->hasPermissionTo('memos.view.sender'))) checked @endif>
-                <label class="custom-control-label" for="memos_view_sender">Aktenvermerke als Verfasser ansehen</label>
+                <label class="custom-control-label" for="memos_view_sender">Aktenvermerke als Verfasser anzeigen</label>
             </div>
             <div class="invalid-feedback @error('memos_view_sender') d-block @enderror">
                 @error('memos_view_sender')
@@ -225,7 +225,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('memos_view_recipient') is-invalid @enderror" name="memos_view_recipient" id="memos_view_recipient" value="true" @if(old('memos_view_recipient', optional($permissions)->hasPermissionTo('memos.view.recipient'))) checked @endif>
-                <label class="custom-control-label" for="memos_view_recipient">Aktenvermerke als Empfänger ansehen</label>
+                <label class="custom-control-label" for="memos_view_recipient">Aktenvermerke als Empfänger anzeigen</label>
             </div>
             <div class="invalid-feedback @error('memos_view_recipient') d-block @enderror">
                 @error('memos_view_recipient')
@@ -236,7 +236,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('memos_view_present') is-invalid @enderror" name="memos_view_present" id="memos_view_present" value="true" @if(old('memos_view_present', optional($permissions)->hasPermissionTo('memos.view.present'))) checked @endif>
-                <label class="custom-control-label" for="memos_view_present">Aktenvermerke als Anwesender ansehen</label>
+                <label class="custom-control-label" for="memos_view_present">Aktenvermerke als Anwesender anzeigen</label>
             </div>
             <div class="invalid-feedback @error('memos_view_present') d-block @enderror">
                 @error('memos_view_present')
@@ -247,7 +247,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('memos_view_notified') is-invalid @enderror" name="memos_view_notified" id="memos_view_notified" value="true" @if(old('memos_view_notified', optional($permissions)->hasPermissionTo('memos.view.notified'))) checked @endif>
-                <label class="custom-control-label" for="memos_view_notified">Aktenvermerke als Benachrichtigter (im Verteiler) ansehen</label>
+                <label class="custom-control-label" for="memos_view_notified">Aktenvermerke als Benachrichtigter (im Verteiler) anzeigen</label>
             </div>
             <div class="invalid-feedback @error('memos_view_notified') d-block @enderror">
                 @error('memos_view_notified')
@@ -258,7 +258,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('memos_view_other') is-invalid @enderror" name="memos_view_other" id="memos_view_other" value="true" @if(old('memos_view_other', optional($permissions)->hasPermissionTo('memos.view.other'))) checked @endif>
-                <label class="custom-control-label" for="memos_view_other">Andere Aktenvermerke ansehen</label>
+                <label class="custom-control-label" for="memos_view_other">Andere Aktenvermerke anzeigen</label>
             </div>
             <div class="invalid-feedback @error('memos_view_other') d-block @enderror">
                 @error('memos_view_other')
@@ -545,7 +545,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_responsible') is-invalid @enderror" name="tasks_view_responsible" id="tasks_view_responsible" value="true" @if(old('tasks_view_responsible', optional($permissions)->hasPermissionTo('tasks.view.responsible'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_responsible">Aufgaben als Verantortlicher ansehen</label>
+                <label class="custom-control-label" for="tasks_view_responsible">Aufgaben als Verantortlicher anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_responsible') d-block @enderror">
                 @error('tasks_view_responsible')
@@ -556,7 +556,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_involved') is-invalid @enderror" name="tasks_view_involved" id="tasks_view_involved" value="true" @if(old('tasks_view_involved', optional($permissions)->hasPermissionTo('tasks.view.involved'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_involved">Aufgaben als Beteiliger ansehen</label>
+                <label class="custom-control-label" for="tasks_view_involved">Aufgaben als Beteiliger anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_involved') d-block @enderror">
                 @error('tasks_view_involved')
@@ -567,7 +567,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_other') is-invalid @enderror" name="tasks_view_other" id="tasks_view_other" value="true" @if(old('tasks_view_other', optional($permissions)->hasPermissionTo('tasks.view.other'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_other">Andere Aufgaben ansehen</label>
+                <label class="custom-control-label" for="tasks_view_other">Andere Aufgaben anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_other') d-block @enderror">
                 @error('tasks_view_other')
@@ -578,7 +578,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_private_responsible') is-invalid @enderror" name="tasks_view_private_responsible" id="tasks_view_private_responsible" value="true" @if(old('tasks_view_private_responsible', optional($permissions)->hasPermissionTo('tasks.view.private.responsible'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_private_responsible">Private Aufgaben als Verantwortlicher ansehen</label>
+                <label class="custom-control-label" for="tasks_view_private_responsible">Private Aufgaben als Verantwortlicher anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_private_responsible') d-block @enderror">
                 @error('tasks_view_private_responsible')
@@ -589,7 +589,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_private_involved') is-invalid @enderror" name="tasks_view_private_involved" id="tasks_view_private_involved" value="true" @if(old('tasks_view_private_involved', optional($permissions)->hasPermissionTo('tasks.view.private.involved'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_private_involved">Private Aufgaben als Beteiligter ansehen</label>
+                <label class="custom-control-label" for="tasks_view_private_involved">Private Aufgaben als Beteiligter anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_private_involved') d-block @enderror">
                 @error('tasks_view_private_involved')
@@ -600,7 +600,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tasks_view_private_other') is-invalid @enderror" name="tasks_view_private_other" id="tasks_view_private_other" value="true" @if(old('tasks_view_private_other', optional($permissions)->hasPermissionTo('tasks.view.private.other'))) checked @endif>
-                <label class="custom-control-label" for="tasks_view_private_other">Andere private Aufgaben ansehen</label>
+                <label class="custom-control-label" for="tasks_view_private_other">Andere private Aufgaben anzeigen</label>
             </div>
             <div class="invalid-feedback @error('tasks_view_private_other') d-block @enderror">
                 @error('tasks_view_private_other')
@@ -1102,7 +1102,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('vehicles_view') is-invalid @enderror" name="vehicles_view" id="vehicles_view" value="true" @if(old('vehicles_view', optional($permissions)->hasPermissionTo('vehicles.view'))) checked @endif>
-                <label class="custom-control-label" for="vehicles_view">Fahrzeuge ansehen</label>
+                <label class="custom-control-label" for="vehicles_view">Fahrzeuge anzeigen</label>
             </div>
             <div class="invalid-feedback @error('vehicles_view') d-block @enderror">
                 @error('vehicles_view')
@@ -1185,7 +1185,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('companies_view') is-invalid @enderror" name="companies_view" id="companies_view" value="true" @if(old('companies_view', optional($permissions)->hasPermissionTo('companies.view'))) checked @endif>
-                <label class="custom-control-label" for="companies_view">Firmen ansehen</label>
+                <label class="custom-control-label" for="companies_view">Firmen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('companies_view') d-block @enderror">
                 @error('companies_view')
@@ -1268,7 +1268,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('help_view') is-invalid @enderror" name="help_view" id="help_view" value="true" @if(old('help_view', optional($permissions)->hasPermissionTo('help.view'))) checked @endif>
-                <label class="custom-control-label" for="help_view">Hilfe ansehen</label>
+                <label class="custom-control-label" for="help_view">Hilfe anzeigen</label>
             </div>
             <div class="invalid-feedback @error('help_view') d-block @enderror">
                 @error('help_view')
@@ -1296,7 +1296,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('wage-services_view') is-invalid @enderror" name="wage-services_view" id="wage-services_view" value="true" @if(old('wage-services_view', optional($permissions)->hasPermissionTo('wage-services.view'))) checked @endif>
-                <label class="custom-control-label" for="wage-services_view">Lohndienstleistungen ansehen</label>
+                <label class="custom-control-label" for="wage-services_view">Lohndienstleistungen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('wage-services_view') d-block @enderror">
                 @error('wage-services_view')
@@ -1379,7 +1379,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('material-services_view') is-invalid @enderror" name="material-services_view" id="material-services_view" value="true" @if(old('material-services_view', optional($permissions)->hasPermissionTo('material-services.view'))) checked @endif>
-                <label class="custom-control-label" for="material-services_view">Materialleistungen ansehen</label>
+                <label class="custom-control-label" for="material-services_view">Materialleistungen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('material-services_view') d-block @enderror">
                 @error('material-services_view')
@@ -1462,7 +1462,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('employees_view') is-invalid @enderror" name="employees_view" id="employees_view" value="true" @if(old('employees_view', optional($permissions)->hasPermissionTo('employees.view'))) checked @endif>
-                <label class="custom-control-label" for="employees_view">Mitarbeiter ansehen</label>
+                <label class="custom-control-label" for="employees_view">Mitarbeiter anzeigen</label>
             </div>
             <div class="invalid-feedback @error('employees_view') d-block @enderror">
                 @error('employees_view')
@@ -1556,7 +1556,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('people_view') is-invalid @enderror" name="people_view" id="people_view" value="true" @if(old('people_view', optional($permissions)->hasPermissionTo('people.view'))) checked @endif>
-                <label class="custom-control-label" for="people_view">Personen ansehen</label>
+                <label class="custom-control-label" for="people_view">Personen anzeigen</label>
             </div>
             <div class="invalid-feedback @error('people_view') d-block @enderror">
                 @error('people_view')
@@ -1639,7 +1639,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('projects_view') is-invalid @enderror" name="projects_view" id="projects_view" value="true" @if(old('projects_view', optional($permissions)->hasPermissionTo('projects.view'))) checked @endif>
-                <label class="custom-control-label" for="projects_view">Projekte ansehen</label>
+                <label class="custom-control-label" for="projects_view">Projekte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('projects_view') d-block @enderror">
                 @error('projects_view')
@@ -1650,7 +1650,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('projects_view_estimates') is-invalid @enderror" name="projects_view_estimates" id="projects_view_estimates" value="true" @if(old('projects_view_estimates', optional($permissions)->hasPermissionTo('projects.view.estimates'))) checked @endif>
-                <label class="custom-control-label" for="projects_view_estimates">Projektkosten ansehen</label>
+                <label class="custom-control-label" for="projects_view_estimates">Projektkosten anzeigen</label>
             </div>
             <div class="invalid-feedback @error('projects_view_estimates') d-block @enderror">
                 @error('projects_view_estimates')
@@ -1733,7 +1733,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('inspection-reports_view_own') is-invalid @enderror" name="inspection-reports_view_own" id="inspection-reports_view_own" value="true" @if(old('inspection-reports_view_own', optional($permissions)->hasPermissionTo('inspection-reports.view.own'))) checked @endif>
-                <label class="custom-control-label" for="inspection-reports_view_own">Eigene Prüfberichte ansehen</label>
+                <label class="custom-control-label" for="inspection-reports_view_own">Eigene Prüfberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('inspection-reports_view_own') d-block @enderror">
                 @error('inspection-reports_view_own')
@@ -1744,7 +1744,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('inspection-reports_view_other') is-invalid @enderror" name="inspection-reports_view_other" id="inspection-reports_view_other" value="true" @if(old('inspection-reports_view_other', optional($permissions)->hasPermissionTo('inspection-reports.view.other'))) checked @endif>
-                <label class="custom-control-label" for="inspection-reports_view_other">Andere Prüfberichte ansehen</label>
+                <label class="custom-control-label" for="inspection-reports_view_other">Andere Prüfberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('inspection-reports_view_other') d-block @enderror">
                 @error('inspection-reports_view_other')
@@ -1948,7 +1948,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('additions-reports_view_own') is-invalid @enderror" name="additions-reports_view_own" id="additions-reports_view_own" value="true" @if(old('additions-reports_view_own', optional($permissions)->hasPermissionTo('additions-reports.view.own'))) checked @endif>
-                <label class="custom-control-label" for="additions-reports_view_own">Eigene Regieberichte ansehen</label>
+                <label class="custom-control-label" for="additions-reports_view_own">Eigene Regieberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('additions-reports_view_own') d-block @enderror">
                 @error('additions-reports_view_own')
@@ -1959,7 +1959,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('additions-reports_view_involved') is-invalid @enderror" name="additions-reports_view_involved" id="additions-reports_view_involved" value="true" @if(old('additions-reports_view_involved', optional($permissions)->hasPermissionTo('additions-reports.view.involved'))) checked @endif>
-                <label class="custom-control-label" for="additions-reports_view_involved">Regieberichte als Beteiligter ansehen</label>
+                <label class="custom-control-label" for="additions-reports_view_involved">Regieberichte als Beteiligter anzeigen</label>
             </div>
             <div class="invalid-feedback @error('additions-reports_view_involved') d-block @enderror">
                 @error('additions-reports_view_involved')
@@ -1970,7 +1970,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('additions-reports_view_other') is-invalid @enderror" name="additions-reports_view_other" id="additions-reports_view_other" value="true" @if(old('additions-reports_view_other', optional($permissions)->hasPermissionTo('additions-reports.view.other'))) checked @endif>
-                <label class="custom-control-label" for="additions-reports_view_other">Andere Regieberichte ansehen</label>
+                <label class="custom-control-label" for="additions-reports_view_other">Andere Regieberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('additions-reports_view_other') d-block @enderror">
                 @error('additions-reports_view_other')
@@ -2251,7 +2251,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('roles_view') is-invalid @enderror" name="roles_view" id="roles_view" value="true" @if(old('roles_view', optional($permissions)->hasPermissionTo('roles.view'))) checked @endif>
-                <label class="custom-control-label" for="roles_view">Rollen (Sammlung von Berechtigungen) ansehen</label>
+                <label class="custom-control-label" for="roles_view">Rollen (Sammlung von Berechtigungen) anzeigen</label>
             </div>
             <div class="invalid-feedback @error('roles_view') d-block @enderror">
                 @error('roles_view')
@@ -2334,7 +2334,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('service-reports_view_own') is-invalid @enderror" name="service-reports_view_own" id="service-reports_view_own" value="true" @if(old('service-reports_view_own', optional($permissions)->hasPermissionTo('service-reports.view.own'))) checked @endif>
-                <label class="custom-control-label" for="service-reports_view_own">Eigene Serviceberichte ansehen</label>
+                <label class="custom-control-label" for="service-reports_view_own">Eigene Serviceberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('service-reports_view_own') d-block @enderror">
                 @error('service-reports_view_own')
@@ -2345,7 +2345,7 @@
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('service-reports_view_other') is-invalid @enderror" name="service-reports_view_other" id="service-reports_view_other" value="true" @if(old('service-reports_view_other', optional($permissions)->hasPermissionTo('service-reports.view.other'))) checked @endif>
-                <label class="custom-control-label" for="service-reports_view_other">Andere Serviceberichte ansehen</label>
+                <label class="custom-control-label" for="service-reports_view_other">Andere Serviceberichte anzeigen</label>
             </div>
             <div class="invalid-feedback @error('service-reports_view_other') d-block @enderror">
                 @error('service-reports_view_other')

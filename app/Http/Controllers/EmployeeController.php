@@ -25,8 +25,7 @@ class EmployeeController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
-            'startImpersonation' => 'impersonate',
-            'stopImpersonation' => 'impersonate',
+            'impersonate' => 'impersonate',
         ]);
     }
 
@@ -291,10 +290,14 @@ class EmployeeController extends Controller
             ->with('success', 'Die Berechtigungen wurden erfolgreich bearbeitet.');
     }
 
-    public function startImpersonation(Employee $employee)
+    public function impersonate(Employee $employee)
     {
         if(Auth::id() === $employee->person_id) {
-            return back()->with('info', 'Du bist bereits als dieser Benutzer angemeldet.');
+            $userId = Session::pull('impersonatorId');
+
+            Auth::loginUsingId($userId);
+
+            return redirect()->route('home')->with('success', 'Du bist jetzt wieder mit deinem Benutzer angemeldet.');
         }
 
         if(!Session::has('impersonatorId')) {
@@ -304,18 +307,5 @@ class EmployeeController extends Controller
         Auth::loginUsingId($employee->person_id);
 
         return redirect()->route('home')->with('success', 'Du bist jetzt als dieser Benutzer angemeldet.');
-    }
-
-    public function stopImpersonation(Employee $employee)
-    {
-        if(!Session::has('impersonatorId') || Auth::id() !== $employee->person_id){
-            return back()->with('danger', 'Du bist nicht als dieser Benutzer angemeldet.');
-        }
-
-        $userId = Session::pull('impersonatorId');
-
-        Auth::loginUsingId($userId);
-
-        return redirect()->route('home')->with('success', 'Du bist jetzt wieder mit deinem Benutzer angemeldet.');
     }
 }

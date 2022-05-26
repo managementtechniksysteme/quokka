@@ -48,11 +48,13 @@ class EmployeePolicy
 
     public function impersonate(User $user, Employee $employee): bool
     {
-        // see if original user can impersonate if already impersonating
-        if(Session::has('impersonatorId')) {
-            return User::find(\Session::get('impersonatorId'))->can('employees.impersonate');
+        // get original user
+        $originalUser = Session::has('impersonatorId') ? User::find(Session::get('impersonatorId')) : $user;
+
+        if($originalUser->employee_id === $employee->person_id) {
+            return false;
         }
 
-        return $user->can('employees.impersonate');
+        return $originalUser->can('employees.impersonate');
     }
 }

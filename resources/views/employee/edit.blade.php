@@ -18,6 +18,13 @@
             @component('employee.fields', [ 'employee' => $employee, 'currentPerson' => $currentPerson, 'people' => $people, 'holidaysSteps' => $holidaysSteps, 'currentAvatarColour' => $currentAvatarColour, 'avatarColours' => $avatarColours ])
             @endcomponent
 
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" href="{{ route('employees.edit-permissions', $employee) }}">
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
+                </svg>
+                Berechtigungen bearbeiten
+            </a>
+
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>

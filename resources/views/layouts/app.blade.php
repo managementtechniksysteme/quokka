@@ -40,6 +40,10 @@
     <!-- Layout mode -->
     <meta name="layoutmode" content="standard">
 
+    @auth
+        @livewire('livewire-ui-spotlight')
+    @endauth
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -72,8 +76,11 @@
 
     <title>{{ config('app.name') }}</title>
 
+    @livewireStyles
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script defer src="{{ asset('js/alpine.min.js') }}"></script>
     @auth
         <script defer>
             let VAPID_PUBLIC_KEY = {!! json_encode(config('webpush.vapid.public_key')) !!}
@@ -96,6 +103,7 @@
         @yield('content')
     </main>
 </div>
+@livewireScripts
 </body>
 
 </html>

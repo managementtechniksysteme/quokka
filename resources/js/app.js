@@ -36,7 +36,7 @@ import VueQrcodeReader from "vue-qrcode-reader";
 import vueTopprogress from 'vue-top-progress'
 import WebpushManager from "./components/WebpushManager";
 
-import "easymde/dist/easymde.min.css";
+import MarkdownEdtior from "./components/MarkdownEditor"
 
 /**
  * The following block of code may be used to automatically register your
@@ -72,6 +72,8 @@ Vue.component('vue-easymde', VueEasymde);
 Vue.component('v-select', vSelect);
 Vue.component('qr-scanner', QrScanner);
 Vue.component('webpush-manager', WebpushManager);
+
+Vue.component('markdown-editor', MarkdownEdtior);
 
 Vue.use(VueHammer);
 Vue.use(VueQrcodeReader);

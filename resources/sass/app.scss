@@ -23,6 +23,9 @@
 // Vue Select
 @import "~vue-select/src/scss/vue-select.scss";
 
+// Spotlight
+@import 'spotlight';
+
 // Vue: wait for components to fully load before showing content
 [v-cloak] {display: none}
 
@@ -265,9 +268,9 @@ img.empty-state {
     background-color: $danger !important;
 }
 
-// No outline buttons
-button.outline-none:focus,
-button.outline-none:active {
+// No outline
+.outline-none:focus,
+.outline-none:active {
     box-shadow:none !important;
     outline:0px !important;
 }
@@ -416,10 +419,6 @@ a.outline-none {
 
 .z-10 {
     z-index: 10;
-}
-
-.z-5000 {
-    z-index: 5000;
 }
 
 .col-1-5 {

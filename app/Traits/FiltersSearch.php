@@ -46,7 +46,7 @@ trait FiltersSearch
             }
 
             foreach (array_keys($this->filterKeys) as $filterKey) {
-                preg_match('/'.$filterKey.'/', $key, $keyMatch);
+                preg_match('/^'.$filterKey.'$/', $key, $keyMatch);
 
                 if ($filterKey === $key) {
                     $query = $this->handleFilterKey($query, $filterKey, $term);

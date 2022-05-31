@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col pr-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Stunden</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_hourly_based_services) }}</span>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdHourlyBasedServices) }}</span>
                                 </div>
                                 <div class="col-auto pl-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -52,7 +52,7 @@
                             <div class="row">
                                 <div class="col pr-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Diäten</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_allowances) }}</span>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdAllowances) }}</span>
                                 </div>
                                 <div class="col-auto pl-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -62,7 +62,7 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col">
-                                    <span class="text-muted">{{ Number::toLocal(Auth::user()->employee->mtd_allowances_in_currency) }}€</span>
+                                    <span class="text-muted">{{ Number::toLocal($employeeMtdAllowancesInCurrency) }}€</span>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             <div class="row">
                                 <div class="col pr-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Überstunden</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_overtime) }}</span>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdOvertime) }}</span>
                                 </div>
                                 <div class="col-auto pl-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -86,11 +86,11 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <span class="text-muted">
-                                        {{ Auth::user()->employee->mtd_overtime_50 }} 50%
+                                        {{ Number::toLocal($employeeMtdOvertime50) }} 50%
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal(Auth::user()->employee->mtd_overtime_100) }} 100%
+                                        {{ Number::toLocal($employeeMtdOvertime100) }} 100%
                                     </span>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted m-0">Verf. Urlaub</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->holidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeHolidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
                                 </div>
                                 <div class="col-auto pl-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -137,10 +137,10 @@
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erstellt MTD</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_created_tasks) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdCreatedTasks) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->mtd_created_tasks) text-blue-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeMtdCreatedTasks) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-square"></use>
                                 </svg>
                             </div>
@@ -148,11 +148,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_created_tasks_responsible_for) }} ver.
+                                    {{ Number::toLocal($employeeMtdCreatedTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_created_tasks_involved_in) }}  bet.
+                                    {{ Number::toLocal($employeeMtdCreatedTasksInvolvedIn) }}  bet.
                                 </span>
                             </div>
                         </div>
@@ -166,10 +166,10 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erledigt MTD</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->mtd_finished_tasks) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdFinishedTasks) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->mtd_finished_tasks) text-green-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeMtdFinishedTasks) text-green-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
                                 </svg>
                             </div>
@@ -177,11 +177,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_finished_tasks_responsible_for) }} ver.
+                                    {{ Number::toLocal($employeeMtdFinishedTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_finished_tasks_involved_in) }} bet.
+                                    {{ Number::toLocal($employeeMtdFinishedTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -195,10 +195,10 @@
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Überfällig</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->overdue_tasks) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeOverdueTasks) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 text-gray-500 @if(Auth::user()->employee->overdue_tasks) text-red-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 text-gray-500 @if($employeeOverdueTasks) text-red-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-x"></use>
                                 </svg>
                             </div>
@@ -206,11 +206,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->overdue_tasks_responsible_for) }} ver.
+                                    {{ Number::toLocal($employeeOverdueTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal(Auth::user()->employee->overdue_tasks_involved_in) }} bet.
+                                    {{ Number::toLocal($employeeOverdueTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -224,10 +224,10 @@
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Bald fällig</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->due_soon_tasks) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeDueSoonTasks) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->due_soon_tasks) text-yellow-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeDueSoonTasks) text-yellow-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-day"></use>
                                 </svg>
                             </div>
@@ -235,11 +235,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->due_soon_tasks_responsible_for) }} ver.
+                                    {{ Number::toLocal($employeeDueSoonTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal(Auth::user()->employee->due_soon_tasks_involved_in) }} bet.
+                                    {{ Number::toLocal($employeeDueSoonTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -270,10 +270,10 @@
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene SB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->new_service_reports) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewServiceReports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->new_service_reports) text-blue-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeNewServiceReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use>
                                 </svg>
                             </div>
@@ -281,12 +281,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_new_service_reports) }} MTD
+                                    {{ Number::toLocal($employeeMtdNewServiceReports) }} MTD
                                     @if(Auth::user()->can('service-reports.view.own') && Auth::user()->can('service-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal(\App\Models\ServiceReport::newServiceReports()) }} ges.
+                                        {{ Number::toLocal($newServiceReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -301,10 +301,10 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene RB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->new_additions_reports) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewAdditionsReports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->new_additions_reports) text-blue-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeNewAdditionsReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                 </svg>
                             </div>
@@ -312,18 +312,18 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_new_additions_reports) }} MTD
+                                    {{ Number::toLocal($employeeMtdNewAdditionsReports) }} MTD
                                     @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('additions-reports.view.involved'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal(Auth::user()->employee->new_additions_reports_involved_in) }} bet.
+                                        {{ Number::toLocal($employeeNewAdditionsReportsInvolvedIn) }} bet.
                                     @endif
-                                    @if(Auth::user()->can('additions-reports.view.own')&& Auth::user()->can('additions-reports.view.involved') && Auth::user()->can('additions-reports.view.other'))
+                                    @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('additions-reports.view.involved') && Auth::user()->can('additions-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal(\App\Models\AdditionsReport::newAdditionsReports()) }} ges.
+                                        {{ Number::toLocal($newAdditionsReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -338,10 +338,10 @@
                         <div class="row">
                             <div class="col pr-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene PB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal(Auth::user()->employee->new_inspection_reports) }}</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewInspectionReports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 @if(Auth::user()->employee->new_inspection_reports) text-blue-500 @else text-gray-500 @endif">
+                                <svg class="icon-bs icon-32 @if($employeeNewInspectionReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                 </svg>
                             </div>
@@ -349,12 +349,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal(Auth::user()->employee->mtd_new_inspection_reports) }} MTD
+                                    {{ Number::toLocal($employeeMtdNewInspectionReports) }} MTD
                                     @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('inspection-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal(\App\Models\InspectionReport::newInspectionReports()) }} ges.
+                                        {{ Number::toLocal($newInspectionReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -364,15 +364,15 @@
             </div>
             <div class="col-md-6 col-xl-3 mb-4">
                 <div class="card shadow-sm">
-                    <a class="stretched-link outline-none" href=""></a>
+                    <a class="stretched-link outline-none" href="{{ route('construction-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene BT</h5>
-                                <span class="h2 font-weight-bold m-0">NA</span>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewConstructionReports) }}</span>
                             </div>
                             <div class="col-auto pl-0">
-                                <svg class="icon-bs icon-32 text-gray-500">
+                                <svg class="icon-bs icon-32 @if($employeeNewConstructionReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                                 </svg>
                             </div>
@@ -380,12 +380,18 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    NA MTD
-                                    @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.other'))
+                                    {{ Number::toLocal($employeeMtdNewConstructionReports) }} MTD
+                                    @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.involved'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        NA ges.
+                                        {{ Number::toLocal($employeeNewConstructionReportsInvolvedIn) }} bet.
+                                    @endif
+                                    @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.involved') && Auth::user()->can('construction-reports.view.other'))
+                                        <svg class="icon-bs icon-baseline text-muted">
+                                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
+                                        </svg>
+                                        {{ Number::toLocal($newConstructionReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -405,17 +411,17 @@
                                 <div class="row">
                                     <div class="col pr-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare SB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal(\App\Models\ServiceReport::signedServiceReports()) }}</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedServiceReports) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 @if(\App\Models\ServiceReport::signedServiceReports()) text-yellow-500 @else text-gray-500 @endif">
+                                        <svg class="icon-bs icon-32 @if($signedServiceReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal(\App\Models\ServiceReport::mtdSignedServiceReports()) }} MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal($mtdSignedServiceReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -430,17 +436,17 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare RB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal(\App\Models\AdditionsReport::signedAdditionsReports()) }}</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedAdditionsReports) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 @if(\App\Models\AdditionsReport::signedAdditionsReports()) text-yellow-500 @else text-gray-500 @endif">
+                                        <svg class="icon-bs icon-32 @if($signedAdditionsReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal(\App\Models\AdditionsReport::mtdSignedAdditionsReports()) }} MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal($mtdSignedAdditionsReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -455,17 +461,17 @@
                                 <div class="row">
                                     <div class="col pr-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare PB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal(\App\Models\InspectionReport::signedInspectionReports()) }}</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedInspectionReports) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 @if(\App\Models\InspectionReport::signedInspectionReports()) text-yellow-500 @else text-gray-500 @endif">
+                                        <svg class="icon-bs icon-32 @if($signedInspectionReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal(\App\Models\InspectionReport::mtdSignedInspectionReports()) }} MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal($mtdSignedInspectionReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -475,22 +481,22 @@
                 @can('construction-reports.approve')
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow-sm">
-                            <a class="stretched-link outline-none" href=""></a>
+                            <a class="stretched-link outline-none" href="{{ route('construction-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col pr-0">
+                                    <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare BT</h5>
-                                        <span class="h2 font-weight-bold m-0">NA</span>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedConstructionReports) }}</span>
                                     </div>
                                     <div class="col-auto pl-0">
-                                        <svg class="icon-bs icon-32 text-gray-500">
+                                        <svg class="icon-bs icon-32 @if($signedConstructionReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">NA MTD</span>
+                                        <span class="text-muted">{{ Number::toLocal($mtdSignedConstructionReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>

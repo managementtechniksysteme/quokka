@@ -40,5 +40,5 @@
 {{ $additionsReport->concerns }}
 @endif
 
-**Leistungsfortschritt**<br />
+<br /><br />**Leistungsfortschritt**<br />
 {!! $additionsReport->comment !!}

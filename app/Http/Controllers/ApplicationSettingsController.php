@@ -77,6 +77,8 @@ class ApplicationSettingsController extends Controller
             $settings->save();
         }
 
+        ApplicationSettings::refreshCache();
+
         return redirect()->route('application-settings.edit', ['tab' => 'general'])->with('success', 'Die Einstellungen erfolgreich bearbeitet.');
     }
 }

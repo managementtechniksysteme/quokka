@@ -208,12 +208,14 @@ class InspectionReport extends Model implements HasMedia
 
     public static function mtdSignedInspectionReports()
     {
-        $today = Carbon::today();
+        $now = Carbon::now();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
         return InspectionReport::whereStatus('signed')
-            ->whereHas('media', function ($signature) use($firstOfMonth, $today) {
-                return $signature->whereBetween('created_at', [$firstOfMonth, $today]);
+            ->whereHas('media', function ($signature) use($firstOfMonth, $now) {
+                return $signature
+                    ->where('collection_name', 'signature')
+                    ->whereBetween('created_at', [$firstOfMonth, $now]);
             })
             ->count();
     }

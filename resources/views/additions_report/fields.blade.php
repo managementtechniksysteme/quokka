@@ -348,7 +348,7 @@
             Anhänge
         </p>
         <p class="text-muted">
-            Dem Servicebericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
+            Dem Bautagesbericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
         </p>
         <p class="text-muted">
             Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.

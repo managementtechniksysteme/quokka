@@ -227,7 +227,7 @@
 
             <p>Unterschreiben Sie bitte in folgendem Feld.<br />
                 Am Computer unterschreiben Sie mid der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für ihr Gerät passenden Eingabestift.<br />
-                Klicken Sie danach auf den <strong>Servicebericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.</p>
+                Klicken Sie danach auf den <strong>Bautagesbericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.</p>
 
             <form action="{{ route('additions-reports.customer-sign', $additionsReport->signatureRequest->token) }}" method="post">
                 @csrf

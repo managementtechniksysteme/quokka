@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\AdditionsReportSignedEvent;
-use App\Events\ServiceReportSignedEvent;
 use App\Models\ApplicationSettings;
 use App\Notifications\AdditionsReportSignedNotification;
 use App\Notifications\ServiceReportSignedNotification;

@@ -74,6 +74,34 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'companies.email']);
         Permission::firstOrCreate(['name' => 'companies.createpdf']);
 
+        // construction reports
+        Permission::firstOrCreate(['name' => 'construction-reports.view.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.view.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.view.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.create']);
+        Permission::firstOrCreate(['name' => 'construction-reports.update.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.update.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.update.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.delete.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.delete.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.delete.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.email.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.email.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.email.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.createpdf.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.createpdf.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.createpdf.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-signature-request.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-signature-request.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-signature-request.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-download-request.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-download-request.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.send-download-request.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.get-signature.own']);
+        Permission::firstOrCreate(['name' => 'construction-reports.get-signature.involved']);
+        Permission::firstOrCreate(['name' => 'construction-reports.get-signature.other']);
+        Permission::firstOrCreate(['name' => 'construction-reports.approve']);
+
         // employees
         Permission::firstOrCreate(['name' => 'employees.view']);
         Permission::firstOrCreate(['name' => 'employees.create']);
@@ -320,6 +348,29 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('companies.update');
         $employee->givePermissionTo('companies.email');
         $employee->givePermissionTo('companies.createpdf');
+
+        // construction reports
+        $employee->givePermissionTo('construction-reports.view.own');
+        $employee->givePermissionTo('construction-reports.view.involved');
+        $employee->givePermissionTo('construction-reports.view.other');
+        $employee->givePermissionTo('construction-reports.create');
+        $employee->givePermissionTo('construction-reports.update.own');
+        $employee->givePermissionTo('construction-reports.delete.own');
+        $employee->givePermissionTo('construction-reports.email.own');
+        $employee->givePermissionTo('construction-reports.email.involved');
+        $employee->givePermissionTo('construction-reports.email.other');
+        $employee->givePermissionTo('construction-reports.createpdf.own');
+        $employee->givePermissionTo('construction-reports.createpdf.involved');
+        $employee->givePermissionTo('construction-reports.createpdf.other');
+        $employee->givePermissionTo('construction-reports.send-signature-request.own');
+        $employee->givePermissionTo('construction-reports.send-signature-request.involved');
+        $employee->givePermissionTo('construction-reports.send-signature-request.other');
+        $employee->givePermissionTo('construction-reports.send-download-request.own');
+        $employee->givePermissionTo('construction-reports.send-download-request.involved');
+        $employee->givePermissionTo('construction-reports.send-download-request.other');
+        $employee->givePermissionTo('construction-reports.get-signature.own');
+        $employee->givePermissionTo('construction-reports.get-signature.involved');
+        $employee->givePermissionTo('construction-reports.get-signature.other');
 
         // help
         $employee->givePermissionTo('help.view');

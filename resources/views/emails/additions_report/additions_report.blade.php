@@ -54,7 +54,7 @@ am {{ $additionsReport->updated_at }}
 {{ $additionsReport->concerns }}
 @endif
 
-**Leistungsfortschritt**<br />
+<br /><br />**Leistungsfortschritt**<br />
 {!! $additionsReport->comment !!}
 
 @component('mail::button', ['url' => route('additions-reports.show', $additionsReport)])

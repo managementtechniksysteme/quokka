@@ -149,7 +149,7 @@
                         <p class="lead text-muted">Es wurden keine Regieberichte passend zur Suche gefunden.</p>
                     @else
                         <p class="lead text-muted">Es sind keine Regieberichte im System vorhanden.</p>
-                        @can('create', \App\Models\ServiceReport::class)
+                        @can('create', \App\Models\AdditionsReport::class)
                             <p class="lead">Lege einen neuen Regiebericht an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('additions-reports.create') }}">
                                 <svg class="icon icon-20 mr-2">

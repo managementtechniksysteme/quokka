@@ -19,11 +19,14 @@
         1. [Adressen](#adressen)
         2. [Aktenvermerke](#aktenvermerke)
         3. [Aufgaben](#aufgaben)
-        4. [Firmen](#firmen)
-        5. [Mitarbeiter](#mitarbeiter)
-        6. [Personen](#personen)
-        7. [Projekte](#projekte)
-        8. [Serviceberichte](#serviceberichte)
+        4. [Bautagesberichte](#bautagesberichte)
+        5. [Firmen](#firmen)
+        6. [Mitarbeiter](#mitarbeiter)
+        7. [Personen](#personen)
+        8. [Projekte](#projekte)
+        9. [Prüfberichte](#pruefberichte)
+        10. [Regieberichte](#regieberichte)
+        11. [Serviceberichte](#serviceberichte)
         @endmarkdown
 
         @markdown
@@ -135,10 +138,10 @@
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Aktenvermerk beteiligt.
         
         * `verständigt:<Name>` oder `v:<Name>`  
-        Die Person mit dem Namen `<Name>` wird über dem Aktenvermerk verständigt.
+        Die Person mit dem Namen `<Name>` wird über den Aktenvermerk verständigt.
         
         * `verständigt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `vm:<{{ config('app.name') }} Benutzername>`  
-        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` wird über dem Aktenvermerk verständigt.
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` wird über den Aktenvermerk verständigt.
         
 
         **Beispiele**
@@ -294,6 +297,80 @@
             @endmarkdown
         </div>
 
+        <a id="bautagesberichte"></a>
+        <h4 class="mt-4">Bautagesberichte</h4>
+
+        @markdown
+        **Standardattribute**
+        * Nummer
+        * Sonstige Besucher
+        * Güte- und Funktionsprüfung
+        * Fehlende Ausführungsunterlagen
+        * Besondere Vorkommnisse
+        * Gefahr in Verzug
+        * Bedenken
+        * Leistungsfortschritt
+        
+        **Spezielle Suchbegriffe**
+        * `ist:neu`  
+        Der Bautagesbericht hat den Status `neu`.
+        
+        * `ist:unterschrieben` oder `ist:u`  
+        Der Bautagesbericht hat den Status `unterschrieben`.
+        
+        * `ist:erledigt`  
+        Der Bautagesbericht hat den Status `erledigt`.
+        
+        * `nummer:<Nummer>` oder `n:<Nummer>`  
+        Der Bautagesbericht hat die Nummer `<Nummer>`
+                    
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+        Der Bautagesbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+                                
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+        Der Bautagesbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
+        
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Bautagesbericht beteiligt.
+        
+        * `beteiligt:<Name>` oder `b:<Name>`  
+        Die Person mit dem Namen `<Name>` ist am Bautagesbericht beteiligt.        
+        
+        **Beispiele**
+        @endmarkdown
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            1
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Bautagesberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
+            Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
+        
+            Mögliche Ergebnisse
+            * MTS000000 [Intern] #1
+            * MTS000000 [Projektmanagement] #1
+            @endmarkdown
+        </div>
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            "p:MTS000000 [Intern]" t:aw
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Bautagesberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Benutzernamen `aw` verfasst wurden.
+            @endmarkdown
+        </div>
+                                                                                                                                    
         <a id="firmen"></a>
         <h4 class="mt-4">Firmen</h4>
 
@@ -474,6 +551,139 @@
             `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
             @endmarkdown
         </div>
+                                                                                                                                                                                                                                                
+        <a id="pruefberichte"></a>
+        <h4 class="mt-4">Prüfberichte</h4>
+        
+        @markdown
+        **Standardattribute**
+        * Anlagen-/Gerätenummer
+        * Durchgeführte Aufgaben und Bemerkungen
+        
+        **Spezielle Suchbegriffe**
+        * `ist:neu`  
+        Der Prüfbericht hat den Status `neu`.
+        
+        * `ist:unterschrieben` oder `ist:u`  
+        Der Prüfbericht hat den Status `unterschrieben`.
+        
+        * `ist:erledigt`  
+        Der Prüfbericht hat den Status `erledigt`.
+                    
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+        Der Prüfbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+                                
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+        Der Prüfbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.      
+        
+        **Beispiele**
+        @endmarkdown
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            1
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Prüfberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
+            Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
+        
+            Mögliche Ergebnisse
+            * MTS000000 [Intern] #1
+            * MTS000000 [Projektmanagement] #1
+            @endmarkdown
+        </div>
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            "p:MTS000000 [Intern]" t:aw
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Benutzernamen `aw` verfasst wurden.
+            @endmarkdown
+        </div>
+                                                                                                                                                                                                                                                
+        <a id="regieberichte"></a>
+        <h4 class="mt-4">Regieberichte</h4>
+        
+        @markdown
+        **Standardattribute**
+        * Nummer
+        * Sonstige Besucher
+        * Güte- und Funktionsprüfung
+        * Fehlende Ausführungsunterlagen
+        * Besondere Vorkommnisse
+        * Gefahr in Verzug
+        * Bedenken
+        * Leistungsfortschritt
+        
+        **Spezielle Suchbegriffe**
+        * `ist:neu`  
+        Der Regiebericht hat den Status `neu`.
+        
+        * `ist:unterschrieben` oder `ist:u`  
+        Der Regiebericht hat den Status `unterschrieben`.
+        
+        * `ist:erledigt`  
+        Der Regiebericht hat den Status `erledigt`.
+        
+        * `nummer:<Nummer>` oder `n:<Nummer>`  
+        Der Regiebericht hat die Nummer `<Nummer>`
+                    
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+        Der Regiebericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+                                
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+        Der Regiebericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
+        
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+        Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Regiebericht beteiligt.
+        
+        * `beteiligt:<Name>` oder `b:<Name>`  
+        Die Person mit dem Namen `<Name>` ist am Regiebericht beteiligt.        
+        
+        **Beispiele**
+        @endmarkdown
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            1
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Regieberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
+            Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
+        
+            Mögliche Ergebnisse
+            * MTS000000 [Intern] #1
+            * MTS000000 [Projektmanagement] #1
+            @endmarkdown
+        </div>
+        
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            "p:MTS000000 [Intern]" t:aw
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Regieberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Benutzernamen `aw` verfasst wurden.
+            @endmarkdown
+        </div>
 
         <a id="serviceberichte"></a>
         <h4 class="mt-4">Serviceberichte</h4>
@@ -516,7 +726,7 @@
             @markdown
             Filtert Serviceberichte, die die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
-
+            
             Mögliche Ergebnisse
             * MTS000000 [Intern] #1
             * MTS000000 [Projektmanagement] #1

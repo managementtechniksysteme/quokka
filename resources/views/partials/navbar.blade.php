@@ -93,14 +93,22 @@
                                             Regieberichte
                                         </a>
                                     @endcan
-                                        @can('viewAny', \App\Models\InspectionReport::class)
-                                            <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('inspection-reports.index') }}">
-                                                <svg class="icon-bs icon-16 mr-2">
-                                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
-                                                </svg>
-                                                Prüfberichte
-                                            </a>
-                                        @endcan
+                                    @can('viewAny', \App\Models\InspectionReport::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('inspection-reports.index') }}">
+                                            <svg class="icon-bs icon-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                                            </svg>
+                                            Prüfberichte
+                                        </a>
+                                    @endcan
+                                    @can('viewAny', \App\Models\ConstructionReport::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('construction-reports.index') }}">
+                                            <svg class="icon-bs icon-16 mr-2">
+                                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
+                                            </svg>
+                                            Bautagesberichte
+                                        </a>
+                                    @endcan
                                 </div>
                             @endif
                         </li>

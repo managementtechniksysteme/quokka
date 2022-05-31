@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class ApplicationSettings extends Model
 {
+    const CACHE_NAME = 'application-settings';
+    const CACHE_TTL = 24 * 60 * 60; // 1 day
+
     protected $casts = [
         'holiday_yearly_allowance' => 'int',
         'task_due_soon_days' => 'int',
@@ -31,7 +35,9 @@ class ApplicationSettings extends Model
 
     public static function get()
     {
-        return ApplicationSettings::all()->first();
+        return Cache::remember(static::CACHE_NAME, static::CACHE_TTL, function () {
+            return ApplicationSettings::first();
+        });
     }
 
     public function company()
@@ -67,5 +73,11 @@ class ApplicationSettings extends Model
     public function signatureNotifyUser()
     {
         return $this->belongsTo(User::class, 'signature_notify_user_id', 'employee_id');
+    }
+
+    public static function refreshCache()
+    {
+        Cache::forget(static::CACHE_NAME);
+        Cache::put(static::CACHE_NAME, ApplicationSettings::first(), static::CACHE_TTL);
     }
 }

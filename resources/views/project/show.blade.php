@@ -124,6 +124,15 @@
                             <span class="ml-auto">{{ $project->inspection_reports_count > 0 ? $project->inspection_reports_count : '' }}</span>
                         </a>
                     @endcan
+                    @can('viewAny', \App\Models\ConstructionReport::class)
+                        <a class="menu-item @if (request()->tab == 'construction_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'construction_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
+                            </svg>
+                            Bautagesberichte
+                            <span class="ml-auto">{{ $project->construction_reports_count > 0 ? $project->construction_reports_count : '' }}</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
 
@@ -178,6 +187,15 @@
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte
+                        </a>
+                    @endcan
+
+                    @can('viewAny', \App\Models\ConstructionReport::class)
+                        <a class="menu-item @if (request()->tab == 'construction_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'construction_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
+                            </svg>
+                            Bautagesberichte
                         </a>
                     @endcan
                 </div>

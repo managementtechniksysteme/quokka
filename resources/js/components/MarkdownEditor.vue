@@ -101,7 +101,7 @@
                             }
 
                             // skip non breakable lines
-                            let skipBreak = stream.string.match(/[#].*/);
+                            let skipBreak = stream.string.match(/(#|---).*/);
 
                             // Case 1: Non-space characters. Eat until last non-space char.
                             if (stream.match(/.*[^ ]/)) {

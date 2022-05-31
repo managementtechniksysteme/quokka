@@ -1,0 +1,19 @@
+@import "~easymde/dist/easymde.min.css";
+
+// Fixes for EasyMDE (hide editor preview in edit mode, smaller toolbar, don't hide behind fixed menu bar)
+.vue-easymde > .EasyMDEContainer > .editor-toolbar.fullscreen {
+    z-index: 2000;
+}
+
+.vue-easymde > .EasyMDEContainer > .CodeMirror.fullscreen {
+    z-index: 2000;
+}
+
+.vue-easymde > .EasyMDEContainer > .CodeMirror > :not(.editor-preview-active).editor-preview {
+    display: none;
+}
+
+.vue-easymde > .EasyMDEContainer > :not(.fullscreen).editor-toolbar > button {
+    width: 24px;
+    height: 24px;
+}

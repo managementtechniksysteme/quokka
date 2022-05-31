@@ -147,7 +147,7 @@ class Employee extends Model
 
     public function getMTDAllowancesInCurrencyAttribute()
     {
-        if(!$this->mtd_allowances) {
+        if($this->mtd_allowances === null) {
             return null;
         }
 

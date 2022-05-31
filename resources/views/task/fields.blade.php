@@ -251,7 +251,7 @@
             <label for="comment">
                 Bemerkungen
             </label>
-            <vue-easymde :configs="{maxHeight: '300px', tabSize: 4, indentWithTabs: false, spellChecker: false, status: false, showIcons: ['strikethrough', 'table', ], hideIcons: ['guide', ] }" name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($task)->comment) }}" v-cloak></vue-easymde>
+            <markdown-editor name="comment" placeholder="Bemerkungen zur Aufgabe"  value="{{ old('comment', optional($task)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
                 <svg class="icon icon-16 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>

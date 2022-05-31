@@ -1,0 +1,16 @@
+.cm-markdown-single-trailing-space-odd:before,
+.cm-markdown-single-trailing-space-even:before,
+.cm-markdown-line-break:before {
+    color: #6c757d; /* a dark orange */
+    position: absolute;
+}
+
+
+.cm-markdown-single-trailing-space-odd:before,
+.cm-markdown-single-trailing-space-even:before {
+    content: '·';
+}
+
+.cm-markdown-line-break:before {
+    content: '↵';
+}

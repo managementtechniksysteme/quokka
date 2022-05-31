@@ -6,12 +6,6 @@
         <style>{!! file_get_contents($cssPath) !!}</style>
     @endisset
 
-    <style>
-        .max-w-2xl {
-            max-width: 42rem;
-        }
-    </style>
-
     <div x-data="LivewireUISpotlight({ componentId: '{{ $this->id }}', placeholder: '{{ trans('livewire-ui-spotlight::spotlight.placeholder') }}', commands: {{ $commands }} })"
          x-init="init()"
          x-show="isOpen"
@@ -22,21 +16,23 @@
          @endforeach
          @keydown.window.escape="isOpen = false"
          @toggle-spotlight.window="toggleOpen()"
-         class="fixed z-5000 px-4 pt-16 flex items-start justify-center inset-0 sm:pt-24">
+         class="position-fixed z-5000 px-5 align-items-start justify-content-center vw-100 vh-100"
+         :class="{'d-none': !isOpen, 'd-flex': isOpen}"
+         style="display: none">
         <div x-show="isOpen" @click="isOpen = false" x-transition:enter="ease-out duration-200" x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-150"
              x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-             class="fixed inset-0 transition-opacity">
-            <div class="absolute inset-0 bg-gray-900 opacity-50"></div>
+             class="position-fixed vw-100 vh-100 transition-opacity">
+            <div class="position-absolute vw-100 vh-100 bg-gray-900 opacity-50"></div>
         </div>
 
         <div x-show="isOpen" x-transition:enter="ease-out duration-200"
              x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
              x-transition:leave="ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
              x-transition:leave-end="opacity-0 scale-95"
-             class="relative bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all max-w-2xl w-full">
-            <div class="relative">
-                <div class="absolute h-full right-5 flex items-center">
+             class="position-relative bg-gray-900 mt-16 rounded-lg overflow-hidden shadow-lg transform transition-all max-w-2xl w-100">
+            <div class="position-relative">
+                <div class="position-absolute h-100 right-5 d-flex align-items-center">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
                          viewBox="0 0 24 24" wire:loading.delay>
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -48,16 +44,15 @@
                 <input @keydown.tab.prevent="" @keydown.prevent.stop.enter="go()" @keydown.prevent.arrow-up="selectUp()"
                        @keydown.prevent.arrow-down="selectDown()" x-ref="input" x-model="input"
                        type="text"
-                       style="caret-color: #6b7280; border: 0 !important;"
-                       class="appearance-none w-full bg-transparent px-6 py-4 text-gray-300 text-lg placeholder-gray-500 focus:border-0 focus:border-transparent focus:shadow-none outline-none focus:outline-none"
+                       class="spotlight-input w-100 bg-transparent px-6 py-4 text-gray-300 lead border-0 outline-none"
                        x-bind:placeholder="inputPlaceholder">
             </div>
-            <div class="border-t border-gray-800" x-show="filteredItems().length > 0" style="display: none;">
-                <ul x-ref="results" style="max-height: 265px;" class="overflow-y-auto">
+            <div class="border-top border-gray-800" x-show="filteredItems().length > 0">
+                <ul x-ref="results" class="m-0 p-0 spotlight-results overflow-auto">
                     <template x-for="(item, i) in filteredItems()" :key>
                         <li>
-                            <button @click="go(item[0].item.id)" class="block w-full px-6 py-3 text-left"
-                                    :class="{ 'bg-gray-700': selected === i, 'hover:bg-gray-800': selected !== i }">
+                            <button @click="go(item[0].item.id)" class="d-block w-100 border-0 outline-none px-6 py-3 text-left"
+                                    :class="{ 'bg-gray-700': selected === i, 'bg-hover-gray-800': selected !== i }">
                                 <span x-text="item[0].item.name"
                                       :class="{'text-gray-300': selected !== i, 'text-white': selected === i }"></span>
                                 <span x-text="item[0].item.description" class="ml-1"

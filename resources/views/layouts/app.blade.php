@@ -40,10 +40,6 @@
     <!-- Layout mode -->
     <meta name="layoutmode" content="standard">
 
-    @auth
-        @livewire('livewire-ui-spotlight')
-    @endauth
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -104,6 +100,9 @@
     </main>
 </div>
 @livewireScripts
+@auth
+    @livewire('livewire-ui-spotlight')
+@endauth
 </body>
 
 </html>

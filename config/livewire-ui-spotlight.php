@@ -12,6 +12,9 @@ use App\SpotlightCommands\ChangelogShowCommand;
 use App\SpotlightCommands\CompanyCreateCommand;
 use App\SpotlightCommands\CompanyIndexCommand;
 use App\SpotlightCommands\CompanyShowCommand;
+use App\SpotlightCommands\ConstructionReportCreateCommand;
+use App\SpotlightCommands\ConstructionReportIndexCommand;
+use App\SpotlightCommands\ConstructionReportShowCommand;
 use App\SpotlightCommands\EmployeeCreateCommand;
 use App\SpotlightCommands\EmployeeIndexCommand;
 use App\SpotlightCommands\EmployeeShowCommand;
@@ -98,6 +101,9 @@ return [
         CompanyCreateCommand::class,
         CompanyIndexCommand::class,
         CompanyShowCommand::class,
+        ConstructionReportCreateCommand::class,
+        ConstructionReportIndexCommand::class,
+        ConstructionReportShowCommand::class,
         EmployeeCreateCommand::class,
         EmployeeIndexCommand::class,
         EmployeeShowCommand::class,
@@ -152,7 +158,7 @@ return [
     | to set this parameter to true. This includes the modern-normalize css.
     |
     */
-    'include_css' => true,
+    'include_css' => false,
 
 
     /*

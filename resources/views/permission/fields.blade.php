@@ -973,6 +973,309 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+            </svg>
+            Bautagesberichte
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Bautagesberichte.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_view_own') is-invalid @enderror" name="construction-reports_view_own" id="construction-reports_view_own" value="true" @if(old('construction-reports_view_own', optional($permissions)->hasPermissionTo('construction-reports.view.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_view_own">Eigene Bautagesberichte anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_view_own') d-block @enderror">
+                @error('construction-reports_view_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_view_involved') is-invalid @enderror" name="construction-reports_view_involved" id="construction-reports_view_involved" value="true" @if(old('construction-reports_view_involved', optional($permissions)->hasPermissionTo('construction-reports.view.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_view_involved">Bautagesberichte als Beteiligter anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_view_involved') d-block @enderror">
+                @error('construction-reports_view_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_view_other') is-invalid @enderror" name="construction-reports_view_other" id="construction-reports_view_other" value="true" @if(old('construction-reports_view_other', optional($permissions)->hasPermissionTo('construction-reports.view.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_view_other">Andere Bautagesberichte anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_view_other') d-block @enderror">
+                @error('construction-reports_view_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_create') is-invalid @enderror" name="construction-reports_create" id="construction-reports_create" value="true" @if(old('construction-reports_create', optional($permissions)->hasPermissionTo('construction-reports.create'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_create">Bautagesberichte erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_create') d-block @enderror">
+                @error('construction-reports_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_update_own') is-invalid @enderror" name="construction-reports_update_own" id="construction-reports_update_own" value="true" @if(old('construction-reports_update_own', optional($permissions)->hasPermissionTo('construction-reports.update.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_update_own">Eigene Bautagesberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_update_own') d-block @enderror">
+                @error('construction-reports_update_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_update_involved') is-invalid @enderror" name="construction-reports_update_involved" id="construction-reports_update_involved" value="true" @if(old('construction-reports_update_involved', optional($permissions)->hasPermissionTo('construction-reports.update.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_update_involved">Bautagesberichte als Beteiligter bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_update_involved') d-block @enderror">
+                @error('construction-reports_update_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_update_other') is-invalid @enderror" name="construction-reports_update_other" id="construction-reports_update_other" value="true" @if(old('construction-reports_update_other', optional($permissions)->hasPermissionTo('construction-reports.update.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_update_other">Andere Bautagesberichte bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_update_other') d-block @enderror">
+                @error('construction-reports_update_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_delete_own') is-invalid @enderror" name="construction-reports_delete_own" id="construction-reports_delete_own" value="true" @if(old('construction-reports_delete_own', optional($permissions)->hasPermissionTo('construction-reports.delete.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_delete_own">Eigene Bautagesberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_delete_own') d-block @enderror">
+                @error('construction-reports_delete_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_delete_involved') is-invalid @enderror" name="construction-reports_delete_involved" id="construction-reports_delete_involved" value="true" @if(old('construction-reports_delete_involved', optional($permissions)->hasPermissionTo('construction-reports.delete.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_delete_involved">Bautagesberichte als Beteiligter entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_delete_involved') d-block @enderror">
+                @error('construction-reports_delete_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_delete_other') is-invalid @enderror" name="construction-reports_delete_other" id="construction-reports_delete_other" value="true" @if(old('construction-reports_delete_other', optional($permissions)->hasPermissionTo('construction-reports.delete.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_delete_other">Andere Bautagesberichte entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_delete_other') d-block @enderror">
+                @error('construction-reports_delete_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_email_own') is-invalid @enderror" name="construction-reports_email_own" id="construction-reports_email_own" value="true" @if(old('construction-reports_email_own', optional($permissions)->hasPermissionTo('construction-reports.email.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_email_own">Eigene Bautagesberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_email_own') d-block @enderror">
+                @error('construction-reports_email_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_email_involved') is-invalid @enderror" name="construction-reports_email_involved" id="construction-reports_email_involved" value="true" @if(old('construction-reports_email_involved', optional($permissions)->hasPermissionTo('construction-reports.email.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_email_involved">Bautagesberichte als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_email_involved') d-block @enderror">
+                @error('construction-reports_email_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_email_other') is-invalid @enderror" name="construction-reports_email_other" id="construction-reports_email_other" value="true" @if(old('construction-reports_email_other', optional($permissions)->hasPermissionTo('construction-reports.email.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_email_other">Andere Bautagesberichte per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_email_other') d-block @enderror">
+                @error('construction-reports_email_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_createpdf_own') is-invalid @enderror" name="construction-reports_createpdf_own" id="construction-reports_createpdf_own" value="true" @if(old('construction-reports_createpdf_own', optional($permissions)->hasPermissionTo('construction-reports.createpdf.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_createpdf_own">PDF Dateien von eigenen Bautagesberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_createpdf_own') d-block @enderror">
+                @error('construction-reports_createpdf_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_createpdf_involved') is-invalid @enderror" name="construction-reports_createpdf_involved" id="construction-reports_createpdf_involved" value="true" @if(old('construction-reports_createpdf_involved', optional($permissions)->hasPermissionTo('construction-reports.createpdf.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_createpdf_involved">PDF Dateien von Bautagesberichten als Beteiligter rstellen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_createpdf_involved') d-block @enderror">
+                @error('construction-reports_createpdf_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_createpdf_other') is-invalid @enderror" name="construction-reports_createpdf_other" id="construction-reports_createpdf_other" value="true" @if(old('construction-reports_createpdf_other', optional($permissions)->hasPermissionTo('construction-reports.createpdf.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_createpdf_other">PDF Dateien von anderen Bautagesberichten erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_createpdf_other') d-block @enderror">
+                @error('construction-reports_createpdf_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-signature-request_own') is-invalid @enderror" name="construction-reports_send-signature-request_own" id="construction-reports_send-signature-request_own" value="true" @if(old('construction-reports_send-signature-request_own', optional($permissions)->hasPermissionTo('construction-reports.send-signature-request.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-signature-request_own">Anfrage zur Unterschrift von eigenen Bautagesberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-signature-request_own') d-block @enderror">
+                @error('construction-reports_send-signature-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-signature-request_involved') is-invalid @enderror" name="construction-reports_send-signature-request_involved" id="construction-reports_send-signature-request_involved" value="true" @if(old('construction-reports_send-signature-request_involved', optional($permissions)->hasPermissionTo('construction-reports.send-signature-request.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-signature-request_involved">Anfrage zur Unterschrift von Bautagesberichten als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-signature-request_involved') d-block @enderror">
+                @error('construction-reports_send-signature-request_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-signature-request_other') is-invalid @enderror" name="construction-reports_send-signature-request_other" id="construction-reports_send-signature-request_other" value="true" @if(old('construction-reports_send-signature-request_other', optional($permissions)->hasPermissionTo('construction-reports.send-signature-request.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-signature-request_other">Anfrage zur Unterschrift von anderen Bautagesberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-signature-request_other') d-block @enderror">
+                @error('construction-reports_send-signature-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-download-request_own') is-invalid @enderror" name="construction-reports_send-download-request_own" id="construction-reports_send-download-request_own" value="true" @if(old('construction-reports_send-download-request_own', optional($permissions)->hasPermissionTo('construction-reports.send-download-request.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-download-request_own">Anfrage zum Herunterladen von eigenen Bautagesberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-download-request_own') d-block @enderror">
+                @error('construction-reports_send-download-request_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-download-request_involved') is-invalid @enderror" name="construction-reports_send-download-request_involved" id="construction-reports_send-download-request_involved" value="true" @if(old('construction-reports_send-download-request_involved', optional($permissions)->hasPermissionTo('construction-reports.send-download-request.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-download-request_involved">Anfrage zum Herunterladen von Bautagesberichten als Beteiligter per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-download-request_involved') d-block @enderror">
+                @error('construction-reports_send-download-request_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_send-download-request_other') is-invalid @enderror" name="construction-reports_send-download-request_other" id="construction-reports_send-download-request_other" value="true" @if(old('construction-reports_send-download-request_other', optional($permissions)->hasPermissionTo('construction-reports.send-download-request.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_send-download-request_other">Anfrage zum Herunterladen von anderen Bautagesberichten per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_send-download-request_other') d-block @enderror">
+                @error('construction-reports_send-download-request_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_get-signature_own') is-invalid @enderror" name="construction-reports_get-signature_own" id="construction-reports_get-signature_own" value="true" @if(old('construction-reports_get-signature_own', optional($permissions)->hasPermissionTo('construction-reports.get-signature.own'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_get-signature_own">Eigene Bautagesberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_get-signature_own') d-block @enderror">
+                @error('construction-reports_get-signature_own')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_get-signature_involved') is-invalid @enderror" name="construction-reports_get-signature_involved" id="construction-reports_get-signature_involved" value="true" @if(old('construction-reports_get-signature_involved', optional($permissions)->hasPermissionTo('construction-reports.get-signature.involved'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_get-signature_involved">Bautagesberichte als Beteiligter unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_get-signature_involved') d-block @enderror">
+                @error('construction-reports_get-signature_involved')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_get-signature_other') is-invalid @enderror" name="construction-reports_get-signature_other" id="construction-reports_get-signature_other" value="true" @if(old('construction-reports_get-signature_other', optional($permissions)->hasPermissionTo('construction-reports.get-signature.other'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_get-signature_other">Andere Bautagesberichte unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_get-signature_other') d-block @enderror">
+                @error('construction-reports_get-signature_other')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('construction-reports_approve') is-invalid @enderror" name="construction-reports_approve" id="construction-reports_approve" value="true" @if(old('construction-reports_approve', optional($permissions)->hasPermissionTo('construction-reports.approve'))) checked @endif>
+                <label class="custom-control-label" for="construction-reports_approve">Bautagesberichte als erledigt markieren</label>
+            </div>
+            <div class="invalid-feedback @error('construction-reports_approve') d-block @enderror">
+                @error('construction-reports_approve')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
             </svg>
             Fahrtenbuch

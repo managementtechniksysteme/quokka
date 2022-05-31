@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
+use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
 use App\Models\Memo;
 use App\Models\Project;
@@ -110,7 +111,8 @@ class ProjectController extends Controller
             ->loadCount('memos')
             ->loadCount('serviceReports')
             ->loadCount('additionsReports')
-            ->loadCount('inspectionReports');
+            ->loadCount('inspectionReports')
+            ->loadCount('constructionReports');
 
         switch ($request->tab) {
             case 'overview':
@@ -118,6 +120,10 @@ class ProjectController extends Controller
                 return view('project.show_tab_overview')->with(compact('project'))->with(compact('currencyUnit'));
 
             case 'tasks':
+                if(Auth::user()->cannot('viewAny', Task::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
                 Task::handleDefaultFilter($request);
 
                 $tasks = $project->tasks()
@@ -131,6 +137,10 @@ class ProjectController extends Controller
                 return view('project.show_tab_tasks')->with(compact('project'))->with(compact('tasks'));
 
             case 'memos':
+                if(Auth::user()->cannot('viewAny', Memo::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
                 $memos = $project->memos()
                     ->filterPermissions()
                     ->filterSearch($request->input())
@@ -143,6 +153,10 @@ class ProjectController extends Controller
                 return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
 
             case 'service_reports':
+                if(Auth::user()->cannot('viewAny', ServiceReport::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
                 ServiceReport::handleDefaultFilter($request);
 
                 $serviceReports = $project->serviceReports()
@@ -160,6 +174,10 @@ class ProjectController extends Controller
                 return view('project.show_tab_service_reports')->with(compact('project'))->with(compact('serviceReports'));
 
             case 'additions_reports':
+                if(Auth::user()->cannot('viewAny', AdditionsReport::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
                 AdditionsReport::handleDefaultFilter($request);
 
                 $additionsReports = $project->additionsReports()
@@ -173,6 +191,10 @@ class ProjectController extends Controller
                 return view('project.show_tab_additions_reports')->with(compact('project'))->with(compact('additionsReports'));
 
             case 'inspection_reports':
+                if(Auth::user()->cannot('viewAny', InspectionReport::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
                 InspectionReport::handleDefaultFilter($request);
 
                 $inspectionReports = $project->inspectionReports()
@@ -184,6 +206,23 @@ class ProjectController extends Controller
                     ->appends($request->except('page'));
 
                 return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('inspectionReports'));
+
+            case 'construction_reports':
+                if(Auth::user()->cannot('viewAny', ConstructionReport::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
+                ConstructionReport::handleDefaultFilter($request);
+
+                $constructionReports = $project->constructionReports()
+                    ->filterPermissions()
+                    ->filterSearch($request->input())
+                    ->order($request->input())
+                    ->with('employee.person')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_construction_reports')->with(compact('project'))->with(compact('constructionReports'));
 
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);

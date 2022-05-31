@@ -3,12 +3,15 @@
 namespace App\Providers;
 
 use App\Events\AdditionsReportSignedEvent;
+use App\Events\ConstructionReportSignedEvent;
 use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
 use App\Listeners\SendAdditionsReportMentionNotification;
 use App\Listeners\SendAdditionsReportSignedNotification;
 use App\Listeners\SendCommentInvolvedNotification;
 use App\Listeners\SendCommentMentionNotification;
+use App\Listeners\SendConstructionReportMentionNotification;
+use App\Listeners\SendConstructionReportSignedNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
 use App\Listeners\SendInspectionReportMentionNotification;
 use App\Listeners\SendInspectionReportSignedNotification;
@@ -40,6 +43,10 @@ class EventServiceProvider extends ServiceProvider
             SendAdditionsReportSignedNotification::class,
         ],
 
+        ConstructionReportSignedEvent::class => [
+            SendConstructionReportSignedNotification::class,
+        ],
+
         InspectionReportSignedEvent::class => [
             SendInspectionReportSignedNotification::class,
         ],
@@ -67,6 +74,7 @@ class EventServiceProvider extends ServiceProvider
         SendAdditionsReportMentionNotification::class,
         SendCommentInvolvedNotification::class,
         SendCommentMentionNotification::class,
+        SendConstructionReportMentionNotification::class,
         SendHolidayAllowanceAdjustmentNotification::class,
         SendInspectionReportMentionNotification::class,
         SendMemoInvolvedNotification::class,

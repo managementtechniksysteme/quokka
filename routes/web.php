@@ -21,6 +21,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
@@ -60,6 +61,11 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/additions-reports/download/{token}', [AdditionsReportController::class, 'customerDownload'])->name('additions-reports.customer-download');
     Route::post('/additions-reports/email-download-request/{token}', [AdditionsReportController::class, 'customerEmailDownloadRequest'])->name('additions-reports.customer-email-download-request');
 
+    Route::get('/construction-reports/sign/{token}', [ConstructionReportController::class, 'customerShowSignatureRequest'])->name('construction-reports.customer-sign');
+    Route::post('/construction-reports/sign/{token}', [ConstructionReportController::class, 'customerSign']);
+    Route::get('/construction-reports/download/{token}', [ConstructionReportController::class, 'customerDownload'])->name('construction-reports.customer-download');
+    Route::post('/construction-reports/email-download-request/{token}', [ConstructionReportController::class, 'customerEmailDownloadRequest'])->name('construction-reports.customer-email-download-request');
+
     Route::get('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerShowSignatureRequest'])->name('inspection-reports.customer-sign');
     Route::post('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerSign']);
     Route::get('/inspection-reports/download/{token}', [InspectionReportController::class, 'customerDownload'])->name('inspection-reports.customer-download');
@@ -95,6 +101,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('addresses', AddressController::class);
     Route::resource('companies', CompanyController::class);
+
+    Route::resource('construction-reports', ConstructionReportController::class);
+    Route::get('/construction-reports/{construction_report}/download', [ConstructionReportController::class, 'download'])->name('construction-reports.download');
+    Route::get('/construction-reports/{construction_report}/email', [ConstructionReportController::class, 'showEmail'])->name('construction-reports.email');
+    Route::post('/construction-reports/{construction_report}/email', [ConstructionReportController::class, 'email']);
+    Route::get('/construction-reports/{construction_report}/sign', [ConstructionReportController::class, 'showSignatureRequest'])->name('construction-reports.sign');
+    Route::post('/construction-reports/{construction_report}/sign', [ConstructionReportController::class, 'sign']);
+    Route::get('/construction-reports/{construction_report}/email-download-request', [ConstructionReportController::class, 'showEmailDownloadRequest'])->name('construction-reports.email-download-request');
+    Route::post('/construction-reports/{construction_report}/email-download-request', [ConstructionReportController::class, 'emailDownloadRequest']);
+    Route::get('/construction-reports/{construction_report}/email-signature-request', [ConstructionReportController::class, 'showEmailSignatureRequest'])->name('construction-reports.email-signature-request');
+    Route::post('/construction-reports/{construction_report}/email-signature-request', [ConstructionReportController::class, 'emailSignatureRequest']);
+    Route::get('/construction-reports/{construction_report}/finish', [ConstructionReportController::class, 'finish'])->name('construction-reports.finish');
 
     Route::resource('employees', EmployeeController::class);
     Route::get('/employees/{employee}/access-grant', [EmployeeController::class, 'grantAccess'])->name('employees.access-grant');

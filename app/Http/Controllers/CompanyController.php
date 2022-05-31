@@ -147,7 +147,12 @@ class CompanyController extends Controller
                 $company->load('address')->load('contactPerson');
 
                 return view('company.show_tab_overview')->with(compact('company'));
+
             case 'projects':
+                if(Auth::user()->cannot('viewAny', Project::class)) {
+                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                }
+
                 $projects = Project::where('company_id', $company->id)
                     ->filterSearch($input)
                     ->order($input)
@@ -167,7 +172,12 @@ class CompanyController extends Controller
                     ->with(compact('projectOverwallCostsWarningPercentage'))
                     ->with(compact('projectMaterialCostsWarningPercentage'))
                     ->with(compact('projectWageCostsWarningPercentage'));
+
             case 'people':
+                if(Auth::user()->cannot('viewAny', Person::class)) {
+                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                }
+
                 $people = Person::where('company_id', $company->id)
                     ->filterSearch($input)
                     ->order($input)

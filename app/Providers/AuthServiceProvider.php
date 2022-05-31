@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\AdditionsReport;
+use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
 use App\Policies\AdditionsReportPolicy;
+use App\Policies\ConstructionReportPolicy;
 use App\Policies\InspectionReportPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;

@@ -136,7 +136,7 @@
                         <p class="lead text-muted">Es wurden keine Prüfberichte passend zur Suche gefunden.</p>
                     @else
                         <p class="lead text-muted">Es sind keine Prüfberichte im System vorhanden.</p>
-                        @can('create', \App\Models\ServiceReport::class)
+                        @can('create', \App\Models\InspectionReport::class)
                             <p class="lead">Lege einen neuen Prüfbericht an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('inspection-reports.create') }}">
                                 <svg class="icon icon-20 mr-2">

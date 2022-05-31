@@ -6,9 +6,13 @@ use App\Traits\FiltersSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Employee extends Model
 {
+    const DASHBOARD_CACHE_TAG_PREFIX = 'dashboard';
+    const DASHBOARD_CACHE_TTL = 60;
+
     use FiltersSearch;
     use HasFactory;
 
@@ -70,16 +74,6 @@ class Employee extends Model
         return $this->hasMany(ServiceReport::class, 'employee_id');
     }
 
-    public function accounting()
-    {
-        return $this->hasMany(Accounting::class, 'employee_id');
-    }
-
-    public function logbook()
-    {
-        return $this->hasMany(Logbook::class, 'employee_id');
-    }
-
     public function additionsReports() {
         return $this->hasMany(AdditionsReport::class, 'employee_id');
     }
@@ -90,6 +84,24 @@ class Employee extends Model
 
     public function inspectionReports() {
         return $this->hasMany(InspectionReport::class, 'employee_id');
+    }
+
+    public function constructionReports() {
+        return $this->hasMany(ConstructionReport::class, 'employee_id');
+    }
+
+    public function constructionReportsInvolvedIn() {
+        return $this->morphedByMany(ConstructionReport::class, 'employeeable', null, 'employee_id', 'employeeable_id')->wherePivot('employee_type', 'involved');
+    }
+
+    public function accounting()
+    {
+        return $this->hasMany(Accounting::class, 'employee_id');
+    }
+
+    public function logbook()
+    {
+        return $this->hasMany(Logbook::class, 'employee_id');
     }
 
     public function isCurrentlyOnHoliday()
@@ -125,18 +137,21 @@ class Employee extends Model
             return null;
         }
 
-        return $this->getMTDServiceSum($allowanceServiceId);
+        return $this->getCache()
+            ->remember($this->getDashboardCacheKeyName('mtd-allowances'), static::DASHBOARD_CACHE_TTL,
+                function() use ($allowanceServiceId) {
+                    return $this->getMTDServiceSum($allowanceServiceId);
+                }
+            );
     }
 
     public function getMTDAllowancesInCurrencyAttribute()
     {
-        $allowanceServiceId = ApplicationSettings::get()->allowances_service_id;
-
-        if($allowanceServiceId === null) {
+        if(!$this->mtd_allowances) {
             return null;
         }
 
-        return $this->getMTDServiceSum($allowanceServiceId) * ApplicationSettings::get()->allowancesService->costs;
+        return $this->mtd_allowances * ApplicationSettings::get()->allowancesService->costs;
     }
 
     public function getMTDOvertime50Attribute()
@@ -147,7 +162,13 @@ class Employee extends Model
             return null;
         }
 
-        return $this->getMTDServiceSum($overtime50ServiceId);
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-overtime-50'), static::DASHBOARD_CACHE_TTL,
+                function() use ($overtime50ServiceId) {
+                    return $this->getMTDServiceSum($overtime50ServiceId);
+                }
+            );
     }
 
     public function getMTDOvertime100Attribute()
@@ -158,7 +179,13 @@ class Employee extends Model
             return null;
         }
 
-        return $this->getMTDServiceSum($overtime100ServiceId);
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-overtime-100'), static::DASHBOARD_CACHE_TTL,
+                function() use ($overtime100ServiceId) {
+                    return $this->getMTDServiceSum($overtime100ServiceId);
+                }
+            );
     }
 
     public function getMTDOvertimeAttribute()
@@ -189,8 +216,14 @@ class Employee extends Model
         $today = Carbon::today();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
-        return $this->tasksResponsibleFor()
-            ->whereBetween('tasks.created_at', [$firstOfMonth, $today])->count();
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-created-tasks-responsible-for'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->tasksResponsibleFor()
+                        ->whereBetween('tasks.created_at', [$firstOfMonth, $today])->count();
+                }
+            );
     }
 
     public function getMTDCreatedTasksInvolvedInAttribute()
@@ -198,8 +231,14 @@ class Employee extends Model
         $today = Carbon::today();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
-        return $this->tasksInvolvedIn()
-            ->whereBetween('tasks.created_at', [$firstOfMonth, $today])->count();
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-created-tasks-involved-in'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->tasksInvolvedIn()
+                        ->whereBetween('tasks.created_at', [$firstOfMonth, $today])->count();
+                }
+            );
     }
 
     public function getMTDCreatedTasksAttribute()
@@ -212,9 +251,15 @@ class Employee extends Model
         $today = Carbon::today();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
-        return $this->tasksResponsibleFor()
-            ->whereStatus('finished')
-            ->whereBetween('ends_on', [$firstOfMonth, $today])->count();
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-finished-tasks-responsible-for'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->tasksResponsibleFor()
+                        ->whereStatus('finished')
+                        ->whereBetween('ends_on', [$firstOfMonth, $today])->count();
+                }
+            );
     }
 
     public function getMTDFinishedTasksInvolvedInAttribute()
@@ -222,9 +267,15 @@ class Employee extends Model
         $today = Carbon::today();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
-        return $this->tasksInvolvedIn()
-            ->whereStatus('finished')
-            ->whereBetween('ends_on', [$firstOfMonth, $today])->count();
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-finished-tasks-involved-in'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->tasksInvolvedIn()
+                        ->whereStatus('finished')
+                        ->whereBetween('ends_on', [$firstOfMonth, $today])->count();
+                }
+            );
     }
 
     public function getMTDFinishedTasksAttribute()
@@ -234,8 +285,7 @@ class Employee extends Model
 
     public function getOverdueTasksResponsibleForAttribute()
     {
-        return $this->tasksResponsibleFor()
-            ->get()
+        return $this->tasksResponsibleFor
             ->filter(function ($task) {
                 return $task->isOverdue();
             })
@@ -244,8 +294,7 @@ class Employee extends Model
 
     public function getOverdueTasksInvolvedInAttribute()
     {
-        return $this->tasksInvolvedIn()
-            ->get()
+        return $this->tasksInvolvedIn
             ->filter(function ($task) {
                 return $task->isOverdue();
             })
@@ -259,8 +308,7 @@ class Employee extends Model
 
     public function getDueSoonTasksResponsibleForAttribute()
     {
-        return $this->tasksResponsibleFor()
-            ->get()
+        return $this->tasksResponsibleFor
             ->filter(function ($task) {
             return $task->isDueSoon();
             })
@@ -269,8 +317,7 @@ class Employee extends Model
 
     public function getDueSoonTasksInvolvedInAttribute()
     {
-        return $this->tasksInvolvedIn()
-            ->get()
+        return $this->tasksInvolvedIn
             ->filter(function ($task) {
                 return $task->isDueSoon();
             })->count();
@@ -283,12 +330,12 @@ class Employee extends Model
 
     public function getMTDNewServiceReportsAttribute()
     {
-        $today = Carbon::today();
+        $now = Carbon::now();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
         return $this->serviceReports()
             ->whereStatus('new')
-            ->whereBetween('created_at', [$firstOfMonth, $today])
+            ->whereBetween('created_at', [$firstOfMonth, $now])
             ->count();
     }
 
@@ -301,12 +348,12 @@ class Employee extends Model
 
     public function getMTDNewAdditionsReportsAttribute()
     {
-        $today = Carbon::today();
+        $now = Carbon::now();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
         return $this->additionsReports()
             ->whereStatus('new')
-            ->whereBetween('created_at', [$firstOfMonth, $today])
+            ->whereBetween('created_at', [$firstOfMonth, $now])
             ->count();
     }
 
@@ -326,12 +373,12 @@ class Employee extends Model
 
     public function getMTDNewInspectionReportsAttribute()
     {
-        $today = Carbon::today();
+        $now = Carbon::now();
         $firstOfMonth = Carbon::today()->firstOfMonth();
 
         return $this->inspectionReports()
             ->whereStatus('new')
-            ->whereBetween('created_at', [$firstOfMonth, $today])
+            ->whereBetween('created_at', [$firstOfMonth, $now])
             ->count();
     }
 
@@ -344,11 +391,44 @@ class Employee extends Model
 
     public function getMTDNewConstructionReportsAttribute()
     {
-        return 'NA';
+        $now = Carbon::now();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->constructionReports()
+            ->whereStatus('new')
+            ->whereBetween('created_at', [$firstOfMonth, $now])
+            ->count();
     }
 
     public function getNewConstructionReportsAttribute()
     {
-        return 'NA';
+        return $this->constructionReports()
+            ->whereStatus('new')
+            ->count();
+    }
+
+    public function getNewConstructionReportsInvolvedInAttribute()
+    {
+        return $this->constructionReportsInvolvedIn()
+            ->whereStatus('new')
+            ->count();
+    }
+
+    public function clearDashboardCache()
+    {
+        $this->getCache()->flush();
+    }
+
+    private function getCache()
+    {
+        return Cache::store('array')->tags($this->getDashboardCacheTag());
+    }
+
+    private function getDashboardCacheTag() {
+        return static::DASHBOARD_CACHE_TAG_PREFIX . ':' . $this->person_id;
+    }
+
+    private function getDashboardCacheKeyName(string $name) {
+        return $this->getDashboardCacheTag() . ':' . $name;
     }
 }

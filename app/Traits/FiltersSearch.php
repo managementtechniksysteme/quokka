@@ -22,14 +22,19 @@ trait FiltersSearch
         }
     }
 
-    public function scopeFilterSearch($query, $params = null)
+    public function getFilterKeys() : array
     {
-        if (! (isset($params['search']) && isset($this->filterKeys))) {
+        return $this->filterKeys;
+    }
+
+    public function scopeFilterSearch($query, $search = null)
+    {
+        if (! (isset($search) && isset($this->filterKeys))) {
             return $query;
         }
 
         // split search on white space excluding inside quotes
-        preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $params['search'], $terms);
+        preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $search, $terms);
 
         $searchTerms = [];
 
@@ -74,16 +79,7 @@ trait FiltersSearch
             $termHandled = false;
         }
 
-        // append all general terms to the search query (logical and between terms, logical or within terms for all
-        // fields)
-        if (! empty($searchTerms)) {
-            $query = $query->where(function ($query) use ($searchTerms) {
-                foreach ($this->filterFields as $filterField) {
-                    $likeQuery = '%'.join('%', $searchTerms).'%';
-                    $query->orWhere($filterField, 'LIKE', $likeQuery);
-                }
-            });
-        }
+        $this->handleGeneralTerms($query, $searchTerms);
 
         return $query;
     }
@@ -128,11 +124,11 @@ trait FiltersSearch
             $value = $values[1];
 
             if (str_starts_with($match, '!')) {
-                return $query->whereHas($entity, function ($query) use ($parameter, $value) {
+                return $query->whereHas($entity, function ($query) use ($parameter, $value, $values) {
                     return $query->where($parameter, $values[3] ?? '!=', $value);
                 });
             } else {
-                return $query->whereHas($entity, function ($query) use ($parameter, $value) {
+                return $query->whereHas($entity, function ($query) use ($parameter, $value, $values) {
                     return $query->where($parameter, $values[2] ?? '=', $value);
                 });
             }
@@ -140,5 +136,31 @@ trait FiltersSearch
 
         // filter direct model attributes
         return str_starts_with($match, '!') ? $query->where($values[0], $values[3] ?? '!=', $values[1]) : $query->where($values[0], $values[2] ?? '=', $values[1]);
+    }
+
+    private function handleGeneralTerms($query, $terms) {
+        // append all general terms to the search query (logical and between terms, logical or within terms for all
+        // fields)
+        if (! empty($terms)) {
+            $query = $query->where(function ($query) use ($terms) {
+                foreach ($this->filterFields as $filterField) {
+                    $likeQuery = '%'.join('%', $terms).'%';
+
+                    if(str_contains($filterField, '.')) {
+                        $entity = substr($filterField, 0, strrpos($filterField, '.'));
+                        $parameter = substr($filterField, strrpos($filterField, '.') + 1);
+
+                        $query->orWhereHas($entity, function ($query) use ($parameter, $likeQuery) {
+                            return $query->where($parameter, 'LIKE', $likeQuery);
+                        });
+                    }
+                    else {
+                        $query->orWhere($filterField, 'LIKE', $likeQuery);
+                    }
+                }
+            });
+        }
+
+        return $query;
     }
 }

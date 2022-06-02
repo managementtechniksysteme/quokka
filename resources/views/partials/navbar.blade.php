@@ -1,8 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-    <div class="container-xl">
-        <a class="navbar-brand" href="{{ route('home') }}">
+    <div class="container-fluid">
+        <a class="navbar-brand mr-0 mr-lg-4" href="{{ route('home') }}">
             {{ config('app.name') }}
         </a>
+
+        <form class="form-inline w-50 d-inline d-lg-none" action="{{ route('search.index') }}" method="get">
+            <div class="input-group global-search border rounded-sm">
+                        <span class="input-group-prepend">
+                            <div class="input-group-text bg-transparent border-0">
+                                <svg class="icon icon-16 text-muted">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+                                </svg>
+                            </div>
+                        </span>
+                <input type="search" name="query" class="form-control outline-none border-0 pl-0" placeholder="Suche" autocomplete="off">
+                <span class="input-group-append">
+                            <div class="input-group-text bg-transparent border-0 text-gray-500">
+                                <svg class="icon mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
+                                </svg>
+                                <span class="lead">K</span>
+                            </div>
+                        </span>
+            </div>
+        </form>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -237,7 +259,36 @@
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <div class="ml-auto d-inline-flex">
+
+                <div class="form-inline d-none d-lg-inline mr-4">
+                    <div class="input-group global-search border rounded-sm">
+                        <span class="input-group-prepend">
+                            <div class="input-group-text bg-transparent border-0">
+                                <svg class="icon icon-16 text-muted">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+                                </svg>
+                            </div>
+                        </span>
+                        <form action="{{ route('search.index') }}" method="get">
+                            <input type="search" name="query" class="form-control outline-none border-0 pl-0 rounded-0" placeholder="Suche" autocomplete="off">
+                        </form>
+                        <span class="input-group-append">
+                            <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
+                                <span class="lead">
+                                    <svg class="icon icon-baseline">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
+                                    </svg>
+                                    <span>K</span>
+                                </span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+
+
+            <ul class="navbar-nav">
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
@@ -312,6 +363,9 @@
                     </li>
                 @endguest
             </ul>
+
+
+            </div>
         </div>
     </div>
 </nav>

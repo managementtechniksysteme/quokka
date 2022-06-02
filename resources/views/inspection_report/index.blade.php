@@ -4,6 +4,9 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
+                <svg class="icon-bs icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                </svg>
                 Prüfberichte
                 @if($inspectionReports)
                     <small class="text-muted">{{ $inspectionReports->total() }} Einträge</small>

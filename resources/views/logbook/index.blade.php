@@ -3,7 +3,12 @@
 @section('content')
     <div class="bg-gray-100 mt-0 d-xl-none">
         <div class="container py-4">
-            <h3>Fahrtenbuch</h3>
+            <h3>
+                <svg class="icon icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+                </svg>
+                Fahrtenbuch
+            </h3>
         </div>
     </div>
     <div class="my-4 my-xl-0 h-100">

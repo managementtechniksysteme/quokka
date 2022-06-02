@@ -4,6 +4,9 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
+                <svg class="icon-bs icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
+                </svg>
                 Bautagesberichte
                 @if($constructionReports)
                     <small class="text-muted">{{ $constructionReports->total() }} Einträge</small>

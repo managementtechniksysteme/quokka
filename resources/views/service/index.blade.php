@@ -4,6 +4,16 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
+                <svg class="icon icon-baseline mr-1">
+                    @switch($tab)
+                        @case('wage-services')
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                            @break
+                        @case('material-services')
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
+                            @break
+                    @endswitch
+                </svg>
                 Leistungen
             </h3>
         </div>

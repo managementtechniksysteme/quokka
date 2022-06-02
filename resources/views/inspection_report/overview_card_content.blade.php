@@ -4,7 +4,7 @@
         <div class="col flex-grow-1 h-100 py-3">
             <a class="stretched-link outline-none" href="{{ route('inspection-reports.show', $inspectionReport) }}"></a>
             <div>
-                {{ $inspectionReport->equipment_identifier }} vom {{ $inspectionReport->inspected_on }}
+                Anlage {{ $inspectionReport->equipment_identifier }} vom {{ $inspectionReport->inspected_on }}
             </div>
             <div class="text-muted">
                 <div class="d-inline-flex align-items-center">

@@ -29,7 +29,7 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
             </svg>
             Stammdaten
         </p>

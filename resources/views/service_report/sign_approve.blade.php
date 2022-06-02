@@ -4,6 +4,9 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
+                <svg class="icon icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
+                </svg>
                 Servicebericht unterschreiben und herunterladen
                 <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>
             </h3>

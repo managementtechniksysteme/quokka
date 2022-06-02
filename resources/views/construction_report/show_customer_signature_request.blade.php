@@ -5,6 +5,9 @@
         <div class="bg-gray-100 mt-0">
             <div class="container py-4">
                 <h3>
+                    <svg class="icon-bs icon-baseline mr-1">
+                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
+                    </svg>
                     Bautagesbericht unterschreiben und herunterladen
                     <small class="text-muted">{{ $constructionReport->project->name }} #{{ $constructionReport->number }}</small>
                 </h3>

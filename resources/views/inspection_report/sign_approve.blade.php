@@ -4,6 +4,9 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
+                <svg class="icon-bs icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                </svg>
                 Prüfbericht unterschreiben und herunterladen
                 <small class="text-muted">Anlage {{ $inspectionReport->equipment_identifier }} (Projekt {{ $inspectionReport->project->name }}) vom {{ $inspectionReport->inspected_on }}</small>
             </h3>

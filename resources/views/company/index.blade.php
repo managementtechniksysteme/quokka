@@ -4,6 +4,9 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
+                <svg class="icon icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
+                </svg>
                 Firmen
                 @if($companies)
                     <small class="text-muted">{{ $companies->total() }} Einträge</small>

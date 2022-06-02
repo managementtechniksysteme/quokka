@@ -3,7 +3,12 @@
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
-            <h3>Prüfbericht anlegen</h3>
+            <h3>
+                <svg class="icon-bs icon-baseline mr-1">
+                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                </svg>
+                Prüfbericht anlegen
+            </h3>
         </div>
     </div>
 

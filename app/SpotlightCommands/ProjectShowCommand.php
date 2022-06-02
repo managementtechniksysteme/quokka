@@ -22,7 +22,7 @@ class ProjectShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('project')
-                    ->setPlaceholder('Welches Projekt?')
+                    ->setPlaceholder('Welches Projekt möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

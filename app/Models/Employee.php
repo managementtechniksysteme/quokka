@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class Employee extends Model
 {
+    use FiltersSearch;
+    use HasFactory;
+
     const DASHBOARD_CACHE_TAG_PREFIX = 'dashboard';
     const DASHBOARD_CACHE_TTL = 60;
 
-    use FiltersSearch;
-    use HasFactory;
+    protected $primaryKey = 'person_id';
+    public $incrementing = false;
 
     protected $casts = [
         'person_id' => 'int',
@@ -27,7 +32,9 @@ class Employee extends Model
         'person_id', 'entered_on', 'left_on', 'holidays',
     ];
 
-    protected $filterFields = [];
+    protected $filterFields = [
+        'person.first_name', 'person.last_name', 'user.username'
+    ];
 
     protected $filterKeys = [
         'name:(.*)' => ['hasraw' => ['person', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
@@ -36,8 +43,21 @@ class Employee extends Model
         'b:(.*)' => ['user.username', '{value}'],
     ];
 
-    protected $primaryKey = 'person_id';
-    public $incrementing = false;
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Employee::filterSearch($query)
+            ->with('person')
+            ->get()
+            ->map(function(Employee $employee) {
+                return new GlobalSearchResult(
+                    Employee::class,
+                    'Mitarbeiter',
+                    $employee->id,
+                    $employee->name,
+                    route('employees.show', $employee)
+                );
+            });
+    }
 
     public function person()
     {

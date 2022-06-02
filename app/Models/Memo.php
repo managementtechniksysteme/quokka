@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 
-class Memo extends Model implements HasMedia
+class Memo extends Model implements FiltersGlobalSearch, HasMedia
 {
     use HasAttachments;
     use FiltersPermissions;
@@ -29,14 +32,27 @@ class Memo extends Model implements HasMedia
 
     protected $filterFields = [
         'title',
+        'project.name',
+        'project.company.name',
+        'employeeComposer.person.first_name',
+        'employeeComposer.person.last_name',
+        'employeeComposer.user.username',
+        'personRecipient.first_name',
+        'personRecipient.last_name',
+        'presentPeople.first_name',
+        'presentPeople.last_name',
+        'presentPeople.employee.user.username',
+        'notifiedPeople.first_name',
+        'notifiedPeople.last_name',
+        'notifiedPeople.employee.user.username',
     ];
 
     protected $filterKeys = [
         'hat:folgetermin' => ['raw' => ['next_meeting_on >= curdate()', 'next_meeting_on < curdate() or next_meeting_on is null']],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
-        'projekt:(.*)' => ['project.name', '{value}'],
-        'p:(.*)' => ['project.name', '{value}'],
+        'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'von:(.*)' => ['employeeComposer.user.username', '{value}'],
         'an:(.*)' => ['hasraw' => ['personRecipient', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'beteiligt:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
@@ -71,6 +87,23 @@ class Memo extends Model implements HasMedia
             ['!notifiedPeople.id', '{user}'],
         ],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Memo::filterPermissions()
+            ->filterSearch($query)
+            ->with('project')
+            ->get()
+            ->map(function(Memo $memo) {
+                return new GlobalSearchResult(
+                    Memo::class,
+                    'Aktenvermerk',
+                    $memo->id,
+                    "$memo->title (Projekt {$memo->project->name})",
+                    route('memos.show', $memo)
+                );
+            });
+    }
 
     public function project()
     {

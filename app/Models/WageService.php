@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use function PHPUnit\Framework\matches;
 
-class WageService extends Model
+class WageService extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use OrdersResults;
@@ -38,6 +41,21 @@ class WageService extends Model
         'name-asc' => ['name'],
         'name-desc' => [['name', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return WageService::filterSearch($query)
+            ->get()
+            ->map(function(WageService $wageService) {
+                return new GlobalSearchResult(
+                    WageService::class,
+                    'Lohndienstleistung',
+                    $wageService->id,
+                    $wageService->name_with_unit,
+                    route('wage-services.show', $wageService)
+                );
+            });
+    }
 
     public function accounting()
     {

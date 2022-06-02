@@ -366,3 +366,13 @@ a.outline-none {
 .collapse-enter, .collapse-leave-to {
     opacity: 0
 }
+
+// Global search
+.global-search:focus-within {
+    border: 1px solid $secondary !important;
+}
+
+.global-search-append-button:hover {
+    color: $white !important;
+    background-color: $secondary !important;
+}

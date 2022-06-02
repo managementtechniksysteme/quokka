@@ -22,7 +22,7 @@ class EmployeeShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('employee')
-                    ->setPlaceholder('Welchen Mitarbeiter?')
+                    ->setPlaceholder('Welchen Mitarbeiter möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

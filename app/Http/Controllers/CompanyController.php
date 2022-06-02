@@ -36,8 +36,8 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = Company::filterSearch($request->input())
-            ->order($request->input())
+        $companies = Company::filterSearch($request->search)
+            ->order($request->sort)
             ->with('address')
             ->with('operatorAddress')
             ->withCount('people')
@@ -139,7 +139,6 @@ class CompanyController extends Controller
      */
     public function show(Company $company, Request $request)
     {
-        $input = $request->input();
         $company->loadCount('people')->loadCount('projects');
 
         switch ($request->tab) {
@@ -154,8 +153,8 @@ class CompanyController extends Controller
                 }
 
                 $projects = Project::where('company_id', $company->id)
-                    ->filterSearch($input)
-                    ->order($input)
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->withCount('tasks')
                     ->withCount('memos')
                     ->withCount('serviceReports')
@@ -179,8 +178,8 @@ class CompanyController extends Controller
                 }
 
                 $people = Person::where('company_id', $company->id)
-                    ->filterSearch($input)
-                    ->order($input)
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 

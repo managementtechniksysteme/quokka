@@ -26,7 +26,7 @@ class VehicleShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('vehicle')
-                    ->setPlaceholder('Welches Fahrzeug?')
+                    ->setPlaceholder('Welches Fahrzeug möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

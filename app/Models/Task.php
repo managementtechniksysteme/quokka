@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
-class Task extends Model implements HasMedia
+class Task extends Model implements FiltersGlobalSearch, HasMedia
 {
     use FiltersSearch;
     use FiltersPermissions;
@@ -32,6 +35,14 @@ class Task extends Model implements HasMedia
 
     protected $filterFields = [
         'name',
+        'project.name',
+        'project.company.name',
+        'responsibleEmployee.person.first_name',
+        'responsibleEmployee.person.last_name',
+        'responsibleEmployee.user.username',
+        'involvedEmployees.person.first_name',
+        'involvedEmployees.person.last_name',
+        'involvedEmployees.user.username',
     ];
 
     protected $filterKeys = [
@@ -48,8 +59,8 @@ class Task extends Model implements HasMedia
         'ist:nv' => ['billed', 'no'],
         'ist:garantie' => ['billed', 'warranty'],
         'ist:überfällig' => ['raw' => ['due_on < curdate() and status != "finished"', 'due_on <= curdate() or (due_on > curdate() and status = "finished")']],
-        'projekt:(.*)' => ['project.name', '{value}'],
-        'p:(.*)' => ['project.name', '{value}'],
+        'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'verantwortlich:(.*)' => ['responsibleEmployee.user.username', '{value}'],
         'v:(.*)' => ['responsibleEmployee.user.username', '{value}'],
         'beteiligt:(.*)' => ['involvedEmployees.user.username', '{value}'],
@@ -102,6 +113,23 @@ class Task extends Model implements HasMedia
     public static function defaultFilter() : ?string
     {
         return Auth::user()->settings->show_finished_items ? null : '!ist:erledigt';
+    }
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Task::filterPermissions()
+            ->filterSearch($query)
+            ->with('project')
+            ->get()
+            ->map(function(Task $task) {
+                return new GlobalSearchResult(
+                    Task::class,
+                    'Aufgabe',
+                    $task->id,
+                    "$task->name (Projekt {$task->project->name})",
+                    route('tasks.show', $task)
+                );
+            });
     }
 
     public function project()

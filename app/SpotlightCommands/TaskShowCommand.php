@@ -22,7 +22,7 @@ class TaskShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('task')
-                    ->setPlaceholder('Welche Aufgabe?')
+                    ->setPlaceholder('Welche Aufgabe möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

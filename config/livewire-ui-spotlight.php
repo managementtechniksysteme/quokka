@@ -20,6 +20,7 @@ use App\SpotlightCommands\EmployeeIndexCommand;
 use App\SpotlightCommands\EmployeeShowCommand;
 use App\SpotlightCommands\EmployeeStartImpersonationCommand;
 use App\SpotlightCommands\EmployeeStopImpersonationCommand;
+use App\SpotlightCommands\GlobalSearchCommand;
 use App\SpotlightCommands\HelpIndexCommand;
 use App\SpotlightCommands\HelpShowCommand;
 use App\SpotlightCommands\HomeShowCommand;
@@ -109,6 +110,7 @@ return [
         EmployeeShowCommand::class,
         EmployeeStartImpersonationCommand::class,
         EmployeeStopImpersonationCommand::class,
+        GlobalSearchCommand::class,
         HelpIndexCommand::class,
         HelpShowCommand::class,
         HomeShowCommand::class,

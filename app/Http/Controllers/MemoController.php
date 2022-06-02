@@ -42,8 +42,8 @@ class MemoController extends Controller
     public function index(Request $request)
     {
         $memos = Memo::filterPermissions()
-            ->filterSearch($request->input())
-            ->order($request->input())
+            ->filterSearch($request->search)
+            ->order($request->sort)
             ->with('employeeComposer.person')
             ->with('personRecipient')
             ->paginate(Auth::user()->settings->list_pagination_size)

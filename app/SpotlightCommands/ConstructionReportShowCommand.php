@@ -22,7 +22,7 @@ class ConstructionReportShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('constructionReport')
-                    ->setPlaceholder('Welchen Bautagesbericht?')
+                    ->setPlaceholder('Welchen Bautagesbericht möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

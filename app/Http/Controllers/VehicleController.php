@@ -26,9 +26,9 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
-        $vehicles = Vehicle::filterSearch($request->input())
+        $vehicles = Vehicle::filterSearch($request->search)
             ->with('logbook')
-            ->order($request->input())
+            ->order($request->sort)
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 

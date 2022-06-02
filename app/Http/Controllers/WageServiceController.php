@@ -28,8 +28,8 @@ class WageServiceController extends Controller
 
     public function index(Request $request)
     {
-        $wageServices = WageService::filterSearch($request->input())
-            ->order($request->input())
+        $wageServices = WageService::filterSearch($request->search)
+            ->order($request->sort)
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
@@ -39,7 +39,8 @@ class WageServiceController extends Controller
         return view('service.index_tab_wage_services')
             ->with(compact('wageServices'))
             ->with(compact('materialServicesCount'))
-            ->with(compact('wageServicesCount'));
+            ->with(compact('wageServicesCount'))
+            ->with('tab', 'wage-services');
     }
 
     public function create()

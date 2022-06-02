@@ -39,8 +39,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::filterSearch($request->input())
-            ->order($request->input())
+        $projects = Project::filterSearch($request->search)
+            ->order($request->sort)
             ->with('company')
             ->withCount('tasks')
             ->withCount('memos')
@@ -128,8 +128,8 @@ class ProjectController extends Controller
 
                 $tasks = $project->tasks()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('responsibleEmployee.person')
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
@@ -143,8 +143,8 @@ class ProjectController extends Controller
 
                 $memos = $project->memos()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('employeeComposer.person')
                     ->with('personRecipient')
                     ->paginate(Auth::user()->settings->list_pagination_size)
@@ -161,8 +161,8 @@ class ProjectController extends Controller
 
                 $serviceReports = $project->serviceReports()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('employee.person')
                     ->withMin('services', 'provided_on')
                     ->withMax('services', 'provided_on')
@@ -182,8 +182,8 @@ class ProjectController extends Controller
 
                 $additionsReports = $project->additionsReports()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('employee.person')
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
@@ -199,8 +199,8 @@ class ProjectController extends Controller
 
                 $inspectionReports = $project->inspectionReports()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('employee.person')
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
@@ -216,8 +216,8 @@ class ProjectController extends Controller
 
                 $constructionReports = $project->constructionReports()
                     ->filterPermissions()
-                    ->filterSearch($request->input())
-                    ->order($request->input())
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
                     ->with('employee.person')
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));

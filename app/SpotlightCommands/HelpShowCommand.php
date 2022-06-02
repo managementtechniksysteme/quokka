@@ -23,7 +23,7 @@ class HelpShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('topic')
-                    ->setPlaceholder('Welches Thema?')
+                    ->setPlaceholder('Welches Thema möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

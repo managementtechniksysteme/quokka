@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -9,10 +11,11 @@ use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
-class ConstructionReport extends Model implements HasMedia
+class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
     use FiltersSearch;
     use FiltersPermissions;
@@ -55,6 +58,8 @@ class ConstructionReport extends Model implements HasMedia
         'imminent_danger',
         'concerns',
         'comment',
+        'project.name',
+        'project.company.name',
     ];
 
     protected $filterKeys = [
@@ -64,8 +69,8 @@ class ConstructionReport extends Model implements HasMedia
         'ist:erledigt' => ['status', 'finished'],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
-        'projekt:(.*)' => ['project.name', '{value}'],
-        'p:(.*)' => ['project.name', '{value}'],
+        'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
         'beteiligt:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
@@ -107,6 +112,23 @@ class ConstructionReport extends Model implements HasMedia
         $filter = trim($filter);
 
         return $filter === '' ? null : $filter;
+    }
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return ConstructionReport::filterPermissions()
+            ->filterSearch($query)
+            ->with('project')
+            ->get()
+            ->map(function(ConstructionReport $constructionReport) {
+                return new GlobalSearchResult(
+                    ConstructionReport::class,
+                    'Bautagesbericht',
+                    $constructionReport->id,
+                    "{$constructionReport->project->name} #$constructionReport->number",
+                    route('construction-reports.show', $constructionReport)
+                );
+            });
     }
 
     public function registerMediaCollections(): void

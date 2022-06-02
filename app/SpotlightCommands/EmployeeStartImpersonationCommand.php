@@ -29,7 +29,7 @@ class EmployeeStartImpersonationCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('employee')
-                    ->setPlaceholder('Welcher Mitarbeiter?')
+                    ->setPlaceholder('Als welcher Mitarbeiter möchtest du dich anmelden?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

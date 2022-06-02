@@ -22,7 +22,7 @@ class AdditionsReportShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('additionsReport')
-                    ->setPlaceholder('Welchen Regiebericht?')
+                    ->setPlaceholder('Welchen Regiebericht möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

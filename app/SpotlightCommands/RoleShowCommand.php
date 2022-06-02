@@ -22,7 +22,7 @@ class RoleShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('role')
-                    ->setPlaceholder('Welche Rolle?')
+                    ->setPlaceholder('Welche Rolle möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

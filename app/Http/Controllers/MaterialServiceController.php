@@ -27,8 +27,8 @@ class MaterialServiceController extends Controller
 
     public function index(Request $request)
     {
-        $materialServices = MaterialService::filterSearch($request->input())
-            ->order($request->input())
+        $materialServices = MaterialService::filterSearch($request->search)
+            ->order($request->sort)
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
@@ -38,7 +38,8 @@ class MaterialServiceController extends Controller
         return view('service.index_tab_material_services')
             ->with(compact('materialServices'))
             ->with(compact('materialServicesCount'))
-            ->with(compact('wageServicesCount'));
+            ->with(compact('wageServicesCount'))
+            ->with('tab', 'material-services');
     }
 
     public function create()

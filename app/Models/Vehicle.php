@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class Vehicle extends Model
+class Vehicle extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use OrdersResults;
@@ -32,6 +35,21 @@ class Vehicle extends Model
         'type-asc' => ['make', 'model'],
         'type-desc' => [['make', 'desc'], ['model', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Vehicle::filterSearch($query)
+            ->get()
+            ->map(function(Vehicle $vehicle) {
+                return new GlobalSearchResult(
+                    Vehicle::class,
+                    'Fahrzeug',
+                    $vehicle->id,
+                    "$vehicle->registration_identifier ($vehicle->make_model)",
+                    route('vehicles.show', $vehicle)
+                );
+            });
+    }
 
     public function logbook()
     {

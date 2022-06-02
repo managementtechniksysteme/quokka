@@ -22,7 +22,7 @@ class PersonShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('person')
-                    ->setPlaceholder('Welche Person?')
+                    ->setPlaceholder('Welche Person möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

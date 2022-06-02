@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
-class Address extends Model
+class Address extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use HasFactory;
@@ -22,7 +26,7 @@ class Address extends Model
     ];
 
     protected $filterFields = [
-        'name', 'street_number', 'postcode', 'city',
+        'name', 'street_number', 'postcode', 'city', 'companies.name',
     ];
 
     protected $filterKeys = [];
@@ -34,6 +38,21 @@ class Address extends Model
         'postcode-asc' => ['postcode', 'city', 'street_number'],
         'postcode-desc' => [['postcode', 'desc'], ['city', 'desc'], ['street_number', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Address::filterSearch($query)
+            ->get()
+            ->map(function(Address $address) {
+                return new GlobalSearchResult(
+                    Address::class,
+                    'Adresse',
+                    $address->id,
+                    "$address->name ($address->address_line)",
+                    route('addresses.show', $address)
+                );
+            });
+    }
 
     public function companies()
     {

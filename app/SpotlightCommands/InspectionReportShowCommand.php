@@ -22,7 +22,7 @@ class InspectionReportShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('inspectionReport')
-                    ->setPlaceholder('Welchen Prüfbericht?')
+                    ->setPlaceholder('Welchen Prüfbericht möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

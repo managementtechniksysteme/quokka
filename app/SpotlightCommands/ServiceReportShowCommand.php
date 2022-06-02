@@ -23,7 +23,7 @@ class ServiceReportShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('serviceReport')
-                    ->setPlaceholder('Welchen Servicebericht?')
+                    ->setPlaceholder('Welchen Servicebericht möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

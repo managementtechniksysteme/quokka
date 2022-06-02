@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -9,10 +11,11 @@ use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
-class InspectionReport extends Model implements HasMedia
+class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
     use FiltersSearch;
     use FiltersPermissions;
@@ -71,7 +74,7 @@ class InspectionReport extends Model implements HasMedia
     ];
 
     protected $filterFields = [
-        'equipment_identifier', 'comment',
+        'equipment_identifier', 'comment', 'project.name', 'project.company.name',
     ];
 
     protected $filterKeys = [
@@ -79,8 +82,8 @@ class InspectionReport extends Model implements HasMedia
         'ist:unterschrieben' => ['status', 'signed'],
         'ist:u' => ['status', 'signed'],
         'ist:erledigt' => ['status', 'finished'],
-        'projekt:(.*)' => ['project.name', '{value}'],
-        'p:(.*)' => ['project.name', '{value}'],
+        'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
     ];
@@ -112,6 +115,23 @@ class InspectionReport extends Model implements HasMedia
         $filter = trim($filter);
 
         return $filter === '' ? null : $filter;
+    }
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return InspectionReport::filterPermissions()
+            ->filterSearch($query)
+            ->with('project')
+            ->get()
+            ->map(function(InspectionReport $inspectionReport) {
+                return new GlobalSearchResult(
+                    InspectionReport::class,
+                    'Prüfbericht',
+                    $inspectionReport->id,
+                    "Anlage $inspectionReport->equipment_identifier (Projekt {$inspectionReport->project->name}) vom $inspectionReport->inspected_on",
+                    route('inspection-reports.show', $inspectionReport)
+                );
+            });
     }
 
     public function registerMediaCollections(): void

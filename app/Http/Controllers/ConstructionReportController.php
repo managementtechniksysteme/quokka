@@ -54,8 +54,8 @@ class ConstructionReportController extends Controller
         ConstructionReport::handleDefaultFilter($request);
 
         $constructionReports = ConstructionReport::filterPermissions()
-            ->filterSearch($request->input())
-            ->order($request->input())
+            ->filterSearch($request->search)
+            ->order($request->sort)
             ->with('project')
             ->with('employee.person')
             ->paginate(Auth::user()->settings->list_pagination_size)

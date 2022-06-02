@@ -22,7 +22,7 @@ class CompanyShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('company')
-                    ->setPlaceholder('Welche Firma?')
+                    ->setPlaceholder('Welche Firma möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

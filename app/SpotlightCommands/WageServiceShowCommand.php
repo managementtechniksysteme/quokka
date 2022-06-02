@@ -22,7 +22,7 @@ class WageServiceShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('wageService')
-                    ->setPlaceholder('Welche Lohndienstleistung?')
+                    ->setPlaceholder('Welche Lohndienstleistung möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

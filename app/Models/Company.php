@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class Company extends Model
+class Company extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use HasFactory;
@@ -39,6 +42,21 @@ class Company extends Model
         'name-asc' => ['name'],
         'name-desc' => [['name', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Company::filterSearch($query)
+            ->get()
+            ->map(function(Company $company) {
+                return new GlobalSearchResult(
+                    Company::class,
+                    'Firma',
+                    $company->id,
+                    $company->name,
+                    route('companies.show', $company)
+                );
+            });
+    }
 
     public function address()
     {

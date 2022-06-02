@@ -22,7 +22,7 @@ class MaterialServiceShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('materialService')
-                    ->setPlaceholder('Welche Materialleistung?')
+                    ->setPlaceholder('Welche Materialleistung möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

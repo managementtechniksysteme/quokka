@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class Project extends Model
+class Project extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use OrdersResults;
@@ -23,13 +26,13 @@ class Project extends Model
     ];
 
     protected $filterFields = [
-        'name',
+        'name', 'company.name'
     ];
 
     protected $filterKeys = [
         'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
-        'firma:(.*)' => ['company.name', '{value}'],
-        'f:(.*)' => ['company.name', '{value}'],
+        'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
     ];
 
     protected $orderKeys = [
@@ -41,6 +44,21 @@ class Project extends Model
         'wage-costs-asc' => ['wage_costs'],
         'wage-costs-desc' => [['wage_costs', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Project::filterSearch($query)
+            ->get()
+            ->map(function(Project $project) {
+                return new GlobalSearchResult(
+                    Project::class,
+                    'Projekt',
+                    $project->id,
+                    $project->name,
+                    route('projects.show', $project)
+                );
+            });
+    }
 
     public function company()
     {

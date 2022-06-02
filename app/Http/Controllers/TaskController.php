@@ -43,8 +43,8 @@ class TaskController extends Controller
         Task::handleDefaultFilter($request);
 
         $tasks = Task::filterPermissions()
-            ->filterSearch($request->input())
-            ->order($request->input())
+            ->filterSearch($request->search)
+            ->order($request->sort)
             ->with('project')
             ->with('responsibleEmployee.person')
             ->paginate(Auth::user()->settings->list_pagination_size)
@@ -149,8 +149,7 @@ class TaskController extends Controller
             }]);
 
         $commentSortKey =
-            Auth::user()->settings->task_comments_sort_newest_first ?
-                ['sort' => 'created_at-desc'] : ['sort' => 'created_at-asc'];
+            Auth::user()->settings->task_comments_sort_newest_first ? 'created_at-desc' : 'created_at-asc';
 
         $comments = TaskComment::where('task_id', $task->id)
             ->order($commentSortKey)

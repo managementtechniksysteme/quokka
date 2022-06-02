@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
+use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 
-class Person extends Model
+class Person extends Model implements FiltersGlobalSearch
 {
     use FiltersSearch;
     use HasFactory;
@@ -25,12 +28,12 @@ class Person extends Model
     ];
 
     protected $filterFields = [
-        'first_name', 'last_name', 'department', 'role',
+        'first_name', 'last_name', 'department', 'role', 'company.name',
     ];
 
     protected $filterKeys = [
-        'firma:(.*)' => ['company.name', '{value}'],
-        'f:(.*)' => ['company.name', '{value}'],
+        'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
     ];
 
     protected $orderKeys = [
@@ -40,6 +43,21 @@ class Person extends Model
         'last-name-asc' => ['last_name', 'first_name'],
         'last-name-desc' => [['last_name', 'desc'], ['first_name', 'desc']],
     ];
+
+    public static function filterGlobalSearch(string $query) : Collection
+    {
+        return Person::filterSearch($query)
+            ->get()
+            ->map(function(Person $person) {
+                return new GlobalSearchResult(
+                    Person::class,
+                    'Person',
+                    $person->id,
+                    $person->name,
+                    route('people.show', $person)
+                );
+            });
+    }
 
     public function address()
     {

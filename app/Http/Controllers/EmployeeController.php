@@ -41,7 +41,7 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees = Employee::filterSearch($request->input())
+        $employees = Employee::filterSearch($request->search)
             ->with('person')
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));

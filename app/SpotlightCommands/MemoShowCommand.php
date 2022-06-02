@@ -22,7 +22,7 @@ class MemoShowCommand extends SpotlightCommand
         return SpotlightCommandDependencies::collection()
             ->add(
                 SpotlightCommandDependency::make('memo')
-                    ->setPlaceholder('Welchen Aktenvermerk?')
+                    ->setPlaceholder('Welchen Aktenvermerk möchtest du anzeigen?')
                     ->setType(SpotlightCommandDependency::SEARCH)
             );
     }

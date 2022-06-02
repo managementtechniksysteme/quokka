@@ -4,10 +4,10 @@ namespace App\Traits;
 
 trait OrdersResults
 {
-    public function scopeOrder($query, $params = null)
+    public function scopeOrder($query, $sort = null)
     {
-        if (isset($params['sort']) && isset($this->orderKeys[$params['sort']])) {
-            $orderArray = $this->orderKeys[$params['sort']];
+        if (isset($sort) && isset($this->orderKeys[$sort])) {
+            $orderArray = $this->orderKeys[$sort];
         } elseif (isset($this->orderKeys['default'])) {
             $orderArray = $this->orderKeys['default'];
         } else {

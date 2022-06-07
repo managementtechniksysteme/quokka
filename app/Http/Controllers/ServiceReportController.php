@@ -207,7 +207,7 @@ class ServiceReportController extends Controller
                 ->first();
 
             if($savedService && ($savedService->hours !== $service['hours'] || $savedService->kilometres !== $service['kilometres'])) {
-                DB::table('service_report_services')
+                DB::table((new ServiceReportService())->getTable())
                     ->where('service_report_id', $serviceReport->id)
                     ->where('provided_on', $service['provided_on'])
                     ->update([

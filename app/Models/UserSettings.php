@@ -15,6 +15,7 @@ class UserSettings extends Model
         'task_comments_sort_newest_first' => 'bool',
         'accounting_expand_errors' => 'bool',
         'accounting_filter_default_days' => 'int',
+        'latest_changes_quantity' => 'int',
     ];
 
     protected $fillable = [
@@ -27,6 +28,7 @@ class UserSettings extends Model
         'task_comments_sort_newest_first',
         'accounting_expand_errors',
         'accounting_filter_default_days',
+        'latest_changes_quantity',
     ];
 
     protected $primaryKey = 'user_id';

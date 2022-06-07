@@ -54,6 +54,45 @@
                     </div>
                 </div>
 
+                @can('tools-viewlatestchanges')
+                    <div class="form-group">
+                        <div>
+                            <label for="latest_changes_quantity">Anzahl der Elemente auf der Übersichtsseite für letzte Änderungen</label>
+                        </div>
+                        <div class="btn-group btn-group-toggle @error('latest_changes_quantity') is-invalid @enderror" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '5') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="5" value="5" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '5') checked @endif> 5
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '10') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="10" value="10" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '10') checked @endif> 10
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '15') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="15" value="15" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '15') checked @endif> 15
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '20') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="20" value="20" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '20') checked @endif> 20
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '25') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="25" value="25" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '25') checked @endif> 25
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '30') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="30" value="30" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '30') checked @endif> 30
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '40') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="40" value="40" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '40') checked @endif> 40
+                            </label>
+                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '50') active @endif">
+                                <input type="radio" name="latest_changes_quantity" id="50" value="50" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '50') checked @endif> 50
+                            </label>
+                        </div>
+                        <div class="invalid-feedback @error('latest_changes_quantity') d-block @enderror">
+                            @error('latest_changes_quantity')
+                            {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                @endcan
+
                 <div class="form-group">
                     <div>
                         <label for="show_finished_items">Erledigte Elemente (z.B. Aufgaben) in Listen anzeigen?</label>

@@ -14,7 +14,7 @@ class LatestChangesController extends Controller
 
     public function index()
     {
-        $results = GlobalSearch::getLatestChanges(50)
+        $results = GlobalSearch::getLatestChanges(Auth::user()->settings->latest_changes_quantity)
             ->paginate(Auth::user()->settings->list_pagination_size);
 
         return view('latest_changes.index')

@@ -23,6 +23,10 @@ class ServiceReportService extends Model
         'default' => ['provided_on'],
     ];
 
+    protected $touches = [
+        'serviceReport'
+    ];
+
     public function serviceReport()
     {
         return $this->belongsTo(ServiceReport::class);

@@ -21,7 +21,9 @@ use App\Models\ServiceReportService;
 use App\Models\SignatureRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use mysql_xdevapi\Table;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -194,12 +196,35 @@ class ServiceReportController extends Controller
 
         $serviceReport->update($validatedData);
 
-        $serviceReport->services()->delete();
+        $datesToKeep = $request->services ? array_column($request->services, 'provided_on') : [];
+
+        $serviceReport->services()->whereNotIn('provided_on', $datesToKeep)->delete();
 
         foreach ($request->services as $service) {
-            $serviceReportService = ServiceReportService::make($service);
-            $serviceReportService->service_report_id = $serviceReport->id;
-            $serviceReportService->save();
+            $savedService = $serviceReport->services()
+                ->where('service_report_id', $serviceReport->id)
+                ->where('provided_on', $service['provided_on'])
+                ->first();
+
+            if($savedService && ($savedService->hours !== $service['hours'] || $savedService->kilometres !== $service['kilometres'])) {
+                DB::table('service_report_services')
+                    ->where('service_report_id', $serviceReport->id)
+                    ->where('provided_on', $service['provided_on'])
+                    ->update([
+                        'hours' => $service['hours'],
+                        'kilometres' => $service['kilometres'],
+                    ]);
+
+                $serviceReport->touch();
+            }
+            else if(!$savedService) {
+                ServiceReportService::create([
+                    'service_report_id' => $serviceReport->id,
+                    'provided_on' => $service['provided_on'],
+                    'hours' => $service['hours'],
+                    'kilometres' => $service['kilometres'],
+                ]);
+            }
         }
 
         if ($serviceReport->status === 'signed') {

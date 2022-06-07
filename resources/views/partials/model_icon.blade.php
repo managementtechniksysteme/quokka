@@ -1,4 +1,4 @@
-@switch($result->model)
+@switch($model)
     @case(\App\Models\AdditionsReport::class)
         <svg class="icon-bs icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>

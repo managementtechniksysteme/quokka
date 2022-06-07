@@ -212,15 +212,21 @@ class ServiceReportController extends Controller
 
         if ($request->remove_attachments) {
             $serviceReport->deleteAttachments($request->remove_attachments);
+
+            $serviceReport->touch();
         }
 
         if ($request->new_attachments) {
             $serviceReport->addAttachments($request->new_attachments);
+
+            $serviceReport->touch();
         }
 
         $serviceReport->deleteSignatureRequest();
 
-        event(new ServiceReportUpdatedEvent($serviceReport));
+        if($serviceReport->wasChanged()) {
+            event(new ServiceReportUpdatedEvent($serviceReport));
+        }
 
         if ($request->send_signature_request) {
             return redirect()
@@ -247,6 +253,7 @@ class ServiceReportController extends Controller
         $serviceReport->deleteSignature();
 
         $serviceReport->services()->delete();
+        $serviceReport->deleteAttachments();
         $serviceReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $serviceReport)

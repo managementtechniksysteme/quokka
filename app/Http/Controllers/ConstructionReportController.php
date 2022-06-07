@@ -190,25 +190,43 @@ class ConstructionReportController extends Controller
             $constructionReport->deleteSignature();
         }
 
-        $constructionReport->involvedEmployees()->syncWithPivotValues($request->involved_ids, ['employee_type' => 'involved']);
+        $touched = $constructionReport->involvedEmployees()->syncWithPivotValues($request->involved_ids, ['employee_type' => 'involved']);
+
+        if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+            $constructionReport->touch();
+        }
 
         if ($request->filled('present_ids')) {
-            $constructionReport->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+            $touched = $constructionReport->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+
+            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $constructionReport->touch();
+            }
         } else {
-            $constructionReport->presentPeople()->detach();
+            $touched = $constructionReport->presentPeople()->detach();
+
+            if($touched > 0) {
+                $constructionReport->touch();
+            }
         }
 
         if ($request->remove_attachments) {
             $constructionReport->deleteAttachments($request->remove_attachments);
+
+            $constructionReport->touch();
         }
 
         if ($request->new_attachments) {
             $constructionReport->addAttachments($request->new_attachments);
+
+            $constructionReport->touch();
         }
 
         $constructionReport->deleteSignatureRequest();
 
-        event(new ConstructionReportUpdatedEvent($constructionReport));
+        if($constructionReport->wasChanged()) {
+            event(new ConstructionReportUpdatedEvent($constructionReport));
+        }
 
         if ($request->send_signature_request) {
             return redirect()
@@ -228,6 +246,7 @@ class ConstructionReportController extends Controller
         $constructionReport->deleteSignatureRequest();
         $constructionReport->deleteSignature();
 
+        $constructionReport->deleteAttachments();
         $constructionReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $constructionReport)

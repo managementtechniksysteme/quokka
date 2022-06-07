@@ -4,6 +4,7 @@ namespace App\SpotlightCommands;
 
 use App\Support\GlobalSearch\GlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use LivewireUI\Spotlight\Spotlight;
 use LivewireUI\Spotlight\SpotlightCommand;
@@ -52,5 +53,10 @@ class GlobalSearchCommand extends SpotlightCommand
     public function execute(Spotlight $spotlight, string $globalSearchResult): void
     {
         $spotlight->redirect($globalSearchResult);
+    }
+
+    public function shouldBeShown(Request $request): bool
+    {
+        return $request->user()->can('search');
     }
 }

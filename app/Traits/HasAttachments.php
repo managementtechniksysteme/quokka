@@ -52,16 +52,16 @@ trait HasAttachments
         }
     }
 
-    public function deleteAttachments($attachments)
+    public function deleteAttachments($attachments = null)
     {
-        if (! $attachments) {
-            return;
-        }
-
-        $attachmentsToDelete = $this->attachments()->find($attachments);
+        $attachmentsToDelete = $attachments ? $this->attachments()->find($attachments) : $this->attachments();
 
         if ($attachmentsToDelete) {
             $attachmentsToDelete->each->forceDelete();
         }
+    }
+
+    public function deleteAllAttachments() {
+        $this->deleteAttachments($this->attachments());
     }
 }

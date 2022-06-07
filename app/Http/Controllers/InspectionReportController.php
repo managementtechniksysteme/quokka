@@ -167,15 +167,21 @@ class InspectionReportController extends Controller
 
         if ($request->remove_attachments) {
             $inspectionReport->deleteAttachments($request->remove_attachments);
+
+            $inspectionReport->touch();
         }
 
         if ($request->new_attachments) {
             $inspectionReport->addAttachments($request->new_attachments);
+
+            $inspectionReport->touch();
         }
 
         $inspectionReport->deleteSignatureRequest();
 
-        event(new InspectionReportUpdatedEvent($inspectionReport));
+        if($inspectionReport->wasChanged()) {
+            event(new InspectionReportUpdatedEvent($inspectionReport));
+        }
 
         if ($request->send_signature_request) {
             return redirect()
@@ -195,6 +201,7 @@ class InspectionReportController extends Controller
         $inspectionReport->deleteSignatureRequest();
         $inspectionReport->deleteSignature();
 
+        $inspectionReport->deleteAttachments();
         $inspectionReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $inspectionReport)

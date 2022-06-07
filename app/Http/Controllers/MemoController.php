@@ -236,9 +236,17 @@ class MemoController extends Controller
         }
 
         if ($request->filled('present_ids')) {
-            $memo->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+            $touched = $memo->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+
+            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $memo->touch();
+            }
         } else {
-            $memo->presentPeople()->detach();
+            $touched = $memo->presentPeople()->detach();
+
+            if($touched > 0) {
+                $memo->touch();
+            }
         }
 
         if ($request->filled('notified_ids')) {
@@ -248,20 +256,34 @@ class MemoController extends Controller
                 $notifiedPeople = Person::find($request->notified_ids);
             }
 
-            $memo->notifiedPeople()->syncWithPivotValues($notifiedPeople, ['person_type' => 'notified']);
+            $touched = $memo->notifiedPeople()->syncWithPivotValues($notifiedPeople, ['person_type' => 'notified']);
+
+            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $memo->touch();
+            }
         } else {
-            $memo->notifiedPeople()->detach();
+            $touched = $memo->notifiedPeople()->detach();
+
+            if($touched > 0) {
+                $memo->touch();
+            }
         }
 
         if ($request->remove_attachments) {
             $memo->deleteAttachments($request->remove_attachments);
+
+            $memo->touch();
         }
 
         if ($request->new_attachments) {
             $memo->addAttachments($request->new_attachments);
+
+            $memo->touch();
         }
 
-        event(new MemoUpdatedEvent($memo));
+        if($memo->wasChanged()) {
+            event(new MemoUpdatedEvent($memo));
+        }
 
         return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');
     }
@@ -276,6 +298,7 @@ class MemoController extends Controller
     {
         $memo->presentPeople()->detach();
         $memo->notifiedPeople()->detach();
+        $memo->deleteAttachments();
         $memo->delete();
 
         return $this->getConditionalRedirect($request->redirect, $memo)

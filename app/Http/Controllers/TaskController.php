@@ -206,20 +206,34 @@ class TaskController extends Controller
                 $employees = Employee::find($request->involved_ids);
             }
 
-            $task->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
+            $touched = $task->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
+
+            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $task->touch();
+            }
         } else {
-            $task->involvedEmployees()->detach();
+            $touched = $task->involvedEmployees()->detach();
+
+            if($touched > 0) {
+                $task->touch();
+            }
         }
 
         if ($request->remove_attachments) {
             $task->deleteAttachments($request->remove_attachments);
+
+            $task->touch();
         }
 
         if ($request->new_attachments) {
             $task->addAttachments($request->new_attachments);
+
+            $task->touch();
         }
 
-        event(new TaskUpdatedEvent($task));
+        if($task->wasChanged()) {
+            event(new TaskUpdatedEvent($task));
+        }
 
         return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
     }
@@ -227,6 +241,7 @@ class TaskController extends Controller
     public function destroy(Request $request, Task $task): RedirectResponse
     {
         $task->involvedEmployees()->detach();
+        $task->deleteAttachments();
         $task->delete();
 
         return $this->getConditionalRedirect($request->redirect, $task)

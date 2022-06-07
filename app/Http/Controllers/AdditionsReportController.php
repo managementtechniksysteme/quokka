@@ -190,25 +190,43 @@ class AdditionsReportController extends Controller
             $additionsReport->deleteSignature();
         }
 
-        $additionsReport->involvedEmployees()->syncWithPivotValues($request->involved_ids, ['employee_type' => 'involved']);
+        $touched = $additionsReport->involvedEmployees()->syncWithPivotValues($request->involved_ids, ['employee_type' => 'involved']);
+
+        if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+            $additionsReport->touch();
+        }
 
         if ($request->filled('present_ids')) {
-            $additionsReport->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+            $touched = $additionsReport->presentPeople()->syncWithPivotValues($request->present_ids, ['person_type' => 'present']);
+
+            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $additionsReport->touch();
+            }
         } else {
-            $additionsReport->presentPeople()->detach();
+            $touched = $additionsReport->presentPeople()->detach();
+
+            if($touched > 0) {
+                $additionsReport->touch();
+            }
         }
 
         if ($request->remove_attachments) {
             $additionsReport->deleteAttachments($request->remove_attachments);
+
+            $additionsReport->touch();
         }
 
         if ($request->new_attachments) {
             $additionsReport->addAttachments($request->new_attachments);
+
+            $additionsReport->touch();
         }
 
         $additionsReport->deleteSignatureRequest();
 
-        event(new AdditionsReportUpdatedEvent($additionsReport));
+        if($additionsReport->wasChanged()) {
+            event(new AdditionsReportUpdatedEvent($additionsReport));
+        }
 
         if ($request->send_signature_request) {
             return redirect()
@@ -228,6 +246,7 @@ class AdditionsReportController extends Controller
         $additionsReport->deleteSignatureRequest();
         $additionsReport->deleteSignature();
 
+        $additionsReport->deleteAttachments();
         $additionsReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $additionsReport)

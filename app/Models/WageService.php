@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use function PHPUnit\Framework\matches;
 
 class WageService extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
@@ -42,9 +44,12 @@ class WageService extends Model implements FiltersGlobalSearch
         'name-desc' => [['name', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return WageService::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(WageService $wageService) {
                 return new GlobalSearchResult(
@@ -52,7 +57,9 @@ class WageService extends Model implements FiltersGlobalSearch
                     'Lohndienstleistung',
                     $wageService->id,
                     $wageService->name_with_unit,
-                    route('wage-services.show', $wageService)
+                    route('wage-services.show', $wageService),
+                    $wageService->created_at,
+                    $wageService->updated_at,
                 );
             });
     }

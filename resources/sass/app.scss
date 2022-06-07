@@ -291,7 +291,7 @@ a.outline-none {
 
 // Minimum width of 0
 .min-w-0 {
-    min-width: 0;
+    min-width: 0 !important;
 }
 
 // Link heights corresponding to feather icons for split dropdowns in navbar
@@ -367,9 +367,26 @@ a.outline-none {
     opacity: 0
 }
 
+.navbar-toggle:focus {
+    border: 1px solid $secondary !important;
+}
+
 // Global search
+.global-search {
+    max-width: 18rem;
+}
+
+// Global search
+.global-search-centered {
+    max-width: 32rem !important;
+}
+
 .global-search:focus-within {
     border: 1px solid $secondary !important;
+}
+
+.global-search-input {
+    width: 6rem !important;
 }
 
 .global-search-append-button:hover {

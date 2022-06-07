@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Support\Collection;
 
 class Person extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use HasFactory;
     use Notifiable;
@@ -44,9 +46,12 @@ class Person extends Model implements FiltersGlobalSearch
         'last-name-desc' => [['last_name', 'desc'], ['first_name', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Person::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Person $person) {
                 return new GlobalSearchResult(
@@ -54,7 +59,9 @@ class Person extends Model implements FiltersGlobalSearch
                     'Person',
                     $person->id,
                     $person->name,
-                    route('people.show', $person)
+                    route('people.show', $person),
+                    $person->created_at,
+                    $person->updated_at,
                 );
             });
     }

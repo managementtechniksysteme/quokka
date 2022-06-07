@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Support\Collection;
 
 class Company extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use HasFactory;
     use OrdersResults;
@@ -43,9 +45,12 @@ class Company extends Model implements FiltersGlobalSearch
         'name-desc' => [['name', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Company::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Company $company) {
                 return new GlobalSearchResult(
@@ -53,7 +58,9 @@ class Company extends Model implements FiltersGlobalSearch
                     'Firma',
                     $company->id,
                     $company->name,
-                    route('companies.show', $company)
+                    route('companies.show', $company),
+                    $company->created_at,
+                    $company->updated_at,
                 );
             });
     }

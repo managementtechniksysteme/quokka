@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -17,6 +18,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
@@ -115,11 +117,14 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
         return $filter === '' ? null : $filter;
     }
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return AdditionsReport::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(AdditionsReport $additionsReport) {
                 return new GlobalSearchResult(
@@ -127,7 +132,9 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
                     'Regiebericht',
                     $additionsReport->id,
                     "{$additionsReport->project->name} #$additionsReport->number",
-                    route('additions-reports.show', $additionsReport)
+                    route('additions-reports.show', $additionsReport),
+                    $additionsReport->created_at,
+                    $additionsReport->updated_at,
                 );
             });
     }

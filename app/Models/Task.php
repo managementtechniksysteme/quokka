@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
@@ -16,6 +17,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachments;
@@ -115,11 +117,14 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         return Auth::user()->settings->show_finished_items ? null : '!ist:erledigt';
     }
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Task::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Task $task) {
                 return new GlobalSearchResult(
@@ -127,7 +132,9 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
                     'Aufgabe',
                     $task->id,
                     "$task->name (Projekt {$task->project->name})",
-                    route('tasks.show', $task)
+                    route('tasks.show', $task),
+                    $task->created_at,
+                    $task->updated_at,
                 );
             });
     }

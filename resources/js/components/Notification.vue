@@ -61,7 +61,7 @@
 <style scoped>
     #notification {
         width: 100%;
-        height: 3.5rem;
+        height: 4rem;
         top: 0;
         left: 0;
         text-align: center;

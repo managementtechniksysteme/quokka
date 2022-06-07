@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -17,6 +18,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
@@ -77,11 +79,14 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         return $filter === '' ? null : $filter;
     }
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return ServiceReport::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(ServiceReport $serviceReport) {
                 return new GlobalSearchResult(
@@ -89,7 +94,9 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
                     'Servicebericht',
                     $serviceReport->id,
                     "{$serviceReport->project->name} #$serviceReport->number",
-                    route('service-reports.show', $serviceReport)
+                    route('service-reports.show', $serviceReport),
+                    $serviceReport->created_at,
+                    $serviceReport->updated_at,
                 );
             });
     }

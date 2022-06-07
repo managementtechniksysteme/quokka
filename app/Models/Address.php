@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Address extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use HasFactory;
     use OrdersResults;
@@ -39,9 +41,12 @@ class Address extends Model implements FiltersGlobalSearch
         'postcode-desc' => [['postcode', 'desc'], ['city', 'desc'], ['street_number', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Address::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Address $address) {
                 return new GlobalSearchResult(
@@ -49,7 +54,9 @@ class Address extends Model implements FiltersGlobalSearch
                     'Adresse',
                     $address->id,
                     "$address->name ($address->address_line)",
-                    route('addresses.show', $address)
+                    route('addresses.show', $address),
+                    $address->created_at,
+                    $address->updated_at,
                 );
             });
     }

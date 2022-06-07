@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon-bs icon-baseline text-muted mr-2">
+                <svg class="icon-bs icon-baseline text-muted mr-1">
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#{{ DateTimeHelpers::iconStringForTimeOfDay(\Carbon\Carbon::now()) }}"></use>
                 </svg>
                 Übersicht - {{ DateTimeHelpers::greetingForTimeOfDay(\Carbon\Carbon::now()) }}, {{ Auth::user()->employee->person->first_name }}!
@@ -15,7 +15,7 @@
     <div class="container py-4">
         @can('accounting.view.own')
             <h4>
-                <svg class="icon-bs icon-baseline text-muted mr-2">
+                <svg class="icon-bs icon-baseline text-muted mr-1">
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use>
                 </svg>
                 Leistungen diesen Monat
@@ -123,7 +123,7 @@
         @endcan
 
         <h4>
-            <svg class="icon-bs icon-baseline text-muted mr-2">
+            <svg class="icon-bs icon-baseline text-muted mr-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
             </svg>
             Aufgaben
@@ -256,7 +256,7 @@
         </p>
 
         <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted mr-2">
+            <svg class="icon-bs icon-baseline text-muted mr-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#card-text"></use>
             </svg>
             Berichte
@@ -519,7 +519,7 @@
         </p>
 
         <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted mr-2">
+            <svg class="icon-bs icon-baseline text-muted mr-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
             </svg>
             Letzte Benachrichtigungen

@@ -2,6 +2,7 @@
 
 namespace App\Support\GlobalSearch;
 
+use App\Traits\FiltersLatestChanges;
 use Fuse\Fuse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -19,6 +20,7 @@ class GlobalSearch
         foreach (config('search.models') as $model) {
             $searchResults = $searchResults->concat(static::searchModel($model, $query));
         }
+
         return $searchResults;
     }
 
@@ -44,6 +46,22 @@ class GlobalSearch
         $fuzzyQuery = static::getQueryWithoutTermsMatchingFilterKeys($query, $termsMatchingFilterKeys);
 
         return $fuzzyQuery ? static::fuzzySearch($searchResults->toArray(), $fuzzyQuery) : $searchResults;
+    }
+
+    public static function getLatestChanges(int $quantity) : Collection
+    {
+        $searchResults = collect();
+
+        foreach (config('search.models') as $model) {
+            $searchResults = $searchResults->concat(static::getLatestModelChanges($model, $quantity));
+        }
+
+        return $searchResults
+            ->sortByDesc(function ($searchResult) {
+                return $searchResult->updated_at;
+            })
+            ->values()
+            ->take($quantity);
     }
 
     private static function searchModel(string $model, string $query) : Collection
@@ -120,10 +138,25 @@ class GlobalSearch
                     $result['item']['type'],
                     $result['item']['id'],
                     $result['item']['name'],
-                    $result['item']['route']
+                    $result['item']['route'],
+                    $result['item']['created_at'],
+                    $result['item']['updated_at']
                 );
             },
             (new Fuse($list, $fuseOptions))->search($query)
         ));
+    }
+
+    private static function getLatestModelChanges(string $model, int $quantity) : Collection
+    {
+        if(Auth::user()->cannot('viewAny', $model)) {
+            return collect();
+        }
+
+        if (!class_exists($model) || !in_array(FiltersLatestChanges::class, class_uses($model))) {
+            return collect();
+        }
+
+        return forward_static_call([$model, FiltersLatestChanges::$FILTERS_LATEST_CHANGES_METHOD], $quantity);
     }
 }

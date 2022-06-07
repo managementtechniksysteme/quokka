@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -17,6 +18,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
@@ -117,11 +119,14 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         return $filter === '' ? null : $filter;
     }
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return InspectionReport::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(InspectionReport $inspectionReport) {
                 return new GlobalSearchResult(
@@ -129,7 +134,9 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
                     'Prüfbericht',
                     $inspectionReport->id,
                     "Anlage $inspectionReport->equipment_identifier (Projekt {$inspectionReport->project->name}) vom $inspectionReport->inspected_on",
-                    route('inspection-reports.show', $inspectionReport)
+                    route('inspection-reports.show', $inspectionReport),
+                    $inspectionReport->created_at,
+                    $inspectionReport->updated_at,
                 );
             });
     }

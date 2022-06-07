@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
@@ -17,6 +18,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
@@ -114,11 +116,14 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         return $filter === '' ? null : $filter;
     }
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return ConstructionReport::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(ConstructionReport $constructionReport) {
                 return new GlobalSearchResult(
@@ -126,7 +131,9 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
                     'Bautagesbericht',
                     $constructionReport->id,
                     "{$constructionReport->project->name} #$constructionReport->number",
-                    route('construction-reports.show', $constructionReport)
+                    route('construction-reports.show', $constructionReport),
+                    $constructionReport->created_at,
+                    $constructionReport->updated_at,
                 );
             });
     }

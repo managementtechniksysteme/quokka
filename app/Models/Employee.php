@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 
 class Employee extends Model
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use HasFactory;
 
@@ -43,18 +45,23 @@ class Employee extends Model
         'b:(.*)' => ['user.username', '{value}'],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Employee::filterSearch($query)
             ->with('person')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Employee $employee) {
                 return new GlobalSearchResult(
                     Employee::class,
                     'Mitarbeiter',
                     $employee->id,
-                    $employee->name,
-                    route('employees.show', $employee)
+                    $employee->person->name,
+                    route('employees.show', $employee),
+                    $employee->created_at,
+                    $employee->updated_at,
                 );
             });
     }

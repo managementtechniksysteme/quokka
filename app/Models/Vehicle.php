@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Support\Collection;
 
 class Vehicle extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
@@ -36,9 +38,12 @@ class Vehicle extends Model implements FiltersGlobalSearch
         'type-desc' => [['make', 'desc'], ['model', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Vehicle::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Vehicle $vehicle) {
                 return new GlobalSearchResult(
@@ -46,7 +51,9 @@ class Vehicle extends Model implements FiltersGlobalSearch
                     'Fahrzeug',
                     $vehicle->id,
                     "$vehicle->registration_identifier ($vehicle->make_model)",
-                    route('vehicles.show', $vehicle)
+                    route('vehicles.show', $vehicle),
+                    $vehicle->created_at,
+                    $vehicle->updated_at,
                 );
             });
     }

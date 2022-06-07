@@ -206,6 +206,9 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'roles.email']);
         Permission::firstOrCreate(['name' => 'roles.createpdf']);
 
+        // search
+        Permission::firstOrCreate(['name' => 'search']);
+
         // service reports
         Permission::firstOrCreate(['name' => 'service-reports.view.own']);
         Permission::firstOrCreate(['name' => 'service-reports.view.other']);
@@ -268,6 +271,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'tasks.comments.delete.other']);
 
         // tools
+        Permission::firstOrCreate(['name' => 'tools.viewlatestchanges']);
         Permission::firstOrCreate(['name' => 'tools.scanqr']);
 
         // user settings
@@ -426,6 +430,9 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('projects.update');
         $employee->givePermissionTo('projects.email');
         $employee->givePermissionTo('projects.createpdf');
+
+        // search
+        $employee->givePermissionTo('search');
 
         // service reports
         $employee->givePermissionTo('service-reports.view.own');

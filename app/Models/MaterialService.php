@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ use Illuminate\Support\Collection;
 
 class MaterialService extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
@@ -37,9 +39,12 @@ class MaterialService extends Model implements FiltersGlobalSearch
         'name-desc' => [['name', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return MaterialService::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(MaterialService $materialService) {
                 return new GlobalSearchResult(
@@ -47,7 +52,9 @@ class MaterialService extends Model implements FiltersGlobalSearch
                     'Materialleistung',
                     $materialService->id,
                     $materialService->name,
-                    route('material-services.show', $materialService)
+                    route('material-services.show', $materialService),
+                    $materialService->created_at,
+                    $materialService->updated_at,
                 );
             });
     }

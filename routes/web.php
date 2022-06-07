@@ -26,6 +26,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InspectionReportController;
+use App\Http\Controllers\LatestChangesController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
@@ -136,6 +137,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/inspection-reports/{inspection_report}/email-signature-request', [InspectionReportController::class, 'showEmailSignatureRequest'])->name('inspection-reports.email-signature-request');
     Route::post('/inspection-reports/{inspection_report}/email-signature-request', [InspectionReportController::class, 'emailSignatureRequest']);
     Route::get('/inspection-reports/{inspection_report}/finish', [InspectionReportController::class, 'finish'])->name('inspection-reports.finish');
+
+    Route::resource('latest-changes', LatestChangesController::class)->only(['index']);
 
     Route::resource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/logbook/download', [LogbookController::class, 'download'])->name('logbook.download');

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:search');
+    }
+
     public function index(SearchRequest $request)
     {
         $validatedData = $request->validated();

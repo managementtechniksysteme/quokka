@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
@@ -14,6 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Memo extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use FiltersLatestChanges;
     use HasAttachments;
     use FiltersPermissions;
     use FiltersSearch;
@@ -88,11 +90,14 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
         ],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Memo::filterPermissions()
             ->filterSearch($query)
             ->with('project')
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Memo $memo) {
                 return new GlobalSearchResult(
@@ -100,7 +105,9 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
                     'Aktenvermerk',
                     $memo->id,
                     "$memo->title (Projekt {$memo->project->name})",
-                    route('memos.show', $memo)
+                    route('memos.show', $memo),
+                    $memo->created_at,
+                    $memo->updated_at,
                 );
             });
     }

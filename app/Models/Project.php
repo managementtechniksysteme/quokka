@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
+use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 
 class Project extends Model implements FiltersGlobalSearch
 {
+    use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
@@ -45,9 +47,12 @@ class Project extends Model implements FiltersGlobalSearch
         'wage-costs-desc' => [['wage_costs', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
         return Project::filterSearch($query)
+            ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
+                return $query->latest('updated_at')->limit($latestQuantity);
+            })
             ->get()
             ->map(function(Project $project) {
                 return new GlobalSearchResult(
@@ -55,7 +60,9 @@ class Project extends Model implements FiltersGlobalSearch
                     'Projekt',
                     $project->id,
                     $project->name,
-                    route('projects.show', $project)
+                    route('projects.show', $project),
+                    $project->created_at,
+                    $project->updated_at,
                 );
             });
     }

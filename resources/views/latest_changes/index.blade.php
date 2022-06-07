@@ -5,11 +5,11 @@
         <div class="container py-4">
             <h3>
                 <svg class="icon icon-baseline mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                 </svg>
-                Suche - {{ $query }}
+                Letzte Änderungen
                 @unless($results->isEmpty())
-                    <small class="text-muted">{{ $results->total() }} Ergebnisse</small>
+                    <small class="text-muted">{{ $results->total() }} Elemente</small>
                 @endif
             </h3>
         </div>
@@ -18,7 +18,7 @@
     <div class="container my-4">
         <div class="mt-3">
             @forelse ($results as $result)
-                @component('search.result_card', [ 'result' => $result, ])
+                @component('latest_changes.result_card', [ 'result' => $result ])
                 @endcomponent
 
                 @if(!$loop->last)

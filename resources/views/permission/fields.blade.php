@@ -2839,6 +2839,34 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+            </svg>
+            Suche
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Suche.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('search') is-invalid @enderror" name="search" id="search" value="true" @if(old('search', optional($permissions)->hasPermissionTo('search'))) checked @endif>
+                <label class="custom-control-label" for="search">Globale Suche verwenden</label>
+            </div>
+            <div class="invalid-feedback @error('search') d-block @enderror">
+                @error('search')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
             </svg>
             Tools
@@ -2849,6 +2877,17 @@
     </div>
 
     <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tools_viewlatestchanges') is-invalid @enderror" name="tools_viewlatestchanges" id="tools_viewlatestchanges" value="true" @if(old('tools_viewlatestchanges', optional($permissions)->hasPermissionTo('tools.viewlatestchanges'))) checked @endif>
+                <label class="custom-control-label" for="tools_viewlatestchanges">Letzte Änderungen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('tools_viewlatestchanges') d-block @enderror">
+                @error('tools_viewlatestchanges')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
         <div class="form-group">
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tools_scanqr') is-invalid @enderror" name="tools_scanqr" id="tools_scanqr" value="true" @if(old('tools_scanqr', optional($permissions)->hasPermissionTo('tools.scanqr'))) checked @endif>

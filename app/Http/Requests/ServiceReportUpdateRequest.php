@@ -18,6 +18,7 @@ class ServiceReportUpdateRequest extends FormRequest
             'comment' => 'required',
             'send_signature_request' => 'accepted|sometimes',
             'services' => 'required|array|min:1',
+            'services.*.service_report_id' => 'nullable|in:'.$this->service_report->id,
             'services.*.provided_on' => 'required|date|distinct',
             'services.*.hours' => 'required|numeric|min:0|multiple_of:0.5',
             'services.*.kilometres' => 'required|integer|min:0',

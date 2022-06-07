@@ -40,6 +40,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(service, index) in services"  class="hover-highlight">
+                        <input v-if="services.length" type="hidden" :id="'services['+index+'][service_report_id]'" :name="'services['+index+'][service_report_id]'" :value="service.service_report_id" />
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][provided_on]'" :name="'services['+index+'][provided_on]'" :value="service.provided_on.toISOString().substr(0, 10)" />
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][hours]'" :name="'services['+index+'][hours]'" :value="service.hours" />
                         <input v-if="services.length" type="hidden" :id="'services['+index+'][kilometres]'" :name="'services['+index+'][kilometres]'" :value="service.kilometres" />
@@ -94,6 +95,7 @@
 
                 this.services.push({
                     edit: null,
+                    service_report_id: service.service_report_id,
                     provided_on: new Date(date - userTimezoneOffset),
                     hours: service.hours,
                     kilometres: service.kilometres,
@@ -125,6 +127,7 @@
                 else {
                     this.services.push({
                         edit: null,
+                        service_report_id: null,
                         provided_on: date,
                         hours: hours,
                         kilometres: kilometres});

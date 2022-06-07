@@ -9,6 +9,10 @@ class ServiceReportService extends Model
 {
     use OrdersResults;
 
+
+    protected $primaryKey = null;
+    public $incrementing = false;
+
     protected $casts = [
         'provided_on' => 'date',
         'hours' => 'double',

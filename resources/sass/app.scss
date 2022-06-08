@@ -38,12 +38,12 @@
 // Always show scroll bars to avoid content shifting
 // Set height to maximum minus navbar
 main {
-    min-height: calc(100vh - 4rem);
-    height: calc(100vh - 4rem);
-    max-height: calc(100vh - 4rem);
+    min-height: calc(100vh - 3.8rem);
+    height: calc(100vh - 3.8rem);
+    max-height: calc(100vh - 3.8rem);
     width: 100%;
     position: absolute;
-    top: 4rem;
+    top: 3.8rem;
     overflow-y: scroll;
 }
 

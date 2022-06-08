@@ -61,7 +61,7 @@
 <style scoped>
     #notification {
         width: 100%;
-        height: 4rem;
+        height: 3.8rem;
         top: 0;
         left: 0;
         text-align: center;
@@ -79,22 +79,22 @@
     }
 
     @-webkit-keyframes fadein {
-        from {top: -30px; opacity: 0;}
+        from {top: -3.8rem; opacity: 0;}
         to {top: 0; opacity: 1;}
     }
 
     @keyframes fadein {
-        from {top: -30px; opacity: 0;}
+        from {top: -3.8rem; opacity: 0;}
         to {top: 0; opacity: 1;}
     }
 
     @-webkit-keyframes fadeout {
         from {top: 0; opacity: 1;}
-        to {top: -30px; opacity: 0;}
+        to {top: -3.8rem; opacity: 0;}
     }
 
     @keyframes fadeout {
         from {top: 0; opacity: 1;}
-        to {top: -30px; opacity: 0;}
+        to {top: -3.8rem; opacity: 0;}
     }
 </style>

@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                 </svg>
                 Serviceberichte
-                @if($serviceReports)
+                @unless($serviceReports->isEmpty())
                     <small class="text-muted">{{ $serviceReports->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

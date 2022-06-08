@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                 </svg>
                 Aktenvermerke
-                @if($memos)
+                @unless($memos->isEmpty())
                     <small class="text-muted">{{ $memos->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

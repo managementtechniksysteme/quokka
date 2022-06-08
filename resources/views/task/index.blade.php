@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                 </svg>
                 Aufgaben
-                @if($tasks)
+                @unless($tasks->isEmpty())
                     <small class="text-muted">{{ $tasks->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

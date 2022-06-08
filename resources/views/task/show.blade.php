@@ -90,9 +90,9 @@
         <div class="mt-4">
             <h4>
                 Diskussion
-                @if($comments)
+                @unless($comments->isEmpty())
                     <small class="text-muted">{{ $comments->total() }} Einträge</small>
-                @endif
+                @endunless
             </h4>
 
             @unless($comments->isEmpty())

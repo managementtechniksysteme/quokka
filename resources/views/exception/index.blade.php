@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                 </svg>
                 Fehlerdateien
-                @if($exceptions)
+                @unless($exceptions->isEmpty())
                     <small class="text-muted">{{ $exceptions->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
         </div>
     </div>

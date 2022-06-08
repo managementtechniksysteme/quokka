@@ -20,6 +20,8 @@ use App\SpotlightCommands\EmployeeIndexCommand;
 use App\SpotlightCommands\EmployeeShowCommand;
 use App\SpotlightCommands\EmployeeStartImpersonationCommand;
 use App\SpotlightCommands\EmployeeStopImpersonationCommand;
+use App\SpotlightCommands\ExceptionIndexCommand;
+use App\SpotlightCommands\ExceptionShowCommand;
 use App\SpotlightCommands\GlobalSearchCommand;
 use App\SpotlightCommands\HelpIndexCommand;
 use App\SpotlightCommands\HelpShowCommand;
@@ -27,6 +29,7 @@ use App\SpotlightCommands\HomeShowCommand;
 use App\SpotlightCommands\InspectionReportCreateCommand;
 use App\SpotlightCommands\InspectionReportIndexCommand;
 use App\SpotlightCommands\InspectionReportShowCommand;
+use App\SpotlightCommands\LatestChangesIndexCommand;
 use App\SpotlightCommands\LogbookIndexCommand;
 use App\SpotlightCommands\LogoutCommand;
 use App\SpotlightCommands\MaterialServiceCreateCommand;
@@ -110,6 +113,8 @@ return [
         EmployeeShowCommand::class,
         EmployeeStartImpersonationCommand::class,
         EmployeeStopImpersonationCommand::class,
+        ExceptionIndexCommand::class,
+        ExceptionShowCommand::class,
         GlobalSearchCommand::class,
         HelpIndexCommand::class,
         HelpShowCommand::class,
@@ -117,6 +122,7 @@ return [
         InspectionReportCreateCommand::class,
         InspectionReportIndexCommand::class,
         InspectionReportShowCommand::class,
+        LatestChangesIndexCommand::class,
         LogbookIndexCommand::class,
         LogoutCommand::class,
         MaterialServiceCreateCommand::class,

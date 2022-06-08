@@ -170,7 +170,7 @@
                         </li>
                     @endif
 
-                    @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-scanqr'))
+                    @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
                         <li class="nav-item dropdown">
                             <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg class="icon icon-20 mr-1">
@@ -194,6 +194,14 @@
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
                                         </svg>
                                         QR-Code scannen
+                                    </a>
+                                @endcan
+                                @can('tools-viewexceptions')
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('exceptions.index') }}">
+                                        <svg class="icon icon-16 mr-1">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                                        </svg>
+                                        Fehlerdateien
                                     </a>
                                 @endcan
                             </div>

@@ -20,7 +20,7 @@ class HelpController extends Controller
      */
     public function index()
     {
-        $files = File::allFiles(resource_path('views/help/topic'));
+        $files = File::files(resource_path('views/help/topic'));
 
         $names = array_map(function ($element) {
             return $element->getBasename('.blade.php');

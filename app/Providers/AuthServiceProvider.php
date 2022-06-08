@@ -7,6 +7,7 @@ use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
 use App\Policies\AdditionsReportPolicy;
 use App\Policies\ConstructionReportPolicy;
+use App\Policies\ExceptionPolicy;
 use App\Policies\InspectionReportPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -41,12 +42,20 @@ class AuthServiceProvider extends ServiceProvider
             return $user->can('help.view');
         });
 
+        Gate::define('tools-scanqr', function ($user) {
+            return $user->can('tools.scanqr');
+        });
+
         Gate::define('tools-viewlatestchanges', function ($user) {
             return $user->can('tools.viewlatestchanges');
         });
 
-        Gate::define('tools-scanqr', function ($user) {
-            return $user->can('tools.scanqr');
+        Gate::define('tools-viewexceptions', function ($user) {
+            return $user->can('exceptions.view');
+        });
+
+        Gate::define('tools-deleteexceptions', function ($user) {
+            return $user->can('exceptions.delete');
         });
     }
 }

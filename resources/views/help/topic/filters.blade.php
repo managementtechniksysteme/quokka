@@ -14,21 +14,54 @@
 
     <div class="container my-4">
         <a id="top"></a>
+        
+        <a href="#allgemeines"># Allgemeines</a><br />
+        @can('viewAny', \App\Models\Address::class)
+        <a href="#adressen"># Adressen</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Memo::class)
+        <a href="#aktenvermerke"># Aktenvermerke</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Task::class)
+        <a href="#aufgaben"># Aufgaben</a><br />
+        @endcan
+        @can('viewAny', \App\Models\ConstructionReport::class)
+        <a href="#bautagesberichte"># Bautagesberichte</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Vehicle::class)
+        <a href="#fahrzeuge"># Fahrzeuge</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Company::class)
+        <a href="#firmen"># Firmen</a><br />
+        @endcan
+        @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
+        <a href="#leistungen"># Leistungen</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Employee::class)
+        <a href="#mitarbeiter"># Mitarbeiter</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Person::class)
+        <a href="#personen"># Personen</a><br />
+        @endcan
+        @can('viewAny', \App\Models\Project::class)
+        <a href="#projekte"># Projekte</a><br />
+        @endcan
+        @can('viewAny', \App\Models\InspectionReport::class)
+        <a href="#pruefberichte"># Prüfberichte</a><br />
+        @endcan
+        @can('viewAny', \App\Models\AdditionsReport::class)
+        <a href="#regieberichte"># Regieberichte</a><br />
+        @endcan
+        @can('viewAny', \Spatie\Permission\Models\Role::class)
+        <a href="#rollen"># Rollen</a><br />
+        @endcan
+        @can('viewAny', \App\Models\ServiceReport::class)
+        <a href="#serviceberichte"># Serviceberichte</a><br />
+        @endcan
 
-        @markdown
-        1. [Adressen](#adressen)
-        2. [Aktenvermerke](#aktenvermerke)
-        3. [Aufgaben](#aufgaben)
-        4. [Bautagesberichte](#bautagesberichte)
-        5. [Firmen](#firmen)
-        6. [Mitarbeiter](#mitarbeiter)
-        7. [Personen](#personen)
-        8. [Projekte](#projekte)
-        9. [Prüfberichte](#pruefberichte)
-        10. [Regieberichte](#regieberichte)
-        11. [Serviceberichte](#serviceberichte)
-        @endmarkdown
-
+        <a id="allgemeines"></a>
+        <h4 class="mt-4">Allgemeines</h4>
+        
         @markdown
         Die in {{ config('app.name') }} implementierte Suche zum Filtern von Listen kann mit speziellen Suchbegriffen verwendet werden.
         Diese filtern Attribute nach angegebenen Werten. Somit ist eine genauere Suche möglich. Die Verwendung dieser
@@ -74,6 +107,7 @@
 
         </div>
 
+        @can('viewAny', \App\Models\Address::class)
         <a id="adressen"></a>
         <h4 class="mt-4">Adressen</h4>
 
@@ -83,6 +117,7 @@
         * Straße und Nummer
         * Postleitzahl
         * Ort
+        * Firmenname
 
         **Spezielle Suchbegriffe**
         * keine
@@ -107,13 +142,21 @@
             * MTS Management Technik Systeme GmbH & CO KG
             @endmarkdown
         </div>
+        @endcan
 
+        @can('viewAny', \App\Models\Memo::class)
         <a id="aktenvermerke"></a>
         <h4 class="mt-4">Aktenvermerke</h4>
 
         @markdown
         **Standardattribute**
         * Titel
+        * Kundenname
+        * Projektname
+        * Name und {{ config('app.name') }} Benutzername des Verfassers
+        * Name und {{ config('app.name') }} Benutzerbane des Empfängers
+        * Name und {{ config('app.name') }} Benutzername von anwesenden Personen
+        * Name und {{ config('app.name') }} Benutzername von Personen im Verteiler
 
         **Spezielle Suchbegriffe**
         * `hat:folgetermin`  
@@ -124,6 +167,9 @@
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Aktenvermerk ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Aktenvermerk ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
                         
         * `von:<{{ config('app.name') }} Benutzername>`  
         Der Aktenvermerk wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
@@ -194,13 +240,19 @@
             Folgetermine in der Zukunft aufweisen.
             @endmarkdown
         </div>
+        @endcan
 
+        @can('viewAny', \App\Models\Task::class)                                                                                                        
         <a id="aufgaben"></a>
         <h4 class="mt-4">Aufgaben</h4>
 
         @markdown
         **Standardattribute**
         * Name
+        * Projektname
+        * Firmenname
+        * Name oder {{ config('app.name') }} Benutzername des verantwortlichen Mitarbeiters
+        * Name oder {{ config('app.name') }} Benutzername beteiligter Mitarbeiter
 
         **Spezielle Suchbegriffe**
         * `ist:privat`  
@@ -241,6 +293,9 @@
         
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Die Aufgabe ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Die Aufgabe ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
                     
         * `verantwortlich:<{{ config('app.name') }} Benutzername>` oder `v:<{{ config('app.name') }} Benutzername>`  
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist für die Aufgabe verantwortlich.
@@ -296,13 +351,17 @@
             Filtert Aufgaben, die ein Fälligkeitsdatum in der Vergangenheit haben und nicht als `privat` markiert sind.
             @endmarkdown
         </div>
-
+        @endcan
+        
+        @can('viewAny', \App\Models\ConstructionReport::class)
         <a id="bautagesberichte"></a>
         <h4 class="mt-4">Bautagesberichte</h4>
 
         @markdown
         **Standardattribute**
         * Nummer
+        * Name und {{ config('app.name') }} Benutzername beteiligter Mitarbeiter
+        * Name und {{ config('app.name') }} Benutzername anwesender Personen
         * Sonstige Besucher
         * Güte- und Funktionsprüfung
         * Fehlende Ausführungsunterlagen
@@ -326,6 +385,9 @@
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Bautagesbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+        
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Bautagesbericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
                                 
         * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
         Der Bautagesbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
@@ -370,7 +432,43 @@
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
+        @endcan
+                                                                                                                                                                                                                                    
+        @can('viewAny', \App\Models\Vehicle::class)
+        <a id="fahrzeuge"></a>
+        <h4 class="mt-4">Fahrzeuge</h4>
+
+        @markdown
+        **Standardattribute**
+        * Hersteller
+        * Modell
+        * Kennzeichen
+        * Kommentar
+
+        **Spezielle Suchbegriffe**
+        * keine
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            MTS1
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Fahrzeuge, die in Hersteller, Modell,  Kennzeichen oder Kommentar den Begriff `MTS1` aufweisen.
+
+            Mögliche Ergebnisse
+            * MT-MTS1
+            @endmarkdown
+        </div>
+        @endcan
                                                                                                                                     
+        @can('viewAny', \App\Models\Company::class)
         <a id="firmen"></a>
         <h4 class="mt-4">Firmen</h4>
 
@@ -378,9 +476,11 @@
         **Standardattribute**
         * Name
         * Name 2
+        * Name von zugewiesenen Personen
 
         **Spezielle Suchbegriffe**
-        * keine
+        * `person:<Person Name>` oder `p:<Person Name>`  
+        Die Person mit dem Namen `<Person Name>` ist der Firma zugeordnet.
 
         **Beispiele**
         @endmarkdown
@@ -403,13 +503,46 @@
             * MTS Management Technik Systeme GmbH & CO KG
             @endmarkdown
         </div>
+        @endcan
+                                                                                                                                                                                                                                                
+        @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
+        <a id="leistungen"></a>
+        <h4 class="mt-4">Leistungen</h4>
 
+        @markdown
+        **Standardattribute**
+        * Name
+
+        **Spezielle Suchbegriffe**
+        * keine
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            Techniker
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Leistungen, die im Namen den Begriff `Techniker` aufweisen.
+
+            Mögliche Ergebnisse
+            * Techniker
+            @endmarkdown
+        </div>
+        @endif
+
+        @can('viewAny', \App\Models\Employee::class)
         <a id="mitarbeiter"></a>
         <h4 class="mt-4">Mitarbeiter</h4>
 
         @markdown
         **Standardattribute**
-        * keine
+        * Name oder {{ config('app.name') }} Benutzername des Mitarbeiters
 
         **Spezielle Suchbegriffe**
         * `name:<Mitarbeiter Name>` oder `n:<Mitarbeiter Name>`  
@@ -454,7 +587,9 @@
             * Martin Steiner
             @endmarkdown
         </div>
-                                            
+        @endcan 
+        
+        @can('viewAny', \App\Models\Person::class)
         <a id="personen"></a>
         <h4 class="mt-4">Personen</h4>
 
@@ -464,6 +599,7 @@
         * Nachname
         * Abteilung
         * Rolle
+        * Firmenname
 
         **Spezielle Suchbegriffe**
         * `firma:<Firma Name>` oder `f:<Firma Name>`  
@@ -502,13 +638,16 @@
             Filtert Personen, die der Firma mit dem Namen `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
             @endmarkdown
         </div>
-                                                                                                                                                
+        @endcan
+             
+        @can('viewAny', \App\Models\Project::class)
         <a id="projekte"></a>
         <h4 class="mt-4">Projekte</h4>
 
         @markdown
         **Standardattribute**
         * Name
+        * Firmenname
 
         **Spezielle Suchbegriffe**
         * `ist:beendet`  
@@ -551,7 +690,9 @@
             `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
             @endmarkdown
         </div>
-                                                                                                                                                                                                                                                
+        @endcan
+              
+        @can('viewAny', \App\Models\InspectionReport::class)
         <a id="pruefberichte"></a>
         <h4 class="mt-4">Prüfberichte</h4>
         
@@ -559,6 +700,9 @@
         **Standardattribute**
         * Anlagen-/Gerätenummer
         * Durchgeführte Aufgaben und Bemerkungen
+        * Projektname
+        * Firmenname des Kunden
+        * Name oder {{ config('app.name') }} Benutzername des zuständigen Mitarbeiters
         
         **Spezielle Suchbegriffe**
         * `ist:neu`  
@@ -572,6 +716,9 @@
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Prüfbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+           
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Prüfbericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
                                 
         * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
         Der Prüfbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.      
@@ -610,13 +757,17 @@
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
-                                                                                                                                                                                                                                                
+        @endcan
+     
+        @can('viewAny', \App\Models\AdditionsReport::class)
         <a id="regieberichte"></a>
         <h4 class="mt-4">Regieberichte</h4>
         
         @markdown
         **Standardattribute**
         * Nummer
+        * Name oder {{ config('app.name') }} Benutzername beteiligter Mitarbeiter
+        * Name anwesender Personen
         * Sonstige Besucher
         * Güte- und Funktionsprüfung
         * Fehlende Ausführungsunterlagen
@@ -624,6 +775,8 @@
         * Gefahr in Verzug
         * Bedenken
         * Leistungsfortschritt
+        * Projektname
+        * Firmenname
         
         **Spezielle Suchbegriffe**
         * `ist:neu`  
@@ -684,7 +837,40 @@
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
+        @endcan
+                                                                                                                                                                                                                                                                                                                                                                                                    
+        @can('viewAny', \Spatie\Permission\Models\Role::class)
+        <a id="rollen"></a>
+        <h4 class="mt-4">Rollen</h4>
 
+        @markdown
+        **Standardattribute**
+        * Name
+
+        **Spezielle Suchbegriffe**
+        * keine
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            Administrator
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Rollen, die im Namen den Begriff `Administrator` aufweisen.
+
+            Mögliche Ergebnisse
+            * Administrator
+            @endmarkdown
+        </div>
+        @endcan
+
+        @can('viewAny', \App\Models\ServiceReport::class)
         <a id="serviceberichte"></a>
         <h4 class="mt-4">Serviceberichte</h4>
 
@@ -692,6 +878,9 @@
         **Standardattribute**
         * Nummer
         * Kurzbericht
+        * Projektname
+        * Firmenname
+        * Name oder {{ config('app.name') }} Benutzername des zuständigen Mitarbeiters
 
         **Spezielle Suchbegriffe**
         * `ist:neu`  
@@ -708,6 +897,9 @@
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Servicebericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Servicebericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
                                 
         * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
         Der Servicebericht ist dem Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` zugeordnet.        
@@ -746,6 +938,7 @@
             Benutzernamen `aw` zugeordnet sind.
             @endmarkdown
         </div>
+        @endcan
                                             
     </div>
 @endsection

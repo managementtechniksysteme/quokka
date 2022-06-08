@@ -34,10 +34,16 @@ class Company extends Model implements FiltersGlobalSearch
     ];
 
     protected $filterFields = [
-        'name', 'name_2',
+        'name',
+        'name_2',
+        'people.first_name',
+        'people.last_name'
     ];
 
-    protected $filterKeys = [];
+    protected $filterKeys = [
+        'person:(.*)' => ['hasraw' => ['people', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
+        'p:(.*)' => ['hasraw' => ['people', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
+    ];
 
     protected $orderKeys = [
         'default' => ['name'],

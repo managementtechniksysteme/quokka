@@ -76,7 +76,13 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $filterFields = [
-        'equipment_identifier', 'comment', 'project.name', 'project.company.name',
+        'equipment_identifier',
+        'comment',
+        'project.name',
+        'project.company.name',
+        'employee.person.first_name',
+        'employee.person.last_name',
+        'employee.user.username',
     ];
 
     protected $filterKeys = [
@@ -86,6 +92,8 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         'ist:erledigt' => ['status', 'finished'],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
     ];

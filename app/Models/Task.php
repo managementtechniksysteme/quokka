@@ -63,6 +63,8 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         'ist:überfällig' => ['raw' => ['due_on < curdate() and status != "finished"', 'due_on <= curdate() or (due_on > curdate() and status = "finished")']],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'verantwortlich:(.*)' => ['responsibleEmployee.user.username', '{value}'],
         'v:(.*)' => ['responsibleEmployee.user.username', '{value}'],
         'beteiligt:(.*)' => ['involvedEmployees.user.username', '{value}'],

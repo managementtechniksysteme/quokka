@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                 </svg>
                 Projekte
-                @if($projects)
+                @unless($projects->isEmpty())
                     <small class="text-muted">{{ $projects->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

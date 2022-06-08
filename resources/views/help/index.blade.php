@@ -10,6 +10,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe
+                @if(count($names) > 0)
+                    <small class="text-muted">{{ count($names) }} Einträge</small>
+                @endif
             </h3>
         </div>
     </div>

@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                 </svg>
                 Firmen
-                @if($companies)
+                @unless($companies->isEmpty())
                     <small class="text-muted">{{ $companies->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

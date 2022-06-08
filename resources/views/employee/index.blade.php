@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                 </svg>
                 Mitarbeiter
-                @if($employees)
+                @unless($employees->isEmpty())
                     <small class="text-muted">{{ $employees->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

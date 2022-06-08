@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                 </svg>
                 Adressen
-                @if($addresses)
+                @unless($addresses->isEmpty())
                     <small class="text-muted">{{ $addresses->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

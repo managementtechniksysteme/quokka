@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                 </svg>
                 Bautagesberichte
-                @if($constructionReports)
+                @unless($constructionReports->isEmpty())
                     <small class="text-muted">{{ $constructionReports->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

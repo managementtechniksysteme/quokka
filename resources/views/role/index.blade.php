@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                 </svg>
                 Rollen
-                @if($roles)
+                @unless($roles->isEmpty())
                     <small class="text-muted">{{ $roles->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

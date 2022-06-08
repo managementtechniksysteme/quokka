@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                 </svg>
                 Fuhrpark
-                @if($vehicles)
+                @unless($vehicles->isEmpty())
                     <small class="text-muted">{{ $vehicles->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

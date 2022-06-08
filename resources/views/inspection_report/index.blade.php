@@ -8,9 +8,9 @@
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                 </svg>
                 Prüfberichte
-                @if($inspectionReports)
+                @unless($inspectionReports->isEmpty())
                     <small class="text-muted">{{ $inspectionReports->total() }} Einträge</small>
-                @endif
+                @endunless
             </h3>
 
             <div class="scroll-x d-flex">

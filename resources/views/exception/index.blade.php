@@ -5,7 +5,7 @@
         <div class="container py-4">
             <h3>
                 <svg class="icon icon-baseline mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                 </svg>
                 Fehlerdateien
                 @if($exceptions)

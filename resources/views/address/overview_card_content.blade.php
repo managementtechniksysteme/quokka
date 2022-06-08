@@ -1,17 +1,18 @@
 <div class="overview-card rounded">
-    <div class="row align-items-center px-3">
-
-        <div class="col flex-grow-1 h-100 py-3">
+    <div class="row px-3 align-items-center">
+        <div class="d-flex align-items-center flex-grow-1 position-relative">
             <a class="stretched-link outline-none" href="{{ route('addresses.show', $address) }}"></a>
-            <p class="m-0 ms-100 text-truncate">
-                {{ $address->name }}
-            </p>
-            <p class="text-muted m-0 ms-100 text-truncate">
-                {{ $address->address_line }}
-            </p>
-        </div>
+            <div class="col flex-grow-1 h-100 py-3">
 
-        <div class="d-none d-sm-block col-sm-auto text-right">
+                <p class="m-0 ms-100 text-truncate">
+                    {{ $address->name }}
+                </p>
+                <p class="text-muted m-0 ms-100 text-truncate">
+                    {{ $address->address_line }}
+                </p>
+            </div>
+
+            <div class="d-none d-sm-block col-sm-auto text-right">
             <span class="text-muted d-inline-flex align-items-center">
                 <svg class="icon icon-12 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
@@ -19,12 +20,13 @@
                 {{ $address->companies_count }}
             </span>
 
-            <span class="text-muted d-inline-flex align-items-center ml-2">
+                <span class="text-muted d-inline-flex align-items-center ml-2">
                 <svg class="icon icon-12 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                 </svg>
                 {{ $address->people_count }}
             </span>
+            </div>
         </div>
 
         <div class="col-md-auto d-none d-md-block">

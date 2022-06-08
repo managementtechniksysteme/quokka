@@ -57,10 +57,11 @@
                 @endif
             @empty
                 <div class="text-center mt-4">
-                    <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                     @if(Request::get('search'))
+                        <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
                         <p class="lead text-muted">Es wurden keine Fehlerdateien passend zur Suche gefunden.</p>
                     @else
+                        <img class="empty-state" src="{{ asset('svg/astronaut.svg') }}" alt="no data" />
                         <p class="lead text-muted">Es sind keine Fehlerdateien im System vorhanden.</p>
                     @endif
                 </div>

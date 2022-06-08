@@ -62,6 +62,12 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         'comment',
         'project.name',
         'project.company.name',
+        'involvedEmployees.first_name',
+        'involvedEmployees.last_name',
+        'involvedEmployees.employee.user.username',
+        'presentPeople.first_name',
+        'presentPeople.last_name',
+        'presentPeople.employee.user.username',
     ];
 
     protected $filterKeys = [
@@ -73,12 +79,14 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         'n:(\d)' => ['number', '{value}'],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
         'beteiligt:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'b:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'beteiligt_mitarbeiter:(.*)' => ['involvedEmployees.user.username', '{value}'],
-        'bm:(.*)' => ['involvedEmployees.user.username', '{value}'],
+        'bm:(.*)' => ['c.user.username', '{value}'],
     ];
 
     protected $orderKeys = [

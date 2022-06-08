@@ -54,6 +54,11 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
 
     protected $filterFields = [
         'number',
+        'involvedEmployees.person.first_name',
+        'involvedEmployees.person.last_name',
+        'involvedEmployees.user.username',
+        'presentPeople.person.first_name',
+        'presentPeople.person.last_name',
         'other_visitors',
         'inspection_comment',
         'missing_documents',
@@ -74,6 +79,8 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
         'n:(\d)' => ['number', '{value}'],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
         'beteiligt:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],

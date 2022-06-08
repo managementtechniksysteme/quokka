@@ -34,7 +34,13 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $filterFields = [
-        'number', 'comment', 'project.name', 'project.company.name',
+        'number',
+        'comment',
+        'project.name',
+        'project.company.name',
+        'employee.person.first_name',
+        'employee.person.last_name',
+        'employee.user.username',
     ];
 
     protected $filterKeys = [
@@ -46,6 +52,8 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         'n:(\d)' => ['number', '{value}'],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+        'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
     ];

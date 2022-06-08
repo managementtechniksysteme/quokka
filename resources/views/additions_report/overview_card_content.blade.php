@@ -1,51 +1,52 @@
 <div class="overview-card rounded border-status @if($additionsReport->isNew()) border-primary @elseif($additionsReport->isSigned()) border-warning @else border-success @endif">
     <div class="row align-items-center px-3">
-
-        <div class="col flex-grow-1 h-100 py-3">
+        <div class="d-flex align-items-center flex-grow-1 position-relative">
             <a class="stretched-link outline-none" href="{{ route('additions-reports.show', $additionsReport) }}"></a>
-            <div>
-                @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $additionsReport->project->name }} @endunless#{{ $additionsReport->number }}
-                ({{ $additionsReport->services_provided_on }})
-            </div>
-            <div class="text-muted">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                    </svg>
-                    {{ Number::toLocal($additionsReport->hours) }}
-                    @switch($additionsReport->status)
-                        @case('new')
-                            @if($additionsReport->signatureRequest)
+            <div class="col flex-grow-1 h-100 py-3">
+                <div>
+                    @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $additionsReport->project->name }} @endunless#{{ $additionsReport->number }}
+                    ({{ $additionsReport->services_provided_on }})
+                </div>
+                <div class="text-muted">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="icon icon-16 mr-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                        </svg>
+                        {{ Number::toLocal($additionsReport->hours) }}
+                        @switch($additionsReport->status)
+                            @case('new')
+                                @if($additionsReport->signatureRequest)
+                                    <svg class="icon icon-16 ml-2 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                                    </svg>
+                                    {{ $additionsReport->signatureRequest->created_at }}
+                                @else
+                                    <svg class="icon icon-16 ml-2 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                    </svg>
+                                    {{ $additionsReport->created_at }}
+                                @endif
+                                @break
+                            @case('signed')
                                 <svg class="icon icon-16 ml-2 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                                 </svg>
-                                {{ $additionsReport->signatureRequest->created_at }}
-                            @else
+                                {{ $additionsReport->signature()->created_at }}
+                                @break
+                            @case('finished')
                                 <svg class="icon icon-16 ml-2 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
-                                {{ $additionsReport->created_at }}
-                            @endif
-                            @break
-                        @case('signed')
-                            <svg class="icon icon-16 ml-2 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            {{ $additionsReport->signature()->created_at }}
-                            @break
-                        @case('finished')
-                            <svg class="icon icon-16 ml-2 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                            </svg>
-                            {{ $additionsReport->updated_at }}
-                            @break
-                    @endswitch
-                    <svg class="icon icon-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                    </svg>
-                    <span class="mw-100 text-truncate">
-                        {{ $additionsReport->employee->person->name }}
-                    </span>
+                                {{ $additionsReport->updated_at }}
+                                @break
+                        @endswitch
+                        <svg class="icon icon-16 ml-2 mr-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        </svg>
+                        <span class="mw-100 text-truncate">
+                            {{ $additionsReport->employee->person->name }}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

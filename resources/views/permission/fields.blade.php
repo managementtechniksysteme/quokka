@@ -1475,6 +1475,45 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+            </svg>
+            Fehlerdateien
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Fehlerdateien.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('exceptions_view') is-invalid @enderror" name="exceptions_view" id="exceptions_view" value="true" @if(old('exceptions_view', optional($permissions)->hasPermissionTo('exceptions.view'))) checked @endif>
+                <label class="custom-control-label" for="exceptions_view">Fehlerdateien anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('exceptions_view') d-block @enderror">
+                @error('exceptions_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('exceptions_delete') is-invalid @enderror" name="exceptions_delete" id="exceptions_delete" value="true" @if(old('exceptions_delete', optional($permissions)->hasPermissionTo('exceptions.delete'))) checked @endif>
+                <label class="custom-control-label" for="exceptions_delete">Fehlerdateien entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('exceptions_delete') d-block @enderror">
+                @error('exceptions_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
             </svg>
             Firmen

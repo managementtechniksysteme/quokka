@@ -23,6 +23,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InspectionReportController;
@@ -122,6 +123,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employees/{employee}/edit-permissions', [EmployeeController::class, 'editPermissions'])->name('employees.edit-permissions');
     Route::patch('/employees/{employee}/edit-permissions', [EmployeeController::class, 'updatePermissions'])->name('employees.update-permissions');
     Route::get('/employees/{employee}/impersonate', [EmployeeController::class, 'impersonate'])->name('employees.impersonate');
+
+    Route::resource('exceptions', ExceptionController::class)->only(['index', 'show', 'destroy']);
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');

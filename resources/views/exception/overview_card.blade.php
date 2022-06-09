@@ -1,5 +1,5 @@
 <div class="overview-card rounded">
-    <div class="mw-100 d-fex flex-grow-1 p-3 align-items-center">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
         <div class="mw-100 flex-grow-1 h-100 position-relative">
             <a class="stretched-link outline-none" href="{{ route('exceptions.show', $exception['uuid']) }}"></a>
             <div class="mw-100 text-truncate">

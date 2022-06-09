@@ -16,7 +16,7 @@
 
     <div class="container my-4">
         @markdown
-        ### v0.1.18-a82141b (09.06.2022)
+        ### v0.1.18-478280a (09.06.2022)
         * Bautagesberichte können nun analog zu Serviceberichten verwaltet werden.
         * Eine Kommandopalette wurde implementiert. Diese kann für schnelle Navigation und Aktionen verwendet werden.
         Falls eine Aktion eine weitere Eingabe erfordert, werden Listen nach Suchergebnissen gefiltert (z.B. bei der

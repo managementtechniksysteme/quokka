@@ -203,7 +203,7 @@
                   <div class="sticky-top bg-general">
                       <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           <h3 class="d-inline-block">
-                              <svg class="icon icon-baseline mr-1">
+                              <svg class="icon icon-baseline text-muted mr-1">
                                   <use xlink:href="/svg/feather-sprite.svg#book"></use>
                               </svg>
                               Fahrtenbuch

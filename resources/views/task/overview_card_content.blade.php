@@ -1,20 +1,22 @@
 <div class="overview-card rounded border-status @if($task->isNew()) border-primary @elseif($task->isInProgress()) border-warning @else border-success @endif">
-    <div class="row align-items-center px-3">
-        <div class="d-flex align-items-center flex-grow-1 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('tasks.show', $task) }}"></a>
-            <div class="col flex-grow-1 h-100 py-3">
-                <div>
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
+        <div class="mw-100 d-flex flex-grow-1 h-100 align-items-center">
+
+            <div class="mw-100 flex-grow-1 position-relative">
+                <a class="stretched-link outline-none" href="{{ route('tasks.show', $task) }}"></a>
+
+                <div class="mw-100 text-truncate">
                     {{ $task->name }}
                 </div>
-                <div class="text-muted">
+                <div class="mw-100 text-muted">
                     @if(isset($secondaryInformation))
                         @switch($secondaryInformation)
                             @case('withoutProject')
-                                <div class="d-inline-flex align-items-center">
+                                <div class="mw-100 d-inline-flex align-items-center">
                                     <svg class="icon icon-16 mr-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                     </svg>
-                                    {{ $task->responsibleEmployee->person->name }}
+                                    <span class="mw-100 text-truncate">{{ $task->responsibleEmployee->person->name }}</span>
                                 </div>
                                 <div class="@if($task->isOverdue()) bg-red-100 text-red-800 rounded px-1 @elseif($task->isDueSoon()) bg-yellow-100 text-yellow-800 rounded px-1 @else text-muted @endif ml-2 d-inline-flex align-items-center">
                                     <svg class="icon icon-16 mr-1">
@@ -24,11 +26,11 @@
                                 </div>
                                 @break
                             @default
-                                <div class="d-flex d-md-inline-flex align-items-center">
+                                <div class="mw-100 d-flex d-md-inline-flex align-items-center">
                                     <svg class="icon icon-16 mr-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                     </svg>
-                                    {{ $task->project->name }}
+                                    <span class="mw-100 text-truncate">{{ $task->project->name }}</span>
                                 </div>
                                 <div class="d-flex d-md-inline-flex align-items-center">
                                     <svg class="icon icon-16 ml-md-2 mr-1">
@@ -45,12 +47,12 @@
                                 @break
                         @endswitch()
                     @else
-                        <div class="d-flex d-md-inline-flex align-items-center">
+                        <div class="mw-100 d-flex d-md-inline-flex align-items-center">
                             <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                             </svg>
-                            {{ $task->project->name }}
-                            </div>
+                            <span class="mw-100 text-truncate">{{ $task->project->name }}</span>
+                        </div>
                         <div class="d-flex d-md-inline-flex align-items-center">
                             <svg class="icon icon-16 ml-md-2 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
@@ -68,7 +70,7 @@
             </div>
 
             @if($task->private)
-                <div class="col-auto text-right">
+                <div class="d-block ml-2">
                     <div class="text-warning d-inline-flex align-items-center">
                         <svg class="icon icon-16 mr-md-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
@@ -80,7 +82,7 @@
         </div>
 
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="taskOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 

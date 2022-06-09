@@ -1,12 +1,12 @@
 <div class="overview-card rounded">
-    <div class="row align-items-center px-3">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
-        <div class="col flex-grow-1 h-100 py-3">
-            <a class="stretched-link outline-none" href="{{ route('memos.show', $memo) }}"></a>
-            <div class="min-w-100 text-truncate">
+        <div class="mw-100 flex-grow-1 h-100 position-relative">
+            <a class="mw-100 stretched-link outline-none" href="{{ route('memos.show', $memo) }}"></a>
+            <div class="mw-100 text-truncate">
                 {{ $memo->title }}
             </div>
-            <div class="text-muted">
+            <div class="mw-100 text-muted">
                 @if(isset($secondaryInformation))
                     @switch($secondaryInformation)
                         @case('withoutProject')
@@ -20,7 +20,7 @@
                                 </svg>
                                 {{ $memo->meeting_held_on }}
                             </div>
-                            <div class="d-flex d-md-inline-flex align-items-center">
+                            <div class="mw-100 d-flex d-md-inline-flex align-items-center">
                                 <svg class="icon icon-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                 </svg>
@@ -28,7 +28,7 @@
                                 <svg class="icon icon-16 mx-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
-                                <span class="min-w-0 text-truncate">
+                                <span class="mw-100 text-truncate">
                                     {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                                 </span>
                             </div>
@@ -46,7 +46,7 @@
                                     {{ $memo->project->name }}
                                 </span>
                             </div>
-                            <div class="d-flex d-md-inline-flex align-items-center">
+                            <div class="mw-100 d-flex d-md-inline-flex align-items-center">
                                 <svg class="text-muted icon icon-16 ml-md-2 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
@@ -58,7 +58,7 @@
                                 <svg class="icon icon-16 mx-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                                 </svg>
-                                <span class="min-w-0 text-truncate">
+                                <span class="mw-100 text-truncate">
                                     {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                                 </span>
                             </div>
@@ -77,7 +77,7 @@
                             {{ $memo->project->name }}
                         </span>
                     </div>
-                    <div class="d-flex d-md-inline-flex align-items-center">
+                    <div class="mw-100 d-flex d-md-inline-flex align-items-center">
                         <svg class="text-muted icon icon-16 ml-md-2 mr-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
@@ -89,7 +89,7 @@
                         <svg class="icon icon-16 mx-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                         </svg>
-                        <span class="min-w-0 text-truncate">
+                        <span class="mw-100 text-truncate">
                             {{  optional($memo->personRecipient)->name ?? 'kein Empfänger' }}
                         </span>
                     </div>
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="memoOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 

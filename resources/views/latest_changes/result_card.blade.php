@@ -1,7 +1,7 @@
-<div class="overview-card rounded">
-    <div class="row align-items-center px-3 position-relative">
-        <a class="stretched-link outline-none" href="{{ $result->route }}"></a>
-        <div class="col flex-grow-1 h-100 py-3">
+<div class="overview-card rounded position-relative">
+    <a class="stretched-link outline-none" href="{{ $result->route }}"></a>
+    <div class="d-flex w-100 p-3 align-items-center">
+        <div class="flex-grow-1 h-100">
             <p class="m-0 mw-100 text-muted text-truncate">
                 @component('partials.model_icon', ['model' => $result->model])
                 @endcomponent
@@ -12,7 +12,7 @@
             </p>
         </div>
 
-        <div class="d-none d-md-flex col-sm-auto text-muted text-right">
+        <div class="d-none d-md-flex text-muted text-right">
             <svg class="icon icon-16 mr-1">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
             </svg>

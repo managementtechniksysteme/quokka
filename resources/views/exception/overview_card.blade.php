@@ -1,6 +1,6 @@
 <div class="overview-card rounded">
-    <div class="row align-items-center px-3">
-        <div class="col test=muted flex-grow-1 h-100 py-3">
+    <div class="mw-100 d-fex flex-grow-1 p-3 align-items-center">
+        <div class="mw-100 flex-grow-1 h-100 position-relative">
             <a class="stretched-link outline-none" href="{{ route('exceptions.show', $exception['uuid']) }}"></a>
             <div class="mw-100 text-truncate">
                 {{ $exception['uuid'] }}
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             @can('tools-deleteexceptions')
                 <form action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
                     @csrf

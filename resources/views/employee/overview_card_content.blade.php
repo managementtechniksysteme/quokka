@@ -1,7 +1,7 @@
 <div class="overview-card rounded">
-    <div class="row align-items-center px-3">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
-        <div class="col test=muted flex-grow-1 h-100 py-3">
+        <div class="mw-100 flex-grow-1 h-100 position-relative">
             <a class="stretched-link outline-none" href="{{ route('employees.show', $employee) }}"></a>
             <div class="mw-100 text-truncate">
                 {{ $employee->person->name }}
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-1">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="employeeOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 

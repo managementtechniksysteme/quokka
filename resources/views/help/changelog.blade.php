@@ -6,7 +6,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline mr-1">
+                <svg class="icon icon-baseline text-muted mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 {{ config('app.name') }} Versionshinweise
@@ -15,6 +15,33 @@
     </div>
 
     <div class="container my-4">
+        @markdown
+        ### v0.1.18-a82141b (09.06.2022)
+        * Bautagesberichte können nun analog zu Serviceberichten verwaltet werden.
+        * Eine Kommandopalette wurde implementiert. Diese kann für schnelle Navigation und Aktionen verwendet werden.
+        Falls eine Aktion eine weitere Eingabe erfordert, werden Listen nach Suchergebnissen gefiltert (z.B. bei der
+        Anzeige einer spezifischen Aufgabe). Die Ergebnisse werden nach dem Start der Eingabe angezeigt. Die Palette
+        kann mit `Strg + k`, `Strg + /` oder `Strg + Leertaste` in Windows oder Linux und `Cmd + k`, 'Cmd + /` oder
+        `Cmd + Leertaste` in MacOS aufgerufen werden. Weiters kann die Palette mit einem Klick auf das Shortcut
+        Symbol der Suche in der Navigationsleiste aktiviert werden.
+        * Eine globale Suche wurde implementiert. Diese kann mittels des Suchfeldes in der Navigationsleiste oder über
+        die Kommandpalette (`Global suchen` verwendet werden.
+        * Eine Anzeige von zuletzt geänderten Elementen ist nun bei entsprechenden Berechtiungen verfügbar.
+        * Fehlerberichte von unerwarteten Serverfehlern können bei entsprechender Berechtigung nun in der Oberfläche
+        angezeigt und gelöscht werden.
+        * Beim Editieren von Texten können Leerzeichen am Ende von Zeilen visuell angezeigt werden. Die Anzeige kann
+        mittels der Paragraph Schaltfläche ganz rechts aktiviert bzw. deaktiviert werden.
+        * Die Suche von Elementen wurde verbessert. So werden Aufgaben nun etwa auch gefunden, wenn ein Teil der
+        zugeordneten Firma oder ein Mitarbeitername des verantwortlichen oder beteiligter Mitarbeiter gefunden wird.
+        * Die Vorschau von Texten wurde gemäß des Standards angepasst, so dass ein einzelner Zeilenumbruch in der
+        Eingabe nicht als neue Zeile in der Vorschau angezeigt wird. Dies ist nun konsistent mit Ausdrucken.
+        * Diverse Anzeigeelemente wurde verbessert.
+        * Ein Fehler bei der Suche von Elementen wurde behoben.
+        * Ein Fehler bei der Erstellung von Mitarbeitern wurde behoben.
+        * Ein Fehler bei der Darstellungen von leeren Listen wurde behoben.
+        * Ein Fehler bei der Berechnung von Werten in der Übersicht wurde behoben.
+        @endmarkdown
+
         @markdown
         ### v0.1.17-39ad206 (25.05.2022)
         * Prüfberichte können nun analog zu Serviceberichten verwaltet werden.

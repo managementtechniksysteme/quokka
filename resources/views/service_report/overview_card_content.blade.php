@@ -1,9 +1,9 @@
 <div class="overview-card rounded border-status @if($serviceReport->isNew()) border-primary @elseif($serviceReport->isSigned()) border-warning @else border-success @endif">
-    <div class="row align-items-center px-3">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
-        <div class="col flex-grow-1 h-100 py-3">
+        <div class="mw-100 flex-grow-1 h-100 position-relative">
             <a class="stretched-link outline-none" href="{{ route('service-reports.show', $serviceReport) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} @endunless#{{ $serviceReport->number }}
                     ({{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on) }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
                         <svg class="icon icon-16 mx-1">
@@ -11,8 +11,8 @@
                         </svg>
                         {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on) }}@endif)
             </div>
-            <div class="text-muted">
-                <div class="d-inline-flex align-items-center">
+            <div class="mw-100 text-muted">
+                <div class="mw-100 d-inline-flex align-items-center">
                     <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="serviceReportOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 

@@ -1,9 +1,9 @@
 <div class="overview-card rounded border-status @if($constructionReport->isNew()) border-primary @elseif($constructionReport->isSigned()) border-warning @else border-success @endif">
-    <div class="row align-items-center px-3">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
-        <div class="col flex-grow-1 h-100 py-3">
+        <div class="mw-100 flex-grow-1 h-100 position-relative">
             <a class="stretched-link outline-none" href="{{ route('construction-reports.show', $constructionReport) }}"></a>
-            <div>
+            <div class="mw-100 text-truncate">
                 @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $constructionReport->project->name }} @endunless#{{ $constructionReport->number }}
                 ({{ $constructionReport->services_provided_on }})
             </div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="constructionReportOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 

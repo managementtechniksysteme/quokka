@@ -1,18 +1,18 @@
 <div class="overview-card rounded">
-    <div class="row px-3 align-items-center">
-        <div class="d-flex align-items-center flex-grow-1 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('addresses.show', $address) }}"></a>
-            <div class="col flex-grow-1 h-100 py-3">
-
-                <p class="m-0 ms-100 text-truncate">
+    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
+        <div class="mw-100 d-flex flex-grow-1 h-100 align-items-center">
+            <div class="mw-100 flex-grow-1 position-relative">
+                <a class="stretched-link outline-none" href="{{ route('addresses.show', $address) }}"></a>
+                <div class="mw-100 text-truncate">
                     {{ $address->name }}
-                </p>
-                <p class="text-muted m-0 ms-100 text-truncate">
+                </div>
+                <div class="text-muted mw-100 text-truncate">
                     {{ $address->address_line }}
-                </p>
+                </div>
             </div>
+        </div>
 
-            <div class="d-none d-sm-block col-sm-auto text-right">
+        <div class="d-none d-sm-block ml-2">
             <span class="text-muted d-inline-flex align-items-center">
                 <svg class="icon icon-12 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
@@ -20,16 +20,15 @@
                 {{ $address->companies_count }}
             </span>
 
-                <span class="text-muted d-inline-flex align-items-center ml-2">
+            <span class="text-muted d-inline-flex align-items-center ml-2">
                 <svg class="icon icon-12 mr-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                 </svg>
                 {{ $address->people_count }}
             </span>
-            </div>
         </div>
 
-        <div class="col-md-auto d-none d-md-block">
+        <div class="d-none d-md-block ml-2">
             <div class="dropdown d-inline">
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="addressOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
@@ -80,6 +79,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>

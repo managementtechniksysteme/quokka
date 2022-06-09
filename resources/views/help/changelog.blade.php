@@ -21,7 +21,7 @@
         * Eine Kommandopalette wurde implementiert. Diese kann für schnelle Navigation und Aktionen verwendet werden.
         Falls eine Aktion eine weitere Eingabe erfordert, werden Listen nach Suchergebnissen gefiltert (z.B. bei der
         Anzeige einer spezifischen Aufgabe). Die Ergebnisse werden nach dem Start der Eingabe angezeigt. Die Palette
-        kann mit `Strg + k`, `Strg + /` oder `Strg + Leertaste` in Windows oder Linux und `Cmd + k`, 'Cmd + /` oder
+        kann mit `Strg + k`, `Strg + /` oder `Strg + Leertaste` in Windows oder Linux und `Cmd + k`, `Cmd + /` oder
         `Cmd + Leertaste` in MacOS aufgerufen werden. Weiters kann die Palette mit einem Klick auf das Shortcut
         Symbol der Suche in der Navigationsleiste aktiviert werden.
         * Eine globale Suche wurde implementiert. Diese kann mittels des Suchfeldes in der Navigationsleiste oder über

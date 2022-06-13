@@ -433,7 +433,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('projects.create');
         $employee->givePermissionTo('projects.update');
         $employee->givePermissionTo('projects.email');
-        $employee->givePermissionTo('projects.createpdf');
 
         // search
         $employee->givePermissionTo('search');

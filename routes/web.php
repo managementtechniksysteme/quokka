@@ -154,7 +154,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/memos/{memo}/email', [MemoController::class, 'email']);
 
     Route::resource('people', PersonController::class);
+
     Route::resource('projects', ProjectController::class);
+    Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
+    Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
+
     Route::resource('roles', RoleController::class);
 
     Route::resource('search', SearchController::class)->only(['index']);

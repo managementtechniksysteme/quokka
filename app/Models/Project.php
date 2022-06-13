@@ -218,4 +218,73 @@ class Project extends Model implements FiltersGlobalSearch
     public function getCurrentKilometresAttribute() {
         return $this->logbook()->sum('driven_kilometres');
     }
+
+    public function getReport($params)
+    {
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
+        $report = $this->accounting()
+            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "' . $currencyUnit .'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, group_concat(distinct accounting.comment separator ", ") as comment')
+            ->join('users', 'accounting.employee_id', '=','users.employee_id')
+            ->join('projects', 'accounting.project_id', '=','projects.id')
+            ->join('services', 'accounting.service_id', '=','services.id')
+            ->groupBy('accounting.service_provided_on')
+            ->groupBy('accounting.employee_id')
+            ->groupBy('users.username')
+            ->groupBy('accounting.service_id')
+            ->groupBy('services.name')
+            ->groupBy('services.unit')
+            ->orderBy('accounting.service_provided_on')
+            ->orderBy('users.username')
+            ->orderBy('services.name');
+
+        if (isset($params['start'])) {
+            $report = $report->where('accounting.service_provided_on', '>=', $params['start']);
+        }
+
+        if (isset($params['end'])) {
+            $report = $report->where('accounting.service_provided_on', '<=', $params['end']);
+        }
+
+        if (isset($params['employee_ids'])) {
+            $report = $report->whereIn('accounting.employee_id', $params['employee_ids']);
+        }
+
+        if (isset($params['service_ids'])) {
+            $report = $report->whereIn('accounting.service_id', $params['service_ids']);
+        }
+
+        return $report->get();
+    }
+
+    public function getReportSums($params)
+    {
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
+        $sums = $this->accounting()
+            ->selectRaw('concat(services.name, " (", ifnull(services.unit, "' . $currencyUnit .'"), ")")  as service, SUM(amount) as amount')
+            ->join('services', 'accounting.service_id', '=','services.id')
+            ->groupBy('services.name')
+            ->groupBy('services.unit')
+            ->orderByDesc('services.type')
+            ->orderBy('services.name');
+
+        if (isset($params['start'])) {
+            $sums = $sums->where('accounting.service_provided_on', '>=', $params['start']);
+        }
+
+        if (isset($params['end'])) {
+            $sums = $sums->where('accounting.service_provided_on', '<=', $params['end']);
+        }
+
+        if (isset($params['employee_ids'])) {
+            $sums = $sums->whereIn('accounting.employee_id', $params['employee_ids']);
+        }
+
+        if (isset($params['service_ids'])) {
+            $sums = $sums->whereIn('accounting.service_id', $params['service_ids']);
+        }
+
+        return $sums->get();
+    }
 }

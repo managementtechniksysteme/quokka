@@ -8,6 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import AccountingSelector from './components/AccountingSelector';
+import AccountingServicesSelector from './components/AccountingServicesSelector';
 import AddressDropdown from './components/AddressDropdown';
 import AttachmentsSelector from './components/AttachmentsSelector';
 import AvatarColourSelector from './components/AvatarColourSelector';
@@ -50,6 +51,7 @@ import MarkdownEdtior from "./components/MarkdownEditor"
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('accounting-selector', AccountingSelector);
+Vue.component('accounting-services-selector', AccountingServicesSelector);
 Vue.component('address-dropdown', AddressDropdown);
 Vue.component('attachments-selector', AttachmentsSelector);
 Vue.component('avatar-colour-selector', AvatarColourSelector);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectDownloadRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\AdditionsReport;
@@ -10,11 +11,15 @@ use App\Models\Company;
 use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
 use App\Models\Memo;
+use App\Models\Person;
 use App\Models\Project;
+use App\Models\Service;
 use App\Models\ServiceReport;
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use ZsgsDesign\PDFConverter\Latex;
 
 class ProjectController extends Controller
 {
@@ -278,6 +283,73 @@ class ProjectController extends Controller
         $project->delete();
 
         return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');
+    }
+
+    public function showDownload(Project $project)
+    {
+        $employees = Person::has('employee')->order()->get();
+        $services = Service::order()->get();
+
+        return view('project.download')->with(compact('project'))->with(compact('employees'))->with(compact('services'));
+    }
+
+    public function download(ProjectDownloadRequest $request, Project $project)
+    {
+        $validatedData = $request->validated();
+
+        $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : null;
+        $end = isset($validatedData['end']) ? Carbon::parse($validatedData['end']) : null;
+
+        $startFormatted = optional($start)->format('Ymd') ?? '';
+        $endFormatted = optional($end)->format('Ymd') ?? '';
+        $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
+
+        $fileName = 'PR ' . $project->name . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
+
+        $report = $project->getReport($validatedData);
+        $sums = $project->getReportSums($validatedData);
+
+        $filterPeople = isset($validatedData['employee_ids']) ?
+            Person::whereIn('id', $validatedData['employee_ids'])
+                ->with('employee.user')
+                ->get()
+                ->sortBy('employee.user.username')
+                ->values() :
+            null;
+
+        $filterServices = isset($validatedData['service_ids']) ?
+            Service::whereIn('id', $validatedData['service_ids'])
+                ->orderByDesc('type')
+                ->orderBy('name')
+                ->get() :
+            null;
+
+        $people = Person::whereIn('id', $report->pluck('employee_id')->unique())
+                ->with('employee.user')
+                ->get()
+                ->sortBy('employee.user.username')
+                ->values();
+
+        $services = Service::whereIn('id', $report->pluck('service_id')->unique())
+                ->orderByDesc('type')
+                ->orderBy('name')
+                ->get();
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.project_report', [
+                'report' => $report,
+                'sums' => $sums,
+                'project' => $project,
+                'filterPeople' => $filterPeople,
+                'filterServices' => $filterServices,
+                'people' => $people,
+                'services' => $services,
+                'start' => $start,
+                'end' => $end
+            ])
+            ->download($fileName);
     }
 
     private function getConditionalRedirect(?string $target, Project $project)

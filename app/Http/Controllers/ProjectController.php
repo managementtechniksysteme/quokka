@@ -19,6 +19,7 @@ use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use ZsgsDesign\PDFConverter\Latex;
 
 class ProjectController extends Controller

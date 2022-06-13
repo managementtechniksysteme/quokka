@@ -41,7 +41,7 @@
 \hline
 \endhead
 @foreach($report as $entry)
-\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->service_provided_on)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->service) !!}} & \footnotesize{{!! Latex::escape(Str::upper($entry->username)) !!}} & \footnotesize{{!! Latex::escape(Number::toLocal($entry->amount)) !!}} & \footnotesize{{!! Latex::escape($entry->comment ?? '') !!}} \\
+\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->service_provided_on)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->service) !!}} & \footnotesize{{!! Latex::escape(Str::upper($entry->username)) !!}} & \footnotesize{{!! Latex::escape(Number::toLocal($entry->amount)) !!}} & \footnotesize{{!! Latex::escape($entry->comment ? Str::replace("\n", ', ', $entry->comment) : '') !!}} \\
 \hline
 @endforeach
 \end{longtable}

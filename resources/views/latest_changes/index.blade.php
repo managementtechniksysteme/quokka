@@ -68,7 +68,7 @@
                         <svg class="icon-bs icon-baseline text-muted mr-1">
                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                         </svg>
-                        Vor dieser Woche
+                        Vorher
                     </h4>
                 @endunless
                 @foreach($changesOlderThanThisWeek as $change)

@@ -42,7 +42,7 @@
                     </svg>
                 </div>
                 <input @keydown.tab.prevent="" @keydown.prevent.stop.enter="go()" @keydown.prevent.arrow-up="selectUp()"
-                       @keydown.prevent.arrow-down="selectDown()" x-ref="input" x-model.debounce="input"
+                       @keydown.prevent.arrow-down="selectDown()" x-ref="input" x-model.debounce.500ms="input"
                        type="text"
                        class="spotlight-input w-100 bg-transparent px-6 py-4 text-gray-300 lead border-0 outline-none"
                        x-bind:placeholder="inputPlaceholder">

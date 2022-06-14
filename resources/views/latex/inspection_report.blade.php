@@ -17,7 +17,7 @@
 \footnotesize{\textbf{Kunde:}} & \multicolumn{3}{l}{\footnotesize{{!! Latex::escape($inspectionReport->project->company->name) !!}}} \\
 \footnotesize{\textbf{Techniker:}} & \multicolumn{3}{l}{\footnotesize{{!! Latex::escape($inspectionReport->employee->person->name) !!}}} \\
 @if(Auth::check() && $inspectionReport->status === 'finished')
-\footnotesize{\textbf{erledigt am:}} & \multicolumn{3}{l}{\footnotesize{{!! Latex::escape($additionsReport->updated_at)!!}}} \\
+\footnotesize{\textbf{\textcolor{success}{erledigt am:}}} & \multicolumn{3}{l}{\footnotesize{\textcolor{success}{{!! Latex::escape($inspectionReport->updated_at)!!}}}} \\
 @endif
 \end{tabular}
 

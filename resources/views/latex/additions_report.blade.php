@@ -51,7 +51,7 @@
 \footnotesize{\textbf{Bedenken:}} & \footnotesize{{!! Latex::escape($additionsReport->concerns) !!}} \\
 @endif
 @if(Auth::check() && $additionsReport->status === 'finished')
-\footnotesize{\textbf{erledigt am:}} & \footnotesize{{!! Latex::escape($additionsReport->updated_at)!!}}
+\footnotesize{\textbf{\textcolor{success}{erledigt am:}}} & \footnotesize{\textcolor{success}{{!! Latex::escape($additionsReport->updated_at)!!}}}
 @endif
 \end{tabular}
 \section{Leistungsfortschritt}

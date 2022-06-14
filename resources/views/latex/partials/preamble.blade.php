@@ -112,3 +112,11 @@
 \renewcommand{\footrulewidth}{0cm}
 \headheight 2.6cm
 \footskip 1cm
+
+\definecolor{success}{RGB}{40,167,69}
+\definecolor{warning}{RGB}{253,126,20}
+\definecolor{danger}{RGB}{220,53,69}
+
+\def\ignorelinebreaks{%
+\catcode`\^^M=9
+\endlinechar=`\^^M}

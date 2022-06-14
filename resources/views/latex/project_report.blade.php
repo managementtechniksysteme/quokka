@@ -45,20 +45,95 @@
 \hline
 @endforeach
 \end{longtable}
-\footnotesize{\textbf{Summen:}}\\\\
+\footnotesize{\textbf{Summen:}}\\
 @foreach($sums as $sum)
-\footnotesize{{!! Latex::escape($sum->service) !!}}: \footnotesize{{!! Latex::escape(Number::toLocal($sum->amount)) !!}}\\
+\footnotesize{{!! Latex::escape($sum->service) !!}}\footnotesize{: }\footnotesize{{!! Latex::escape(Number::toLocal($sum->amount)) !!}}\\
 @endforeach
-\\\\
-\begin{scriptsize}
-Mitarbeiterkürzel:
-\setlist{nosep}
-\begin{description}[labelwidth=0.7cm]
+\\
+\begin{ignorelinebreaks}
+@if($project->costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
+@can('projects.view.estimates')
+\footnotesize{\textbf{Kosten ohne Filter:}}\\
+@if($project->costs || $project->current_costs)
+\footnotesize{Gesamtkosten: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) : '') !!}}
+@if($project->current_costs)
+@if($project->costs)\footnotesize{ - }@endif
+\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+@if($project->current_costs_percentage)
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+@switch($project->current_costs_status)
+@case('success')
+\textcolor{success}{\textbf{$\downarrow$}}
+@break
+@case('warning')
+\textcolor{warning}{\textbf{$\searrow$}}
+@break
+@case('danger')
+\textcolor{danger}{\textbf{$\uparrow$}}
+@break
+@endswitch
+@endif
+@endif
+\\
+@endif
+@if($project->wage_costs || $project->current_wage_costs)
+\footnotesize{Lohnkosten: }\footnotesize{{!! Latex::escape($project->wage_costs ? $currencyUnit . ' ' . Number::toLocal($project->wage_costs) : '') !!}}
+@if($project->current_wage_costs)
+@if($project->wage_costs)\footnotesize{ - }@endif
+\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_wage_costs)) !!}}
+@if($project->current_wage_costs_percentage)
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_wage_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+@switch($project->current_wage_costs_status)
+@case('success')
+\textcolor{success}{\textbf{$\downarrow$}}
+@break
+@case('warning')
+\textcolor{warning}{\textbf{$\searrow$}}
+@break
+@case('danger')
+\textcolor{danger}{\textbf{$\uparrow$}}
+@break
+@endswitch
+@endif
+@endif
+\\
+@endif
+@if($project->material_costs || $project->current_material_costs)
+\footnotesize{Materialkosten: }\footnotesize{{!! Latex::escape($project->material_costs ? $currencyUnit . ' ' . Number::toLocal($project->material_costs) : '') !!}}
+@if($project->current_material_costs)
+@if($project->material_costs)\footnotesize{ - }@endif
+\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_material_costs)) !!}}
+@if($project->current_material_costs_percentage)
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_material_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+@switch($project->current_material_costs_status)
+@case('success')
+\textcolor{success}{\textbf{$\downarrow$}}
+@break
+@case('warning')
+\textcolor{warning}{\textbf{$\searrow$}}
+@break
+@case('danger')
+\textcolor{danger}{\textbf{$\uparrow$}}
+@break
+@endswitch
+@endif
+@endif
+\\
+@endif
+\\
+@endcan
+@endif
+\end{ignorelinebreaks}
+\begin{footnotesize}
+\textbf{Mitarbeiterkürzel:}
+\setlist{nosep, topsep=-0.2cm}
+\setdescription{font=\normalfont}
+\begin{description}[labelwidth=0.8cm]
 @foreach($people as $person)
 \item[{!! Latex::escape(Str::upper($person->employee->user->username)) !!}:] {!! Latex::escape($person->name) !!}
 @endforeach
 \end{description}
-\end{scriptsize}
+\end{footnotesize}
 @else
 Es sind keine Abrechnungen passend dem Filter vorhanden.
 @endif

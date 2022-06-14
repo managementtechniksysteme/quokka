@@ -336,6 +336,8 @@ class ProjectController extends Controller
                 ->orderBy('name')
                 ->get();
 
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
@@ -348,7 +350,8 @@ class ProjectController extends Controller
                 'people' => $people,
                 'services' => $services,
                 'start' => $start,
-                'end' => $end
+                'end' => $end,
+                'currencyUnit' => $currencyUnit,
             ])
             ->download($fileName);
     }

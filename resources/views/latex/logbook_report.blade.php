@@ -43,15 +43,16 @@
 \footnotesize{\textbf{Summe}} & \footnotesize{} & \footnotesize{} & \footnotesize{} & \footnotesize{} & \footnotesize{} & \footnotesize{} & \footnotesize{} & \footnotesize{\textbf{{!! Latex::escape($report->sum('driven_kilometres') > 0 ? Number::toLocal($report->sum('driven_kilometres')) : '') !!}}} & \footnotesize{\textbf{{!! Latex::escape($report->sum('litres_refuelled') > 0 ? Number::toLocal($report->sum('litres_refuelled')) : '') !!}}} \\
 \hline
 \end{longtable}
-\begin{scriptsize}
-Mitarbeiterkürzel:
-\setlist{nosep}
-\begin{description}[labelwidth=0.7cm]
+\begin{footnotesize}
+\textbf{Mitarbeiterkürzel:}
+\setlist{nosep, topsep=-0.2cm}
+\setdescription{font=\normalfont}
+\begin{description}[labelwidth=0.8cm]
 @foreach($people as $person)
 \item[{!! Latex::escape(Str::upper($person->employee->user->username)) !!}:] {!! Latex::escape($person->name) !!}
 @endforeach
 \end{description}
-\end{scriptsize}
+\end{footnotesize}
 @else
 Es sind keine Fahrten passend dem Filter vorhanden.
 @endif

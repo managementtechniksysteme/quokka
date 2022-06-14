@@ -26,6 +26,8 @@
     "dependencies": {
         "alpinejs": "^3.10.2",
         "bootstrap-icons": "^1.8.1",
+        "browser-sync": "^2.27.10",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "clipboard": "^2.0.11",
         "feather-icons": "^4.28.0",
         "jw-vue-pagination": "^1.0.3",

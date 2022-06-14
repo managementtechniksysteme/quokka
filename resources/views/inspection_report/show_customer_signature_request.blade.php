@@ -284,7 +284,9 @@
                     </svg>
                     Durchgeführte Arbeiten und Bemerkungen
                 </div>
-                {!! Html::fromMarkdown($inspectionReport->comment) !!}
+                <div class="markdown">
+                    {!! Html::fromMarkdown($inspectionReport->comment) !!}
+                </div>
             @endif
 
             <div class="alert alert-info mt-4" role="alert">

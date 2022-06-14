@@ -235,7 +235,9 @@
                 </svg>
                 Bemerkungen
             </div>
-            {!! Html::fromMarkdown($person->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($person->comment) !!}
+            </div>
         @endif
 
     </div>

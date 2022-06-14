@@ -164,6 +164,8 @@
             </svg>
             Bemerkungen
         </div>
-        {!! Html::fromMarkdown($project->comment) !!}
+        <div class="markdown">
+            {!! Html::fromMarkdown($project->comment) !!}
+        </div>
     @endif
 @endsection

@@ -327,7 +327,9 @@
                 </svg>
                 Leistungsfortschritt
             </div>
-            {!! Html::fromMarkdown($additionsReport->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($additionsReport->comment) !!}
+            </div>
         @endif
 
         @if($additionsReport->attachments()->count() > 0)

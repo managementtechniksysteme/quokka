@@ -172,7 +172,9 @@
                 </svg>
                 Bemerkungen
             </div>
-            {!! Html::fromMarkdown($serviceReport->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($serviceReport->comment) !!}
+            </div>
         @endif
 
         @if($serviceReport->attachments()->count() > 0)

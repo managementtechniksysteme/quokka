@@ -114,7 +114,9 @@
             </svg>
             Bemerkungen
         </div>
-        {!! Html::fromMarkdown($company->comment) !!}
+        <div class="markdown">
+            {!! Html::fromMarkdown($company->comment) !!}
+        </div>
     @endif
 
 @endsection

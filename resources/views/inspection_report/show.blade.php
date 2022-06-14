@@ -419,7 +419,9 @@
                 </svg>
                 Durchgeführte Arbeiten und Bemerkungen
             </div>
-            {!! Html::fromMarkdown($inspectionReport->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($inspectionReport->comment) !!}
+            </div>
         @endif
 
         @if($inspectionReport->attachments()->count() > 0)

@@ -201,7 +201,9 @@
                     </svg>
                     Leistungsfortschritt
                 </div>
-                {!! Html::fromMarkdown($constructionReport->comment) !!}
+                <div class="markdown">
+                    {!! Html::fromMarkdown($constructionReport->comment) !!}
+                </div>
             @endif
 
             <div class="alert alert-info mt-4" role="alert">

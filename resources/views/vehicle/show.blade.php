@@ -104,7 +104,9 @@
                 </svg>
                 Bemerkungen
             </div>
-            {!! Html::fromMarkdown($vehicle->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($vehicle->comment) !!}
+            </div>
 
       @endif
     </div>

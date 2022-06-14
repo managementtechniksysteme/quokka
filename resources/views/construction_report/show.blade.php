@@ -314,7 +314,9 @@
                 </svg>
                 Leistungsfortschritt
             </div>
-            {!! Html::fromMarkdown($constructionReport->comment) !!}
+            <div class="markdown">
+                {!! Html::fromMarkdown($constructionReport->comment) !!}
+            </div>
         @endif
 
         @if($constructionReport->attachments()->count() > 0)

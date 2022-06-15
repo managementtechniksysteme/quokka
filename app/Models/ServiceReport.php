@@ -78,6 +78,9 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         if (Auth::user()->settings->show_only_own_reports) {
             $filter .= 't:' . Auth::user()->username . ' ';
         }
+        if (! Auth::user()->settings->show_signed_reports) {
+            $filter .= '!ist:unterschrieben ';
+        }
         if (! Auth::user()->settings->show_finished_items) {
             $filter .= '!ist:erledigt ';
         }

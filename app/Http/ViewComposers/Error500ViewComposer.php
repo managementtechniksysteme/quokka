@@ -23,6 +23,8 @@ class Error500ViewComposer
 
             $postParameters = Request::post();
 
+            dd($postParameters);
+
             $postParametersString = rtrim(
                 array_reduce(array_keys($postParameters), function ($string, $key) use ($postParameters) {
                     return $string . $key . ' => ' . $postParameters[$key] . ', ';

@@ -114,6 +114,25 @@
 
                 <div class="form-group">
                     <div>
+                        <label for="show_signed_reports">Unterschriebene Elemente in Listen von Berichten anzeigen?</label>
+                    </div>
+                    <div class="btn-group btn-group-toggle @error('show_signed_reports') is-invalid @enderror" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == true) active @endif">
+                            <input type="radio" name="show_signed_reports" id="1" value="1" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == true) checked @endif> Elemente anzeigen
+                        </label>
+                        <label class="btn btn-outline-secondary @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == false) active @endif">
+                            <input type="radio" name="show_signed_reports" id="0" value="0" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == false) checked @endif> Elemente nicht anzeigen
+                        </label>
+                    </div>
+                    <div class="invalid-feedback @error('show_signed_reports') d-block @enderror">
+                        @error('show_signed_reports')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
                         <label for="show_finished_items">Nur eigene Elemente in Listen von Berichten anzeigen?</label>
                     </div>
                     <div class="btn-group btn-group-toggle @error('show_only_own_reports') is-invalid @enderror" data-toggle="buttons">

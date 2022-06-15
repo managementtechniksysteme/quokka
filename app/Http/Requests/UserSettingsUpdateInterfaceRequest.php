@@ -17,6 +17,7 @@ class UserSettingsUpdateInterfaceRequest extends FormRequest
             'list_pagination_size' => 'required|integer|in:5,10,15,20,25,30',
             'latest_changes_quantity' => 'sometimes|integer|in:5,10,15,20,25,30,40,50',
             'show_finished_items' => 'required|boolean',
+            'show_signed_reports' => 'required|boolean',
             'show_only_own_reports' => 'required|boolean',
             'show_cost_estimates' => 'sometimes|boolean|nullable',
             'task_comments_sort_newest_first' => 'required|boolean',

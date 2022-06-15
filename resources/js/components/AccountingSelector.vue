@@ -194,8 +194,8 @@
                                   Auswertung
                               </button>
 
-                              <div class="dropdown">
-                                  <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+                              <div v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="dropdown">
+                                  <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
                                       <svg class="icon icon-16 mr-2">
                                           <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                       </svg>
@@ -211,6 +211,13 @@
                                       </button>
                                   </div>
                               </div>
+
+                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                                  <svg class="icon icon-16 mr-2">
+                                      <use xlink:href="/svg/feather-sprite.svg#settings"></use>
+                                  </svg>
+                                  Servicebericht erstellen
+                              </button>
                           </div>
                       </div>
 
@@ -829,6 +836,16 @@
                 window.open(url).focus();
             },
 
+            createServiceReportFromSelectedAccounting() {
+                let url = new URL(window.location.origin + '/service-reports/create');
+
+                url.search = new URLSearchParams(
+                    this.getSelectedAccounting().map(accounting => ['accounting[]', accounting.id])
+                ).toString();
+
+                window.open(url).focus();
+            },
+
             getUnsavedAccounting() {
                 return this.accounting.filter(acc => acc.action !== null);
             },
@@ -1148,6 +1165,33 @@
 
             getSelectedAccounting() {
                 return this.accounting.filter(acc => acc.selected === true);
+            },
+
+            selectedAccountingIsHourBased() {
+                let selectedAccounting = this.getSelectedAccounting();
+                let hourBased = this.getSelectedAccounting().filter(accounting => {
+                    let service = this.getService(accounting.service_id);
+                    return service.unit && service.unit === this.services_hour_unit;
+                });
+
+                return hourBased.length === selectedAccounting.length;
+            },
+
+            selectedAccountingIsOwn() {
+                let selectedAccounting = this.getSelectedAccounting();
+
+                return selectedAccounting.
+                    filter(accounting =>
+                        accounting.employee_id === this.current_employee.id
+                    ).length === selectedAccounting.length;
+            },
+
+            selectedAccountingIsSingleProject() {
+                const unique = (value, index, self) => {
+                    return self.indexOf(value) === index
+                }
+
+                return this.getSelectedAccounting().map(accounting => accounting.project_id).filter(unique).length === 1;
             },
 
             toggleShowDetails(accounting) {

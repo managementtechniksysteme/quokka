@@ -63,6 +63,7 @@ class AccountingController extends Controller
         $accountingPermissions = Auth::user()
             ->permissions()
             ->where('name', 'LIKE', 'accounting%')
+            ->orWhere('name', '=', 'service-reports.create')
             ->select('name')
             ->pluck('name');
 

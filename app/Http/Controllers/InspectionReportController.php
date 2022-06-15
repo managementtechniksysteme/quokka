@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\InspectionReportCreateRequest;
 use App\Http\Requests\InspectionReportStoreRequest;
 use App\Events\InspectionReportCreatedEvent;
 use App\Events\InspectionReportSignedEvent;
@@ -62,13 +63,15 @@ class InspectionReportController extends Controller
         return view('inspection_report.index')->with(compact('inspectionReports'));
     }
 
-    public function create(Request $request)
+    public function create(InspectionReportCreateRequest $request)
     {
         $templateInspectionReport = null;
         $currentProject = null;
 
-        if($request->filled('template')) {
-            $templateInspectionReport = InspectionReport::find($request->template);
+        $validatedData = $request->validated();
+
+        if(isset($validatedData['template'])) {
+            $templateInspectionReport = InspectionReport::find($validatedData['template']);
 
             if(!$templateInspectionReport) {
                 return redirect()

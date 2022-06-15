@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\MemoCreatedEvent;
 use App\Events\MemoUpdatedEvent;
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\MemoCreateRequest;
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
 use App\Mail\MemoMail;
@@ -57,7 +58,7 @@ class MemoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(MemoCreateRequest $request)
     {
         $templateMemo = null;
         $currentProject = null;
@@ -66,8 +67,10 @@ class MemoController extends Controller
         $currentPresentPeople = null;
         $currentNotifiedPeople = null;
 
-        if($request->filled('template')) {
-            $templateMemo = Memo::find($request->template);
+        $validatedData = $request->validated();
+
+        if(isset($validatedData['template'])) {
+            $templateMemo = Memo::find($validatedData['template']);
 
             if(!$templateMemo) {
                 return redirect()

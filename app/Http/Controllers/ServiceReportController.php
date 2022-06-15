@@ -85,6 +85,7 @@ class ServiceReportController extends Controller
     public function create(ServiceReportCreateRequest $request)
     {
         $serviceReport = null;
+        $comment = null;
         $currentProject = null;
         $currentServices = null;
 

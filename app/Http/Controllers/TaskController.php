@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\TaskCreatedEvent;
 use App\Events\TaskUpdatedEvent;
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Mail\TaskMail;
@@ -53,15 +54,17 @@ class TaskController extends Controller
         return view('task.index')->with(compact('tasks'));
     }
 
-    public function create(Request $request): RedirectResponse|View
+    public function create(TaskCreateRequest $request): RedirectResponse|View
     {
         $templateTask = null;
         $currentProject = null;
         $currentResponsibleEmployee = null;
         $currentInvolvedEmployees = null;
 
-        if($request->filled('template')) {
-            $templateTask = Task::find($request->template);
+        $validatedData = $request->validated();
+
+        if(isset($validatedData['template'])) {
+            $templateTask = Task::find($validatedData['template']);
 
             if(!$templateTask) {
                 return redirect()

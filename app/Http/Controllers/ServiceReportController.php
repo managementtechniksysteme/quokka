@@ -14,7 +14,6 @@ use App\Http\Requests\SingleEmailRequest;
 use App\Mail\ServiceReportDownloadRequestMail;
 use App\Mail\ServiceReportMail;
 use App\Mail\ServiceReportSignatureRequestMail;
-use App\Models\Accounting;
 use App\Models\DownloadRequest;
 use App\Models\Person;
 use App\Models\Project;
@@ -23,7 +22,6 @@ use App\Models\ServiceReportService;
 use App\Models\SignatureRequest;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -93,7 +91,8 @@ class ServiceReportController extends Controller
 
         if (isset($validatedData['accounting'])) {
             try {
-                [$currentProject, $currentServices, $comment] = $this->getServicesForAccounting($validatedData['accounting']);
+                [$currentProject, $currentServices, $comment] =
+                    ServiceReportService::getServicesForAccounting($validatedData['accounting']);
             }
             catch (Exception $exception) {
                 return back()->with('danger', $exception->getMessage());
@@ -101,7 +100,8 @@ class ServiceReportController extends Controller
         }
         else if (isset($validatedData['logbook'])) {
             try {
-                [$currentProject, $currentServices, $comment] = $this->getServicesForLogbook($validatedData['logbook']);
+                [$currentProject, $currentServices, $comment] =
+                    ServiceReportService::getServicesForLogbook($validatedData['logbook']);
             }
             catch (Exception $exception) {
                 return back()->with('danger', $exception->getMessage());
@@ -558,96 +558,6 @@ class ServiceReportController extends Controller
         $serviceReport->deleteSignatureRequest();
 
         event(new ServiceReportSignedEvent($serviceReport));
-    }
-
-    private function getServicesForAccounting(array $accountingIds): array
-    {
-        $accounting = DB::table('accounting')
-            ->selectRaw('service_provided_on as date, sum(amount) as hours, group_concat(distinct comment separator "\n") as comment, project_id')
-            ->whereIn('id', $accountingIds)
-            ->groupBy('service_provided_on')
-            ->groupBy('project_id')
-            ->get();
-
-        if($accounting->pluck('project_id')->unique()->count() > 1) {
-            throw new Exception('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
-        }
-
-        $project = Project::find($accounting->first()->project_id);
-
-        $logbook = DB::table('logbook')
-            ->selectRaw('driven_on as date, sum(driven_kilometres) as driven_kilometres')
-            ->whereIn('driven_on', $accounting->pluck('date'))
-            ->where('project_id', $project->id)
-            ->groupBy('driven_on')
-            ->get();
-
-        $accounting = $accounting->map(function($accounting) {
-            return (array) $accounting;
-        })->keyBy('date');
-        $logbook = $logbook->map(function($logbook) {
-            return (array) $logbook;
-        })->keyBy('date');
-        $services = $accounting->mergeRecursive($logbook);
-
-        $serviceReportServices = collect();
-
-        foreach($services as $date => $service) {
-            $serviceReportServices->push(ServiceReportService::make([
-                'provided_on' => $date,
-                'hours' => $service['hours'] ?? 0,
-                'kilometres' => $service['driven_kilometres'] ?? 0,
-            ]));
-        }
-
-        $comment = $accounting->pluck('comment')->join("\n\n");
-
-        return [$project, $serviceReportServices, $comment];
-    }
-
-    private function getServicesForLogbook(array $logbookIds): array
-    {
-        $logbook = DB::table('logbook')
-            ->selectRaw('driven_on as date, sum(driven_kilometres) as driven_kilometres, project_id')
-            ->whereIn('id', $logbookIds)
-            ->groupBy('driven_on')
-            ->groupBy('project_id')
-            ->get();
-
-        if($logbook->pluck('project_id')->unique()->count() > 1) {
-            throw new Exception('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
-        }
-
-        $project = Project::find($logbook->first()->project_id);
-
-        $accounting = DB::table('accounting')
-            ->selectRaw('service_provided_on as date, sum(amount) as hours, group_concat(distinct comment separator "\n") as comment')
-            ->whereBetween('service_provided_on', [$logbook->min('date'), $logbook->max('date')])
-            ->where('project_id', $project->id)
-            ->groupBy('service_provided_on')
-            ->get();
-
-        $accounting = $accounting->map(function($accounting) {
-            return (array) $accounting;
-        })->keyBy('date');
-        $logbook = $logbook->map(function($logbook) {
-            return (array) $logbook;
-        })->keyBy('date');
-        $services = $accounting->mergeRecursive($logbook);
-
-        $serviceReportServices = collect();
-
-        foreach($services as $date => $service) {
-            $serviceReportServices->push(ServiceReportService::make([
-                'provided_on' => $date,
-                'hours' => $service['hours'] ?? 0,
-                'kilometres' => $service['driven_kilometres'] ?? 0,
-            ]));
-        }
-
-        $comment = $accounting->pluck('comment')->join("\n\n");
-
-        return [$project, $serviceReportServices, $comment];
     }
 
     private function getConditionalRedirect(?string $target, ServiceReport $serviceReport)

@@ -600,7 +600,7 @@ class ServiceReportController extends Controller
             ]));
         }
 
-        $comment = $accounting->pluck('comment')->join("\n");
+        $comment = $accounting->pluck('comment')->join("\n\n");
 
         return [$project, $serviceReportServices, $comment];
     }
@@ -645,7 +645,7 @@ class ServiceReportController extends Controller
             ]));
         }
 
-        $comment = $accounting->pluck('comment')->join("\n");
+        $comment = $accounting->pluck('comment')->join("\n\n");
 
         return [$project, $serviceReportServices, $comment];
     }

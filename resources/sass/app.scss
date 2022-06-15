@@ -392,6 +392,10 @@ a.outline-none {
     width: 6rem !important;
 }
 
+.global-search-form.was-validated .form-control:valid, .global-search-form.was-validated .form-control:invalid {
+    background-image: none;
+}
+
 .global-search-append-button:hover {
     color: $white !important;
     background-color: $secondary !important;

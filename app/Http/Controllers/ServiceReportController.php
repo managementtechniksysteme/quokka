@@ -582,8 +582,12 @@ class ServiceReportController extends Controller
             ->groupBy('driven_on')
             ->get();
 
-        $accounting = $accounting->keyBy('date');
-        $logbook = $logbook->keyBy('date');
+        $accounting = $accounting->map(function($accounting) {
+            return (array) $accounting;
+        })->keyBy('date');
+        $logbook = $logbook->map(function($logbook) {
+            return (array) $logbook;
+        })->keyBy('date');
         $services = $accounting->mergeRecursive($logbook);
 
         $serviceReportServices = collect();
@@ -591,8 +595,8 @@ class ServiceReportController extends Controller
         foreach($services as $date => $service) {
             $serviceReportServices->push(ServiceReportService::make([
                 'provided_on' => $date,
-                'hours' => $service['hours'],
-                'kilometres' => $service['driven_kilometres'],
+                'hours' => $service['hours'] ?? 0,
+                'kilometres' => $service['driven_kilometres'] ?? 0,
             ]));
         }
 
@@ -623,8 +627,12 @@ class ServiceReportController extends Controller
             ->groupBy('service_provided_on')
             ->get();
 
-        $accounting = $accounting->keyBy('date');
-        $logbook = $logbook->keyBy('date');
+        $accounting = $accounting->map(function($accounting) {
+            return (array) $accounting;
+        })->keyBy('date');
+        $logbook = $logbook->map(function($logbook) {
+            return (array) $logbook;
+        })->keyBy('date');
         $services = $accounting->mergeRecursive($logbook);
 
         $serviceReportServices = collect();
@@ -632,8 +640,8 @@ class ServiceReportController extends Controller
         foreach($services as $date => $service) {
             $serviceReportServices->push(ServiceReportService::make([
                 'provided_on' => $date,
-                'hours' => $service['hours'] ?? null,
-                'kilometres' => $service['driven_kilometres'] ?? null,
+                'hours' => $service['hours'] ?? 0,
+                'kilometres' => $service['driven_kilometres'] ?? 0,
             ]));
         }
 

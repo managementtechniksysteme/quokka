@@ -570,7 +570,7 @@ class ServiceReportController extends Controller
             ->get();
 
         if($accounting->pluck('project_id')->unique()->count() > 1) {
-            throw new \Error('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
+            throw new Exception('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
         }
 
         $project = Project::find($accounting->first()->project_id);
@@ -615,7 +615,7 @@ class ServiceReportController extends Controller
             ->get();
 
         if($logbook->pluck('project_id')->unique()->count() > 1) {
-            throw new \Error('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
+            throw new Exception('Ein Servicebericht kann nur mit Leistungen und Fahrten aus einem Projekte erstellt werden.');
         }
 
         $project = Project::find($logbook->first()->project_id);

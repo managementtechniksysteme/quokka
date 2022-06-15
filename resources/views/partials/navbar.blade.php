@@ -14,8 +14,8 @@
                             </svg>
                         </div>
                     </span>
-                    <form class="form-inline flex-grow-1" action="{{ route('search.index') }}" method="get">
-                        <input type="search" name="query" class="form-control global-search-input outline-none border-0 pl-0 rounded-0 flex-grow-1" placeholder="Suche" autocomplete="off">
+                    <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
+                        <input type="search" name="query" class="form-control global-search-input outline-none border-0 pl-0 rounded-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
                     </form>
                     <span class="input-group-append ml-auto">
                         <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
@@ -295,8 +295,8 @@
                                 </svg>
                             </div>
                         </span>
-                        <form class="form-inline flex-grow-1" action="{{ route('search.index') }}" method="get">
-                            <input type="search" name="query" class="form-control global-search-input border-0 outline-none pl-0 flex-grow-1" placeholder="Suche" autocomplete="off">
+                        <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
+                            <input type="search" name="query" class="form-control global-search-input border-0 outline-none pl-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
                         </form>
                         <span class="input-group-append">
                             <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">

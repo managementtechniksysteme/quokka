@@ -66,6 +66,7 @@ class LogbookController extends Controller
         $logbookPermissions = Auth::user()
             ->permissions()
             ->where('name', 'LIKE', 'logbook%')
+            ->orWhere('name', 'service-reports.create')
             ->select('name')
             ->pluck('name');
 

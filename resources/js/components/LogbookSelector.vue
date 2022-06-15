@@ -222,6 +222,13 @@
                                   </svg>
                                   Auswertung
                               </button>
+
+                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedLogbook().length && this.selectedLogbookIsOwn() && this.selectedLogbookIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                                  <svg class="icon icon-16 mr-2">
+                                      <use xlink:href="/svg/feather-sprite.svg#settings"></use>
+                                  </svg>
+                                  Servicebericht erstellen
+                              </button>
                           </div>
                       </div>
 
@@ -899,6 +906,16 @@
                 window.open(url).focus();
             },
 
+            createServiceReportFromSelectedAccounting() {
+                let url = new URL(window.location.origin + '/service-reports/create');
+
+                url.search = new URLSearchParams(
+                    this.getSelectedLogbook().map(logbook => ['logbook[]', logbook.id])
+                ).toString();
+
+                window.open(url).focus();
+            },
+
             getUnsavedLogbook() {
                 return this.logbook.filter(book => book.action !== null);
             },
@@ -1358,6 +1375,23 @@
 
             getSelectedLogbook() {
                 return this.logbook.filter(book => book.selected === true);
+            },
+
+            selectedLogbookIsOwn() {
+                let selectedLogbook = this.getSelectedLogbook();
+
+                return selectedLogbook.
+                filter(logbook =>
+                    logbook.employee_id === this.current_employee.id
+                ).length === selectedLogbook.length;
+            },
+
+            selectedLogbookIsSingleProject() {
+                const unique = (value, index, self) => {
+                    return self.indexOf(value) === index
+                }
+
+                return this.getSelectedLogbook().map(logbook => logbook.project_id).filter(unique).length === 1;
             },
 
             toggleShowDetails(logbook) {

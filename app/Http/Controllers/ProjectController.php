@@ -391,6 +391,11 @@ class ProjectController extends Controller
 
         $companies = $companies->with('projects')->withCount('projects')->get();
 
+        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
+        $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
+        $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+
         $fileName = 'PL' . optional($company)->name ?? '';
 
         return (new Latex())
@@ -399,6 +404,10 @@ class ProjectController extends Controller
             ->view('latex.project_list', [
                 'companies' => $companies,
                 'company' => $company,
+                'projectOverwallCostsWarningPercentage' => $projectOverwallCostsWarningPercentage,
+                'projectBilledCostsWarningPercentage' => $projectBilledCostsWarningPercentage,
+                'projectMaterialCostsWarningPercentage' => $projectMaterialCostsWarningPercentage,
+                'projectWageCostsWarningPercentage' => $projectWageCostsWarningPercentage,
             ])
             ->download($fileName);
     }

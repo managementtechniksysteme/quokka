@@ -13,7 +13,7 @@ class ProjectDownloadListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company_id' => 'sometimes|exists:companies:id',
+            'company_id' => 'sometimes|exists:companies,id',
         ];
     }
 }

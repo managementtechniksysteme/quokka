@@ -44,4 +44,9 @@ class ProjectPolicy
     {
         return $user->can('projects.createpdf');
     }
+
+    public function downloadList(User $user): bool
+    {
+        return $user->can('projects.view');
+    }
 }

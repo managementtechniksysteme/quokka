@@ -158,6 +158,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
+    Route::get('/projects-list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
 
     Route::resource('roles', RoleController::class);
 

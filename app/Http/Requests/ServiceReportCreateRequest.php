@@ -36,7 +36,7 @@ class ServiceReportCreateRequest extends FormRequest
                     return $query->where('employee_id', Auth::id());
                 }),
             ],
-            'project' => 'sometimes|exists:projects.id|prohibits:accounting,logbook'
+            'project' => 'sometimes|exists:projects,id|prohibits:accounting,logbook'
         ];
     }
 }

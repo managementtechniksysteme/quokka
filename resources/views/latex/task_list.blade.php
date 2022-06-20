@@ -38,6 +38,16 @@
 @endforeach
 @endif
 @endforeach
+\begin{footnotesize}
+\textbf{Mitarbeiterkürzel:}
+\setlist{nosep, topsep=-0.2cm}
+\setdescription{font=\normalfont}
+\begin{description}[labelwidth=0.8cm]
+@foreach($people as $person)
+\item[{!! Latex::escape(Str::upper($person->employee->user->username)) !!}:] {!! Latex::escape($person->name) !!}
+@endforeach
+\end{description}
+\end{footnotesize}
 @else
 Es sind keine Aufgaben passend dem Filter vorhanden.
 @endif

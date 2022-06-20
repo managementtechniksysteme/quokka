@@ -212,7 +212,7 @@
                                   </div>
                               </div>
 
-                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && !this.selectedAccountingContainsUnsaved() && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
                                   <svg class="icon icon-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#settings"></use>
                                   </svg>
@@ -1165,6 +1165,11 @@
 
             getSelectedAccounting() {
                 return this.accounting.filter(acc => acc.selected === true);
+            },
+
+            selectedAccountingContainsUnsaved() {
+                return this.getSelectedAccounting().filter(accounting => accounting.action !== null).length > 0;
+
             },
 
             selectedAccountingIsHourBased() {

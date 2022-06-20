@@ -223,7 +223,7 @@
                                   Auswertung
                               </button>
 
-                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedLogbook().length && this.selectedLogbookIsOwn() && this.selectedLogbookIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedLogbook().length && !this.selectedLogbookContainsUnsaved() && this.selectedLogbookIsOwn() && this.selectedLogbookIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
                                   <svg class="icon icon-16 mr-2">
                                       <use xlink:href="/svg/feather-sprite.svg#settings"></use>
                                   </svg>
@@ -1375,6 +1375,11 @@
 
             getSelectedLogbook() {
                 return this.logbook.filter(book => book.selected === true);
+            },
+
+            selectedLogbookContainsUnsaved() {
+                return this.getSelectedLogbook().filter(logbook => logbook.action !== null).length > 0;
+
             },
 
             selectedLogbookIsOwn() {

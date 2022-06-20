@@ -158,7 +158,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
-    Route::get('/projects-list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
+    Route::get('/project-list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
 
     Route::resource('roles', RoleController::class);
 
@@ -182,6 +182,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tasks/{task}/email', [TaskController::class, 'email']);
     Route::get('/tasks/{task}/finish', [TaskController::class, 'finish'])->name('tasks.finish');
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
+    Route::get('/task-list', [TaskController::class, 'downloadList'])->name('tasks.download-list');
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
     Route::post('user-settings/interface', [UserSettingsController::class, 'updateInterface'])->name('user-settings.update-interface');

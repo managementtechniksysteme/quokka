@@ -11,7 +11,7 @@
             </a>
         @endcan
         @can('downloadList', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company' => $company->id]) }}">
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>
@@ -19,7 +19,7 @@
             </a>
         @endcan
         @can('downloadList', \App\Models\Task::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list') }}">
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>
@@ -158,7 +158,7 @@
     </div>
 
     @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
-        @if($projects->count() > 0 && ($projectOverwallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
+        @if($projects->count() > 0 && ($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
             <p class="mt-3 small">
                 Die Pfeile für die
                 <span class="font-weight-bolder"><u>G</u></span>esamt, <span class="font-weight-bold"><u>v</u></span>errechnet, <span class="font-weight-bold"><u>L</u></span>ohn und <span class="font-weight-bold"><u>M</u></span>aterialosten
@@ -176,7 +176,7 @@
                 </svg>
                 Die aktuellen Kosten liegen über den geschätzten Kosten.<br />
                 Warnschwellen:
-                @if($projectOverwallCostsWarningPercentage)Gesamtkosten: {{ $projectOverwallCostsWarningPercentage }}% @endif
+                @if($projectOverallCostsWarningPercentage)Gesamtkosten: {{ $projectOverallCostsWarningPercentage }}% @endif
                 @if($projectBilledCostsWarningPercentage)verrechnete Kosten: {{ $projectBilledCostsWarningPercentage }}% @endif
                 @if($projectWageCostsWarningPercentage)Lohnkosten: {{ $projectWageCostsWarningPercentage }}% @endif
                 @if($projectMaterialCostsWarningPercentage)Materialkosten: {{ $projectMaterialCostsWarningPercentage }}% @endif

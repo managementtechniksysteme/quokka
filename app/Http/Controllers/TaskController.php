@@ -6,9 +6,11 @@ use App\Events\TaskCreatedEvent;
 use App\Events\TaskUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskDownloadListRequest;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Mail\TaskMail;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Person;
 use App\Models\Project;
@@ -32,6 +34,11 @@ class TaskController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
         ]);
+    }
+
+    public function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
     }
 
     public function __construct()
@@ -314,6 +321,61 @@ class TaskController extends Controller
 
         return $this->getConditionalRedirect($request->redirect, $task)
             ->with('success', 'Die Aufgabe wurde erfolgreich erledigt.');
+    }
+
+    public function downloadList(TaskDownloadListRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $company = null;
+        $project = null;
+
+        $companies = Company::order();
+
+        if(isset($validatedData['company_id'])) {
+            $companies = Company::whereId($validatedData['company_id']);
+            $company = Company::find($validatedData['company_id']);
+        } else if (isset($validatedData['project_id'])) {
+            $project = Project::find($validatedData['project_id']);
+            $companies = Company::whereId($project->company_id);
+        }
+
+        $companies = $companies
+            ->with(['projects' => function($query) use ($project) {
+                $query
+                    ->order()
+                    ->when($project, function($query) use ($project) {
+                        $query->whereId($project->id);
+                    })
+                    ->with(['tasks' => function($query) {
+                        $query
+                            ->filterPermissions()
+                            ->with('responsibleEmployee.user')
+                            ->orderByRaw('field(status, "new", "in progress", "finished")')
+                            ->orderByRaw('field(priority, "high", "medium", "low")')
+                            ->orderBy('due_on', 'desc');
+                    }])
+                    ->withCount('tasks');
+            }])
+            ->withCount('projects')
+            ->get();
+
+        $totalTasks = $companies->reduce(function ($carry, $company) {
+            return $carry + $company->projects->sum('tasks_count');
+        });
+
+        $fileName = 'AL' . optional($company)->name ?? '' . optional($project)->name ?? '';
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.task_list', [
+                'companies' => $companies,
+                'company' => $company,
+                'project' => $project,
+                'totalTasks' => $totalTasks,
+            ])
+            ->download($fileName);
     }
 
     private function getConditionalRedirect(?string $target, Task $task): RedirectResponse

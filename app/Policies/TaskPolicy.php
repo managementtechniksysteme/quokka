@@ -224,4 +224,14 @@ class TaskPolicy
 
         return $responsible || $involved || $other || $privateResponsible || $privateInvolved || $privateOther;
     }
+
+    public function downloadList(User $user): bool
+    {
+        return $user->can('tasks.view.responsible') ||
+            $user->can('tasks.view.involved') ||
+            $user->can('tasks.view.other') ||
+            $user->can('tasks.view.private.responsible') ||
+            $user->can('tasks.view.private.involved') ||
+            $user->can('tasks.view.private.other');
+    }
 }

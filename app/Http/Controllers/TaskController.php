@@ -364,6 +364,20 @@ class TaskController extends Controller
             return $carry + $company->projects->sum('tasks_count');
         });
 
+        $employees = $companies
+            ->pluck('projects')
+            ->flatten()
+            ->pluck('tasks')
+            ->flatten()
+            ->pluck('employee_id')
+            ->unique();
+
+        $people = Person::whereIn('id', $employees)
+            ->with('employee.user')
+            ->get()
+            ->sortBy('employee.user.username')
+            ->values();
+
         $fileName = 'AL' . optional($company)->name ?? '' . optional($project)->name ?? '';
 
         return (new Latex())
@@ -374,6 +388,7 @@ class TaskController extends Controller
                 'company' => $company,
                 'project' => $project,
                 'totalTasks' => $totalTasks,
+                'people' => $people,
             ])
             ->download($fileName);
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectCreateRequest;
+use App\Http\Requests\ProjectDownloadListRequest;
 use App\Http\Requests\ProjectDownloadRequest;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
@@ -70,14 +72,16 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(ProjectCreateRequest $request)
     {
+        $validatedData = $request->validated();
+
         $currentCompany = null;
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
-        if ($request->filled('company')) {
-            $currentCompany = Company::find($request->company);
+        if (isset($validatedData['company'])) {
+            $currentCompany = Company::find($validatedData['company']);
         }
 
         $companies = Company::order()->get();
@@ -354,6 +358,11 @@ class ProjectController extends Controller
                 'currencyUnit' => $currencyUnit,
             ])
             ->download($fileName);
+    }
+
+    public function downloadList(ProjectDownloadListRequest $request)
+    {
+
     }
 
     private function getConditionalRedirect(?string $target, Project $project)

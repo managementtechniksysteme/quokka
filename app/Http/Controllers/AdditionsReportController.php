@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\AdditionsReportCreatedEvent;
 use App\Events\AdditionsReportSignedEvent;
 use App\Events\AdditionsReportUpdatedEvent;
+use App\Http\Requests\AdditionsReportCreateRequest;
 use App\Http\Requests\AdditionsReportStoreRequest;
 use App\Http\Requests\AdditionsReportUpdateRequest;
 use App\Http\Requests\EmailRequest;
@@ -64,12 +65,14 @@ class AdditionsReportController extends Controller
         return view('additions_report.index')->with(compact('additionsReports'));
     }
 
-    public function create(Request $request)
+    public function create(AdditionsReportCreateRequest $request)
     {
         $currentProject = null;
 
-        if ($request->filled('project')) {
-            $currentProject = Project::find($request->project);
+        $validatedData = $request->validated();
+
+        if (isset($validatedData['project'])) {
+            $currentProject = Project::find($validatedData['project']);
         }
 
         $projects = Project::order()->get();

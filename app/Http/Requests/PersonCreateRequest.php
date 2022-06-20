@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class InspectionReportCreateRequest extends FormRequest
+class PersonCreateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +14,7 @@ class InspectionReportCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => 'sometimes|exists:inspection_reports,id|prohibits:project',
-            'project' => 'sometimes|exists:projects,id|prohibits:template'
+            'company' => 'sometimes|exists:companies,id',
         ];
     }
 }

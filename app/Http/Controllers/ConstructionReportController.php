@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\ConstructionReportCreatedEvent;
 use App\Events\ConstructionReportSignedEvent;
 use App\Events\ConstructionReportUpdatedEvent;
+use App\Http\Requests\ConstructionReportCreateRequest;
 use App\Http\Requests\ConstructionReportStoreRequest;
 use App\Http\Requests\ConstructionReportUpdateRequest;
 use App\Http\Requests\EmailRequest;
@@ -64,12 +65,14 @@ class ConstructionReportController extends Controller
         return view('construction_report.index')->with(compact('constructionReports'));
     }
 
-    public function create(Request $request)
+    public function create(ConstructionReportCreateRequest $request)
     {
         $currentProject = null;
 
-        if ($request->filled('project')) {
-            $currentProject = Project::find($request->project);
+        $validatedData = $request->validated();
+
+        if (isset($validatedData['project'])) {
+            $currentProject = Project::find($validatedData['project']);
         }
 
         $projects = Project::order()->get();

@@ -187,7 +187,7 @@
     </div>
 
     <div class="col-md-8">
-        @if($currentCompany && $currentCompany->contact_person_id === $person->id)
+        @if($currentCompany && $person && $currentCompany->contact_person_id === $person->id)
             <div class="alert alert-info mt-1" role="alert">
                 <div class="d-inline-flex align-items-center">
                     <svg class="icon icon-24 mr-2">

@@ -89,8 +89,8 @@ class InspectionReportController extends Controller
 
             $currentProject = $templateInspectionReport->project;
         }
-        else if ($request->filled('project')) {
-            $currentProject = Project::find($request->project);
+        else if (isset($validatedData['project'])) {
+            $currentProject = Project::find($validatedData['project']);
         }
 
         $projects = Project::order()->get();

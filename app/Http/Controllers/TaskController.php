@@ -86,8 +86,8 @@ class TaskController extends Controller
             $currentResponsibleEmployee = $templateTask->responsibleEmployee->person;
             $currentInvolvedEmployees = Person::order()->find($templateTask->involvedEmployees->pluck('person_id')) ?? null;
         }
-        elseif ($request->filled('project')) {
-            $currentProject = Project::find($request->project);
+        elseif (isset($validatedData['project'])) {
+            $currentProject = Project::find($validatedData['project']);
         }
 
         $projects = Project::order()->get();

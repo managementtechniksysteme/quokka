@@ -96,8 +96,8 @@ class MemoController extends Controller
             $currentPresentPeople = $templateMemo->presentPeople;
             $currentNotifiedPeople = $templateMemo->notifiedPeople;
         }
-        else if ($request->filled('project')) {
-            $currentProject = Project::find($request->project);
+        else if (isset($validatedData['project'])) {
+            $currentProject = Project::find($validatedData['project']);
         }
 
         $projects = Project::order()->get();

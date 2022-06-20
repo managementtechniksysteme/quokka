@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PersonCreateRequest;
 use App\Http\Requests\PersonStoreRequest;
 use App\Http\Requests\PersonUpdateRequest;
 use App\Models\Address;
@@ -48,14 +49,16 @@ class PersonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(PersonCreateRequest $request)
     {
+        $validatedData = $request->validated();
+
         $addresses = Address::order()->get();
 
         $currentCompany = null;
 
-        if ($request->filled('company')) {
-            $currentCompany = Company::find($request->company);
+        if (isset($validatedData['company'])) {
+            $currentCompany = Company::find($validatedData['company']);
         }
 
         $companies = Company::order()->get();

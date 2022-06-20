@@ -258,15 +258,15 @@
                         <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                         </svg>
-                        Hier kann festgelgt werden, ab wie vielen Prozent der geschätzten Lohn- sowie Materialkosten eine
-                        Warnung beim entsprechenden Projekt angezeigt werden soll.
+                        Hier kann festgelgt werden, ab wie vielen Prozent der geschätzten sowie aktuell verrechneten
+                        Lohn- sowie Materialkosten eine Warnung beim entsprechenden Projekt angezeigt werden soll.
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="project_overall_costs_warning_percentage">Warnschwelle für die Gesamtkosten</label>
                     <div class="input-group">
@@ -285,7 +285,26 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="project_overall_costs_warning_percentage">Warnschwelle für verrechnete Kosten</label>
+                    <div class="input-group">
+                        <input type="number" min="1" step="1" max="99" class="form-control @error('project_billed_costs_warning_percentage') is-invalid @enderror" id="project_billed_costs_warning_percentage" name="project_billed_costs_warning_percentage" placeholder="25" value="{{ old('project_billed_costs_warning_percentage', $applicationSettings->project_billed_costs_warning_percentage) }}" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <div class="invalid-feedback @error('project_billed_costs_warning_percentage') d-block @enderror">
+                            @error('project_billed_costs_warning_percentage')
+                            {{ $message }}
+                            @else
+                                Warnschwelle muss zwischen 1 und 99 liegen.
+                                @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="project_wage_costs_warning_percentage">Warnschwelle für die Lohnkosten</label>
                     <div class="input-group">
@@ -304,7 +323,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="project_material_costs_warning_percentage">Warnschwelle für die Materialkosten</label>
                     <div class="input-group">

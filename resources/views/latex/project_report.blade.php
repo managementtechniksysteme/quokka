@@ -51,7 +51,7 @@
 @endforeach
 \\
 \begin{ignorelinebreaks}
-@if($project->costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
+@if($project->costs || $project->billed_costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
 @can('projects.view.estimates')
 \footnotesize{\textbf{Kosten ohne Filter:}}\\
 @if($project->costs || $project->current_costs)
@@ -62,6 +62,28 @@
 @if($project->current_costs_percentage)
 \footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_costs_status)
+@case('success')
+\textcolor{success}{\textbf{$\downarrow$}}
+@break
+@case('warning')
+\textcolor{warning}{\textbf{$\searrow$}}
+@break
+@case('danger')
+\textcolor{danger}{\textbf{$\uparrow$}}
+@break
+@endswitch
+@endif
+@endif
+\\
+@endif
+@if($project->billed_costs || $project->current_costs)
+\footnotesize{verrechnete Kosten: }\footnotesize{{!! Latex::escape($project->billed_costs ? $currencyUnit . ' ' . Number::toLocal($project->billed_costs) : '') !!}}
+@if($project->current_costs)
+@if($project->costs)\footnotesize{ - }@endif
+\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+@if($project->current_billed_costs_percentage)
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_billed_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+@switch($project->current_billed_costs_status)
 @case('success')
 \textcolor{success}{\textbf{$\downarrow$}}
 @break
@@ -118,6 +140,26 @@
 @endswitch
 @endif
 @endif
+\\
+@endif
+@if($projectOverwallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
+\footnotesize{Warnschwellen: }
+@if($projectOverwallCostsWarningPercentage)\footnotesize{Gesamt: }\footnotesize{{!! Latex::escape($projectOverwallCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}
+@if($projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
+\footnotesize{, }
+@endif
+@endif
+@if($projectBilledCostsWarningPercentage)\footnotesize{verrechnet: }\footnotesize{{!! Latex::escape($projectBilledCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}
+@if($projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
+\footnotesize{, }
+@endif
+@endif
+@if($projectWageCostsWarningPercentage)\footnotesize{Lohn: }\footnotesize{{!! Latex::escape($projectWageCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}
+@if($projectMaterialCostsWarningPercentage)
+\footnotesize{, }
+@endif
+@endif
+@if($projectMaterialCostsWarningPercentage)\footnotesize{Material: }\footnotesize{{!! Latex::escape($projectMaterialCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}@endif
 \\
 @endif
 \\

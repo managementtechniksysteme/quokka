@@ -9,7 +9,7 @@
                         {{ $project->name }}
                     </span>
                     @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
-                        @if($project->current_wage_costs_status || $project->current_material_costs_status || $project->current_costs_status)
+                        @if($project->current_wage_costs_status || $project->current_material_costs_status || $project->current_costs_status || $project->current_billed_costs_status)
                             <span class="d-none d-md-inline-flex align-items-center">
                                 <svg class="icon icon-12 ml-2 text-muted">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
@@ -18,6 +18,22 @@
                                     <span class="text-muted ml-1">G</span>
                                     <svg class="icon icon-12 text-{{ $project->current_costs_status }}">
                                         @switch($project->current_costs_status)
+                                            @case('success')
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                                @break
+                                            @case('warning')
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                                                @break
+                                            @case('danger')
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                                @break
+                                        @endswitch
+                                    </svg>
+                                @endif
+                                @if($project->current_billed_costs_status)
+                                    <span class="text-muted ml-1">V</span>
+                                    <svg class="icon icon-12 text-{{ $project->current_billed_costs_status }}">
+                                        @switch($project->current_billed_costs_status)
                                             @case('success')
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
                                                 @break

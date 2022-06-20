@@ -24,7 +24,7 @@ class Project extends Model implements FiltersGlobalSearch
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'comment', 'company_id',
+        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'billed_costs', 'comment', 'company_id',
     ];
 
     protected $filterFields = [

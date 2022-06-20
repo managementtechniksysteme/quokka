@@ -164,6 +164,22 @@ class Project extends Model implements FiltersGlobalSearch
         return ($this->current_costs / $this->costs) * 100;
     }
 
+    public function getCurrentBilledCostsPercentageAttribute() {
+        if(!$this->billed_costs) {
+            return null;
+        }
+
+        return ($this->current_costs / $this->billed_costs) * 100;
+    }
+
+    public function getCurrentBilledPercentageAttribute() {
+        if(!$this->billed_costs) {
+            return null;
+        }
+
+        return ($this->current_costs / $this->billed_costs) * 100;
+    }
+
     public function getCurrentMaterialCostsStatusAttribute() {
         $warningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         if(!($this->current_material_costs_percentage && $warningPercentage)) {
@@ -208,6 +224,23 @@ class Project extends Model implements FiltersGlobalSearch
             return 'success';
         }
         elseif($this->current_costs_percentage < 100 ) {
+            return 'warning';
+        }
+        else {
+            return 'danger';
+        }
+    }
+
+    public function getCurrentBilledCostsStatusAttribute() {
+        $warningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
+        if(!($this->current_billed_costs_percentage && $warningPercentage)) {
+            return null;
+        }
+
+        if($this->current_billed_costs_percentage < $warningPercentage) {
+            return 'success';
+        }
+        elseif($this->current_billed_costs_percentage < 100 ) {
             return 'warning';
         }
         else {

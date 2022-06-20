@@ -70,6 +70,41 @@
                 </div>
             </div>
         @endif
+        @if($project->billed_costs || $project->current_costs)
+            <div class="row mt-3">
+                <div class="col-sm-2">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="icon icon-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                        </svg>
+                        verrechnet
+                    </div>
+                </div>
+                <div class="col">
+                    {{ $project->billed_costs ? $currencyUnit . ' ' . Number::toLocal($project->billed_costs) :  '' }}
+                    @if($project->current_costs)
+                        {{ $project->billed_costs ? '-' : '' }}
+                        aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
+                        @if($project->current_billed_costs_percentage)
+                            ({{ Number::toLocal($project->current_billed_costs_percentage, 1) }}%)
+                            <svg class="icon icon-16 ml-2 text-{{ $project->current_billed_costs_status }}">
+                                @switch($project->current_billed_costs_status)
+                                    @case('success')
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                        @break
+                                    @case('warning')
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
+                                        @break
+                                    @case('danger')
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                        @break
+                                @endswitch
+                            </svg>
+                        @endif
+                    @endif
+                </div>
+            </div>
+        @endif
         @if($project->wage_costs || $project->current_wage_costs)
             <div class="row mt-3">
                 <div class="col-sm-2">

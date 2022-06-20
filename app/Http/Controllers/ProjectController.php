@@ -35,6 +35,11 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
+    }
+
     public function __construct()
     {
         $this->authorizeResource(Project::class, 'project');
@@ -57,12 +62,14 @@ class ProjectController extends Controller
             ->appends($request->except('page'));
 
         $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
 
         return view('project.index')
             ->with(compact('projects'))
             ->with(compact('projectOverwallCostsWarningPercentage'))
+            ->with(compact('projectBilledCostsWarningPercentage'))
             ->with(compact('projectMaterialCostsWarningPercentage'))
             ->with(compact('projectWageCostsWarningPercentage'));
     }
@@ -342,6 +349,11 @@ class ProjectController extends Controller
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
+        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
+        $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
+        $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
@@ -356,13 +368,39 @@ class ProjectController extends Controller
                 'start' => $start,
                 'end' => $end,
                 'currencyUnit' => $currencyUnit,
+                'projectOverwallCostsWarningPercentage' => $projectOverwallCostsWarningPercentage,
+                'projectBilledCostsWarningPercentage' => $projectBilledCostsWarningPercentage,
+                'projectMaterialCostsWarningPercentage' => $projectMaterialCostsWarningPercentage,
+                'projectWageCostsWarningPercentage' => $projectWageCostsWarningPercentage,
             ])
             ->download($fileName);
     }
 
     public function downloadList(ProjectDownloadListRequest $request)
     {
+        $validatedData = $request->validated();
 
+        $company = null;
+
+        $companies = Company::order();
+
+        if(isset($validatedData['company_id'])) {
+            $companies = Company::whereId($validatedData['company_id']);
+            $company = Company::find($validatedData['company_id']);
+        }
+
+        $companies = $companies->with('projects')->withCount('projects')->get();
+
+        $fileName = 'PL' . optional($company)->name ?? '';
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.project_list', [
+                'companies' => $companies,
+                'company' => $company,
+            ])
+            ->download($fileName);
     }
 
     private function getConditionalRedirect(?string $target, Project $project)

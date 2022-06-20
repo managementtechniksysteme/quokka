@@ -162,6 +162,7 @@ class CompanyController extends Controller
                     ->appends($request->except('page'));
 
                 $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+                $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
                 $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
                 $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
 
@@ -169,6 +170,7 @@ class CompanyController extends Controller
                     ->with(compact('company'))
                     ->with(compact('projects'))
                     ->with(compact('projectOverwallCostsWarningPercentage'))
+                    ->with(compact('projectBilledCostsWarningPercentage'))
                     ->with(compact('projectMaterialCostsWarningPercentage'))
                     ->with(compact('projectWageCostsWarningPercentage'));
 

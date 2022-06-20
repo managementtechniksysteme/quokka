@@ -96,7 +96,7 @@
 @endif
 @endforeach
 @can('projects.view.estimates')
-@if($projectOverwallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
+@if($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
 \begin{singlespace}
 \begin{scriptsize}
 \begin{ignorelinebreaks}
@@ -109,8 +109,8 @@ Die Pfeile für die Gesamt, verrechneten, Lohn und Materialosten zeigen folgende
 \item[\textcolor{danger}{\textbf{$\uparrow$}}] Die aktuellen Kosten liegen über den geschätzten Kosten.
 \end{description}
 Warnschwellen:~
-@if($projectOverwallCostsWarningPercentage)
-Gesamt: {!! Latex::escape($projectOverwallCostsWarningPercentage) !!}{!! Latex::escape('%') !!}
+@if($projectOverallCostsWarningPercentage)
+Gesamt: {!! Latex::escape($projectOverallCostsWarningPercentage) !!}{!! Latex::escape('%') !!}
 @if($projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage), @endif
 @endif
 @if($projectBilledCostsWarningPercentage)

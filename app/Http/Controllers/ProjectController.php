@@ -61,14 +61,14 @@ class ProjectController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectOverallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
         $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
 
         return view('project.index')
             ->with(compact('projects'))
-            ->with(compact('projectOverwallCostsWarningPercentage'))
+            ->with(compact('projectOverallCostsWarningPercentage'))
             ->with(compact('projectBilledCostsWarningPercentage'))
             ->with(compact('projectMaterialCostsWarningPercentage'))
             ->with(compact('projectWageCostsWarningPercentage'));
@@ -349,7 +349,7 @@ class ProjectController extends Controller
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
-        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectOverallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
         $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
@@ -368,7 +368,7 @@ class ProjectController extends Controller
                 'start' => $start,
                 'end' => $end,
                 'currencyUnit' => $currencyUnit,
-                'projectOverwallCostsWarningPercentage' => $projectOverwallCostsWarningPercentage,
+                'projectOverallCostsWarningPercentage' => $projectOverallCostsWarningPercentage,
                 'projectBilledCostsWarningPercentage' => $projectBilledCostsWarningPercentage,
                 'projectMaterialCostsWarningPercentage' => $projectMaterialCostsWarningPercentage,
                 'projectWageCostsWarningPercentage' => $projectWageCostsWarningPercentage,
@@ -395,7 +395,7 @@ class ProjectController extends Controller
             }])->withCount('projects')
             ->get();
 
-        $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+        $projectOverallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
         $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
@@ -408,7 +408,7 @@ class ProjectController extends Controller
             ->view('latex.project_list', [
                 'companies' => $companies,
                 'company' => $company,
-                'projectOverwallCostsWarningPercentage' => $projectOverwallCostsWarningPercentage,
+                'projectOverallCostsWarningPercentage' => $projectOverallCostsWarningPercentage,
                 'projectBilledCostsWarningPercentage' => $projectBilledCostsWarningPercentage,
                 'projectMaterialCostsWarningPercentage' => $projectMaterialCostsWarningPercentage,
                 'projectWageCostsWarningPercentage' => $projectWageCostsWarningPercentage,

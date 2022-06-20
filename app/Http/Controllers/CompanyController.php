@@ -161,7 +161,7 @@ class CompanyController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
+                $projectOverallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
                 $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
                 $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
                 $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
@@ -169,7 +169,7 @@ class CompanyController extends Controller
                 return view('company.show_tab_projects')
                     ->with(compact('company'))
                     ->with(compact('projects'))
-                    ->with(compact('projectOverwallCostsWarningPercentage'))
+                    ->with(compact('projectOverallCostsWarningPercentage'))
                     ->with(compact('projectBilledCostsWarningPercentage'))
                     ->with(compact('projectMaterialCostsWarningPercentage'))
                     ->with(compact('projectWageCostsWarningPercentage'));

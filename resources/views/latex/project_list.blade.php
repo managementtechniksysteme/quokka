@@ -2,7 +2,7 @@
 
 @include('latex.partials.header')
 
-\fancyfoot[L]{\footnotesize{Projektliste, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
+\fancyfoot[L]{\footnotesize{Projektliste}@if($company)\footnotesize{ ({!! Latex::escape($company->name) !!})}@endif\footnotesize{, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
 \fancyfoot[R]{\footnotesize{Seite \thepage\ von \pageref{LastPage}}}
 
 \renewcommand\TruncateMarker{\textasciitilde}
@@ -14,7 +14,7 @@
 \qrcode[height=1cm]{ {!! Latex::escape(route('projects.index')) !!} }
 \end{minipage}
 \begin{minipage}{0.93\textwidth}
-\large{\textbf{Projektliste, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}} \\ \large{\textbf{@if($company){!! Latex::escape($company->name) !!}@else{!! Latex::escape('alle Firmen') !!}@endif}}
+\large{\textbf{Projektliste, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}} \\ \large{\textbf{@if($company){!! Latex::escape('Firma ') !!}{!! Latex::escape($company->name) !!}@else{!! Latex::escape('alle Firmen') !!}@endif}}
 \end{minipage}
 \\\\\\
 @if(count($companies) > 0 && $companies->sum('projects_count') > 0)
@@ -27,7 +27,7 @@
 \hline
 \hline
 \endhead
-@foreach($company->projects->sortBy('name') as $project)
+@foreach($company->projects as $project)
 \footnotesize{{!! Latex::escape($project->name) !!}}
 @can('projects.view.estimates')
 \begin{ignorelinebreaks}

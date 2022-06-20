@@ -389,7 +389,11 @@ class ProjectController extends Controller
             $company = Company::find($validatedData['company_id']);
         }
 
-        $companies = $companies->with('projects')->withCount('projects')->get();
+        $companies = $companies
+            ->with(['projects' => function($query) {
+                $query->order();
+            }])->withCount('projects')
+            ->get();
 
         $projectOverwallCostsWarningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
         $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;

@@ -10,12 +10,20 @@
                 Projekt anlegen
             </a>
         @endcan
-        @can('viewAny', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company' => $company->id]) }}">
+        @can('downloadList', \App\Models\Project::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company' => $company->id]) }}">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>
-                PDF Liste erstellen
+                Projektliste erstellen
+            </a>
+        @endcan
+        @can('downloadList', \App\Models\Task::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list') }}">
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                </svg>
+                Aufgabenliste erstellen
             </a>
         @endcan
 

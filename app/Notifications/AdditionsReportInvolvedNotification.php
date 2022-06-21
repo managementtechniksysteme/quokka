@@ -12,11 +12,12 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class AdditionsReportSignedNotification extends Notification implements ShouldQueue
+class AdditionsReportInvolvedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public AdditionsReport $additionsReport;
+    public bool $isNew;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -24,9 +25,10 @@ class AdditionsReportSignedNotification extends Notification implements ShouldQu
      *
      * @return void
      */
-    public function __construct(AdditionsReport $additionsReport)
+    public function __construct(AdditionsReport $additionsReport, bool $isNew)
     {
         $this->additionsReport = $additionsReport;
+        $this->isNew = $isNew;
     }
 
     /**
@@ -50,6 +52,7 @@ class AdditionsReportSignedNotification extends Notification implements ShouldQu
             'model' => AdditionsReport::class,
             'type' => 'AdditionsReport',
             'id' => $this->additionsReport->id,
+            'created' => $this->isNew,
             'route' => route('additions-reports.show', $this->additionsReport->id),
         ];
     }
@@ -62,18 +65,32 @@ class AdditionsReportSignedNotification extends Notification implements ShouldQu
      */
     public function toMail($notifiable)
     {
+        if ($this->isNew) {
+            $subject = 'Es wurde ein Regiebericht erstellt, an dem du beteiligt bist (Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.')';
+        } else {
+            $subject = 'Es wurde ein Regiebericht bearbeitet, an dem du beteiligt bist (Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.')';
+        }
+
         return (new MailMessage)
-            ->subject('Ein Regiebericht wurde unterschrieben (Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.')')
-            ->markdown('emails.additions_report.notification_signed', ['additionsReport' => $this->additionsReport]);
+                    ->subject($subject)
+                    ->markdown('emails.additions_report.notification_involved', ['additionsReport' => $this->additionsReport, 'isNew' => $this->isNew]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
+        if ($this->isNew) {
+            $title = 'Ein Regiebericht wurde erstellt';
+            $body = 'Der Regiebericht Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.', an dem du beteiligt bist, wurde erstellt.';
+        } else {
+            $title = 'Eine Regiebericht wurde bearbeitet';
+            $body = 'Der Regiebericht Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.', an dem du beteiligt bist, wurde bearbeitet.';
+        }
+
         return (new WebPushMessage)
-            ->title('Ein Regiebericht wurde unterschrieben')
+            ->title($title)
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Der Regiebericht Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.' wurde unterschrieben.')
+            ->body($body)
             ->tag(AdditionsReport::class.':'.$this->additionsReport->id)
             ->data(['url' => route('additions-reports.show', $this->additionsReport)])
             ->vibrate($this->vibrationDuration);

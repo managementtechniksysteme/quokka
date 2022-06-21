@@ -6,10 +6,12 @@ use App\Events\AdditionsReportSignedEvent;
 use App\Events\ConstructionReportSignedEvent;
 use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
+use App\Listeners\SendAdditionsReportInvolvedNotification;
 use App\Listeners\SendAdditionsReportMentionNotification;
 use App\Listeners\SendAdditionsReportSignedNotification;
 use App\Listeners\SendCommentInvolvedNotification;
 use App\Listeners\SendCommentMentionNotification;
+use App\Listeners\SendConstructionReportInvolvedNotification;
 use App\Listeners\SendConstructionReportMentionNotification;
 use App\Listeners\SendConstructionReportSignedNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
@@ -71,9 +73,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
+        SendAdditionsReportInvolvedNotification::class,
         SendAdditionsReportMentionNotification::class,
         SendCommentInvolvedNotification::class,
         SendCommentMentionNotification::class,
+        SendConstructionReportInvolvedNotification::class,
         SendConstructionReportMentionNotification::class,
         SendHolidayAllowanceAdjustmentNotification::class,
         SendInspectionReportMentionNotification::class,

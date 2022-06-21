@@ -12,11 +12,12 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class ConstructionReportSignedNotification extends Notification implements ShouldQueue
+class ConstructionReportInvolvedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public ConstructionReport $constructionReport;
+    public bool $isNew;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -24,9 +25,10 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
      *
      * @return void
      */
-    public function __construct(ConstructionReport $constructionReport)
+    public function __construct(ConstructionReport $constructionReport, bool $isNew)
     {
         $this->constructionReport = $constructionReport;
+        $this->isNew = $isNew;
     }
 
     /**
@@ -50,6 +52,7 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
             'model' => ConstructionReport::class,
             'type' => 'ConstructionReport',
             'id' => $this->constructionReport->id,
+            'created' => $this->isNew,
             'route' => route('construction-reports.show', $this->constructionReport->id),
         ];
     }
@@ -62,20 +65,34 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
      */
     public function toMail($notifiable)
     {
+        if ($this->isNew) {
+            $subject = 'Es wurde ein Bautagesbericht erstellt, an dem du beteiligt bist (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')';
+        } else {
+            $subject = 'Es wurde ein Bautagesbericht bearbeitet, an dem du beteiligt bist (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')';
+        }
+
         return (new MailMessage)
-            ->subject('Ein Bautagesbericht wurde unterschrieben (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')')
-            ->markdown('emails.construction_report.notification_signed', ['constructionReport' => $this->constructionReport]);
+                    ->subject($subject)
+                    ->markdown('emails.construction_report.notification_involved', ['constructionReport' => $this->constructionReport, 'isNew' => $this->isNew]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
+        if ($this->isNew) {
+            $title = 'Ein Bautagesbericht wurde erstellt';
+            $body = 'Der Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.', an dem du beteiligt bist, wurde erstellt.';
+        } else {
+            $title = 'Eine Bautagesbericht wurde bearbeitet';
+            $body = 'Der Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.', an dem du beteiligt bist, wurde bearbeitets.';
+        }
+
         return (new WebPushMessage)
-            ->title('Ein Bautagesbericht wurde unterschrieben')
+            ->title($title)
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Der Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.' wurde unterschrieben.')
+            ->body($body)
             ->tag(ConstructionReport::class.':'.$this->constructionReport->id)
-            ->data(['url' => route('Construction-reports.show', $this->constructionReport)])
+            ->data(['url' => route('construciton-reports.show', $this->constructionReport)])
             ->vibrate($this->vibrationDuration);
     }
 }

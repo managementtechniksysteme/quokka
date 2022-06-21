@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -39,8 +40,20 @@ class TaskInvolvedNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => Task::class,
+            'type' => 'Task',
+            'id' => $this->task->id,
+            'created' => $this->isNew,
+            'route' => route('tasks.show', $this->task->id),
         ];
     }
 

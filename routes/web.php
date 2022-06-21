@@ -31,6 +31,7 @@ use App\Http\Controllers\LatestChangesController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
@@ -152,6 +153,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/memos/{memo}/download', [MemoController::class, 'download'])->name('memos.download');
     Route::get('/memos/{memo}/email', [MemoController::class, 'showEmail'])->name('memos.email');
     Route::post('/memos/{memo}/email', [MemoController::class, 'email']);
+
+    Route::resource('notifications', NotificationController::class)->only(['index', 'destroy']);
+    Route::post('/notifications', [NotificationController::class, 'clear'])->name('notifications.clear');
 
     Route::resource('people', PersonController::class);
 

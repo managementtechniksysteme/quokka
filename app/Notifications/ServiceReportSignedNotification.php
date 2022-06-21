@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\ServiceReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -37,8 +38,19 @@ class ServiceReportSignedNotification extends Notification implements ShouldQueu
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => ServiceReport::class,
+            'type' => 'ServiceReport',
+            'id' => $this->serviceReport->id,
+            'route' => route('service-reports.show', $this->serviceReport->id),
         ];
     }
 

@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\AdditionsReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -37,8 +38,19 @@ class AdditionsReportMentionNotification extends Notification implements ShouldQ
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => AdditionsReport::class,
+            'type' => 'AdditionsReport',
+            'id' => $this->additionsReport->id,
+            'route' => route('additions-reports.show', $this->additionsReport->id),
         ];
     }
 

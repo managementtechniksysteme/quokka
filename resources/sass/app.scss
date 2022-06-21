@@ -400,3 +400,13 @@ a.outline-none {
     color: $white !important;
     background-color: $secondary !important;
 }
+
+// Notification badge
+.notification-badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: $danger;
+}

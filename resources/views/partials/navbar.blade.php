@@ -32,10 +32,13 @@
         @endcan
 
 
-        <button class="p-2 bg-transparent border rounded-sm outline-none d-inline-flex d-xl-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="p-2 bg-transparent border rounded-sm outline-none d-inline-flex d-xl-none position-relative" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <svg class="icon icon-24 align-self-center">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
             </svg>
+            @if(Auth::user()->unreadNotifications()->count())
+                <span class="notification-badge"></span>
+            @endif
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">

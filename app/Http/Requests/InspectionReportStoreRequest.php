@@ -41,7 +41,7 @@ class InspectionReportStoreRequest extends FormRequest
             'uvc_sensor_identifier' => 'required',
             'uvc_sensor_pre_alarm' => 'required|numeric|min:0',
             'uvc_sensor_cut_off_point' => 'required|numeric|min:0',
-            'uvc_sensor_values_unit' => 'required|in:%,W_m2',
+            'uvc_sensor_values_unit' => 'required|in:percent,W_m2',
             'quartz_tube_contaminated' => 'boolean|nullable',
             'quartz_tube_leaking' => 'boolean|nullable',
             'water_suspended_load_visible' => 'boolean|nullable',

@@ -271,7 +271,7 @@ class NotificationHelper
                 }
 
                 return $notification->data['created'] ?
-                    'Die Aufgabe '.$task->name.', an der du beteiligt bist, wurde erstellt (Projekt '.$ask->project->name.').' :
+                    'Die Aufgabe '.$task->name.', an der du beteiligt bist, wurde erstellt (Projekt '.$task->project->name.').' :
                     'Die Aufgabe '.$task->name.', an der du beteiligt bist, wurde bearbeitet (Projekt '.$task->project->name.').';
 
             case TaskMentionNotification::class:

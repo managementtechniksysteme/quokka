@@ -335,8 +335,8 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Auth::user()->unreadNotifications()->count() || Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg class="icon icon-20 mr-1">
+                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg class="icon icon-20 mr-1 @if(Auth::user()->unreadNotifications()->count()) text-red @endif" >
                                 @if(Auth::user()->unreadNotifications()->count())
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                                 @elseif(Session::has('impersonatorId'))

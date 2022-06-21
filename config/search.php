@@ -12,6 +12,7 @@ use App\Models\Person;
 use App\Models\Project;
 use App\Models\ServiceReport;
 use App\Models\Task;
+use App\Models\TaskComment;
 use App\Models\Vehicle;
 use App\Models\WageService;
 
@@ -41,6 +42,7 @@ return [
         Project::class,
         ServiceReport::class,
         Task::class,
+        TaskComment::class,
         Vehicle::class,
         WageService::class,
     ],

@@ -2,6 +2,7 @@
 
 namespace App\Support\GlobalSearch;
 
+use App\Models\TaskComment;
 use App\Traits\FiltersLatestChanges;
 use Fuse\Fuse;
 use Illuminate\Support\Arr;

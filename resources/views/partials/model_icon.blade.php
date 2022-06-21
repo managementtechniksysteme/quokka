@@ -59,6 +59,11 @@
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
         </svg>
         @break
+    @case(\App\Models\TaskComment::class)
+        <svg class="icon icon-16 mr-1">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+        </svg>
+        @break
     @case(\App\Models\Vehicle::class)
         <svg class="icon icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>

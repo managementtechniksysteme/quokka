@@ -12,6 +12,11 @@ class ApplicationSettings extends Model
 
     protected $casts = [
         'holiday_yearly_allowance' => 'int',
+        'accounting_min_amount' => 'double',
+        'project_material_costs_warning_percentage' => 'int',
+        'project_wage_costs_warning_percentage' => 'int',
+        'project_overall_costs_warning_percentage' => 'int',
+        'project_billed_costs_warning_percentage' => 'int',
         'task_due_soon_days' => 'int',
     ];
 

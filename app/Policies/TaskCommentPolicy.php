@@ -11,8 +11,14 @@ class TaskCommentPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user, Task $task): bool
+    public function viewAny(User $user, Task $task = null): bool
     {
+        // for all tasks (global search)
+        // filtering is done when returning search results (mostly relevant for latest changes)
+        if(!$task) {
+            return $user->can('viewAny', Task::class);
+        }
+
         return $user->can('view', $task);
     }
 

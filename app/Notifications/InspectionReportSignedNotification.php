@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\InspectionReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -37,8 +38,19 @@ class InspectionReportSignedNotification extends Notification implements ShouldQ
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => InspectionReport::class,
+            'type' => 'InspectionReport',
+            'id' => $this->inspectionReport->id,
+            'route' => route('inspection-reports.show', $this->inspectionReport->id),
         ];
     }
 

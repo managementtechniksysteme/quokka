@@ -30,7 +30,7 @@ class SendAdditionsReportMentionNotification implements ShouldQueue
         }
     }
 
-    public function handleAdditionseReportUpdated(AdditionsReportUpdatedEvent $event)
+    public function handleAdditionsReportUpdated(AdditionsReportUpdatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->additionsReport->comment) as $mentionedUser) {
             $mentionedUser->notify(new AdditionsReportMentionNotification($event->additionsReport));

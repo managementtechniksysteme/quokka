@@ -6,6 +6,7 @@ use App\Models\ApplicationSettings;
 use App\Models\Employee;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -22,12 +23,15 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
     public string $titleWebpush;
     public string $holidayServiceUnit;
     public string $directionString;
+    public bool $manualAdjustment;
 
     private array $vibrationDuration = ['100'];
 
     public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance, bool $manualAdjustment)
     {
         $holidayAllowanceDifference = $currentHolidayAllowance-$oldHolidayAllowance;
+
+        $this->manualAdjustment = $manualAdjustment;
 
         $this->titleMail =
             $manualAdjustment ? "Anpassung deines verfügbaren Urlaubes" :
@@ -43,8 +47,24 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
     public function via($notifiable): array
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => Employee::class,
+            'type' => 'Employee',
+            'id' => $notifiable->id,
+            'currentHolidayAllowance' => $this->currentHolidayAllowance,
+            'holidayAllowanceDifference' => $this->holidayAllowanceDifference,
+            'directionString' => $this->directionString,
+            'holidayServiceUnit' => $this->holidayServiceUnit,
+            'manualAdjustment' => $this->manualAdjustment,
+            'route' => route('home'),
         ];
     }
 
@@ -68,7 +88,7 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
             ->badge('/icons/icon_alpha_512.png')
             ->body('Dein verfügbarer Urlaub wurde um ' .
                 $this->holidayAllowanceDifference . ' ' . $this->holidayServiceUnit . ' ' . $this->directionString . '.' .
-                'Dein aktueller Stand beträgt ' . $this->currentHolidayAllowance . ' ' . $this->holidayServiceUnit . '.')
+                ' Dein aktueller Stand beträgt ' . $this->currentHolidayAllowance . ' ' . $this->holidayServiceUnit . '.')
             ->vibrate($this->vibrationDuration);
     }
 }

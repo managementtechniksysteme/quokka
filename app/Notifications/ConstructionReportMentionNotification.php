@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\ConstructionReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -37,8 +38,19 @@ class ConstructionReportMentionNotification extends Notification implements Shou
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => ConstructionReport::class,
+            'type' => 'ConstructionReport',
+            'id' => $this->constructionReport->id,
+            'route' => route('construction-reports.show', $this->constructionReport->id),
         ];
     }
 

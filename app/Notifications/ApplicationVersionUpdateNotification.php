@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -15,6 +16,7 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
 {
     use Queueable;
 
+    private string $version;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -24,7 +26,7 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
      */
     public function __construct()
     {
-        //
+        $this->version = (new Version ())->compact();
     }
 
     /**
@@ -36,8 +38,17 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'version' => $this->version,
+            'route' => route('changelog.show'),
         ];
     }
 
@@ -56,13 +67,12 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
 
     public function toWebPush($notifiable, $notification)
     {
-        $version = new Version();
 
         return (new WebPushMessage)
             ->title('Eine neue Quokka Version ist verfügbar')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Quokka Version '.$version->compact().' ist nun zur Verwendung verfügbar.')
+            ->body('Quokka Version '.$this->version.' ist nun zur Verwendung verfügbar.')
             ->tag(ApplicationVersionUpdateNotification::class)
             ->data(['url' => route('changelog.show')])
             ->vibrate($this->vibrationDuration);

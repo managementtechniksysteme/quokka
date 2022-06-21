@@ -335,9 +335,11 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Auth::user()->unreadNotifications()->count() || Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-20 mr-1">
-                                @if(Session::has('impersonatorId'))
+                                @if(Auth::user()->unreadNotifications()->count())
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
+                                @elseif(Session::has('impersonatorId'))
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-plus"></use>
                                 @else
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
@@ -353,6 +355,12 @@
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                                 </svg>
                                 Übersicht
+                            </a>
+                            <a class="dropdown-item  d-inline-flex align-items-center @if(Auth::user()->unreadNotifications()->count()) text-red @endif" href="{{ route('notifications.index') }}">
+                                <svg class="icon icon-16 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
+                                </svg>
+                                Benachrichtigungen
                             </a>
                             <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('user-settings.edit') }}">
                                 <svg class="icon icon-16 mr-1">

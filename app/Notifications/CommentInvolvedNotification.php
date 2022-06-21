@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\TaskComment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -40,8 +41,20 @@ class CommentInvolvedNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         return [
+            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
+        ];
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'model' => TaskComment::class,
+            'type' => 'TaskComment',
+            'id' => $this->comment->id,
+            'created' => $this->isNew,
+            'route' => route('tasks.show', $this->comment->task->id),
         ];
     }
 

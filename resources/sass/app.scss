@@ -404,9 +404,24 @@ a.outline-none {
 // Notification badge
 .notification-badge {
     position: absolute;
+    opacity: 0;
     top: -0.25rem;
     right: -0.25rem;
     padding: 0.5rem;
     border-radius: 50%;
     background: $danger;
+    animation: notification-badge-animation 500ms ease-in;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes notification-badge-animation {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1, 1);
+        opacity: 100;
+    }
 }

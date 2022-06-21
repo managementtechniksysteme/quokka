@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="d-none d-lg-flex text-muted align-items-center mr-4">
+        <div class="d-none d-lg-flex flex-shrink-0 text-muted align-items-center mr-4">
             <svg class="icon icon-16 mr-1">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
             </svg>

@@ -17,6 +17,7 @@ class UserSettings extends Model
         'accounting_expand_errors' => 'bool',
         'accounting_filter_default_days' => 'int',
         'latest_changes_quantity' => 'int',
+        'notify_self' => 'bool',
     ];
 
     protected $fillable = [
@@ -31,6 +32,7 @@ class UserSettings extends Model
         'accounting_expand_errors',
         'accounting_filter_default_days',
         'latest_changes_quantity',
+        'notify_self',
     ];
 
     protected $primaryKey = 'user_id';

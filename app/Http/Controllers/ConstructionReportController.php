@@ -123,7 +123,7 @@ class ConstructionReportController extends Controller
             $constructionReport->addAttachments($request->new_attachments);
         }
 
-        event(new ConstructionReportCreatedEvent($constructionReport));
+        event(new ConstructionReportCreatedEvent($constructionReport, Auth::user(), Auth::user()->settings->notify_self));
 
         if ($request->send_signature_request) {
             return redirect()
@@ -228,7 +228,7 @@ class ConstructionReportController extends Controller
         $constructionReport->deleteSignatureRequest();
 
         if($constructionReport->wasChanged()) {
-            event(new ConstructionReportUpdatedEvent($constructionReport));
+            event(new ConstructionReportUpdatedEvent($constructionReport, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         if ($request->send_signature_request) {

@@ -6,6 +6,7 @@ use App\Events\AdditionsReportCreatedEvent;
 use App\Events\AdditionsReportUpdatedEvent;
 use App\Models\AdditionsReport;
 use App\Models\Employee;
+use App\Models\User;
 use App\Notifications\AdditionsReportInvolvedNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,7 +32,7 @@ class SendAdditionsReportInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($additionsReport);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new AdditionsReportInvolvedNotification($additionsReport, true));
+            $involvedUser->notify(new AdditionsReportInvolvedNotification($additionsReport, true, $event->user, $event->notifySelf));
         }
     }
 
@@ -39,10 +40,10 @@ class SendAdditionsReportInvolvedNotification implements ShouldQueue
     {
         $additionsReport = $event->additionsReport;
 
-        $involvedUsers = $this->getInvolvedUsers($additionsReport);
+        $involvedUsers = $this->getInvolvedUsers($additionsReport, $event->user);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new AdditionsReportInvolvedNotification($additionsReport, false));
+            $involvedUser->notify(new AdditionsReportInvolvedNotification($additionsReport, false, $event->user, $event->notifySelf));
         }
     }
 
@@ -59,7 +60,7 @@ class SendAdditionsReportInvolvedNotification implements ShouldQueue
         );
     }
 
-    private function getInvolvedUsers(AdditionsReport $additionsReport)
+    private function getInvolvedUsers(AdditionsReport $additionsReport, User $user)
     {
         $involvedEmployees = $additionsReport->involvedEmployees;
 

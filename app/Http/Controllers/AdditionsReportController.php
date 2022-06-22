@@ -123,7 +123,7 @@ class AdditionsReportController extends Controller
             $additionsReport->addAttachments($request->new_attachments);
         }
 
-        event(new AdditionsReportCreatedEvent($additionsReport));
+        event(new AdditionsReportCreatedEvent($additionsReport, Auth::user(), Auth::user()->settings->notify_self));
 
         if ($request->send_signature_request) {
             return redirect()
@@ -228,7 +228,7 @@ class AdditionsReportController extends Controller
         $additionsReport->deleteSignatureRequest();
 
         if($additionsReport->wasChanged()) {
-            event(new AdditionsReportUpdatedEvent($additionsReport));
+            event(new AdditionsReportUpdatedEvent($additionsReport, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         if ($request->send_signature_request) {

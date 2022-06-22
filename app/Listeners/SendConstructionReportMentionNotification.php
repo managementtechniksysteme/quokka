@@ -26,14 +26,14 @@ class SendConstructionReportMentionNotification implements ShouldQueue
     public function handleConstructionReportCreated(ConstructionReportCreatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->constructionReport->comment) as $mentionedUser) {
-            $mentionedUser->notify(new ConstructionReportMentionNotification($event->constructionReport));
+            $mentionedUser->notify(new ConstructionReportMentionNotification($event->constructionReport, $event->user, $event->notifySelf));
         }
     }
 
     public function handleConstructionReportUpdated(ConstructionReportUpdatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->constructionReport->comment) as $mentionedUser) {
-            $mentionedUser->notify(new ConstructionReportMentionNotification($event->constructionReport));
+            $mentionedUser->notify(new ConstructionReportMentionNotification($event->constructionReport, $event->user, $event->notifySelf));
         }
     }
 

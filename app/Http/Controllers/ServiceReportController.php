@@ -160,7 +160,7 @@ class ServiceReportController extends Controller
             $serviceReport->addAttachments($request->new_attachments);
         }
 
-        event(new ServiceReportCreatedEvent($serviceReport));
+        event(new ServiceReportCreatedEvent($serviceReport, Auth::user(), Auth::user()->settings->notify_self));
 
         if ($request->send_signature_request) {
             return redirect()
@@ -280,7 +280,7 @@ class ServiceReportController extends Controller
         $serviceReport->deleteSignatureRequest();
 
         if($serviceReport->wasChanged()) {
-            event(new ServiceReportUpdatedEvent($serviceReport));
+            event(new ServiceReportUpdatedEvent($serviceReport, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         if ($request->send_signature_request) {

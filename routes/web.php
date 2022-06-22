@@ -191,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
     Route::post('user-settings/interface', [UserSettingsController::class, 'updateInterface'])->name('user-settings.update-interface');
     Route::post('user-settings/notifications', [UserSettingsController::class, 'updateNotifications'])->name('user-settings.update-notifications');
+    Route::post('user-settings/notification-targets', [UserSettingsController::class, 'updateNotificationTargets'])->name('user-settings.update-notification-targets');
     Route::post('user-settings/signature', [UserSettingsController::class, 'updateSignature'])->name('user-settings.update-signature');
     Route::post('user-settings/password', [UserSettingsController::class, 'updatePassword'])->name('user-settings.update-password');
     Route::post('user-settings/otp-enable', [UserSettingsController::class, 'enableOtp'])->name('user-settings.otp-enable');

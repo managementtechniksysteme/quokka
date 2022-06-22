@@ -159,7 +159,7 @@ class MemoController extends Controller
             $memo->addAttachments($request->new_attachments);
         }
 
-        event(new MemoCreatedEvent($memo));
+        event(new MemoCreatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
 
         return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
     }
@@ -285,7 +285,7 @@ class MemoController extends Controller
         }
 
         if($memo->wasChanged()) {
-            event(new MemoUpdatedEvent($memo));
+            event(new MemoUpdatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');

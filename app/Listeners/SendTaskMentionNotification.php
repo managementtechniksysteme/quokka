@@ -29,7 +29,7 @@ class SendTaskMentionNotification implements ShouldQueue
 
         if ($task->comment) {
             foreach (Mentions::extractMentionedUsers($task->comment) as $mentionedUser) {
-                $mentionedUser->notify(new TaskMentionNotification($task));
+                $mentionedUser->notify(new TaskMentionNotification($task, $event->user, $event->notifySelf));
             }
         }
     }
@@ -40,7 +40,7 @@ class SendTaskMentionNotification implements ShouldQueue
 
         if ($task->comment) {
             foreach (Mentions::extractMentionedUsers($task->comment) as $mentionedUser) {
-                $mentionedUser->notify(new TaskMentionNotification($task));
+                $mentionedUser->notify(new TaskMentionNotification($task, $event->user, $event->notifySelf));
             }
         }
     }

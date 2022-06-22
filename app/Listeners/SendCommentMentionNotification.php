@@ -32,14 +32,14 @@ class SendCommentMentionNotification implements ShouldQueue
     public function handleCommentCreated(CommentCreatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->comment->comment) as $mentionedUser) {
-            $mentionedUser->notify(new CommentMentionNotification($event->comment));
+            $mentionedUser->notify(new CommentMentionNotification($event->comment, $event->user, $event->notifySelf));
         }
     }
 
     public function handleCommentUpdated(CommentUpdatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->comment->comment) as $mentionedUser) {
-            $mentionedUser->notify(new CommentMentionNotification($event->comment));
+            $mentionedUser->notify(new CommentMentionNotification($event->comment, $event->user, $event->notifySelf));
         }
     }
 

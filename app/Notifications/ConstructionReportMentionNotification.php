@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\ConstructionReport;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class ConstructionReportMentionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public ConstructionReport $constructionReport;
     private array $vibrationDuration = ['100'];
@@ -24,9 +27,11 @@ class ConstructionReportMentionNotification extends Notification implements Shou
      *
      * @return void
      */
-    public function __construct(ConstructionReport $constructionReport)
+    public function __construct(ConstructionReport $constructionReport, User $user, bool $notifySelf)
     {
         $this->constructionReport = $constructionReport;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

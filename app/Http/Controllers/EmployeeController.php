@@ -186,7 +186,7 @@ class EmployeeController extends Controller
         }
 
         if($employee->holidays !== $oldHolidayAllowance) {
-            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, true));
+            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, Auth::user(), Auth::user()->settings->notify_self, true));
         }
 
         return redirect()

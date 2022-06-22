@@ -518,12 +518,5 @@
             @endif
         </p>
 
-        <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted mr-1">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
-            </svg>
-            Letzte Benachrichtigungen
-        </h4>
-
     </div>
 @endsection

@@ -9,6 +9,7 @@ use App\Http\Requests\CommentUpdateRequest;
 use App\Models\Task;
 use App\Models\TaskComment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -63,7 +64,7 @@ class CommentController extends Controller
             $comment->addAttachments($request->new_attachments);
         }
 
-        event(new CommentCreatedEvent($comment));
+        event(new CommentCreatedEvent($comment, Auth::user(), Auth::user()->settings->notify_self));
 
         return redirect()
             ->route('tasks.show', $task)
@@ -107,7 +108,7 @@ class CommentController extends Controller
             $comment->addAttachments($request->new_attachments);
         }
 
-        event(new CommentUpdatedEvent($comment));
+        event(new CommentUpdatedEvent($comment, Auth::user(), Auth::user()->settings->notify_self));
 
         return redirect()
             ->route('tasks.show', $comment->task)

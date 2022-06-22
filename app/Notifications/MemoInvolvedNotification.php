@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\Memo;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class MemoInvolvedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public Memo $memo;
     public bool $isNew;
@@ -25,10 +28,12 @@ class MemoInvolvedNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Memo $memo, bool $isNew)
+    public function __construct(Memo $memo, bool $isNew, User $user, bool $notifySelf)
     {
         $this->memo = $memo;
         $this->isNew = $isNew;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

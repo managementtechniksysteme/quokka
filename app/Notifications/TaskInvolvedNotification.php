@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\Task;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class TaskInvolvedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public Task $task;
     public bool $isNew;
@@ -25,10 +28,12 @@ class TaskInvolvedNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Task $task, bool $isNew)
+    public function __construct(Task $task, bool $isNew, User $user, bool $notifySelf)
     {
         $this->task = $task;
         $this->isNew = $isNew;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

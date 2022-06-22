@@ -31,7 +31,7 @@ class SendCommentInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($comment->task);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new CommentInvolvedNotification($comment, true));
+            $involvedUser->notify(new CommentInvolvedNotification($comment, true, $event->user, $event->notifySelf));
         }
     }
 
@@ -42,7 +42,7 @@ class SendCommentInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($comment->task);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new CommentInvolvedNotification($comment, false));
+            $involvedUser->notify(new CommentInvolvedNotification($comment, false, $event->user, $event->notifySelf));
         }
     }
 

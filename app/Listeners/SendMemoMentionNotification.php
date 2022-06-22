@@ -29,7 +29,7 @@ class SendMemoMentionNotification implements ShouldQueue
 
         if ($memo->comment) {
             foreach (Mentions::extractMentionedUsers($memo->comment) as $mentionedUser) {
-                $mentionedUser->notify(new MemoMentionNotification($memo));
+                $mentionedUser->notify(new MemoMentionNotification($memo, $event->user, $event->notifySelf));
             }
         }
     }
@@ -40,7 +40,7 @@ class SendMemoMentionNotification implements ShouldQueue
 
         if ($memo->comment) {
             foreach (Mentions::extractMentionedUsers($memo->comment) as $mentionedUser) {
-                $mentionedUser->notify(new MemoMentionNotification($memo));
+                $mentionedUser->notify(new MemoMentionNotification($memo, $event->user, $event->notifySelf));
             }
         }
     }

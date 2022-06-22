@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\ConstructionReport;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class ConstructionReportInvolvedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public ConstructionReport $constructionReport;
     public bool $isNew;
@@ -25,10 +28,12 @@ class ConstructionReportInvolvedNotification extends Notification implements Sho
      *
      * @return void
      */
-    public function __construct(ConstructionReport $constructionReport, bool $isNew)
+    public function __construct(ConstructionReport $constructionReport, bool $isNew, User $user, bool $notifySelf)
     {
         $this->constructionReport = $constructionReport;
         $this->isNew = $isNew;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

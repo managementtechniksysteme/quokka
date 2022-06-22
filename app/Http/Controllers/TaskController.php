@@ -143,7 +143,7 @@ class TaskController extends Controller
             $task->addAttachments($request->new_attachments);
         }
 
-        event(new TaskCreatedEvent($task));
+        event(new TaskCreatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));
 
         return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich angelegt.');
     }
@@ -242,7 +242,7 @@ class TaskController extends Controller
         }
 
         if($task->wasChanged()) {
-            event(new TaskUpdatedEvent($task));
+            event(new TaskUpdatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');

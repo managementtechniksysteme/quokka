@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\ServiceReport;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class ServiceReportMentionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public ServiceReport $serviceReport;
     private array $vibrationDuration = ['100'];
@@ -24,9 +27,11 @@ class ServiceReportMentionNotification extends Notification implements ShouldQue
      *
      * @return void
      */
-    public function __construct(ServiceReport $serviceReport)
+    public function __construct(ServiceReport $serviceReport, User $user, bool $notifySelf)
     {
         $this->serviceReport = $serviceReport;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

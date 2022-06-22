@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\Task;
+use App\Models\User;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class TaskMentionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public Task $task;
     private array $vibrationDuration = ['100'];
@@ -24,9 +27,11 @@ class TaskMentionNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Task $task)
+    public function __construct(Task $task, User $user, bool $notifySelf)
     {
         $this->task = $task;
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
     }
 
     /**

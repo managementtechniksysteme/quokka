@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\Reauthenticate;
 use App\Http\Requests\UserSettingsConfirmOtpRequest;
 use App\Http\Requests\UserSettingsUpdateInterfaceRequest;
+use App\Http\Requests\UserSettingsUpdateNotificationsRequest;
+use App\Http\Requests\UserSettingsUpdateNotificationTargetsRequest;
 use App\Http\Requests\UserSettingsUpdatePasswordRequest;
 use App\Http\Requests\UserSettingsUpdateSignatureRequest;
+use App\Models\NotificationType;
 use chillerlan\QRCode\QRCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,9 +38,22 @@ class UserSettingsController extends Controller
             case 'interface':
                 return view('user_settings.edit_interface');
             case 'notifications':
+                Auth::user()->load('notificationsViaEmail')->load('notificationsViaWebPush');
                 Auth::user()->loadCount('pushSubscriptions');
 
-                return view('user_settings.edit_notifications');
+                $notifications = [];
+
+                foreach (NotificationType::all() as $notification) {
+                    $notifications[$notification->type] = $notification->id;
+                }
+
+                $emailNotifications = Auth::user()->notificationsViaEmail->pluck('id')->toArray();
+                $webPushNotifications = Auth::user()->notificationsViaWebPush()->pluck('id')->toArray();
+
+                return view('user_settings.edit_notifications')
+                    ->with(compact('notifications'))
+                    ->with(compact('emailNotifications'))
+                    ->with(compact('webPushNotifications'));
             case 'security':
                 if (Session::has('otpSecret')) {
                     Session::reflash();
@@ -70,6 +86,34 @@ class UserSettingsController extends Controller
         Auth::user()->settings->update($validatedData);
 
         return redirect()->route('user-settings.edit', ['tab' => 'interface'])->with('success', 'Die Einstellungen wurde erfolgreich gespeichert.');
+    }
+
+    public function updateNotifications(UserSettingsUpdateNotificationsRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        Auth::user()->settings->update($validatedData);
+
+        return redirect()->route('user-settings.edit', ['tab' => 'notifications'])->with('success', 'Die Einstellungen wurde erfolgreich gespeichert.');
+    }
+
+    public function updateNotificationTargets(UserSettingsUpdateNotificationTargetsRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        if (isset($validatedData['email'])) {
+            Auth::user()->notificationsViaEmail()->syncWithPivotValues($validatedData['email'], ['notification_target_type' => 'email']);
+        } else {
+            Auth::user()->notificationsViaEmail()->detach();
+        }
+
+        if (isset($validatedData['webpush'])) {
+            Auth::user()->notificationsViaWebPush()->syncWithPivotValues($validatedData['webpush'], ['notification_target_type' => 'webpush']);
+        } else {
+            Auth::user()->notificationsViaWebPush()->detach();
+        }
+
+        return redirect()->route('user-settings.edit', ['tab' => 'notifications'])->with('success', 'Die Einstellungen wurde erfolgreich gespeichert.');
     }
 
     public function updatePassword(UserSettingsUpdatePasswordRequest $request)

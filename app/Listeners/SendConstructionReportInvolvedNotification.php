@@ -31,7 +31,7 @@ class SendConstructionReportInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($constructionReport);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new ConstructionReportInvolvedNotification($constructionReport, true));
+            $involvedUser->notify(new ConstructionReportInvolvedNotification($constructionReport, true, $event->user, $event->notifySelf));
         }
     }
 
@@ -42,7 +42,7 @@ class SendConstructionReportInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($constructionReport);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new ConstructionReportInvolvedNotification($constructionReport, false));
+            $involvedUser->notify(new ConstructionReportInvolvedNotification($constructionReport, false, $event->user, $event->notifySelf));
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\ApplicationSettings;
 use App\Models\Employee;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -16,6 +17,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class HolidayAllowanceAdjustmentNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public float $holidayAllowanceDifference;
     public float $currentHolidayAllowance;

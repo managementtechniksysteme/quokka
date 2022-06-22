@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\AdditionsReport;
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +16,7 @@ use NotificationChannels\WebPush\WebPushMessage;
 class AdditionsReportSignedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     public AdditionsReport $additionsReport;
     private array $vibrationDuration = ['100'];

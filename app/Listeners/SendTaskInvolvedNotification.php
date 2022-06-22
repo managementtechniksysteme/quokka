@@ -31,7 +31,7 @@ class SendTaskInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($task);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new TaskInvolvedNotification($task, true));
+            $involvedUser->notify(new TaskInvolvedNotification($task, true, $event->user, $event->notifySelf));
         }
     }
 
@@ -42,7 +42,7 @@ class SendTaskInvolvedNotification implements ShouldQueue
         $involvedUsers = $this->getInvolvedUsers($task);
 
         foreach ($involvedUsers as $involvedUser) {
-            $involvedUser->notify(new TaskInvolvedNotification($task, false));
+            $involvedUser->notify(new TaskInvolvedNotification($task, false, $event->user, $event->notifySelf));
         }
     }
 

@@ -26,14 +26,14 @@ class SendInspectionReportMentionNotification implements ShouldQueue
     public function handleInspectionReportCreated(InspectionReportCreatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->inspectionReport->comment) as $mentionedUser) {
-            $mentionedUser->notify(new InspectionReportMentionNotification($event->inspectionReport));
+            $mentionedUser->notify(new InspectionReportMentionNotification($event->inspectionReport, $event->user, $event->notifySelf));
         }
     }
 
     public function handleInspectionReportUpdated(InspectionReportUpdatedEvent $event)
     {
         foreach (Mentions::extractMentionedUsers($event->inspectionReport->comment) as $mentionedUser) {
-            $mentionedUser->notify(new InspectionReportMentionNotification($event->inspectionReport));
+            $mentionedUser->notify(new InspectionReportMentionNotification($event->inspectionReport, $event->user, $event->notifySelf));
         }
     }
 

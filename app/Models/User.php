@@ -66,6 +66,16 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(UserSettings::class, 'user_id');
     }
 
+    public function notificationsViaEmail()
+    {
+        return $this->morphToMany(NotificationType::class, 'notifiable', null, 'notifiable_id', 'notification_type_id')->wherePivot('notification_target_type', 'email')->withTimestamps();
+    }
+
+    public function notificationsViaWebPush()
+    {
+        return $this->morphToMany(NotificationType::class, 'notifiable', null, 'notifiable_id', 'notification_type_id')->wherePivot('notification_target_type', 'webpush')->withTimestamps();
+    }
+
     public function routeNotificationForMail()
     {
         return $this->person->email;

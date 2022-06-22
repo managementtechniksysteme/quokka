@@ -116,7 +116,7 @@ class InspectionReportController extends Controller
             $inspectionReport->addAttachments($request->new_attachments);
         }
 
-        event(new InspectionReportCreatedEvent($inspectionReport));
+        event(new InspectionReportCreatedEvent($inspectionReport, Auth::user(), Auth::user()->settings->notify_self));
 
         if ($request->send_signature_request) {
             return redirect()
@@ -183,7 +183,7 @@ class InspectionReportController extends Controller
         $inspectionReport->deleteSignatureRequest();
 
         if($inspectionReport->wasChanged()) {
-            event(new InspectionReportUpdatedEvent($inspectionReport));
+            event(new InspectionReportUpdatedEvent($inspectionReport, Auth::user(), Auth::user()->settings->notify_self));
         }
 
         if ($request->send_signature_request) {

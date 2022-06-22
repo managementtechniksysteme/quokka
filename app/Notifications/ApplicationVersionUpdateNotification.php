@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -15,6 +16,7 @@ use PragmaRX\Version\Package\Version;
 class ApplicationVersionUpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use TargetsNotification;
 
     private string $version;
     private array $vibrationDuration = ['100'];

@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\AdditionsReport;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

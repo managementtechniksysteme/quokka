@@ -2,24 +2,25 @@
 
 namespace App\Notifications;
 
-use App\Models\Memo;
-use App\Models\User;
 use App\Traits\TargetsNotification;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Channels\DatabaseChannel;
 use Illuminate\Notifications\Channels\MailChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Collection;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
+use PragmaRX\Version\Package\Version;
 
-class MemoMentionNotification extends Notification implements ShouldQueue
+class NotificationSummaryNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    use TargetsNotification;
 
-    public Memo $memo;
+    private Carbon $date;
+    private Collection $notifications;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -27,11 +28,10 @@ class MemoMentionNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Memo $memo, User $user, bool $notifySelf)
+    public function __construct(Carbon $date, Collection $notifications)
     {
-        $this->memo = $memo;
-        $this->user = $user;
-        $this->notifySelf = $notifySelf;
+        $this->date = $date;
+        $this->notifications = $notifications;
     }
 
     /**
@@ -43,19 +43,8 @@ class MemoMentionNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         return [
-            DatabaseChannel::class,
             MailChannel::class,
             WebPushChannel::class,
-        ];
-    }
-
-    public function toDatabase($notifiable)
-    {
-        return [
-            'model' => Memo::class,
-            'type' => 'Memo',
-            'id' => $this->memo->id,
-            'route' => route('memos.show', $this->memo->id),
         ];
     }
 
@@ -68,19 +57,20 @@ class MemoMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Du wurdst in einem Aktenvermerk erwähnt (Projekt '.$this->memo->project->name.' #'.$this->memo->number.')')
-                    ->markdown('emails.memo.notification_mention', ['memo' => $this->memo]);
+                    ->subject("Zusammenfassung vom $this->date")
+                    ->markdown('emails.notification_summary', ['date' => $this->date, 'notifications' => $this->notifications]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
+
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Aktenvermerk erwähnt')
+            ->title("Zusammenfassung vom $this->date")
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Aktenvermerk '.$this->memo->title.' (Projekt '.$this->memo->project->name.' #'.$this->memo->number.') erwähnt.')
-            ->tag(Memo::class.':'.$this->memo->id)
-            ->data(['url' => route('memos.show', $this->memo)])
+            ->body("Deine Zusammenfassung vom $this->date wurde als Email verschickt.")
+            ->tag(NotificationSummaryNotification::class)
+            ->data(['url' => route('notifications.index')])
             ->vibrate($this->vibrationDuration);
     }
 }

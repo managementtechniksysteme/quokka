@@ -159,10 +159,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('people', PersonController::class);
 
+    Route::get('/projects/list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
     Route::resource('projects', ProjectController::class);
     Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
-    Route::get('/project-list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
 
     Route::resource('roles', RoleController::class);
 
@@ -180,16 +180,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/service-reports/{service_report}/email-signature-request', [ServiceReportController::class, 'emailSignatureRequest']);
     Route::get('/service-reports/{service_report}/finish', [ServiceReportController::class, 'finish'])->name('service-reports.finish');
 
+    Route::get('/tasks/list', [TaskController::class, 'downloadList'])->name('tasks.download-list');
     Route::resource('tasks', TaskController::class);
     Route::get('/tasks/{task}/download', [TaskController::class, 'download'])->name('tasks.download');
     Route::get('/tasks/{task}/email', [TaskController::class, 'showEmail'])->name('tasks.email');
     Route::post('/tasks/{task}/email', [TaskController::class, 'email']);
     Route::get('/tasks/{task}/finish', [TaskController::class, 'finish'])->name('tasks.finish');
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
-    Route::get('/task-list', [TaskController::class, 'downloadList'])->name('tasks.download-list');
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');
     Route::post('user-settings/interface', [UserSettingsController::class, 'updateInterface'])->name('user-settings.update-interface');
+    Route::post('user-settings/notifications', [UserSettingsController::class, 'updateNotifications'])->name('user-settings.update-notifications');
     Route::post('user-settings/signature', [UserSettingsController::class, 'updateSignature'])->name('user-settings.update-signature');
     Route::post('user-settings/password', [UserSettingsController::class, 'updatePassword'])->name('user-settings.update-password');
     Route::post('user-settings/otp-enable', [UserSettingsController::class, 'enableOtp'])->name('user-settings.otp-enable');

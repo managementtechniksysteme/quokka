@@ -4,41 +4,46 @@
             {{ config('app.name') }}
         </a>
 
-        @can('search')
-            <div class="d-inline-flex d-xl-none flex-grow-1 mx-4">
-                <div class="input-group global-search global-search-centered border rounded-sm flex-grow-1 mx-auto">
-                    <span class="input-group-prepend">
-                        <div class="input-group-text bg-transparent border-0">
-                            <svg class="icon icon-16 text-muted">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                            </svg>
-                        </div>
-                    </span>
-                    <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
-                        <input type="search" name="query" class="form-control global-search-input outline-none border-0 pl-0 rounded-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
-                    </form>
-                    <span class="input-group-append ml-auto">
-                        <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
-                            <span class="lead">
-                                <svg class="icon icon-baseline">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
-                                </svg>
-                                <span>K</span>
-                            </span>
-                        </button>
-                    </span>
-                </div>
-            </div>
-        @endcan
+        @auth
 
+            @can('search')
+                <div class="d-inline-flex d-xl-none flex-grow-1 mx-4">
+                    <div class="input-group global-search global-search-centered border rounded-sm flex-grow-1 mx-auto">
+                        <span class="input-group-prepend">
+                            <div class="input-group-text bg-transparent border-0">
+                                <svg class="icon icon-16 text-muted">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
+                                </svg>
+                            </div>
+                        </span>
+                        <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
+                            <input type="search" name="query" class="form-control global-search-input outline-none border-0 pl-0 rounded-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
+                        </form>
+                        <span class="input-group-append ml-auto">
+                            <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
+                                <span class="lead">
+                                    <svg class="icon icon-baseline">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
+                                    </svg>
+                                    <span>K</span>
+                                </span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            @endcan
+
+        @endauth
 
         <button class="p-2 bg-transparent border rounded-sm outline-none d-inline-flex d-xl-none position-relative" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <svg class="icon icon-24 align-self-center">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
             </svg>
-            @if(Auth::user()->unreadNotifications()->count())
-                <span class="notification-badge"></span>
-            @endif
+            @auth
+                @if(Auth::user()->unreadNotifications()->count())
+                    <span class="notification-badge"></span>
+                @endif
+            @endauth
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -288,32 +293,36 @@
 
             </ul>
 
-            @can('search')
-                <div class="d-none d-xl-inline-flex mx-2 flex-grow-1">
-                    <div class="input-group global-search border rounded-sm flex-grow-1 ml-auto">
-                        <span class="input-group-prepend">
-                            <div class="input-group-text bg-transparent border-0">
-                                <svg class="icon icon-16 text-muted">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                                </svg>
-                            </div>
-                        </span>
-                        <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
-                            <input type="search" name="query" class="form-control global-search-input border-0 outline-none pl-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
-                        </form>
-                        <span class="input-group-append">
-                            <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
-                                <span class="lead">
-                                    <svg class="icon icon-baseline">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
+            @auth
+
+                @can('search')
+                    <div class="d-none d-xl-inline-flex mx-2 flex-grow-1">
+                        <div class="input-group global-search border rounded-sm flex-grow-1 ml-auto">
+                            <span class="input-group-prepend">
+                                <div class="input-group-text bg-transparent border-0">
+                                    <svg class="icon icon-16 text-muted">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
                                     </svg>
-                                    <span>K</span>
-                                </span>
-                            </button>
-                        </span>
+                                </div>
+                            </span>
+                            <form class="form-inline needs-validation global-search-form flex-grow-1" action="{{ route('search.index') }}" method="get" novalidate>
+                                <input type="search" name="query" class="form-control global-search-input border-0 outline-none pl-0 flex-grow-1" placeholder="Suche" autocomplete="off" required>
+                            </form>
+                            <span class="input-group-append">
+                                <button class="btn btn-outline-secondary border-0 text-gray-500 global-search-append-button" onclick="window.dispatchEvent(new CustomEvent('toggle-spotlight'))">
+                                    <span class="lead">
+                                        <svg class="icon icon-baseline">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#command"></use>
+                                        </svg>
+                                        <span>K</span>
+                                    </span>
+                                </button>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            @endcan
+                @endcan
+
+            @endauth
 
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->

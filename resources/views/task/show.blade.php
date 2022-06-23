@@ -91,7 +91,7 @@
             <h4>
                 Diskussion
                 @unless($comments->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.entries', $comments->total()) }}e</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $comments->total()) }}</small>
                 @endunless
             </h4>
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -12,11 +14,27 @@ class NotificationController extends Controller
         $this->middleware('can:tools-scanqr');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $notifications = Auth::user()
-            ->unreadNotifications()
-            ->paginate(Auth::user()->settings->list_pagination_siz);
+        $notifications = null;
+
+        if($request->has('show-read')) {
+            $readNotifications = Auth::user()
+                ->notifications()
+                ->whereNotNull('read_at')
+                ->get();
+
+            $notifications = Auth::user()
+                ->unreadNotifications()
+                ->get()
+                ->concat($readNotifications)
+                ->paginate(Auth::user()->settings->list_pagination_size)
+                ->appends($request->except('page'));
+        } else {
+            $notifications = Auth::user()
+                ->unreadNotifications()
+                ->paginate(Auth::user()->settings->list_pagination_size);
+        }
 
         return view('notification.index')
             ->with(compact('notifications'));

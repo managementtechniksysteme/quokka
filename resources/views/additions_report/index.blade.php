@@ -9,7 +9,7 @@
                 </svg>
                 Regieberichte
                 @unless($additionsReports->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $additionsReports->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $additionsReports->total()) }}</small>
                 @endunless
             </h3>
 

@@ -9,7 +9,7 @@
                 </svg>
                 Bautagesberichte
                 @unless($constructionReports->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $constructionReports->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $constructionReports->total()) }}</small>
                 @endunless
             </h3>
 

@@ -9,7 +9,7 @@
                 </svg>
                 Rollen
                 @unless($roles->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $roles->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $roles->total()) }}</small>
                 @endunless
             </h3>
 

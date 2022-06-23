@@ -9,7 +9,7 @@
                 </svg>
                 Benachrichtigungen
                 @unless($notifications->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $notifications->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $notifications->total()) }}</small>
                 @endif
             </h3>
 

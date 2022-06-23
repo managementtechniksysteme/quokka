@@ -9,7 +9,7 @@
                 </svg>
                 Adressen
                 @unless($addresses->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $addresses->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $addresses->total()) }}</small>
                 @endunless
             </h3>
 

@@ -9,7 +9,7 @@
                 </svg>
                 Serviceberichte
                 @unless($serviceReports->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $serviceReports->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $serviceReports->total()) }}</small>
                 @endunless
             </h3>
 

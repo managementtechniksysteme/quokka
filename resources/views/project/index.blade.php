@@ -9,7 +9,7 @@
                 </svg>
                 Projekte
                 @unless($projects->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $projects->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $projects->total()) }}</small>
                 @endunless
             </h3>
 

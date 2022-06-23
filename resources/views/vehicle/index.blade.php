@@ -9,7 +9,7 @@
                 </svg>
                 Fuhrpark
                 @unless($vehicles->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $vehicles->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $vehicles->total()) }}</small>
                 @endunless
             </h3>
 

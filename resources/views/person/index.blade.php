@@ -9,7 +9,7 @@
                 </svg>
                 Personen
                 @unless($people->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $people->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $people->total()) }}</small>
                 @endunless
             </h3>
 

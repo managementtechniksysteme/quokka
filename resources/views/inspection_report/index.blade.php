@@ -9,7 +9,7 @@
                 </svg>
                 Prüfberichte
                 @unless($inspectionReports->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $inspectionReports->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $inspectionReports->total()) }}</small>
                 @endunless
             </h3>
 

@@ -349,10 +349,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-20 mr-1 @if(Auth::user()->unreadNotifications()->count()) text-red @endif" >
-                                @if(Auth::user()->unreadNotifications()->count())
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
-                                @elseif(Session::has('impersonatorId'))
+                                @if(Session::has('impersonatorId'))
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-plus"></use>
+                                @elseif(Auth::user()->unreadNotifications()->count())
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                                 @else
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 @endif

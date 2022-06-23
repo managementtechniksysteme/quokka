@@ -9,7 +9,7 @@
                 </svg>
                 Aktenvermerke
                 @unless($memos->isEmpty())
-                    <small class="text-muted">{{ $memos->total() }} Einträge</small>
+                    <small class="text-muted">{{ trans_choice('messages.elements', $memos->total()) }}</small>
                 @endunless
             </h3>
 

@@ -9,7 +9,7 @@
                 </svg>
                 Aufgaben
                 @unless($tasks->isEmpty())
-                    <small class="text-muted">{{ $tasks->total() }} Einträge</small>
+                    <small class="text-muted">{{ trans_choice('messages.elements', $tasks->total()) }}</small>
                 @endunless
             </h3>
 

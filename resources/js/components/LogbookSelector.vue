@@ -208,7 +208,7 @@
                               </svg>
                               Fahrtenbuch
                               <small v-if="logbook.length" class="text-muted">
-                                  {{ logbook.length }} Einträge
+                                  {{ logbook.length }} {{ logbook.length === 1 ? 'Eintrag' : 'Einträge' }}
                                   <span v-if="getNewLogbook().length" class="text-success">+{{ getNewLogbook().length }}</span>
                                   <span v-if="getChangedLogbook().length" class="text-warning">±{{ getChangedLogbook().length }}</span>
                                   <span v-if="getDestroyedLogbook().length" class="text-danger">-{{ getDestroyedLogbook().length }}</span>

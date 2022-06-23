@@ -9,7 +9,7 @@
                 </svg>
                 Letzte Änderungen
                 @unless($results->isEmpty())
-                    <small class="text-muted">{{ $results->total() }} Elemente</small>
+                    <small class="text-muted">{{ trans_choice('messages.elements', $results->total()) }}</small>
                 @endif
             </h3>
         </div>

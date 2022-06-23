@@ -11,7 +11,7 @@
                     <svg class="icon icon-16 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                     </svg>
-                    {{ $role->permissions_count }} Berechtigungen
+                    {{ trans_choice('messages.permissions', $role->permissions_count) }}
                 </div>
             </div>
         </div>

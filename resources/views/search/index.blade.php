@@ -9,7 +9,7 @@
                 </svg>
                 Suche - {{ $query }}
                 @unless($results->isEmpty())
-                    <small class="text-muted">{{ $results->total() }} Ergebnisse</small>
+                    <small class="text-muted">{{ trans_choice('messages.results', $results->total()) }}</small>
                 @endif
             </h3>
         </div>

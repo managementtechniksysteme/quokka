@@ -142,9 +142,9 @@
 @endif
 \\
 @endif
-@if($projectOverwallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
+@if($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
 \footnotesize{Warnschwellen: }
-@if($projectOverwallCostsWarningPercentage)\footnotesize{Gesamt: }\footnotesize{{!! Latex::escape($projectOverwallCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}
+@if($projectOverallCostsWarningPercentage)\footnotesize{Gesamt: }\footnotesize{{!! Latex::escape($projectOverallCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}
 @if($projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
 \footnotesize{, }
 @endif

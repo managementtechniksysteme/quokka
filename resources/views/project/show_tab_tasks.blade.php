@@ -11,7 +11,7 @@
             </a>
         @endcan
         @can('downloadList', \App\Models\Task::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list', ['project_id' => $project->id]) }}">
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list', ['project_id' => $project->id]) }}" target="_blank">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>

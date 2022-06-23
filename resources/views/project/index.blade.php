@@ -23,7 +23,7 @@
                     </a>
                 @endcan
                 @can('downloadList', \App\Models\Project::class)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('projects.download-list') }}">
+                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('projects.download-list') }}" target="_blank">
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>

@@ -180,7 +180,7 @@
             <h4 class="mt-5">
                 Berechtigungen
                 <small class="text-muted">
-                    {{ trans_choice('messages.elements', $employee->user->permissions) }}
+                    {{ trans_choice('messages.entries', $employee->user->permissions) }}
                     <a class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center ml-2" type="button"  data-toggle="collapse" data-target="#permissions">
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>

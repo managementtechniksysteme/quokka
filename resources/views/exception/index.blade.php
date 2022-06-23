@@ -9,7 +9,7 @@
                 </svg>
                 Fehlerdateien
                 @unless($exceptions->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.elements', $exceptions->total()) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', $exceptions->total()) }}</small>
                 @endunless
             </h3>
         </div>

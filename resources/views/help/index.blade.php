@@ -11,7 +11,7 @@
                 </svg>
                 Hilfe
                 @if(count($names) > 0)
-                    <small class="text-muted">{{ trans_choice('messages.elements', count($names)) }}</small>
+                    <small class="text-muted">{{ trans_choice('messages.entries', count($names)) }}</small>
                 @endif
             </h3>
         </div>

@@ -23,7 +23,7 @@ class SendNotificationSummaryJob implements ShouldQueue
     {
         $this->date = Carbon::yesterday();
         $this->users = User::whereHas('notifications', function ($query) {
-            return $query->whereNotNull('read_at')->whereDate('created_at', $this->date);
+            return $query->whereNull('read_at')->whereDate('created_at', $this->date);
         })
         ->get();
     }

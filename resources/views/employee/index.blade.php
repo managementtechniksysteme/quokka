@@ -9,7 +9,7 @@
                 </svg>
                 Mitarbeiter
                 @unless($employees->isEmpty())
-                    <small class="text-muted">{{ $employees->total() }} Einträge</small>
+                    <small class="text-muted">{{ trans_choice('messages.elements', $employees->total()) }}</small>
                 @endunless
             </h3>
 

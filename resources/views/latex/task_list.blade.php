@@ -22,7 +22,7 @@
 @if(count($company->projects) > 0 && $company->projects->sum('tasks_count') > 0)
 @foreach($company->projects as $project)
 @if(count($project->tasks) > 0)
-\textbf{{!! Latex::escape($company->name) !!} - {!! Latex::escape($project->name) !!}} ({!! Latex::escape($project->tasks_count) !!} Aufgaben)
+\textbf{{!! Latex::escape($company->name) !!} - {!! Latex::escape($project->name) !!}} ({!! Latex::escape(trans_choice('messages.projects', $project->tasks_count)) !!})
 \begin{longtable}{@{}A{10.1cm}p{0.6cm}p{2.1cm}p{1cm}p{2cm}@{}}
 \hline
 \footnotesize{\textbf{Aufgabe}} & \footnotesize{\textbf{MA}} & \footnotesize{\textbf{Status}} & \footnotesize{\textbf{Priorität}} & \footnotesize{\textbf{fällig am}} \\

@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $role->name }}
                     @if($role->permissions_count)
-                        ({{ $role->permissions_count }} Berechtigungen)
+                        ({{ trans_choice('messages.permissions', $role->permissions_count) }})
                     @endif
                     @if(false)
                         <svg class="icon icon-16 text-yellow ml-1">

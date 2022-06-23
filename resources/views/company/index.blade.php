@@ -9,7 +9,7 @@
                 </svg>
                 Firmen
                 @unless($companies->isEmpty())
-                    <small class="text-muted">{{ $companies->total() }} Einträge</small>
+                    <small class="text-muted">{{ trans_choice('messages.elements', $companies->total()) }}</small>
                 @endunless
             </h3>
 

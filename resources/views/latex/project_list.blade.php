@@ -20,7 +20,7 @@
 @if(count($companies) > 0 && $companies->sum('projects_count') > 0)
 @foreach($companies as $company)
 @if(count($company->projects) > 0)
-\textbf{{!! Latex::escape($company->name) !!}} ({!! Latex::escape($company->projects_count) !!} Projekte)
+\textbf{{!! Latex::escape($company->name) !!}} ({!! Latex::escape(trans_choice('messages.projects', $company->projects_count)) !!})
 \begin{longtable}{@{}A{11.8cm}p{2cm}p{2cm}@{}}
 \hline
 \footnotesize{\textbf{Projekt}} & \footnotesize{\textbf{Start}} & \footnotesize{\textbf{Ende}} \\

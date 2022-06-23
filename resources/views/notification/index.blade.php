@@ -52,7 +52,7 @@
             @endforelse
         </div>
 
-        @if( !request()->has('show-read') )
+        @if( $readNotificationCount && !request()->has('show-read') )
             <div class="d-flex justify-content-center mt-4">
                 <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('notifications.index', ['show-read' => true]) }}">
                     <svg class="icon icon-16 mr-2">

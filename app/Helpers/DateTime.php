@@ -15,7 +15,7 @@ class DateTime
             $hourOfDay >= 13 => 'Schönen Nachmittag',
             $hourOfDay >= 11 => 'Mahlzeit',
             $hourOfDay >= 0 => 'Guten Morgen',
-            default => 'Tag',
+            default => 'Guten Tag',
         };
     }
 

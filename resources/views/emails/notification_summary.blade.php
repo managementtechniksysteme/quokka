@@ -4,7 +4,7 @@ Hallo,
 hier ist deine Zusammenfassung über Benachrichtigungen vom {{ $date }}.
 
 @foreach($notifications as $notification)
-**{{ $notification->created_at->format('H:i') }}** - {{ NotificationHelper::header($notification) }}<br />
+**{{ $notification->created_at->format('H:i') }}** - {{ NotificationHelper::header($notification) }} ([Link]({{ $notification->data['route'] }}))<br />
 {{ NotificationHelper::text($notification) }}<br /><br />
 @endforeach
 

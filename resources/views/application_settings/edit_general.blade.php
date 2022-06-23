@@ -410,6 +410,40 @@
             </div>
         </div>
 
+        <div class="row mt-4">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1">
+                    <svg class="icon icon-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                    </svg>
+                    Entfernen gelesener Benachrichtigung
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <div>
+                        <label for="prune_read_notifications">Gelesene Benachrichtigungen, die älter als einen Monat sind, automatisch aus dem System entfernen?</label>
+                    </div>
+                    <div class="btn-group btn-group-toggle @error('prune_read_notifications') is-invalid @enderror" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary @if(old('prune_read_notifications', optional(Auth::user()->settings)->prune_read_notifications) == true) active @endif">
+                            <input type="radio" name="prune_read_notifications" id="1" value="1" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == true) checked @endif> entfernen
+                        </label>
+                        <label class="btn btn-outline-secondary @if(old('prune_read_notifications', optional(Auth::user()->settings)->notify_self) == false) active @endif">
+                            <input type="radio" name="prune_read_notifications" id="0" value="0" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == false) checked @endif> nicht entfernen
+                        </label>
+                    </div>
+                    <div class="invalid-feedback @error('prune_read_notifications') d-block @enderror">
+                        @error('prune_read_notifications')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
             <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>

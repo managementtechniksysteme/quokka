@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('model:prune')->daily();
         $schedule->job(new AdjustHolidayAllowanceJob)->daily();
         $schedule->job(new SendNotificationSummaryJob())->dailyAt('07:00');
     }

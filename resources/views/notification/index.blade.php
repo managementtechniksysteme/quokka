@@ -32,7 +32,21 @@
     </div>
 
     <div class="container my-4">
-        <div class="mt-3">
+
+        @if(\App\Models\ApplicationSettings::get()->prune_read_notifications)
+            <div class="alert alert-warning mt-3" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                    </svg>
+                    <p class="m-0">
+                        Gelesene Nachrichten, die älter als einen Monat sind, werden automatisch aus dem System entfernt.
+                    </p>
+                </div>
+            </div>
+        @endif
+
+        <div class="mt-4">
             @forelse ($notifications as $notification)
                 @component('notification.overview_card', [ 'notification' => $notification, ])
                 @endcomponent

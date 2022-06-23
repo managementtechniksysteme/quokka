@@ -199,7 +199,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Aktenvermerk erwähnt
                             </td>
@@ -240,7 +240,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei einer neuen Applikationsversion
                             </td>
@@ -281,7 +281,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei einer Aufgabe beteiligt
                             </td>
@@ -312,7 +312,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einer Aufgabe erwähnt
                             </td>
@@ -353,7 +353,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei einer Aufgabe beteiligt
                             </td>
@@ -384,7 +384,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Kommentar erwähnt
                             </td>
@@ -425,7 +425,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei einem Bautagesbericht beteiligt
                             </td>
@@ -456,7 +456,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Bautagesbericht erwähnt
                             </td>
@@ -487,7 +487,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei Unterschrift eines Bautagesberichtes
                             </td>
@@ -528,7 +528,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Prüfbericht erwähnt
                             </td>
@@ -559,7 +559,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei Unterschrift eines Prüfberichtes
                             </td>
@@ -600,7 +600,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei einem Regiebericht beteiligt
                             </td>
@@ -631,7 +631,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Regiebericht erwähnt
                             </td>
@@ -662,7 +662,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei Unterschrift eines Regieberichtes
                             </td>
@@ -703,7 +703,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 In einem Servicebericht erwähnt
                             </td>
@@ -734,7 +734,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei Unterschrift eines Serviceberichtes
                             </td>
@@ -775,7 +775,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <tr class="hover-highlight">
                             <td>
                                 Bei Anpassung des verfügbaren Urlaubes
                             </td>

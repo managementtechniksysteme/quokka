@@ -6,7 +6,7 @@
                 @include('notification.notification_icon')
                 {{ NotificationHelper::header($notification) }}
             </div>
-            <div class="flex-wrap">
+            <div class="flex-wrap @if($notification->read_at) text-muted @endif">
                 {{ NotificationHelper::text($notification) }}
             </div>
         </div>
@@ -18,19 +18,21 @@
             {{ $notification->created_at->format('d.m.Y H:i') }}
         </div>
 
-        <div class="d-none d-lg-block">
-            <form action="{{ route('notifications.destroy', $notification) }}" method="post">
-                @csrf
-                @method('DELETE')
+        @if( !$notification->read_at )
+            <div class="d-none d-lg-block">
+                <form action="{{ route('notifications.destroy', $notification) }}" method="post">
+                    @csrf
+                    @method('DELETE')
 
-                <button type="submit" class="btn btn-outline-success d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                    </svg>
-                    Gelesen
-                </button>
-            </form>
-        </div>
+                    <button type="submit" class="btn btn-outline-success d-inline-flex align-items-center">
+                        <svg class="icon icon-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                        </svg>
+                        Gelesen
+                    </button>
+                </form>
+            </div>
+        @endif
 
     </div>
 </div>

@@ -43,10 +43,25 @@
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/astronaut.svg') }}" alt="no data"/>
-                    <p class="lead text-muted">Du hast keine ungelesenen Benachrichtigungen.</p>
+                    @if( request()->has('show-read') )
+                        <p class="lead text-muted">Du hast keine Benachrichtigungen.</p>
+                    @else
+                        <p class="lead text-muted">Du hast keine ungelesenen Benachrichtigungen.</p>
+                    @endif
                 </div>
             @endforelse
         </div>
+
+        @if( !request()->has('show-read') )
+            <div class="d-flex justify-content-center mt-4">
+                <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('notifications.index', ['show-read' => true]) }}">
+                    <svg class="icon icon-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                    </svg>
+                    Gelesene Benachrichtigungen anzeigen
+                </a>
+            </div>
+        @endif
 
         <div class="mt-2">
             {{ $notifications->links() }}

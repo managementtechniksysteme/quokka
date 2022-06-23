@@ -1,7 +1,7 @@
 <div class="py-2">
     <div class="row">
         <div class="col-auto d-none d-md-block pr-0">
-            <div class="avatar bg-{{ $comment->employee->user->settings->avatar_colour }}-200 rounded-circle d-inline-flex align-items-center justify-content-center">
+            <div class="avatar bg-{{ $comment->employee->user->settings->avatar_colour }}-200 rounded-circle border border-{{ $comment->employee->user->settings->avatar_colour }}-800 d-inline-flex align-items-center justify-content-center">
                 <h4 class="text-{{ $comment->employee->user->settings->avatar_colour }}-800 m-0">{{ $comment->employee->user->username_avatar_string }}</h4>
             </div>
         </div>

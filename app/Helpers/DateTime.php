@@ -12,7 +12,7 @@ class DateTime
 
         return match (true) {
             $hourOfDay >= 17 => 'Guten Abend',
-            $hourOfDay >= 13 => 'Guten Nachmittag',
+            $hourOfDay >= 13 => 'Schönen Nachmittag',
             $hourOfDay >= 11 => 'Mahlzeit',
             $hourOfDay >= 0 => 'Guten Morgen',
             default => 'Tag',

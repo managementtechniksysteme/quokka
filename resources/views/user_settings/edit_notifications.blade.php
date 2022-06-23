@@ -156,7 +156,7 @@
                     <thead>
                         <th scope="col"></th>
                         <th scope="col">Email</th>
-                        <th scope="col">Webpush</th>
+                        <th scope="col">Push</th>
                     </thead>
                     <tbody>
                         <tr>

@@ -13,8 +13,15 @@ trait TargetsNotification
 
     public function shouldSend(mixed $notifiable, string $channel): bool
     {
+        \Illuminate\Support\Facades\Log::info('notifiable id');
+        \Illuminate\Support\Facades\Log::info($notifiable->employee_id);
+        \Illuminate\Support\Facades\Log::info('user id');
+        \Illuminate\Support\Facades\Log::info($this->user->employee_id);
+        \Illuminate\Support\Facades\Log::info('notify self');
+        \Illuminate\Support\Facades\Log::info($this->notifySelf);
 
-        if ($notifiable instanceof User && $this->user && !$this->shouldNotifySelf($notifiable)) {
+        if ($notifiable instanceof User && $this->user && !$this->shouldNotifyUser($notifiable)) {
+            \Illuminate\Support\Facades\Log::info('not notifying self');
             return false;
         }
 
@@ -25,12 +32,16 @@ trait TargetsNotification
         return true;
     }
 
-    private function shouldNotifySelf(mixed $notifiable): bool
+    private function shouldNotifyUser(User $notifiable): bool
     {
-        return $this->user->employee_id === $notifiable->employee_id && $this->notifySelf;
+        if($this->user->employee_id === $notifiable->employee_id) {
+            return $this->notifySelf;
+        }
+        
+        return true;
     }
 
-    private function shouldNotifyVia(mixed $notifiable, string $channel): bool
+    private function shouldNotifyVia(User $notifiable, string $channel): bool
     {
         if($channel === MailChannel::class &&
             !$notifiable->notificationsViaEmail()->where('type', static::class)->exists()) {

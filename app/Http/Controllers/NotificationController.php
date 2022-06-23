@@ -36,8 +36,19 @@ class NotificationController extends Controller
                 ->paginate(Auth::user()->settings->list_pagination_size);
         }
 
+        $unreadNotificationCount = Auth::user()
+            ->unreadNotifications()
+            ->count();
+
+        $readNotificationCount = Auth::user()
+            ->notifications()
+            ->whereNotNull('read_at')
+            ->count();
+
         return view('notification.index')
-            ->with(compact('notifications'));
+            ->with(compact('notifications'))
+            ->with(compact('unreadNotificationCount'))
+            ->with(compact('readNotificationCount'));
     }
 
     public function destroy(DatabaseNotification $notification) {

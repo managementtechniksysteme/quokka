@@ -30,6 +30,7 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
             'project_billed_costs_warning_percentage' => 'integer|min:1|max:99|nullable',
             'signature_notify_user_id' => 'exists:users,employee_id|nullable',
             'task_due_soon_days' => 'required|integer|min:1',
+            'prune_read_notifications' => 'required|boolean',
         ];
     }
 }

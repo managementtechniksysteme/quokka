@@ -37,6 +37,7 @@ class ApplicationSettings extends Model
         'project_billed_costs_warning_percentage',
         'signature_notify_user_id',
         'task_due_soon_days',
+        'prune_read_notifications',
     ];
 
     public static function get()

@@ -16,6 +16,46 @@
 
     <div class="container my-4">
         @markdown
+        ### v0.1.19-3532f96 (24.06.2022)
+        * Auswertungen von Projekten stehen nun zur Verfügung.
+        * Auswertungen von Projektlisten stehen nun zur Verfügung.
+        * Auswertungen von Aufgabenlisten stehen nun zur Verfügung.
+        * Ein Servicebericht kann nun direkt aus der Abrechnung oder dem Fahrtenbuch erstellt werden. Hierbei können die
+        gewünschten Elemente selektiert werden und es erscheint ein Button zum Erstellen des Berichtes. Dies funktioniert
+        nur, wenn alle Elemente einem Projekt angehören, alle Elemente dem aktuellen Benutzer zugeordnet sind und im Fall
+        von Leistungsabrechnungen alle Elemente studenbasiert sind. Die Anzahl an Stunden bzw. Kilometern wird automatisch
+        pro Tag aufsummiert und zusammen mit dem Projekt in den jeweiligen Eingabefeldern hinterlegt. Kommentare von
+        abgerechneten Leistungen werden nach Datum sortiert in das Kurzbericht Feld des Serviceberichtes eingetragen.
+        Falls ein Servicebericht aus der Abrechnung erstellt wird, so werden automatisch die gefahrenen Kilometer der selben
+        Tage des angemeldeten Benutzers gesucht und einetragen. Falls ein Servicebericht aus dem Fahrtenbuch erstell wird,
+        werden auotmatische alle Leistungen des angemeldeten Benutzers im gleichen Zeitbereich gesucht und eingetragen.
+        * Benachrichtigungsziele können nun verwaltet werden. Hierbei kann festgelgt werden, welche spezifischen
+        Benachrichtigungen per Email bzw. Push übermittelt werden sollen.
+        * Es kann festgelegt werden, ob man über eigenen Aktionen benachrichtig werden möchte.
+        * Benachrichtigungen in der Applikation wurden implementiert. Alle Benachrichtigungen (außer bei eigenen
+        Aktionen, falls nicht erwünscht), sind in Quokka selbst sichtbar. Diese können als gelesen markiert werden.
+        * Eine tägliche Zusammenfassung von ungelesenen Benachrichtigungen wird per Email versendet.
+        * Gelesene Benachrichtigungen, welche älter als einen Monat sind, können automatisch aus dem System entfernt
+        werden, falls die entsprechende Einstellung in den globalen Applikationseinstellungen gesetzt ist.
+        * Projekten können aktuell verrechnete Kosten zugewiesen werden, welche dann den gebuchten Leistungen
+        gegenüber gestellt wird.
+        * Die Erkennung von Änderungen an Elementen wurde verbessert, so dass ungeänderte Elemente, welche gespeichert
+        werden, keine Benachrichtigungen auslösen.
+        * Eine Anzeige und die Möglichkeit zum Löschen von Serverfehler (bei entsprechenden Berechtigungen) für besseren
+        Support wurde implementiert.
+        * Eine Einstellungen zur standardmäßigen Anzeige von lediglich neuen Berichten wurde hinzugefügt.
+        * Kommentare in Aufgaben werden in der Liste zuletzt geänderter Elemente nun separat aufgeführt.
+        * Tabellen in Texten werden nun innerhalb der Applikation besser dargestellt.
+        * Die Verzögerung bei Verwendung der Kommando Palette wurde erhöht, um das Laden von Ergebnissen zu verbessern.
+        * Ein Fehler bei der Auswertung vom Fahrtenbuch wurde behoben (alle Fahrten wurden mit dme aktuellen Datum
+        angezeigt).
+        * Ein Fehler wurde behoben, bei dem nicht intialisierte Elemente vor der Anmeldung zu Serverfehlern führten.
+        * Fehler bei Anzeigeelementen wurden behoben.
+        * Ein Fehler bei der Anzeige von Mengen an Elementen in Überschriften wurde behoben.
+        * Rechtschreibfehler wurden behoben.
+        @endmarkdown
+
+        @markdown
         ### v0.1.18-478280a (09.06.2022)
         * Bautagesberichte können nun analog zu Serviceberichten verwaltet werden.
         * Eine Kommandopalette wurde implementiert. Diese kann für schnelle Navigation und Aktionen verwendet werden.

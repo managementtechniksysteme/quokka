@@ -38,6 +38,7 @@ class ApplicationSettings extends Model
         'signature_notify_user_id',
         'task_due_soon_days',
         'prune_read_notifications',
+        'prune_sent_emails',
     ];
 
     public static function get()

@@ -38,6 +38,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SentEmailsController;
 use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
@@ -124,6 +125,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employees/{employee}/edit-permissions', [EmployeeController::class, 'editPermissions'])->name('employees.edit-permissions');
     Route::patch('/employees/{employee}/edit-permissions', [EmployeeController::class, 'updatePermissions'])->name('employees.update-permissions');
     Route::get('/employees/{employee}/impersonate', [EmployeeController::class, 'impersonate'])->name('employees.impersonate');
+
+    Route::resource('sent-emails', SentEmailsController::class)->only(['index']);
 
     Route::resource('exceptions', ExceptionController::class)->only(['index', 'show', 'destroy']);
 

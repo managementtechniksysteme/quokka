@@ -50,6 +50,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->can('tools.viewlatestchanges');
         });
 
+        Gate::define('tools-viewsentemails', function ($user) {
+            return $user->can('tools.viewsentemails');
+        });
+
         Gate::define('tools-viewexceptions', function ($user) {
             return $user->can('exceptions.view');
         });

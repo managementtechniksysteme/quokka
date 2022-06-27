@@ -31,6 +31,7 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
             'signature_notify_user_id' => 'exists:users,employee_id|nullable',
             'task_due_soon_days' => 'required|integer|min:1',
             'prune_read_notifications' => 'required|boolean',
+            'prune_sent_emails' => 'required|boolean',
         ];
     }
 }

@@ -77,11 +77,11 @@
                                 </svg>
                                 Mitwirkende Personen
                             </div>
-                            <del>{{ \App\Models\Person::find($activity->properties['old']['involved_ids'])?->implode('name', ', ') ?? 'keine angegeben' }}</del>
+                            <del>{{ \App\Models\Person::order()->find($activity->properties['old']['involved_ids'])?->implode('name', ', ') ?? 'keine angegeben' }}</del>
                             <svg class="icon icon-baseline m-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
                             </svg>
-                            {{ \App\Models\Person::find($activity->properties['attributes']['involved_ids'])?->implode('name', ', ') ?? 'keine angegeben' }}
+                            {{ \App\Models\Person::order()->find($activity->properties['attributes']['involved_ids'])?->implode('name', ', ') ?? 'keine angegeben' }}
                         @endif
                         @if(isset($activity->properties['old']['due_on']) || isset($activity->properties['attributes']['due_on']))
                             <div class="text-muted">

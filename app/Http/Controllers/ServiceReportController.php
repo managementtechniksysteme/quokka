@@ -311,6 +311,7 @@ class ServiceReportController extends Controller
 
         $serviceReport->services()->delete();
         $serviceReport->deleteAttachments();
+        $serviceReport->activities()->delete();
         $serviceReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $serviceReport)

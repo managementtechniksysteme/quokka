@@ -207,6 +207,7 @@ class InspectionReportController extends Controller
         $inspectionReport->deleteSignature();
 
         $inspectionReport->deleteAttachments();
+        $inspectionReport->activities()->delete();
         $inspectionReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $inspectionReport)

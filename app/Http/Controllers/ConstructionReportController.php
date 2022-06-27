@@ -252,6 +252,7 @@ class ConstructionReportController extends Controller
         $constructionReport->deleteSignature();
 
         $constructionReport->deleteAttachments();
+        $constructionReport->activities()->delete();
         $constructionReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $constructionReport)

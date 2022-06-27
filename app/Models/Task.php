@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements FiltersGlobalSearch, HasMedia
@@ -21,6 +23,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachments;
+    use LogsActivity;
     use OrdersResults;
 
     protected $casts = [
@@ -100,6 +103,8 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         ],
     ];
 
+    protected static $recordEvents = ['updated'];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -139,6 +144,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
                     $task->updated_at,
                 );
             });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->dontLogIfAttributesChangedOnly(['created_at', 'updated_at'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function project()

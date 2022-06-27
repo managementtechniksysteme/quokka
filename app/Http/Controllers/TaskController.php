@@ -23,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Activitylog\Facades\LogBatch;
+use Spatie\Activitylog\Models\Activity;
 use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
@@ -156,18 +158,64 @@ class TaskController extends Controller
             }])
             ->load(['involvedEmployees.person' => function ($query) {
                 $query->order();
-            }]);
+            }])
+            ->load('activities');
 
-        $commentSortKey =
-            Auth::user()->settings->task_comments_sort_newest_first ? 'created_at-desc' : 'created_at-asc';
+        $sortNewestFirst =
+            Auth::user()->settings->task_comments_sort_newest_first;
 
         $comments = TaskComment::where('task_id', $task->id)
-            ->order($commentSortKey)
             ->with('employee.user.settings')
             ->with('media')
-            ->paginate(Auth::user()->settings->list_pagination_size);
+            ->get();
 
-        return view('task.show')->with(compact('task'))->with(compact('comments'));
+        $combinedActivities = collect();
+
+        $activities = $task->activities()
+            ->with('causer.employee.person')
+            ->get();
+
+        $batches = $activities->groupBy('batch_uuid');
+
+        foreach ($batches as $batchId => $batch) {
+            if($batchId && $batch->count() > 1) {
+                $activity = $batch->pop();
+
+                $attributes = $activity->properties['attributes'];
+                $old = $activity->properties['old'];
+
+                foreach ($batch as $batchActivity) {
+                    $attributes = array_merge(
+                        $attributes, $batchActivity->properties['attributes']
+                    );
+                    $old = array_merge($old, $batchActivity->properties['old']);
+                }
+
+                $properties = [];
+                $properties['attributes'] = $attributes;
+                $properties['old'] = $old;
+
+                $activity->properties = $properties;
+
+                $combinedActivities = $combinedActivities->push($activity);
+            }
+
+            else {
+                $combinedActivities = $combinedActivities->concat($batch);
+            }
+        }
+
+        $combinedActivities = $combinedActivities->concat($comments);
+
+        if (Auth::user()->settings->task_comments_sort_newest_first) {
+            $combinedActivities = $combinedActivities->sortByDesc('created_at');
+        } else {
+            $combinedActivities = $combinedActivities->sortBy('created_at');
+        }
+
+        $combinedActivities = $combinedActivities->values()->paginate(Auth::user()->settings->list_pagination_size);
+
+        return view('task.show')->with(compact('task'))->with('activities', $combinedActivities);
     }
 
     public function edit(Task $task): View
@@ -196,6 +244,8 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
+        LogBatch::startBatch();
+
         $task->update($validatedData);
 
         if ($task->status !== 'finished' && $task->ends_on) {
@@ -210,6 +260,8 @@ class TaskController extends Controller
         }
 
         if ($request->filled('involved_ids')) {
+            $oldInvolvedEmployees = $task->involvedEmployees->pluck('person_id');
+
             if (($responsibleEmployee = array_search($task->employee_id, $request->involved_ids)) !== false) {
                 $employees = Employee::find(Arr::except($request->involved_ids, $responsibleEmployee));
             } else {
@@ -219,6 +271,22 @@ class TaskController extends Controller
             $touched = $task->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
 
             if($touched['attached'] || $touched['detached'] || $touched['updated']) {
+                $attributes = [];
+                $attributes['involved_ids'] = $employees->pluck('person_id');
+
+                $old = [];
+                $old['involved_ids'] = $oldInvolvedEmployees;
+
+                activity()
+                    ->by(Auth::user())
+                    ->on($task)
+                    ->withProperties([
+                        'attributes' => $attributes,
+                        'old' => $old,
+                    ])
+                    ->event('updatedInvolvedEmployees')
+                    ->log('updatedInvolvedEmployees');
+
                 $task->touch();
             }
         } else {
@@ -240,6 +308,8 @@ class TaskController extends Controller
 
             $task->touch();
         }
+
+        LogBatch::endBatch();
 
         if($task->wasChanged()) {
             event(new TaskUpdatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));

@@ -89,13 +89,13 @@
 
         <div class="mt-4">
             <h4>
-                Diskussion
-                @unless($comments->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.entries', $comments->total()) }}</small>
+                Aktivitäten und Diskussion
+                @unless($activities->isEmpty())
+                    <small class="text-muted">{{ trans_choice('messages.entries', $activities->total()) }}</small>
                 @endunless
             </h4>
 
-            @unless($comments->isEmpty())
+            @unless($activities->isEmpty())
                 <div class="mb-2">
                     @can('create', [\App\Models\TaskComment::class, $task])
                         <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
@@ -109,13 +109,21 @@
             @endunless
 
             <div class="mt-3">
-                @forelse ($comments as $comment)
-                    @component('comment.overview_card', [ 'comment' => $comment ])
-                    @endcomponent
+                @forelse ($activities as $activity)
+                    @switch(get_class($activity))
+                        @case(\Spatie\Activitylog\Models\Activity::class)
+                            @component('task.activity_card', [ 'activity' => $activity ])
+                            @endcomponent
+                            @break
+                        @case(\App\Models\TaskComment::class)
+                            @component('comment.overview_card', [ 'comment' => $activity ])
+                            @endcomponent
+                            @break
+                    @endswitch
                 @empty
                     <div class="text-center">
                         <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                        <p class="lead text-muted">Zu der Aufgabe {{ $task->name }} gibt es noch keine Diskussion.</p>
+                        <p class="lead text-muted">Zu der Aufgabe {{ $task->name }} gibt es noch keine Aktivitäten.</p>
                         @can('create', [\App\Models\TaskComment::class, $task])
                             <p class="lead">Lege einen neuen Kommentar an.</p>
                             <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('comments.create', ['task' => $task->id]) }}">
@@ -130,7 +138,7 @@
             </div>
 
             <div class="mt-2">
-                {{ $comments->links() }}
+                {{ $activities->links() }}
             </div>
 
         </div>

@@ -72,8 +72,20 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "check-style": "php-cs-fixer fix --dry-run --diff",
-        "fix-style": "php-cs-fixer fix",
+        "check-style": [
+            "php-cs-fixer fix --dry-run --diff",
+            "./node_modules/.bin/prettier --check resources/**/*.blade.php",
+            "./node_modules/.bin/prettier --check resources/**/*.vue",
+            "./node_modules/.bin/prettier --check resources/**/*.js",
+            "./node_modules/.bin/prettier --check resources/**/*.scss"
+        ],
+        "fix-style": [
+            "php-cs-fixer fix",
+            "./node_modules/.bin/prettier --write resources/**/*.blade.php",
+            "./node_modules/.bin/prettier --write resources/**/*.vue",
+            "./node_modules/.bin/prettier --write resources/**/*.js",
+            "./node_modules/.bin/prettier --write resources/**/*.scss"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

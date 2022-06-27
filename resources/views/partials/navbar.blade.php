@@ -178,7 +178,7 @@
                         </li>
                     @endif
 
-                    @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
+                    @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
                         <li class="nav-item dropdown">
                             <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg class="icon icon-20 mr-1">
@@ -194,6 +194,14 @@
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                                         </svg>
                                         Letzte Änderungen
+                                    </a>
+                                @endcan
+                                @can('tools-viewsentemails')
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('sent-emails.index') }}">
+                                        <svg class="icon icon-16 mr-1">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                                        </svg>
+                                        Gesendete Emails
                                     </a>
                                 @endcan
                                 @can('tools-scanqr')

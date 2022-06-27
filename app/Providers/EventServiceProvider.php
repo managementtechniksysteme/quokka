@@ -6,6 +6,7 @@ use App\Events\AdditionsReportSignedEvent;
 use App\Events\ConstructionReportSignedEvent;
 use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
+use App\Listeners\LogSentMessageListener;
 use App\Listeners\SendAdditionsReportInvolvedNotification;
 use App\Listeners\SendAdditionsReportMentionNotification;
 use App\Listeners\SendAdditionsReportSignedNotification;
@@ -28,6 +29,7 @@ use App\Observers\AccountingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Mail\Events\MessageSent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -39,6 +41,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        MessageSent::class => [
+            LogSentMessageListener::class,
         ],
 
         AdditionsReportSignedEvent::class => [

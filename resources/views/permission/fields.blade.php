@@ -2929,6 +2929,17 @@
         </div>
         <div class="form-group">
             <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('tools_viewsentemails') is-invalid @enderror" name="tools_viewsentemails" id="tools_viewsentemails" value="true" @if(old('tools_viewsentemails', optional($permissions)->hasPermissionTo('tools.viewsentemails'))) checked @endif>
+                <label class="custom-control-label" for="tools_viewsentemails">Gesendete Emails anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('tools_viewsentemails') d-block @enderror">
+                @error('tools_viewsentemails')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input @error('tools_scanqr') is-invalid @enderror" name="tools_scanqr" id="tools_scanqr" value="true" @if(old('tools_scanqr', optional($permissions)->hasPermissionTo('tools.scanqr'))) checked @endif>
                 <label class="custom-control-label" for="tools_scanqr">QR-Code Scanner verwenden</label>
             </div>

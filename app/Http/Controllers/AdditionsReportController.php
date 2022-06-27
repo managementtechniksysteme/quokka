@@ -252,6 +252,7 @@ class AdditionsReportController extends Controller
         $additionsReport->deleteSignature();
 
         $additionsReport->deleteAttachments();
+        $additionsReport->activities()->delete();
         $additionsReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $additionsReport)

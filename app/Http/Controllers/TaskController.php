@@ -338,6 +338,7 @@ class TaskController extends Controller
     {
         $task->involvedEmployees()->detach();
         $task->deleteAttachments();
+        $task->activities()->delete();
         $task->delete();
 
         return $this->getConditionalRedirect($request->redirect, $task)

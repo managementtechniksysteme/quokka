@@ -10,7 +10,7 @@ class LatestChangesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:tools-scanqr');
+        $this->middleware('can:tools-viewlatestchanges');
     }
 
     public function index()

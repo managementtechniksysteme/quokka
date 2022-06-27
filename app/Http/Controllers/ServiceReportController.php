@@ -65,6 +65,7 @@ class ServiceReportController extends Controller
             ->order($request->sort)
             ->with('project')
             ->with('employee.person')
+            ->with('activities.causer')
             ->withMin('services', 'provided_on')
             ->withMax('services', 'provided_on')
             ->withSum('services', 'hours')
@@ -185,7 +186,8 @@ class ServiceReportController extends Controller
             ->load('project')
             ->load('employee.person')
             ->load('services')
-            ->load('media');
+            ->load('media')
+            ->load('activities.causer');
 
         return view('service_report.show')
             ->with(compact('serviceReport'));
@@ -539,7 +541,8 @@ class ServiceReportController extends Controller
             ->load('employee.person')
             ->load('project.company.address')
             ->load('project.company.operatorAddress')
-            ->load('services');
+            ->load('services')
+            ->load('activities.causer');
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

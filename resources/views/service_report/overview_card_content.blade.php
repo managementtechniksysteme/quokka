@@ -46,6 +46,9 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             {{ $serviceReport->updated_at }}
+                            @if($serviceReport->activities->last())
+                                ({{ Str::upper($serviceReport->activities->last()->causer->username) }})
+                            @endif
                         @break
                     @endswitch
                     <svg class="icon icon-16 ml-2 mr-1">

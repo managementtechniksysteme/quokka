@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
@@ -23,6 +25,7 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
+    use LogsActivity;
     use OrdersResults;
 
     protected $casts = [
@@ -111,6 +114,8 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         'inspection-reports.view.other' => ['!employee.person_id', '{user}'],
     ];
 
+    protected static $recordEvents = ['updated'];
+
     public static function defaultFilter() : ?string
     {
         $filter = '';
@@ -150,6 +155,14 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
                     $inspectionReport->updated_at,
                 );
             });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['status'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function registerMediaCollections(): void

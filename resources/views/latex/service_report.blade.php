@@ -22,7 +22,7 @@
 @else
 \footnotesize{\textbf{Kunde:}} & \footnotesize{nicht angegeben} & \footnotesize{\textbf{Betreiber:}} & \footnotesize{nicht angegeben} \\
 @endif
-\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if(Auth::check() && $serviceReport->status === 'finished')\footnotesize{\textbf{\textcolor{success}{erledigt am:}}}@endif & @if(Auth::check() && $serviceReport->status === 'finished')\footnotesize{\textcolor{success}{{!! Latex::escape($serviceReport->updated_at)!!}}}@endif \\
+\footnotesize{\textbf{Techniker MTS:}} & \footnotesize{{!! Latex::escape($serviceReport->employee->person->name) !!}} & @if(Auth::check() && $serviceReport->status === 'finished')\footnotesize{\textbf{\textcolor{success}{erledigt am:}}}@endif & @if(Auth::check() && $serviceReport->status === 'finished')\footnotesize{\textcolor{success}{{!! Latex::escape($serviceReport->updated_at)!!}@if($serviceReport->activities->last()) ({!! Latex::escape(Str::upper($serviceReport->activities->last()->causer->username)) !!})@endif}}@endif \\
 \end{tabular}
 \section{Kurzbericht}
 \footnotesize{{!! Latex::fromMarkdown($serviceReport->comment) !!}}

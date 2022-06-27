@@ -59,6 +59,7 @@ class ConstructionReportController extends Controller
             ->order($request->sort)
             ->with('project')
             ->with('employee.person')
+            ->with('activities.causer')
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
@@ -146,7 +147,8 @@ class ConstructionReportController extends Controller
             ->load(['presentPeople' => function ($query) {
                 $query->order();
             }])
-            ->load('media');
+            ->load('media')
+            ->load('activities.causer');
 
         return view('construction_report.show')
             ->with(compact('constructionReport'));
@@ -496,7 +498,8 @@ class ConstructionReportController extends Controller
             }])
             ->load(['presentPeople' => function ($query) {
                 $query->order();
-            }]);
+            }])
+            ->load('activities.causer');
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

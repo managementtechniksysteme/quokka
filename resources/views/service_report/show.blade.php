@@ -151,6 +151,9 @@
                         @break
                     @case('finished')
                         am {{ $serviceReport->updated_at }}
+                        @if($serviceReport->activities->last())
+                            ({{ Str::upper($serviceReport->activities->last()->causer->username) }})
+                        @endif
                         @break
                 @endswitch
             </div>

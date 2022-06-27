@@ -50,7 +50,7 @@
 \footnotesize{\textbf{Bedenken:}} & \footnotesize{{!! Latex::escape($constructionReport->concerns) !!}} \\
 @endif
 @if(Auth::check() && $constructionReport->status === 'finished')
-\footnotesize{\textbf{\textcolor{success}{erledigt am:}}} & \footnotesize{\textcolor{success}{{!! Latex::escape($constructionReport->updated_at)!!}}}
+\footnotesize{\textbf{\textcolor{success}{erledigt am:}}} & \footnotesize{\textcolor{success}{{!! Latex::escape($constructionReport->updated_at)!!}@if($constructionReport->activities->last()) ({!! Latex::escape(Str::upper($constructionReport->activities->last()->causer->username)) !!})@endif}}
 @endif
 \end{tabular}
 \section{Leistungsfortschritt}

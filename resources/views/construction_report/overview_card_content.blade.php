@@ -34,6 +34,9 @@
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             {{ $constructionReport->updated_at }}
+                            @if($constructionReport->activities->last())
+                                ({{ Str::upper($constructionReport->activities->last()->causer->username) }})
+                            @endif
                             @break
                     @endswitch
                     <svg class="icon icon-16 ml-2 mr-1">

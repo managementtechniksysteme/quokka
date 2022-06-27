@@ -57,6 +57,7 @@ class InspectionReportController extends Controller
             ->order($request->sort)
             ->with('project')
             ->with('employee.person')
+            ->with('activities.causer')
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
@@ -134,7 +135,8 @@ class InspectionReportController extends Controller
         $inspectionReport
             ->load('project.company')
             ->load('employee.person')
-            ->load('media');
+            ->load('media')
+            ->load('activities.causer');
 
         return view('inspection_report.show')
             ->with(compact('inspectionReport'));
@@ -420,7 +422,8 @@ class InspectionReportController extends Controller
     {
         $inspectionReport
             ->load('project.company')
-            ->load('employee.person');
+            ->load('employee.person')
+            ->load('activities.causer');
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

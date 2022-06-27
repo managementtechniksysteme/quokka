@@ -259,9 +259,9 @@ class TaskController extends Controller
             $task->save();
         }
 
-        if ($request->filled('involved_ids')) {
-            $oldInvolvedEmployees = $task->involvedEmployees->pluck('person_id');
+        $oldInvolvedEmployees = $task->involvedEmployees->pluck('person_id');
 
+        if ($request->filled('involved_ids')) {
             if (($responsibleEmployee = array_search($task->employee_id, $request->involved_ids)) !== false) {
                 $employees = Employee::find(Arr::except($request->involved_ids, $responsibleEmployee));
             } else {
@@ -293,6 +293,22 @@ class TaskController extends Controller
             $touched = $task->involvedEmployees()->detach();
 
             if($touched > 0) {
+                $attributes = [];
+                $attributes['involved_ids'] = [];
+
+                $old = [];
+                $old['involved_ids'] = $oldInvolvedEmployees;
+
+                activity()
+                    ->by(Auth::user())
+                    ->on($task)
+                    ->withProperties([
+                        'attributes' => $attributes,
+                        'old' => $old,
+                    ])
+                    ->event('updatedInvolvedEmployees')
+                    ->log('updatedInvolvedEmployees');
+
                 $task->touch();
             }
         }

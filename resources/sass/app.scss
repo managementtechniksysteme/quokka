@@ -277,6 +277,28 @@ a.outline-none {
     border-left: 3px solid;
 }
 
+// Border for finished activity card
+.border-activity-finished-header {
+    border-left-width: 2px !important;
+    border-top-width: 2px !important;
+    border-right-width: 2px !important;
+    border-bottom-width: 1px !important;
+    border-left-color: $green-200 !important;
+    border-top-color: $green-200 !important;
+    border-right-color: $green-200 !important;
+    border-bottom-color: inherit;
+}
+
+.border-activity-finished-body {
+    border-left-width: 2px !important;
+    border-top-width: 0 !important;
+    border-right-width: 2px !important;
+    border-bottom-width: 2px !important;
+    border-left-color: $green-200 !important;
+    border-right-color: $green-200 !important;
+    border-bottom-color: $green-200 !important;
+}
+
 // Attachments
 .attachment-img-preview {
     min-width: 50px;

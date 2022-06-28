@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
 
-class SentEmailsController extends Controller
+class SentEmailController extends Controller
 {
     public function __construct()
     {

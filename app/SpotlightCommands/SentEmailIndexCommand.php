@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use LivewireUI\Spotlight\Spotlight;
 use LivewireUI\Spotlight\SpotlightCommand;
 
-class LatestChangesIndexCommand extends SpotlightCommand
+class SentEmailIndexCommand extends SpotlightCommand
 {
-    protected string $name = 'Letzte Änderungen anzeigen';
+    protected string $name = 'Gesendete Emails anzeigen';
 
-    protected string $description = 'Die zuletzt geänderten Elemente anzeigen';
+    protected string $description = 'Alle gesendeten Emails anzeigen';
 
     protected array $synonyms = [
         'log',
@@ -18,11 +18,11 @@ class LatestChangesIndexCommand extends SpotlightCommand
 
     public function execute(Spotlight $spotlight): void
     {
-        $spotlight->redirect(route('latest-changes.index'));
+        $spotlight->redirect(route('sent-emails.index'));
     }
 
     public function shouldBeShown(Request $request): bool
     {
-        return $request->user()->can('tools-viewlatestchanges');
+        return $request->user()->can('tools-viewsentemails');
     }
 }

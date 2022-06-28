@@ -49,6 +49,7 @@ use App\SpotlightCommands\QrScanIndexCommand;
 use App\SpotlightCommands\RoleCreateCommand;
 use App\SpotlightCommands\RoleIndexCommand;
 use App\SpotlightCommands\RoleShowCommand;
+use App\SpotlightCommands\SentEmailIndexCommand;
 use App\SpotlightCommands\ServiceReportCreateCommand;
 use App\SpotlightCommands\ServiceReportIndexCommand;
 use App\SpotlightCommands\ServiceReportShowCommand;
@@ -143,6 +144,7 @@ return [
         RoleCreateCommand::class,
         RoleIndexCommand::class,
         RoleShowCommand::class,
+        SentEmailIndexCommand::class,
         ServiceReportCreateCommand::class,
         ServiceReportIndexCommand::class,
         ServiceReportShowCommand::class,

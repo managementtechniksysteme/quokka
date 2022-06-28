@@ -23,7 +23,7 @@ class LogSentMessageListener  implements ShouldQueue
                 'cc' => is_array($event->message->getCc()) ? $event->message->getCc() : ($event->message->getCc() !== null ? [$event->message->getCc()] : []),
                 'bcc' => is_array($event->message->getBcc()) ? $event->message->getBcc() : ($event->message->getBcc() !== null ? [$event->message->getBcc()] : []),
             ])
-            ->event('email')
-            ->log('email');
+            ->event('emailSent')
+            ->log('emailSent');
     }
 }

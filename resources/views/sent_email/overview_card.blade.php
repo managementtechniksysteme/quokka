@@ -10,19 +10,19 @@
             @if(!empty($activity->properties['to']))
                 <div class="flex-wrap">
                     <span class="text-muted">An:</span>
-                    {{  implode(', ', $activity->properties['to']) }}
+                    {{  Email::concatEmails($activity->properties['to']) }}
                 </div>
             @endif
             @if(!empty($activity->properties['cc']))
                 <div class="flex-wrap">
                     <span class="text-muted">CC:</span>
-                    {{  implode(', ', $activity->properties['cc']) }}
+                    {{  Email::concatEmails($activity->properties['cc']) }}
                 </div>
             @endif
             @if(!empty($activity->properties['bcc']))
                 <div class="flex-wrap">
                     <span class="text-muted">BCC:</span>
-                    {{  implode(', ', $activity->properties['bcc']) }}
+                    {{  Email::concatEmails($activity->properties['bcc']) }}
                 </div>
             @endif
         </div>

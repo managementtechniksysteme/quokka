@@ -1,3 +1,5 @@
 {
-      "plugins": ["@shufo/prettier-plugin-blade"]
+  "printWidth": 80,
+  "tabWidth": 2,
+  "plugins": ["@shufo/prettier-plugin-blade"]
 }

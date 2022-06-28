@@ -22,7 +22,7 @@
                             <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
-                            {{ $activity->created_at->format('d.m.Y, H:i') }}
+                            {{ $activity->created_at->format('d.m.Y H:i') }}
                         </p>
                     </div>
                 </div>

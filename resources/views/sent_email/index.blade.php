@@ -36,7 +36,7 @@
 
                     <form action="{{ route('sent-emails.index') }}" method="get">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Gesendete Email suchen" autocomplete="off" />
+                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Gesendete Emails suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="icon icon-16">

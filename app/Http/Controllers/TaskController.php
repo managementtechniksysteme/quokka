@@ -465,7 +465,7 @@ class TaskController extends Controller
             ->sortBy('employee.user.username')
             ->values();
 
-        $fileName = 'AL' . optional($company)->name ?? '' . optional($project)->name ?? '';
+        $fileName = 'AL' . (isset($company) ? ' ' . $company->name : '') . (isset($project) ? ' ' . $project->name : '') . '.pdf';
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

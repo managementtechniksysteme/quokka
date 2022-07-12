@@ -12,6 +12,7 @@ use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
+use App\Models\InterimInvoice;
 use App\Models\Memo;
 use App\Models\Person;
 use App\Models\Project;
@@ -21,7 +22,6 @@ use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use ZsgsDesign\PDFConverter\Latex;
 
 class ProjectController extends Controller
@@ -124,6 +124,7 @@ class ProjectController extends Controller
     public function show(Project $project, Request $request)
     {
         $project
+            ->loadCount('interimInvoices')
             ->loadCount('tasks')
             ->loadCount('memos')
             ->loadCount('serviceReports')
@@ -134,7 +135,21 @@ class ProjectController extends Controller
         switch ($request->tab) {
             case 'overview':
                 $currencyUnit = ApplicationSettings::get()->currency_unit;
+
                 return view('project.show_tab_overview')->with(compact('project'))->with(compact('currencyUnit'));
+
+            case 'interim_invoices':
+                if(Auth::user()->cannot('viewAny', InterimInvoice::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
+                $interimInvoices = $project
+                    ->interimInvoices()
+                    ->order()
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_interim_invoices')->with(compact('project'))->with(compact('interimInvoices'));
 
             case 'tasks':
                 if(Auth::user()->cannot('viewAny', Task::class)) {
@@ -292,6 +307,7 @@ class ProjectController extends Controller
     {
         $redirect = $this->getConditionalRedirect($request->redirect, $project);
 
+        $project->interimInvoices->delete();
         $project->delete();
 
         return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');
@@ -314,9 +330,9 @@ class ProjectController extends Controller
 
         $startFormatted = optional($start)->format('Ymd') ?? '';
         $endFormatted = optional($end)->format('Ymd') ?? '';
-        $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
+        $rangeString = $startFormatted.($start && $end ? '-' : '').$endFormatted;
 
-        $fileName = 'PR ' . $project->name . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
+        $fileName = 'PR '.$project->name.($rangeString !== '' ? ' '.$rangeString : '').'.pdf';
 
         $report = $project->getReport($validatedData);
         $sums = $project->getReportSums($validatedData);
@@ -390,7 +406,7 @@ class ProjectController extends Controller
         }
 
         $companies = $companies
-            ->with(['projects' => function($query) {
+            ->with(['projects' => function ($query) {
                 $query->order();
             }])->withCount('projects')
             ->get();
@@ -400,7 +416,7 @@ class ProjectController extends Controller
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
 
-        $fileName = 'PL' . optional($company)->name ?? '';
+        $fileName = 'PL'.optional($company)->name ?? '';
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

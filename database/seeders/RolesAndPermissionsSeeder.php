@@ -202,6 +202,12 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'projects.email']);
         Permission::firstOrCreate(['name' => 'projects.createpdf']);
 
+        // project interim invoices
+        Permission::firstOrCreate(['name' => 'interim-invoices.view']);
+        Permission::firstOrCreate(['name' => 'interim-invoices.create']);
+        Permission::firstOrCreate(['name' => 'interim-invoices.update']);
+        Permission::firstOrCreate(['name' => 'interim-invoices.delete']);
+
         // roles
         Permission::firstOrCreate(['name' => 'roles.view']);
         Permission::firstOrCreate(['name' => 'roles.create']);
@@ -296,7 +302,6 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'wage-services.delete']);
         Permission::firstOrCreate(['name' => 'wage-services.email']);
         Permission::firstOrCreate(['name' => 'wage-services.createpdf']);
-
 
         // ***
         // Roles
@@ -479,8 +484,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('tasks.createpdf.private.involved');
 
         // task comments
-        $employee->givePermissionTo( 'tasks.comments.create');
-        $employee->givePermissionTo( 'tasks.comments.update.own');
+        $employee->givePermissionTo('tasks.comments.create');
+        $employee->givePermissionTo('tasks.comments.update.own');
 
         // tools
         $employee->givePermissionTo('tools.scanqr');

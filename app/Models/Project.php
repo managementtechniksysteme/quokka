@@ -24,11 +24,11 @@ class Project extends Model implements FiltersGlobalSearch
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'billed_costs', 'comment', 'company_id',
+        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'comment', 'company_id',
     ];
 
     protected $filterFields = [
-        'name', 'company.name'
+        'name', 'company.name',
     ];
 
     protected $filterKeys = [
@@ -47,14 +47,14 @@ class Project extends Model implements FiltersGlobalSearch
         'wage-costs-desc' => [['wage_costs', 'desc']],
     ];
 
-    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
+    public static function filterGlobalSearch(string $query, ?int $latestQuantity = null): Collection
     {
         return Project::filterSearch($query)
             ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
                 return $query->latest('updated_at')->limit($latestQuantity);
             })
             ->get()
-            ->map(function(Project $project) {
+            ->map(function (Project $project) {
                 return new GlobalSearchResult(
                     Project::class,
                     'Projekt',
@@ -65,6 +65,11 @@ class Project extends Model implements FiltersGlobalSearch
                     $project->updated_at,
                 );
             });
+    }
+
+    public function interimInvoices()
+    {
+        return $this->hasMany(InterimInvoice::class);
     }
 
     public function company()
@@ -141,7 +146,7 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentMaterialCostsPercentageAttribute() {
-        if(!$this->material_costs) {
+        if(! $this->material_costs) {
             return null;
         }
 
@@ -149,7 +154,7 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentWageCostsPercentageAttribute() {
-        if(!$this->wage_costs) {
+        if(! $this->wage_costs) {
             return null;
         }
 
@@ -157,15 +162,23 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentCostsPercentageAttribute() {
-        if(!$this->material_costs && !$this->wage_costs) {
+        if(! $this->material_costs && ! $this->wage_costs) {
             return null;
         }
 
         return ($this->current_costs / $this->costs) * 100;
     }
 
+    public function getBilledCostsAttribute() {
+        if(! $this->interimInvoices()->exists()) {
+            return null;
+        }
+
+        return $this->interimInvoices->sum('amount');
+    }
+
     public function getCurrentBilledCostsPercentageAttribute() {
-        if(!$this->billed_costs) {
+        if(! $this->billed_costs) {
             return null;
         }
 
@@ -173,7 +186,7 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentBilledPercentageAttribute() {
-        if(!$this->billed_costs) {
+        if(! $this->billed_costs) {
             return null;
         }
 
@@ -182,14 +195,14 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getCurrentMaterialCostsStatusAttribute() {
         $warningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
-        if(!($this->current_material_costs_percentage && $warningPercentage)) {
+        if(! ($this->current_material_costs_percentage && $warningPercentage)) {
             return null;
         }
 
         if($this->current_material_costs_percentage < $warningPercentage) {
             return 'success';
         }
-        elseif($this->current_material_costs_percentage < 100 ) {
+        elseif($this->current_material_costs_percentage < 100) {
             return 'warning';
         }
         else {
@@ -199,14 +212,14 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getCurrentWageCostsStatusAttribute() {
         $warningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
-        if(!($this->current_wage_costs_percentage && $warningPercentage)) {
+        if(! ($this->current_wage_costs_percentage && $warningPercentage)) {
             return null;
         }
 
         if($this->current_wage_costs_percentage < $warningPercentage) {
             return 'success';
         }
-        elseif($this->current_wage_costs_percentage < 100 ) {
+        elseif($this->current_wage_costs_percentage < 100) {
             return 'warning';
         }
         else {
@@ -216,14 +229,14 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getCurrentCostsStatusAttribute() {
         $warningPercentage = ApplicationSettings::get()->project_overall_costs_warning_percentage;
-        if(!($this->current_costs_percentage && $warningPercentage)) {
+        if(! ($this->current_costs_percentage && $warningPercentage)) {
             return null;
         }
 
         if($this->current_costs_percentage < $warningPercentage) {
             return 'success';
         }
-        elseif($this->current_costs_percentage < 100 ) {
+        elseif($this->current_costs_percentage < 100) {
             return 'warning';
         }
         else {
@@ -233,14 +246,14 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getCurrentBilledCostsStatusAttribute() {
         $warningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
-        if(!($this->current_billed_costs_percentage && $warningPercentage)) {
+        if(! ($this->current_billed_costs_percentage && $warningPercentage)) {
             return null;
         }
 
         if($this->current_billed_costs_percentage < $warningPercentage) {
             return 'success';
         }
-        elseif($this->current_billed_costs_percentage < 100 ) {
+        elseif($this->current_billed_costs_percentage < 100) {
             return 'warning';
         }
         else {
@@ -257,10 +270,10 @@ class Project extends Model implements FiltersGlobalSearch
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
         $report = $this->accounting()
-            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "' . $currencyUnit .'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, group_concat(distinct accounting.comment separator ", ") as comment')
-            ->join('users', 'accounting.employee_id', '=','users.employee_id')
-            ->join('projects', 'accounting.project_id', '=','projects.id')
-            ->join('services', 'accounting.service_id', '=','services.id')
+            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, group_concat(distinct accounting.comment separator ", ") as comment')
+            ->join('users', 'accounting.employee_id', '=', 'users.employee_id')
+            ->join('projects', 'accounting.project_id', '=', 'projects.id')
+            ->join('services', 'accounting.service_id', '=', 'services.id')
             ->groupBy('accounting.service_provided_on')
             ->groupBy('accounting.employee_id')
             ->groupBy('users.username')
@@ -295,8 +308,8 @@ class Project extends Model implements FiltersGlobalSearch
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
         $sums = $this->accounting()
-            ->selectRaw('concat(services.name, " (", ifnull(services.unit, "' . $currencyUnit .'"), ")")  as service, SUM(amount) as amount')
-            ->join('services', 'accounting.service_id', '=','services.id')
+            ->selectRaw('concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, SUM(amount) as amount')
+            ->join('services', 'accounting.service_id', '=', 'services.id')
             ->groupBy('services.name')
             ->groupBy('services.unit')
             ->orderByDesc('services.type')

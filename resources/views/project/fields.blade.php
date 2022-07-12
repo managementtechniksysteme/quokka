@@ -83,21 +83,6 @@
         </div>
 
         <div class="form-group">
-            <label for="billed_costs">Aktuell verrechnete Kosten</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">{{ $currencyUnit }}</span>
-                </div>
-                <input type="number" min="0" step="0.01" class="form-control @error('billed_costs') is-invalid @enderror" id="billed_costs" name="billed_costs" placeholder="" value="{{ old('billed_costs', optional($project)->billed_costs) }}" />
-                <div class="invalid-feedback @error('current_costs') d-block @enderror">
-                    @error('billed_costs')
-                    {{ $message }}
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label for="company_id">Firma</label>
             <company-dropdown :companies="{{ $companies }}" :current_company="{{ $currentCompany ?? 'null' }}" v-cloak></company-dropdown>
             <div class="invalid-feedback @error('company_id') d-block @enderror">

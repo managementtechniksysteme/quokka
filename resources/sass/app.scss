@@ -1,449 +1,454 @@
 /* nunito-regular - latin */
 @font-face {
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Nunito Regular'), local('Nunito-Regular'),
-        url('../fonts/nunito-v12-latin-regular.woff2') format('woff2');
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Nunito Regular"), local("Nunito-Regular"),
+    url("../fonts/nunito-v12-latin-regular.woff2") format("woff2");
 }
 
-
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap colors
-@import 'bootstrap_colors';
+@import "bootstrap_colors";
 
 // Bootstrap fixed REM spacers
-@import 'bootstrap_spacers';
+@import "bootstrap_spacers";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 // Vue Easymde
-@import 'easymde';
+@import "easymde";
 
 // Codemirror
-@import 'codemirror';
+@import "codemirror";
 
 // Vue Select
 @import "select";
 
 // Spotlight
-@import 'spotlight';
+@import "spotlight";
 
 // Markdown
-@import 'markdown';
+@import "markdown";
 
 // Vue: wait for components to fully load before showing content
-[v-cloak] {display: none}
+[v-cloak] {
+  display: none;
+}
 
 // Always show scroll bars to avoid content shifting
 // Set height to maximum minus navbar
 main {
-    min-height: calc(100vh - 3.8rem);
-    height: calc(100vh - 3.8rem);
-    max-height: calc(100vh - 3.8rem);
-    width: 100%;
-    position: absolute;
-    top: 3.8rem;
-    overflow-y: scroll;
+  min-height: calc(100vh - 3.8rem);
+  height: calc(100vh - 3.8rem);
+  max-height: calc(100vh - 3.8rem);
+  width: 100%;
+  position: absolute;
+  top: 3.8rem;
+  overflow-y: scroll;
 }
 
 // General body background color for other elements
 .bg-general {
-    background-color: $body-bg;
+  background-color: $body-bg;
 }
 
 // Icons
 svg.icon {
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    fill: none;
-    display: inline-flex;
-    align-self: center;
-    min-width: 1em;
-    min-height: 1em;
-    max-width: 1em;
-    max-height: 1em;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  display: inline-flex;
+  align-self: center;
+  min-width: 1em;
+  min-height: 1em;
+  max-width: 1em;
+  max-height: 1em;
 }
 
 svg.icon-bs {
-    fill: currentColor;
-    display: inline-flex;
-    align-self: center;
-    min-width: 1em;
-    min-height: 1em;
-    max-width: 1em;
-    max-height: 1em;
+  fill: currentColor;
+  display: inline-flex;
+  align-self: center;
+  min-width: 1em;
+  min-height: 1em;
+  max-width: 1em;
+  max-height: 1em;
 }
 
 svg.icon-baseline {
-    bottom: 0.125em;
-    position: relative;
+  bottom: 0.125em;
+  position: relative;
 }
 
 svg.icon-12 {
-    min-width: 12px;
-    min-height: 12px;
-    max-width: 12px;
-    max-height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  max-width: 12px;
+  max-height: 12px;
 }
 
 svg.icon-16 {
-    min-width: 16px;
-    min-height: 16px;
-    max-width: 16px;
-    max-height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 16px;
+  max-height: 16px;
 }
 
 svg.icon-20 {
-    min-width: 20px;
-    min-height: 20px;
-    max-width: 20px;
-    max-height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 20px;
+  max-height: 20px;
 }
 
 svg.icon-24 {
-    min-width: 24px;
-    min-height: 24px;
-    max-width: 24px;
-    max-height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
 }
 
 svg.icon-28 {
-    min-width: 28px;
-    min-height: 28px;
-    max-width: 28px;
-    max-height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  max-width: 28px;
+  max-height: 28px;
 }
 
 svg.icon-32 {
-    min-width: 32px;
-    min-height: 32px;
-    max-width: 32px;
-    max-height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
 }
 
 // Empty state images
 img.empty-state {
-    display: inline;
-    min-width: 256px;
-    max-width: 256px;
+  display: inline;
+  min-width: 256px;
+  max-width: 256px;
 }
 
 // Overview dropdown
 .dropdown-toggle-vertical-points:after {
-    border: none;
-    content: '\2807';
+  border: none;
+  content: "\2807";
 }
 
-.dropdown-toggle-vertical-points:hover, .dropdown-toggle-vertical-points:focus {
-    text-decoration: none;
+.dropdown-toggle-vertical-points:hover,
+.dropdown-toggle-vertical-points:focus {
+  text-decoration: none;
 }
 
 // Success dropdown button with blue text and white text with blue background on hover
 .dropdown-item-primary {
-    color: $primary !important;
+  color: $primary !important;
 }
 
 .dropdown-item-primary:hover {
-    color: $primary !important;
+  color: $primary !important;
 }
 
 .dropdown-item-primary:active {
-    color: #ffffff !important;
-    background-color: $primary !important;
+  color: #ffffff !important;
+  background-color: $primary !important;
 }
 
 // Success dropdown button with green text and white text with green background on hover
 .dropdown-item-success {
-    color: $success !important;
+  color: $success !important;
 }
 
 .dropdown-item-success:hover {
-    color: $success !important;
+  color: $success !important;
 }
 
 .dropdown-item-success:active {
-    color: #ffffff !important;
-    background-color: $success !important;
+  color: #ffffff !important;
+  background-color: $success !important;
 }
 
 // Success dropdown button with yellow text and yellow background on hover
 .dropdown-item-warning {
-    color: $yellow !important;
+  color: $yellow !important;
 }
 
 .dropdown-item-warning:hover {
-    color: $yellow !important;
+  color: $yellow !important;
 }
 
 .dropdown-item-warning:active {
-    color: $dark !important;
-    background-color: $yellow !important;
+  color: $dark !important;
+  background-color: $yellow !important;
 }
 
 // Danger dropdown button with red text and white text with red background on hover
 .dropdown-item-danger {
-    color: $danger !important;
+  color: $danger !important;
 }
 
 .dropdown-item-danger:hover {
-    color: $danger !important;
+  color: $danger !important;
 }
 
 .dropdown-item-danger:active {
-    color: #ffffff !important;
-    background-color: $danger !important;
+  color: #ffffff !important;
+  background-color: $danger !important;
 }
 
 // No outline
 .outline-none:focus,
 .outline-none:active {
-    box-shadow:none !important;
-    outline:0px !important;
+  box-shadow: none !important;
+  outline: 0px !important;
 }
 
 // Checkbox toggle buttons
 button.checkboxtoggle:hover {
-    color: $blue-500 !important;
+  color: $blue-500 !important;
 }
 
 // Details toggle buttons
 button.detailstoggle:hover {
-    color: $dark !important;
+  color: $dark !important;
 }
 
 // Errors toggle buttons
 button.errorstoggle:hover {
-    color: $red-500 !important;
+  color: $red-500 !important;
 }
 
 // No link outlines (e.g. quick menu dropdowns)
 a.outline-none {
-    outline: none;
+  outline: none;
 }
 
 // Overview cards
 .overview-card:hover {
-    background-color: $hover-bg;
+  background-color: $hover-bg;
 }
 
 .hover-highlight:hover {
-    background-color: $hover-bg;
+  background-color: $hover-bg;
 }
 
 // Side menu
 .menu-item.active {
-    background-color: $hover-bg;
-    color: $primary !important;
-    font-weight: bold;
+  background-color: $hover-bg;
+  color: $primary !important;
+  font-weight: bold;
 }
 
 .menu-item:hover {
-    background-color: $hover-bg;
-    color: $primary !important;
-    text-decoration: none;
+  background-color: $hover-bg;
+  color: $primary !important;
+  text-decoration: none;
 }
 
 // Html help example code
 .markdown-example-input > pre {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .markdown-example-output blockquote {
-    border-left: 2px solid;
-    border-color: $secondary;
-    padding-left: 5px;
+  border-left: 2px solid;
+  border-color: $secondary;
+  padding-left: 5px;
 }
 
 .markdown-example-output pre {
-    background-color: $light;
+  background-color: $light;
 }
 
 // Avatars
 .avatar {
-    min-height: 4em;
-    min-width: 4em;
-    max-height: 4em;
-    max-width: 4em;
+  min-height: 4em;
+  min-width: 4em;
+  max-height: 4em;
+  max-width: 4em;
 }
 
 // Status border
 .border-status {
-    border-left: 3px solid;
+  border-left: 3px solid;
 }
 
 // Border for finished activity card
 .border-activity-finished-header {
-    border-left-width: 2px !important;
-    border-top-width: 2px !important;
-    border-right-width: 2px !important;
-    border-bottom-width: 1px !important;
-    border-left-color: $green-200 !important;
-    border-top-color: $green-200 !important;
-    border-right-color: $green-200 !important;
-    border-bottom-color: inherit;
+  border-left-width: 2px !important;
+  border-top-width: 2px !important;
+  border-right-width: 2px !important;
+  border-bottom-width: 1px !important;
+  border-left-color: $green-200 !important;
+  border-top-color: $green-200 !important;
+  border-right-color: $green-200 !important;
+  border-bottom-color: inherit;
 }
 
 .border-activity-finished-body {
-    border-left-width: 2px !important;
-    border-top-width: 0 !important;
-    border-right-width: 2px !important;
-    border-bottom-width: 2px !important;
-    border-left-color: $green-200 !important;
-    border-right-color: $green-200 !important;
-    border-bottom-color: $green-200 !important;
+  border-left-width: 2px !important;
+  border-top-width: 0 !important;
+  border-right-width: 2px !important;
+  border-bottom-width: 2px !important;
+  border-left-color: $green-200 !important;
+  border-right-color: $green-200 !important;
+  border-bottom-color: $green-200 !important;
 }
 
 // Attachments
 .attachment-img-preview {
-    min-width: 50px;
-    min-height: 50px;
-    width: 50px;
-    height: 50px;
-    max-width: 50px;
-    max-height: 50px;
-    object-fit: cover;
+  min-width: 50px;
+  min-height: 50px;
+  width: 50px;
+  height: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: cover;
 }
 
 .attachment:hover {
-    background-color: $hover-bg !important;
+  background-color: $hover-bg !important;
 }
 
 // Minimum width of 0
 .min-w-0 {
-    min-width: 0 !important;
+  min-width: 0 !important;
 }
 
 // Link heights corresponding to feather icons for split dropdowns in navbar
 .h-12 {
-    min-height: 12px;
-    max-height: 12px;
+  min-height: 12px;
+  max-height: 12px;
 }
 
 .h-16 {
-    min-height: 16px;
-    max-height: 16px;
+  min-height: 16px;
+  max-height: 16px;
 }
 
-.h-20{
-    min-height: 20px;
-    max-height: 20px;
+.h-20 {
+  min-height: 20px;
+  max-height: 20px;
 }
 
 .h-14 {
-    min-height: 24px;
-    max-height: 24px;
+  min-height: 24px;
+  max-height: 24px;
 }
 
 .h-28 {
-    min-height: 28px;
-    max-height: 28px;
+  min-height: 28px;
+  max-height: 28px;
 }
 
 .h-32 {
-    min-height: 32px;
-    max-height: 32px;
+  min-height: 32px;
+  max-height: 32px;
 }
 
 // Single line height textarea for form controls
 .textarea-h1 {
-    height: calc(1.6em + 0.75rem + 2px) !important;
+  height: calc(1.6em + 0.75rem + 2px) !important;
 }
 
 // Display textarea line breaks correctly
 .whitespace-preline {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .scroll-x {
-    overflow-x: auto;
-    white-space: nowrap;
-    //-ms-overflow-style: none;
-    //scrollbar-width: none;
+  overflow-x: auto;
+  white-space: nowrap;
+  //-ms-overflow-style: none;
+  //scrollbar-width: none;
 }
 
 .z-1 {
-    z-index: 1;
+  z-index: 1;
 }
 
 .z-10 {
-    z-index: 10;
+  z-index: 10;
 }
 
 .col-1-5 {
-    flex: 0 0 12.3%;
-    max-width: 12.3%;
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+  flex: 0 0 12.3%;
+  max-width: 12.3%;
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 // Collapse animation
-.collapse-enter-active, .collapse-leave-active {
-    transition: opacity .5s;
+.collapse-enter-active,
+.collapse-leave-active {
+  transition: opacity 0.5s;
 }
-.collapse-enter, .collapse-leave-to {
-    opacity: 0
+.collapse-enter,
+.collapse-leave-to {
+  opacity: 0;
 }
 
 .navbar-toggle:focus {
-    border: 1px solid $secondary !important;
+  border: 1px solid $secondary !important;
 }
 
 // Global search
 .global-search {
-    max-width: 18rem;
+  max-width: 18rem;
 }
 
 // Global search
 .global-search-centered {
-    max-width: 32rem !important;
+  max-width: 32rem !important;
 }
 
 .global-search:focus-within {
-    border: 1px solid $secondary !important;
+  border: 1px solid $secondary !important;
 }
 
 .global-search-input {
-    width: 6rem !important;
+  width: 6rem !important;
 }
 
-.global-search-form.was-validated .form-control:valid, .global-search-form.was-validated .form-control:invalid {
-    background-image: none;
+.global-search-form.was-validated .form-control:valid,
+.global-search-form.was-validated .form-control:invalid {
+  background-image: none;
 }
 
 .global-search-append-button:hover {
-    color: $white !important;
-    background-color: $secondary !important;
+  color: $white !important;
+  background-color: $secondary !important;
 }
 
 // Notification badge
 .notification-badge {
-    position: absolute;
-    opacity: 0;
-    top: -0.25rem;
-    right: -0.25rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    background: $danger;
-    animation: notification-badge-animation 500ms ease-in;
-    animation-delay: 1s;
-    animation-fill-mode: forwards;
+  position: absolute;
+  opacity: 0;
+  top: -0.25rem;
+  right: -0.25rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: $danger;
+  animation: notification-badge-animation 500ms ease-in;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes notification-badge-animation {
-    0% {
-        transform: scale(0, 0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1, 1);
-        opacity: 100;
-    }
+  0% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 100;
+  }
 }

@@ -2061,6 +2061,68 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
+            </svg>
+            Projekte Teilrechnungen
+        </p>
+        <p class="text-muted">
+          Berechtigungen für die Teilrechnungen von Projekten (falls
+	  ein Projekt angesehen werden darf).
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('interim-invoices_view') is-invalid @enderror" name="interim-invoices_view" id="interim-invoices_view" value="true" @if(old('interim-invoices_view', optional($permissions)->hasPermissionTo('interim-invoices.view'))) checked @endif>
+                <label class="custom-control-label" for="interim-invoices_view">Teilrechnungen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('interim-invoices_view') d-block @enderror">
+                @error('interim-invoices_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('interim-invoices_create') is-invalid @enderror" name="interim-invoices_create" id="interim-invoices_create" value="true" @if(old('interim-invoices_create', optional($permissions)->hasPermissionTo('interim-invoices.create'))) checked @endif>
+                <label class="custom-control-label" for="interim-invoices_create">Teilrechnungen anlegen</label>
+            </div>
+            <div class="invalid-feedback @error('interim-invoices_create') d-block @enderror">
+                @error('interim-invoices_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('interim-invoices_update') is-invalid @enderror" name="interim-invoices_update" id="interim-invoices_update" value="true" @if(old('interim-invoices_update', optional($permissions)->hasPermissionTo('interim-invoices.update'))) checked @endif>
+                <label class="custom-control-label" for="interim-invoices_update">Teilrechnungen bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('interim-invoices_update') d-block @enderror">
+                @error('interim-invoices_update')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('interim-invoices_delete') is-invalid @enderror" name="interim-invoices_delete" id="interim-invoices_delete" value="true" @if(old('interim-invoices_delete', optional($permissions)->hasPermissionTo('interim-invoices.delete'))) checked @endif>
+                <label class="custom-control-label" for="interim-invoices_delete">Teilrechnungen entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('interim-invoices_delete') d-block @enderror">
+                @error('interim-invoices_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon-bs icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
             </svg>

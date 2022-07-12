@@ -36,7 +36,6 @@ class ProjectUpdateRequest extends FormRequest
             'ends_on' => 'after_or_equal:starts_on|nullable',
             'material_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
             'wage_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
-            'billed_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
             'company_id' => 'required|exists:companies,id',
             'comment' => 'nullable',
         ];

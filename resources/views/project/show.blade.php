@@ -77,6 +77,16 @@
                         Stammdaten
                     </a>
 
+                    @can('viewAny', \App\Models\InterimInvoice::class)
+                        <a class="menu-item @if (request()->tab == 'interim_invoices') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'interim_invoices']) }}">
+                            <svg class="icon icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                            </svg>
+                            Teilrechnungen
+                            <span class="ml-auto">{{ $project->interim_invoices_count > 0 ? $project->interim_invoices_count : '' }}</span>
+                        </a>
+                    @endcan
+
                     @can('viewAny', \App\Models\Task::class)
                         <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
                             <svg class="icon icon-16 mr-2">
@@ -144,6 +154,15 @@
                         </svg>
                         Stammdaten
                     </a>
+
+                    @can('viewAny', \App\Models\InterimInvoice::class)
+                        <a class="menu-item @if (request()->tab == 'interim_invoices') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'interim_invoices']) }}">
+                            <svg class="icon icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                            </svg>
+                            Teilrechnungen
+                        </a>
+                    @endcan
 
                     @can('viewAny', \App\Models\Task::class)
                         <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">

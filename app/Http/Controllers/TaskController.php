@@ -24,7 +24,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Facades\LogBatch;
-use Spatie\Activitylog\Models\Activity;
 use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
@@ -75,7 +74,7 @@ class TaskController extends Controller
         if(isset($validatedData['template'])) {
             $templateTask = Task::find($validatedData['template']);
 
-            if(!$templateTask) {
+            if(! $templateTask) {
                 return redirect()
                     ->route('tasks.create')
                     ->with('warning', 'Die angegebene Aufgabe existiert nicht.');
@@ -399,7 +398,7 @@ class TaskController extends Controller
     {
         $task->status = 'finished';
 
-        if(!$task->ends_on) {
+        if(! $task->ends_on) {
             $task->starts_on = $task->starts_on ?? Carbon::now();
             $task->ends_on = Carbon::now();
         }
@@ -422,19 +421,19 @@ class TaskController extends Controller
         if(isset($validatedData['company_id'])) {
             $companies = Company::whereId($validatedData['company_id']);
             $company = Company::find($validatedData['company_id']);
-        } else if (isset($validatedData['project_id'])) {
+        } elseif (isset($validatedData['project_id'])) {
             $project = Project::find($validatedData['project_id']);
             $companies = Company::whereId($project->company_id);
         }
 
         $companies = $companies
-            ->with(['projects' => function($query) use ($project) {
+            ->with(['projects' => function ($query) use ($project) {
                 $query
                     ->order()
-                    ->when($project, function($query) use ($project) {
+                    ->when($project, function ($query) use ($project) {
                         $query->whereId($project->id);
                     })
-                    ->with(['tasks' => function($query) {
+                    ->with(['tasks' => function ($query) {
                         $query
                             ->filterPermissions()
                             ->with('responsibleEmployee.user')
@@ -465,7 +464,7 @@ class TaskController extends Controller
             ->sortBy('employee.user.username')
             ->values();
 
-        $fileName = 'AL' . (isset($company) ? ' ' . $company->name : '') . (isset($project) ? ' ' . $project->name : '') . '.pdf';
+        $fileName = 'AL'.(isset($company) ? ' '.$company->name : '').(isset($project) ? ' '.$project->name : '').'.pdf';
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

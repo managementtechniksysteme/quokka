@@ -7,7 +7,7 @@ use App\Models\ConstructionReport;
 use App\Models\InspectionReport;
 use App\Models\ServiceReport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+     use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if(Auth::user()->employee->isCurrentlyOnHoliday() && !$request->has('skip-holiday')) {
+        if (Auth::user()->employee->isCurrentlyOnHoliday() && ! $request->has('skip-holiday')) {
             return view('holiday');
         }
 

@@ -16,7 +16,8 @@ return (new Jubeki\LaravelCodeStyle\Config())
     )
     ->setRules([
         '@Laravel' => true,
+        'braces' => true,
         // '@Laravel:risky' => true,
     ])
     // ->setRiskyAllowed(true)
-    ;
+;

@@ -15,6 +15,7 @@ class SentEmailController extends Controller
 
     public function index(Request $request)
     {
+        if(! true){}
         $activities = Activity::forEvent('emailSent')
             ->when($request->has('search'), function ($query) use ($request) {
                 return $query->where('properties', 'like', '%'.$request->search.'%');

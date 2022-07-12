@@ -15,6 +15,26 @@
     </div>
 
     <div class="container my-4">
+      @markdown
+      ### v0.1.20-6d2c664 (12.07.2022)
+      * Implementierung von Teilrechnungen zu Projekten für berechtigte
+      Benutzer.
+      * Bei Berichten wird der Benutzer bei Erledigung mitgespeichert
+      und in der Oberfläche sowie in Ausdrucken angezeigt.
+      * Aufgabenaktivitäten werden nun in der Liste analog zu
+      Kommentaren angezeigt. Bei Erledigung einer Aufgabe wird die
+      Aktion zusäztlich farblich hervorgehoben. Die Aktionen beziehen
+      sich auf Änderungen an der Aufgabe (z.B. beteiligte Mitarbeiter,
+      Titel oder Start- bzw. Fälligkeitsdatum).
+      * Gesendete Emails können bei entsprechenden Berechtigungen nun
+      in einer Übersicht angesehen werden (dient eher zu Kontrollen).
+      * Verbesserungen an diversen Anzeigen.
+      * Korrektur von Anzeige- und Rechtschreibfehlern.
+      * Fehlerbehebungen bei Berechtigungen.
+      * Dateinamen von Aufgabenlisten als PDF werden nun korrekt
+      vergeben.
+      @endmarkdown
+
         @markdown
         ### v0.1.19-3532f96 (24.06.2022)
         * Auswertungen von Projekten stehen nun zur Verfügung.

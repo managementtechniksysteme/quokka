@@ -11,13 +11,13 @@
 |
 */
 
+use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\AdditionsReportController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticateController;
 use App\Http\Controllers\Auth\SecondFactorController;
-use App\Http\Controllers\AccountingController;
-use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
@@ -27,6 +27,7 @@ use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InspectionReportController;
+use App\Http\Controllers\InterimInvoiceController;
 use App\Http\Controllers\LatestChangesController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
@@ -166,6 +167,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
+
+    Route::resource('/projects/{project}/interim-invoices', InterimInvoiceController::class)->except(['index']);
 
     Route::resource('roles', RoleController::class);
 

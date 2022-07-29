@@ -1,4 +1,4 @@
-<0623501726798406235017267984?php
+<?php
 
 namespace App\Http\Controllers;
 

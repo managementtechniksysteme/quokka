@@ -118,7 +118,11 @@
                     return;
                 }
 
-                let service = this.services.find(service => service.provided_on.getDate() === date.getDate());
+              let service = this.services.find(service =>
+		service.provided_on.getYear() === date.getYear() &&
+		service.provided_on.getMonth() === date.getMonth() &&
+		service.provided_on.getDate() === date.getDate()
+	      );
 
                 if(service) {
                     service.hours += hours;

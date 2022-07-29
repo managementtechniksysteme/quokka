@@ -16,6 +16,11 @@
 
     <div class="container my-4">
       @markdown
+      ### v0.1.21-00d1735 (29.07.2022)
+      * Beheben eines Fehlers der bei Serviceberichten Stunden beim falschen 
+      Datum aufsummiert, falls der selbe Tag in einem anderen Monat bereits 
+      vorhanden ist.
+
       ### v0.1.20-6d2c664 (12.07.2022)
       * Implementierung von Teilrechnungen zu Projekten für berechtigte
       Benutzer.

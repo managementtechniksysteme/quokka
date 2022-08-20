@@ -2,7 +2,7 @@
 
 @section('tab')
     @unless ($project->interimInvoices->isEmpty())
-        @can('create', \App\Models\InterimResult::class)
+        @can('create', \App\Models\InterimInvoice::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('interim-results.create', ['project' => $project]) }}">
                 <svg class="icon icon-16 mr-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>

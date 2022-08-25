@@ -174,6 +174,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('search', SearchController::class)->only(['index']);
 
+    Route::get('/service-reports/list', [ServiceReportController::class, 'downloadList'])->name('service-reports.download-list');
     Route::resource('service-reports', ServiceReportController::class);
     Route::get('/service-reports/{service_report}/download', [ServiceReportController::class, 'download'])->name('service-reports.download');
     Route::get('/service-reports/{service_report}/email', [ServiceReportController::class, 'showEmail'])->name('service-reports.email');

@@ -7,6 +7,7 @@ use App\Events\ServiceReportSignedEvent;
 use App\Events\ServiceReportUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\ServiceReportCreateRequest;
+use App\Http\Requests\ServiceReportDownloadListRequest;
 use App\Http\Requests\SignRequest;
 use App\Http\Requests\ServiceReportStoreRequest;
 use App\Http\Requests\ServiceReportUpdateRequest;
@@ -14,6 +15,7 @@ use App\Http\Requests\SingleEmailRequest;
 use App\Mail\ServiceReportDownloadRequestMail;
 use App\Mail\ServiceReportMail;
 use App\Mail\ServiceReportSignatureRequestMail;
+use App\Models\Company;
 use App\Models\DownloadRequest;
 use App\Models\Person;
 use App\Models\Project;
@@ -44,6 +46,11 @@ class ServiceReportController extends Controller
             'sign' => 'sign',
             'approve' => 'approve',
         ]);
+    }
+
+    public function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
     }
 
     public function __construct()
@@ -528,6 +535,79 @@ class ServiceReportController extends Controller
 
             return view('service_report.download_invalid');
         }
+    }
+
+    public function downloadList(ServiceReportDownloadListRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $company = null;
+        $project = null;
+
+        $companies = Company::order();
+
+        if(isset($validatedData['company_id'])) {
+            $companies = Company::whereId($validatedData['company_id']);
+            $company = Company::find($validatedData['company_id']);
+        } elseif (isset($validatedData['project_id'])) {
+            $project = Project::find($validatedData['project_id']);
+            $companies = Company::whereId($project->company_id);
+        }
+
+        $companies = $companies
+            ->with(['projects' => function ($query) use ($project) {
+                $query
+                    ->order()
+                    ->when($project, function ($query) use ($project) {
+                        $query->whereId($project->id);
+                    })
+                    ->with(['serviceReports' => function ($query) {
+                        $query
+                            ->filterPermissions()
+                            ->with('employee.user')
+                            ->withMin('services', 'provided_on')
+                            ->withMax('services', 'provided_on')
+                            ->withSum('services', 'hours')
+                            ->withSum('services', 'kilometres')
+                            ->orderByRaw('field(status, "new", "signed", "finished")')
+                            ->orderBy('number');
+                    }])
+                    ->withCount('serviceReports');
+            }])
+            ->withCount('projects')
+            ->get();
+
+        $totalServiceReports = $companies->reduce(function ($carry, $company) {
+            return $carry + $company->projects->sum('service_reports_count');
+        });
+
+        $employees = $companies
+            ->pluck('projects')
+            ->flatten()
+            ->pluck('serviceReports')
+            ->flatten()
+            ->pluck('employee_id')
+            ->unique();
+
+        $people = Person::whereIn('id', $employees)
+            ->with('employee.user')
+            ->get()
+            ->sortBy('employee.user.username')
+            ->values();
+
+        $fileName = 'SL'.(isset($company) ? ' '.$company->name : '').(isset($project) ? ' '.$project->name : '').'.pdf';
+
+        return (new Latex())
+            ->binPath('/usr/bin/pdflatex')
+            ->untilAuxSettles()
+            ->view('latex.service_report_list', [
+                'companies' => $companies,
+                'company' => $company,
+                'project' => $project,
+                'totalServiceReports' => $totalServiceReports,
+                'people' => $people,
+            ])
+            ->download($fileName);
     }
 
     public function finish(Request $request, ServiceReport $serviceReport)

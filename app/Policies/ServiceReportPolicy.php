@@ -73,6 +73,11 @@ class ServiceReportPolicy
         return $user->can('service-reports.createpdf.other');
     }
 
+    public function downloadList(User $user): bool
+    {
+        return $user->can('service-reports.view.own') || $user->can('service-reports.view.other');
+    }
+
     public function emailSignatureRequest(User $user, ServiceReport $serviceReport): bool
     {
         if($serviceReport->status !== 'new') {

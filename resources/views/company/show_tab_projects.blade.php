@@ -26,6 +26,14 @@
                 Aufgabenliste erstellen
             </a>
         @endcan
+        @can('downloadList', \App\Models\ServiceReport::class)
+            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"s>
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                </svg>
+                Serviceberichtliste erstellen
+            </a>
+        @endcan
 
         <div class="row mt-4">
 

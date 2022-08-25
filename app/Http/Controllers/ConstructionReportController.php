@@ -185,7 +185,24 @@ class ConstructionReportController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldProjectId = $constructionReport->project_id;
+        $newProjectId = (int)$validatedData['project_id'];
+
+        unset($validatedData['project_id']);
         $constructionReport->update($validatedData);
+
+        if($oldProjectId !== $newProjectId) {
+            $constructionReport->project_id = $newProjectId;
+            $constructionReport->number = 1;
+
+            $latestConstructionReport = ConstructionReport::where('project_id', $newProjectId)->latest('number')->first();
+
+            if ($latestConstructionReport) {
+                $constructionReport->number = $latestConstructionReport->number + 1;
+            }
+
+            $constructionReport->save();
+        }
 
         if ($constructionReport->status === 'signed') {
             $constructionReport->status = 'new';

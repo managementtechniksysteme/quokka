@@ -185,7 +185,24 @@ class AdditionsReportController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldProjectId = $additionsReport->project_id;
+        $newProjectId = (int)$validatedData['project_id'];
+
+        unset($validatedData['project_id']);
         $additionsReport->update($validatedData);
+
+        if($oldProjectId !== $newProjectId) {
+            $additionsReport->project_id = $newProjectId;
+            $additionsReport->number = 1;
+
+            $latestAdditionsReport = AdditionsReport::where('project_id', $newProjectId)->latest('number')->first();
+
+            if ($latestAdditionsReport) {
+                $additionsReport->number = $latestAdditionsReport->number + 1;
+            }
+
+            $additionsReport->save();
+        }
 
         if ($additionsReport->status === 'signed') {
             $additionsReport->status = 'new';

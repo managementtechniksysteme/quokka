@@ -226,7 +226,24 @@ class ServiceReportController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldProjectId = $serviceReport->project_id;
+        $newProjectId = (int)$validatedData['project_id'];
+
+        unset($validatedData['project_id']);
         $serviceReport->update($validatedData);
+
+        if($oldProjectId !== $newProjectId) {
+            $serviceReport->project_id = $newProjectId;
+            $serviceReport->number = 1;
+
+            $latestServiceReport = ServiceReport::where('project_id', $newProjectId)->latest('number')->first();
+
+            if ($latestServiceReport) {
+                $serviceReport->number = $latestServiceReport->number + 1;
+            }
+
+            $serviceReport->save();
+        }
 
         $datesToKeep = $request->services ? array_column($request->services, 'provided_on') : [];
 

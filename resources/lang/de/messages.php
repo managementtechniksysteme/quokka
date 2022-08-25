@@ -7,5 +7,6 @@ return [
     'permissions' => ':count Berechtigung|:count Berechtigungen',
     'projects' => ':count Projekt|:count Projekte',
     'results' => ':count Ergebnis|:count Ergebnisse',
+    'service_reports' => ':count Servicebericht|:count Serviceberichte',
     'tasks' => ':count Aufgabe|:count Aufgaben'
 ];

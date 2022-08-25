@@ -25,7 +25,7 @@
       Leistungsabrechnung angepasst.
       * Beim Verschieben von nummerierten Elementen zwischen Projekten (wie etwa
       Serviceberichte) wird nun die erste freie Nummer des neu zugewiesenen Projektes
-      für das entsprechende Element vergeben. Bis jetzt blieb die Nummer unverändert. 
+      für das entsprechende Element vergeben. Bis jetzt blieb die Nummer unverändert.
       Diese konnte zu doppeleten Nummern oder größeren Lücken in der Nummerierung führen.
       Wird ein Element wieder zum ursprünglichen Projekt zurückverschoben, so wird ebenfalls
       die nächste freie Nummer vergeben. Die ursprüngliche Nummer bleibt unbenutzt.

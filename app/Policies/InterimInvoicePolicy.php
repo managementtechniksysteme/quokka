@@ -37,9 +37,6 @@ class InterimInvoicePolicy
 
     public function delete(User $user, InterimInvoice $interimInvoice): bool
     {
-        \Illuminate\Support\Facades\Log::info($interimInvoice);
-        \Illuminate\Support\Facades\Log::info($interimInvoice->project);
-
         return $user->can('view', $interimInvoice->project) &&
             $user->can('interim-invoices.delete');
     }

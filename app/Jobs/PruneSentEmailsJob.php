@@ -38,7 +38,7 @@ class PruneSentEmailsJob implements ShouldQueue
         if($this->activities->count()) {
             Log::info('Pruning ' . $this->activities->count() . ' sent emails.');
 
-            $this->activities->delete();
+            $this->activities->each->delete();
         }
 
         Log::info('Finished pruning sent emails older than ' . $this->date);

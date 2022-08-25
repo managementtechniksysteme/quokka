@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\ApplicationSettings;
 use App\Models\Employee;
+use App\Models\User;
 use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,10 +30,12 @@ class HolidayAllowanceAdjustmentNotification extends Notification implements Sho
 
     private array $vibrationDuration = ['100'];
 
-    public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance, bool $manualAdjustment)
+    public function __construct(float $oldHolidayAllowance, float $currentHolidayAllowance, User|null $user, bool|null $notifySelf, bool $manualAdjustment)
     {
         $holidayAllowanceDifference = $currentHolidayAllowance-$oldHolidayAllowance;
 
+        $this->user = $user;
+        $this->notifySelf = $notifySelf;
         $this->manualAdjustment = $manualAdjustment;
 
         $this->titleMail =

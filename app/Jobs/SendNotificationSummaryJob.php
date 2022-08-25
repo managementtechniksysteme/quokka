@@ -33,15 +33,20 @@ class SendNotificationSummaryJob implements ShouldQueue
         Log::info('Processing notification summary job for ' . $this->date);
 
         $this->users->each(function ($user) {
-            Log::info('Sending notifiation summary to employee with ID ' . $user->employee_id);
+            try {
+                Log::info('Sending notifiation summary to employee with ID ' . $user->employee_id);
 
-            $notifications = $user
-                ->unreadNotifications()
-                ->whereDate('created_at', $this->date)
-                ->reorder('created_at')
-                ->get();
+                $notifications = $user
+                    ->unreadNotifications()
+                    ->whereDate('created_at', $this->date)
+                    ->reorder('created_at')
+                    ->get();
 
-            $user->notify(new NotificationSummaryNotification($this->date, $notifications));
+                $user->notify(new NotificationSummaryNotification($this->date, $notifications));
+            } catch (\Exception $e) {
+                Log::error('Failed to send notification summary for employee ID ' . $user->employee_id);
+                Log::error($e);
+            }
         });
 
         Log::info('Finished processing notification summary job for ' . $this->date);

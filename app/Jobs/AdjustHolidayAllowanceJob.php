@@ -40,14 +40,20 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
         Log::info('Processing holiday allowance adjustements for ' . $this->currentDate);
 
         $this->employees->each(function ($employee) {
-            Log::info('Increasing holiday allowance for employee ID ' .
-                $employee->person_id . ' by ' . $this->yearlyHolidayAllowance);
+            try {
+                Log::info('Increasing holiday allowance for employee ID ' .
+                    $employee->person_id . ' by ' . $this->yearlyHolidayAllowance);
 
-            $oldHolidayAllowance = $employee->holidays;
+                $oldHolidayAllowance = $employee->holidays;
 
-            $employee->update(['holidays' => $employee->holidays + $this->yearlyHolidayAllowance]);
+                $employee->update(['holidays' => $employee->holidays + $this->yearlyHolidayAllowance]);
 
-            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, null, null, false));
+                event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, null,
+                    null, false));
+            } catch (\Exception $e) {
+                Log::error('Failed to increase holiday allowance adjustment for employee ID ' . $employee->person_id);
+                Log::error($e);
+            }
         });
 
         Log::info('Finished processing holiday allowance adjustements for ' . $this->currentDate);

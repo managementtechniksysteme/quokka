@@ -22,7 +22,7 @@ class PruneSentEmailsJob implements ShouldQueue
     public function __construct()
     {
         $this->date = Carbon::today()->subMonth();
-        $this->activities = Activity::forEvent('email')
+        $this->activities = Activity::forEvent('emailSent')
             ->whereDate('created_at', '<', $this->date)
             ->get();
     }

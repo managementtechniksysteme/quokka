@@ -159,7 +159,7 @@ class InspectionReportController extends Controller
     public function update(InspectionReportUpdateRequest $request, InspectionReport $inspectionReport)
     {
         $validatedData = $request->validated();
-
+        
         $inspectionReport->update($validatedData);
 
         if ($inspectionReport->status === 'signed') {

@@ -231,7 +231,24 @@ class MemoController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldProjectId = $memo->project_id;
+        $newProjectId = (int)$validatedData['project_id'];
+
+        unset($validatedData['project_id']);
         $memo->update($validatedData);
+
+        if($oldProjectId !== $newProjectId) {
+            $memo->project_id = $newProjectId;
+            $memo->number = 1;
+
+            $latestMemo = Memo::where('project_id', $newProjectId)->latest('number')->first();
+
+            if ($latestMemo) {
+                $memo->number = $latestMemo->number + 1;
+            }
+
+            $memo->save();
+        }
 
         if (! $request->filled('person_id')) {
             $memo->personRecipient()->disassociate();

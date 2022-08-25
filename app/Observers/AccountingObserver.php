@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Accounting;
 use App\Models\ApplicationSettings;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AccountingObserver
 {
@@ -14,7 +16,10 @@ class AccountingObserver
         }
 
         if($this->isHolidayService($accounting)) {
-            $this->removeHolidayFromEmployee($accounting, $accounting->amount);
+            DB::transaction(function () use ($accounting) {
+                Auth::user()->employee()->lockForUpdate()->get();
+                $this->removeHolidayFromEmployee($accounting, $accounting->amount);
+            });
         }
     }
 
@@ -25,13 +30,22 @@ class AccountingObserver
         }
 
         if($this->stayedHolidayService($accounting)) {
-            $this->addHolidayToEmployee($accounting, $accounting->getOriginal('amount') - $accounting->amount);
+            DB::transaction(function () use ($accounting) {
+                Auth::user()->employee()->lockForUpdate()->get();
+                $this->addHolidayToEmployee($accounting, $accounting->getOriginal('amount') - $accounting->amount);
+            });
         }
         elseif ($this->changedFromHolidayService($accounting)) {
-            $this->addHolidayToEmployee($accounting, $accounting->amount);
+            DB::transaction(function () use ($accounting) {
+                Auth::user()->employee()->lockForUpdate()->get();
+                $this->addHolidayToEmployee($accounting, $accounting->amount);
+            });
         }
         elseif ($this->changedToHolidayService($accounting)) {
-            $this->removeHolidayFromEmployee($accounting, $accounting->amount);
+            DB::transaction(function () use ($accounting) {
+                Auth::user()->employee()->lockForUpdate()->get();
+                $this->removeHolidayFromEmployee($accounting, $accounting->amount);
+            });
         }
     }
 
@@ -42,7 +56,10 @@ class AccountingObserver
         }
 
         if($this->wasHolidayService($accounting)) {
-            $this->addHolidayToEmployee($accounting, $accounting->amount);
+            DB::transaction(function () use ($accounting) {
+                Auth::user()->employee()->lockForUpdate()->get();
+                $this->addHolidayToEmployee($accounting, $accounting->amount);
+            });
         }
     }
 

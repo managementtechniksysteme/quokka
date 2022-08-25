@@ -47,7 +47,7 @@ class AdjustHolidayAllowanceJob implements ShouldQueue
 
             $employee->update(['holidays' => $employee->holidays + $this->yearlyHolidayAllowance]);
 
-            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, Auth::user(), Auth::user()->settings->notify_self, false));
+            event(new HolidayAllowanceAdjustedEvent($employee, $oldHolidayAllowance, $employee->holidays, null, null, false));
         });
 
         Log::info('Finished processing holiday allowance adjustements for ' . $this->currentDate);

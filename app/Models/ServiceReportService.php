@@ -56,6 +56,7 @@ class ServiceReportService extends Model
             ->selectRaw('driven_on as date, sum(driven_kilometres) as driven_kilometres')
             ->whereIn('driven_on', $accounting->pluck('date'))
             ->where('project_id', $project->id)
+            ->where('employee_id', \Auth::id())
             ->groupBy('driven_on')
             ->get();
 

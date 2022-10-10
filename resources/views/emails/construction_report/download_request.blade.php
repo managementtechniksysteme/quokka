@@ -2,7 +2,7 @@
 Guten Tag,
 
 es liegt ein neuer Bautagesbericht von MTS Management Technik Systeme GmbH & CO KG zum Herunterladen vor.
-Klicken Sie bitte auf den folgenden Button um den Bautagesbericht herunterzuladen.
+Klicken Sie bitte auf den folgenden Button, um den Bautagesbericht herunterzuladen.
 
 @include("emails.construction_report.construction_report_content_request")
 

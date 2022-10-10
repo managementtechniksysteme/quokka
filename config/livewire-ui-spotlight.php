@@ -22,6 +22,9 @@ use App\SpotlightCommands\EmployeeStartImpersonationCommand;
 use App\SpotlightCommands\EmployeeStopImpersonationCommand;
 use App\SpotlightCommands\ExceptionIndexCommand;
 use App\SpotlightCommands\ExceptionShowCommand;
+use App\SpotlightCommands\FlowMeterInspectionReportCreateCommand;
+use App\SpotlightCommands\FlowMeterInspectionReportIndexCommand;
+use App\SpotlightCommands\FlowMeterInspectionReportShowCommand;
 use App\SpotlightCommands\GlobalSearchCommand;
 use App\SpotlightCommands\HelpIndexCommand;
 use App\SpotlightCommands\HelpShowCommand;
@@ -117,6 +120,9 @@ return [
         EmployeeStopImpersonationCommand::class,
         ExceptionIndexCommand::class,
         ExceptionShowCommand::class,
+        FlowMeterInspectionReportCreateCommand::class,
+        FlowMeterInspectionReportIndexCommand::class,
+        FlowMeterInspectionReportShowCommand::class,
         GlobalSearchCommand::class,
         HelpIndexCommand::class,
         HelpShowCommand::class,

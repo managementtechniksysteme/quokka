@@ -2,7 +2,7 @@
 Guten Tag,
 
 es liegt ein neuer Regiebericht von MTS Management Technik Systeme GmbH & CO KG zum Herunterladen vor.
-Klicken Sie bitte auf den folgenden Button um den Regiebericht herunterzuladen.
+Klicken Sie bitte auf den folgenden Button, um den Regiebericht herunterzuladen.
 
 @include("emails.additions_report.additions_report_content_request")
 

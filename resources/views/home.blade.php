@@ -400,6 +400,39 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 col-xl-3 mb-4">
+                <div class="card shadow-sm">
+                    <a class="stretched-link outline-none" href="{{ route('flow-meter-inspection-reports.index', ['search' => 'ist:neu']) }}"></a>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col pr-0">
+                                <h5 class="card-title text-uppercase text-muted m-0">offene DM</h5>
+                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewFlowMeterInspectionReports) }}</span>
+                            </div>
+                            <div class="col-auto pl-0">
+                                <svg class="icon-bs icon-32 @if($employeeNewFlowMeterInspectionReports) text-blue-500 @else text-gray-500 @endif">
+                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <span class="text-muted">
+                                    {{ Number::toLocal($employeeMtdNewFlowMeterInspectionReports) }} MTD
+                                    @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('flow-meter-inspection-reports.view.other'))
+                                        <svg class="icon-bs icon-baseline text-muted">
+                                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
+                                        </svg>
+                                        {{ Number::toLocal($newFlowMeterInspectionReports) }} ges.
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @if(Auth::user()->can('service-reports.approve') || Auth::user()->can('additions-reports.approve') || Auth::user()->can('inspection-reports.approve') || Auth::user()->can('construction-reports.approve'))
             <div class="row">
@@ -504,6 +537,34 @@
                     </div>
                 @endcan
             </div>
+
+            <div class="row">
+                @can('flow-meter-inspection-reports.approve')
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow-sm">
+                            <a class="stretched-link outline-none" href="{{ route('flow-meter-inspection-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col pr-0">
+                                        <h5 class="card-title text-uppercase text-muted m-0">erledigbare DM</h5>
+                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedFlowMeterInspectionReports) }}</span>
+                                    </div>
+                                    <div class="col-auto pl-0">
+                                        <svg class="icon-bs icon-32 @if($signedFlowMeterInspectionReports) text-yellow-500 @else text-gray-500 @endif">
+                                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <span class="text-muted">{{ Number::toLocal($mtdSignedFlowMeterInspectionReports) }} MTD</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endcan
+            </div>
         @endcan
 
         <p class="small">
@@ -512,6 +573,7 @@
             RB - Regieberichte,
             PB - Prüfberichte,
             BT - Bautagesberichte,
+            DM - Prüfberichte für Durchflussmesseinrichtungen,
             MTD - Month to Date (seit Monatsbeginn)@if(Auth::user()->can('additions-reports.view.involved') || Auth::user()->can('construction-reports.view.involved')),
             bet. - beteiligt{{''}}@endif{{''}}@if(Auth::user()->can('service-reports.view.other') || Auth::user()->can('additions-reports.view.other') || Auth::user()->can('inspection-reports.view.other') || Auth::user()->can('construction-reports.view.other')),
             ges. - gesamt

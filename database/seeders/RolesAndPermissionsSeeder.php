@@ -115,6 +115,26 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'exceptions.view']);
         Permission::firstOrCreate(['name' => 'exceptions.delete']);
 
+        // flow meter inspection reports
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.view.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.view.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.create']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.update.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.update.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.delete.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.delete.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.email.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.email.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.createpdf.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.createpdf.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.send-signature-request.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.send-signature-request.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.send-download-request.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.send-download-request.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.get-signature.own']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.get-signature.other']);
+        Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.approve']);
+
         // help
         Permission::firstOrCreate(['name' => 'help.view']);
 
@@ -385,6 +405,23 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('construction-reports.get-signature.own');
         $employee->givePermissionTo('construction-reports.get-signature.involved');
         $employee->givePermissionTo('construction-reports.get-signature.other');
+
+        // flow meter inspection reports
+        $employee->givePermissionTo('flow-meter-inspection-reports.view.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.view.other');
+        $employee->givePermissionTo('flow-meter-inspection-reports.create');
+        $employee->givePermissionTo('flow-meter-inspection-reports.update.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.delete.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.email.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.email.other');
+        $employee->givePermissionTo('flow-meter-inspection-reports.createpdf.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.createpdf.other');
+        $employee->givePermissionTo('flow-meter-inspection-reports.send-signature-request.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.send-signature-request.other');
+        $employee->givePermissionTo('flow-meter-inspection-reports.send-download-request.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.send-download-request.other');
+        $employee->givePermissionTo('flow-meter-inspection-reports.get-signature.own');
+        $employee->givePermissionTo('flow-meter-inspection-reports.get-signature.other');
 
         // help
         $employee->givePermissionTo('help.view');

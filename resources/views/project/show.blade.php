@@ -134,6 +134,15 @@
                             <span class="ml-auto">{{ $project->inspection_reports_count > 0 ? $project->inspection_reports_count : '' }}</span>
                         </a>
                     @endcan
+                    @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+                        <a class="menu-item @if (request()->tab == 'flow_meter_inspection_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'flow_meter_inspection_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                            </svg>
+                            Prüfberichte für Durchflussmesseinrichtungen
+                            <span class="ml-auto">{{ $project->flow_meter_inspection_reports_count > 0 ? $project->flow_meter_inspection_reports_count : '' }}</span>
+                        </a>
+                    @endcan
                     @can('viewAny', \App\Models\ConstructionReport::class)
                         <a class="menu-item @if (request()->tab == 'construction_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'construction_reports']) }}">
                             <svg class="icon-bs icon-16 mr-2">
@@ -206,6 +215,15 @@
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte
+                        </a>
+                    @endcan
+
+                    @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+                        <a class="menu-item @if (request()->tab == 'flow_meter_inspection_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'flow_meter_inspection_reports']) }}">
+                            <svg class="icon-bs icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                            </svg>
+                            Prüfberichte für Durchflussmesseinrichtungen
                         </a>
                     @endcan
 

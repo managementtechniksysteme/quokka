@@ -5,6 +5,7 @@ use App\Models\Address;
 use App\Models\Company;
 use App\Models\ConstructionReport;
 use App\Models\Employee;
+use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\MaterialService;
 use App\Models\Memo;
@@ -35,6 +36,7 @@ return [
         Company::class,
         ConstructionReport::class,
         Employee::class,
+        FlowMeterInspectionReport::class,
         InspectionReport::class,
         MaterialService::class,
         Memo::class,

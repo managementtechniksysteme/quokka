@@ -1,6 +1,5 @@
 @php
     use \App\Models\Project;
-    //dd($inspectionReport->uvc_lamp_replacement_available === true);
 @endphp
 
 @if (old('project_id'))
@@ -102,7 +101,7 @@
             <label for="equipment_identifier">Anlagen-/Gerätenummer</label>
             <input type="text" class="form-control @error('equipment_identifier') is-invalid @enderror" id="equipment_identifier" name="equipment_identifier" placeholder="A012345.1234" value="{{ old('equipment_identifier', optional($inspectionReport)->equipment_identifier) }}" required />
             <div class="invalid-feedback">
-                @error('equipment_type')
+                @error('equipment_identifier')
                 {{ $message }}
                 @else
                     Gib bitte die Anlagen-/Gerätenummer ein.

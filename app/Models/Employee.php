@@ -113,6 +113,10 @@ class Employee extends Model
         return $this->hasMany(InspectionReport::class, 'employee_id');
     }
 
+    public function flowMeterInspectionReports() {
+        return $this->hasMany(FlowMeterInspectionReport::class, 'employee_id');
+    }
+
     public function constructionReports() {
         return $this->hasMany(ConstructionReport::class, 'employee_id');
     }
@@ -412,6 +416,24 @@ class Employee extends Model
     public function getNewInspectionReportsAttribute()
     {
         return $this->inspectionReports()
+            ->whereStatus('new')
+            ->count();
+    }
+
+    public function getMTDNewFlowMeterInspectionReportsAttribute()
+    {
+        $now = Carbon::now();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->flowMeterInspectionReports()
+            ->whereStatus('new')
+            ->whereBetween('created_at', [$firstOfMonth, $now])
+            ->count();
+    }
+
+    public function getNewFlowMeterInspectionReportsAttribute()
+    {
+        return $this->flowMeterInspectionReports()
             ->whereStatus('new')
             ->count();
     }

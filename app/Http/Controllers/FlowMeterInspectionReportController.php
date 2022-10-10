@@ -93,6 +93,8 @@ class FlowMeterInspectionReportController extends Controller
             $templateFlowMeterInspectionReport->load('project');
 
             $currentProject = $templateFlowMeterInspectionReport->project;
+
+            $templateFlowMeterInspectionReport = $templateFlowMeterInspectionReport->replicate();
         }
         else if (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);

@@ -16,6 +16,14 @@
 
     <div class="container my-4">
       @markdown
+      ### v0.1.23-3e59f5a (10.10.2022)
+      * Implementierung von Prüfberichten von Durchflussmesseinrichtungen
+      * Ein Fehler wurde behoben, bei dem alle Fahrtenbucheinträge eines Tages zu einem Servicebericht hinzugefügt
+      wurden, falls dieser aus der Abrechnung oder dem Fahrtenbuch erstellt wurde. Nun werden lediglich die eigenen
+      Fahrten als Kilometer eingetragen.
+      @endmarkdown
+
+      @markdown
       ### v0.1.22-596a827 (25.08.2022)
       * Listen von Serviceberichten können nun als PDF Format erstellt werden.
       * Ein Fehler bei der automatischen Erhöhung des Urlaubs um die jährlich

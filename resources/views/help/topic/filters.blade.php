@@ -49,6 +49,9 @@
         @can('viewAny', \App\Models\InspectionReport::class)
         <a href="#pruefberichte"># Prüfberichte</a><br />
         @endcan
+        @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+            <a href="#pruefberichte_fuer_durchflussmesseinrichtungen"># Prüfberichte für Durchflussmesseinrichtungen</a><br />
+        @endcan
         @can('viewAny', \App\Models\AdditionsReport::class)
         <a href="#regieberichte"># Regieberichte</a><br />
         @endcan
@@ -735,12 +738,12 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Prüfberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
+            Filtert Prüfberichte, bei welchen sich der Begriff `1` in der Anlagennummer oder im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
         
             Mögliche Ergebnisse
-            * MTS000000 [Intern] #1
-            * MTS000000 [Projektmanagement] #1
+            * Anlage 1
+            * Anlage 12
             @endmarkdown
         </div>
         
@@ -754,6 +757,74 @@
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Benutzernamen `aw` verfasst wurden.
+            @endmarkdown
+        </div>
+        @endcan
+
+        @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+        <a id="pruefberichte_fuer_durchflussmesseinrichtungen"></a>
+        <h4 class="mt-4">Prüfberichte für Durchflussmesseinrichtungen</h4>
+
+        @markdown
+        **Standardattribute**
+        * Anlage
+        * Messstelle
+        * Sonstige Bemerkungen
+        * Projektname
+        * Firmenname des Kunden
+        * Name oder {{ config('app.name') }} Benutzername des zuständigen Mitarbeiters
+
+        **Spezielle Suchbegriffe**
+        * `ist:neu`
+        Der Prüfbericht hat den Status `neu`.
+
+        * `ist:unterschrieben` oder `ist:u`
+        Der Prüfbericht hat den Status `unterschrieben`.
+
+        * `ist:erledigt`
+        Der Prüfbericht hat den Status `erledigt`.
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
+        Der Prüfbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Prüfbericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
+
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`
+        Der Prüfbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            1
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Prüfberichte, bei welchen sich der Begriff `1` in der Anlage, Messstelle oder Kommentaren befindet.
+            Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
+
+            Mögliche Ergebnisse
+            * Anlage 1
+            * Messstelle 12
+            @endmarkdown
+        </div>
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            "p:MTS000000 [Intern]" t:aw
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>

@@ -256,7 +256,7 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('flowMeterInspectionReports'));
+                return view('project.show_tab_flow_meter_inspection_reports')->with(compact('project'))->with(compact('flowMeterInspectionReports'));
 
             case 'construction_reports':
                 if(Auth::user()->cannot('viewAny', ConstructionReport::class)) {

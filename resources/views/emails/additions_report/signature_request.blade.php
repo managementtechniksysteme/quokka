@@ -2,7 +2,7 @@
 Guten Tag,
 
 es liegt ein neuer Regiebericht von MTS Management Technik Systeme GmbH & CO KG zur Unterschrift vor.
-Klicken Sie bitte auf den folgenden Button um den Regiebericht herunterzuladen und zu unterschreiben.
+Klicken Sie bitte auf den folgenden Button, um den Regiebericht herunterzuladen und zu unterschreiben.
 
 @include("emails.additions_report.additions_report_content_request")
 

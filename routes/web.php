@@ -24,6 +24,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
+use App\Http\Controllers\FlowMeterInspectionReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InspectionReportController;
@@ -71,6 +72,11 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/construction-reports/sign/{token}', [ConstructionReportController::class, 'customerSign']);
     Route::get('/construction-reports/download/{token}', [ConstructionReportController::class, 'customerDownload'])->name('construction-reports.customer-download');
     Route::post('/construction-reports/email-download-request/{token}', [ConstructionReportController::class, 'customerEmailDownloadRequest'])->name('construction-reports.customer-email-download-request');
+
+    Route::get('/flow-meter-inspection-reports/sign/{token}', [FlowMeterInspectionReportController::class, 'customerShowSignatureRequest'])->name('flow-meter-inspection-reports.customer-sign');
+    Route::post('/flow-meter-inspection-reports/sign/{token}', [FlowMeterInspectionReportController::class, 'customerSign']);
+    Route::get('/flow-meter-inspection-reports/download/{token}', [FlowMeterInspectionReportController::class, 'customerDownload'])->name('flow-meter-inspection-reports.customer-download');
+    Route::post('/flow-meter-inspection-reports/email-download-request/{token}', [FlowMeterInspectionReportController::class, 'customerEmailDownloadRequest'])->name('flow-meter-inspection-reports.customer-email-download-request');
 
     Route::get('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerShowSignatureRequest'])->name('inspection-reports.customer-sign');
     Route::post('/inspection-reports/sign/{token}', [InspectionReportController::class, 'customerSign']);
@@ -133,6 +139,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
+
+    Route::resource('flow-meter-inspection-reports', FlowMeterInspectionReportController::class);
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/download', [FlowMeterInspectionReportController::class, 'download'])->name('flow-meter-inspection-reports.download');
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email', [FlowMeterInspectionReportController::class, 'showEmail'])->name('flow-meter-inspection-reports.email');
+    Route::post('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email', [FlowMeterInspectionReportController::class, 'email']);
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/sign', [FlowMeterInspectionReportController::class, 'showSignatureRequest'])->name('flow-meter-inspection-reports.sign');
+    Route::post('/flow-meter-inspection-reports/{flow_meter_inspection_report}/sign', [FlowMeterInspectionReportController::class, 'sign']);
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email-download-request', [FlowMeterInspectionReportController::class, 'showEmailDownloadRequest'])->name('flow-meter-inspection-reports.email-download-request');
+    Route::post('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email-download-request', [FlowMeterInspectionReportController::class, 'emailDownloadRequest']);
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email-signature-request', [FlowMeterInspectionReportController::class, 'showEmailSignatureRequest'])->name('flow-meter-inspection-reports.email-signature-request');
+    Route::post('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email-signature-request', [FlowMeterInspectionReportController::class, 'emailSignatureRequest']);
+    Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/finish', [FlowMeterInspectionReportController::class, 'finish'])->name('flow-meter-inspection-reports.finish');
 
     Route::resource('inspection-reports', InspectionReportController::class);
     Route::get('/inspection-reports/{inspection_report}/download', [InspectionReportController::class, 'download'])->name('inspection-reports.download');

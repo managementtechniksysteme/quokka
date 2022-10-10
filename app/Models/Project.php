@@ -102,6 +102,11 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->hasMany(InspectionReport::class);
     }
 
+    public function flowMeterInspectionReports()
+    {
+        return $this->hasMany(FlowMeterInspectionReport::class);
+    }
+
     public function constructionReports()
     {
         return $this->hasMany(ConstructionReport::class);

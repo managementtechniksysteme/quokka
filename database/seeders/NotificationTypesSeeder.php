@@ -13,6 +13,8 @@ use App\Notifications\CommentMentionNotification;
 use App\Notifications\ConstructionReportInvolvedNotification;
 use App\Notifications\ConstructionReportMentionNotification;
 use App\Notifications\ConstructionReportSignedNotification;
+use App\Notifications\FlowMeterInspectionReportMentionNotification;
+use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Notifications\HolidayAllowanceAdjustmentNotification;
 use App\Notifications\InspectionReportMentionNotification;
 use App\Notifications\InspectionReportSignedNotification;
@@ -38,6 +40,8 @@ class NotificationTypesSeeder extends Seeder
             ConstructionReportInvolvedNotification::class,
             ConstructionReportMentionNotification::class,
             ConstructionReportSignedNotification::class,
+            FlowMeterInspectionReportMentionNotification::class,
+            FlowMeterInspectionReportSignedNotification::class,
             HolidayAllowanceAdjustmentNotification::class,
             InspectionReportMentionNotification::class,
             InspectionReportSignedNotification::class,
@@ -57,7 +61,7 @@ class NotificationTypesSeeder extends Seeder
             if ($notificationType->wasRecentlyCreated) {
                 User::each(function ($user) use ($notificationType) {
                     $user->notificationsViaEmail()->attach($notificationType, ['notification_target_type' => 'email']);
-                    $user->notificationsViaEmail()->attach($notificationType, ['notification_target_type' => 'webpush']);
+                    $user->notificationsViaWebPush()->attach($notificationType, ['notification_target_type' => 'webpush']);
                 });
             }
         }

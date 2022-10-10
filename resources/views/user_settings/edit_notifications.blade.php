@@ -594,6 +594,78 @@
                         <tr>
                             <td class="text-muted" colspan="3">
                                 <svg class="icon-bs icon-baseline mr-2">
+                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                                </svg>
+                                Prüfberichte für Durchflussmesseinrichtungen
+                            </td>
+                        </tr>
+
+                        <tr class="hover-highlight">
+                            <td>
+                                In einem Prüfbericht erwähnt
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]"
+                                           id="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}"
+                                           @if(old("email[{$notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class], $emailNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]"
+                                           id="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}"
+                                           @if(old("webpush[{$notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class], $webPushNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportMentionNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover-highlight">
+                            <td>
+                                Bei Unterschrift eines Prüfberichtes
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]"
+                                           id="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}"
+                                           @if(old("email[{$notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class], $emailNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="email[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]"
+                                           id="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}"
+                                           @if(old("webpush[{$notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class], $webPushNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="webpush[{{ $notifications[\App\Notifications\FlowMeterInspectionReportSignedNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-muted" colspan="3">
+                                <svg class="icon-bs icon-baseline mr-2">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                 </svg>
                                 Regieberichte

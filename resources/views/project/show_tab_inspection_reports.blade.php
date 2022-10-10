@@ -1,7 +1,7 @@
 @extends('project.show')
 
 @section('tab')
-    @unless ($project->additionsReports->isEmpty() && !Request::get('search'))
+    @unless ($project->inspectionReports->isEmpty() && !Request::get('search'))
         @can('create', \App\Models\InspectionReport::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('inspection-reports.create', ['project' => $project->id]) }}">
                 <svg class="icon icon-16 mr-2">

@@ -1,7 +1,7 @@
 @component('mail::message')
 Hallo,
 
-der Prüfbericht Prüfbericht Anlage {{ $inspectionReport->equipment_identifier }}
+der Prüfbericht Anlage {{ $inspectionReport->equipment_identifier }}
 (Kunde {{ $inspectionReport->project->company->name }}) vom {{ $inspectionReport->inspected_on }} wurde unterschrieben.
 
 **Durchgeführte Arbeiten und Bemerkungen**<br />

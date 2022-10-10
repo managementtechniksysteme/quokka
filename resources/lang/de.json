@@ -80,5 +80,19 @@
   "rainy": "regnerisch",
   "snowy": "Schnee",
   "percent": "%",
-  "W_m2": "W/m²"
+  "W_m2": "W/m²",
+  "doppler_ultrasonic": "Doppler Ultraschall Messung",
+  "ultrasonic_signal_transmit_time": "Ultraschall Laufzeitmessung, Signallaufzeit",
+  "ultrasonic_cross_correlation": "Ultraschall Kreuzkorrelation",
+  "radar": "Radar",
+  "m_s": "m/s",
+  "l_s": "l/s",
+  "m3_h": "m³/h",
+  "guess": "Werte aus Abschätzung",
+  "statistical_analysis": "Werte aus statischer Auswertung der Betriebsprotokolle",
+  "local": "Vor Ort",
+  "control_stand": "Warte",
+  "display": "Anzeige Messwertumformer",
+  "registering_device": "Registriergerät",
+  "pcs": "Prozessleitsystem"
 }

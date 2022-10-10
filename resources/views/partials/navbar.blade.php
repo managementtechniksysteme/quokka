@@ -140,6 +140,14 @@
                                             Prüfberichte
                                         </a>
                                     @endcan
+                                    @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.index') }}">
+                                            <svg class="icon-bs icon-16 mr-1">
+                                                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+                                            </svg>
+                                            Prüfberichte für Durchflussmesseinrichtungen
+                                        </a>
+                                    @endcan
                                     @can('viewAny', \App\Models\ConstructionReport::class)
                                         <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('construction-reports.index') }}">
                                             <svg class="icon-bs icon-16 mr-1">

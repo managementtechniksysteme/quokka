@@ -50,6 +50,8 @@ class InspectionReportStoreRequest extends FormRequest
             'water_minimum_uv_transmission' => 'required|numeric|min:0|max:100',
             'water_measured_uv_transmission' => 'required|numeric|min:0|max:100',
             'comment' => 'required',
+            'new_attachments' => 'array|nullable',
+            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
     }
 }

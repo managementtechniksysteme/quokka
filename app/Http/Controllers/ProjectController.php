@@ -11,6 +11,7 @@ use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\ConstructionReport;
+use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\InterimInvoice;
 use App\Models\Memo;
@@ -130,6 +131,7 @@ class ProjectController extends Controller
             ->loadCount('serviceReports')
             ->loadCount('additionsReports')
             ->loadCount('inspectionReports')
+            ->loadCount('flowMeterInspectionReports')
             ->loadCount('constructionReports');
 
         switch ($request->tab) {
@@ -238,6 +240,23 @@ class ProjectController extends Controller
                     ->appends($request->except('page'));
 
                 return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('inspectionReports'));
+
+            case 'flow_meter_inspection_reports':
+                if(Auth::user()->cannot('viewAny', FlowMeterInspectionReport::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
+                FlowMeterInspectionReport::handleDefaultFilter($request);
+
+                $flowMeterInspectionReports = $project->flowMeterInspectionReports()
+                    ->filterPermissions()
+                    ->filterSearch($request->search)
+                    ->order($request->sort)
+                    ->with('employee.person')
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('flowMeterInspectionReports'));
 
             case 'construction_reports':
                 if(Auth::user()->cannot('viewAny', ConstructionReport::class)) {

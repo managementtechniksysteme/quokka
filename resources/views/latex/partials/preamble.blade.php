@@ -20,6 +20,8 @@
 \usepackage{longtable}
 \usepackage{multirow}
 \usepackage{parskip}
+\usepackage{pdflscape}
+\usepackage{pdfpages}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}

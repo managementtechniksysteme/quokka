@@ -430,7 +430,7 @@ class InspectionReportController extends Controller
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.inspection_report', ['inspectionReport' => $inspectionReport])
-            ->download('PB '.$inspectionReport->project->name.' #'.$inspectionReport->number.'.pdf');
+            ->download('PB '.$inspectionReport->project->name.' - '.$inspectionReport->equipment_identifier.'.pdf');
     }
 
     private function addSignature(InspectionReport $inspectionReport, string $signature)

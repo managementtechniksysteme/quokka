@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AdditionsReportSignedEvent;
 use App\Events\ConstructionReportSignedEvent;
+use App\Events\FlowMeterInspectionReportSignedEvent;
 use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
 use App\Listeners\LogSentMessageListener;
@@ -15,6 +16,7 @@ use App\Listeners\SendCommentMentionNotification;
 use App\Listeners\SendConstructionReportInvolvedNotification;
 use App\Listeners\SendConstructionReportMentionNotification;
 use App\Listeners\SendConstructionReportSignedNotification;
+use App\Listeners\SendFlowMeterInspectionReportMentionNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
 use App\Listeners\SendInspectionReportMentionNotification;
 use App\Listeners\SendInspectionReportSignedNotification;
@@ -25,6 +27,7 @@ use App\Listeners\SendServiceReportSignedNotification;
 use App\Listeners\SendTaskInvolvedNotification;
 use App\Listeners\SendTaskMentionNotification;
 use App\Models\Accounting;
+use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Observers\AccountingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -53,6 +56,10 @@ class EventServiceProvider extends ServiceProvider
 
         ConstructionReportSignedEvent::class => [
             SendConstructionReportSignedNotification::class,
+        ],
+
+        FlowMeterInspectionReportSignedEvent::class => [
+            FlowMeterInspectionReportSignedNotification::class,
         ],
 
         InspectionReportSignedEvent::class => [
@@ -85,6 +92,7 @@ class EventServiceProvider extends ServiceProvider
         SendCommentMentionNotification::class,
         SendConstructionReportInvolvedNotification::class,
         SendConstructionReportMentionNotification::class,
+        SendFlowMeterInspectionReportMentionNotification::class,
         SendHolidayAllowanceAdjustmentNotification::class,
         SendInspectionReportMentionNotification::class,
         SendMemoInvolvedNotification::class,

@@ -18,6 +18,8 @@ use App\Notifications\CommentMentionNotification;
 use App\Notifications\ConstructionReportInvolvedNotification;
 use App\Notifications\ConstructionReportMentionNotification;
 use App\Notifications\ConstructionReportSignedNotification;
+use App\Notifications\FlowMeterInspectionReportMentionNotification;
+use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Notifications\HolidayAllowanceAdjustmentNotification;
 use App\Notifications\InspectionReportMentionNotification;
 use App\Notifications\InspectionReportSignedNotification;
@@ -66,6 +68,12 @@ class NotificationHelper
 
             case ConstructionReportSignedNotification::class:
                 return 'Ein Bautagesbericht wurde unterschrieben';
+
+            case FlowMeterInspectionReportMentionNotification::class:
+                return 'Du wurdst in einem Prüfbericht für Durchflussmesseinrichtungen erwähnt';
+
+            case FlowMeterInspectionReportSignedNotification::class:
+                return 'Ein Prüfbericht für Durchflussmesseinrichtungen wurde unterschrieben';
 
             case HolidayAllowanceAdjustmentNotification::class:
                return $notification->data['manualAdjustment'] ? "Urlaubsanpassung" : "Automatische Urlaubsanpassung";
@@ -195,6 +203,26 @@ class NotificationHelper
 
                 return 'Der Bautagesbericht Projekt '.$constructionReport->project->name.' #'.$constructionReport->number.' wurde unterschrieben.';
 
+            case FlowMeterInspectionReportMentionNotification::class:
+                $flowMeterInspectionReport = FlowMeterInspectionReport::with('project')
+                    ->find($notification->data['id']);
+
+                if(!$flowMeterInspectionReport) {
+                    return 'Der Prüfbericht für Durchflussmesseinrichtungen existiert nicht mehr.';
+                }
+
+                return 'Du wurdst im Prüfbericht der Anlage '.$flowMeterInspectionReport->equipment_identifier.' (Kunde: '.$flowMeterInspectionReport->project->company->name.') erwähnt';
+
+            case FlowMeterInspectionReportSignedNotification::class:
+                $flowMeterInspectionReport = FlowMeterInspectionReport::with('project')
+                    ->find($notification->data['id']);
+
+                if(!$flowMeterInspectionReport) {
+                    return 'Der Prüfbericht für Durchflussmesseinrichtungen existiert nicht mehr.';
+                }
+
+                return 'Der Prüfbericht der Anlage '.$flowMeterInspectionReport->equipment_identifier.' (Kunde: '.$flowMeterInspectionReport->project->company->name.') wurde unterschrieben.';
+
             case HolidayAllowanceAdjustmentNotification::class:
                 return 'Dein verfügbarer Urlaub wurde um ' .
                 $notification->data['holidayAllowanceDifference'] . ' ' . $notification->data['holidayServiceUnit'] . ' ' . $notification->data['directionString'] . '.' .
@@ -208,7 +236,7 @@ class NotificationHelper
                     return 'Der Prüfbericht existiert nicht mehr.';
                 }
 
-                return 'Du wurdst im Prüfbericht Projekt '.$inspectionReport->project->name.' #'.$inspectionReport->number.' erwähnt';
+                return 'Du wurdst im Prüfbericht der Anlage '.$inspectionReport->equipment_identifier.' (Kunde: '.$inspectionReport->project->company->name.') erwähnt';
 
             case InspectionReportSignedNotification::class:
                 $inspectionReport = InspectionReport::with('project')
@@ -218,7 +246,7 @@ class NotificationHelper
                     return 'Der Prüfbericht existiert nicht mehr.';
                 }
 
-                return 'Der Prüfbericht Projekt '.$inspectionReport->project->name.' #'.$inspectionReport->number.' wurde unterschrieben.';
+                return 'Der Prüfbericht der Anlage '.$inspectionReport->equipment_identifier.' (Kunde: '.$inspectionReport->project->company->name.') wurde unterschrieben.';
 
             case MemoInvolvedNotification::class:
                 $memo = Memo::with('project')

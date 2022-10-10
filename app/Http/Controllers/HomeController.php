@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdditionsReport;
 use App\Models\ConstructionReport;
+use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\ServiceReport;
 use Illuminate\Http\Request;
@@ -56,6 +57,9 @@ class HomeController extends Controller
             ->with('employeeMtdNewConstructionReports', Auth::user()->employee->mtd_new_construction_reports)
             ->with('employeeNewConstructionReportsInvolvedIn', Auth::user()->employee->new_construction_reports_involved_in)
             ->with('newConstructionReports', ConstructionReport::newConstructionReports())
+            ->with('employeeNewFlowMeterInspectionReports', Auth::user()->employee->new_flow_meter_inspection_reports)
+            ->with('employeeMtdNewFlowMeterInspectionReports', Auth::user()->employee->mtd_new_flow_meter_inspection_reports)
+            ->with('newFlowMeterInspectionReports', FlowMeterInspectionReport::newFlowMeterInspectionReports())
             ->with('signedServiceReports', ServiceReport::signedServiceReports())
             ->with('mtdSignedServiceReports', ServiceReport::mtdSignedServiceReports())
             ->with('signedAdditionsReports', AdditionsReport::signedAdditionsReports())
@@ -63,6 +67,8 @@ class HomeController extends Controller
             ->with('signedInspectionReports', InspectionReport::signedInspectionReports())
             ->with('mtdSignedInspectionReports', InspectionReport::mtdSignedInspectionReports())
             ->with('signedConstructionReports', ConstructionReport::signedConstructionReports())
-            ->with('mtdSignedConstructionReports', ConstructionReport::mtdSignedConstructionReports());
+            ->with('mtdSignedConstructionReports', ConstructionReport::mtdSignedConstructionReports())
+            ->with('signedFlowMeterInspectionReports', FlowMeterInspectionReport::signedFlowMeterInspectionReports())
+            ->with('mtdSignedFlowMeterInspectionReports', FlowMeterInspectionReport::mtdSignedFlowMeterInspectionReports());
     }
 }

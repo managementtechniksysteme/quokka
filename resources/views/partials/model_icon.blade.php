@@ -24,6 +24,11 @@
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
         </svg>
         @break
+    @case(\App\Models\FlowMeterInspectionReport::class)
+        <svg class="icon-bs icon-baseline mr-1">
+            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
+        </svg>
+        @break
     @case(\App\Models\InspectionReport::class)
         <svg class="icon-bs icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>

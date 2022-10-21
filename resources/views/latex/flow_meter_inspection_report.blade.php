@@ -19,7 +19,7 @@
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Name:}} & \footnotesize{{!! Latex::escape($company->name) !!}} \\
-\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($company->address->first()->address_line) !!}} \\
+\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($company->address->first()->street_number) !!}} \\
 \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($company->address->first()->postcode) !!} {!! Latex::escape($company->address->first()->city) !!}} \\
 \footnotesize{\textbf{Telefon:}} & \footnotesize{{!! Latex::escape($company->phone) !!}} \\
 \footnotesize{\textbf{Email:}} & \footnotesize{{!! Latex::escape($company->email) !!}} \\
@@ -39,7 +39,7 @@
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Name:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->name) !!}} \\
-\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->address_line) !!}} \\
+\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->street_number) !!}} \\
 \footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->postcode) !!} {!! Latex::escape($company->address->first()->city) !!}} \\
 \footnotesize{\textbf{Telefon:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->phone ?? '') !!}} \\
 \footnotesize{\textbf{Email:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->email ?? '') !!}} \\
@@ -49,12 +49,12 @@
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Anlage:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->equipment_identifier) !!}} \\
-\footnotesize{\textbf{Kläranlage:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->address_line) !!}} \\
-\footnotesize{\textbf{Kanalanlage:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->postcode) !!} {!! Latex::escape($company->address->first()->city) !!}} \\
-\footnotesize{\textbf{Indirekteinleiter:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->phone ?? '') !!}} \\
-\footnotesize{\textbf{Bezeichnung der Messstelle:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->email ?? '') !!}} \\
+\footnotesize{\textbf{Bereich 1:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->area_1 ?? '') !!}} \\
+\footnotesize{\textbf{Bereich 2:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->area_2 ?? '') !!} \\
+\footnotesize{\textbf{Bereich 3:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->area_3 ?? '') !!}} \\
+\footnotesize{\textbf{Bezeichnung der Messstelle:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_point) !!}} \\
 \footnotesize{\textbf{Datum der Überprüfung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->inspected_on) !!}} \\
-\footnotesize{\textbf{Ausbaugröße (Bemessungswert) der Kläranlage:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->treatment_plant_size ?? '') !!} {!! $flowMeterInspectionReport->treatment_plant_size ? 'EW\textsubscript{60}' : '' !!}} \\
+\footnotesize{\textbf{Ausbaugröße (Bemessungswert):}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->treatment_plant_size ?? '') !!} {!! $flowMeterInspectionReport->treatment_plant_size ? 'EW\textsubscript{60}' : '' !!}} \\
 \end{tabular}
 
 \section{Angaben zur stationären Messeinrichtung}
@@ -68,21 +68,23 @@
 \footnotesize{\textbf{Jahr der Inbetriebnahme:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->commissioning_year ?? '') !!}} \\
 \footnotesize{\textbf{Zuständiger Mitarbeiter des Betriebspersonals für die Messeinrichtung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->responsible_person) !!}} \\
 \footnotesize{\textbf{eingeschult am:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->responsible_person_instructed_on) !!}} \\
-\footnotesize{\textbf{eingeschult durch:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->instructor ?? '') !!}} \\
-\footnotesize{\textbf{Auskunft gebende Betriebsangehörige:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->information_providing_person ?? '') !!}} \\
-\footnotesize{\textbf{Wetter:}} & \footnotesize{{!! Latex::escape(trans($flowMeterInspectionReport->weather)) !!} ({!! Latex::escape(trans($flowMeterInspectionReport->weather)) !!}\textdegree{}C)} \\
+\footnotesize{\textbf{eingeschult durch:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->instructor) !!}} \\
+\footnotesize{\textbf{Auskunft gebende Mitarbeiter:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->information_providing_people ?? '') !!}} \\
+\footnotesize{\textbf{Wetter:}} & \footnotesize{{!! Latex::escape(trans($flowMeterInspectionReport->weather)) !!} ({!! Latex::escape(trans($flowMeterInspectionReport->temperature)) !!}\textdegree{}C)} \\
 \footnotesize{\textbf{Datum der letzten Vollprüfung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->last_inspected_on ?? '') !!}} \\
 \footnotesize{\textbf{durchgeführt von (Prüfstelle):}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->last_inspected_by ?? '') !!}} \\
-\footnotesize{\textbf{Projektnummer:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->last_inspection_project ?? '') !!} {!! Latex::escape($flowMeterInspectionReport->last_inspection_project && $flowMeterInspectionReport->last_inspection_project_date ? $flowMeterInspectionReport->last_inspection_project_date : '') !!}} \\
+\footnotesize{\textbf{Projektnummer/Prüfnummer:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->last_inspection_project ?? '') !!}} \\
 \end{tabular}
 
 \subsection{Beschreibung der stationären Messeinrichtung}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Profilmaße:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_measurements) !!}} \\
+\footnotesize{\textbf{Auśendurchmesser des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_outer_diameter) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Wandstärke des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_thickness) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Material des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_material) !!}} \\
 \footnotesize{\textbf{Ohne/mit Querschnittsverengung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->without_cross_section_reduction_string) !!}} \\
 \footnotesize{\textbf{vollgefüllt/teilgefüllt:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->fully_filled_string) !!}} \\
-\footnotesize{\textbf{Geschwindigkeitsmessung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->speed_measurement_type === 'other' ? $flowMeterInspectionReport->speed_measurement_type_other : trans($flowMeterInspectionReport->speed_measurement_type)) !!}} \\
+\footnotesize{\textbf{Messart:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->speed_measurement_type === 'other' ? $flowMeterInspectionReport->speed_measurement_type_other : trans($flowMeterInspectionReport->speed_measurement_type)) !!}} \\
 \footnotesize{\textbf{Art der Wasserstandsmessung (bei teilgefüllten Messstrecken):}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->water_level_measurement_type ?? '') !!}} \\
 \end{tabular}
 
@@ -92,12 +94,12 @@
 \footnotesize{\textbf{Veränderungen am Messsystem:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->equipment_changes ?? '') !!}} \\
 \footnotesize{\textbf{Ist eine Dokumentation über Messstelle, Mess- und Auswertegeräte vorhanden?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->documentation_existent_string) !!}} \\
 \footnotesize{\textbf{Ist ein Prüfbuch vorhanden?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->inspection_book_existent_string) !!}} \\
-\footnotesize{\textbf{Ist eine Wartumgsvorschrift vorhanden?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->inspection_requirements_existent_string) !!}} \\
+\footnotesize{\textbf{Ist eine Wartungsvorschrift vorhanden?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->inspection_requirements_existent_string) !!}} \\
 \footnotesize{\textbf{Stimmen die Einbaubedingungen mit der Dokumentation überein?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->documentation_current_string) !!}} \\
 \footnotesize{\textbf{Beschreibung der vorgenommenen Änderungen gegenüber der Dokumentation:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->equipment_changes_to_documentation ?? '') !!}} \\
-\footnotesize{\textbf{Fabrikat des Messrohrs:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_type) !!}} \\
-\footnotesize{\textbf{Mindesgeschwindigkeit des Messrohrs:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_minimum_speed) !!}{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_minimum_speed_unit_string) !!}} \\
-\footnotesize{\textbf{Messbereich des Messrohrs laut Herstellerangabe 100\%:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_maximum_flow_rate) !!}{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_maximum_flow_rate_unit_string) !!} bei {!! Latex::escape($flowMeterInspectionReport->measuring_pipe_maximum_speed) !!}{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_maximum_speed_unit_string) !!}} \\
+\footnotesize{\textbf{Fabrikat des Messrohrs:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_type ?? '') !!}} \\
+\footnotesize{\textbf{Mindestgeschwindigkeit des Messrohrs:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_minimum_speed ? $flowMeterInspectionReport->measuring_pipe_minimum_speed . '' . $flowMeterInspectionReport->measuring_pipe_minimum_speed_unit_string : '' ) !!}} \\
+\footnotesize{\textbf{Messbereich des Messrohrs laut Herstellerangabe 100\%:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measuring_pipe_maximum_flow_rate ? $flowMeterInspectionReport->measuring_pipe_maximum_flow_rate . '' . $flowMeterInspectionReport->measuring_pipe_maximum_flow_rate_unit_string . ' bei ' . $flowMeterInspectionReport->measuring_pipe_maximum_speed . '' . $flowMeterInspectionReport->measuring_pipe_maximum_speed_unit_string) !!}} \\
 \footnotesize{\textbf{Einstellung der Schleimmengenunderdrückung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->mucus_suppression ?? '') !!}{!! Latex::escape($flowMeterInspectionReport->mucus_suppression ? trans($flowMeterInspectionReport->mucus_suppression_unit) : '') !!}} \\
 \footnotesize{\textbf{Tatsächlicher im Betrieb beobachteter Durchflussbereich (laut Betriebsprotokollen seit der letzten Überprüfung):}} & \footnotesize{Q\textsubscript{min}(5\% Wert): {!! Latex::escape($flowMeterInspectionReport->q_min ?? '') !!}{!! Latex::escape('l/s') !!}, Q\textsubscript{max}(95\% Wert): {!! Latex::escape($flowMeterInspectionReport->q_max ?? '') !!}{!! Latex::escape('l/s') !!}} \\
 \footnotesize{\textbf{Ermittlung der Werte:}} & \footnotesize{{!! Latex::escape(trans($flowMeterInspectionReport->flow_range_type)) !!}} \\
@@ -127,25 +129,16 @@
 \footnotesize{\textbf{Fabrikat:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_make) !!}} \\
 \footnotesize{\textbf{Type:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_type) !!}} \\
 \footnotesize{\textbf{Seriennummer:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_identifier) !!}} \\
-\footnotesize{\textbf{Signalausgang:}} & \footnotesize{von {!! Latex::escape($flowMeterInspectionReport->measurement_transformer_minimum_level) !!} bis {!! Latex::escape($flowMeterInspectionReport->measurement_transformer_maximum_level) !!} {!! Latex::escape($flowMeterInspectionReport->measurement_transformer_level_unit === 'other' ? $flowMeterInspectionReport->measurement_transformer_level_unit_other : $flowMeterInspectionReport->measurement_transformer_level_unit_string) !!}} \\
+\footnotesize{\textbf{Signalausgang:}} & \footnotesize{von {!! Latex::escape($flowMeterInspectionReport->measurement_transformer_level_unit === 'interface' ? trans($flowMeterInspectionReport->measurement_transformer_level_unit) : 'von ' . $flowMeterInspectionReport->measurement_transformer_minimum_level . ' bis ' . $flowMeterInspectionReport->measurement_transformer_maximum_level . '' . $flowMeterInspectionReport->measurement_transformer_level_unit_string) !!}} \\
 \footnotesize{\textbf{Programmierbarer Messbereich 100\%:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_range_100_percent) !!} {!! Latex::escape('l/s') !!}} \\
 \footnotesize{\textbf{Impulsausgang:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_impulses) !!} {!! Latex::escape('Impulse/m³') !!}} \\
+\footnotesize{\textbf{Die Aufzeichnung der Durchflusssummen und Momentanwerte, die für die Betriebsprotokolle verwendet wird, erfolg durch:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_data_logging) !!}} \\
 \end{tabular}
-
-\subsection{Datenaufzeichnung}
-
-\begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Die Aufzeichnung der Durchflusssummen und Momentanwerte, die für die Betriebsprotokolle verwendet wird, erfolg durch:}} & \footnotesize{{!! Latex::escape(trans($flowMeterInspectionReport->measurement_transformer_data_logging)) !!}} \\
-\footnotesize{\textbf{Registriergerät Fabrikat:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_registering_device_make ?? '') !!}} \\
-\footnotesize{\textbf{Registriergerät Type:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_registering_device_type ?? '') !!}} \\
-\footnotesize{\textbf{Registriergerät Seriennummer:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_transformer_registering_device_identifier ?? '') !!}} \\
-\end{tabular}
-
 
 \subsection{Bestandsaufnahme Oberwasserseite}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Rohrdurchmesser:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->headwater_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Rohrdurchmesser innen:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->headwater_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Länge der einlaufseitigen Beruhigungsstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->headwater_calming_section) !!}} \\
 \footnotesize{\textbf{Beurteilung der Beruhigungsstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->headwater_calming_section_assessment) !!}} \\
 \end{tabular}
@@ -162,7 +155,7 @@
 \subsection{Beurteilung der Messstrecke (im eingebauten Zustand)}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Querschnitt des Messrohrs:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Querschnitt des Messrohrs innen:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Ist die Zugänglichkeit gegeben?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_access_possible_string) !!}} \\
 \footnotesize{\textbf{Ist im Messrohr bei den Durchflüssen der Vergleichsmessung die geforderte Fließtiefe (Füllhöhe) vorhanden?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_pipe_required_fill_level_existent_string) !!}} \\
 \footnotesize{\textbf{Ist das Messrohr innen einer optischen Kontrolle zugänglich?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_pipe_visible_inspection_inside_possible_string) !!}} \\
@@ -180,7 +173,7 @@
 \subsection{Bestandsaufnahme Unterwasserseite}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Rohrdurchmesser:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Rohrdurchmesser innen:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Vollfüllung?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_pipe_fully_filled_string) !!}} \\
 \footnotesize{\textbf{Gefälle der Auslaufstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_runout_section_slope ? $flowMeterInspectionReport->tailwater_runout_section_slope_assessment_type.'\textperthousand' : '') !!}} \\
 \footnotesize{\textbf{Vermessung durchgeführt mittels:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_runout_section_slope_assessment_type ?? '') !!}} \\
@@ -199,9 +192,9 @@
 \subsection{Kontrolle der Messwert-Anzeige bei Null-Durchfluss}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Wie wird der Null-Durchfluss geprüft?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_testing_conditions) !!}} \\
-\footnotesize{\textbf{Wo wird der Null-Durchfluss abgelesen?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_reading_points) !!}} \\
-\footnotesize{\textbf{(Angezeigter Durchfluss bei Null-Durchfluss:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_displayed_flow) !!} {!! Latex::escape('l/s') !!}} \\
+\footnotesize{\textbf{Wie wird der Null-Durchfluss geprüft?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_testing_conditions ?? '') !!}} \\
+\footnotesize{\textbf{Wo wird der Null-Durchfluss abgelesen?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_reading_points ?? '') !!}} \\
+\footnotesize{\textbf{Angezeigter Durchfluss bei Null-Durchfluss:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->zero_flow_rate_displayed_flow ?? '') !!} {!! Latex::escape('l/s') !!}} \\
 \end{tabular}
 
 
@@ -245,11 +238,13 @@
 \hline
 \multicolumn{1}{|c|}{\scriptsize{(1)}} & \multicolumn{1}{c|}{\scriptsize{(2)}} & \multicolumn{1}{c|}{\scriptsize{(3)}} & \multicolumn{1}{c|}{\scriptsize{(4)}} & \multicolumn{1}{c|}{\scriptsize{(5)}} & \multicolumn{1}{c|}{\scriptsize{(6)}} & \multicolumn{1}{c|}{\scriptsize{(7)}} & \multicolumn{1}{c|}{\scriptsize{(8)}} & \multicolumn{1}{c|}{\scriptsize{(9)}} & \multicolumn{1}{c|}{\scriptsize{(10)}} & \multicolumn{1}{c|}{\scriptsize{(11)}} &  \multicolumn{1}{c|}{\scriptsize{(12)}} & \multicolumn{1}{c|}{\scriptsize{(13)}} & \multicolumn{1}{c|}{\scriptsize{(14)}} & \multicolumn{1}{c|}{\scriptsize{(15)}} & \multicolumn{1}{c|}{\scriptsize{(16)}} \\
 \hline
-\multicolumn{2}{|c|}{\scriptsize{\shortstack{Messbereich des \\ stationären Systems}}} & \multicolumn{1}{c|}{\scriptsize{Uhrzeit}} & \multicolumn{1}{c|}{\scriptsize{Dauer\textsuperscript{**}}} & \multicolumn{1}{c|}{\scriptsize{Uhrzeit}} & \multicolumn{3}{c|}{\scriptsize{\shortstack{Messwertumformer @if($flowMeterInspectionReport->comparison_measurement_measurement_transformer_checked)\\{!! Latex::escape('Zähler überprüft') !!}@endif}}} & \multicolumn{3}{c|}{\scriptsize{\shortstack{Prozessleitsystem @if($flowMeterInspectionReport->comparison_measurement_pcs_checked)\\{!! Latex::escape('Zähler überprüft') !!}@endif}}} & \multicolumn{3}{c|}{\scriptsize{Vergleichsmessung}} & \multicolumn{1}{c|}{\scriptsize{\shortstack{Abweichung\\Vergleichsmessung/\\stationär}}} & \multicolumn{1}{c|}{\scriptsize{\shortstack{errechneter\\Mittelwert\\mobil}}} \\
+\multicolumn{2}{|c|}{\scriptsize{\shortstack{Messbereich des \\ stationären Systems}}} & \multicolumn{1}{c|}{\scriptsize{Uhrzeit}} & \multicolumn{1}{c|}{\scriptsize{Dauer\textsuperscript{**}}} & \multicolumn{1}{c|}{\scriptsize{Uhrzeit}} & \multicolumn{3}{c|}{\scriptsize{Messwertumformer}} & \multicolumn{3}{c|}{\scriptsize{Prozessleitsystem}} & \multicolumn{3}{c|}{\scriptsize{Vergleichsmessung}} & \multicolumn{1}{c|}{\scriptsize{\shortstack{Abweichung\\Vergleichsmessung/\\stationär}}} & \multicolumn{1}{c|}{\scriptsize{\shortstack{errechneter\\Mittelwert\\mobil}}} \\
 \hline
 \multicolumn{1}{|c|}{\scriptsize{\% Q}} & \multicolumn{1}{c|}{\scriptsize{l/s}} & \multicolumn{1}{c|}{\scriptsize{Start}} & \multicolumn{1}{c|}{\scriptsize{Minuten}} & \multicolumn{1}{c|}{\scriptsize{Ende}} & \multicolumn{2}{c|}{\scriptsize{Zählerstand m\textsuperscript{3}}} & \multicolumn{1}{c|}{\scriptsize{Summe}} & \multicolumn{2}{c|}{\scriptsize{Zählerstand m\textsuperscript{3}}} & \multicolumn{1}{c|}{\scriptsize{Summe}} &  \multicolumn{2}{c|}{\scriptsize{m\textsuperscript{3}}} & \multicolumn{1}{c|}{\scriptsize{Summe}} & \multicolumn{1}{c|}{\scriptsize{\%}} & \multicolumn{1}{c|}{\scriptsize{l/s}} \\
 \hline
 \multicolumn{1}{|c|}{\scriptsize{}} & \multicolumn{1}{c|}{\scriptsize{}} & \multicolumn{1}{c|}{\scriptsize{}} & \multicolumn{1}{c|}{\scriptsize{= (5)-(3)}} & \multicolumn{1}{c|}{\scriptsize{}} & \multicolumn{1}{c|}{\scriptsize{Start}} & \multicolumn{1}{c|}{\scriptsize{Ende}} & \multicolumn{1}{c|}{\scriptsize{= (7)-(6)}} & \multicolumn{1}{c|}{\scriptsize{Start}} & \multicolumn{1}{c|}{\scriptsize{Ende}} & \multicolumn{1}{c|}{\scriptsize{= (10)-(9)}} &  \multicolumn{1}{c|}{\scriptsize{Start}} & \multicolumn{1}{c|}{\scriptsize{Ende}} & \multicolumn{1}{c|}{\scriptsize{= (13)-(12)}} & \multicolumn{1}{c|}{\scriptsize{= [(11)-(14)]/(14)}} & \multicolumn{1}{c|}{\scriptsize{vgl. (2)}} \\
+\hline
+\multicolumn{1}{|c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional(optional($flowMeterInspectionReport->measurementsQ100)->started_at)->format('d.m.y') ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional(optional($flowMeterInspectionReport->measurementsQ100)->ended_at)->format("d.m.y") ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} &  \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} & \multicolumn{1}{c|}{\scriptsize{()}} \\
 \hline
 \multicolumn{1}{|c|}{\scriptsize{Gesamt}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->q_value ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional(optional($flowMeterInspectionReport->measurementsQ100)->started_at)->format("H:i") ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape($flowMeterInspectionReport->measurementsQ100 && $flowMeterInspectionReport->measurementsQ100->started_at && $flowMeterInspectionReport->measurementsQ100->ended_at ? $flowMeterInspectionReport->measurementsQ100->ended_at->diff($flowMeterInspectionReport->measurementsQ100->started_at)->format("%H:%I") : '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional(optional($flowMeterInspectionReport->measurementsQ100)->ended_at)->format("H:i") ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->measurement_transformer_reading_start ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->measurement_transformer_reading_end ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->measurement_transformer_reading_sum ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->pcs_reading_start ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->pcs_reading_end ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->pcs_reading_sum ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->comparison_measurement_start ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->comparison_measurement_end ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->comparison_measurement_sum ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->measurement_difference ?? '') !!}}} & \multicolumn{1}{c|}{\scriptsize{{!! Latex::escape(optional($flowMeterInspectionReport->measurementsQ100)->q_value_average_mobile ?? '') !!}}} \\
 \hline
@@ -287,7 +282,7 @@
 \section{Zusammenfassende Beurteilung}
 
 \begin{footnotesize}
-Nach Überprüfung der Messstelle wird festgestellt, dass zum Zeitpunkt der Überprüfung die Messwerte der stationären Messumg im Durchflussbereich
+Nach Überprüfung der Messstelle wird festgestellt, dass zum Zeitpunkt der Überprüfung die Messwerte der stationären Messung im Durchflussbereich
 
 von $0,1$ Q\textsubscript{max} bis $0,3$ Q\textsubscript{max} von der Vergleichsmessung um \textbf{{!! Latex::escape($flowMeterInspectionReport->measurement_difference_up_to_30_q_max) !!}{!! Latex::escape('%') !!}} abweichen\\
 über $0,3$ Q\textsubscript{max} von der Vergleichsmessung um \textbf{{!! Latex::escape($flowMeterInspectionReport->measurement_difference_above_30_q_max) !!}{!! Latex::escape('%') !!}} abweichen,
@@ -297,20 +292,22 @@ die Differenz der Zählerstände der stationären Messung im Durchflussbereich
 von $0,1$ Q\textsubscript{max} bis $0,3$ Q\textsubscript{max} vom Ergebnis der Vergleichsmessung um \textbf{{!! Latex::escape($flowMeterInspectionReport->reading_difference_up_to_30_q_max) !!}{!! Latex::escape('%') !!}} abweicht\\
 über $0,3$ Q\textsubscript{max} vom Ergebnis der Vergleichsmessung um \textbf{{!! Latex::escape($flowMeterInspectionReport->reading_difference_above_30_q_max) !!}{!! Latex::escape('%') !!}} abweicht.
 
-\textbf{Das Messsystem arbeitet somit {!! Latex::escape($flowMeterInspectionReport->equipment_in_tolerance_range ? 'innerhalb' : 'außerhalb') !!} des Toleranzbereichs des ÖWAV Regelblatts 38.}
+\textbf{Das Messsystem arbeitet somit {!! Latex::escape($flowMeterInspectionReport->equipment_in_tolerance_range ? 'innerhalb' : 'außerhalb') !!} des maximalen Toleranzbereichs von 10{!! Latex::escape('%') !!} des ÖWAV Regelblatts 38.}
 
-Beim Messsystem wurden folgede Mängel festgstellt: {!! Latex::escape($flowMeterInspectionReport->equipment_deficiencies ?? '') !!}
+Beim Messsystem wurden folgende Mängel festgstellt: {!! Latex::escape($flowMeterInspectionReport->equipment_deficiencies ?? '') !!}
 @if($flowMeterInspectionReport->equipment_deficiencies)
 \\
-Zweitprüfung/Vollprüfung nach Korrektur erforderlich? {!! Latex::escape($flowMeterInspectionReport->further_inspection_required_string ?? '') !!}
+Zweitprüfung/Vollprüfung nach Korrektur erforderlich? {!! Latex::escape($flowMeterInspectionReport->further_inspection_required_string) !!}
 @endif
 
 Die oben stehenden Aussagen beruhen auf eigenen Erhebungen und Vergleichsmessungen.
 
 \end{footnotesize}
 
+@if($flowMeterInspectionReport->comment)
 \section{Sonstige Kommentare}
 \footnotesize{{!! Latex::fromMarkdown($flowMeterInspectionReport->comment) !!}}
+@endif
 
 @if($flowMeterInspectionReport->appendix_description)
 \section{Anhänge}

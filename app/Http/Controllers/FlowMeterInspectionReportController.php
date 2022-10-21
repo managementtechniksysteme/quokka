@@ -21,6 +21,7 @@ use App\Models\FlowMeterInspectionReportMeasurements;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\SignatureRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -101,6 +102,119 @@ class FlowMeterInspectionReportController extends Controller
         }
 
         $projects = Project::order()->get();
+
+        // client side validation satisfied
+        /*$templateFlowMeterInspectionReport = FlowMeterInspectionReport::make([
+            "inspected_on" => "2022-10-21",
+            "equipment_identifier" => "Klaeranlage Musterort",
+            "temperature" => "18",
+            "measuring_point" => "Ablaufmessung",
+            "installation_point" => "Klaeranlage",
+            "medium" => "Abwasser",
+            "responsible_person" => "Max Mustermann",
+            "responsible_person_instructed_on" => "1990-01-01",
+            "instructor" => "Max Mustermann",
+            "profile_outer_diameter" => "600",
+            "profile_thickness" => "3",
+            "profile_material" => "Material",
+            "q_min" => "33",
+            "q_max" => "225",
+            "flow_rate_meter" => "System",
+            "flow_rate_meter_make" => "Fabrikat",
+            "flow_rate_meter_type" => "Type",
+            "flow_rate_meter_identifier" => "Seriennummer",
+            "measurement_transformer_make" => "Fabrikat",
+            "measurement_transformer_type" => "Type",
+            "measurement_transformer_identifier" => "Seriennummer",
+            "measurement_transformer_range_100_percent" => "250",
+            "measurement_transformer_impulses" => "1",
+            "measurement_transformer_data_logging" => "Aufzeichnung",
+            "headwater_pipe_diameter" => "600",
+            "headwater_calming_section" => "5 x Rohrdurchmesser",
+            "headwater_calming_section_assessment" => "ausreichewnd gleichmaessig",
+            "measurement_section_pipe_diameter" => "600",
+            "tailwater_pipe_diameter" => "600",
+            "tailwater_runout_section_assessment" => "ausreichend gleichmaessig",
+            "comparison_measurements_process" => "mobile_measurement_equipment",
+            "measurement_difference_up_to_30_q_max" => "3",
+            "measurement_difference_above_30_q_max" => "2",
+            "reading_difference_up_to_30_q_max" => "5",
+            "reading_difference_above_30_q_max" => "3",
+        ]);*/
+
+        // client and server side valiation satisfied
+        $templateFlowMeterInspectionReport = FlowMeterInspectionReport::make([
+            "inspected_on" => "2022-10-21",
+            "weather" => "sunny",
+            "temperature" => "18",
+            "equipment_identifier" => "Klaeranlage Musterort",
+            "measuring_point" => "Ablaufmessung",
+            "installation_point" => "Klaeranlage",
+            "medium" => "Abwasser",
+            "responsible_person" => "Max Mustermann",
+            "responsible_person_instructed_on" => "1990-01-01",
+            "instructor" => "Max Mustermann",
+            "profile_outer_diameter" => "600",
+            "profile_wall_thickness" => "3",
+            "profile_material" => "Material",
+            "without_cross_section_reduction" => "1",
+            "fully_filled" => "1",
+            "speed_measurement_type" => "ultrasonic_signal_transmit_time",
+            "documentation_existent" => "1",
+            "inspection_book_existent" => "1",
+            "inspection_requirements_existent" => "0",
+            "documentation_current" => "1",
+            "q_min" => "33",
+            "q_max" => "225",
+            "flow_range_type" => "statistical_analysis",
+            "flow_rate_meter" => "System",
+            "flow_rate_meter_make" => "Fabrikat",
+            "flow_rate_meter_type" => "Type",
+            "flow_rate_meter_identifier" => "Seriennummer",
+            "measurement_transformer_point" => "local",
+            "measurement_transformer_make" => "Fabrikat",
+            "measurement_transformer_type" => "Type",
+            "measurement_transformer_identifier" => "Seriennummer",
+            "measurement_transformer_level_unit" => "mA",
+            "measurement_transformer_range_100_percent" => "250",
+            "measurement_transformer_impulses" => "1",
+            "measurement_transformer_data_logging" => "Aufzeichnung",
+            "headwater_pipe_diameter" => "600",
+            "headwater_calming_section" => "5 x Rohrdurchmesser",
+            "headwater_calming_section_assessment" => "ausreichewnd gleichmaessig",
+            "measurement_section_installation_according_to_manufacturer" => "1",
+            "measurement_section_pipe_diameter" => "600",
+            "tailwater_pipe_diameter" => "600",
+            "tailwater_pipe_fully_filled" => "1",
+            "tailwater_runout_section_assessment" => "ausreichend gleichmaessig",
+            "tailwater_measurement_pipe_can_run_dry" => "0",
+            "tailwater_flow_conditions_influenced" => "0",
+            "comparison_measurements_process" => "mobile_measurement_equipment",
+            "comparison_measurement_mobile_type" => "ultrasonic_signal_transmit_time",
+            "comparison_measurement_mobile_installation_point" => "Einbauort",
+            "comparison_measurement_mobile_equipment_make" => "Fabrikat",
+            "comparison_measurement_mobile_equipment_type" => "Type",
+            "comparison_measurement_mobile_equipment_identifier" => "Seriennummer",
+            "comparison_measurement_mobile_equipment_last_calibrated_on" => "2022-01-01",
+            "comparison_measurement_mobile_equipment_last_cal_provider" => "Flexim GmbH",
+            "comparison_measurement_mobile_equipment_last_cal_doc_identifier" => "Dokumentation",
+            "measurement_difference_up_to_30_q_max" => "3",
+            "measurement_difference_above_30_q_max" => "2",
+            "reading_difference_up_to_30_q_max" => "5",
+            "reading_difference_above_30_q_max" => "3",
+            "equipment_in_tolerance_range" => "1",
+            "measurement_transformer_minimum_level" => "4",
+            "measurement_transformer_maximum_level" => "20",
+        ]);
+        $templateFlowMeterInspectionReport->measurementsQ100 = FlowMeterInspectionReportMeasurements::make([
+            "q_percent" => 100,
+            "started_at" => Carbon::parse("2022-10-21T10:00"),
+            "ended_at" => Carbon::parse("2022-10-21T12:00"),
+            "measurement_transformer_reading_sum" => 10,
+            "comparison_measurement_sum" => 10,
+            "measurement_difference" => 0,
+        ]);
+        $currentProject = Project::find(1);
 
         return view('flow_meter_inspection_report.create')
             ->with('flowMeterInspectionReport', $templateFlowMeterInspectionReport)
@@ -240,6 +354,7 @@ class FlowMeterInspectionReportController extends Controller
         $flowMeterInspectionReport->deleteAppendix();
         $flowMeterInspectionReport->deleteAttachments();
         $flowMeterInspectionReport->activities()->delete();
+        $flowMeterInspectionReport->measurements()->delete();
         $flowMeterInspectionReport->delete();
 
         return $this->getConditionalRedirect($request->redirect, $flowMeterInspectionReport)

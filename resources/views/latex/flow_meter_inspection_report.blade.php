@@ -2,10 +2,31 @@
 
 @include('latex.partials.header')
 
+\titleformat{\section}{\large\bfseries}{\thesection}{2em}{\uuline}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesection}{2em}{\underline}
+
 \fancyfoot[L]{\footnotesize{Prüfbericht vom {!! Latex::escape($flowMeterInspectionReport->inspected_on) !!}, Anlage: {!! Latex::escape($flowMeterInspectionReport->equipment_identifier) !!}, {!! Latex::escape($flowMeterInspectionReport->measuring_point) !!}, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
 \fancyfoot[R]{\footnotesize{Seite \thepage\ von \pageref{LastPage}}}
 
 \begin{document}
+
+\begin{titlepage}
+\begin{center}
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{{!! base_path() !!}/resources/views/latex/images/mts_logo.png}
+\end{figure}
+\vspace*{1cm}
+\huge{\textbf{Prüfbericht für Durchflussmesseinrichtungen in geschlossenen Profilen}}
+\vfill
+\large{{!! Latex::escape($flowMeterInspectionReport->equipment_identifier) !!}, {!! Latex::escape($flowMeterInspectionReport->measuring_point) !!}} \\
+\vspace*{0.5cm}
+\large{{!! Latex::escape($flowMeterInspectionReport->project->company->name) !!}} \\
+\vspace*{0.5cm}
+\large{{!! Latex::escape($flowMeterInspectionReport->project->name) !!}}
+\end{center}
+\end{titlepage}
+
 \begin{minipage}{0.07\textwidth}
 \qrcode[height=1cm]{ {!! Latex::escape(route('flow-meter-inspection-reports.show', $flowMeterInspectionReport)) !!} }
 \end{minipage}

@@ -14,7 +14,7 @@
 \begin{center}
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{{!! base_path() !!}/resources/views/latex/images/mts_logo.png}
+\includegraphics[width=0.5\textwidth]{{!! base_path() !!}/resources/views/latex/images/mts_logo_titlepage.png}
 \end{figure}
 \vspace*{1cm}
 \huge{\textbf{Prüfbericht für Durchflussmesseinrichtungen in geschlossenen Profilen}}

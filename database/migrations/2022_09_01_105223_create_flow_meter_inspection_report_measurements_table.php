@@ -14,8 +14,8 @@ class CreateFlowMeterInspectionReportMeasurementsTable extends Migration {
             // arbitrary measurement points in the future
             $table->unsignedTinyInteger('q_percent');
             $table->unsignedDouble('q_value')->nullable();
-            $table->time('started_at');
-            $table->time('ended_at');
+            $table->datetime('started_at')->nullable();
+            $table->datetime('ended_at')->nullable();
             $table->unsignedDouble('measurement_transformer_reading_start')->nullable();
             $table->unsignedDouble('measurement_transformer_reading_end')->nullable();
             $table->unsignedDouble('measurement_transformer_reading_sum')->nullable();
@@ -34,7 +34,7 @@ class CreateFlowMeterInspectionReportMeasurementsTable extends Migration {
 
             $table->unique(['q_percent', 'flow_meter_inspection_report_id'], 'flow_meter_inspection_report_measurements_unique');
 
-            $table->foreign('flow_meter_inspection_report_id', 'flow_meter_inspection_report_measurements_report_id_foreign')->references('id')->on('flow_meter_inspection_reports')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('flow_meter_inspection_report_id', 'flow_meter_inspection_report_measurements_report_id_foreign')->references('id')->on('flow_meter_inspection_reports')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

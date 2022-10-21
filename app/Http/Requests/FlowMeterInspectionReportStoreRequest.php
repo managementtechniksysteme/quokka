@@ -15,8 +15,8 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
 
         $speed_measurement_type = $this->input('speed_measurement_type');
         $measurement_transformer_level_unit = $this->input('measurement_transformer_level_unit');
-        $measurement_transformer_data_logging = $this->input('measurement_transformer_data_logging');
         $measurement_section_slope = $this->input('measurement_section_slope');
+        $measurement_section_pipe_visible_inspection_inside_possible = $this->input('measurement_section_pipe_visible_inspection_inside_possible');
         $tailwater_runout_section_slope = $this->input('tailwater_runout_section_slope');
         $tailwater_flow_conditions_influenced = $this->input('tailwater_flow_conditions_influenced');
         $comparison_measurements_process = $this->input('comparison_measurements_process');
@@ -37,9 +37,9 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'weather' => 'required|in:sunny,cloudy,rainy,snowy',
             'temperature' => 'required|integer',
             'equipment_identifier'=> 'required',
-            'treatment_plant' => 'nullable',
-            'sewage_plant' => 'nullable',
-            'indirect_induction' => 'nullable',
+            'area_1' => 'nullable',
+            'area_2' => 'nullable',
+            'area_3' => 'nullable',
             'treatment_plant_size' => 'integer|min:0|nullable',
             'measuring_point' => 'required',
             'installation_point' => 'required',
@@ -48,12 +48,13 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'responsible_person' => 'required',
             'responsible_person_instructed_on' => 'required|date',
             'instructor' => 'required',
-            'information_providing_person' => 'required',
+            'information_providing_people' => 'nullable',
             'last_inspected_on' => 'date|nullable',
             'last_inspected_by' => 'nullable',
             'last_inspection_project' => 'nullable',
-            'last_inspection_project_date' => 'date|nullable',
-            'profile_measurements' => 'required',
+            'profile_outer_diameter' => 'required|integer|min:1',
+            'profile_wall_thickness' => 'required|integer|min:1',
+            'profile_material' => 'required',
             'without_cross_section_reduction' => 'required|boolean',
             'fully_filled' => 'required|boolean',
             'speed_measurement_type' => 'required|in:doppler_ultrasonic,ultrasonic_signal_transmit_time,ultrasonic_cross_correlation,radar,other',
@@ -64,13 +65,13 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'inspection_requirements_existent' => 'required|boolean',
             'documentation_current' => 'required|boolean',
             'equipment_changes_to_documentation' => 'nullable',
-            'measuring_pipe_type' => 'required',
-            'measuring_pipe_minimum_speed' => 'required|numeric|min:0',
-            'measuring_pipe_minimum_speed_unit' => 'required|in:m_s',
-            'measuring_pipe_maximum_speed' => 'required|numeric|min:0',
-            'measuring_pipe_maximum_speed_unit' => 'required|in:m_s',
-            'measuring_pipe_maximum_flow_rate' => 'required|numeric|min:0',
-            'measuring_pipe_maximum_flow_rate_unit' => 'required|in:l_s,m3_h',
+            'measuring_pipe_type' => 'nullable',
+            'measuring_pipe_minimum_speed' => 'required_with:measuring_pipe_minimum_speed_unit|numeric|min:0|nullable',
+            'measuring_pipe_minimum_speed_unit' => 'required_with:measuring_pipe_minimum_speed|in:m_s|nullable',
+            'measuring_pipe_maximum_speed' => 'required_with:measuring_pipe_maximum_speed_unit,measuring_pipe_maximum_flow_rate,measuring_pipe_maximum_flow_rate_unit|numeric|min:0|nullable',
+            'measuring_pipe_maximum_speed_unit' => 'required_with:measuring_pipe_maximum_speed,measuring_pipe_maximum_flow_rate,measuring_pipe_maximum_flow_rate_unit|in:m_s|nullable',
+            'measuring_pipe_maximum_flow_rate' => 'required_with:measuring_pipe_maximum_speed,measuring_pipe_maximum_speed_unit,measuring_pipe_maximum_flow_rate_unit|numeric|min:0|nullable',
+            'measuring_pipe_maximum_flow_rate_unit' => 'required_with:measuring_pipe_maximum_speed,measuring_pipe_maximum_speed_unit,measuring_pipe_maximum_flow_rate|in:l_s,m3_h|nullable',
             'mucus_suppression' => 'numeric|min:0|required_with:mucus_suppression_unit|nullable',
             'mucus_suppression_unit' => 'in:percent,l_s|required_with:mucus_suppression|nullable',
             'q_min' => 'required|numeric|min:0',
@@ -88,12 +89,10 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'measurement_transformer_make' => 'required',
             'measurement_transformer_type' => 'required',
             'measurement_transformer_identifier' => 'required',
-            'measurement_transformer_minimum_level' => 'required|numeric|min:0|lt:measurement_transformer_maximum_level',
-            'measurement_transformer_maximum_level' => 'required|numeric|min:0|gt:measurement_transformer_minimum_level',
-            'measurement_transformer_level_unit' => 'required|in:mA,V,other',
+            'measurement_transformer_level_unit' => 'required|in:mA,V,interface',
             'measurement_transformer_range_100_percent' => 'required|numeric|min:0',
             'measurement_transformer_impulses' => 'required|integer|min:0',
-            'measurement_transformer_data_logging' => 'required|in:display,registering_device,pcs',
+            'measurement_transformer_data_logging' => 'required',
             'headwater_pipe_diameter' => 'required|integer|min:1',
             'headwater_calming_section' => 'required',
             'headwater_calming_section_assessment' => 'required',
@@ -101,27 +100,26 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'measurement_section_installation_according_to_manufacturer' => 'required|boolean',
             'measurement_section_minimum_speed_undercut_point' => 'numeric|min:0|nullable',
             'measurement_section_pipe_diameter' => 'required|integer|min:1',
-            'measurement_section_access_possible' => 'required|boolean',
-            'measurement_section_pipe_required_fill_level_existent' => 'required|boolean',
-            'measurement_section_pipe_visible_inspection_inside_possible' => 'required|boolean',
-            'measurement_section_pipe_visible_inspection_inside' => 'nullable',
-            'measurement_section_pipe_contaminated' => 'required|boolean',
-            'measurement_section_pipe_cleaning_possible' => 'required|boolean',
+            'measurement_section_access_possible' => 'boolean|nullable',
+            'measurement_section_pipe_required_fill_level_existent' => 'boolean|nullable',
+            'measurement_section_pipe_visible_inspection_inside_possible' => 'boolean|nullable',
+            'measurement_section_pipe_contaminated' => 'boolean|nullable',
+            'measurement_section_pipe_cleaning_possible' => 'boolean|nullable',
             'measurement_section_pipe_last_cleaned_on' => 'date|nullable',
-            'measurement_section_sensor_cleaned' => 'required|boolean',
-            'measurement_section_sensor_damaged' => 'required|boolean',
-            'measurement_section_pipe_inside_surface_ok' => 'required|boolean',
-            'measurement_section_pipe_grounding_existent' => 'required|boolean',
-            'measurement_section_pipe_air_pockets_visible' => 'required|boolean',
+            'measurement_section_sensor_cleaned' => 'boolean|nullable',
+            'measurement_section_sensor_damaged' => 'boolean|nullable',
+            'measurement_section_pipe_inside_surface_ok' => 'boolean|nullable',
+            'measurement_section_pipe_grounding_existent' => 'boolean|nullable',
+            'measurement_section_pipe_air_pockets_visible' => 'boolean|nullable',
             'tailwater_pipe_diameter' => 'required|integer|min:1',
             'tailwater_pipe_fully_filled' => 'required|boolean',
             'tailwater_runout_section_slope' => 'numeric|min:0|required_with:tailwater_runout_section_slope_assessment_type|nullable',
             'tailwater_runout_section_assessment' => 'required',
             'tailwater_measurement_pipe_can_run_dry' => 'required|boolean',
             'tailwater_flow_conditions_influenced' => 'required|boolean',
-            'zero_flow_rate_testing_conditions' => 'required',
-            'zero_flow_rate_reading_points' => 'required',
-            'zero_flow_rate_displayed_flow' => 'required|numeric|min:0',
+            'zero_flow_rate_testing_conditions' => 'required_with:zero_flow_rate_reading_points,zero_flow_rate_displayed_flow|nullable',
+            'zero_flow_rate_reading_points' => 'required_with:zero_flow_rate_testing_conditions,zero_flow_rate_displayed_flow|nullable',
+            'zero_flow_rate_displayed_flow' => 'required_with:zero_flow_rate_testing_conditions,zero_flow_rate_reading_points|numeric|min:0|nullable',
             'comparison_measurements_process' => 'required|in:mobile_measurement_equipment,volumetric',
             'comparison_measurement_mobile_type' => 'nullable',
             'comparison_measurement_mobile_type_other' => 'nullable',
@@ -140,24 +138,25 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'comparison_measurement_volumetric_basin' => 'nullable',
             'comparison_measurement_volumetric_basin_cross_section_area' => 'nullable',
             'comparison_measurement_volumetric_height_measurement_equipment' => 'nullable',
-            'comparison_measurement_measurement_transformer_checked' => 'required|boolean',
-            'comparison_measurement_pcs_checked' => 'required|boolean',
             'measurements' => 'array:20,30,50,70,100',
             'measurements.*.q_value' => 'numeric|min:0|nullable',
-            'measurements.*.started_at' => 'date_format:H:i|before:measurements.*.ended_at|nullable',
-            'measurements.*.ended_at' => 'date_format:H:i|after:measurements.*.started_at|nullable',
-            'measurements.100.started_at' => 'required|date_format:H:i|before:measurements.*.ended_at',
-            'measurements.100.ended_at' => 'required|date_format:H:i|after:measurements.*.started_at',
+            'measurements.*.started_at' => 'date_format:Y-m-d\TH:i|before:measurements.*.ended_at|nullable',
+            'measurements.*.ended_at' => 'date_format:Y-m-d\TH:i|after:measurements.*.started_at|nullable',
+            'measurements.100.started_at' => 'required|date_format:Y-m-d\TH:i|before:measurements.*.ended_at',
+            'measurements.100.ended_at' => 'required|date_format:Y-m-d\TH:i|after:measurements.*.started_at',
             'measurements.*.measurement_transformer_reading_start' => 'numeric|min:0|nullable',
             'measurements.*.measurement_transformer_reading_end' => 'numeric|min:0|nullable',
             'measurements.*.measurement_transformer_reading_sum' => 'numeric|min:0|nullable',
+            'measurements.100.measurement_transformer_reading_sum' => 'required|numeric|min:0',
             'measurements.*.pcs_reading_start' => 'numeric|min:0|nullable',
             'measurements.*.pcs_reading_end' => 'numeric|min:0|nullable',
             'measurements.*.pcs_reading_sum' => 'numeric|min:0|nullable',
             'measurements.*.comparison_measurement_start' => 'numeric|min:0|nullable',
             'measurements.*.comparison_measurement_end' => 'numeric|min:0|nullable',
             'measurements.*.comparison_measurement_sum' => 'numeric|min:0|nullable',
+            'measurements.100.comparison_measurement_sum' => 'required|numeric|min:0',
             'measurements.*.measurement_difference' => 'numeric|min:0|nullable',
+            'measurements.100.measurement_difference' => 'required|numeric|min:0',
             'measurements.*.q_value_average_mobile' => 'numeric|min:0|nullable',
             'measurement_difference_up_to_30_q_max' => 'required|numeric|min:0',
             'measurement_difference_above_30_q_max' => 'required|numeric|min:0',
@@ -166,7 +165,7 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'equipment_in_tolerance_range' => 'required|boolean',
             'equipment_deficiencies' => 'nullable',
             'further_inspection_required' => 'boolean|nullable',
-            'comment' => 'required',
+            'comment' => 'nullable',
             'appendix_description' => 'nullable',
             'appendix' => 'mimes:pdf',
             'new_attachments' => 'array|nullable',
@@ -179,26 +178,24 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             $rules['speed_measurement_type_other'] = 'prohibited|nullable';
         }
 
-        if ($measurement_transformer_level_unit === 'other') {
-            $rules['measurement_transformer_level_unit_other'] = 'required';
+        if ($measurement_transformer_level_unit === 'interface') {
+            $rules['measurement_transformer_minimum_level'] = 'prohibited|nullable';
+            $rules['measurement_transformer_maximum_level'] = 'prohibited|nullable';
         } else {
-            $rules['measurement_transformer_level_unit_other'] = 'prohibited|nullable';
-        }
-
-        if ($measurement_transformer_data_logging === 'registering_device') {
-            $rules['measurement_transformer_registering_device_make'] = 'required';
-            $rules['measurement_transformer_registering_device_type'] = 'required';
-            $rules['measurement_transformer_registering_device_identifier'] = 'nullable';
-        } else {
-            $rules['measurement_transformer_registering_device_make'] = 'prohibited|nullable';
-            $rules['measurement_transformer_registering_device_type'] = 'prohibited|nullable';
-            $rules['measurement_transformer_registering_device_identifier'] = 'prohibited|nullable';
+            $rules['measurement_transformer_minimum_level'] = 'required|numeric|min:0|lt:measurement_transformer_maximum_level';
+            $rules['measurement_transformer_maximum_level'] = 'required|numeric|min:0|gt:measurement_transformer_minimum_level';
         }
 
         if($measurement_section_slope) {
             $rules['measurement_section_slope_assessment_type'] = 'required';
         } else {
             $rules['measurement_section_slope_assessment_type'] = 'prohibited|nullable';
+        }
+
+        if($measurement_section_pipe_visible_inspection_inside_possible === false) {
+            $rules['measurement_section_pipe_visible_inspection_inside'] = 'required';
+        } else {
+            $rules['measurement_section_pipe_visible_inspection_inside'] = 'prohibited|nullable';
         }
 
         if($tailwater_runout_section_slope) {
@@ -226,11 +223,11 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             $rules['comparison_measurement_mobile_equipment_make'] = 'required';
             $rules['comparison_measurement_mobile_equipment_type'] = 'required';
             $rules['comparison_measurement_mobile_equipment_identifier'] = 'required';
-            $rules['comparison_measurement_mobile_equipment_maximum_speed'] = 'required|numeric|min:0';
-            $rules['comparison_measurement_mobile_equipment_maximum_speed_unit'] = 'required|in:m_s';
-            $rules['comparison_measurement_mobile_equipment_maximum_flow_rate'] = 'required|numeric|min:0';
-            $rules['comparison_measurement_mobile_equipment_maximum_flow_rate_unit'] = 'required|in:l_s,m3_h';
-            $rules['comparison_measurement_mobile_equipment_q_min'] = 'required|numeric|min:0';
+            $rules['comparison_measurement_mobile_equipment_maximum_speed'] = 'required_with:comparison_measurement_mobile_equipment_maximum_speed_unit,comparison_measurement_mobile_equipment_maximum_flow_rate,comparison_measurement_mobile_equipment_maximum_flow_rate_unit|numeric|min:0|nullable';
+            $rules['comparison_measurement_mobile_equipment_maximum_speed_unit'] = 'required_with:comparison_measurement_mobile_equipment_maximum_speed,comparison_measurement_mobile_equipment_maximum_flow_rate,comparison_measurement_mobile_equipment_maximum_flow_rate_unit|in:m_s|nullable';
+            $rules['comparison_measurement_mobile_equipment_maximum_flow_rate'] = 'required_with:comparison_measurement_mobile_equipment_maximum_speed,comparison_measurement_mobile_equipment_maximum_speed_unit,comparison_measurement_mobile_equipment_maximum_flow_rate_unit|numeric|min:0|nullable';
+            $rules['comparison_measurement_mobile_equipment_maximum_flow_rate_unit'] = 'required_with:comparison_measurement_mobile_equipment_maximum_speed,comparison_measurement_mobile_equipment_maximum_speed_unit,comparison_measurement_mobile_equipment_maximum_flow_rate|in:l_s,m3_h|nullable';
+            $rules['comparison_measurement_mobile_equipment_q_min'] = '|numeric|min:0|nullable';
             $rules['comparison_measurement_mobile_equipment_last_calibrated_on'] = 'required|date';
             $rules['comparison_measurement_mobile_equipment_last_cal_provider'] = 'required';
             $rules['comparison_measurement_mobile_equipment_last_cal_doc_identifier'] = 'required';

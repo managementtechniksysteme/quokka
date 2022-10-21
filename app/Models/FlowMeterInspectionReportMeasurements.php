@@ -25,8 +25,8 @@ class FlowMeterInspectionReportMeasurements extends Model
     protected $casts = [
         'q_percent' => 'int',
         'q_value' => 'double',
-        'started_at' => 'datetime:H:i',
-        'ended_at' => 'datetime:H:i',
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
         'measurement_transformer_reading_start' => 'double',
         'measurement_transformer_reading_end' => 'double',
         'measurement_transformer_reading_sum' => 'double',
@@ -77,7 +77,7 @@ class FlowMeterInspectionReportMeasurements extends Model
     }
 
     private function getTimeStringForInputField(Carbon $field) {
-        return $field ? $field->format("H:i") : '';
+        return $field ? $field->format("Y-m-d\TH:i") : '';
     }
 
 }

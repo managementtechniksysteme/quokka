@@ -1,4 +1,6 @@
 /.idea
+/.npm
+/docker/mariadb/data
 /node_modules
 /public/hot
 /public/storage

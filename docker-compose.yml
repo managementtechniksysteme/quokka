@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      args:
+        user: quokka
+        uid: 1000
+      context: ./
+      dockerfile: docker/php-fpm/Dockerfile
+    image: php-fpm-laravel
+    container_name : quokka-php-fpm
+    hostname: php-fpm
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www:z
+    networks:
+      - quokka
+
+  nodejs:
+    image: node:16
+    container_name: quokka-nodejs
+    hostname: nodejs
+    restart: unless-stopped
+    tty: true
+    working_dir: /root
+    volumes:
+      - ./:/root:z
+    networks:
+      - quokka
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: quokka-mariadb
+    hostname: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_USER: ${MARIADB_USERNAME}
+    volumes:
+      - ./docker/mariadb/data:/var/lib/mysql:z
+    networks:
+      - quokka
+
+  nginx:
+    image: nginx:1.21.0-alpine
+    container_name: quokka-nginx
+    hostname: nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/config:/etc/nginx/conf.d:z
+    networks:
+      - quokka
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: quokka-redis
+    hostname: redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - quokka
+
+networks:
+  quokka:
+    driver: bridge

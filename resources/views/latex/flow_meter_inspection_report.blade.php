@@ -100,7 +100,7 @@
 \subsection{Beschreibung der stationären Messeinrichtung}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Auśendurchmesser des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_outer_diameter) !!} {!! Latex::escape('mm') !!}} \\
+\footnotesize{\textbf{Außendurchmesser des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_outer_diameter) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Wandstärke des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_wall_thickness) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Material des Profils:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->profile_material) !!}} \\
 \footnotesize{\textbf{Ohne/mit Querschnittsverengung:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->without_cross_section_reduction_string) !!}} \\

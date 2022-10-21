@@ -192,7 +192,7 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             $rules['measurement_section_slope_assessment_type'] = 'prohibited|nullable';
         }
 
-        if($measurement_section_pipe_visible_inspection_inside_possible === false) {
+        if($measurement_section_pipe_visible_inspection_inside_possible === "0") {
             $rules['measurement_section_pipe_visible_inspection_inside'] = 'required';
         } else {
             $rules['measurement_section_pipe_visible_inspection_inside'] = 'prohibited|nullable';

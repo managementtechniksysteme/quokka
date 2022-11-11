@@ -188,6 +188,11 @@
             </div>
             <div class="col">
                 {{ \App\Helpers\Number::toLocal($project->current_kilometres) }}
+                @can('projects.view.estimates')
+                    @if(\App\Models\ApplicationSettings::get()->kilometre_costs)
+                        ({{ $currencyUnit . ' ' . Number::toLocal($project->current_kilometre_costs) }})
+                    @endif
+                @endcan
             </div>
         </div>
     @endif

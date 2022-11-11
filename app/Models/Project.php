@@ -146,8 +146,12 @@ class Project extends Model implements FiltersGlobalSearch
                 ->sum(DB::raw('accounting.amount*services.costs'));
     }
 
+    public function getCurrentKilometreCostsAttribute() {
+        return $this->current_kilometres * ApplicationSettings::get()->kilometre_costs;
+    }
+
     public function getCurrentCostsAttribute() {
-        return $this->current_material_costs + $this->current_wage_costs;
+        return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
     }
 
     public function getCurrentMaterialCostsPercentageAttribute() {
@@ -183,14 +187,6 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentBilledCostsPercentageAttribute() {
-        if(! $this->billed_costs) {
-            return null;
-        }
-
-        return ($this->current_costs / $this->billed_costs) * 100;
-    }
-
-    public function getCurrentBilledPercentageAttribute() {
         if(! $this->billed_costs) {
             return null;
         }

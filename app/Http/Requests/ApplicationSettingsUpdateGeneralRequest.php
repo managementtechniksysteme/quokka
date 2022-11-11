@@ -24,6 +24,7 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
             'currency_unit' => 'required',
             'services_hour_unit' => 'exists:services,unit|nullable',
             'accounting_min_amount' => 'required|numeric|min:0',
+            'kilometre_costs' => 'numeric|min:0|nullable',
             'project_material_costs_warning_percentage' => 'integer|min:1|max:99|nullable',
             'project_wage_costs_warning_percentage' => 'integer|min:1|max:99|nullable',
             'project_overall_costs_warning_percentage' => 'integer|min:1|max:99|nullable',

@@ -145,6 +145,21 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="kilometre_costs">Fahrtkosten pro Kilometer</label>
+                    <div class="input-group">
+                        <input type="number" min="0" step=".01" class="form-control @error('kilometre_costs') is-invalid @enderror" id="kilometre_costs" name="kilometre_costs" placeholder="1,5" value="{{ old('kilometre_costs', $applicationSettings->kilometre_costs) }}" required />
+                        <div class="input-group-append">
+                            <span class="input-group-text">€</span>
+                        </div>
+                        <div class="invalid-feedback @error('kilometre_costs') d-block @enderror">
+                            @error('accounting_min_amount')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="allowances_service_id">Diäten Leistung</label>
                     <service-dropdown inputname="allowances_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentAllowancesService ?? 'null' }}" v-cloak></service-dropdown>
                     <div class="invalid-feedback @error('allowances_service_id') d-block @enderror">

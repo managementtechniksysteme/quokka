@@ -15,6 +15,13 @@
     </div>
 
     <div class="container my-4">
+    @markdown
+    ### v0.1.24-cc21b26 (11.11.2022)
+    * In den Applikationseinstellungen können nun Kosten für Fahrtkilometer eingetragen werden. Diese werden in der
+    Projektübersicht sowie bei PDF Auswertungen angezeigt. Weiters werden die Fahrtkosten in den aktuellen Gesamtkosten
+    berücksichtigt.
+    @endmarkdown
+
       @markdown
       ### v0.1.23-3e59f5a (10.10.2022)
       * Implementierung von Prüfberichten von Durchflussmesseinrichtungen
@@ -41,8 +48,8 @@
 
       @markdown
       ### v0.1.21-00d1735 (29.07.2022)
-      * Beheben eines Fehlers der bei Serviceberichten Stunden beim falschen 
-      Datum aufsummiert, falls der selbe Tag in einem anderen Monat bereits 
+      * Beheben eines Fehlers der bei Serviceberichten Stunden beim falschen
+      Datum aufsummiert, falls der selbe Tag in einem anderen Monat bereits
       vorhanden ist.
       @endmarkdown
 

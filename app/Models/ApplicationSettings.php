@@ -13,6 +13,7 @@ class ApplicationSettings extends Model
     protected $casts = [
         'holiday_yearly_allowance' => 'int',
         'accounting_min_amount' => 'double',
+        'kilometre_costs' => 'double',
         'project_material_costs_warning_percentage' => 'int',
         'project_wage_costs_warning_percentage' => 'int',
         'project_overall_costs_warning_percentage' => 'int',
@@ -31,6 +32,7 @@ class ApplicationSettings extends Model
         'time_balance_service_id',
         'services_hour_unit',
         'accounting_min_amount',
+        'kilometre_costs',
         'project_material_costs_warning_percentage',
         'project_wage_costs_warning_percentage',
         'project_overall_costs_warning_percentage',

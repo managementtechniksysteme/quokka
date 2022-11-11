@@ -142,6 +142,10 @@
 @endif
 \\
 @endif
+@if($project->current_kiloemetre_costs)
+\footnotesize{Fahrtkosten (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_kilemetres) . 'km') !!}}\footnotesize{) km}\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_kilemetre_costs)) !!}}
+\\
+@endif
 @if($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)
 \footnotesize{Warnschwellen: }
 @if($projectOverallCostsWarningPercentage)\footnotesize{Gesamt: }\footnotesize{{!! Latex::escape($projectOverallCostsWarningPercentage) !!}}\footnotesize{{!! Latex::escape('%') !!}}

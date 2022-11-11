@@ -9,6 +9,7 @@
 .env
 .env.backup
 .env.testing
+.node_repl_history
 .php-cs-fixer.cache
 .phpunit.result.cache
 .phpstorm.meta.php

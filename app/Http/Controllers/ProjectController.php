@@ -435,7 +435,7 @@ class ProjectController extends Controller
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
 
-        $fileName = 'PL'.optional($company)->name ?? '';
+        $fileName = 'PL '.(optional($company)->name ?? '').'.pdf';
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

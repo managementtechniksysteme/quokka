@@ -177,7 +177,7 @@
 \subsection{Bestandsaufnahme Messstrecke}
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
-\footnotesize{\textbf{Gefälle der Messstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_slope ? $flowMeterInspectionReport->measurement_section_slope.'\textperthousand' : '') !!}} \\
+\footnotesize{\textbf{Gefälle der Messstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_slope ? $flowMeterInspectionReport->measurement_section_slope.'‰' : '') !!}} \\
 \footnotesize{\textbf{Vermessung durchgeführt mittels:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_slope_assessment_type ?? '') !!}} \\
 \footnotesize{\textbf{Einbaubedingungen laut Hersteller erfüllt?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_installation_according_to_manufacturer_string) !!}} \\
 \footnotesize{\textbf{Unterschreitung der Mindestgeschwindigkeit \newline unterhalb von:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->measurement_section_minimum_speed_undercut_point ? $flowMeterInspectionReport->measurement_section_minimum_speed_undercut_point . ' l/s' : '') !!}} \\
@@ -208,7 +208,7 @@
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Rohrdurchmesser innen:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_pipe_diameter) !!} {!! Latex::escape('mm') !!}} \\
 \footnotesize{\textbf{Vollfüllung?}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_pipe_fully_filled_string) !!}} \\
-\footnotesize{\textbf{Gefälle der Auslaufstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_runout_section_slope ? $flowMeterInspectionReport->tailwater_runout_section_slope_assessment_type.'\textperthousand' : '') !!}} \\
+\footnotesize{\textbf{Gefälle der Auslaufstrecke:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_runout_section_slope ? $flowMeterInspectionReport->tailwater_runout_section_slope_assessment_type.'‰' : '') !!}} \\
 \footnotesize{\textbf{Vermessung durchgeführt mittels:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->tailwater_runout_section_slope_assessment_type ?? '') !!}} \\
 \end{tabular}
 

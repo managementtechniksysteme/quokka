@@ -25,6 +25,7 @@ class Latex
         $text = str_replace('_', '\\_', $text);
         $text = str_replace('~', '\\textasciitilde{}', $text);
         $text = str_replace('%', '\\%', $text);
+        $text = str_replace('‰', '\\textperthousand', $text);
 
         // Brackets & pipes
         $text = str_replace('<', '\\textless{}', $text);

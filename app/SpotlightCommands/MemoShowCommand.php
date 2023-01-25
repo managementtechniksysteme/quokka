@@ -15,7 +15,7 @@ class MemoShowCommand extends SpotlightCommand
 {
     protected string $name = 'Aktenvermerk anzeigen';
 
-    protected string $description = 'Einen spezifische Aktenvermerk anzeigen';
+    protected string $description = 'Einen spezifischen Aktenvermerk anzeigen';
 
     public function dependencies(): ?SpotlightCommandDependencies
     {

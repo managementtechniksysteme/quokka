@@ -63,7 +63,7 @@ class MemoController extends Controller
         $templateMemo = null;
         $currentProject = null;
         $currentEmployeeComposer = null;
-        $currentPersonRecepient = null;
+        $currentPersonRecipient = null;
         $currentPresentPeople = null;
         $currentNotifiedPeople = null;
 
@@ -92,7 +92,7 @@ class MemoController extends Controller
 
             $currentProject = $templateMemo->project;
             $currentEmployeeComposer = $templateMemo->employeeComposer->person;
-            $currentPersonRecepient = $templateMemo->personRecipient;
+            $currentPersonRecipient = $templateMemo->personRecipient;
             $currentPresentPeople = $templateMemo->presentPeople;
             $currentNotifiedPeople = $templateMemo->notifiedPeople;
         }
@@ -113,7 +113,7 @@ class MemoController extends Controller
             ->with('projects', $projects->toJson())
             ->with('currentEmployeeComposer', optional($currentEmployeeComposer)->toJson())
             ->with('employees', $employees->toJson())
-            ->with('currentPersonRecipient', optional($currentPersonRecepient)->toJson())
+            ->with('currentPersonRecipient', optional($currentPersonRecipient)->toJson())
             ->with('currentPresentPeople', optional($currentPresentPeople)->toJson())
             ->with('currentNotifiedPeople', optional($currentNotifiedPeople)->toJson())
             ->with('people', $people->toJson())

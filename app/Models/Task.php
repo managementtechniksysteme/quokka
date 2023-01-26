@@ -195,7 +195,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             case false:
                 return 'public';
             case true:
-                return 'privat';
+                return 'private';
             default:
                 return $this->private;
         }

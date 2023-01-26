@@ -8,6 +8,7 @@ use App\Traits\FiltersSearch;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -466,6 +467,70 @@ class Employee extends Model
         return $this->constructionReportsInvolvedIn()
             ->whereStatus('new')
             ->count();
+    }
+
+    public function getMTDKilometresAttribute()
+    {
+        $today = Carbon::today();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-kilometres'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->logbook()
+                        ->whereBetween('driven_on', [$firstOfMonth, $today])
+                        ->sum('driven_kilometres');
+                }
+            );
+    }
+
+    public function getMTDCompanyKilometresAttribute()
+    {
+        $today = Carbon::today();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-company-kilometres'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->logbook()
+                        ->whereHas('vehicle', function (Builder $query) {
+                            $query->where('private', false);
+                        })
+                        ->whereBetween('driven_on', [$firstOfMonth, $today])
+                        ->sum('driven_kilometres');
+                }
+            );
+    }
+
+    public function getPrivateKilometres($start, $end)
+    {
+        return $this->logbook()
+            ->whereHas('vehicle', function (Builder $query) {
+                $query->where('private', true);
+            })
+            ->whereBetween('driven_on', [$start, $end])
+            ->sum('driven_kilometres');
+    }
+
+    public function getMTDPrivateKilometresAttribute()
+    {
+        $today = Carbon::today();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return $this->getCache()
+            ->tags($this->getDashboardCacheTag())
+            ->remember($this->getDashboardCacheKeyName('mtd-private-kilometres'), static::DASHBOARD_CACHE_TTL,
+                function() use ($today, $firstOfMonth) {
+                    return $this->getPrivateKilometres($firstOfMonth, $today);
+                }
+            );
+    }
+
+    public function getMTDPrivateKilometresInCurrencyAttribute()
+    {
+        return $this->mtd_private_kilometres * ApplicationSettings::get()->kilometre_costs;
     }
 
     public function clearDashboardCache()

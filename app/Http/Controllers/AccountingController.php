@@ -8,6 +8,7 @@ use App\Http\Requests\AccountingStoreRequest;
 use App\Http\Requests\AccountingUpdateRequest;
 use App\Models\Accounting;
 use App\Models\ApplicationSettings;
+use App\Models\Logbook;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Service;
@@ -115,6 +116,7 @@ class AccountingController extends Controller
         $allowancesService = ApplicationSettings::get()->allowancesService;
         $holidayService = ApplicationSettings::get()->holidayService;
         $currencyUnit = ApplicationSettings::get()->currency_unit;
+        $kilometre_costs = ApplicationSettings::get()->kilometre_costs;
 
         $username = Str::upper($user->username);
 
@@ -129,12 +131,17 @@ class AccountingController extends Controller
 
         $report = Accounting::getReport($validatedData);
 
+        $private_kilometres = Auth::user()->employee->getPrivateKilometres($start, $end);
+
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.accounting_report', [
                 'report' => $report,
                 'employee' => $user->employee,
+                'private_kilometres' => $private_kilometres,
+                'kilometre_costs' => $kilometre_costs,
                 'project' => $project,
                 'service' => $service,
                 'allowancesService' => $allowancesService,

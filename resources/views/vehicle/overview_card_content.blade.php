@@ -1,27 +1,44 @@
 <div class="overview-card rounded">
     <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
-        <div class="mw-100 flex-grow-1 h-100 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('vehicles.show', $vehicle) }}"></a>
-            <div class="mw-100 text-truncate">
-                {{ $vehicle->registration_identifier }}
-            </div>
-            <div class="text-muted">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
-                    </svg>
-                    {{ $vehicle->make_model }}
+        <div class="mw-100 d-flex flex-grow-1 h-100 align-items-center">
 
-                    @if($vehicle->current_kilometres)
-                        <svg class="icon icon-16 ml-2 mr-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#database"></use>
-                        </svg>
-                        {{ $vehicle->current_kilometres_string }}
-                    @endif
+            <div class="mw-100 flex-grow-1 h-100 position-relative">
 
+                <div class="mw-100 flex-grow-1 position-relative">
+                    <a class="stretched-link outline-none" href="{{ route('vehicles.show', $vehicle) }}"></a>
+                    <div class="mw-100 text-truncate">
+                        {{ $vehicle->registration_identifier }}
+                    </div>
+                    <div class="text-muted">
+                        <div class="d-inline-flex align-items-center">
+                            <svg class="icon icon-16 mr-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
+                            </svg>
+                            {{ $vehicle->make_model }}
+
+                            @if($vehicle->current_kilometres)
+                                <svg class="icon icon-16 ml-2 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#database"></use>
+                                </svg>
+                                {{ $vehicle->current_kilometres_string }}
+                            @endif
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            @if($vehicle->private)
+                <div class="d-block ml-2">
+                    <div class="text-warning d-inline-flex align-items-center">
+                        <svg class="icon icon-16 mr-md-1">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                        </svg>
+                        <span class="text-muted d-none d-lg-inline-block">privat</span>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <div class="d-none d-md-block ml-2">

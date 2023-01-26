@@ -12,6 +12,7 @@ class VehicleUpdateRequest extends FormRequest
             'make' => 'required',
             'model' => 'required',
             'registration_identifier' => 'required|unique:vehicles,registration_identifier,'.$this->vehicle->id,
+            'private' => 'required|boolean',
             'comment' => 'nullable',
         ];
     }

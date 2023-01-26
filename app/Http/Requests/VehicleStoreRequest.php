@@ -12,6 +12,7 @@ class VehicleStoreRequest extends FormRequest
             'make' => 'required',
             'model' => 'required',
             'registration_identifier' => 'required|unique:vehicles',
+            'private' => 'required|boolean',
             'comment' => 'nullable',
         ];
     }

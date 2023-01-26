@@ -99,7 +99,7 @@
         </div>
 
         @if($note->title)
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-sm-5 col-md-4 col-lg-2">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="icon icon-16 mr-2">

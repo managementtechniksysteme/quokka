@@ -50,6 +50,25 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <div>
+                <label for="private">Privatfahrzeug</label>
+            </div>
+            <div class="btn-group btn-group-toggle @error('private') is-invalid @enderror" data-toggle="buttons">
+                <label class="btn btn-outline-secondary @if(old('private', optional($vehicle)->private) == true) active @endif">
+                    <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($vehicle)->private) == true) checked @endif> ja
+                </label>
+                <label class="btn btn-outline-secondary @if(old('private', optional($vehicle)->private) == false) active @endif">
+                    <input type="radio" name="private" id="0" value="0" autocomplete="off" @if(old('private', optional($vehicle)->private) == false) checked @endif> nein
+                </label>
+            </div>
+            <div class="invalid-feedback @error('private') d-block @enderror">
+                @error('private')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+
     </div>
 </div>
 

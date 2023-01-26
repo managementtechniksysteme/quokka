@@ -390,6 +390,14 @@
                                 </svg>
                                 Benachrichtigungen
                             </a>
+                            @can('viewAny', \App\Models\Note::class)
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('notes.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+                                    </svg>
+                                    Notizbuch
+                                </a>
+                            @endcan
                             <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('user-settings.edit') }}">
                                 <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>

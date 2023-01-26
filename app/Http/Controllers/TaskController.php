@@ -12,6 +12,7 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Mail\TaskMail;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\Note;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\Task;
@@ -65,6 +66,7 @@ class TaskController extends Controller
     public function create(TaskCreateRequest $request): RedirectResponse|View
     {
         $templateTask = null;
+        $templateNote = null;
         $currentProject = null;
         $currentResponsibleEmployee = null;
         $currentInvolvedEmployees = null;
@@ -93,6 +95,26 @@ class TaskController extends Controller
             $currentProject = $templateTask->project;
             $currentResponsibleEmployee = $templateTask->responsibleEmployee->person;
             $currentInvolvedEmployees = Person::order()->find($templateTask->involvedEmployees->pluck('person_id')) ?? null;
+        }
+        elseif (isset($validatedData['note'])) {
+            $templateNote = Note::find($validatedData['note']);
+
+            if(!$templateNote) {
+                return redirect()
+                    ->route('notes.create')
+                    ->with('warning', 'Die angegebene Notiz existiert nicht.');
+            }
+
+            if(Auth::user()->cannot('view', $templateNote)) {
+                return redirect()
+                    ->route('notes.create')
+                    ->with('danger', 'Du kannst aus dieser Notiz keine Aufgabe erstellen.');
+            }
+
+            $templateTask = Task::make([
+               'name' => $templateNote->title_string,
+               'comment' => $templateNote->comment,
+            ]);
         }
         elseif (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);

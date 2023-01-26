@@ -2,46 +2,46 @@
 
 namespace App\Policies;
 
-use App\Models\Address;
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AddressPolicy
+class NotePolicy
 {
     use HandlesAuthorization;
 
     public function viewAny(User $user): bool
     {
-        return $user->can('addresses.view');
+        return $user->can('notes.view');
     }
 
-    public function view(User $user, Address $address): bool
+    public function view(User $user, Note $note): bool
     {
-        return $user->can('addresses.view');
+        return $user->can('notes.view') && $note->employee_id == $user->employee_id;
     }
 
     public function create(User $user): bool
     {
-        return $user->can('addresses.create');
+        return $user->can('notes.create');
     }
 
-    public function update(User $user, Address $address): bool
+    public function update(User $user, Note $note): bool
     {
-        return $user->can('addresses.update');
+        return $user->can('notes.update') && $note->employee_id == $user->employee_id;
     }
 
-    public function delete(User $user, Address $address): bool
+    public function delete(User $user, Note $note): bool
     {
-        return $user->can('addresses.delete');
+        return $user->can('notes.delete') && $note->employee_id == $user->employee_id;
     }
 
-    public function email(User $user, Address $address): bool
+    public function email(User $user, Note $note): bool
     {
-        return $user->can('addresses.email');
+        return $user->can('notes.email') && $note->employee_id == $user->employee_id;
     }
 
-    public function createPdf(User $user, Address $address): bool
+    public function createPdf(User $user, Note $note): bool
     {
-        return $user->can('addresses.createpdf');
+        return $user->can('notes.createpdf') && $note->employee_id == $user->employee_id;
     }
 }

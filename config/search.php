@@ -9,6 +9,7 @@ use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\MaterialService;
 use App\Models\Memo;
+use App\Models\Note;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\ServiceReport;
@@ -40,6 +41,7 @@ return [
         InspectionReport::class,
         MaterialService::class,
         Memo::class,
+        Note::class,
         Person::class,
         Project::class,
         ServiceReport::class,

@@ -44,6 +44,11 @@
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
         </svg>
         @break
+    @case(\App\Models\Note::class)
+        <svg class="icon icon-baseline mr-1">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book-open"></use>
+        </svg>
+        @break
     @case(\App\Models\Person::class)
         <svg class="icon icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>

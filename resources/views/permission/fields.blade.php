@@ -1885,6 +1885,89 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
+            </svg>
+            Notizen
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Notizen.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_view') is-invalid @enderror" name="notes_view" id="notes_view" value="true" @if(old('notes_view', optional($permissions)->hasPermissionTo('notes.view'))) checked @endif>
+                <label class="custom-control-label" for="notes_view">Notizen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('notes_view') d-block @enderror">
+                @error('notes_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_create') is-invalid @enderror" name="notes_create" id="notes_create" value="true" @if(old('notes_create', optional($permissions)->hasPermissionTo('notes.create'))) checked @endif>
+                <label class="custom-control-label" for="notes_create">Notizen anlegen</label>
+            </div>
+            <div class="invalid-feedback @error('notes_create') d-block @enderror">
+                @error('notes_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_update') is-invalid @enderror" name="notes_update" id="notes_update" value="true" @if(old('notes_update', optional($permissions)->hasPermissionTo('notes.update'))) checked @endif>
+                <label class="custom-control-label" for="notes_update">Notizen bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('notes_update') d-block @enderror">
+                @error('notes_update')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_delete') is-invalid @enderror" name="notes_delete" id="notes_delete" value="true" @if(old('notes_delete', optional($permissions)->hasPermissionTo('notes.delete'))) checked @endif>
+                <label class="custom-control-label" for="notes_delete">Notizen entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('notes_delete') d-block @enderror">
+                @error('notes_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_email') is-invalid @enderror" name="notes_email" id="notes_email" value="true" @if(old('notes_email', optional($permissions)->hasPermissionTo('notes.email'))) checked @endif>
+                <label class="custom-control-label" for="notes_email">Notizen per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('notes_email') d-block @enderror">
+                @error('notes_email')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('notes_createpdf') is-invalid @enderror" name="notes_createpdf" id="notes_createpdf" value="true" @if(old('notes_createpdf', optional($permissions)->hasPermissionTo('notes.createpdf'))) checked @endif>
+                <label class="custom-control-label" for="notes_createpdf">PDF Dateien von Notizen erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('notes_createpdf') d-block @enderror">
+                @error('notes_createpdf')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
             </svg>
             Personen

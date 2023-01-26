@@ -46,7 +46,7 @@
                         @endif
 
                         <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Adressen suchen" autocomplete="off" />
+                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Notizen suchen" autocomplete="off" />
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="icon icon-16">

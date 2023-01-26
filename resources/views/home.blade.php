@@ -99,6 +99,35 @@
                 </div>
                 <div class="col-md-6 col-xl-3 mb-4">
                     <div class="card shadow-sm">
+                        <a class="stretched-link outline-none" href="{{ route('logbook.index') }}"></a>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col pr-0">
+                                    <h5 class="card-title text-uppercase text-muted m-0">Kilometer</h5>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdKilometres) }}</span>
+                                </div>
+                                <div class="col-auto pl-0">
+                                    <svg class="icon-bs icon-32 text-gray-500">
+                                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <span class="text-muted">
+                                        {{ Number::toLocal($employeeMtdCompanyKilometres) }} Firma
+                                        <svg class="icon-bs icon-baseline text-muted">
+                                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
+                                        </svg>
+                                        {{ Number::toLocal($employeeMtdPrivateKilometres) }} privat ({{ Number::toLocal($employeeMtdPrivateKilometresInCurrency) }}€)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">

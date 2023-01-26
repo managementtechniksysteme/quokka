@@ -38,4 +38,7 @@
 @else
 Es sind keine Abrechnungen passend dem Filter vorhanden.
 @endif
+@if($kilometre_costs > 0)
+    \footnotesize{\textbf{Privatkilometer:} {!! Latex::escape(Number::toLocal($private_kilometres)) !!} ({!! Latex::escape(Number::toLocal($private_kilometres * $kilometre_costs)) . $currencyUnit !!})}
+@endif
 \end{document}

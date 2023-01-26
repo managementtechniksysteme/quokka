@@ -20,12 +20,16 @@ class Vehicle extends Model implements FiltersGlobalSearch
         'make_model', 'current_kilometres'
     ];
 
+    protected $casts = [
+        'private' => 'bool',
+    ];
+
     protected $fillable = [
-        'make', 'model', 'registration_identifier', 'comment',
+        'make', 'model', 'registration_identifier', 'private', 'comment',
     ];
 
     protected $filterFields = [
-        'make', 'model', 'registration_identifier', 'comment',
+        'make', 'model', 'registration_identifier', 'private', 'comment',
     ];
 
     protected $filterKeys = [];
@@ -65,6 +69,18 @@ class Vehicle extends Model implements FiltersGlobalSearch
 
     public function getMakeModelAttribute() {
         return "{$this->make} {$this->model}";
+    }
+
+    public function getPrivateStringAttribute()
+    {
+        switch ($this->private) {
+            case false:
+                return 'no';
+            case true:
+                return 'yes';
+            default:
+                return $this->private;
+        }
     }
 
     public function getCurrentKilometresAttribute() {

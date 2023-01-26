@@ -37,7 +37,7 @@
                         Empfänger
                     </p>
                     <p class="text-muted">
-                        Hier können die gewünschten Email Adressen angegeben werden, an welche der Servicebericht per Email gesendet werden soll.
+                        Hier können die gewünschten Email Adressen angegeben werden, an welche der Aktenvermerk per Email gesendet werden soll.
                     </p>
                 </div>
 

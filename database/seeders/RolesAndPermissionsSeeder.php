@@ -205,6 +205,14 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'memos.createpdf.notified']);
         Permission::firstOrCreate(['name' => 'memos.createpdf.other']);
 
+        // notes
+        Permission::firstOrCreate(['name' => 'notes.view']);
+        Permission::firstOrCreate(['name' => 'notes.create']);
+        Permission::firstOrCreate(['name' => 'notes.update']);
+        Permission::firstOrCreate(['name' => 'notes.delete']);
+        Permission::firstOrCreate(['name' => 'notes.email']);
+        Permission::firstOrCreate(['name' => 'notes.createpdf']);
+
         // people
         Permission::firstOrCreate(['name' => 'people.view']);
         Permission::firstOrCreate(['name' => 'people.create']);
@@ -463,6 +471,14 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('memos.delete.sender');
         $employee->givePermissionTo('memos.email.sender');
         $employee->givePermissionTo('memos.createpdf.sender');
+
+        // notes
+        $employee->givePermissionTo('notes.view');
+        $employee->givePermissionTo('notes.create');
+        $employee->givePermissionTo('notes.update');
+        $employee->givePermissionTo('notes.delete');
+        $employee->givePermissionTo('notes.email');
+        $employee->givePermissionTo('notes.createpdf');
 
         // people
         $employee->givePermissionTo('people.view');

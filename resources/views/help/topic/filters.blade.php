@@ -40,6 +40,9 @@
         @can('viewAny', \App\Models\Employee::class)
         <a href="#mitarbeiter"># Mitarbeiter</a><br />
         @endcan
+        @can('viewAny', \App\Models\Note::class)
+        <a href="#notizen"># Notizen</a><br />
+        @endcan
         @can('viewAny', \App\Models\Person::class)
         <a href="#personen"># Personen</a><br />
         @endcan
@@ -588,6 +591,40 @@
         
             Mögliche Ergebnisse
             * Martin Steiner
+            @endmarkdown
+        </div>
+        @endcan 
+                                                                                                                                                                                                                                                                                            
+        @can('viewAny', \App\Models\Note::class)
+        <a id="notizen"></a>
+        <h4 class="mt-4">Notizen</h4>
+
+        @markdown
+        **Standardattribute**
+        * Titel
+        * Kommentar
+
+        **Spezielle Suchbegriffe**
+        * keine
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            Telefonnotiz
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Notizen, die im Titel oder Kommentar den Begriff `Telefonnotiz` aufweisen.
+            Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
+
+            Mögliche Ergebnisse
+            * Telefonnotiz
+            * Telefonnotiz vom 01.01.2000
             @endmarkdown
         </div>
         @endcan 

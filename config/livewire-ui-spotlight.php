@@ -41,6 +41,9 @@ use App\SpotlightCommands\MaterialServiceShowCommand;
 use App\SpotlightCommands\MemoCreateCommand;
 use App\SpotlightCommands\MemoIndexCommand;
 use App\SpotlightCommands\MemoShowCommand;
+use App\SpotlightCommands\NoteCreateCommand;
+use App\SpotlightCommands\NoteIndexCommand;
+use App\SpotlightCommands\NoteShowCommand;
 use App\SpotlightCommands\NotificationIndexCommand;
 use App\SpotlightCommands\PersonCreateCommand;
 use App\SpotlightCommands\PersonIndexCommand;
@@ -139,6 +142,9 @@ return [
         MemoCreateCommand::class,
         MemoIndexCommand::class,
         MemoShowCommand::class,
+        NoteCreateCommand::class,
+        NoteIndexCommand::class,
+        NoteShowCommand::class,
         NotificationIndexCommand::class,
         PersonCreateCommand::class,
         PersonIndexCommand::class,

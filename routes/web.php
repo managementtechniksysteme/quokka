@@ -33,6 +33,7 @@ use App\Http\Controllers\LatestChangesController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
@@ -175,6 +176,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/memos/{memo}/download', [MemoController::class, 'download'])->name('memos.download');
     Route::get('/memos/{memo}/email', [MemoController::class, 'showEmail'])->name('memos.email');
     Route::post('/memos/{memo}/email', [MemoController::class, 'email']);
+
+    Route::get('/notes/list', [NoteController::class, 'downloadList'])->name('notes.download-list');
+    Route::resource('notes', NoteController::class);
+    Route::get('/notes/{note}/download', [NoteController::class, 'download'])->name('notes.download');
+    Route::get('/notes/{note}/email', [NoteController::class, 'showEmail'])->name('notes.email');
+    Route::post('/notes/{note}/email', [NoteController::class, 'email']);
 
     Route::resource('notifications', NotificationController::class)->only(['index', 'destroy']);
     Route::post('/notifications', [NotificationController::class, 'clear'])->name('notifications.clear');

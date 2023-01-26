@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class TaskCreateRequest extends FormRequest
+class NoteCreateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,9 +15,7 @@ class TaskCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => 'sometimes|exists:tasks,id',
-            'project' => 'sometimes|exists:projects,id',
-            'note' => 'sometimes|exists:notes,id',
+            'template' => 'sometimes|exists:notes,id',
         ];
     }
 }

@@ -17,6 +17,7 @@ class TaskCreateRequest extends FormRequest
         return [
             'template' => 'sometimes|exists:tasks,id',
             'project' => 'sometimes|exists:projects,id',
+            'note' => 'sometimes|exists:notes,id',
         ];
     }
 }

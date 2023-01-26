@@ -135,6 +135,11 @@ class Employee extends Model
         return $this->hasMany(Logbook::class, 'employee_id');
     }
 
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'employee_id');
+    }
+
     public function isCurrentlyOnHoliday()
     {
         $currentHolidayAccounting = $this->accounting()

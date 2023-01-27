@@ -204,11 +204,16 @@
 
                                   <div class="dropdown-menu dropdown-menu-right">
                                       <form @submit.prevent="onReportSubmit">
-                                          <div v-for="employeeId in this.getShownEmployeeIds()" class="form-check mx-1 my-2">
+                                          <div v-for="employeeId in this.getShownEmployeeIds()" class="d-inline-block form-check mx-2 my-1">
                                               <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">
-                                              <label class="form-check-label" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="employeeId">{{ getEmployeeName(employeeId) }}</label>
+                                              <label class="form-check-label" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="employeeId">
+                                                <svg class="icon icon-16">
+                                                  <use xlink:href="/svg/feather-sprite.svg#user"></use>
+                                                </svg>
+                                                {{ getEmployeeName(employeeId) }}
+                                              </label>
                                           </div>
-                                          <button class="btn btn-sm btn-primary mx-1" type="submit">
+                                          <button class="btn btn-sm btn-primary mx-2 mt-2" type="submit">
                                               <svg class="icon icon-16 mr-2">
                                                   <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                               </svg>

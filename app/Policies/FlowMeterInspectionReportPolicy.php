@@ -45,8 +45,12 @@ class FlowMeterInspectionReportPolicy
 
     public function delete(User $user, FlowMeterInspectionReport $flowMeterInspectionReport): bool
     {
-        if($flowMeterInspectionReport->status !== 'new') {
+        if($flowMeterInspectionReport->status === 'finished') {
             return false;
+        }
+
+        if($flowMeterInspectionReport->status === 'signed') {
+            return $user->can('flow-meter-inspection-reports.approve');
         }
 
         if($flowMeterInspectionReport->employee_id === $user->employee_id) {

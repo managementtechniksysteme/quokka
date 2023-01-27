@@ -76,8 +76,12 @@ class ConstructionReportPolicy
         $involved = false;
         $other = false;
 
-        if($constructionReport->status !== 'new') {
+        if($constructionReport->status === 'finished') {
             return false;
+        }
+
+        if($constructionReport->status === 'signed') {
+            return $user->can('construction-reports.approve');
         }
 
         if($constructionReport->employee->person_id === $user->employee_id) {

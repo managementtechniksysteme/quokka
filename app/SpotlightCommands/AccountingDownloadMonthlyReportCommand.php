@@ -67,7 +67,7 @@ class AccountingDownloadMonthlyReportCommand extends SpotlightCommand
 
         $spotlight->redirect(
             route('accounting.download', [
-                'employee_id' => $request->user(),
+                'employee_ids[]' => $request->user(),
                 'start' => $startDate->format('Y-m-d'),
                 'end' => $endDate->format('Y-m-d'),
             ])

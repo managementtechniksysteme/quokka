@@ -827,6 +827,8 @@
 
                 const params = new URLSearchParams(params);
 
+                employeeIds = Array.isArray(employeeIds) ? employeeIds : [employeeIds];
+
                 employeeIds.forEach(function (id) {
                     params.append('employee_ids[]', id);
                 });

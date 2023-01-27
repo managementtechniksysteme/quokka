@@ -90,4 +90,5 @@ Es sind keine Abrechnungen passend dem Filter vorhanden.
 @endforeach
 \end{description}
 \end{footnotesize}
+@endif
 \end{document}

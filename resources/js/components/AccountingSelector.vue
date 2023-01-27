@@ -196,13 +196,13 @@
 
                               <div v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="dropdown">
                                   <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                                      <svg class="icon icon-16 mr-2">
-                                          <use xlink:href="/svg/feather-sprite.svg#printer"></use>
-                                      </svg>
-                                      Auswertung
+                                    <svg class="icon icon-16 mr-2">
+                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                    </svg>
+                                    Auswertung
                                   </button>
 
-                                  <div class="dropdown-menu dropdown-menu-right">
+                                  <div class="dropdown-menu dropdown-menu-right min-w-200">
                                       <form @submit.prevent="onReportSubmit">
                                           <div v-for="employeeId in this.getShownEmployeeIds()" class="d-inline-block form-check mx-2 my-1">
                                               <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">

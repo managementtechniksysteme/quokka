@@ -17,7 +17,8 @@ class AccountingDownloadRequest extends FormRequest
             'end' => 'sometimes|date',
             'project_id' => 'sometimes|exists:projects,id',
             'service_id' => 'sometimes|exists:services,id',
-            'employee_id' => 'required|exists:employees,person_id',
+            'employee_ids' => 'sometimes|array',
+            'employee_ids.*' => 'exists:employees,person_id'
         ];
 
         if($this->filled('start') && $this->filled('end')) {
@@ -26,11 +27,11 @@ class AccountingDownloadRequest extends FormRequest
         }
 
         if(Auth::user()->can('accounting.view.own') && Auth::user()->cannot('accounting.view.other')) {
-            $rules['employee_id'] = $rules['employee_id'] . '|in:'.Auth::user()->employee_id;
+            $rules['employee_ids.*'] = $rules['employee_ids'] . '|in:'.Auth::user()->employee_id;
         }
 
         if(Auth::user()->can('accounting.view.other') && Auth::user()->cannot('accounting.view.own')) {
-            $rules['employee_id'] = $rules['employee_id'] . '|not_in:'.Auth::user()->employee_id;
+            $rules['employee_ids'] = $rules['employee_ids'] . '|not_in:'.Auth::user()->employee_id;
         }
 
         return $rules;

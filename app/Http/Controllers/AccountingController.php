@@ -8,6 +8,7 @@ use App\Http\Requests\AccountingStoreRequest;
 use App\Http\Requests\AccountingUpdateRequest;
 use App\Models\Accounting;
 use App\Models\ApplicationSettings;
+use App\Models\Employee;
 use App\Models\Logbook;
 use App\Models\Person;
 use App\Models\Project;
@@ -110,7 +111,10 @@ class AccountingController extends Controller
     {
         $validatedData = $request->validated();
 
-        $user = User::find($validatedData['employee_id'])->load('employee.person');
+        $employees = Employee::whereIn('person_id', $validatedData['employee_ids'])
+            ->with('user')
+            ->with('person')
+            ->get();
         $project = isset($validatedData['project_id']) ? Project::find($validatedData['project_id']) : null;
         $service = isset($validatedData['service_id']) ? Service::find($validatedData['service_id']) : null;
         $allowancesService = ApplicationSettings::get()->allowancesService;
@@ -118,7 +122,12 @@ class AccountingController extends Controller
         $currencyUnit = ApplicationSettings::get()->currency_unit;
         $kilometre_costs = ApplicationSettings::get()->kilometre_costs;
 
-        $username = Str::upper($user->username);
+        if(count($validatedData['employee_ids']) === 1) {
+            $user = User::find($validatedData['employee_ids'][0])->load('employee.person');
+            $username = Str::upper($user->username);
+        } else {
+            $username = null;
+        }
 
         $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : null;
         $end = isset($validatedData['end']) ? Carbon::parse($validatedData['end']) : null;
@@ -127,19 +136,24 @@ class AccountingController extends Controller
         $endFormatted = optional($end)->format('Ymd') ?? '';
         $rangeString = $startFormatted.($start&&$end ? '-' : '').$endFormatted;
 
-        $fileName = 'AR ' . $username . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
+        $fileName = 'AR ' . ($username ?? '') . ($rangeString !== '' ? ' ' . $rangeString : '') . '.pdf';
 
         $report = Accounting::getReport($validatedData);
 
-        $private_kilometres = Auth::user()->employee->getPrivateKilometres($start, $end);
+        $private_kilometres = [];
 
+        foreach ($employees as $employee) {
+            $private_kilometres[$employee->user->username] = $employee->getPrivateKilometres($start, $end);
+        }
+
+        ksort($private_kilometres);
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.accounting_report', [
                 'report' => $report,
-                'employee' => $user->employee,
+                'employees' => $employees,
                 'private_kilometres' => $private_kilometres,
                 'kilometre_costs' => $kilometre_costs,
                 'project' => $project,

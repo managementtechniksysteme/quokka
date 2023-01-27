@@ -32,8 +32,12 @@
 @endif
 \\
 @endif
-
+@if($project->comment)
+\section{Bemerkungen}
+\footnotesize{{!! Latex::fromMarkdown($project->comment) !!}}
+@endif
 @if(count($report) > 0)
+\section{Auswertung}
 \begin{longtable}{@{}p{2.2cm}A{3cm}p{0.6cm}p{1.2cm}p{8.8cm}@{}}
 \hline
 \footnotesize{\textbf{Datum}} & \footnotesize{\textbf{Leistung}} & \footnotesize{\textbf{MA}} & \footnotesize{\textbf{Menge}} & \footnotesize{\textbf{Bemerkungen}} \\

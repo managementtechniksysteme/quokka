@@ -23,7 +23,7 @@
 \\\\
 @if($employee || $project)\footnotesize{\textbf{Weitere Filter:}}
 @if($employee)\footnotesize{Mitarbeiter: {!! Latex::escape($employee->person->name) !!}}@endif
-@if($employee && $project), @endif
+@if($employee && $project)\footnotesize{, }@endif
 @if($project)\footnotesize{Projekt: {!! Latex::escape($project->name) !!}}@endif
 \\
 @endif

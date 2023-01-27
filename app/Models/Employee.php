@@ -510,7 +510,12 @@ class Employee extends Model
             ->whereHas('vehicle', function (Builder $query) {
                 $query->where('private', true);
             })
-            ->whereBetween('driven_on', [$start, $end])
+            ->when($start, function ($query) use ($start) {
+                $query->where('driven_on', '>=', $start);
+            })
+            ->when($end, function ($query) use ($end) {
+                $query->where('driven_on', '<=', $end);
+            })
             ->sum('driven_kilometres');
     }
 

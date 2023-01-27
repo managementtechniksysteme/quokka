@@ -10,12 +10,12 @@
 \qrcode[height=1cm]{ {!! Latex::escape(route('notes.show', $note)) !!} }
 \end{minipage}
 \begin{minipage}{0.93\textwidth}
-\large{\textbf{Notiz vom {!! Latex::escape($note->created_at->format('d.m.Y, H:i')) !!}}}
+\large{\textbf{Notiz\\vom {!! Latex::escape($note->created_at->format('d.m.Y, H:i')) !!}}}
 \end{minipage}
 \\\\\\
 @if($note->title)
 \section{Titel: {!! Latex::escape($note->title) !!}}
 @endif
 \section{Notiz}
-\footnotesize{{!! Latex::fromMarkdown($task->comment) !!}}
+\footnotesize{{!! Latex::fromMarkdown($note->comment) !!}}
 \end{document}

@@ -203,12 +203,18 @@
                                   </button>
 
                                   <div class="dropdown-menu dropdown-menu-right">
-                                      <button v-for="employeeId in this.getShownEmployeeIds()" class="dropdown-item" v-bind:class="{'dropdown-item-primary': employeeId === current_employee.id}" @click="createPdf(employeeId)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                          <svg class="icon icon-16 mr-2">
-                                              <use xlink:href="/svg/feather-sprite.svg#user"></use>
-                                          </svg>
-                                          {{ getEmployeeName(employeeId) }}
-                                      </button>
+                                      <form @submit.prevent="onReportSubmit">
+                                          <div v-for="employeeId in this.getShownEmployeeIds()" class="form-check mx-1 my-2">
+                                              <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">
+                                              <label class="form-check-label" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="employeeId">{{ getEmployeeName(employeeId) }}</label>
+                                          </div>
+                                          <button class="btn btn-sm btn-primary mx-1" type="submit">
+                                              <svg class="icon icon-16 mr-2">
+                                                  <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                              </svg>
+                                              Erstellen
+                                          </button>
+                                      </form>
                                   </div>
                               </div>
 
@@ -811,27 +817,34 @@
                 });
             },
 
-            createPdf(employeeId) {
+            onReportSubmit(event) {
+                const data = new FormData(event.target);
+                this.createPdf(data.getAll('employee_ids[]'))
+            },
+
+            createPdf(employeeIds) {
                 let url = new URL(window.location.origin + '/accounting/download');
 
-                let params = {
-                    employee_id: employeeId,
-                }
+                const params = new URLSearchParams(params);
+
+                employeeIds.forEach(function (id) {
+                    params.append('employee_ids[]', id);
+                });
 
                 if(this.filter_start) {
-                    params.start = this.filter_start;
+                    params.append('start', this.filter_start);
                 }
                 if(this.filter_end) {
-                    params.end = this.filter_end;
+                    params.append('end', this.filter_end);
                 }
                 if(this.filter_project) {
-                    params.project_id = this.filter_project.id;
+                    params.append('project_id', this.filter_project.id);
                 }
                 if(this.filter_service) {
-                    params.service_id = this.filter_service.id;
+                    params.append('service_id', this.filter_service.id);
                 }
 
-                url.search = new URLSearchParams(params).toString();
+                url.search = params.toString();
 
                 window.open(url).focus();
             },

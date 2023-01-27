@@ -29,6 +29,7 @@
       Privatfahrzeugen gefahren wurden, werden für alle gewählten Mitarbeiter angezeigt.
       * Bereits unterschriebene Berichte dürfen nun gelöscht werden, falls die Berechtigung zum Erledigen der Berichte
       vorhanden ist.
+      * Bei Projektauswertungen werden Projektbemerkungen nun vor der Tabelle angezeigt.
       @endmarkdown
 
       @markdown

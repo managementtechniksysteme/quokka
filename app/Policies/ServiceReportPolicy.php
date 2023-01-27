@@ -44,8 +44,12 @@ class ServiceReportPolicy
 
     public function delete(User $user, ServiceReport $serviceReport): bool
     {
-        if($serviceReport->status !== 'new') {
+        if($serviceReport->status === 'finished') {
             return false;
+        }
+
+        if($serviceReport->status === 'signed') {
+            return $user->can('service-reports.approve');
         }
 
         if($serviceReport->employee_id === $user->employee_id) {

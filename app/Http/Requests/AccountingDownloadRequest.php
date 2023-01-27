@@ -27,11 +27,11 @@ class AccountingDownloadRequest extends FormRequest
         }
 
         if(Auth::user()->can('accounting.view.own') && Auth::user()->cannot('accounting.view.other')) {
-            $rules['employee_ids.*'] = $rules['employee_ids'] . '|in:'.Auth::user()->employee_id;
+            $rules['employee_ids.*'] = $rules['employee_ids.*'] . '|in:'.Auth::user()->employee_id;
         }
 
         if(Auth::user()->can('accounting.view.other') && Auth::user()->cannot('accounting.view.own')) {
-            $rules['employee_ids'] = $rules['employee_ids'] . '|not_in:'.Auth::user()->employee_id;
+            $rules['employee_ids'] = $rules['employee_ids.*'] . '|not_in:'.Auth::user()->employee_id;
         }
 
         return $rules;

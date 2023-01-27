@@ -80,6 +80,7 @@ Es sind keine Abrechnungen passend dem Filter vorhanden.
 @endif
 @endif
 @if(count($employees) > 1)
+\\\\
 \begin{footnotesize}
 \textbf{Mitarbeiterkürzel:}
 \setlist{nosep, topsep=-0.2cm}

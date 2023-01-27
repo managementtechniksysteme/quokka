@@ -79,4 +79,15 @@ Es sind keine Abrechnungen passend dem Filter vorhanden.
 \footnotesize{Summe: {!! Latex::escape(Number::toLocal(array_sum($private_kilometres))) !!} ({!! Latex::escape(Number::toLocal(array_sum($private_kilometres) * $kilometre_costs)) . $currencyUnit !!})}
 @endif
 @endif
+@if(count($employees) > 1)
+\begin{footnotesize}
+\textbf{Mitarbeiterkürzel:}
+\setlist{nosep, topsep=-0.2cm}
+\setdescription{font=\normalfont}
+\begin{description}[labelwidth=0.8cm]
+@foreach($employees as $employee)
+\item[{!! Latex::escape(Str::upper($employee->user->username)) !!}:] {!! Latex::escape($employee->person->name) !!}
+@endforeach
+\end{description}
+\end{footnotesize}
 \end{document}

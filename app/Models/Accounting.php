@@ -192,27 +192,27 @@ class Accounting extends Model
             ->leftJoinSub($accountingAllowances, 'accounting_allowances', function($join) {
                 $join->on('accounting.service_provided_on', '=', 'accounting_allowances.service_provided_on')
                     ->on('accounting.project_id', '=', 'accounting_allowances.project_id')
-                    ->on('accounting.employee_id', '=', 'accounting_hours.employee_id');
+                    ->on('accounting.employee_id', '=', 'accounting_allowances.employee_id');
             })
             ->leftJoinSub($accountingOvertime50, 'accounting_overtime_50', function($join) {
                 $join->on('accounting.service_provided_on', '=', 'accounting_overtime_50.service_provided_on')
                     ->on('accounting.project_id', '=', 'accounting_overtime_50.project_id')
-                    ->on('accounting.employee_id', '=', 'accounting_hours.employee_id');
+                    ->on('accounting.employee_id', '=', 'accounting_overtime_50.employee_id');
             })
             ->leftJoinSub($accountingOvertime100, 'accounting_overtime_100', function($join) {
                 $join->on('accounting.service_provided_on', '=', 'accounting_overtime_100.service_provided_on')
                     ->on('accounting.project_id', '=', 'accounting_overtime_100.project_id')
-                    ->on('accounting.employee_id', '=', 'accounting_hours.employee_id');
+                    ->on('accounting.employee_id', '=', 'accounting_overtime_100.employee_id');
             })
             ->leftJoinSub($accountingTimeBalance, 'accounting_time_balance', function($join) {
                 $join->on('accounting.service_provided_on', '=', 'accounting_time_balance.service_provided_on')
                     ->on('accounting.project_id', '=', 'accounting_time_balance.project_id')
-                    ->on('accounting.employee_id', '=', 'accounting_hours.employee_id');
+                    ->on('accounting.employee_id', '=', 'accounting_time_balance.employee_id');
             })
             ->leftJoinSub($accountingHolidays, 'accounting_holidays', function($join) {
                 $join->on('accounting.service_provided_on', '=', 'accounting_holidays.service_provided_on')
                     ->on('accounting.project_id', '=', 'accounting_holidays.project_id')
-                    ->on('accounting.employee_id', '=', 'accounting_hours.employee_id');
+                    ->on('accounting.employee_id', '=', 'accounting_holidays.employee_id');
             })
             ->orderBy('accounting.service_provided_on')
             ->orderBy('projects.name')

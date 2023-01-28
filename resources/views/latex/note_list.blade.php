@@ -20,7 +20,7 @@
 \subsection{Titel: {!! Latex::escape($note->title) !!}}
 @endif
 \subsection{Notiz}
-\footnotesize{{!! Latex::fromMarkdown($task->comment) !!}}
+\footnotesize{{!! Latex::fromMarkdown($note->comment) !!}}
 @endforeach
 @else
 Es sind keine Notizen vorhanden.

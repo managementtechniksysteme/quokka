@@ -201,6 +201,8 @@ class NoteController extends Controller
 
     public function download(Request $request, Note $note)
     {
+        $note->load('employee.user');
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
@@ -211,8 +213,7 @@ class NoteController extends Controller
     public function downloadList(Request $request)
     {
         $notes = Auth::user()->employee->notes()
-            ->order()
-            ->with('employee.person');
+            ->order();
 
         $fileName = 'Notizbuch '.Auth::user()->employee->person->name.'.pdf';
 

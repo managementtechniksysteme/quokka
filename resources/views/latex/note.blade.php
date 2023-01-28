@@ -2,7 +2,7 @@
 
 @include('latex.partials.header')
 
-\fancyfoot[L]{\footnotesize{Notiz vom {!! Latex::escape($note->created_at->format('d.m.Y, H:i')) !!}, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
+\fancyfoot[L]{\footnotesize{Notiz von {!! Latex::escape(String::upper($note->employee->user->username)) !!} am {!! Latex::escape($note->created_at->format('d.m.Y, H:i')) !!}, erstellt am {!! Latex::escape(\Carbon\Carbon::today()) !!}}}
 \fancyfoot[R]{\footnotesize{Seite \thepage\ von \pageref{LastPage}}}
 
 \begin{document}

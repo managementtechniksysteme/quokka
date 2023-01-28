@@ -12,5 +12,5 @@ Danke,<br />
 {{ config('app.name') }}<br />
 MTS Management Technik Systeme GmbH & CO KG
 
-    @include('emails.partials.info_footer')
+@include('emails.partials.info_footer')
 @endcomponent

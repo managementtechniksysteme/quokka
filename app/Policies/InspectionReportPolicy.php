@@ -44,8 +44,12 @@ class InspectionReportPolicy
 
     public function delete(User $user, InspectionReport $inspectionReport): bool
     {
-        if($inspectionReport->status !== 'new') {
+        if($inspectionReport->status === 'finished') {
             return false;
+        }
+
+        if($inspectionReport->status === 'signed') {
+            return $user->can('inspection-reports.approve');
         }
 
         if($inspectionReport->employee_id === $user->employee_id) {

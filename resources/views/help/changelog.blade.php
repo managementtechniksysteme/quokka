@@ -15,12 +15,29 @@
     </div>
 
     <div class="container my-4">
-    @markdown
-    ### v0.1.24-cc21b26 (11.11.2022)
-    * In den Applikationseinstellungen können nun Kosten für Fahrtkilometer eingetragen werden. Diese werden in der
-    Projektübersicht sowie bei PDF Auswertungen angezeigt. Weiters werden die Fahrtkosten in den aktuellen Gesamtkosten
-    berücksichtigt.
-    @endmarkdown
+      @markdown
+      ### v0.1.25-e7e55e8 (27.01.2023)
+      * Ein privates Notizbuch steht nun zur Verfügung. Dieses kann über das Ausklappmenü durch Klick auf den
+      Benutzernamen erreicht werden. Notizen werden wie jegliche andere Elemente behandelt. Sie können per Email
+      versendet oder als PDF gedruckt werden. Weiters besteht die Möglichkeit, eine Notiz schnell in eine Aufgabe
+      umzuwandeln. **Jeder Benutzer sieht nur seine eigenen, persönlchen Notizen.**
+      * Fahrzeuge können ab jetzt als Privatfahrzeuge markiert werden. Somit werden alle auf solche Farhzeuge gebuchten
+      Fahrten als private Fahrten behandelt. Diese werden bei der Abrechnungsauswertung berücksichtigt und automatisch
+      für den angegebenen Zeitraum aufsummiert angezeigt. Zusätzlich wird der entsprechende Euro Betrag ausgegeben.
+      * Bei entsprechenden Berechtiugngen können Abrechnungsauswrtungen jetzt über mehrere Mitarbeiter gleichzeitig
+      erfolgen. In diesem fall wird in der Tabelle zusätzlich das Mitarbeiterkürzel angezeigt und Kilometer, die mit
+      Privatfahrzeugen gefahren wurden, werden für alle gewählten Mitarbeiter angezeigt.
+      * Bereits unterschriebene Berichte dürfen nun gelöscht werden, falls die Berechtigung zum Erledigen der Berichte
+      vorhanden ist.
+      * Bei Projektauswertungen werden Projektbemerkungen nun vor der Tabelle angezeigt.
+      @endmarkdown
+
+      @markdown
+      ### v0.1.24-cc21b26 (11.11.2022)
+      * In den Applikationseinstellungen können nun Kosten für Fahrtkilometer eingetragen werden. Diese werden in der
+      Projektübersicht sowie bei PDF Auswertungen angezeigt. Weiters werden die Fahrtkosten in den aktuellen Gesamtkosten
+      berücksichtigt.
+      @endmarkdown
 
       @markdown
       ### v0.1.23-3e59f5a (10.10.2022)

@@ -213,7 +213,8 @@ class NoteController extends Controller
     public function downloadList(Request $request)
     {
         $notes = Auth::user()->employee->notes()
-            ->order();
+            ->order()
+            ->get();
 
         $fileName = 'Notizbuch '.Auth::user()->employee->person->name.'.pdf';
 

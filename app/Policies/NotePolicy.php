@@ -44,4 +44,9 @@ class NotePolicy
     {
         return $user->can('notes.createpdf') && $note->employee_id == $user->employee_id;
     }
+
+    public function downloadList(User $user): bool
+    {
+        return $user->can('notes.view');
+    }
 }

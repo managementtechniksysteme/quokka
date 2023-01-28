@@ -114,7 +114,10 @@ class AccountingController extends Controller
         $employees = Employee::whereIn('person_id', $validatedData['employee_ids'])
             ->with('user')
             ->with('person')
-            ->get();
+            ->get()
+            ->sortBy('user.username')
+            ->values()
+            ->all();
         $project = isset($validatedData['project_id']) ? Project::find($validatedData['project_id']) : null;
         $service = isset($validatedData['service_id']) ? Service::find($validatedData['service_id']) : null;
         $allowancesService = ApplicationSettings::get()->allowancesService;

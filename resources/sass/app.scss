@@ -321,6 +321,11 @@ a.outline-none {
   min-width: 0 !important;
 }
 
+// Minimum width of 200px
+.min-w-200 {
+  min-width: 200px;
+}
+
 // Link heights corresponding to feather icons for split dropdowns in navbar
 .h-12 {
   min-height: 12px;

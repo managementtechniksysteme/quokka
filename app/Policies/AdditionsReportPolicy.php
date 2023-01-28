@@ -76,8 +76,12 @@ class AdditionsReportPolicy
         $involved = false;
         $other = false;
 
-        if($additionsReport->status !== 'new') {
+        if($additionsReport->status === 'finished') {
             return false;
+        }
+
+        if($additionsReport->status === 'signed') {
+            return $user->can('sadditions-reports.approve');
         }
 
         if($additionsReport->employee->person_id === $user->employee_id) {

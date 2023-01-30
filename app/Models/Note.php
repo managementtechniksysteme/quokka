@@ -29,6 +29,8 @@ class Note extends Model implements FiltersGlobalSearch, HasMedia
         'comment'
     ];
 
+    protected $filterKeys = [];
+
     protected $orderKeys = [
         'default' => [['created_at', 'desc']],
         'created_at-asc' => ['created_at'],

@@ -17,9 +17,21 @@
             }
         },
 
+        mounted() {
+            if(this.selected && this.change_event) {
+                this.$nextTick(function() {
+                    document.dispatchEvent(new CustomEvent(this.change_event, { detail: this.selected.id }));
+                })
+            }
+        },
+
         methods: {
             setSelected(value) {
                 this.selected = value;
+
+                if(this.change_event) {
+                    document.dispatchEvent(new CustomEvent(this.change_event, { detail: value.id }));
+                }
             }
         },
 
@@ -38,6 +50,12 @@
             },
             current_project: {
                 type: Object,
+                default() {
+                    return null;
+                }
+            },
+            change_event: {
+                type: String,
                 default() {
                     return null;
                 }

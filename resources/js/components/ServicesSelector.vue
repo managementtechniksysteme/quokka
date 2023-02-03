@@ -37,7 +37,7 @@
                     <div class="m-0">
                         <p class="m-0">
                             Zu den eingetragenen Daten existieren für das gewählte Projekt bereits folgende Serviceberichte von dir.
-                            <strong>Bitte überprüfe, ob etwaige Dienstleitungen bereits in einem Servicebericht vermerkt sind!</strong>
+                            <strong>Bitte überprüfe, ob Serviceleistungen bereits in einem Servicebericht vermerkt sind!</strong>
                         </p>
                         <ul class="m-0">
                             <li v-for="report in overlapping_reports"><a :href="report.link" target="_blank">{{ report.title }}</a></li>

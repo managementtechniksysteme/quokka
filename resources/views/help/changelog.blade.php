@@ -15,6 +15,16 @@
     </div>
 
     <div class="container my-4">
+
+
+      @markdown
+      ### v0.1.26-de5fbe7 (03.02.2023)
+      * Beim Erstellen und Bearbeiten von Serviceberichten wird automatisch geprüft, ob zu den eingegebenen
+      Daten bereits andere Serviceberichte des Mitarbeiters existieren. Diese werden in Echtzeit als Links zur
+      Prüfung über der Leistungstabelle angezeigt.
+      * Ein Fehler bei der Suche in Fehlerberichten wurde behoben.
+      @endmarkdown
+
       @markdown
       ### v0.1.25-e7e55e8 (27.01.2023)
       * Ein privates Notizbuch steht nun zur Verfügung. Dieses kann über das Ausklappmenü durch Klick auf den

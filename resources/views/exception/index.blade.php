@@ -21,7 +21,7 @@
 
                 <div class="col">
 
-                    <form action="{{ route('employees.index') }}" method="get">
+                    <form action="{{ route('exceptions.index') }}" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Fehlerdatei suchen" autocomplete="off" />
                             <div class="input-group-append">

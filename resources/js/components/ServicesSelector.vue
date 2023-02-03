@@ -29,6 +29,23 @@
         </div>
 
         <div v-if="services.length" class="mt-2">
+            <div v-if="overlapping_reports.length" class="alert alert-warning mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                    </svg>
+                    <div class="m-0">
+                        <p class="m-0">
+                            Zu den eingetragenen Daten existieren für das gewählte Projekt bereits folgende Serviceberichte von dir.
+                            <strong>Bitte überprüfe, ob etwaige Dienstleitungen bereits in einem Servicebericht vermerkt sind!</strong>
+                        </p>
+                        <ul class="m-0">
+                            <li v-for="report in overlapping_reports"><a :href="report.link" target="_blank">{{ report.title }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <table class="table table-sm">
                 <thead>
                     <tr>
@@ -84,23 +101,30 @@
                 kilometres_invalid: false,
                 table_kilometres_invalid: false,
                 services: [],
+                project_id: null,
+                report_id: this.current_report_id ? this.current_report_id : null,
+                overlapping_reports: [],
             }
         },
 
-        created() {
-            let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+        mounted() {
+            if(this.current_services) {
+                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
-            this.current_services.forEach(service => {
-                let date = Date.parse(service.provided_on);
+                this.current_services.forEach(service => {
+                    let date = Date.parse(service.provided_on);
 
-                this.services.push({
-                    edit: null,
-                    service_report_id: service.service_report_id,
-                    provided_on: new Date(date - userTimezoneOffset),
-                    hours: service.hours,
-                    kilometres: service.kilometres,
+                    this.services.push({
+                        edit: null,
+                        service_report_id: service.service_report_id,
+                        provided_on: new Date(date - userTimezoneOffset),
+                        hours: service.hours,
+                        kilometres: service.kilometres,
+                    });
                 });
-            });
+            }
+
+            document.addEventListener('onservicereportprojectchange', this.handleProjectChange);
         },
 
         methods: {
@@ -119,10 +143,10 @@
                 }
 
               let service = this.services.find(service =>
-		service.provided_on.getYear() === date.getYear() &&
-		service.provided_on.getMonth() === date.getMonth() &&
-		service.provided_on.getDate() === date.getDate()
-	      );
+                service.provided_on.getYear() === date.getYear() &&
+                service.provided_on.getMonth() === date.getMonth() &&
+                service.provided_on.getDate() === date.getDate()
+	            );
 
                 if(service) {
                     service.hours += hours;
@@ -136,6 +160,12 @@
                         hours: hours,
                         kilometres: kilometres});
                     this.sortArrayByDate(this.services);
+
+                    this.fetchOverlappingServices(
+                        this.report_id,
+                        this.project_id,
+                        this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                    );
                 }
 
                 let today = new Date();
@@ -150,6 +180,12 @@
 
             removeService(value) {
                 this.services = this.removeFromArray(this.services, value);
+
+                this.fetchOverlappingServices(
+                    this.report_id,
+                    this.project_id,
+                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                );
             },
 
             removeFromArray(services, value) {
@@ -171,6 +207,12 @@
                 changedService.edit = null;
 
                 this.sortArrayByDate(this.services);
+
+                this.fetchOverlappingServices(
+                    this.report_id,
+                    this.project_id,
+                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                );
             },
 
             changeServiceHours(event, changedService) {
@@ -232,6 +274,46 @@
             getDateStringForInputField(date) {
                 return date.toISOString().substr(0, 10);
             },
+
+            handleProjectChange(event) {
+                this.project_id = event.detail;
+                this.fetchOverlappingServices(
+                    this.report_id,
+                    this.project_id,
+                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                );
+            },
+
+            fetchOverlappingServices(service_report_id, project_id, service_dates) {
+                if(!this.project_id || !this.services.length) {
+                    return;
+                }
+
+                let params = {
+                    project_id: project_id,
+                    dates: service_dates
+                }
+
+                if(service_report_id) {
+                    params.report_id = this.report_id;
+                }
+
+                let axiosInstance = axios.create({
+                    validateStatus: function (status) {
+                        return status < 300;
+                    }
+                });
+
+                axiosInstance.get('/service-reports/check-overlap', {
+                    params: params
+                })
+                .then(response => {
+                    this.overlapping_reports = response.data.reports;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }
         },
 
         props: {
@@ -239,6 +321,20 @@
                 type: Array,
                 default() {
                     return [];
+                }
+            },
+
+            project_change_event: {
+                type: String,
+                default() {
+                    return 'onservicereportprojectchange';
+                }
+            },
+
+            current_report_id: {
+                type: Number,
+                default() {
+                    return null;
                 }
             }
         }

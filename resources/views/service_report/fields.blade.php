@@ -79,7 +79,7 @@
 
         <div class="form-group">
             <label for="project_id">Projekt</label>
-            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
+            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" change_event="onservicereportprojectchange"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
                 @error('project_id')
                     {{ $message }}
@@ -103,7 +103,7 @@
     </div>
 
     <div class="col-md-8">
-        <services-selector :current_services="{{ $currentServices ?? 'null' }}" v-cloak></services-selector>
+        <services-selector :current_services="{{ $currentServices ?? 'null' }}" :current_report_id="{{ $serviceReport ? $serviceReport->id : 'null' }}" v-cloak></services-selector>
         <div class="invalid-feedback @error('services') d-block @enderror @error('services.*') d-block @enderror">
             @error('services')
                 {{ $message }}

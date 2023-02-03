@@ -6,6 +6,7 @@ use App\Events\ServiceReportCreatedEvent;
 use App\Events\ServiceReportSignedEvent;
 use App\Events\ServiceReportUpdatedEvent;
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\ServiceReportCheckOverlapRequest;
 use App\Http\Requests\ServiceReportCreateRequest;
 use App\Http\Requests\ServiceReportDownloadListRequest;
 use App\Http\Requests\SignRequest;
@@ -22,8 +23,10 @@ use App\Models\Project;
 use App\Models\ServiceReport;
 use App\Models\ServiceReportService;
 use App\Models\SignatureRequest;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -616,6 +619,40 @@ class ServiceReportController extends Controller
 
         return $this->getConditionalRedirect($request->redirect, $serviceReport)
             ->with('success', 'Der Servicebericht wurde erfolgreich erledigt.');
+    }
+
+    public function checkOverlap(ServiceReportCheckOverlapRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $reports = Auth::user()->employee->serviceReports()
+            ->whereHas('services', function ($query) use ($validatedData) {
+                $query->whereIn('provided_on', $validatedData['dates']);
+            })
+            ->whereProjectId($validatedData['project_id'])
+            ->when(isset($validatedData['report_id']), function ($query) use ($validatedData) {
+                $query->where('id', "!=", $validatedData['report_id']);
+            })
+            ->orderBy('number')
+            ->with('project')
+            ->withMin('services', 'provided_on')
+            ->withMax('services', 'provided_on')
+            ->get()
+            ->map(function ($serviceReport) {
+                $dateRange =
+                    new Carbon($serviceReport->services_min_provided_on) .
+                    ($serviceReport->services_min_provided_on === $serviceReport->services_max_provided_on ? '' :
+                        ' - '. new Carbon($serviceReport->services_max_provided_on));
+
+                return [
+                    'id' => $serviceReport->id,
+                    'title' => "{$serviceReport->project->name} #$serviceReport->number ($dateRange)",
+                    'link' => route('service-reports.show', $serviceReport),
+                ];
+            });
+
+        return response()->json(['reports' => $reports], Response::HTTP_OK);
+
     }
 
     private function sendDownloadRequest(ServiceReport $serviceReport, string $email)

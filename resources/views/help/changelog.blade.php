@@ -15,7 +15,15 @@
     </div>
 
     <div class="container my-4">
-
+      @markdown
+      ### v0.1.27-e162fbb (08.02.2023)
+      * Ein Fehler beim Filtern von Listen wurde behoben. Durch das Entfernen eines Filters bei vorhandenem
+        Defaultfilter wurde der Defaultfilter bei Seitenwechsel fehlerhafterweise wieder aktiviert. Somit ergab sich
+        unter Umständen auh eine ungültige Seitenzahl, wonach bei einem Klick die Meldung über keine vorhandenen
+        Elemente im System angezeigt wurde.
+      * Ein Fehler beim Erstellen von Serviceberichten aus der Abrechnung wurde behoben. Die Funktion zur Prüfung
+        überlappender, bereits existierender Serviceberichte produzierte eine ungewollte Ausnahme.
+      @endmarkdown
 
       @markdown
       ### v0.1.26-de5fbe7 (03.02.2023)

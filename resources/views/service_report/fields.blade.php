@@ -103,7 +103,7 @@
     </div>
 
     <div class="col-md-8">
-        <services-selector :current_services="{{ $currentServices ?? 'null' }}" :current_report_id="{{ $serviceReport ? $serviceReport->id : 'null' }}" v-cloak></services-selector>
+        <services-selector :current_services="{{ $currentServices ?? 'null' }}" :current_report_id="{{ $serviceReport->id ?? 'null' }}" v-cloak></services-selector>
         <div class="invalid-feedback @error('services') d-block @enderror @error('services.*') d-block @enderror">
             @error('services')
                 {{ $message }}

@@ -30,7 +30,7 @@ class ExceptionController extends Controller
 
         if($request->has('search')) {
             $exceptions = $exceptions->filter(function ($exception) use ($request) {
-                return str_contains($exception['name'], $request->search);
+                return str_contains($exception['uuid'], $request->search);
             });
         }
 

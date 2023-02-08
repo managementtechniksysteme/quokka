@@ -18,7 +18,6 @@ trait FiltersSearch
         if (! $request->has('search') && $defaultFilter !== null && $defaultFilter !== '') {
             $request->request->add(['search' => $defaultFilter]);
         } elseif ($request->has('search') && !$request->filled('search')) {
-            dump('in here');
             $request->request->add(['search' => '']);
         }
     }

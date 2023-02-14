@@ -133,7 +133,7 @@
                         </svg>
                         Anhänge
                     </div>
-                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseNoteAttachments-{{ $task->id }}" role="button" aria-expanded="false" aria-controls="collapseNoteAttachments-{{ $note->id }}">
+                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseNoteAttachments-{{ $note->id }}" role="button" aria-expanded="false" aria-controls="collapseNoteAttachments-{{ $note->id }}">
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>

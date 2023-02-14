@@ -143,7 +143,7 @@
             </div>
             <div class="d-none d-md-block">
                 <div class="row">
-                    @foreach($notes->attachments() as $attachment)
+                    @foreach($note->attachments() as $attachment)
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                 @if($attachment->hasGeneratedConversion('thumbnail'))

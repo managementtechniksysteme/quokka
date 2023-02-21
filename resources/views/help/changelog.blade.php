@@ -16,6 +16,17 @@
 
     <div class="container my-4">
       @markdown
+      ### v0.1.28-96e607c (21.02.2023)
+      * Aktenvermerke können beim Erstellen nun als Entwurf markiert werden. Solange ein Aktenvermerk im Entwurfsstatus
+        bearbeitet wird, werden keine Benachrichtigungen beim Speichern an beteiligte Personen mit Quokka Zugang
+        gesendet. Erst beim Veröffentlichen (entweder beim finalen Bearbeiten des Entwurfs oder durch eine separate
+        Aktion) werden Benachrichtigungen abgearbeitet. Benachrichtigungen nach Bearbeiten von veröffentlichten
+        Aktenvermerken werden wie bisher behandelt.
+      * Aus einer Notiz im Notizbuch kann jetzt neben einer Aufgabe auch ein Aktenvermerk erstellt werden.
+      * Kleinere Fehlerbehebungen und Verbesserungen wurden implementiert.
+      @endmarkdown
+
+      @markdown
       ### v0.1.27-e162fbb (08.02.2023)
       * Ein Fehler beim Filtern von Listen wurde behoben. Durch das Entfernen eines Filters bei vorhandenem
         Defaultfilter wurde der Defaultfilter bei Seitenwechsel fehlerhafterweise wieder aktiviert. Somit ergab sich

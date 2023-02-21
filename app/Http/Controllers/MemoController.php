@@ -10,6 +10,7 @@ use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
 use App\Mail\MemoMail;
 use App\Models\Memo;
+use App\Models\Note;
 use App\Models\Person;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -96,7 +97,27 @@ class MemoController extends Controller
             $currentPresentPeople = $templateMemo->presentPeople;
             $currentNotifiedPeople = $templateMemo->notifiedPeople;
         }
-        else if (isset($validatedData['project'])) {
+        elseif (isset($validatedData['note'])) {
+            $templateNote = Note::find($validatedData['note']);
+
+            if(!$templateNote) {
+                return redirect()
+                    ->route('memos.create')
+                    ->with('warning', 'Die angegebene Notiz existiert nicht.');
+            }
+
+            if(Auth::user()->cannot('view', $templateNote)) {
+                return redirect()
+                    ->route('notes.create')
+                    ->with('danger', 'Du kannst aus dieser Notiz keinen Aktenvermerk erstellen.');
+            }
+
+            $templateMemo = Memo::make([
+                'title' => $templateNote->title_string,
+                'comment' => $templateNote->comment,
+            ]);
+        }
+        elseif (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);
         }
 

@@ -15,8 +15,9 @@ class MemoCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => 'sometimes|exists:memos,id|prohibits:project|prohibits:project',
-            'project' => 'sometimes|exists:projects,id|prohibits:template|prohibits:template'
+            'template' => 'sometimes|exists:memos,id|prohibits:project,note',
+            'project' => 'sometimes|exists:projects,id|prohibits:template,note',
+            'note' => 'sometimes|exists:notes,id|prohibits:template,project',
         ];
     }
 }

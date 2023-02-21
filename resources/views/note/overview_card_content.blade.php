@@ -46,6 +46,14 @@
                             Aufgabe erstellen
                         </a>
                     @endcan
+                    @can('create', \App\Models\Memo::class)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.create', ['note' => $note]) }}">
+                            <svg class="icon icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                            </svg>
+                            Aktenvermerk erstellen
+                        </a>
+                    @endcan
                     @can('email', $note)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('notes.email', $note) }}">
                             <svg class="icon icon-16 mr-2">

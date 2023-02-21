@@ -21,7 +21,8 @@
         bearbeitet wird, werden keine Benachrichtigungen beim Speichern an beteiligte Personen mit Quokka Zugang
         gesendet. Erst beim Veröffentlichen (entweder beim finalen Bearbeiten des Entwurfs oder durch eine separate
         Aktion) werden Benachrichtigungen abgearbeitet. Benachrichtigungen nach Bearbeiten von veröffentlichten
-        Aktenvermerken werden wie bisher behandelt.
+        Aktenvermerken werden wie bisher behandelt. Das Versenden von Emails bzw. Erstellen von PDF Dateien ist erst
+        nach Veröffentlichung möglich.
       * Aus einer Notiz im Notizbuch kann jetzt neben einer Aufgabe auch ein Aktenvermerk erstellt werden.
       * Kleinere Fehlerbehebungen und Verbesserungen wurden implementiert.
       @endmarkdown

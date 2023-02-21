@@ -4,7 +4,7 @@ current:
   label: v
   major: 0
   minor: 1
-  patch: 27
+  patch: 28
   prerelease: beta
   buildmetadata:
   commit: 96e607c

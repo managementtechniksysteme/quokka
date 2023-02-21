@@ -101,7 +101,7 @@ class TaskController extends Controller
 
             if(!$templateNote) {
                 return redirect()
-                    ->route('notes.create')
+                    ->route('tasks.create')
                     ->with('warning', 'Die angegebene Notiz existiert nicht.');
             }
 

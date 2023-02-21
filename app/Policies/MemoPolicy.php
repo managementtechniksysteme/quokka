@@ -134,6 +134,10 @@ class MemoPolicy
         $notified = false;
         $other = false;
 
+        if ($memo->draft) {
+            return false;
+        }
+
         if($memo->employeeComposer->person_id === $user->employee_id) {
             $sender = $user->can('memos.email.sender');
         }
@@ -167,6 +171,10 @@ class MemoPolicy
         $present = false;
         $notified = false;
         $other = false;
+
+        if ($memo->draft) {
+            return false;
+        }
 
         if($memo->employeeComposer->person_id === $user->employee_id) {
             $sender = $user->can('memos.createpdf.sender');

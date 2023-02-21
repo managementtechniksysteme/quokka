@@ -33,6 +33,19 @@
                 <div class="col-sm-5 col-md col-lg-4">
                     <div class="text-muted d-flex align-items-center">
                         <svg class="icon icon-16 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                        </svg>
+                        Entwurf
+                    </div>
+                </div>
+                <div class="col col-sm-7 col-md col-lg-8">
+                    {{ __($memo->draft_string) }}
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-5 col-md col-lg-4">
+                    <div class="text-muted d-flex align-items-center">
+                        <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         Verfasser

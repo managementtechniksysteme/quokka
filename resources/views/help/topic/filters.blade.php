@@ -170,6 +170,9 @@
         
         * `nummer:<Nummer>` oder `n:<Nummer>`  
         Der Aktenvermerk hat die Nummer `<Nummer>`.
+
+        * `ist:entwurf` oder `ist:e`
+        Der Aktenvermerk befindet sich im Entwurfsstatus.
                     
         * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
         Der Aktenvermerk ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.

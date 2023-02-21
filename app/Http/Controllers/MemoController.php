@@ -180,7 +180,9 @@ class MemoController extends Controller
             $memo->addAttachments($request->new_attachments);
         }
 
-        event(new MemoCreatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+        if(!$memo->draft) {
+            event(new MemoCreatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+        }
 
         return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich angelegt.');
     }
@@ -252,6 +254,8 @@ class MemoController extends Controller
     {
         $validatedData = $request->validated();
 
+        $oldDraft = $memo->draft;
+
         $oldProjectId = $memo->project_id;
         $newProjectId = (int)$validatedData['project_id'];
 
@@ -322,8 +326,13 @@ class MemoController extends Controller
             $memo->touch();
         }
 
-        if($memo->wasChanged()) {
-            event(new MemoUpdatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+        if($memo->wasChanged() && !$memo->draft) {
+            if($oldDraft) {
+                event(new MemoCreatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+            }
+            else {
+                event(new MemoUpdatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+            }
         }
 
         return redirect()->route('memos.show', $memo)->with('success', 'Der Aktenvermerk wurde erfolgreich bearbeitet.');
@@ -411,6 +420,18 @@ class MemoController extends Controller
             ->untilAuxSettles()
             ->view('latex.memo', ['memo' => $memo])
             ->download('AV '.$memo->project->name.' #'.$memo->number.'.pdf');
+    }
+
+    public function publish(Request $request, Memo $memo)
+    {
+        if($memo->draft) {
+            $memo->update(['draft' => false]);
+
+            event(new MemoCreatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+        }
+
+        return $this->getConditionalRedirect($request->redirect, $memo)
+            ->with('success', 'Der Aktenvermerk wurde erfolgreich veröffentlicht.');
     }
 
     private function getConditionalRedirect(?string $target, Memo $memo)

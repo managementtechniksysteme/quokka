@@ -176,6 +176,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/memos/{memo}/download', [MemoController::class, 'download'])->name('memos.download');
     Route::get('/memos/{memo}/email', [MemoController::class, 'showEmail'])->name('memos.email');
     Route::post('/memos/{memo}/email', [MemoController::class, 'email']);
+    Route::get('/memos/{memo}/publish', [MemoController::class, 'publish'])->name('memos.publish');
 
     Route::get('/notes/list', [NoteController::class, 'downloadList'])->name('notes.download-list');
     Route::resource('notes', NoteController::class);

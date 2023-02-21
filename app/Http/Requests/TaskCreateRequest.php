@@ -15,9 +15,9 @@ class TaskCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template' => 'sometimes|exists:tasks,id',
-            'project' => 'sometimes|exists:projects,id',
-            'note' => 'sometimes|exists:notes,id',
+            'template' => 'sometimes|exists:tasks,id|prohibits:project,note',
+            'project' => 'sometimes|exists:projects,id|prohibits:template,note',
+            'note' => 'sometimes|exists:notes,id|prohibits:template,project',
         ];
     }
 }

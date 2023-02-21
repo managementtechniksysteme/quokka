@@ -18,6 +18,7 @@ class MemoStoreRequest extends FormRequest
         $project_id = $this->input('project_id');
 
         return [
+            'draft' => 'required|boolean',
             'title' => [
                 'required',
                 Rule::unique('memos')->where(function ($query) use ($title, $project_id) {

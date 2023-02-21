@@ -1,4 +1,4 @@
-<div class="overview-card rounded">
+<div class="overview-card rounded @if($memo->draft) border-status border-warning @endif">
     <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
 
         <div class="mw-100 flex-grow-1 h-100 position-relative">
@@ -102,6 +102,16 @@
                 <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="memoOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="memoOverviewDropdown">
+                    @if($memo->draft)
+                        @can('update', $memo)
+                            <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('memos.publish', ['memo' => $memo, 'redirect' => $actionRedirect ?? 'index']) }}">
+                                <svg class="icon icon-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                                </svg>
+                                Veröffentlichen
+                            </a>
+                        @endcan
+                    @endif
                     @can('update', $memo)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.edit', $memo) }}">
                             <svg class="icon icon-16 mr-2">

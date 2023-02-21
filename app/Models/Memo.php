@@ -23,12 +23,13 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
 
     protected $casts = [
         'number' => 'int',
+        'draft' => 'bool',
         'meeting_held_on' => 'date',
         'next_meeting_on' => 'date',
     ];
 
     protected $fillable = [
-        'number', 'title', 'meeting_held_on', 'next_meeting_on', 'comment', 'project_id',
+        'number', 'draft', 'title', 'meeting_held_on', 'next_meeting_on', 'comment', 'project_id',
         'employee_id', 'person_id',
     ];
 
@@ -54,6 +55,8 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
         'hat:folgetermin' => ['raw' => ['next_meeting_on >= curdate()', 'next_meeting_on < curdate() or next_meeting_on is null']],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
+        'ist:entwurf' => ['draft', true],
+        'ist:e' => ['draft', true],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
@@ -78,6 +81,8 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
         'meeting_held_on-desc' => [['meeting_held_on', 'desc']],
         'title-asc' => ['title'],
         'title-desc' => [['title', 'desc']],
+        'draft-asc' => ['draft'],
+        'draft-desc' => [['draft', 'desc']],
     ];
 
     protected $permissionFilters = [
@@ -138,5 +143,17 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
     public function notifiedPeople()
     {
         return $this->morphToMany(Person::class, 'personable')->wherePivot('person_type', 'notified');
+    }
+
+    public function getDraftStringAttribute()
+    {
+        switch ($this->draft) {
+            case false:
+                return 'no';
+            case true:
+                return 'yes';
+            default:
+                return $this->draft;
+        }
     }
 }

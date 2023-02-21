@@ -25,7 +25,64 @@
 
 @csrf
 
-<div class="row">
+@if(!optional($memo)->id || optional($memo)->draft)
+    <div class="row">
+        <div class="col-md-4">
+            <p class="d-inline-flex align-items-center mb-1">
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                </svg>
+                Entwurf
+            </p>
+            <p class="text-muted">
+                Der Entwurfsstatus des Aktenvermerkes.
+            </p>
+            <p class="text-muted">
+                Solange ein Aktenvermerk als Entwurf gekennzeichnet ist, werden beim Speichern die beteiligten Personen
+                mit Quokka Zugang nicht benachrichtigt. Erst nach Veröffentlichung des Aktenvermerks werden
+                Benachrichtigungen übermittelt. Ein veröffentlichter Aktenvermerk kann nicht mehr in den Entwurfsstatus
+                versetzt werden.
+            </p>
+        </div>
+
+        <div class="col-md-8">
+            @if(optional($memo)->id)
+                <div class="alert alert-info" role="alert">
+                    <div class="d-inline-flex align-items-center">
+                        <svg class="icon icon-24 mr-2">
+                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                        </svg>
+                        <p class="m-0">
+                            Der Aktenvermerk wurde bisher als Entwurf gespeichert. Um ihn zu veröffentlichen, setze den
+                            Entwurfsstatus auf <strong>nein</strong>.
+                        </p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="form-group">
+                <div>
+                    <label for="draft">Entwurf</label>
+                </div>
+                <div class="btn-group btn-group-toggle @error('draft') is-invalid @enderror" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary @if(old('draft', optional($memo)->draft) == true) active @endif">
+                        <input type="radio" name="draft" id="1" value="1" autocomplete="off" @if(old('draft', optional($memo)->draft) == true) checked @endif> ja
+                    </label>
+                    <label class="btn btn-outline-secondary @if(old('draft', optional($memo)->draft) == false) active @endif">
+                        <input type="radio" name="draft" id="0" value="0" autocomplete="off" @if(old('draft', optional($memo)->draft) == false) checked @endif> nein
+                    </label>
+                </div>
+                <div class="invalid-feedback @error('draft') d-block @enderror">
+                    @error('draft')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<div class="row @if(!optional($memo)->id || optional($memo)->draft) mt-4 @endif">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">

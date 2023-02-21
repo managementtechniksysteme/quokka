@@ -18,6 +18,16 @@
             </h3>
 
             <div class="scroll-x d-flex">
+                @if($memo->draft)
+                    @can('update', $memo)
+                        <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.publish', ['memo' => $memo, 'redirect' => 'show']) }}">
+                            <svg class="icon icon-16 mr-2">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                            </svg>
+                            Veröffentlichen
+                        </a>
+                    @endcan
+                @endif
                 @can('update', $memo)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.edit', $memo) }}">
                         <svg class="icon icon-16 mr-2">

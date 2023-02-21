@@ -48,6 +48,12 @@
                                    Meine Aktenvermerke
                                 </a>
                                 <a class="dropdown-item"
+                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=von:' . Auth::user()->username . ' ist:entwurf&sort=' . Request::get('sort') }}"
+                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=von:' . Auth::user()->username . ' ist:entwurf' }}"
+                                    @endif>
+                                    Meine Entwürfe
+                                </a>
+                                <a class="dropdown-item"
                                    @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=bm:' . Auth::user()->username . '&sort=' . Request::get('sort') }}"
                                    @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=bm:' . Auth::user()->username }}"
                                    @endif>
@@ -116,6 +122,18 @@
                                 </svg>
                                 Titel
                             </button>
+                                <button type="submit" name="sort" value="draft-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
+                                    <svg class="icon icon-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
+                                    </svg>
+                                    Entwurf
+                                </button>
+                                <button type="submit" name="sort" value="draft-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
+                                    <svg class="icon icon-16 mr-2">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
+                                    </svg>
+                                    Entwurf
+                                </button>
                         </form>
                     </div>
                 </div>
@@ -156,4 +174,11 @@
     <div class="mt-2">
         {{ $memos->links() }}
     </div>
+
+    @if($memos->count() > 0)
+        <p class="mt-3 small">
+            Der linke farbliche Rand zeigt den Status des jeweiligen Aktenvermerkes:
+            <span class="badge badge-yellow-100 text-yellow-800">Entwurf</span>
+        </p>
+    @endif
 @endsection

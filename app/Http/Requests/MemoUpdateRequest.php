@@ -18,7 +18,7 @@ class MemoUpdateRequest extends FormRequest
         $title = $this->input('title');
         $project_id = $this->input('project_id');
 
-        return [
+        $rules = [
             'title' => [
                 'required',
                 Rule::unique('memos')->where(function ($query) use ($title, $project_id) {
@@ -40,5 +40,11 @@ class MemoUpdateRequest extends FormRequest
             'new_attachments' => 'array|nullable',
             'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
+
+        if($memo->draft) {
+            $rules['draft'] = 'required|boolean';
+        }
+
+        return $rules;
     }
 }

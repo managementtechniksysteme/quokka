@@ -409,11 +409,13 @@ class TaskController extends Controller
             ->load('responsibleEmployee')
             ->load('involvedEmployees');
 
+        $name = str_replace(array('\\','/',':','*','?','"','<','>','|'),'_', $task->name);
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.task', ['task' => $task])
-            ->download('AU '.$task->name.'.pdf');
+            ->download('AU '.$name.'.pdf');
     }
 
     public function finish(Request $request, Task $task): RedirectResponse

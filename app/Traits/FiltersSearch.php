@@ -16,9 +16,10 @@ trait FiltersSearch
         $defaultFilter = self::defaultFilter();
 
         if (! $request->has('search') && $defaultFilter !== null && $defaultFilter !== '') {
-            $request->request->add(['search' => $defaultFilter]);
+            //$request->request->add(['search' => $defaultFilter]);
+            $request->merge(['search' => $defaultFilter]);
         } elseif ($request->has('search') && !$request->filled('search')) {
-            $request->request->add(['search' => '']);
+            $request->merge(['search' => '']);
         }
     }
 

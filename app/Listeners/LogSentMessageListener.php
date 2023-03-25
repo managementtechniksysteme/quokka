@@ -16,12 +16,34 @@ class LogSentMessageListener  implements ShouldQueue
 
     public function handle($event)
     {
+        $toAddresses = [];
+        $ccAddresses = [];
+        $bccAddresses = [];
+
+        foreach ($event->message->getTo() as $toAddress) {
+            $toAddresses[$toAddress->getAddress()] = $toAddress->getName() ?: null;
+        }
+
+        foreach ($event->message->getCc() as $ccAddress) {
+            $ccAddresses[$ccAddress->getAddress()] = $ccAddress->getName() ?: null;
+        }
+
+        foreach ($event->message->getBcc() as $bccAddress) {
+            $bccAddresses[$bccAddress->getAddress()] = $bccAddress->getName() ?: null;
+        }
+
+        \Log::info("Email properties");
+        \Log::info(print_r($toAddresses, true));
+        \Log::info(print_r($ccAddresses, true));
+        \Log::info(print_r($bccAddresses, true));
+
+
         activity()
             ->withProperties([
                 'subject' => $event->message->getSubject(),
-                'to' => is_array($event->message->getTo()) ? $event->message->getTo() : ($event->message->getTo() !== null ? [$event->message->getTo()] : []),
-                'cc' => is_array($event->message->getCc()) ? $event->message->getCc() : ($event->message->getCc() !== null ? [$event->message->getCc()] : []),
-                'bcc' => is_array($event->message->getBcc()) ? $event->message->getBcc() : ($event->message->getBcc() !== null ? [$event->message->getBcc()] : []),
+                'to' => $toAddresses,
+                'cc' => $ccAddresses,
+                'bcc' => $bccAddresses,
             ])
             ->event('emailSent')
             ->log('emailSent');

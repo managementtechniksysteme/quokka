@@ -40,6 +40,8 @@ services:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_PASSWORD: ${MARIADB_PASSWORD}
       MYSQL_USER: ${MARIADB_USERNAME}
+    ports:
+      - 3306:3306
     volumes:
       - ./docker/mariadb/data:/var/lib/mysql:z
     networks:

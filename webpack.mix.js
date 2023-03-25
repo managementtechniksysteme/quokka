@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/init.js', 'public/js')
+    .vue()
     .js('resources/js/serviceworker.js', 'public')
     .js('resources/js/webpush.js', 'public/js')
     .copy('node_modules/alpinejs/dist/cdn.min.js', 'public/js/alpine.min.js')

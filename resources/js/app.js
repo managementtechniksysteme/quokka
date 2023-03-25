@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
 import AccountingSelector from './components/AccountingSelector';
 import AccountingServicesSelector from './components/AccountingServicesSelector';
 import AddressDropdown from './components/AddressDropdown';

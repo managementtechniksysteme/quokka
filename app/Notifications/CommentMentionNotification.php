@@ -69,14 +69,14 @@ class CommentMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Du wurdst in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
+                    ->subject('Du wurdest in einem Kommentar erwähnt (Aufgabe '.$this->comment->task->name.')')
                     ->markdown('emails.comment.notification_mention', ['comment' => $this->comment]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Kommentar erwähnt')
+            ->title('Du wurdest in einem Kommentar erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
             ->body('Du wurdest in einem Kommentar der Aufgabe '.$this->comment->task->name.' (Projekt '.$this->comment->task->project->name.') erwähnt.')

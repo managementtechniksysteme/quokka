@@ -68,17 +68,17 @@ class MemoMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Du wurdst in einem Aktenvermerk erwähnt (Projekt '.$this->memo->project->name.' #'.$this->memo->number.')')
+                    ->subject('Du wurdest in einem Aktenvermerk erwähnt (Projekt '.$this->memo->project->name.' #'.$this->memo->number.')')
                     ->markdown('emails.memo.notification_mention', ['memo' => $this->memo]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Aktenvermerk erwähnt')
+            ->title('Du wurdest in einem Aktenvermerk erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Aktenvermerk '.$this->memo->title.' (Projekt '.$this->memo->project->name.' #'.$this->memo->number.') erwähnt.')
+            ->body('Du wurdest im Aktenvermerk '.$this->memo->title.' (Projekt '.$this->memo->project->name.' #'.$this->memo->number.') erwähnt.')
             ->tag(Memo::class.':'.$this->memo->id)
             ->data(['url' => route('memos.show', $this->memo)])
             ->vibrate($this->vibrationDuration);

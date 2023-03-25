@@ -68,17 +68,17 @@ class TaskMentionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einer Aufgabe erwähnt (Projekt '.$this->task->project->name.')')
+            ->subject('Du wurdest in einer Aufgabe erwähnt (Projekt '.$this->task->project->name.')')
             ->markdown('emails.task.notification_mention', ['task' => $this->task]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einer Aufgabe erwähnt')
+            ->title('Du wurdest in einer Aufgabe erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst in der Aufgabe '.$this->task->name.' (Projekt '.$this->task->project->name.') erwähnt')
+            ->body('Du wurdest in der Aufgabe '.$this->task->name.' (Projekt '.$this->task->project->name.') erwähnt')
             ->tag(Task::class.':'.$this->task->id)
             ->data(['url' => route('tasks.show', $this->task)])
             ->vibrate($this->vibrationDuration);

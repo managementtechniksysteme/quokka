@@ -68,17 +68,17 @@ class InspectionReportMentionNotification extends Notification implements Should
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einem Prüfbericht erwähnt (Anlage: '.$this->inspectionReport->equipment_identifier.', Kunde: '.$this->inspectionReport->project->company->name.')')
+            ->subject('Du wurdest in einem Prüfbericht erwähnt (Anlage: '.$this->inspectionReport->equipment_identifier.', Kunde: '.$this->inspectionReport->project->company->name.')')
             ->markdown('emails.inspection_report.notification_mention', ['inspectionReport' => $this->inspectionReport]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Prüfbericht erwähnt')
+            ->title('Du wurdest in einem Prüfbericht erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Prüfbericht der Anlage '.$this->inspectionReport->equipment_identifier.' (Kunde: '.$this->inspectionReport->project->company->name.') vom '.$this->inspectionReport->inspected_on.' erwähnt')
+            ->body('Du wurdest im Prüfbericht der Anlage '.$this->inspectionReport->equipment_identifier.' (Kunde: '.$this->inspectionReport->project->company->name.') vom '.$this->inspectionReport->inspected_on.' erwähnt')
             ->tag(InspectionReport::class.':'.$this->inspectionReport->id)
             ->data(['url' => route('inspection-reports.show', $this->inspectionReport)])
             ->vibrate($this->vibrationDuration);

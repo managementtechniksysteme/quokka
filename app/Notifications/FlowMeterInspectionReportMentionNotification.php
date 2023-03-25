@@ -68,17 +68,17 @@ class FlowMeterInspectionReportMentionNotification extends Notification implemen
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einem Prüfbericht für Durchflussmesseinrichtungen erwähnt (Anlage: '.$this->flowMeterInspectionReport->equipment_identifier.', Kunde: '.$this->flowMeterInspectionReport->project->company->name.')')
+            ->subject('Du wurdest in einem Prüfbericht für Durchflussmesseinrichtungen erwähnt (Anlage: '.$this->flowMeterInspectionReport->equipment_identifier.', Kunde: '.$this->flowMeterInspectionReport->project->company->name.')')
             ->markdown('emails.flow_meter_inspection_report.notification_mention', ['flowMeterInspectionReport' => $this->flowMeterInspectionReport]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Prüfbericht für Durchflussmesseinrichtungen erwähnt')
+            ->title('Du wurdest in einem Prüfbericht für Durchflussmesseinrichtungen erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Prüfbericht für Durchflusseinrichtungen der Anlage '.$this->flowMeterInspectionReport->equipment_identifier.' (Kunde: '.$this->flowMeterInspectionReport->project->company->name.') vom '.$this->flowMeterInspectionReport->inspected_on.' erwähnt')
+            ->body('Du wurdest im Prüfbericht für Durchflusseinrichtungen der Anlage '.$this->flowMeterInspectionReport->equipment_identifier.' (Kunde: '.$this->flowMeterInspectionReport->project->company->name.') vom '.$this->flowMeterInspectionReport->inspected_on.' erwähnt')
             ->tag(FlowMeterInspectionReport::class.':'.$this->flowMeterInspectionReport->id)
             ->data(['url' => route('inspection-reports.show', $this->flowMeterInspectionReport)])
             ->vibrate($this->vibrationDuration);

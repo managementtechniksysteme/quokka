@@ -68,17 +68,17 @@ class ConstructionReportMentionNotification extends Notification implements Shou
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einem Bautagesbericht erwähnt (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')')
+            ->subject('Du wurdest in einem Bautagesbericht erwähnt (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')')
             ->markdown('emails.construction_report.notification_mention', ['constructionReport' => $this->constructionReport]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Bautagesbericht erwähnt')
+            ->title('Du wurdest in einem Bautagesbericht erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.' erwähnt')
+            ->body('Du wurdest im Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.' erwähnt')
             ->tag(ConstructionReport::class.':'.$this->constructionReport->id)
             ->data(['url' => route('construction-reports.show', $this->constructionReport)])
             ->vibrate($this->vibrationDuration);

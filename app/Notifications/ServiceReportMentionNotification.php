@@ -68,17 +68,17 @@ class ServiceReportMentionNotification extends Notification implements ShouldQue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einem Servicebericht erwähnt (Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.')')
+            ->subject('Du wurdest in einem Servicebericht erwähnt (Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.')')
             ->markdown('emails.service_report.notification_mention', ['serviceReport' => $this->serviceReport]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Du wurdst in einem Servicebericht erwähnt')
+            ->title('Du wurdest in einem Servicebericht erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Servicebericht Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.' erwähnt')
+            ->body('Du wurdest im Servicebericht Projekt '.$this->serviceReport->project->name.' #'.$this->serviceReport->number.' erwähnt')
             ->tag(ServiceReport::class.':'.$this->serviceReport->id)
             ->data(['url' => route('service-reports.show', $this->serviceReport)])
             ->vibrate($this->vibrationDuration);

@@ -68,7 +68,7 @@ class AdditionsReportMentionNotification extends Notification implements ShouldQ
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Du wurdst in einem Regiebericht erwähnt (Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.')')
+            ->subject('Du wurdest in einem Regiebericht erwähnt (Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.')')
             ->markdown('emails.additions_report.notification_mention', ['additionsReport' => $this->additionsReport]);
     }
 
@@ -78,7 +78,7 @@ class AdditionsReportMentionNotification extends Notification implements ShouldQ
             ->title('Du wurdst in einem Regiebericht erwähnt')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Du wurdst im Regiebericht Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.' erwähnt')
+            ->body('Du wurdest im Regiebericht Projekt '.$this->additionsReport->project->name.' #'.$this->additionsReport->number.' erwähnt')
             ->tag(AdditionsReport::class.':'.$this->additionsReport->id)
             ->data(['url' => route('additions-reports.show', $this->additionsReport)])
             ->vibrate($this->vibrationDuration);

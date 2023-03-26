@@ -42,10 +42,11 @@ return [
     */
 
     'extensions' => [
-        'League\CommonMark\Extension\Autolink\AutolinkExtension',
-        'League\CommonMark\Extension\Strikethrough\StrikethroughExtension',
-        'League\CommonMark\Extension\TaskList\TaskListExtension',
-        'League\CommonMark\Extension\Table\TableExtension',
+        League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension::class,
+        League\CommonMark\Extension\Autolink\AutolinkExtension::class,
+        League\CommonMark\Extension\Strikethrough\StrikethroughExtension::class,
+        League\CommonMark\Extension\TaskList\TaskListExtension::class,
+        League\CommonMark\Extension\Table\TableExtension::class,
     ],
 
     /*
@@ -71,66 +72,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Enable Em Tag Parsing
+    | Commonmark Configuration
     |--------------------------------------------------------------------------
     |
-    | This option specifies if `<em>` parsing is enabled.
+    | This option specifies an array of options for commonmark.
     |
-    | Default: true
+    | Default: [
+    |              'enable_em' => true,
+    |              'enable_strong' => true,
+    |              'use_asterisk' => true,
+    |              'use_underscore' => true,
+    |              'unordered_list_markers' => ['-', '+', '*'],
+    |          ]
     |
     */
 
-    'enable_em' => true,
+    'commonmark' => [
+        'enable_em'              => true,
+        'enable_strong'          => true,
+        'use_asterisk'           => true,
+        'use_underscore'         => true,
+        'unordered_list_markers' => ['-', '+', '*'],
+    ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Enable Strong Tag Parsing
-    |--------------------------------------------------------------------------
-    |
-    | This option specifies if `<strong>` parsing is enabled.
-    |
-    | Default: true
-    |
-    */
-
-    'enable_strong' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enable Asterisk Parsing
-    |--------------------------------------------------------------------------
-    |
-    | This option specifies if `*` should be parsed for emphasis.
-    |
-    | Default: true
-    |
-    */
-
-    'use_asterisk' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enable Underscore Parsing
-    |--------------------------------------------------------------------------
-    |
-    | This option specifies if `_` should be parsed for emphasis.
-    |
-    | Default: true
-    |
-    */
-
-    'use_underscore' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Html Input
-    |--------------------------------------------------------------------------
-    |
-    | This option specifies how to handle untrusted Html input.
-    |
-    | Default: 'strip'
-    |
-    */
+   |--------------------------------------------------------------------------
+   | HTML Input
+   |--------------------------------------------------------------------------
+   |
+   | This option specifies how to handle untrusted HTML input.
+   |
+   | Default: 'strip'
+   |
+   */
 
     'html_input' => 'strip',
 
@@ -158,6 +132,25 @@ return [
     |
     */
 
-    'max_nesting_level' => INF,
+    'max_nesting_level' => PHP_INT_MAX,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Slug Normalizer
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies an array of options for slug normalization.
+    |
+    | Default: [
+    |              'max_length' => 255,
+    |              'unique' => 'document',
+    |          ]
+    |
+    */
+
+    'slug_normalizer' => [
+        'max_length' => 255,
+        'unique'     => 'document',
+    ],
 
 ];

@@ -16,6 +16,12 @@
 
     <div class="container my-4">
       @markdown
+      ### v0.1.29-f73070b (26.02.2023)
+      * Das zugrundelegende Framework wurde auf die neueste Version aktualisiert, um zukunftssicher weitere
+        Funktionen entwickeln zu können.
+      @endmarkdown
+
+      @markdown
       ### v0.1.28-96e607c (21.02.2023)
       * Aktenvermerke können beim Erstellen nun als Entwurf markiert werden. Solange ein Aktenvermerk im Entwurfsstatus
         bearbeitet wird, werden keine Benachrichtigungen beim Speichern an beteiligte Personen mit Quokka Zugang

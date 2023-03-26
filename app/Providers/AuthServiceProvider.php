@@ -2,13 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\AdditionsReport;
-use App\Models\ConstructionReport;
-use App\Models\InspectionReport;
-use App\Policies\AdditionsReportPolicy;
-use App\Policies\ConstructionReportPolicy;
 use App\Policies\ExceptionPolicy;
-use App\Policies\InspectionReportPolicy;
 use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -17,9 +11,9 @@ use Spatie\Permission\Models\Role;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
+     * The model to policy mappings for the application.
      *
-     * @var array
+     * @var array<class-string, class-string>
      */
     protected $policies = [
         Role::class => RolePolicy::class,
@@ -27,13 +21,9 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('application-settings-update', function ($user) {
             return $user->can('application-settings.update.general');
         });

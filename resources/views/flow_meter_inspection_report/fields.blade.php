@@ -2988,6 +2988,18 @@
             </div>
         </div>
 
+        <div class="alert alert-warning mt-1" role="alert">
+            <div class="d-inline-flex align-items-center">
+                <svg class="icon icon-24 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                </svg>
+                <p class="m-0">
+                    Um eine korrekte Formatierung des Anhanges im PDF Ausdruck sicherzustellen muss der Anhang im
+                    <strong>A4 Hochformat</strong> vorliegen.
+                </p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label>PDF Anhang für den
                 Ausdruck{{ $flowMeterInspectionReport ? ' (Ohne Auswahl wird der aktuelle Anhang beibehalten)' : '' }}</label>

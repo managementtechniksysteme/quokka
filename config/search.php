@@ -5,6 +5,8 @@ use App\Models\Address;
 use App\Models\Company;
 use App\Models\ConstructionReport;
 use App\Models\Employee;
+use App\Models\FinanceGroup;
+use App\Models\FinanceRecord;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\MaterialService;
@@ -37,6 +39,8 @@ return [
         Company::class,
         ConstructionReport::class,
         Employee::class,
+        FinanceGroup::class,
+        FinanceRecord::class,
         FlowMeterInspectionReport::class,
         InspectionReport::class,
         MaterialService::class,

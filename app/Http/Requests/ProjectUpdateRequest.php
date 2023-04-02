@@ -33,6 +33,8 @@ class ProjectUpdateRequest extends FormRequest
                 })->ignore($project),
             ],
             'starts_on' => 'nullable',
+            'is_pre_execution' => 'boolean',
+            'include_in_finances' => 'boolean',
             'ends_on' => 'after_or_equal:starts_on|nullable',
             'material_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
             'wage_costs' => 'numeric|min:0|multiple_of:0.01|nullable',

@@ -22,6 +22,10 @@ use App\SpotlightCommands\EmployeeStartImpersonationCommand;
 use App\SpotlightCommands\EmployeeStopImpersonationCommand;
 use App\SpotlightCommands\ExceptionIndexCommand;
 use App\SpotlightCommands\ExceptionShowCommand;
+use App\SpotlightCommands\FinanceGroupCreateCommand;
+use App\SpotlightCommands\FinanceGroupIndexCommand;
+use App\SpotlightCommands\FinanceGroupShowCommand;
+use App\SpotlightCommands\FinanceIndexCommand;
 use App\SpotlightCommands\FlowMeterInspectionReportCreateCommand;
 use App\SpotlightCommands\FlowMeterInspectionReportIndexCommand;
 use App\SpotlightCommands\FlowMeterInspectionReportShowCommand;
@@ -123,6 +127,10 @@ return [
         EmployeeStopImpersonationCommand::class,
         ExceptionIndexCommand::class,
         ExceptionShowCommand::class,
+        FinanceIndexCommand::class,
+        FinanceGroupCreateCommand::class,
+        FinanceGroupIndexCommand::class,
+        FinanceGroupShowCommand::class,
         FlowMeterInspectionReportCreateCommand::class,
         FlowMeterInspectionReportIndexCommand::class,
         FlowMeterInspectionReportShowCommand::class,

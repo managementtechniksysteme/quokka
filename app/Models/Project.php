@@ -21,10 +21,12 @@ class Project extends Model implements FiltersGlobalSearch
     protected $casts = [
         'starts_on' => 'date',
         'ends_on' => 'date',
+        'is_pre_execution' => 'bool',
+        'include_in_finances' => 'bool',
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'material_costs', 'wage_costs', 'comment', 'company_id',
+        'name', 'starts_on', 'ends_on', 'is_pre_execution', 'include_in_finances', 'material_costs', 'wage_costs', 'comment', 'company_id',
     ];
 
     protected $filterFields = [
@@ -33,6 +35,10 @@ class Project extends Model implements FiltersGlobalSearch
 
     protected $filterKeys = [
         'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'ist:vorphase' => ['is_pre_execution', true],
+        'ist:vp' => ['is_pre_execution', true],
+        'ist:infinanzen' => ['included_in_finances', true],
+        'ist:if' => ['included_in_finances', true],
         'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
     ];
@@ -70,6 +76,11 @@ class Project extends Model implements FiltersGlobalSearch
     public function interimInvoices()
     {
         return $this->hasMany(InterimInvoice::class);
+    }
+
+    public function financeGroup()
+    {
+        return $this->hasOne(FinanceGroup::class);
     }
 
     public function company()
@@ -124,6 +135,14 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getShortNameAttribute() {
         return Str::beforeLast($this->name, ' [');
+    }
+
+    public function getIsPreExecutionStringAttribute() {
+        return $this->is_pre_execution ? 'ja' : 'nein';
+    }
+
+    public function getIncludedInFinancesStringAttribute() {
+        return $this->include_in_finances ? 'ja' : 'nein';
     }
 
     public function getCostsAttribute() {

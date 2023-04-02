@@ -5,6 +5,12 @@
   */
 
 /*!
+ * ApexCharts v3.37.2
+ * (c) 2018-2023 ApexCharts
+ * Released under the MIT License.
+ */
+
+/*!
  * Signature Pad v3.0.0-beta.4 | https://github.com/szimek/signature_pad
  * (c) 2020 Szymon Nowak | Released under the MIT license
  */
@@ -56,6 +62,14 @@
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*! svg.draggable.js - v2.2.2 - 2019-01-08
+  * https://github.com/svgdotjs/svg.draggable.js
+  * Copyright (c) 2019 Wout Fierens; Licensed MIT */
+
+/*! svg.filter.js - v2.0.2 - 2016-02-24
+  * https://github.com/wout/svg.filter.js
+  * Copyright (c) 2016 Wout Fierens; Licensed MIT */
 
 /**
  * @license

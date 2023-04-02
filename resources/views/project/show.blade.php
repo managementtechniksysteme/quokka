@@ -87,6 +87,18 @@
                         </a>
                     @endcan
 
+                    @can('viewAny', \App\Models\FinanceGroup::class)
+                        @if(!$project->include_in_finances)
+                            <a class="menu-item @if (request()->tab == 'finances') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'finances']) }}">
+                                <svg class="icon icon-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                                </svg>
+                                Finanzen
+                                <span class="ml-auto">{{ $financeRecordsCount > 0 ? $financeRecordsCount : '' }}</span>
+                            </a>
+                        @endif
+                    @endcan
+
                     @can('viewAny', \App\Models\Task::class)
                         <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
                             <svg class="icon icon-16 mr-2">
@@ -171,6 +183,17 @@
                             </svg>
                             Teilrechnungen
                         </a>
+                    @endcan
+
+                    @can('viewAny', \App\Models\InterimInvoice::class)
+                        @if(!$project->include_in_finances)
+                            <a class="menu-item @if (request()->tab == 'finances') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'finances']) }}">
+                                <svg class="icon icon-16 mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                                </svg>
+                                Finanzen
+                            </a>
+                        @endif
                     @endcan
 
                     @can('viewAny', \App\Models\Task::class)

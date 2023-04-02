@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Finances;
 use App\Http\Requests\ProjectCreateRequest;
 use App\Http\Requests\ProjectDownloadListRequest;
 use App\Http\Requests\ProjectDownloadRequest;
@@ -11,6 +12,7 @@ use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\ConstructionReport;
+use App\Models\FinanceRecord;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\InterimInvoice;
@@ -124,6 +126,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project, Request $request)
     {
+        $financeRecordsCount = $project->financeGroup?->financeRecords()->count() ?? 0;
+
         $project
             ->loadCount('interimInvoices')
             ->loadCount('tasks')
@@ -138,7 +142,15 @@ class ProjectController extends Controller
             case 'overview':
                 $currencyUnit = ApplicationSettings::get()->currency_unit;
 
-                return view('project.show_tab_overview')->with(compact('project'))->with(compact('currencyUnit'));
+                $financeData = Finances::getProjectData($project);
+                $manualFinanceData = $project->financeGroup ? Finances::getGroupData($project->financeGroup) : null;
+
+                return view('project.show_tab_overview')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with('financeData', $financeData)
+                    ->with('manualFinanceData', $manualFinanceData)
+                    ->with(compact('currencyUnit'));
 
             case 'interim_invoices':
                 if(Auth::user()->cannot('viewAny', InterimInvoice::class)) {
@@ -151,7 +163,30 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_interim_invoices')->with(compact('project'))->with(compact('interimInvoices'));
+                return view('project.show_tab_interim_invoices')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('interimInvoices'));
+
+            case 'finances':
+                if(Auth::user()->cannot('viewAny', FinanceRecord::class) ||
+                    $project->include_in_finances) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
+                $financeGroup = $project
+                    ->financeGroup?->loadSum('financeRecords', 'amount');
+
+                $financeRecords = $financeGroup?->financeRecords()
+                    ->order()
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page')) ?? null;
+
+                return view('project.show_tab_finances')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('financeGroup'))
+                    ->with(compact('financeRecords'));
 
             case 'tasks':
                 if(Auth::user()->cannot('viewAny', Task::class)) {
@@ -168,7 +203,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_tasks')->with(compact('project'))->with(compact('tasks'));
+                return view('project.show_tab_tasks')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('tasks'));
 
             case 'memos':
                 if(Auth::user()->cannot('viewAny', Memo::class)) {
@@ -184,7 +222,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_memos')->with(compact('project'))->with(compact('memos'));
+                return view('project.show_tab_memos')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('memos'));
 
             case 'service_reports':
                 if(Auth::user()->cannot('viewAny', ServiceReport::class)) {
@@ -205,7 +246,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_service_reports')->with(compact('project'))->with(compact('serviceReports'));
+                return view('project.show_tab_service_reports')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('serviceReports'));
 
             case 'additions_reports':
                 if(Auth::user()->cannot('viewAny', AdditionsReport::class)) {
@@ -222,7 +266,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_additions_reports')->with(compact('project'))->with(compact('additionsReports'));
+                return view('project.show_tab_additions_reports')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('additionsReports'));
 
             case 'inspection_reports':
                 if(Auth::user()->cannot('viewAny', InspectionReport::class)) {
@@ -239,7 +286,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_inspection_reports')->with(compact('project'))->with(compact('inspectionReports'));
+                return view('project.show_tab_inspection_reports')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('inspectionReports'));
 
             case 'flow_meter_inspection_reports':
                 if(Auth::user()->cannot('viewAny', FlowMeterInspectionReport::class)) {
@@ -256,7 +306,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_flow_meter_inspection_reports')->with(compact('project'))->with(compact('flowMeterInspectionReports'));
+                return view('project.show_tab_flow_meter_inspection_reports')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('flowMeterInspectionReports'));
 
             case 'construction_reports':
                 if(Auth::user()->cannot('viewAny', ConstructionReport::class)) {
@@ -273,7 +326,10 @@ class ProjectController extends Controller
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
-                return view('project.show_tab_construction_reports')->with(compact('project'))->with(compact('constructionReports'));
+                return view('project.show_tab_construction_reports')
+                    ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
+                    ->with(compact('constructionReports'));
 
             default:
                 return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
@@ -312,6 +368,10 @@ class ProjectController extends Controller
         $validatedData = $request->validated();
 
         $project->update($validatedData);
+
+        if($validatedData['include_in_finances']) {
+            $project->financeGroup()->delete();
+        }
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
     }

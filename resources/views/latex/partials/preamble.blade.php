@@ -12,7 +12,7 @@
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \usepackage{framed}
-\usepackage{geometry}
+\usepackage[showframe]{geometry}
 \usepackage{graphicx}
 \usepackage{helvet}
 \usepackage{hyperref}

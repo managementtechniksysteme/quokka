@@ -186,6 +186,31 @@
                         </li>
                     @endif
 
+                    @if(auth()->user()->can('finances-view') || auth()->user()->can('viewAny', \App\Models\FinanceGroup::class))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('finances-view') disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('finances.index') }}">
+                                <svg class="icon icon-20 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                                </svg>
+                                Finanzen
+                            </a>
+                            @can('viewAny', \App\Models\FinanceGroup::class)
+                                <a id="navbarFinancesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarFinancesDropdown">
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('finance-groups.index') }}">
+                                        <svg class="icon icon-16 mr-1">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
+                                        </svg>
+                                        Manuelle Einträge
+                                    </a>
+                                </div>
+                            @endcan
+                        </li>
+                    @endif
+
                     @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
                         <li class="nav-item dropdown">
                             <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -53,6 +53,58 @@
         </div>
 
         <div class="form-group">
+            <div>
+                <label for="is_pre_execution">Befindet sich das Projekt in der Vorphase?</label>
+            </div>
+            <div class="btn-group btn-group-toggle @error('is_pre_execution') is-invalid @enderror" data-toggle="buttons">
+                <label class="btn btn-outline-secondary @if(old('is_pre_execution', optional($project)->is_pre_execution) == true) active @endif">
+                    <input type="radio" name="is_pre_execution" id="1" value="1" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == true) checked @endif> ja
+                </label>
+                <label class="btn btn-outline-secondary @if(old('is_pre_execution', optional($project)->is_pre_execution) == false) active @endif">
+                    <input type="radio" name="is_pre_execution" id="0" value="0" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == false) checked @endif> nein
+                </label>
+            </div>
+            <div class="invalid-feedback @error('is_pre_execution') d-block @enderror">
+                @error('is_pre_execution')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        @if(!$project?->include_in_finances && $project?->financeGroup()->exists())
+            <div class="alert alert-warning mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                    </svg>
+                    <p class="m-0">
+                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim setzten der
+                        nachfolgenden Option auf <strong>ja</strong> aus dem System entfernt.
+                    </p>
+                </div>
+            </div>
+        @endif
+
+        <div class="form-group">
+            <div>
+                <label for="include_in_finances">Sollen dem Projekt zugehörigen Leistungen in den Finanzen berücksichtigt werden?</label>
+            </div>
+            <div class="btn-group btn-group-toggle @error('include_in_finances') is-invalid @enderror" data-toggle="buttons">
+                <label class="btn btn-outline-secondary @if(old('include_in_finances', optional($project)->include_in_finances) == true) active @endif">
+                    <input type="radio" name="include_in_finances" id="1" value="1" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == true) checked @endif> ja
+                </label>
+                <label class="btn btn-outline-secondary @if(old('include_in_finances', optional($project)->include_in_finances) == false) active @endif">
+                    <input type="radio" name="include_in_finances" id="0" value="0" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == false) checked @endif> nein
+                </label>
+            </div>
+            <div class="invalid-feedback @error('include_in_finances') d-block @enderror">
+                @error('include_in_finances')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="wage_costs">Lohnkosten</label>
             <div class="input-group">
                 <div class="input-group-prepend">

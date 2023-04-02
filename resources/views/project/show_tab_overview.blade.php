@@ -34,6 +34,32 @@
             </div>
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col-sm-2">
+            <div class="text-muted d-flex align-items-center">
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                </svg>
+                Vorphase
+            </div>
+        </div>
+        <div class="col">
+            {{ $project->isPreExecutionString }}
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-2">
+            <div class="text-muted d-flex align-items-center">
+                <svg class="icon icon-16 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
+                </svg>
+                In Finanzen
+            </div>
+        </div>
+        <div class="col">
+            {{ $project->includedInFinancesString }}
+        </div>
+    </div>
     @can('projects.view.estimates')
         @if($project->costs || $project->current_costs)
             <div class="row mt-3">
@@ -196,6 +222,21 @@
             </div>
         </div>
     @endif
+
+    @can('finances-view')
+        <div class="row mt-4">
+            <div class="col-md-6 mb-2">
+                <h4>Finanzen aus der Abrechnung</h4>
+                <finance-revenue-expense-chart :revenue="{{ $financeData['revenue'] }}" :expense="{{ $financeData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+            </div>
+            @if($manualFinanceData)
+                <div class="col-md-6 mb-2">
+                    <h4>Manuell eingetragene Finanzen</h4>
+                    <finance-revenue-expense-chart :revenue="{{ $manualFinanceData['revenue'] }}" :expense="{{ $manualFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                </div>
+            @endif
+        </div>
+    @endcan
 
     @if ($project->comment)
         <div class="text-muted d-flex align-items-center mt-4">

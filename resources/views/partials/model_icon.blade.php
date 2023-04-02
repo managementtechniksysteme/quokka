@@ -29,7 +29,7 @@
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
         </svg>
         @break
-    @case(\App\Models\\App\Models\FinanceRecord::class)
+    @case(\App\Models\FinanceRecord::class)
         <svg class="icon icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
         </svg>

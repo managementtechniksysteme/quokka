@@ -33,6 +33,8 @@ class ProjectStoreRequest extends FormRequest
             ],
             'starts_on' => 'date|nullable',
             'ends_on' => 'date|after_or_equal:starts_on|nullable',
+            'is_pre_execution' => 'boolean',
+            'include_in_finances' => 'boolean',
             'material_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
             'wage_costs' => 'numeric|min:0|multiple_of:0.01|nullable',
             'company_id' => 'required|exists:companies,id',

@@ -14,7 +14,7 @@
 
     <div class="container my-4">
         <a id="top"></a>
-        
+
         <a href="#allgemeines"># Allgemeines</a><br />
         @can('viewAny', \App\Models\Address::class)
         <a href="#adressen"># Adressen</a><br />
@@ -30,6 +30,9 @@
         @endcan
         @can('viewAny', \App\Models\Vehicle::class)
         <a href="#fahrzeuge"># Fahrzeuge</a><br />
+        @endcan
+        @can('viewAny', \App\Models\FinanceGroups::class)
+        <a href="#finanzen"># Finanzen</a><br />
         @endcan
         @can('viewAny', \App\Models\Company::class)
         <a href="#firmen"># Firmen</a><br />
@@ -67,7 +70,7 @@
 
         <a id="allgemeines"></a>
         <h4 class="mt-4">Allgemeines</h4>
-        
+
         @markdown
         Die in {{ config('app.name') }} implementierte Suche zum Filtern von Listen kann mit speziellen Suchbegriffen verwendet werden.
         Diese filtern Attribute nach angegebenen Werten. Somit ist eine genauere Suche möglich. Die Verwendung dieser
@@ -165,39 +168,39 @@
         * Name und {{ config('app.name') }} Benutzername von Personen im Verteiler
 
         **Spezielle Suchbegriffe**
-        * `hat:folgetermin`  
+        * `hat:folgetermin`
         Der Aktenvermerk at einen Folgetermin in der Zukunft.
-        
-        * `nummer:<Nummer>` oder `n:<Nummer>`  
+
+        * `nummer:<Nummer>` oder `n:<Nummer>`
         Der Aktenvermerk hat die Nummer `<Nummer>`.
 
         * `ist:entwurf` oder `ist:e`
         Der Aktenvermerk befindet sich im Entwurfsstatus.
-                    
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Der Aktenvermerk ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
 
         * `firma:<Firma Name>` oder `f:<Firma Name>`
         Der Aktenvermerk ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
-                        
-        * `von:<{{ config('app.name') }} Benutzername>`  
+
+        * `von:<{{ config('app.name') }} Benutzername>`
         Der Aktenvermerk wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
-        
-        * `an:<Name>`  
+
+        * `an:<Name>`
         Der Aktenvermerk wurde an die Person mit dem Namen `<Name>` verfasst.
-                                            
-        * `beteiligt:<Name>` oder `b:<Name>`  
+
+        * `beteiligt:<Name>` oder `b:<Name>`
         Die Person mit dem Namen `<Name>` ist am Aktenvermerk beteiligt.
-        
-        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Aktenvermerk beteiligt.
-        
-        * `verständigt:<Name>` oder `v:<Name>`  
+
+        * `verständigt:<Name>` oder `v:<Name>`
         Die Person mit dem Namen `<Name>` wird über den Aktenvermerk verständigt.
-        
-        * `verständigt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `vm:<{{ config('app.name') }} Benutzername>`  
+
+        * `verständigt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `vm:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` wird über den Aktenvermerk verständigt.
-        
+
 
         **Beispiele**
         @endmarkdown
@@ -211,10 +214,10 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dierser 
+            Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dierser
             Reihenfolge im Titel befinden.
             Hierbei können andere Begriffe vor, zwischen oder nach den Suchbegriffen vorhanden sein.
-    
+
             Mögliche Ergebnisse
             * Besprechung zur Inbetriebnahme
             * MTS Besprechung zur Inbetriebnahme der neuen Kaffeemaschine.
@@ -231,7 +234,7 @@
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dieser
-            Reiehnfolge im Titel befinden, der Verfasser den {{ config('app.name') }} Benutzernamen `mst` hat und der Empfänger den Namen 
+            Reiehnfolge im Titel befinden, der Verfasser den {{ config('app.name') }} Benutzernamen `mst` hat und der Empfänger den Namen
             `Angelika Steiner` hat.
             @endmarkdown
         </div>
@@ -251,7 +254,7 @@
         </div>
         @endcan
 
-        @can('viewAny', \App\Models\Task::class)                                                                                                        
+        @can('viewAny', \App\Models\Task::class)
         <a id="aufgaben"></a>
         <h4 class="mt-4">Aufgaben</h4>
 
@@ -264,52 +267,52 @@
         * Name oder {{ config('app.name') }} Benutzername beteiligter Mitarbeiter
 
         **Spezielle Suchbegriffe**
-        * `ist:privat`  
+        * `ist:privat`
         Die Aufgabe ist als `privat` markiert.
-        
-        * `ist:niedrig`  
+
+        * `ist:niedrig`
         Die Aufgabe hat `niedrige` Priorität.
-        
-        * `ist:mittel`  
+
+        * `ist:mittel`
         Die Aufgabe hat `mittlere` Priorität.
-        
-        * `ist:hoch`  
+
+        * `ist:hoch`
         Die Aufgabe hat `hohe` Priorität.
-        
-        * `ist:neu`  
+
+        * `ist:neu`
         Die Aufgabe hat den Status `neu`.
-        
-        * `ist:in_bearbeitung` oder `ist:ib`  
+
+        * `ist:in_bearbeitung` oder `ist:ib`
         Die Aufgabe hat den Status `in Bearbeitung`.
-        
-        * `ist:erledigt`  
+
+        * `ist:erledigt`
         Die Aufgabe hat den Status `erledigt`.
-        
-        * `ist:verrechnet`  
+
+        * `ist:verrechnet`
         Die Aufgabe hat den Verrechnungsstatus `verrechnet`.
-        
-        * `ist:nicht_verrechnet` oder `ist:nv`  
+
+        * `ist:nicht_verrechnet` oder `ist:nv`
         Die Aufgabe hat den Verrechnungsstatus `nicht verrechnet`.
-        
-        * `ist:garantie`  
+
+        * `ist:garantie`
         Die Aufgabe hat den Verrechnungsstatus `Garantie`.
-        
-        * `ist:überfällig`  
+
+        * `ist:überfällig`
         Die Aufgabe hat ein Fälligkeitsdatum in der Vergangenheit.
-        
-        * `ist:bald_fällig`  
+
+        * `ist:bald_fällig`
         Die Aufgabe hat ein Fälligkeitsdatum in naher Zukunft.
-        
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Die Aufgabe ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
 
         * `firma:<Firma Name>` oder `f:<Firma Name>`
         Die Aufgabe ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
-                    
-        * `verantwortlich:<{{ config('app.name') }} Benutzername>` oder `v:<{{ config('app.name') }} Benutzername>`  
+
+        * `verantwortlich:<{{ config('app.name') }} Benutzername>` oder `v:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist für die Aufgabe verantwortlich.
-                                
-        * `beteiligt:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Banutzername>`  
+
+        * `beteiligt:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Banutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist an der Aufgabe beteiligt.
 
         **Beispiele**
@@ -361,7 +364,7 @@
             @endmarkdown
         </div>
         @endcan
-        
+
         @can('viewAny', \App\Models\ConstructionReport::class)
         <a id="bautagesberichte"></a>
         <h4 class="mt-4">Bautagesberichte</h4>
@@ -378,38 +381,38 @@
         * Gefahr in Verzug
         * Bedenken
         * Leistungsfortschritt
-        
+
         **Spezielle Suchbegriffe**
-        * `ist:neu`  
+        * `ist:neu`
         Der Bautagesbericht hat den Status `neu`.
-        
-        * `ist:unterschrieben` oder `ist:u`  
+
+        * `ist:unterschrieben` oder `ist:u`
         Der Bautagesbericht hat den Status `unterschrieben`.
-        
-        * `ist:erledigt`  
+
+        * `ist:erledigt`
         Der Bautagesbericht hat den Status `erledigt`.
-        
-        * `nummer:<Nummer>` oder `n:<Nummer>`  
+
+        * `nummer:<Nummer>` oder `n:<Nummer>`
         Der Bautagesbericht hat die Nummer `<Nummer>`
-                    
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Der Bautagesbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
-        
+
         * `firma:<Firma Name>` oder `f:<Firma Name>`
         Der Bautagesbericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
-                                
-        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`
         Der Bautagesbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
-        
-        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Bautagesbericht beteiligt.
-        
-        * `beteiligt:<Name>` oder `b:<Name>`  
-        Die Person mit dem Namen `<Name>` ist am Bautagesbericht beteiligt.        
-        
+
+        * `beteiligt:<Name>` oder `b:<Name>`
+        Die Person mit dem Namen `<Name>` ist am Bautagesbericht beteiligt.
+
         **Beispiele**
         @endmarkdown
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -421,13 +424,13 @@
             @markdown
             Filtert Bautagesberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
-        
+
             Mögliche Ergebnisse
             * MTS000000 [Intern] #1
             * MTS000000 [Projektmanagement] #1
             @endmarkdown
         </div>
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -437,12 +440,12 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Bautagesberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Filtert Bautagesberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
         @endcan
-                                                                                                                                                                                                                                    
+
         @can('viewAny', \App\Models\Vehicle::class)
         <a id="fahrzeuge"></a>
         <h4 class="mt-4">Fahrzeuge</h4>
@@ -476,7 +479,41 @@
             @endmarkdown
         </div>
         @endcan
-                                                                                                                                    
+
+        @can('viewAny', \App\Models\FinanceGroup::class)
+        <a id="finanzen"></a>
+        <h4 class="mt-4">Finanzen</h4>
+
+        @markdown
+        **Standardattribute**
+        * Name der Finanzgruppe
+        * Name des zugeordneten Projektes einer Finanzgruppe
+        * Name der Finanzeinträge
+
+        **Spezielle Suchbegriffe**
+        * keine
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            ENZ100101
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Finanzgruppen und Einträge, in denen sich die Begriff `ENZ100101` im Namen befindet.
+            Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
+
+            Mögliche Ergebnisse
+            * ENZ100101 [Service und Wartung]
+            @endmarkdown
+        </div>
+        @endcan
+
         @can('viewAny', \App\Models\Company::class)
         <a id="firmen"></a>
         <h4 class="mt-4">Firmen</h4>
@@ -488,12 +525,12 @@
         * Name von zugewiesenen Personen
 
         **Spezielle Suchbegriffe**
-        * `person:<Person Name>` oder `p:<Person Name>`  
+        * `person:<Person Name>` oder `p:<Person Name>`
         Die Person mit dem Namen `<Person Name>` ist der Firma zugeordnet.
 
         **Beispiele**
         @endmarkdown
-                                                                                                                                    
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -503,7 +540,7 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Firmen, in denen sich die Begriff `Management`, `Technik` und `Systeme` in dieser Reihenfolge in 
+            Filtert Firmen, in denen sich die Begriff `Management`, `Technik` und `Systeme` in dieser Reihenfolge in
             Name oder Name 2 befinden.
             Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
 
@@ -513,7 +550,7 @@
             @endmarkdown
         </div>
         @endcan
-                                                                                                                                                                                                                                                
+
         @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
         <a id="leistungen"></a>
         <h4 class="mt-4">Leistungen</h4>
@@ -554,10 +591,10 @@
         * Name oder {{ config('app.name') }} Benutzername des Mitarbeiters
 
         **Spezielle Suchbegriffe**
-        * `name:<Mitarbeiter Name>` oder `n:<Mitarbeiter Name>`  
+        * `name:<Mitarbeiter Name>` oder `n:<Mitarbeiter Name>`
         Der Mitarbeiter hat den Namen `<Mitarbeiter Name>`.
-        
-        * `benutzer:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Benutzername>`  
+
+        * `benutzer:<{{ config('app.name') }} Benutzername>` oder `b:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter hat den {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>`.
 
         **Beispiele**
@@ -591,13 +628,13 @@
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
             Filtert Mitarbeiter, die den {{ config('app.name') }} Benutzernamen `mst` besitzen.
-        
+
             Mögliche Ergebnisse
             * Martin Steiner
             @endmarkdown
         </div>
-        @endcan 
-                                                                                                                                                                                                                                                                                            
+        @endcan
+
         @can('viewAny', \App\Models\Note::class)
         <a id="notizen"></a>
         <h4 class="mt-4">Notizen</h4>
@@ -630,8 +667,8 @@
             * Telefonnotiz vom 01.01.2000
             @endmarkdown
         </div>
-        @endcan 
-        
+        @endcan
+
         @can('viewAny', \App\Models\Person::class)
         <a id="personen"></a>
         <h4 class="mt-4">Personen</h4>
@@ -645,7 +682,7 @@
         * Firmenname
 
         **Spezielle Suchbegriffe**
-        * `firma:<Firma Name>` oder `f:<Firma Name>`  
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
         Die Person ist der Firma mit dem Namen `<Firma Name>` zugerodnet.
 
         **Beispiele**
@@ -682,7 +719,7 @@
             @endmarkdown
         </div>
         @endcan
-             
+
         @can('viewAny', \App\Models\Project::class)
         <a id="projekte"></a>
         <h4 class="mt-4">Projekte</h4>
@@ -693,10 +730,16 @@
         * Firmenname
 
         **Spezielle Suchbegriffe**
-        * `ist:beendet`  
+        * `ist:vorphase` oder `ist:vp`
+        Das Projekt befindet sich in der Vorphase.
+
+        * `ist:beendet`
         Das Projekt hat ein Enddatum in der Vergangenheit.
-        
-        * `firma:<Firma Name>` oder `f:<Firma Name>`  
+
+        * `ist:infinanzen` oder `ist:if`
+        Die Leistungen, welche dem Projekt zugeordnet sind, werden bei den Finanzen berücksichtigt.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
         Das Projekt ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
 
         **Beispiele**
@@ -734,11 +777,11 @@
             @endmarkdown
         </div>
         @endcan
-              
+
         @can('viewAny', \App\Models\InspectionReport::class)
         <a id="pruefberichte"></a>
         <h4 class="mt-4">Prüfberichte</h4>
-        
+
         @markdown
         **Standardattribute**
         * Anlagen-/Gerätenummer
@@ -746,29 +789,29 @@
         * Projektname
         * Firmenname des Kunden
         * Name oder {{ config('app.name') }} Benutzername des zuständigen Mitarbeiters
-        
+
         **Spezielle Suchbegriffe**
-        * `ist:neu`  
+        * `ist:neu`
         Der Prüfbericht hat den Status `neu`.
-        
-        * `ist:unterschrieben` oder `ist:u`  
+
+        * `ist:unterschrieben` oder `ist:u`
         Der Prüfbericht hat den Status `unterschrieben`.
-        
-        * `ist:erledigt`  
+
+        * `ist:erledigt`
         Der Prüfbericht hat den Status `erledigt`.
-                    
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Der Prüfbericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
-           
+
         * `firma:<Firma Name>` oder `f:<Firma Name>`
         Der Prüfbericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
-                                
-        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
-        Der Prüfbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.      
-        
+
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`
+        Der Prüfbericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
+
         **Beispiele**
         @endmarkdown
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -780,13 +823,13 @@
             @markdown
             Filtert Prüfberichte, bei welchen sich der Begriff `1` in der Anlagennummer oder im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
-        
+
             Mögliche Ergebnisse
             * Anlage 1
             * Anlage 12
             @endmarkdown
         </div>
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -796,7 +839,7 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
@@ -869,11 +912,11 @@
             @endmarkdown
         </div>
         @endcan
-     
+
         @can('viewAny', \App\Models\AdditionsReport::class)
         <a id="regieberichte"></a>
         <h4 class="mt-4">Regieberichte</h4>
-        
+
         @markdown
         **Standardattribute**
         * Nummer
@@ -888,35 +931,35 @@
         * Leistungsfortschritt
         * Projektname
         * Firmenname
-        
+
         **Spezielle Suchbegriffe**
-        * `ist:neu`  
+        * `ist:neu`
         Der Regiebericht hat den Status `neu`.
-        
-        * `ist:unterschrieben` oder `ist:u`  
+
+        * `ist:unterschrieben` oder `ist:u`
         Der Regiebericht hat den Status `unterschrieben`.
-        
-        * `ist:erledigt`  
+
+        * `ist:erledigt`
         Der Regiebericht hat den Status `erledigt`.
-        
-        * `nummer:<Nummer>` oder `n:<Nummer>`  
+
+        * `nummer:<Nummer>` oder `n:<Nummer>`
         Der Regiebericht hat die Nummer `<Nummer>`
-                    
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Der Regiebericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
-                                
-        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
+
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`
         Der Regiebericht wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
-        
-        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`  
+
+        * `beteiligt_mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `bm:<{{ config('app.name') }} Benutzername>`
         Der Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` ist am Regiebericht beteiligt.
-        
-        * `beteiligt:<Name>` oder `b:<Name>`  
-        Die Person mit dem Namen `<Name>` ist am Regiebericht beteiligt.        
-        
+
+        * `beteiligt:<Name>` oder `b:<Name>`
+        Die Person mit dem Namen `<Name>` ist am Regiebericht beteiligt.
+
         **Beispiele**
         @endmarkdown
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -928,13 +971,13 @@
             @markdown
             Filtert Regieberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
-        
+
             Mögliche Ergebnisse
             * MTS000000 [Intern] #1
             * MTS000000 [Projektmanagement] #1
             @endmarkdown
         </div>
-        
+
         <div class="markdown-example-input bg-light border border-bottom-0 p-2">
             @markdown
             ```
@@ -944,12 +987,12 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Regieberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }} 
+            Filtert Regieberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
             @endmarkdown
         </div>
         @endcan
-                                                                                                                                                                                                                                                                                                                                                                                                    
+
         @can('viewAny', \Spatie\Permission\Models\Role::class)
         <a id="rollen"></a>
         <h4 class="mt-4">Rollen</h4>
@@ -994,26 +1037,26 @@
         * Name oder {{ config('app.name') }} Benutzername des zuständigen Mitarbeiters
 
         **Spezielle Suchbegriffe**
-        * `ist:neu`  
+        * `ist:neu`
         Der Servicebericht hat den Status `neu`.
-        
-        * `ist:unterschrieben` oder `ist:u`  
+
+        * `ist:unterschrieben` oder `ist:u`
         Der Servicebericht hat den Status `unterschrieben`.
-        
-        * `ist:erledigt`  
+
+        * `ist:erledigt`
         Der Servicebericht hat den Status `erledigt`.
-        
-        * `nummer:<Nummer>` oder `n:<Nummer>`  
+
+        * `nummer:<Nummer>` oder `n:<Nummer>`
         Der Servicebericht hat die Nummer `<Nummer>`
-                    
-        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`  
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
         Der Servicebericht ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
 
         * `firma:<Firma Name>` oder `f:<Firma Name>`
         Der Servicebericht ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
-                                
-        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`  
-        Der Servicebericht ist dem Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` zugeordnet.        
+
+        * `techniker:<{{ config('app.name') }} Benutzername>` oder `t:<{{ config('app.name') }} Benutzername>`
+        Der Servicebericht ist dem Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` zugeordnet.
 
         **Beispiele**
         @endmarkdown
@@ -1029,7 +1072,7 @@
             @markdown
             Filtert Serviceberichte, die die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
-            
+
             Mögliche Ergebnisse
             * MTS000000 [Intern] #1
             * MTS000000 [Projektmanagement] #1
@@ -1045,11 +1088,11 @@
         </div>
         <div class="markdown-example-output border mb-2 p-2">
             @markdown
-            Filtert Serviceberichte, die dem Projekt `MTS000000 [Intern]` und dem Mitarbeiter mit dem {{ config('app.name') }} 
+            Filtert Serviceberichte, die dem Projekt `MTS000000 [Intern]` und dem Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` zugeordnet sind.
             @endmarkdown
         </div>
         @endcan
-                                            
+
     </div>
 @endsection

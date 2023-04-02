@@ -28,6 +28,14 @@ class AuthServiceProvider extends ServiceProvider
             return $user->can('application-settings.update.general');
         });
 
+        Gate::define('finances-view', function ($user) {
+            return $user->can('finances.view');
+        });
+
+        Gate::define('finances-createpdf', function ($user) {
+            return $user->can('finances.createpdf');
+        });
+
         Gate::define('help-view', function ($user) {
             return $user->can('help.view');
         });

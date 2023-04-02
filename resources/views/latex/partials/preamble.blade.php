@@ -22,6 +22,7 @@
 \usepackage{parskip}
 \usepackage{pdflscape}
 \usepackage{pdfpages}
+\usepackage{pgfplots}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}

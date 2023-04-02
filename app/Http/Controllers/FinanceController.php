@@ -66,7 +66,7 @@ class FinanceController extends Controller
             ->only('id', 'title_string', 'type')
             ->values();
 
-        $financeGroups = $financeGroups->merge($financeProjects)
+        $financeGroups = $financeGroups->concat($financeProjects)
             ->sortBy('title_string')
             ->values();
 

@@ -115,6 +115,22 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'exceptions.view']);
         Permission::firstOrCreate(['name' => 'exceptions.delete']);
 
+        // finances
+        Permission::firstOrCreate(['name' => 'finances.view']);
+        Permission::firstOrCreate(['name' => 'finances.createpdf']);
+
+        // finance groups
+        Permission::firstOrCreate(['name' => 'finance-groups.view']);
+        Permission::firstOrCreate(['name' => 'finance-groups.create']);
+        Permission::firstOrCreate(['name' => 'finance-groups.update']);
+        Permission::firstOrCreate(['name' => 'finance-groups.delete']);
+
+        // finance records
+        Permission::firstOrCreate(['name' => 'finance-records.view']);
+        Permission::firstOrCreate(['name' => 'finance-records.create']);
+        Permission::firstOrCreate(['name' => 'finance-records.update']);
+        Permission::firstOrCreate(['name' => 'finance-records.delete']);
+
         // flow meter inspection reports
         Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.view.own']);
         Permission::firstOrCreate(['name' => 'flow-meter-inspection-reports.view.other']);

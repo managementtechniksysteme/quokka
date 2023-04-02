@@ -17,15 +17,15 @@
                     <svg class="icon icon-16 ml-2 mr-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                     </svg>
-                    {{ Number::toLocal($interimInvoice->amount) }}
+                    {{ Number::toLocal($interimInvoice->amount, 2) }}
                 </div>
             </div>
 
             <div class="d-none d-md-block ml-2">
                 <div class="dropdown d-inline">
-                    <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="projectOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="interimResultOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="projectOverviewDropdown">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="interimResultOverviewDropdown">
                         @can('update', $interimInvoice)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('interim-invoices.edit', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}">
                                 <svg class="icon icon-16 mr-2">

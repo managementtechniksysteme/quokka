@@ -24,6 +24,9 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
+use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\FinanceGroupController;
+use App\Http\Controllers\FinanceRecordController;
 use App\Http\Controllers\FlowMeterInspectionReportController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;
@@ -96,7 +99,6 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::post('/home', [HomeController::class, 'post']);
 
     Route::resource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/accounting/download', [AccountingController::class, 'download'])->name('accounting.download');
@@ -138,6 +140,12 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('sent-emails', SentEmailController::class)->only(['index']);
 
     Route::resource('exceptions', ExceptionController::class)->only(['index', 'show', 'destroy']);
+
+    Route::resource('finances', FinanceController::class)->only(['index']);
+    Route::get('/finances/download', [FinanceController::class, 'download'])->name('finances.download');
+
+    Route::resource('finance-groups', FinanceGroupController::class);
+    Route::resource('/finance-groups/{finance_group}/finance-records', FinanceRecordController::class)->except(['index']);
 
     Route::resource('help', HelpController::class)->only(['index', 'show']);
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');

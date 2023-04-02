@@ -1514,6 +1514,167 @@
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
             <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+            </svg>
+            Finanzen
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Finanzen.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finances_view') is-invalid @enderror" name="finances_view" id="finances_view" value="true" @if(old('finances_view', optional($permissions)->hasPermissionTo('finances.view'))) checked @endif>
+                <label class="custom-control-label" for="finances_view">Finanzen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('finances_view') d-block @enderror">
+                @error('finances_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finances_createpdf') is-invalid @enderror" name="finances_createpdf" id="finances_createpdf" value="true" @if(old('finances_createpdf', optional($permissions)->hasPermissionTo('finances.createpdf'))) checked @endif>
+                <label class="custom-control-label" for="finances_createpdf">PDF Datei der Finanzübersicht erstellenn</label>
+            </div>
+            <div class="invalid-feedback @error('finances_createpdf') d-block @enderror">
+                @error('finances_createpdf')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+            </svg>
+            Finanzgruppen
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Finanzgruppen.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-groups_view') is-invalid @enderror" name="finance-groups_view" id="finance-groups_view" value="true" @if(old('finance-groups_view', optional($permissions)->hasPermissionTo('finance-groups.view'))) checked @endif>
+                <label class="custom-control-label" for="finance-groups_view">Finanzgruppen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-groups_view') d-block @enderror">
+                @error('finance-groups_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-groups_create') is-invalid @enderror" name="finance-groups_create" id="finance-groups_create" value="true" @if(old('finance-groups_create', optional($permissions)->hasPermissionTo('finance-groups.create'))) checked @endif>
+                <label class="custom-control-label" for="finance-groups_create">Finanzgruppen anlegen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-groups_create') d-block @enderror">
+                @error('finance-groups_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-groups_update') is-invalid @enderror" name="finance-groups_update" id="finance-groups_update" value="true" @if(old('finance-groups_update', optional($permissions)->hasPermissionTo('finance-groups.update'))) checked @endif>
+                <label class="custom-control-label" for="finance-groups_update">Finanzgruppen bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('finance-groups_update') d-block @enderror">
+                @error('finance-groups_update')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-groups_delete') is-invalid @enderror" name="finance-groups_delete" id="finance-groups_delete" value="true" @if(old('finance-groups_delete', optional($permissions)->hasPermissionTo('finance-groups.delete'))) checked @endif>
+                <label class="custom-control-label" for="finance-groups_delete">Finanzgruppen entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-groups_delete') d-block @enderror">
+                @error('finance-groups_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+            </svg>
+            Finanzeinträge
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Finanzeinträge.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-records_view') is-invalid @enderror" name="finance-records_view" id="finance-records_view" value="true" @if(old('finance-records_view', optional($permissions)->hasPermissionTo('finance-records.view'))) checked @endif>
+                <label class="custom-control-label" for="finance-records_view">Finanzeinträge anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-records_view') d-block @enderror">
+                @error('finance-records_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-records_create') is-invalid @enderror" name="finance-records_create" id="finance-records_create" value="true" @if(old('finance-records_create', optional($permissions)->hasPermissionTo('finance-records.create'))) checked @endif>
+                <label class="custom-control-label" for="finance-records_create">Finanzeinträge anlegen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-records_create') d-block @enderror">
+                @error('finance-records_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-records_update') is-invalid @enderror" name="finance-records_update" id="finance-records_update" value="true" @if(old('finance-records_update', optional($permissions)->hasPermissionTo('finance-records.update'))) checked @endif>
+                <label class="custom-control-label" for="finance-records_update">Finanzeinträge bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('finance-records_update') d-block @enderror">
+                @error('finance-records_update')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('finance-records_delete') is-invalid @enderror" name="finance-records_delete" id="finance-records_delete" value="true" @if(old('finance-records_delete', optional($permissions)->hasPermissionTo('finance-records.delete'))) checked @endif>
+                <label class="custom-control-label" for="finance-records_delete">Finanzeinträge entfernen</label>
+            </div>
+            <div class="invalid-feedback @error('finance-records_delete') d-block @enderror">
+                @error('finance-records_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
             </svg>
             Firmen

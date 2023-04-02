@@ -24,6 +24,16 @@
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
         </svg>
         @break
+    @case(\App\Models\FinanceGroup::class)
+        <svg class="icon icon-baseline mr-1">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+        </svg>
+        @break
+    @case(\App\Models\\App\Models\FinanceRecord::class)
+        <svg class="icon icon-baseline mr-1">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+        </svg>
+        @break
     @case(\App\Models\FlowMeterInspectionReport::class)
         <svg class="icon-bs icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>

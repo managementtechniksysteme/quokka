@@ -111,7 +111,10 @@ class AccountingController extends Controller
     {
         $validatedData = $request->validated();
 
-        $employees = Employee::whereIn('person_id', $validatedData['employee_ids'])
+        $employeeIds = $validatedData['employee_ids'] ?? Employee::pluck('person_id');
+
+
+        $employees = Employee::whereIn('person_id', $employeeIds)
             ->with('user')
             ->with('person')
             ->get()

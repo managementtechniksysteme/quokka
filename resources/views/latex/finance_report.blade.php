@@ -119,7 +119,7 @@ nodes near coords align={vertical}
 \footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($groupRow['billed_on'])->translatedFormat('d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($groupRow['title']) !!}} & \footnotesize{@if($groupRow['amount']>=0) \footnotesize{{!! Latex::escape(Number::toLocal($groupRow['amount']) . $currencyUnit) !!}} @else \footnotesize{\textcolor{red}{{!! Latex::escape(Number::toLocal($groupRow['amount']) . $currencyUnit) !!}}} @endif} \\
 \hline
 @endforeach
-\footnotesize{} & \footnotesize{\textbf{Summe}} & \footnotesize{@if(array_sum(array_column($group, 'amount'))>=0) \footnotesize{\textbf{{!! Latex::escape(Number::toLocal(array_sum(array_column($group, 'amount'))) . $currencyUnit) !!}}} @else \footnotesize{\textbf{\textcolor{red}{{!! Latex::escape(Number::toLocal(array_sum(array_column($group['amount']))) . $currencyUnit) !!}}}} @endif} \\
+\footnotesize{} & \footnotesize{\textbf{Summe}} & \footnotesize{@if(array_sum(array_column($group, 'amount'))>=0) \footnotesize{\textbf{{!! Latex::escape(Number::toLocal(array_sum(array_column($group, 'amount'))) . $currencyUnit) !!}}} @else \footnotesize{\textbf{\textcolor{red}{{!! Latex::escape(Number::toLocal(array_sum(array_column($group, 'amount'))) . $currencyUnit) !!}}}} @endif} \\
 \hline
 \end{longtable}
 @endforeach

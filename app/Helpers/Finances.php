@@ -24,7 +24,7 @@ class Finances
                 )
             );
 
-        $expense = $openProjects->sum(fn($project) => $project->current_costs) +
+        $expense = $openProjects->sum(fn($project) => -$project->current_costs) +
             $financeGroups->sum(
                 fn($financeGroup) => $financeGroup->financeRecords->sum(
                     fn($financeRecord) => $financeRecord->amount < 0 ? $financeRecord->amount : 0
@@ -53,7 +53,7 @@ class Finances
                 )
             );
 
-        $expense = $preExecutionProjects->sum(fn($project) => $project->current_costs) +
+        $expense = $preExecutionProjects->sum(fn($project) => -$project->current_costs) +
             $financeGroups->sum(
                 fn($financeGroup) => $financeGroup->financeRecords->sum(
                     fn($financeRecord) => min($financeRecord->amount, 0)

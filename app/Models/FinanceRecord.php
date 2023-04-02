@@ -43,11 +43,12 @@ class FinanceRecord extends Model implements FiltersGlobalSearch
             })
             ->get()
             ->map(function(FinanceRecord $financeRecord) {
+                $financeGroupTitle = $financeRecord->financeGroup->title_string
                 return new GlobalSearchResult(
                     FinanceRecord::class,
                     'Finanzeintrag',
                     $financeRecord->id,
-                    "$financeRecord->title (Gruppe $financeRecord->financeGroup->title_string)",
+                    "$financeRecord->title (Gruppe $financeGroupTitle)",
                     route('finance-groups.show', $financeRecord->financeGroup),
                     $financeRecord->created_at,
                     $financeRecord->updated_at,

@@ -88,7 +88,7 @@ class FinanceController extends Controller
 
         $today = Carbon::today()->format('Y-m-d');
 
-        $fileName = "FL ${today}.pdf";
+        $fileName = "FI ${today}.pdf";
 
         $report = Finances::getReportData();
         $currencyUnit = ApplicationSettings::get()->currency_unit;

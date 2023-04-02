@@ -62,7 +62,7 @@ class Finances
 
         return [
             'revenue' => $revenue,
-            'expense' => -$expense,
+            'expense' => $expense,
         ];
     }
 

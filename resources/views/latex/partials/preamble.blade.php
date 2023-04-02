@@ -12,7 +12,7 @@
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \usepackage{framed}
-\usepackage[showframe]{geometry}
+\usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{helvet}
 \usepackage{hyperref}
@@ -22,6 +22,7 @@
 \usepackage{parskip}
 \usepackage{pdflscape}
 \usepackage{pdfpages}
+\usepackage{pgfplots}
 \usepackage{qrcode}
 \usepackage{setspace}
 \usepackage{textcomp}

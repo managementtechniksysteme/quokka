@@ -37,18 +37,18 @@ class FinanceRecord extends Model implements FiltersGlobalSearch
 
     public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
-        return FinanceGroup::filterSearch($query)
+        return FinanceRecord::filterSearch($query)
             ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
                 return $query->latest('updated_at')->limit($latestQuantity);
             })
             ->get()
             ->map(function(FinanceRecord $financeRecord) {
                 return new GlobalSearchResult(
-                    FinanceGroup::class,
+                    FinanceRecord::class,
                     'Finanzeintrag',
                     $financeRecord->id,
                     "$financeRecord->title (Gruppe $financeRecord->financeGroup->title_string)",
-                    route('finance-records.index'),
+                    route('finance-groups.show', $financeRecord->financeGroup),
                     $financeRecord->created_at,
                     $financeRecord->updated_at,
                 );

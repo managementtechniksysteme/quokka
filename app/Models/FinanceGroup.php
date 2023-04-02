@@ -49,7 +49,7 @@ class FinanceGroup extends Model implements FiltersGlobalSearch
                     'Finanzgruppe',
                     $financeGroup->id,
                     $financeGroup->title,
-                    route('finance-records.index'),
+                    route('finance-groups.show', $financeGroup),
                     $financeGroup->created_at,
                     $financeGroup->updated_at,
                 );

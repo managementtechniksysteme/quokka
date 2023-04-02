@@ -111,7 +111,8 @@ class AccountingController extends Controller
     {
         $validatedData = $request->validated();
 
-        $employeeIds = $validatedData['employee_ids'] ?? Employee::pluck('person_id');
+        $employeeIds =
+            isset($validatedData['employee_ids']) ? $validatedData['employee_ids'] : Employee::pluck('person_id');
 
 
         $employees = Employee::whereIn('person_id', $employeeIds)

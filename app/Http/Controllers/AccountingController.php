@@ -111,10 +111,12 @@ class AccountingController extends Controller
     {
         $validatedData = $request->validated();
 
-        $employeeIds = $validatedData['employee_ids'] ?? Employee::pluck('person_id');
+        if(!isset($validatedData['employee_ids'])) {
+            $validatedData['employee_ids'] = Employee::pluck('person_id');
+        }
 
 
-        $employees = Employee::whereIn('person_id', $employeeIds)
+        $employees = Employee::whereIn('person_id', $validatedData['employee_ids'])
             ->with('user')
             ->with('person')
             ->get()
@@ -128,8 +130,8 @@ class AccountingController extends Controller
         $currencyUnit = ApplicationSettings::get()->currency_unit;
         $kilometre_costs = ApplicationSettings::get()->kilometre_costs;
 
-        if(count($employeeIds) === 1) {
-            $user = User::find($employeeIds[0])->load('employee.person');
+        if(count($validatedData['employee_ids']) === 1) {
+            $user = User::find($validatedData['employee_ids'][0])->load('employee.person');
             $username = Str::upper($user->username);
         } else {
             $username = null;
@@ -153,6 +155,8 @@ class AccountingController extends Controller
         }
 
         ksort($private_kilometres);
+
+        dd($report);
 
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')

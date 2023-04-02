@@ -90,11 +90,15 @@ class FinanceController extends Controller
 
         $fileName = "FL ${today}.pdf";
 
+        $report = Finances::getReportData();
+        $currencyUnit = ApplicationSettings::get()->currency_unit;
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.finance_report', [
-
+                'report' => $report,
+                'currencyUnit' => $currencyUnit,
             ])
             ->download($fileName);
     }

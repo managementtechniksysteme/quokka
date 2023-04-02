@@ -95,6 +95,33 @@ class Finances
 
     public static function getReportData(): array
     {
-        return [];
+        $currentlyOpenProjectsData = static::getCurrentlyOpenProjectsData();
+        $preExecutionProjectsData = static::getPreExecutionProjectsData();
+
+        $groupData = [];
+
+        foreach (FinanceGroup::all() as $financeGroup) {
+            $groupData[$financeGroup->title_string] = static::getGroupData($financeGroup);
+        }
+
+        foreach (Project::where('include_in_finances', true)->get() as $project) {
+           $groupData[$project->name] = static::getProjectData($project);
+        }
+
+        ksort($groupData);
+
+        $manualGroupDetails = [];
+
+        foreach (FinanceGroup::with('financeRecords')->get() as $financeGroup) {
+            $manualGroupDetails[$financeGroup->title_string] =
+                $financeGroup->financeRecords->map->only('billed_on', 'title', 'amount')->toArray();
+        }
+
+        return [
+            'currentlyOpenProjectsData' => $currentlyOpenProjectsData,
+            'preExecutionProjectsData' => $preExecutionProjectsData,
+            'groupData' => $groupData,
+            'manualGroupDetails' => $manualGroupDetails,
+        ];
     }
 }

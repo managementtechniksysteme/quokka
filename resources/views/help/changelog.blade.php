@@ -15,8 +15,25 @@
     </div>
 
     <div class="container my-4">
+    @markdown
+      ### v0.1.30-dcc5911 (02.04.2023)
+      * Die Finanzübersicht wurde implementiert. Es besteht die Möglichkeit, zusammenfassende sowie gruppenspezifische
+        Graphen anzuzeigen. Weiters kann eine Übersicht in PDF Format generiert werden. Finanzen können manuell
+        mittels Gruppen und zugehörigen Einträgen verwaltet werden. Eine Gruppe kann hierbei einem Projekt zugeordnet
+        sein oder als eigenständige Sammlung behandelt werden.
+      * In diesem Zuge wurden Projekte um zwei Einstellungsmöglichkeiten erweitert. Diese geben an, ob sich ein
+        Projekt in der Vorphase befindet und ob dem Projekt zugeordnete Leistungen in der Finanzübersicht
+        berücksichtigt werden sollen.
+      * Finanzwerte für einen Projekt werden jetzt ebenfalls graphisch in der Projektdetail Seite dargestellt.
+      * Ein Hinweis zur Verwendung von A4 Hochformat Anhängen wurde zum Formular für Prüfberichte von
+        Durchflussmesseinrichtungen hinzugefügt.
+      * Ein Fehler wurde beim Erstellen von Aufgaben PDFs behoben, bei dem illegale Zeichen im resultierenden
+        Dateienamen eine PDF Generierung verhinderten.
+      * Kleinere Ausbesserungen von Schreibfehler und Verbesserung der Benutzeroberfläche.
+      @endmarkdown
+
       @markdown
-      ### v0.1.29-f73070b (26.02.2023)
+      ### v0.1.29-f73070b (26.03.2023)
       * Das zugrundelegende Framework wurde auf die neueste Version aktualisiert, um zukunftssicher weitere
         Funktionen entwickeln zu können.
       @endmarkdown

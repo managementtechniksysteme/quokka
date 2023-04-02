@@ -70,7 +70,7 @@
                         style: {
                             fontFamily: 'Roboto',
                         },
-                        formatter: (value) => value + this.currency_unit
+                        formatter: (value) => value.toFixed(2) + this.currency_unit
                     },
                     legend: {
                         fontFamily: 'Roboto',

@@ -78,6 +78,7 @@
                     tooltip: {
                         enabled: true,
                         y: {
+                            formatter: (value, { series, seriesIndex, dataPointIndex, w }) => value.toFixed(2) + this.currency_unit,
                             title: {
                                 formatter: () => ''
                             }

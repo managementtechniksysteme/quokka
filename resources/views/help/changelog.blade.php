@@ -16,6 +16,12 @@
 
     <div class="container my-4">
     @markdown
+      ### v0.1.30-fa208e8 (03.04.2023)
+      * Falls die entsprechende Option zum Ausblenden von Listenelementen in den Benutzereinstellungen gesetzt ist,
+        werden beendete Projekte ab dem Tag nach dem Ende automatisch aus der Übersicht ausgeblendet.
+    @endmarkdown
+
+    @markdown
       ### v0.1.30-dcc5911 (02.04.2023)
       * Die Finanzübersicht wurde implementiert. Es besteht die Möglichkeit, zusammenfassende sowie gruppenspezifische
         Graphen anzuzeigen. Weiters kann eine Übersicht in PDF Format generiert werden. Finanzen können manuell

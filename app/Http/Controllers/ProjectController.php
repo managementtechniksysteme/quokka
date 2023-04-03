@@ -55,6 +55,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
+        Project::handleDefaultFilter($request);
+
         $projects = Project::filterSearch($request->search)
             ->order($request->sort)
             ->with('company')

@@ -9,6 +9,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -52,6 +53,11 @@ class Project extends Model implements FiltersGlobalSearch
         'wage-costs-asc' => ['wage_costs'],
         'wage-costs-desc' => [['wage_costs', 'desc']],
     ];
+
+    public static function defaultFilter() : ?string
+    {
+        return Auth::user()->settings->show_finished_items ? null : '!ist:beendet';
+    }
 
     public static function filterGlobalSearch(string $query, ?int $latestQuantity = null): Collection
     {

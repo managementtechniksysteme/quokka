@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\FinanceGroup;
 use App\Models\Project;
+use Carbon\Carbon;
 
 class Finances
 {
@@ -11,6 +12,10 @@ class Finances
     {
         $openProjects = Project::where('is_pre_execution', false)
             ->where('include_in_finances', true)
+            ->where(function ($query) {
+                $query->whereNull('ends_on')
+                    ->orWhere('ends_on', '>', Carbon::today());
+            })
             ->get();
 
         $financeGroups = FinanceGroup::whereHas('project', fn($query) => $query->where('is_pre_execution', false))

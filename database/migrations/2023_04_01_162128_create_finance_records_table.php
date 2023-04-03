@@ -19,7 +19,7 @@ class CreateFinanceRecordsTable extends Migration
 
             $table->unique(['title', 'finance_group_id']);
 
-            $table->foreign('finance_group_id')->references('id')->on('finance_groups')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('finance_group_id')->references('id')->on('finance_groups')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

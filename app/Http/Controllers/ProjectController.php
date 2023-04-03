@@ -98,11 +98,14 @@ class ProjectController extends Controller
 
         $companies = Company::order()->get();
 
+        $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+
         return view('project.create')
             ->with('project', null)
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
-            ->with('companies', $companies->toJson());
+            ->with('companies', $companies->toJson())
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
     }
 
     /**
@@ -357,11 +360,14 @@ class ProjectController extends Controller
         $currentCompany = $project->company;
         $companies = Company::order()->get();
 
+        $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+
         return view('project.edit')
             ->with(compact('project'))
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
-            ->with('companies', $companies->toJson());
+            ->with('companies', $companies->toJson())
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
     }
 
     /**
@@ -382,7 +388,8 @@ class ProjectController extends Controller
             $project->save();
         }
 
-        if($validatedData['include_in_finances']) {
+        if($validatedData['include_in_finances'] ||
+            ($project->ends_on !== null && ApplicationSettings::get()->remove_finished_project_finance_group)) {
             $project->financeGroup()->delete();
         }
 

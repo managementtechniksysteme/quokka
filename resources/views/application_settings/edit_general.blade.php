@@ -493,6 +493,40 @@
             </div>
         </div>
 
+        <div class="row mt-4">
+            <div class="col">
+                <p class="text-muted d-inline-flex align-items-center mb-1">
+                    <svg class="icon icon-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                    </svg>
+                    Entfernen der zugehörigen Finanzgrupopen für abgeschlossene Projekte
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <div>
+                        <label for="remove_finished_project_finance_group">Beim markieren von Projekten als beendet werden alle zugehörigen Finanzeinträge automatisch gelösacht?</label>
+                    </div>
+                    <div class="btn-group btn-group-toggle @error('remove_finished_project_finance_group') is-invalid @enderror" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary @if(old('remove_finished_project_finance_group', $applicationSettings->remove_finished_project_finance_group) == true) active @endif">
+                            <input type="radio" name="remove_finished_project_finance_group" id="1" value="1" autocomplete="off" @if(old('remove_finished_project_finance_group', $applicationSettings->remove_finished_project_finance_group) == true) checked @endif> entfernen
+                        </label>
+                        <label class="btn btn-outline-secondary @if(old('remove_finished_project_finance_group', $applicationSettings->remove_finished_project_finance_group) == false) active @endif">
+                            <input type="radio" name="remove_finished_project_finance_group" id="0" value="0" autocomplete="off" @if(old('remove_finished_project_finance_group', $applicationSettings->remove_finished_project_finance_group) == false) checked @endif> nicht entfernen
+                        </label>
+                    </div>
+                    <div class="invalid-feedback @error('remove_finished_project_finance_group') d-block @enderror">
+                        @error('remove_finished_project_finance_group')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
             <svg class="icon icon-16 mr-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>

@@ -42,6 +42,20 @@
             </div>
         </div>
 
+        @if($removeFinishedProjectFinanceGroup && $project?->financeGroup()->exists())
+            <div class="alert alert-warning mt-1" role="alert">
+                <div class="d-inline-flex align-items-center">
+                    <svg class="icon icon-24 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                    </svg>
+                    <p class="m-0">
+                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim Setzen eines
+                        Projektendes aus dem System entfernt.
+                    </p>
+                </div>
+            </div>
+        @endif
+
         <div class="form-group">
             <label for="ends_on">Enddatum</label>
             <input type="date" class="form-control @error('ends_on') is-invalid @enderror" id="ends_on" name="ends_on" placeholder="" value="{{ old('ends_on', optional(optional($project)->ends_on)->format('Y-m-d')) }}" />
@@ -78,7 +92,7 @@
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     <p class="m-0">
-                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim setzten der
+                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim Setzen der
                         nachfolgenden Option auf <strong>ja</strong> aus dem System entfernt.
                     </p>
                 </div>

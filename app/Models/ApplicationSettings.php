@@ -19,6 +19,8 @@ class ApplicationSettings extends Model
         'project_overall_costs_warning_percentage' => 'int',
         'project_billed_costs_warning_percentage' => 'int',
         'task_due_soon_days' => 'int',
+        'prune_sent_emails' => 'bool',
+        'remove_finished_project_finance_group' => 'bool',
     ];
 
     protected $fillable = [
@@ -41,6 +43,7 @@ class ApplicationSettings extends Model
         'task_due_soon_days',
         'prune_read_notifications',
         'prune_sent_emails',
+        'remove_finished_project_finance_group',
     ];
 
     public static function get()

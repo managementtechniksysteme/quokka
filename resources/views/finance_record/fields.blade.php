@@ -39,6 +39,18 @@
             </div>
         </div>
 
+        <div class="alert alert-info mt-1" role="alert">
+            <div class="d-inline-flex align-items-center">
+                <svg class="icon icon-24 mr-2">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                </svg>
+                <p class="m-0">
+                    Bei Einnahmen wird ein <strong>positiver</strong> Betrag eingegeben. Für Ausgaben wird ein
+                    <strong>negativer</strong> Wert verwendet.
+                </p>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="amount">Betrag</label>
             <div class="input-group">

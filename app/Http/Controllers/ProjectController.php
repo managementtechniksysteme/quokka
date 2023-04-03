@@ -115,7 +115,13 @@ class ProjectController extends Controller
     {
         $validatedData = $request->validated();
 
-        $project = Project::create($validatedData);
+        $project = Project::make($validatedData);
+
+        if(isset($validatedData['ends_on'])) {
+            $project->is_pre_execution = false;
+        }
+
+        $project->save();
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich angelegt.');
     }
@@ -370,6 +376,11 @@ class ProjectController extends Controller
         $validatedData = $request->validated();
 
         $project->update($validatedData);
+
+        if($project->ends_on !== null) {
+            $project->is_pre_execution = false;
+            $project->save();
+        }
 
         if($validatedData['include_in_finances']) {
             $project->financeGroup()->delete();

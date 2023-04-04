@@ -44,7 +44,8 @@ ylabel near ticks,
 yticklabel pos=left,
 scaled y ticks=false,
 nodes near coords,
-every node near coord/.append style={font=\scriptsize},
+nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
+%every node near coord/.append style={font=\scriptsize},
 nodes near coords align={vertical}
 ]
 \addplot[fill=green, draw=none] coordinates {
@@ -76,8 +77,10 @@ xticklabels={Einnahmen, Ausgaben, Differenz},
 ylabel near ticks,
 yticklabel pos=left,
 scaled y ticks=false,
+ylabel = {number of clips},
 nodes near coords,
-every node near coord/.append style={font=\scriptsize},
+nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
+%every node near coord/.append style={font=\scriptsize},
 nodes near coords align={vertical}
 ]
 \addplot[fill=green, draw=none] coordinates {

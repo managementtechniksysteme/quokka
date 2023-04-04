@@ -390,7 +390,7 @@ class ProjectController extends Controller
 
         if($validatedData['include_in_finances'] ||
             ($project->ends_on !== null && ApplicationSettings::get()->remove_finished_project_finance_group)) {
-            $project->financeGroup->delete();
+            $project->financeGroup()->delete();
         }
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
@@ -406,8 +406,8 @@ class ProjectController extends Controller
     {
         $redirect = $this->getConditionalRedirect($request->redirect, $project);
 
-        $project->interimInvoices->delete();
-        $project->financeGroup->delete();
+        $project->interimInvoices()->delete();
+        $project->financeGroup()->delete();
         $project->delete();
 
         return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');

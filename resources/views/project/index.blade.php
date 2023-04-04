@@ -54,7 +54,7 @@
                                     </svg>
                                 </button>
                                 @if (Request::get('search'))
-                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
+                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
                                         <svg class="icon icon-16">
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
                                         </svg>

@@ -226,13 +226,13 @@
     @can('finances-view')
         <div class="row mt-4">
             <div class="col-md-6 mb-2">
-                <h4>Finanzen aus der Abrechnung</h4>
+                <h4>Projektcontrolling</h4>
                 <finance-revenue-expense-chart :revenue="{{ $accountingFinanceData['revenue'] }}" :expense="{{ $accountingFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
             </div>
             @if($manualFinanceData)
                 <div class="col-md-6 mb-2">
-                    <h4>Auftragssummen</h4>
-                    <finance-revenue-expense-chart :revenue="{{ $manualFinanceData['revenue'] }}" :expense="{{ $manualFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                    <h4>Finanzcontrolling</h4>
+                    <finance-volume-chart :total_volume="{{ $manualFinanceData['total_volume'] }}" :billed_volume="{{ $manualFinanceData['billed_volume'] }}" v-cloak></finance-volume-chart>
                 </div>
             @endif
         </div>

@@ -16,6 +16,7 @@ import CompanyDropdown from './components/CompanyDropdown';
 import EmailSelector from "./components/EmailSelector";
 import FinanceGroupDropdown from "./components/FinanceGroupDropdown.vue";
 import FinanceRevenueExpenseChart from "./components/FinanceRevenueExpenseChart.vue";
+import FinanceVolumeChart from "./components/FinanceVolumeChart.vue";
 import GestureLinks from './components/GestureLinks';
 import JwPagination from 'jw-vue-pagination';
 import LogbookSelector from './components/LogbookSelector';
@@ -63,6 +64,7 @@ Vue.component('company-dropdown', CompanyDropdown);
 Vue.component('email-selector', EmailSelector);
 Vue.component('finance-group-dropdown', FinanceGroupDropdown);
 Vue.component('finance-revenue-expense-chart', FinanceRevenueExpenseChart)
+Vue.component('finance-volume-chart', FinanceVolumeChart)
 Vue.component('gesture-links', GestureLinks);
 Vue.component('jw-pagination', JwPagination);
 Vue.component('logbook-selector', LogbookSelector);

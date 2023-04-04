@@ -38,8 +38,8 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                                <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($currentlyOpenProjectsData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
+                                <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -47,8 +47,8 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($currentlyOpenProjectsData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
+                                <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -58,15 +58,15 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Differenz</h5>
-                                <span class="h2 font-weight-bold @if($currentlyOpenProjectsData['revenue'] + $currentlyOpenProjectsData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($currentlyOpenProjectsData['revenue'] + $currentlyOpenProjectsData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
+                                <span class="h2 font-weight-bold @if($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <finance-revenue-expense-chart :revenue="{{ $currentlyOpenProjectsData['revenue'] }}" :expense="{{ $currentlyOpenProjectsData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                    <finance-volume-chart :total_volume="{{ $currentlyOpenProjectsData['total_volume'] }}" :billed_volume="{{ $currentlyOpenProjectsData['billed_volume'] }}" v-cloak></finance-volume-chart>
                 </div>
             </div>
 
@@ -82,8 +82,8 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                                <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($preExecutionProjectsData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
+                                <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -91,8 +91,8 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($preExecutionProjectsData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
+                                <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -102,15 +102,15 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Differenz</h5>
-                                <span class="h2 font-weight-bold @if($preExecutionProjectsData['revenue'] + $preExecutionProjectsData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($preExecutionProjectsData['revenue'] + $preExecutionProjectsData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
+                                <span class="h2 font-weight-bold @if($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <finance-revenue-expense-chart :revenue="{{ $preExecutionProjectsData['revenue'] }}" :expense="{{ $preExecutionProjectsData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                    <finance-volume-chart :total_volume="{{ $preExecutionProjectsData['total_volume'] }}" :billed_volume="{{ $preExecutionProjectsData['billed_volume'] }}" v-cloak></finance-volume-chart>
                 </div>
             </div>
         </div>
@@ -151,8 +151,8 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                            <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($projectData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                            <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
+                            <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($projectData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -160,8 +160,8 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                            <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($projectData['expense'], 2) }}{{ $currencyUnit }}</span>
+                            <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
+                            <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -169,15 +169,15 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">Differenz</h5>
-                            <span class="h2 font-weight-bold @if($projectData['revenue'] + $projectData['expense'] >= 0) text-green @else text-red @endif m-0">{{ Number::toLocal($projectData['revenue'] + $projectData['expense'], 2) }}{{ $currencyUnit }}</span>
+                            <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
+                            <span class="h2 font-weight-bold @if($projectData['total_volume'] + $projectData['billed_volume'] >= 0) text-green @else text-red @endif m-0">{{ Number::toLocal($projectData['total_volume'] + $projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <finance-revenue-expense-chart :revenue="{{ $projectData['revenue'] }}" :expense="{{ $projectData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                <finance-volume-chart :total_volume="{{ $projectData['total_volume'] }}" :billed_volume="{{ $projectData['billed_volume'] }}" v-cloak></finance-volume-chart>
             </div>
         @endif
 

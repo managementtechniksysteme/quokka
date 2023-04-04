@@ -7,7 +7,7 @@
 
             <h3>
                 Finanzgruppe bearbeiten
-                <small class="text-muted">{{ $financeGroup->title_string }}</small>
+                <small class="text-muted">{{ $financeGroup->title }}</small>
             </h3>
         </div>
     </div>

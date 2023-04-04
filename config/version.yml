@@ -7,7 +7,7 @@ current:
   patch: 30
   prerelease: beta
   buildmetadata:
-  commit: fa208e8
+  commit: ac144c7
   timestamp:
     mode: absorb
     year:

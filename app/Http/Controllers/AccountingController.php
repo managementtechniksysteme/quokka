@@ -156,8 +156,6 @@ class AccountingController extends Controller
 
         ksort($private_kilometres);
 
-        dd($report);
-
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()

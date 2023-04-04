@@ -12,13 +12,17 @@ class Finances
     {
         $openProjects = Project::where('is_pre_execution', false)
             ->where('include_in_finances', true)
-            ->where(function ($query) {
+            ->where(fn ($query) =>
                 $query->whereNull('ends_on')
-                    ->orWhere('ends_on', '>', Carbon::today());
-            })
+                    ->orWhere('ends_on', '>', Carbon::today())
+            )
             ->get();
 
-        $financeGroups = FinanceGroup::whereHas('project', fn($query) => $query->where('is_pre_execution', false))
+        $financeGroups = FinanceGroup::whereHas('project',
+            fn($query) => $query->where('is_pre_execution', false)
+                ->where(fn ($query) =>
+                    $query->whereNull('ends_on')
+                        ->orWhere('ends_on', '>', Carbon::today())))
             ->orWhereDoesntHave('project')
             ->with('financeRecords')->get();
 

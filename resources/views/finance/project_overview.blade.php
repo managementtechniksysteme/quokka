@@ -117,7 +117,7 @@
 
         <h4 class="mt-4">
             <svg class="icon-bs icon-baseline text-muted mr-1">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#list"></use>
+                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use>
             </svg>
             Übersicht einzelner Projekte
         </h4>

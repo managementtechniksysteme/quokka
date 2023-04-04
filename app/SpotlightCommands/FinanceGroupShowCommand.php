@@ -36,7 +36,7 @@ class FinanceGroupShowCommand extends SpotlightCommand
             ->map(function (FinanceGroup $financeGroup) {
                 return new SpotlightSearchResult(
                     $financeGroup->id,
-                    $financeGroup->title_string,
+                    $financeGroup->title,
                     ''
                 );
             });

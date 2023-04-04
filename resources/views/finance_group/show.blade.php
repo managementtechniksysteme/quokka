@@ -8,7 +8,7 @@
             <h3>
                 Finanzgruppe
                 <small class="text-muted d-inline-flex align-items-center">
-                    {{ $financeGroup->title_string }}
+                    {{ $financeGroup->title }}
                     @if(false)
                         <svg class="icon icon-16 text-yellow ml-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
@@ -90,7 +90,7 @@
             @empty
                 <div class="text-center">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Zu der Finanzgruppe {{ $financeGroup->title_string }} gibt es noch keine Finanzeinträge.</p>
+                    <p class="lead text-muted">Zu der Finanzgruppe {{ $financeGroup->title }} gibt es noch keine Finanzeinträge.</p>
                     @can('create', \App\Models\FinanceRecord::class)
                         <p class="lead">Lege einen neuen Finanzeintrag an.</p>
                         <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">

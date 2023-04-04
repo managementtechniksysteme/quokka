@@ -41,11 +41,11 @@ bar shift=0pt,
 xtick={1, 2, 3},
 xticklabels={Einnahmen, Ausgaben, Differenz},
 ylabel near ticks,
+ylabel style={font=\tiny, /pgf/number format/.cd,fixed},
 yticklabel pos=left,
 scaled y ticks=false,
 nodes near coords,
 nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
-%every node near coord/.append style={font=\scriptsize},
 nodes near coords align={vertical}
 ]
 \addplot[fill=green, draw=none] coordinates {
@@ -75,12 +75,11 @@ bar shift=0pt,
 xtick={1, 2, 3},
 xticklabels={Einnahmen, Ausgaben, Differenz},
 ylabel near ticks,
+ylabel style={font=\tiny, /pgf/number format/.cd,fixed},
 yticklabel pos=left,
 scaled y ticks=false,
-ylabel = {number of clips},
 nodes near coords,
 nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
-%every node near coord/.append style={font=\scriptsize},
 nodes near coords align={vertical}
 ]
 \addplot[fill=green, draw=none] coordinates {

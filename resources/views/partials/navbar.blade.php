@@ -194,20 +194,30 @@
                                 </svg>
                                 Finanzen
                             </a>
-                            @can('viewAny', \App\Models\FinanceGroup::class)
-                                <a id="navbarFinancesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="caret h-20"></span>
-                                </a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarFinancesDropdown">
-                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('finance-groups.index') }}">
+                            <a id="navbarFinancesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret h-20"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarFinancesDropdown">
+                            @can('finances-view')
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('project-finances.index') }}">
                                         <svg class="icon icon-16 mr-1">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                         </svg>
-                                        Manuelle Einträge
+                                        Projektübersicht
                                     </a>
-                                </div>
                             @endcan
+                            @can('viewAny', \App\Models\FinanceGroup::class)
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('finance-groups.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
+                                    </svg>
+                                    Manuelle Einträge
+                                </a>
+                            @endcan
+                            @if(auth()->user()->can('finances-view') || auth()->user()->can('viewAny', \App\Models\FinanceGroup::class))
+                                </div>
+                            @endif
                         </li>
                     @endif
 

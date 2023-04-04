@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class FinanceIndexRequest extends FormRequest
+class ProjectFinanceIndexRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,7 @@ class FinanceIndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'group' => 'sometimes|exists:finance_groups,id',
+            'project' => 'sometimes|exists:projects,id',
         ];
     }
 }

@@ -4,16 +4,7 @@
             <div class="mw-100 flex-grow-1 position-relative">
                 <a class="stretched-link outline-none" href="{{ route('finance-groups.show', $financeGroup) }}"></a>
                 <div class="mw-100 d-flex align-items-center">
-                    <svg class="icon icon-baseline text-muted mr-1">
-                        @if($financeGroup->project)
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                        @else
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                        @endif
-                    </svg>
-                    <span class="mw-100 text-truncate">
-                        {{ $financeGroup->title_string }}
-                    </span>
+                    {{ $financeGroup->title }}
                 </div>
                 <div class="text-muted mw-100 text-truncate">
                     {{ $financeGroup->finance_records_count }} Einträge

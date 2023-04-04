@@ -10,12 +10,9 @@ class CreateFinanceGroupsTable extends Migration
     {
         Schema::create('finance_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique()->nullable();
+            $table->string('title')->unique();
             $table->text('comment')->nullable();
-            $table->unsignedBigInteger('project_id')->nullable();
             $table->timestamps();
-
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

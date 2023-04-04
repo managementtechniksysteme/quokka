@@ -126,19 +126,5 @@
             {{ $financeGroups->links() }}
         </div>
 
-        @if($financeGroups->count() > 0)
-            <p class="mt-3 small">
-                Das Symbol zeigt die Art der Finanzgruppe an:
-                <svg class="icon icon-baseline">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                </svg>
-                einem Projekt zugewiesen
-                <svg class="icon icon-baseline">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                </svg>
-                manuell angelegt
-            </p>
-        @endif
-
     </div>
 @endsection

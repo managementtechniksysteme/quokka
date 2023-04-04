@@ -68,7 +68,7 @@
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
-                        Gesamtkosten
+                        Auftragssumme
                     </div>
                 </div>
                 <div class="col">
@@ -227,11 +227,11 @@
         <div class="row mt-4">
             <div class="col-md-6 mb-2">
                 <h4>Finanzen aus der Abrechnung</h4>
-                <finance-revenue-expense-chart :revenue="{{ $financeData['revenue'] }}" :expense="{{ $financeData['expense'] }}" v-cloak></finance-revenue-expense-chart>
+                <finance-revenue-expense-chart :revenue="{{ $accountingFinanceData['revenue'] }}" :expense="{{ $accountingFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
             </div>
             @if($manualFinanceData)
                 <div class="col-md-6 mb-2">
-                    <h4>Manuell eingetragene Finanzen</h4>
+                    <h4>Auftragssummen</h4>
                     <finance-revenue-expense-chart :revenue="{{ $manualFinanceData['revenue'] }}" :expense="{{ $manualFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
                 </div>
             @endif

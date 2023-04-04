@@ -122,6 +122,7 @@ class ProjectController extends Controller
 
         if(isset($validatedData['ends_on'])) {
             $project->is_pre_execution = false;
+            $project->financial_costs = null;
         }
 
         $project->save();
@@ -153,13 +154,16 @@ class ProjectController extends Controller
             case 'overview':
                 $currencyUnit = ApplicationSettings::get()->currency_unit;
 
-                $financeData = Finances::getProjectData($project);
-                $manualFinanceData = $project->financeGroup ? Finances::getGroupData($project->financeGroup) : null;
+                $accountingFinanceData = [
+                    'revenue' => $project->billed_costs ?? 0,
+                    'expense' => -$project->current_costs,
+                ];
+                $manualFinanceData = Finances::getProjectData($project);
 
                 return view('project.show_tab_overview')
                     ->with(compact('project'))
                     ->with('financeRecordsCount', $financeRecordsCount)
-                    ->with('financeData', $financeData)
+                    ->with('accountingFinanceData', $accountingFinanceData)
                     ->with('manualFinanceData', $manualFinanceData)
                     ->with(compact('currencyUnit'));
 
@@ -178,26 +182,6 @@ class ProjectController extends Controller
                     ->with(compact('project'))
                     ->with('financeRecordsCount', $financeRecordsCount)
                     ->with(compact('interimInvoices'));
-
-            case 'finances':
-                if(Auth::user()->cannot('viewAny', FinanceRecord::class) ||
-                    $project->include_in_finances) {
-                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
-                }
-
-                $financeGroup = $project
-                    ->financeGroup?->loadSum('financeRecords', 'amount');
-
-                $financeRecords = $financeGroup?->financeRecords()
-                    ->order()
-                    ->paginate(Auth::user()->settings->list_pagination_size)
-                    ->appends($request->except('page')) ?? null;
-
-                return view('project.show_tab_finances')
-                    ->with(compact('project'))
-                    ->with('financeRecordsCount', $financeRecordsCount)
-                    ->with(compact('financeGroup'))
-                    ->with(compact('financeRecords'));
 
             case 'tasks':
                 if(Auth::user()->cannot('viewAny', Task::class)) {
@@ -388,9 +372,8 @@ class ProjectController extends Controller
             $project->save();
         }
 
-        if($validatedData['include_in_finances'] ||
-            ($project->ends_on !== null && ApplicationSettings::get()->remove_finished_project_finance_group)) {
-            $project->financeGroup()->delete();
+        if($validatedData['include_in_finances'] || $project->ends_on !== null) {
+            $project->financial_costs = null;
         }
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
@@ -407,7 +390,6 @@ class ProjectController extends Controller
         $redirect = $this->getConditionalRedirect($request->redirect, $project);
 
         $project->interimInvoices()->delete();
-        $project->financeGroup()->delete();
         $project->delete();
 
         return $redirect->with('success', 'Das Projekt wurde erfolgreich entfernt.');

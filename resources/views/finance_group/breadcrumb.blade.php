@@ -4,5 +4,5 @@
     </svg>
     <a href="{{ route('finance-groups.index') }}">Finanzgruppen</a>
     <span class="px-2">/</span>
-    <a href="{{ route('finance-groups.show', $financeGroup) }}">{{ $financeGroup->title_string }}</a>
+    <a href="{{ route('finance-groups.show', $financeGroup) }}">{{ $financeGroup->title }}</a>
 </div>

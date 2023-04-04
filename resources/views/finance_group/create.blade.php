@@ -14,7 +14,7 @@
 
     <div class="container my-4">
         <form class="needs-validation mt-4" action="{{ route('finance-groups.store') }}" method="post" novalidate>
-            @component('finance_group.fields', [ 'financeGroup' => $financeGroup, 'currentProject' => $currentProject, 'projects' => $projects ])
+            @component('finance_group.fields', [ 'financeGroup' => $financeGroup ])
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">

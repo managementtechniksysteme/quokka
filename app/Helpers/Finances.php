@@ -18,13 +18,13 @@ class Finances
             )
             ->get();
 
-        $revenue = $openProjects->sum(fn($project) => $project->costs);
+        $totalVolume = $openProjects->sum(fn($project) => $project->costs);
 
-        $expense = $openProjects->sum(fn($project) => -$project->current_financial_costs);
+        $billedVolume = $openProjects->sum(fn($project) => -$project->current_billed_financial_costs);
 
         return [
-            'revenue' => $revenue,
-            'expense' => $expense,
+            'total_volume' => $totalVolume,
+            'billed_volume' => $billedVolume,
         ];
     }
 
@@ -32,13 +32,13 @@ class Finances
     {
         $preExecutionProjects = Project::where('is_pre_execution', true)->get();
 
-        $revenue = $preExecutionProjects->sum(fn($project) => $project->costs);
+        $totalVolume = $preExecutionProjects->sum(fn($project) => $project->costs);
 
-        $expense = $preExecutionProjects->sum(fn($project) => -$project->current_financial_costs);
+        $billedVolume = $preExecutionProjects->sum(fn($project) => -$project->current_billed_financial_costs);
 
         return [
-            'revenue' => $revenue,
-            'expense' => $expense,
+            'total_volume' => $totalVolume,
+            'billed_volume' => $billedVolume,
         ];
     }
 
@@ -70,12 +70,12 @@ class Finances
 
     public static function getProjectData(Project $project): array
     {
-        $revenue = $project->costs;
-        $expense = $project->current_financial_costs;
+        $total_volume = $project->costs;
+        $billed_volume = $project->current_billed_financial_costs;
 
         return [
-            'revenue' => $revenue ?? 0,
-            'expense' => $expense ? -$expense : 0,
+            'total_volume' => $total_volume ?? 0,
+            'billed_volume' => $billed_volume ? -$billed_volume : 0,
         ];
     }
 

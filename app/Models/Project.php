@@ -24,13 +24,13 @@ class Project extends Model implements FiltersGlobalSearch
         'ends_on' => 'date',
         'material_costs' => 'double',
         'wage_costs' => 'double',
-        'financial_costs' => 'double',
+        'billed_financial_costs' => 'double',
         'is_pre_execution' => 'bool',
         'include_in_finances' => 'bool',
     ];
 
     protected $fillable = [
-        'name', 'starts_on', 'ends_on', 'is_pre_execution', 'include_in_finances', 'material_costs', 'wage_costs', 'financial_costs', 'comment', 'company_id',
+        'name', 'starts_on', 'ends_on', 'is_pre_execution', 'include_in_finances', 'material_costs', 'wage_costs', 'billed_financial_costs', 'comment', 'company_id',
     ];
 
     protected $filterFields = [
@@ -149,8 +149,8 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->include_in_finances ? 'ja' : 'nein';
     }
 
-    public function getCurrentFinancialCostsAttribute() {
-        return $this->financial_costs ?? $this->current_costs;
+    public function getCurrentBilledFinancialCostsAttribute() {
+        return $this->billed_financial_costs ?? $this->billed_costs ?? 0;
     }
 
     public function getCostsAttribute() {

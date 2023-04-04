@@ -91,7 +91,7 @@
         </div>
 
         <div class="form-group">
-            <label for="wage_costs">Lohnkosten</label>
+            <label for="wage_costs">Lohnkosten Auftragsvolumen</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">{{ $currencyUnit }}</span>
@@ -106,7 +106,7 @@
         </div>
 
         <div class="form-group">
-            <label for="material_costs">Materialkosten</label>
+            <label for="material_costs">Materialkosten Auftragsvolumen</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">{{ $currencyUnit }}</span>
@@ -121,14 +121,14 @@
         </div>
 
         <div class="form-group">
-            <label for="financial_costs">aktuelle Kosten für die Finanzübersicht</label>
+            <label for="billed_financial_costs">aktuell verrechnete Kosten für die Finanzübersicht</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">{{ $currencyUnit }}</span>
                 </div>
-                <input type="number" min="0" step="0.01" class="form-control @error('financial_costs') is-invalid @enderror" id="financial_costs" name="financial_costs" placeholder="" value="{{ old('financial_costs', optional($project)->financial_costs) }}" />
-                <div class="invalid-feedback @error('financial_costs') d-block @enderror">
-                    @error('financial_costs')
+                <input type="number" min="0" step="0.01" class="form-control @error('billed_financial_costs') is-invalid @enderror" id="billed_financial_costs" name="billed_financial_costs" placeholder="" value="{{ old('billed_financial_costs', optional($project)->billed_financial_costs) }}" />
+                <div class="invalid-feedback @error('billed_financial_costs') d-block @enderror">
+                    @error('billed_financial_costs')
                     {{ $message }}
                     @enderror
                 </div>

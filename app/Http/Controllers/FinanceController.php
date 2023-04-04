@@ -25,59 +25,24 @@ class FinanceController extends Controller
         $validatedData = $request->validated();
 
         $currentFinanceGroup = null;
-        $currentProject = null;
         $groupData = null;
 
-        $currentlyOpenProjectsData = Finances::getCurrentlyOpenProjectsData();
-        $preExecutionProjectsData = Finances::getPreExecutionProjectsData();
+        $groupTotals = Finances::getGroupTotals();
 
         if(isset($validatedData['group'])) {
             $currentFinanceGroup = FinanceGroup::find($validatedData['group']);
             $groupData = Finances::getGroupData($currentFinanceGroup);
-            $currentFinanceGroup = [
-                'id' => $currentFinanceGroup->id,
-                'title_string' => $currentFinanceGroup->title_string,
-                'type' => 'group',
-            ];
-        }
-        elseif(isset($validatedData['project'])) {
-            $currentProject = Project::find($validatedData['project']);
-            $groupData = Finances::getProjectData($currentProject);
-            $currentFinanceGroup = [
-                'id' => $currentProject->id,
-                'title_string' => $currentProject->name,
-                'type' => 'project',
-            ];
         }
 
-        $financeGroups = FinanceGroup::select('id', 'title', 'project_id')
-            ->selectRaw('"group" as type')
-            ->with('project')
-            ->get()
-            ->map
-            ->only('id', 'title_string', 'type')
-            ->values();
-
-        $financeProjects = Project::where('include_in_finances', true)
-            ->select('id', 'name as title_string')
-            ->selectRaw('"project" as type')
-            ->get()
-            ->map
-            ->only('id', 'title_string', 'type')
-            ->values();
-
-        $financeGroups = $financeGroups->concat($financeProjects)
-            ->sortBy('title_string')
-            ->values();
+        $financeGroups = FinanceGroup::order()->get();
 
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
         return view('finance.index')
-            ->with('currentlyOpenProjectsData', $currentlyOpenProjectsData)
-            ->with('preExecutionProjectsData', $preExecutionProjectsData)
+            ->with('groupTotals', $groupTotals)
             ->with('financeGroups', $financeGroups->toJson())
-            ->with('currentFinanceGroup', json_encode($currentFinanceGroup))
+            ->with('currentFinanceGroup', $currentFinanceGroup)
             ->with('groupData', $groupData)
             ->with(compact('currencyUnit'));
     }
@@ -90,7 +55,7 @@ class FinanceController extends Controller
 
         $fileName = "FI ${today}.pdf";
 
-        $report = Finances::getReportData();
+        $report = Finances::getGroupReportData();
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
         return (new Latex())

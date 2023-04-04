@@ -23,15 +23,7 @@ class FinanceGroupStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable|prohibits:project_id',
-            'project_id' =>
-                'sometimes',
-                Rule::exists('projects')
-                    ->where('include_in_finances', false)
-                    ->where(function ($query) {
-                        $query->doesntHave('financeGroup');
-                    }),
-                'prohibits:title',
+            'title' => 'required|unique:finance_groups,title',
             'comment' => 'nullable',
         ];
     }

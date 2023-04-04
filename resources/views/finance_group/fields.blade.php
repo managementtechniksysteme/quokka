@@ -19,10 +19,6 @@
         <p class="text-muted">
             Die Details der Finanzgruppe.
         </p>
-        <p>
-            Die Gruppe kann entweder einen Titel besitzen oder einem Projekt zugeordnet
-            sein.
-        </p>
     </div>
 
     <div class="col-md-8">
@@ -31,16 +27,6 @@
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="Mustergruppe" value="{{ old('title', optional($financeGroup)->title) }}" />
             <div class="invalid-feedback">
                 @error('title')
-                {{ $message }}
-                @enderror
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="project_id">Projekt</label>
-            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" v-cloak></project-dropdown>
-            <div class="invalid-feedback @error('project_id') d-block @enderror">
-                @error('project_id')
                 {{ $message }}
                 @enderror
             </div>

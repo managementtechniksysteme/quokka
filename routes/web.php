@@ -25,6 +25,7 @@ use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\ProjectFinanceController;
 use App\Http\Controllers\FinanceGroupController;
 use App\Http\Controllers\FinanceRecordController;
 use App\Http\Controllers\FlowMeterInspectionReportController;
@@ -142,7 +143,9 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('exceptions', ExceptionController::class)->only(['index', 'show', 'destroy']);
 
     Route::resource('finances', FinanceController::class)->only(['index']);
+    Route::get('/project-finances', [ProjectFinanceController::class, 'index'])->name('project-finances.index');
     Route::get('/finances/download', [FinanceController::class, 'download'])->name('finances.download');
+    Route::get('/project-finances/download', [ProjectFinanceController::class, 'download'])->name('project-finances.download');
 
     Route::resource('finance-groups', FinanceGroupController::class);
     Route::resource('/finance-groups/{finance_group}/finance-records', FinanceRecordController::class)->except(['index']);

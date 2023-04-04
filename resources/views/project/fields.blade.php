@@ -42,20 +42,6 @@
             </div>
         </div>
 
-        @if($removeFinishedProjectFinanceGroup && $project?->financeGroup()->exists())
-            <div class="alert alert-warning mt-1" role="alert">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                    </svg>
-                    <p class="m-0">
-                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim Setzen eines
-                        Projektendes aus dem System entfernt.
-                    </p>
-                </div>
-            </div>
-        @endif
-
         <div class="form-group">
             <label for="ends_on">Enddatum</label>
             <input type="date" class="form-control @error('ends_on') is-invalid @enderror" id="ends_on" name="ends_on" placeholder="" value="{{ old('ends_on', optional(optional($project)->ends_on)->format('Y-m-d')) }}" />
@@ -84,20 +70,6 @@
                 @enderror
             </div>
         </div>
-
-        @if(!$project?->include_in_finances && $project?->financeGroup()->exists())
-            <div class="alert alert-warning mt-1" role="alert">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                    </svg>
-                    <p class="m-0">
-                        Dem Projekt sind manuell angelegte Finanzeinträge zugeordnet. Diese werden beim Setzen der
-                        nachfolgenden Option auf <strong>ja</strong> aus dem System entfernt.
-                    </p>
-                </div>
-            </div>
-        @endif
 
         <div class="form-group">
             <div>
@@ -142,6 +114,21 @@
                 <input type="number" min="0" step="0.01" class="form-control @error('material_costs') is-invalid @enderror" id="material_costs" name="material_costs" placeholder="" value="{{ old('material_costs', optional($project)->material_costs) }}" />
                 <div class="invalid-feedback @error('material_costs') d-block @enderror">
                     @error('material_costs')
+                    {{ $message }}
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="financial_costs">aktuelle Kosten für die Finanzübersicht</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">{{ $currencyUnit }}</span>
+                </div>
+                <input type="number" min="0" step="0.01" class="form-control @error('financial_costs') is-invalid @enderror" id="financial_costs" name="financial_costs" placeholder="" value="{{ old('financial_costs', optional($project)->financial_costs) }}" />
+                <div class="invalid-feedback @error('financial_costs') d-block @enderror">
+                    @error('financial_costs')
                     {{ $message }}
                     @enderror
                 </div>

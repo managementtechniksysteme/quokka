@@ -368,5 +368,7 @@ return [
         'equipment_in_tolerance_range' => 'Messystem im Toleranzbereich',
         'further_inspection_required' => 'Erforderliche Zweitprüfung/Vollprüfung',
         'appendix' => 'PDF Anhang',
+        'include_in_finances' => 'In Finanzen enthalten',
+        'financial_costs' => 'Kosten',
     ],
 ];

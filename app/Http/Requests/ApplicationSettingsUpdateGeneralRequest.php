@@ -33,7 +33,6 @@ class ApplicationSettingsUpdateGeneralRequest extends FormRequest
             'task_due_soon_days' => 'required|integer|min:1',
             'prune_read_notifications' => 'required|boolean',
             'prune_sent_emails' => 'required|boolean',
-            'remove_finished_project_finance_group' => 'required|boolean',
         ];
     }
 }

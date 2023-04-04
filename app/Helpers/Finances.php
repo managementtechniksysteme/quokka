@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\FinanceGroup;
+use App\Models\FinanceRecord;
 use App\Models\Project;
 use Carbon\Carbon;
 
@@ -11,34 +12,15 @@ class Finances
     public static function getCurrentlyOpenProjectsData(): array
     {
         $openProjects = Project::where('is_pre_execution', false)
-            ->where('include_in_finances', true)
             ->where(fn ($query) =>
                 $query->whereNull('ends_on')
                     ->orWhere('ends_on', '>', Carbon::today())
             )
             ->get();
 
-        $financeGroups = FinanceGroup::whereHas('project',
-            fn($query) => $query->where('is_pre_execution', false)
-                ->where(fn ($query) =>
-                    $query->whereNull('ends_on')
-                        ->orWhere('ends_on', '>', Carbon::today())))
-            ->orWhereDoesntHave('project')
-            ->with('financeRecords')->get();
+        $revenue = $openProjects->sum(fn($project) => $project->costs);
 
-        $revenue = $openProjects->sum(fn($project) => $project->billed_costs) +
-            $financeGroups->sum(
-                fn($financeGroup) => $financeGroup->financeRecords->sum(
-                    fn($financeRecord) => $financeRecord->amount >= 0 ? $financeRecord->amount : 0
-                )
-            );
-
-        $expense = $openProjects->sum(fn($project) => -$project->current_costs) +
-            $financeGroups->sum(
-                fn($financeGroup) => $financeGroup->financeRecords->sum(
-                    fn($financeRecord) => $financeRecord->amount < 0 ? $financeRecord->amount : 0
-                )
-            );
+        $expense = $openProjects->sum(fn($project) => -$project->current_financial_costs);
 
         return [
             'revenue' => $revenue,
@@ -48,26 +30,21 @@ class Finances
 
     public static function getPreExecutionProjectsData(): array
     {
-        $preExecutionProjects = Project::where('is_pre_execution', true)
-            ->where('include_in_finances', true)
-            ->get();
+        $preExecutionProjects = Project::where('is_pre_execution', true)->get();
 
-        $financeGroups = FinanceGroup::whereHas('project', fn($query) => $query->where('is_pre_execution', true))
-            ->with('financeRecords')->get();
+        $revenue = $preExecutionProjects->sum(fn($project) => $project->costs);
 
-        $revenue = $preExecutionProjects->sum(fn($project) => $project->billed_costs) +
-            $financeGroups->sum(
-                fn($financeGroup) => $financeGroup->financeRecords->sum(
-                    fn($financeRecord) => max($financeRecord->amount, 0)
-                )
-            );
+        $expense = $preExecutionProjects->sum(fn($project) => -$project->current_financial_costs);
 
-        $expense = $preExecutionProjects->sum(fn($project) => -$project->current_costs) +
-            $financeGroups->sum(
-                fn($financeGroup) => $financeGroup->financeRecords->sum(
-                    fn($financeRecord) => min($financeRecord->amount, 0)
-                )
-            );
+        return [
+            'revenue' => $revenue,
+            'expense' => $expense,
+        ];
+    }
+
+    public static function getGroupTotals() {
+        $revenue = FinanceRecord::where('amount', '>=', 0)->sum('amount');
+        $expense = FinanceRecord::where('amount', '<', 0)->sum('amount');
 
         return [
             'revenue' => $revenue,
@@ -93,8 +70,8 @@ class Finances
 
     public static function getProjectData(Project $project): array
     {
-        $revenue = $project->billed_costs;
-        $expense = $project->current_costs;
+        $revenue = $project->costs;
+        $expense = $project->current_financial_costs;
 
         return [
             'revenue' => $revenue ?? 0,
@@ -102,35 +79,41 @@ class Finances
         ];
     }
 
-    public static function getReportData(): array
+    public static function getProjectReportData(): array
     {
         $currentlyOpenProjectsData = static::getCurrentlyOpenProjectsData();
         $preExecutionProjectsData = static::getPreExecutionProjectsData();
 
-        $groupData = [];
+        $projectData = [];
 
-        foreach (FinanceGroup::all() as $financeGroup) {
-            $groupData[$financeGroup->title_string] = static::getGroupData($financeGroup);
+        foreach (Project::where('include_in_finances', true)
+                     ->orWhereNotNull('financial_costs')->get() as $project) {
+           $projectData[$project->name] = static::getProjectData($project);
         }
 
-        foreach (Project::where('include_in_finances', true)->get() as $project) {
-           $groupData[$project->name] = static::getProjectData($project);
-        }
-
-        ksort($groupData);
-
-        $manualGroupDetails = [];
-
-        foreach (FinanceGroup::with('financeRecords')->get() as $financeGroup) {
-            $manualGroupDetails[$financeGroup->title_string] =
-                $financeGroup->financeRecords->map->only('billed_on', 'title', 'amount')->toArray();
-        }
+        ksort($projectData);
 
         return [
             'currentlyOpenProjectsData' => $currentlyOpenProjectsData,
             'preExecutionProjectsData' => $preExecutionProjectsData,
-            'groupData' => $groupData,
-            'manualGroupDetails' => $manualGroupDetails,
+            'projectData' => $projectData,
+        ];
+    }
+
+    public static function getGroupReportData(): array
+    {
+        $groupTotals = self::getGroupTotals();
+
+        $groupDetails = [];
+
+        foreach (FinanceGroup::with('financeRecords')->get() as $financeGroup) {
+            $groupDetails[$financeGroup->title] =
+                $financeGroup->financeRecords->map->only('billed_on', 'title', 'amount')->toArray();
+        }
+
+        return [
+            'groupTotals' => $groupTotals,
+            'groupDetails' => $groupDetails,
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FinanceGroupCreateRequest;
 use App\Http\Requests\FinanceGroupStoreRequest;
 use App\Http\Requests\FinanceGroupUpdateRequest;
 use App\Models\FinanceGroup;
@@ -39,25 +38,11 @@ class FinanceGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(FinanceGroupCreateRequest $request)
+    public function create(Request $request)
     {
-        $validatedData = $request->validated();
-
-        $currentProject = null;
-
-        if(isset($validatedData['project'])) {
-            $currentProject = Project::find($validatedData['project']);
-        }
-
-        $projects = Project::where('include_in_finances', false)
-            ->doesntHave('financeGroup')
-            ->order()
-            ->get();
 
         return view('finance_group.create')
-            ->with('financeGroup', null)
-            ->with('currentProject', $currentProject)
-            ->with('projects', $projects->toJson());
+            ->with('financeGroup', null);
     }
 
     /**

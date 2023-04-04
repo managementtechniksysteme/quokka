@@ -16,10 +16,6 @@ class FinanceGroup extends Model implements FiltersGlobalSearch
     use FiltersSearch;
     use OrdersResults;
 
-    protected $appends = [
-        'title_string',
-    ];
-
     protected $fillable = [
         'title', 'comment', 'project_id',
     ];
@@ -56,19 +52,9 @@ class FinanceGroup extends Model implements FiltersGlobalSearch
             });
     }
 
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
     public function financeRecords()
     {
         return $this->hasMany(FinanceRecord::class);
-    }
-
-    public function getTitleStringAttribute()
-    {
-        return $this->title ?? $this->project->name;
     }
 
     public function getRecordsSumAttribute()

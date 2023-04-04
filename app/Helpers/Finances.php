@@ -87,7 +87,7 @@ class Finances
         $projectData = [];
 
         foreach (Project::where('include_in_finances', true)
-                     ->orWhereNotNull('financial_costs')->get() as $project) {
+                     ->orWhereNotNull('billed_financial_costs')->get() as $project) {
            $projectData[$project->name] = static::getProjectData($project);
         }
 

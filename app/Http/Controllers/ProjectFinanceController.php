@@ -37,7 +37,7 @@ class ProjectFinanceController extends Controller
         }
 
         $projects = Project::where('include_in_finances', true)
-            ->orWhereNotNull('financial_costs')
+            ->orWhereNotNull('billed_financial_costs')
             ->order()
             ->get();
 

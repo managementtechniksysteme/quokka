@@ -114,7 +114,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>

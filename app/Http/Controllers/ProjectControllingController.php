@@ -32,7 +32,7 @@ class ProjectControllingController extends Controller
             $currentProject = Project::find($validatedData['project']);
             $accountingFinanceData = [
                 'revenue' => $currentProject->getBilledCosts($start, $end) ?? 0,
-                'expense' => -$currentProject->getCurrentCosts(),
+                'expense' => -$currentProject->getCurrentCosts($start, $end),
             ];
             $manualFinanceData = Finances::getProjectData($currentProject);
         }

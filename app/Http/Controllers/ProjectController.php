@@ -155,7 +155,7 @@ class ProjectController extends Controller
                 $currencyUnit = ApplicationSettings::get()->currency_unit;
 
                 $accountingFinanceData = [
-                    'revenue' => $project->current_billed_costs ?? 0,
+                    'revenue' => $project->billed_costs ?? 0,
                     'expense' => -$project->current_costs,
                 ];
                 $manualFinanceData = Finances::getProjectData($project);
@@ -420,7 +420,7 @@ class ProjectController extends Controller
         $sums = $project->getReportSums($validatedData);
 
         $accountingFinanceData = [
-            'revenue' => $project->current_billed_costs ?? 0,
+            'revenue' => $project->billed_costs ?? 0,
             'expense' => -$project->current_costs,
         ];
         $manualFinanceData = Finances::getProjectData($project);

@@ -198,15 +198,17 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentKilometreCostsAttribute() {
-        return $this->current_kilometres * ApplicationSettings::get()->kilometre_costs;
+        return $this->getCurrentKilometres($this->starts_on, $this->ends_on) * ApplicationSettings::get()->kilometre_costs;
     }
 
     public function getCurrentCostsAttribute() {
-        return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
+        return $this->getCurrentCosts();
     }
 
     public function getCurrentCosts(?Carbon $start=null, ?Carbon $end=null) {
-        return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
+        return $this->getCurrentMaterialCosts($start, $end) +
+            $this->getCurrentWageCosts($start, $end) +
+            $this->getCurrentKilometres($start, $end) * ApplicationSettings::get()->kilometre_costs;
     }
 
     public function getCurrentMaterialCostsPercentageAttribute() {

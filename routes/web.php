@@ -25,6 +25,7 @@ use App\Http\Controllers\ConstructionReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\ProjectControllingController;
 use App\Http\Controllers\ProjectFinanceController;
 use App\Http\Controllers\FinanceGroupController;
 use App\Http\Controllers\FinanceRecordController;
@@ -207,6 +208,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
 
     Route::resource('/projects/{project}/interim-invoices', InterimInvoiceController::class)->except(['index']);
+
+    Route::resource('project-controlling', ProjectControllingController::class)->only(['index']);
 
     Route::resource('roles', RoleController::class);
 

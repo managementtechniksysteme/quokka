@@ -26,7 +26,7 @@
     <div class="container my-4">
         <h4>
             <svg class="icon-bs icon-baseline text-muted mr-1">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use>
+                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart-2"></use>
             </svg>
             Aktuelle Finanzübersicht
         </h4>

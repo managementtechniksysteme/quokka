@@ -202,7 +202,7 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentCostsAttribute() {
-        return $this->getCurrentCosts();
+        return $this->getCurrentCosts($this->starts_on, $this->ends_on);
     }
 
     public function getCurrentCosts(?Carbon $start=null, ?Carbon $end=null) {

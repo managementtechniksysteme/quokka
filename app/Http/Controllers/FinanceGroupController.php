@@ -87,18 +87,9 @@ class FinanceGroupController extends Controller
      */
     public function edit(FinanceGroup $financeGroup)
     {
-        $currentProject = $financeGroup->project ?? null;
-
-        $projects = Project::where('include_in_finances', false)
-            ->doesntHave('financeGroup')
-            ->order()
-            ->get()
-            ->add($currentProject);
 
         return view('finance_group.edit')
-            ->with(compact('financeGroup'))
-            ->with('currentProject', $currentProject)
-            ->with('projects', $projects->toJson());
+            ->with(compact('financeGroup'));
     }
 
     /**
@@ -114,12 +105,7 @@ class FinanceGroupController extends Controller
 
         $financeGroup->update($validatedData);
 
-        if(!isset($validatedData['project_id'])) {
-            $financeGroup->project()->disassociate();
-            $financeGroup->save();
-        }
-
-        return redirect()->route('finance-groups.show', $financeGroup)
+       return redirect()->route('finance-groups.show', $financeGroup)
             ->with('success', 'Die Finanzgruppe wurde erfolgreich bearbeitet.');
     }
 

@@ -249,11 +249,11 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentBilledCostsPercentageAttribute() {
-        if(! $this->billed_costs) {
+        if(! $this->current_billed_financial_costs) {
             return null;
         }
 
-        return ($this->current_costs / $this->billed_costs) * 100;
+        return ($this->current_costs / $this->current_billed_financial_costs) * 100;
     }
 
     public function getCurrentMaterialCostsStatusAttribute() {

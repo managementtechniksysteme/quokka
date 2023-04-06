@@ -155,7 +155,7 @@ class ProjectController extends Controller
                 $currencyUnit = ApplicationSettings::get()->currency_unit;
 
                 $accountingFinanceData = [
-                    'revenue' => $project->billed_costs ?? 0,
+                    'revenue' => $project->current_billed_costs ?? 0,
                     'expense' => -$project->current_costs,
                 ];
                 $manualFinanceData = Finances::getProjectData($project);
@@ -419,6 +419,12 @@ class ProjectController extends Controller
         $report = $project->getReport($validatedData);
         $sums = $project->getReportSums($validatedData);
 
+        $accountingFinanceData = [
+            'revenue' => $project->current_billed_costs ?? 0,
+            'expense' => -$project->current_costs,
+        ];
+        $manualFinanceData = Finances::getProjectData($project);
+
         $filterPeople = isset($validatedData['employee_ids']) ?
             Person::whereIn('id', $validatedData['employee_ids'])
                 ->with('employee.user')
@@ -459,6 +465,8 @@ class ProjectController extends Controller
                 'report' => $report,
                 'sums' => $sums,
                 'project' => $project,
+                'accountingFinanceData' => $accountingFinanceData,
+                'manualFinanceData' => $manualFinanceData,
                 'filterPeople' => $filterPeople,
                 'filterServices' => $filterServices,
                 'people' => $people,

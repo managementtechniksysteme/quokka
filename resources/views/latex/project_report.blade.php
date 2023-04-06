@@ -55,14 +55,14 @@
 @endforeach
 \\
 \begin{ignorelinebreaks}
-@if($project->costs || $project->billed_costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
+@if($project->costs || $project->current_billed_financial_costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
 @can('projects.view.estimates')
 \footnotesize{\textbf{Kosten ohne Filter:}}\\
 @if($project->costs || $project->current_costs)
-\footnotesize{Gesamtkosten: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) : '') !!}}
+\footnotesize{Auftragsvolumen: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) : '') !!}}
 @if($project->current_costs)
 @if($project->costs)\footnotesize{ - }@endif
-\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
 @if($project->current_costs_percentage)
 \footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_costs_status)
@@ -80,11 +80,11 @@
 @endif
 \\
 @endif
-@if($project->billed_costs || $project->current_costs)
-\footnotesize{verrechnete Kosten: }\footnotesize{{!! Latex::escape($project->billed_costs ? $currencyUnit . ' ' . Number::toLocal($project->billed_costs) : '') !!}}
+@if($project->current_billed_financial_costs || $project->current_costs)
+\footnotesize{verrechnet: }\footnotesize{{!! Latex::escape($project->current_billed_financial_costs ? $currencyUnit . ' ' . Number::toLocal($project->current_billed_financial_costs) : '') !!}}
 @if($project->current_costs)
 @if($project->costs)\footnotesize{ - }@endif
-\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
 @if($project->current_billed_costs_percentage)
 \footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_billed_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_billed_costs_status)
@@ -103,10 +103,10 @@
 \\
 @endif
 @if($project->wage_costs || $project->current_wage_costs)
-\footnotesize{Lohnkosten: }\footnotesize{{!! Latex::escape($project->wage_costs ? $currencyUnit . ' ' . Number::toLocal($project->wage_costs) : '') !!}}
+\footnotesize{Lohnvolumen: }\footnotesize{{!! Latex::escape($project->wage_costs ? $currencyUnit . ' ' . Number::toLocal($project->wage_costs) : '') !!}}
 @if($project->current_wage_costs)
 @if($project->wage_costs)\footnotesize{ - }@endif
-\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_wage_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_wage_costs)) !!}}
 @if($project->current_wage_costs_percentage)
 \footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_wage_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_wage_costs_status)
@@ -125,10 +125,10 @@
 \\
 @endif
 @if($project->material_costs || $project->current_material_costs)
-\footnotesize{Materialkosten: }\footnotesize{{!! Latex::escape($project->material_costs ? $currencyUnit . ' ' . Number::toLocal($project->material_costs) : '') !!}}
+\footnotesize{Materialvolumen: }\footnotesize{{!! Latex::escape($project->material_costs ? $currencyUnit . ' ' . Number::toLocal($project->material_costs) : '') !!}}
 @if($project->current_material_costs)
 @if($project->material_costs)\footnotesize{ - }@endif
-\footnotesize{aktuell: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_material_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_material_costs)) !!}}
 @if($project->current_material_costs_percentage)
 \footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_material_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_material_costs_status)
@@ -171,6 +171,81 @@
 \\
 @endif
 \\
+@endcan
+@can('finances-view')
+
+
+\begin{minipage}{.5\textwidth}
+\footnotesize{\textbf{Projektcontrolling:}}\\
+\begin{tikzpicture}
+\begin{axis}[
+axis line style={draw=none},
+tick style={draw=none},
+ticklabel style={font=\tiny},
+ybar,
+enlargelimits=0.2,
+ymajorgrids=true,
+bar width=32pt,
+bar shift=0pt,
+xtick={1, 2, 3},
+xticklabels={Einnahmen, Ausgaben, Differenz},
+ylabel near ticks,
+yticklabel style={font=\tiny, /pgf/number format/.cd,fixed},
+yticklabel pos=left,
+scaled y ticks=false,
+nodes near coords,
+nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
+nodes near coords align={vertical}
+]
+\addplot[fill=green, draw=none] coordinates {
+(1, {!! $accountingFinanceData['revenue'] !!})
+};
+\addplot[fill=red, draw=none] coordinates {
+(2, {!! $accountingFinanceData['expense'] !!})
+};
+\addplot[@if($accountingFinanceData['revenue']+$accountingFinanceData['expense']>0)fill=green @else fill=red @endif, draw=none] coordinates {
+(3, {!! $accountingFinanceData['revenue']+$accountingFinanceData['expense'] !!})
+};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\footnotesize{\textbf{Finanzcontrolling:}}\\
+\begin{tikzpicture}
+\begin{axis}[
+axis line style={draw=none},
+tick style={draw=none},
+ticklabel style={font=\tiny},
+ybar,
+enlargelimits=0.2,
+ymajorgrids=true,
+bar width=32pt,
+bar shift=0pt,
+xtick={1, 2, 3},
+xticklabels={Auftragsvolumen, verrechnet, offen},
+ylabel near ticks,
+yticklabel style={font=\tiny, /pgf/number format/.cd,fixed},
+yticklabel pos=left,
+scaled y ticks=false,
+nodes near coords,
+nodes near coords style={font=\scriptsize, /pgf/number format/.cd,fixed},
+nodes near coords align={vertical}
+]
+\addplot[fill=green, draw=none] coordinates {
+(1, {!! $manualFinanceData['total_volume'] !!})
+};
+\addplot[fill=red, draw=none] coordinates {
+(2, {!! $manualFinanceData['billed_volume'] !!})
+};
+\addplot[@if($manualFinanceData['total_volume']+$manualFinanceData['billedl_volume']>0)fill=green @else fill=red @endif, draw=none] coordinates {
+(3, {!! $manualFinanceData['total_volume']+$manualFinanceData['billed_volume'] !!})
+};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+
+
+
 @endcan
 @endif
 \end{ignorelinebreaks}

@@ -68,14 +68,14 @@
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
-                        Auftragssumme
+                        Auftragsvolumen
                     </div>
                 </div>
                 <div class="col">
                     {{ $project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) :  '' }}
                     @if($project->current_costs)
                         {{ $project->costs ? '-' : '' }}
-                        aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
+                        gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
                         @if($project->current_costs_percentage)
                             ({{ Number::toLocal($project->current_costs_percentage, 1) }}%)
                             <svg class="icon icon-16 ml-2 text-{{ $project->current_costs_status }}">
@@ -96,7 +96,7 @@
                 </div>
             </div>
         @endif
-        @if($project->billed_costs || $project->current_costs)
+        @if($project->current_billed_financial_costs || $project->current_costs)
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
@@ -107,10 +107,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    {{ $project->billed_costs ? $currencyUnit . ' ' . Number::toLocal($project->billed_costs) :  '' }}
+                    {{ $project->current_billed_financial_costs ? $currencyUnit . ' ' . Number::toLocal($project->current_billed_financial_costs) :  '' }}
                     @if($project->current_costs)
-                        {{ $project->billed_costs ? '-' : '' }}
-                        aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
+                        {{ $project->current_billed_financial_costs ? '-' : '' }}
+                        gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
                         @if($project->current_billed_costs_percentage)
                             ({{ Number::toLocal($project->current_billed_costs_percentage, 1) }}%)
                             <svg class="icon icon-16 ml-2 text-{{ $project->current_billed_costs_status }}">
@@ -138,14 +138,14 @@
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
-                        Lohnkosten
+                        Lohnvolumen
                     </div>
                 </div>
                 <div class="col">
                     {{ $project->wage_costs ? $currencyUnit . ' ' . Number::toLocal($project->wage_costs) : '' }}
                     @if($project->current_wage_costs)
                         {{ $project->wage_costs ? '-' : '' }}
-                        aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_wage_costs) }}
+                        gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_wage_costs) }}
                         @if($project->current_wage_costs_percentage)
                             ({{ Number::toLocal($project->current_wage_costs_percentage, 1) }}%)
                             <svg class="icon icon-16 ml-2 text-{{ $project->current_wage_costs_status }}">
@@ -173,14 +173,14 @@
                         <svg class="icon icon-16 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
-                        Materialkosten
+                        Materialvolumen
                     </div>
                 </div>
                 <div class="col">
                     {{ $project->material_costs ? $currencyUnit . ' ' . Number::toLocal($project->material_costs) :  '' }}
                     @if($project->current_material_costs)
                         {{ $project->material_costs ? '-' : '' }}
-                        aktuell: {{ $currencyUnit . ' ' . Number::toLocal($project->current_material_costs) }}
+                        gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_material_costs) }}
                         @if($project->current_material_costs_percentage)
                             ({{ Number::toLocal($project->current_material_costs_percentage, 1) }}%)
                             <svg class="icon icon-16 ml-2 text-{{ $project->current_material_costs_status }}">

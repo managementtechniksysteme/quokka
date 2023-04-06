@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@php
+    use \App\Models\Project;
+@endphp
+
+@if (old('project'))
+    @php $currentProject = Project::find(old('project')); @endphp
+@endif
+
 @section('content')
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
@@ -147,7 +155,7 @@
         </form>
 
         @if($projectData)
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">

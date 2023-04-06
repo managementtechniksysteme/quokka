@@ -84,16 +84,29 @@
                         </li>
                     @endif
 
-                    @can('viewAny', \App\Models\Project::class)
-                        <li class="nav-item">
-                            <a class="nav-link d-inline-flex align-items-center" href="{{ route('projects.index') }}">
+                    @if(auth()->user()->can('viewAny', \App\Models\Project::class) || auth()->user()->can('finances-view'))
+                        <li class="nav-item dropdown">
+                            <a class="nav-link @cannot('viewAny', \App\Models\Project::class) disabled @endcan d-inline-flex align-items-center pr-0" href="{{ route('projects.index') }}">
                                 <svg class="icon icon-20 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
                                 Projekte
                             </a>
+                            @can('finances-view')
+                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center pl-0 ml-n1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret h-20"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
+                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('project-controlling.index') }}">
+                                        <svg class="icon icon-16 mr-1">
+                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
+                                        </svg>
+                                        Controlling
+                                    </a>
+                                </div>
+                            @endcan
                         </li>
-                    @endcan
+                    @endif
 
                     @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class))
                         <li class="nav-item dropdown">

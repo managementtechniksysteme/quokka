@@ -205,7 +205,7 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
     }
 
-    private function getCurrentCosts(?Carbon $start=null, ?Carbon $end=null) {
+    public function getCurrentCosts(?Carbon $start=null, ?Carbon $end=null) {
         return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
     }
 
@@ -237,7 +237,7 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->getBilledCosts($this->starts_on, $this->ends_on);
     }
 
-    private function getBilledCosts(?Carbon $start=null, ?Carbon $end=null) {
+    public function getBilledCosts(?Carbon $start=null, ?Carbon $end=null) {
         if(! $this->interimInvoices()->exists()) {
             return null;
         }

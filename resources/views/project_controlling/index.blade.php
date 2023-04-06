@@ -30,7 +30,7 @@
                 </svg>
                 <p class="m-0">
                     Die Eingaben für Start- und Enddatum haben nur Auswirkungen auf das
-                    <strong>Projektcontrolling</strong>>.
+                    <strong>Projektcontrolling</strong>.
                     Wenn keine Filter angegeben sind, Start bzw. Ende des Projektes verwendet.
                 </p>
             </div>

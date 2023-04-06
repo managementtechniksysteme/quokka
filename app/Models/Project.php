@@ -190,7 +190,7 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->getCurrentKilometres($this->starts_on, $this->ends_on);
     }
 
-    private function getCurrentkilometres(?Carbon $start=null, ?Carbon $end = null) {
+    private function getCurrentKilometres(?Carbon $start=null, ?Carbon $end = null) {
         return $this->logbook()
             ->when($start, fn ($query) => $query->where('driven_on', '>=', $start))
             ->when($end, fn ($query) => $query->where('driven_on', '<=', $end))

@@ -7,6 +7,7 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -158,19 +159,42 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentMaterialCostsAttribute() {
+        return $this->getCurrentMaterialCosts($this->starts_on, $this->ends_on);
+    }
+
+    private function getCurrentMaterialCosts(?Carbon $start=null, ?Carbon $end=null) {
         return $this->accounting()
             ->whereIn('service_id', MaterialService::pluck('id'))
+            ->when($start, fn ($query) => $query->where('service_provided_on', '>=', $start))
+            ->when($end, fn ($query) => $query->where('service_provided_on', '<=', $end))
             ->sum('amount');
     }
 
     public function getCurrentWageCostsAttribute() {
+        return $this->getCurrentWageCosts($this->starts_on, $this->ends_on);
+    }
+
+    private function getCurrentWageCosts(?Carbon $start=null, ?Carbon $end=null) {
         return $this->accounting()
-                ->whereIn('service_id', WageService::pluck('id'))
-                ->join('services', function ($join) {
-                    $join->on('accounting.service_id', '=', 'services.id')
-                        ->whereNotNull('services.costs');
-                })
-                ->sum(DB::raw('accounting.amount*services.costs'));
+            ->whereIn('service_id', WageService::pluck('id'))
+            ->when($start, fn ($query) => $query->where('service_provided_on', '>=', $start))
+            ->when($end, fn ($query) => $query->where('service_provided_on', '<=', $end))
+            ->join('services', function ($join) {
+                $join->on('accounting.service_id', '=', 'services.id')
+                    ->whereNotNull('services.costs');
+            })
+            ->sum(DB::raw('accounting.amount*services.costs'));
+    }
+
+    public function getCurrentKilometresAttribute() {
+        return $this->getCurrentKilometres($this->starts_on, $this->ends_on);
+    }
+
+    private function getCurrentkilometres(?Carbon $start=null, ?Carbon $end = null) {
+        return $this->logbook()
+            ->when($start, fn ($query) => $query->where('driven_on', '>=', $start))
+            ->when($end, fn ($query) => $query->where('driven_on', '<=', $end))
+            ->sum('driven_kilometres');
     }
 
     public function getCurrentKilometreCostsAttribute() {
@@ -178,6 +202,10 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getCurrentCostsAttribute() {
+        return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
+    }
+
+    private function getCurrentCosts(?Carbon $start=null, ?Carbon $end=null) {
         return $this->current_material_costs + $this->current_wage_costs + $this->current_kilometre_costs;
     }
 
@@ -206,11 +234,18 @@ class Project extends Model implements FiltersGlobalSearch
     }
 
     public function getBilledCostsAttribute() {
+        return $this->getBilledCosts($this->starts_on, $this->ends_on);
+    }
+
+    private function getBilledCosts(?Carbon $start=null, ?Carbon $end=null) {
         if(! $this->interimInvoices()->exists()) {
             return null;
         }
 
-        return $this->interimInvoices->sum('amount');
+        return $this->interimInvoices
+            ->when($start, fn ($query) => $query->where('billed_on', '>=', $start))
+            ->when($end, fn ($query) => $query->where('billed_on', '<=', $end))
+            ->sum('amount');
     }
 
     public function getCurrentBilledCostsPercentageAttribute() {
@@ -287,10 +322,6 @@ class Project extends Model implements FiltersGlobalSearch
         else {
             return 'danger';
         }
-    }
-
-    public function getCurrentKilometresAttribute() {
-        return $this->logbook()->sum('driven_kilometres');
     }
 
     public function getReport($params)

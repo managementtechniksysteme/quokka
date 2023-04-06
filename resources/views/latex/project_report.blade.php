@@ -237,7 +237,7 @@ nodes near coords align={vertical}
 \addplot[fill=red, draw=none] coordinates {
 (2, {!! $manualFinanceData['billed_volume'] !!})
 };
-\addplot[@if($manualFinanceData['total_volume']+$manualFinanceData['billedl_volume']>0)fill=green @else fill=red @endif, draw=none] coordinates {
+\addplot[@if($manualFinanceData['total_volume']+$manualFinanceData['billed_volume']>0)fill=green @else fill=red @endif, draw=none] coordinates {
 (3, {!! $manualFinanceData['total_volume']+$manualFinanceData['billed_volume'] !!})
 };
 \end{axis}

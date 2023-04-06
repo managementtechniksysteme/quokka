@@ -14,10 +14,17 @@ class ProjectControllingIndexRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules =  [
             'project' => 'sometimes|required_with:start,end|exists:projects,id',
-            'start' => 'date|before_or_equal:end|nullable',
-            'end' => 'date|after_or_equal:end|nullable',
+            'start' => 'date|nullable',
+            'end' => 'date|nullable',
         ];
+
+        if($this->filled('start') && $this->filled('end')) {
+            $rules['start'] = $rules['start'] . '|before_or_equal:end';
+            $rules['end'] = $rules['end'] . '|after_or_equal:start';
+        }
+
+        return $rules;
     }
 }

@@ -16,6 +16,12 @@
 
     <div class="container my-4">
     @markdown
+      ### v0.1.31-62bb242 (06.04.2023)
+      * Finanzielle Auswertungen wurde in manuelle und Projektauwertung aufgeteilt.
+      * Projektauswertungen mit Filtermöglichkeit sind im Menüpunkt Projekte -> Controlling zu finden.
+    @endmarkdown
+
+    @markdown
       ### v0.1.30-fa208e8 (03.04.2023)
       * Falls die entsprechende Option zum Ausblenden von Listenelementen in den Benutzereinstellungen gesetzt ist,
         werden beendete Projekte ab dem Tag nach dem Ende automatisch aus der Übersicht ausgeblendet.

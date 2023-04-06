@@ -25,11 +25,16 @@ class ProjectControllingController extends Controller
         $accountingFinanceData = null;
         $manualFinanceData = null;
 
-        $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : null;
-        $end = isset($validatedData['start']) ? Carbon::parse($validatedData['end']) : null;
+        $start = null;
+        $end = null;
+
 
         if(isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);
+
+            $start = isset($validatedData['start']) ? Carbon::parse($validatedData['start']) : $currentProject->starts_on;
+            $end = isset($validatedData['start']) ? Carbon::parse($validatedData['end']) : $currentProject->ends_on;
+
             $accountingFinanceData = [
                 'revenue' => $currentProject->getBilledCosts($start, $end) ?? 0,
                 'expense' => -$currentProject->getCurrentCosts($start, $end),

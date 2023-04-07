@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\TokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('guest')->group(function () {
+    Route::post('/token', [TokenController::class, 'token'])->name('token');
+    Route::post('/otp', [TokenController::class, 'tokenSecondFactorOneTimePassword'])->name('token.otp');
+});
+
+Route::middleware(['auth:sanctum', 'ability:refresh'])->group(function () {
+    Route::post('/token/refresh', [TokenController::class, 'refreshToken'])->name('token.refresh');
+});
+
+Route::middleware(['auth:sanctum', 'ability:authenticate'])->group(function () {
 });

@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('cache:prune-stale-tags')->hourly();
         $schedule->command('model:prune')->daily();
+        $schedule->command('sanctum:prune-expired --hours=24')->daily();
         $schedule->job(new PruneSentEmailsJob)->daily();
         $schedule->job(new AdjustHolidayAllowanceJob)->daily();
         $schedule->job(new SendNotificationSummaryJob())->dailyAt('07:00');

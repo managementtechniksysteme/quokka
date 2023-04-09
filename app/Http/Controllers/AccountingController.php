@@ -43,7 +43,7 @@ class AccountingController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if($request->ajax() || $request->acceptsJson()) {
             $currentAccounting = Accounting::filterPermissions()
                 ->filterSearch($request->validate((new AccountingIndexRequest($request->query()))->rules()))
                 ->order()

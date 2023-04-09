@@ -27,6 +27,7 @@ class TokenController extends Controller
             $this->username() => 'required',
             'password' => 'required',
             config('authapi.token_name_input') => 'required',
+            'remember_me' => 'boolean',
         ]);
 
         $this->checkLoginAttempts($request);
@@ -45,7 +46,7 @@ class TokenController extends Controller
 
         if ($user->{config('auth2fa.otp_secret_column')} !== null) {
             $signedUrl = URL::temporarySignedRoute(
-                config('auth2fa.otp_route'),
+                'token.otp',
                 $now->addMinutes(config('auth2fa.otp_link_valid_minutes')));
 
             return new JsonResponse([
@@ -58,7 +59,11 @@ class TokenController extends Controller
         $this->deleteValidTokens($user, $validatedData[config('authapi.token_name_input')]);
 
         // Create new tokens
-        $tokens = $this->createTokens($user, $validatedData[config('authapi.token_name_input')]);
+        $tokens = $this->createTokens(
+            $user,
+            $validatedData[config('authapi.token_name_input')],
+            $validatedData['remember_me']
+        );
 
         // Return response with tokens
         return new JsonResponse($tokens);
@@ -73,6 +78,7 @@ class TokenController extends Controller
             'password' => 'required',
             config('auth2fa.otp_input') => 'required|digits:6',
             config('authapi.token_name_input') => 'required',
+            'remember_me' => 'boolean',
         ]);
 
         $this->checkLoginAttempts($request);
@@ -101,7 +107,11 @@ class TokenController extends Controller
             $this->deleteValidTokens($user, $validatedData[config('authapi.token_name_input')]);
 
             // Create new tokens
-            $tokens = $this->createTokens($user, $validatedData[config('authapi.token_name_input')]);
+            $tokens = $this->createTokens(
+                $user,
+                $validatedData[config('authapi.token_name_input')],
+                $validatedData['remember_me']
+            );
 
             // Return response with tokens
             return new JsonResponse($tokens);
@@ -145,7 +155,7 @@ class TokenController extends Controller
         return 'username';
     }
 
-    private function createTokens(User $user, string $tokenName) : array
+    private function createTokens(User $user, string $tokenName, bool $rememberMe) : array
     {
         $now = Carbon::now();
 
@@ -161,7 +171,11 @@ class TokenController extends Controller
             ->createToken(
                 $tokenName,
                 [config('authapi.refresh_token_ability')],
-                $now->addMinutes(config('authapi.refresh_token_lifetime'))
+                $now->addMinutes(
+                    $rememberMe ?
+                        config('authapi.refresh_token_lifetime') :
+                        config('authapi.auth_token_lifetime')
+                )
             )
             ->plainTextToken;
 

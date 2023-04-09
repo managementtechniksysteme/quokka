@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\LogbookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +26,6 @@ Route::middleware(['auth:sanctum', 'ability:refresh'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'ability:authenticate'])->group(function () {
+    Route::apiResource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::apiResource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
 });

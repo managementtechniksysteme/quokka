@@ -39,7 +39,7 @@ class LogbookController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if($request->ajax() || $request->acceptsJson()) {
             $currentLogbook = Logbook::filterPermissions()
                 ->filterSearch($request->validate((new LogbookIndexRequest($request->query()))->rules()))
                 ->order()

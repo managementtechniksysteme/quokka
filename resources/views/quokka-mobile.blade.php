@@ -38,7 +38,7 @@
             <a href="{{ route('tasks.show', 464) }}"><btn class="btn btn-lg btn-primary" type="btn-link"> Zur Aufgabe für Quokka Mobile</btn></a>
         </div>
 
-        <h3 class="mt-5">Qokka Mobile für Android herunterladen</h3>
+        <h3 class="mt-5">Quokka Mobile für Android herunterladen</h3>
 
         <p class="text-muted lead">
             Quokka Mobile kann unter folgendem Link heruntergeladen werden. Da die Verison nur intern vertrieben wird

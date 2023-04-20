@@ -38,7 +38,7 @@ class TokenController extends Controller
             $this->incrementLoginAttempts($request);
 
             throw ValidationException::withMessages([
-                $this->username() => ['The provided credentials are incorrect.'],
+                $this->username() => [Lang::get('auth.failed')],
             ]);
         }
 
@@ -51,7 +51,7 @@ class TokenController extends Controller
 
             return new JsonResponse([
                 config('auth2fa.otp_input') => 'required',
-                'otp-url' => $signedUrl,
+                'otp_url' => $signedUrl,
             ]);
         }
 
@@ -126,25 +126,14 @@ class TokenController extends Controller
 
     public function refreshToken(Request $request) : JsonResponse
     {
-        $validatedData = $request->validate([
-            config('authapi.token_name_input') => 'required',
-        ]);
-
         $user = Auth::user();
-
         $token = PersonalAccessToken::findToken($request->bearerToken());
 
-        if($token->name !== $validatedData[config('authapi.token_name_input')]) {
-            throw ValidationException::withMessages([
-                config('authapi.token_name_input') => [Lang::get('authapi.refresh_device_mismatch')],
-            ]);
-        }
-
         // Delete old valid tokens if there are any
-        $this->deleteValidTokens($user, $validatedData[config('authapi.token_name_input')]);
+        $this->deleteValidTokens($user, $token->name);
 
-        // Create new tokens
-        $tokens = $this->createTokens($user, $validatedData[config('authapi.token_name_input')]);
+        // Create new tokens (this can only occure if remember me is true)
+        $tokens = $this->createTokens($user, $token->name, true);
 
         // Return response with tokens
         return new JsonResponse($tokens);
@@ -181,7 +170,7 @@ class TokenController extends Controller
 
         return [
             'token' => $authenticateToken,
-            'refresh-token' => $refreshToken,
+            'refresh_token' => $refreshToken,
         ];
     }
 

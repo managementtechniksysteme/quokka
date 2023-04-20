@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\FiltersPermissions;
+use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class Logbook extends Model
 {
     use FiltersPermissions;
+    use FiltersSearch;
     use OrdersResults;
 
     protected $table = 'logbook';
@@ -76,6 +78,10 @@ class Logbook extends Model
 
         if (isset($params['project_id'])) {
             $query = $query->where('project_id', $params['project_id']);
+        }
+
+        if (isset($params['employee_id'])) {
+            $query = $query->where('employee_id', $params['employee_id']);
         }
 
         if (isset($params['only_own'])) {

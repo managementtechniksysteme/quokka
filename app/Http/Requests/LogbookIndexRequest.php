@@ -14,6 +14,7 @@ class LogbookIndexRequest extends FormRequest
             'end' => 'sometimes|date',
             'project_id' => 'sometimes|exists:projects,id',
             'vehicle_id' => 'sometimes|exists:vehicles,id',
+            'employee_id' => 'sometimes|exists:employees,id',
             'only_own' => 'sometimes|accepted',
         ];
 

@@ -1,8 +1,16 @@
 <?php
 
-use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\Api\AccountingController;
+use App\Http\Controllers\Api\ApplicationSettingsController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\TokenController;
-use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\Api\ForgotPasswordController;
+use App\Http\Controllers\Api\LogbookController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::post('/token', [TokenController::class, 'token'])->name('token');
     Route::post('/otp', [TokenController::class, 'tokenSecondFactorOneTimePassword'])->name('token.otp');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgot-password');
 });
 
 Route::middleware(['auth:sanctum', 'ability:refresh'])->group(function () {
@@ -26,6 +35,28 @@ Route::middleware(['auth:sanctum', 'ability:refresh'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'ability:authenticate'])->group(function () {
-    Route::apiResource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::apiResource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::apiResource('accounting', AccountingController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::apiResource('application-settings', ApplicationSettingsController::class)->only(['index',]);
+
+    Route::apiResource('dashboard', DashboardController::class)->only(['index']);
+
+    Route::get('/employees/select-options', [EmployeeController::class, 'selectOptions']);
+    Route::apiResource('employees', EmployeeController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('/logbook/location-select-options', [LogbookController::class, 'locationSelectOptions']);
+    Route::apiResource('logbook', LogbookController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    Route::get('/projects/select-options', [ProjectController::class, 'selectOptions']);
+    Route::apiResource('projects', ProjectController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('/services/hourly-based-ids', [ServiceController::class, 'hourlyBasedIds']);
+    Route::get('/services/select-options', [ServiceController::class, 'selectOptions']);
+    Route::get('/services/types', [ServiceController::class, 'types']);
+    Route::apiResource('services', ServiceController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('/user', [UserController::class, 'index']);
+
+    Route::get('/vehicles/select-options', [VehicleController::class, 'selectOptions']);
+    Route::apiResource('vehicles', VehicleController::class)->only(['index', 'store', 'update', 'destroy']);
 });

@@ -242,7 +242,7 @@ class Employee extends Model
 
         $serviceIds = is_array($serviceIds) ? $serviceIds : [$serviceIds];
 
-        return $this->accounting()
+        return (double)$this->accounting()
             ->whereIn('service_id', $serviceIds)
             ->whereBetween('service_provided_on', [$firstOfMonth, $today])
             ->sum('amount');
@@ -478,7 +478,7 @@ class Employee extends Model
             ->tags($this->getDashboardCacheTag())
             ->remember($this->getDashboardCacheKeyName('mtd-kilometres'), static::DASHBOARD_CACHE_TTL,
                 function() use ($today, $firstOfMonth) {
-                    return $this->logbook()
+                    return (int)$this->logbook()
                         ->whereBetween('driven_on', [$firstOfMonth, $today])
                         ->sum('driven_kilometres');
                 }
@@ -494,7 +494,7 @@ class Employee extends Model
             ->tags($this->getDashboardCacheTag())
             ->remember($this->getDashboardCacheKeyName('mtd-company-kilometres'), static::DASHBOARD_CACHE_TTL,
                 function() use ($today, $firstOfMonth) {
-                    return $this->logbook()
+                    return (int)$this->logbook()
                         ->whereHas('vehicle', function (Builder $query) {
                             $query->where('private', false);
                         })
@@ -506,7 +506,7 @@ class Employee extends Model
 
     public function getPrivateKilometres($start, $end)
     {
-        return $this->logbook()
+        return (int)$this->logbook()
             ->whereHas('vehicle', function (Builder $query) {
                 $query->where('private', true);
             })

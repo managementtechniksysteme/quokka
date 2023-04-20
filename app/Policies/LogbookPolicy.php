@@ -20,6 +20,15 @@ class LogbookPolicy
         return $user->can('logbook.create');
     }
 
+    public function view(User $user, Logbook $logbook): bool
+    {
+        if($logbook->employee_id === $user->employee_id) {
+            return $user->can('logbook.view.own');
+        }
+
+        return $user->can('logbook.view.other');
+    }
+
     public function update(User $user, Logbook $logbook): bool
     {
         if($logbook->employee_id === $user->employee_id) {

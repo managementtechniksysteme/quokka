@@ -37,4 +37,14 @@ class Service extends Model
             return "$this->name ($this->unit)";
         }
     }
+
+    public function getUnitStringAttribute() {
+        $unit = $this->type === 'material' ? ApplicationSettings::get()->currency_unit : $this->unit;
+
+        if(!$unit) {
+            return null;
+        }
+
+        return mb_strlen($unit) > 1 ? " $unit" : $unit;
+    }
 }

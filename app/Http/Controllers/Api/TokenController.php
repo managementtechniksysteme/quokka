@@ -46,7 +46,7 @@ class TokenController extends Controller
 
         if ($user->{config('auth2fa.otp_secret_column')} !== null) {
             $signedUrl = URL::temporarySignedRoute(
-                'token.otp',
+                'api.token.otp',
                 $now->addMinutes(config('auth2fa.otp_link_valid_minutes')));
 
             return new JsonResponse([

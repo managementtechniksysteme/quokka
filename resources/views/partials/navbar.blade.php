@@ -234,51 +234,59 @@
                         </li>
                     @endif
 
-                    @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
-                        <li class="nav-item dropdown">
-                            <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <svg class="icon icon-20 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
-                                </svg>
-                                Tools
-                            </a>
 
-                            <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                                @can('tools-viewlatestchanges')
-                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('latest-changes.index') }}">
-                                        <svg class="icon icon-16 mr-1">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
-                                        </svg>
-                                        Letzte Änderungen
-                                    </a>
-                                @endcan
-                                @can('tools-viewsentemails')
-                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('sent-emails.index') }}">
-                                        <svg class="icon icon-16 mr-1">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                                        </svg>
-                                        Gesendete Emails
-                                    </a>
-                                @endcan
-                                @can('tools-scanqr')
-                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('qr-scan.index') }}">
-                                        <svg class="icon icon-16 mr-1">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
-                                        </svg>
-                                        QR-Code scannen
-                                    </a>
-                                @endcan
-                                @can('tools-viewexceptions')
-                                    <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('exceptions.index') }}">
-                                        <svg class="icon icon-16 mr-1">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                                        </svg>
-                                        Fehlerdateien
-                                    </a>
-                                @endcan
-                            </div>
-                        </li>
-                    @endif
+                    <li class="nav-item dropdown">
+                        <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="notification-badge mr-1 mt-1 h-12 w-12"></span>
+                            <svg class="icon icon-20 mr-1">
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
+                            </svg>
+                            Tools
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
+                            <a class="dropdown-item d-inline-flex align-items-center text-red" href="{{ route('quokka-mobile.index') }}">
+                                <svg class="icon icon-16 mr-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
+                                </svg>
+                                Quokka Mobile
+                                <span class="badge badge-red-100 text-red-800 ml-1">neu</span>
+                            </a>
+                            @can('tools-viewlatestchanges')
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('latest-changes.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
+                                    </svg>
+                                    Letzte Änderungen
+                                </a>
+                            @endcan
+                            @can('tools-viewsentemails')
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('sent-emails.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                                    </svg>
+                                    Gesendete Emails
+                                </a>
+                            @endcan
+                            @can('tools-scanqr')
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('qr-scan.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#camera"></use>
+                                    </svg>
+                                    QR-Code scannen
+                                </a>
+                            @endcan
+                            @can('tools-viewexceptions')
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('exceptions.index') }}">
+                                    <svg class="icon icon-16 mr-1">
+                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                                    </svg>
+                                    Fehlerdateien
+                                </a>
+                            @endcan
+                        </div>
+                    </li>
+
 
                     @if(auth()->user()->can('application-settings-update') || auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
                         <li class="nav-item dropdown">

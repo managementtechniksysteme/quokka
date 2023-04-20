@@ -420,8 +420,8 @@ class ProjectController extends Controller
         $sums = $project->getReportSums($validatedData);
 
         $accountingFinanceData = [
-            'revenue' => $project->billed_costs ?? 0,
-            'expense' => -$project->current_costs,
+            'revenue' => $project->getBilledCosts($start, $end) ?? 0,
+            'expense' => -$project->getCurrentCosts($start, $end),
         ];
         $manualFinanceData = Finances::getProjectData($project);
 

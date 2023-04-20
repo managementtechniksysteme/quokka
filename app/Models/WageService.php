@@ -81,8 +81,8 @@ class WageService extends Model implements FiltersGlobalSearch
         }
 
         return match (true) {
-            strlen($this->unit) === 1 => "{$this->unit}",
-            strlen($this->unit) > 1 => " {$this->unit}",
+            mb_strlen($this->unit) === 1 => "{$this->unit}",
+            mb_strlen($this->unit) > 1 => " {$this->unit}",
             default => " {$this->unit}",
         };
     }

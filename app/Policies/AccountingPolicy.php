@@ -20,6 +20,15 @@ class AccountingPolicy
         return $user->can('accounting.create');
     }
 
+    public function view(User $user, Accounting $accounting): bool
+    {
+        if($accounting->employee_id === $user->employee_id) {
+            return $user->can('accounting.view.own');
+        }
+
+        return $user->can('accounting.view.other');
+    }
+
     public function update(User $user, Accounting $accounting): bool
     {
         if($accounting->employee_id === $user->employee_id) {

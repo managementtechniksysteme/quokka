@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\FiltersPermissions;
+use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class Accounting extends Model
 {
     use FiltersPermissions;
+    use FiltersSearch;
     use OrdersResults;
 
     protected $table = 'accounting';
@@ -73,6 +75,10 @@ class Accounting extends Model
 
         if (isset($params['service_id'])) {
             $query = $query->where('service_id', $params['service_id']);
+        }
+
+        if (isset($params['employee_id'])) {
+            $query = $query->where('employee_id', $params['employee_id']);
         }
 
         if (isset($params['only_own'])) {

@@ -20,7 +20,6 @@ class ApplicationSettings extends Model
         'project_billed_costs_warning_percentage' => 'int',
         'task_due_soon_days' => 'int',
         'prune_sent_emails' => 'bool',
-        'remove_finished_project_finance_group' => 'bool',
     ];
 
     protected $fillable = [

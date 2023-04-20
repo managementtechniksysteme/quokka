@@ -24,17 +24,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->name('api.')->group(function () {
     Route::post('/token', [TokenController::class, 'token'])->name('token');
     Route::post('/otp', [TokenController::class, 'tokenSecondFactorOneTimePassword'])->name('token.otp');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forgot-password');
 });
 
-Route::middleware(['auth:sanctum', 'ability:refresh'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:refresh'])->name('api.')->group(function () {
     Route::post('/token/refresh', [TokenController::class, 'refreshToken'])->name('token.refresh');
 });
 
-Route::middleware(['auth:sanctum', 'ability:authenticate'])->group(function () {
+Route::middleware(['auth:sanctum', 'ability:authenticate'])->name('api.')->group(function () {
     Route::apiResource('accounting', AccountingController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 
     Route::apiResource('application-settings', ApplicationSettingsController::class)->only(['index',]);

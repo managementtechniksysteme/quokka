@@ -15,6 +15,16 @@
     </div>
 
     <div class="container my-4">
+        bda69a8
+    @markdown
+    ### v0.1.32-bda69a8 (20.04.2023)
+    *  Die Projektcontrolling Graphen in PDF Ausdrücken von Projektübersichten berücksichtigen nun den gefilterten
+       Zeitraum
+    * Quokka Mobile steht in einer ersten Version 0.0.1 zur Verfügung. Die infoseite dazu befindet sich hier:
+      [Quokka Mobile]({{route('quokka-mobile.index')}}). Eine Aufgabe zur Diskusion findet sich hier:
+      [{{route('tasks.show', 464)}}].
+    @endmarkdown
+
     @markdown
       ### v0.1.31-62bb242 (06.04.2023)
       * Finanzielle Auswertungen wurde in manuelle und Projektauwertung aufgeteilt.

@@ -21,8 +21,7 @@
     *  Die Projektcontrolling Graphen in PDF Ausdrücken von Projektübersichten berücksichtigen nun den gefilterten
        Zeitraum
     * Quokka Mobile steht in einer ersten Version 0.0.1 zur Verfügung. Die infoseite dazu befindet sich hier:
-      [Quokka Mobile]({{route('quokka-mobile.index')}}). Eine Aufgabe zur Diskusion findet sich hier:
-      [{{route('tasks.show', 464)}}].
+      [Quokka Mobile]({{route('quokka-mobile.index')}}). Eine Aufgabe zur Diskusion findet sich [hier]({{route('tasks.show', 464)}}).
     @endmarkdown
 
     @markdown

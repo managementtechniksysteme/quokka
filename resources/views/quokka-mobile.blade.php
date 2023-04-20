@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card mb-4">"
+                    <div class="card mb-4">
                         <img class="card-img-top" src="{{asset('mobile/images/convenience.gif')}}">
                         <div class="card-body">
                             <h5 class="card-title">Inklusive bewährten Funktionen</h5>

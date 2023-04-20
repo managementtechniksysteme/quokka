@@ -61,7 +61,7 @@
         </div>
 
         <div class="text-center">
-            <a href="{{asset('mobile/quokka-mobile-0.0.1.apk')}}"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
+            <a href="https://github.com/managementtechniksysteme/quokka/raw/master/public/mobile/quokka-mobile-0.0.1.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
         </div>
 
         <h3 class="mt-5">Funktionsüberblick</h3>

@@ -60,9 +60,19 @@
             </div>
         </div>
 
-        <div class="text-center">
-            <a href="https://github.com/managementtechniksysteme/quokka/raw/master/public/mobile/quokka-mobile-0.0.1.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
+        <div class="row">
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <p class="lead text-muted">Die offizielle Release Version von Quokka Mobile mit stabilen Funktionen.</p>
+                <img src="{{asset('mobile/images/qr-code-release.png')}}">
+                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.0/quokka-mobile-0.1.0.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <p class="lead text-muted">Die Beta Version von Quokka Mobile mit neuen Funktionen. Diese Version kann ungewollte Bugs enthalten.</p>
+                <img src="{{asset('mobile/images/qr-code-beta.png')}}">
+                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.0/quokka-mobile-0.1.0-beta.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile Beta herunterladen</btn></a>
+            </div>
         </div>
+
 
         <h3 class="mt-5">Funktionsüberblick</h3>
 

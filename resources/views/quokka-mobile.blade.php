@@ -18,16 +18,16 @@
         <h3>Quokka Mobile - Quokka zum Mitnehmen</h3>
 
         <p class="text-muted lead">
-            Die erste Version von Quokka Mobile steht zur Verwedung bereit. Mit einem Fokus auf intuitiver Bedienung mit
-            nativer Bedienoberflâche können nun auch von unterwegs ganz bequem Einträge erledigt werden. Zum Start stehen
-            die Abrechnungsfunktion sowie das Fahrenbuch zur Verfügung.
+            Die erste Version von Quokka Mobile steht zur Verwendung bereit. Mit einem Fokus auf intuitiver Bedienung mit
+            nativer Bedienoberfläche können nun auch von unterwegs ganz bequem Einträge erledigt werden. Zum Start stehen
+            die Abrechnungsfunktion sowie das Fahrtenbuch zur Verfügung.
         </p>
 
         <h3>Diskussion und Funktionswünsche</h3>
 
         <p class="text-muted lead">
             Der Funktionsumfang ist im Gegensatz zum großen Bruder, der Webversion, zum Start auf das Wesentlichste
-            beschränkt. Diese wurden jedoch möglichst getreu der bekannten Implemantierung verwirklicht. Bei aktiver
+            beschränkt. Diese wurden jedoch möglichst getreu der bekannten Implementierung verwirklicht. Bei aktiver
             Verwendung der mobilen Version können ohne Weiteres zusätzliche Funktionen eingebaut werden.
         </p>
         <p class="text-muted lead">
@@ -41,8 +41,8 @@
         <h3 class="mt-5">Quokka Mobile für Android herunterladen</h3>
 
         <p class="text-muted lead">
-            Quokka Mobile kann unter folgendem Link heruntergeladen werden. Da die Verison nur intern vertrieben wird
-            und es sich um eine Erstversion handelt, ist eine manuelle Installation der Datei notwerndig. Am einfachsten
+            Quokka Mobile kann unter folgendem Link heruntergeladen werden. Da die Version nur intern vertrieben wird
+            und es sich um eine Erstversion handelt, ist eine manuelle Installation der Datei notwendig. Am einfachsten
             kann Quokka Mobile installiert werden, indem die Datei direkt auf dem entsprechenden Gerät heruntergeladen
             wird.
         </p>
@@ -55,7 +55,7 @@
                 <p class="m-0">
                     Um manuell heruntergeladene Applikationen installieren zu können, welche nicht vom Google Play Store
                     stammen, muss die entsprechende Berechtigung auf dem Gerät aktiviert werden. Diese findet sich
-                    üblicherweise in den Einstellungen (Sytemsicherheit) unter <strong>Installationsquellen</strong>.
+                    üblicherweise in den Einstellungen (Systemsicherheit) unter <strong>Installationsquellen</strong>.
                 </p>
             </div>
         </div>
@@ -96,7 +96,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Inklusive bewährten Funktionen</h5>
                             <p class="card-text text-muted">Auch die Komfortfunktionen wurden übernommen. So werden etwa
-                            die Stunden automatisch basierent auf eingegebenen Zeiten berechnet.</p>
+                            die Stunden automatisch basierend auf eingegebenen Zeiten berechnet.</p>
                         </div>
                     </div>
                 </div>
@@ -127,9 +127,9 @@
                     <div class="card mb-4">
                         <img class="card-img-top" src="{{asset('mobile/images/logbook.png')}}">
                         <div class="card-body">
-                            <h5 class="card-title">Fahrten unmittelbar aufzeichenenn</h5>
+                            <h5 class="card-title">Fahrten unmittelbar aufzeichnen</h5>
                             <p class="card-text text-muted"> Auch das Fahrtenbuch kann analog zur Webversion in Quokka
-                            Mobile bedient werden. Somit kann gleich bei der Ankunft eine Fahr eintetragen und aus den
+                            Mobile bedient werden. Somit kann gleich bei der Ankunft eine Fahr eingetragen und aus den
                             Gedanken verworfen werden.</p>
                         </div>
                     </div>

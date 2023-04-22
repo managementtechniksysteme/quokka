@@ -57,6 +57,7 @@ Route::middleware(['auth:sanctum', 'ability:authenticate'])->name('api.')->group
 
     Route::get('/user', [UserController::class, 'index']);
 
+    Route::get('/vehicles/current-kilometres', [VehicleController::class, 'currentKilometres']);
     Route::get('/vehicles/select-options', [VehicleController::class, 'selectOptions']);
     Route::apiResource('vehicles', VehicleController::class)->only(['index', 'store', 'update', 'destroy']);
 });

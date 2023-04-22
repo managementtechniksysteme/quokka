@@ -64,12 +64,12 @@
             <div class="col-md-6 d-flex h-100 flex-column justify-content-end">
                 <p class="lead text-muted m-0">Die offizielle Release Version von Quokka Mobile mit stabilen Funktionen.</p>
                 <img src="{{asset('mobile/images/qr-code-release.png')}}">
-                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.0/quokka-mobile-0.1.0.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
+                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.1/quokka-mobile-0.1.1.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile herunterladen</btn></a>
             </div>
             <div class="col-md-6 d-flex h-100 flex-column justify-content-end mt-4 md-mt-0">
                 <p class="lead text-muted m-0">Die Beta Version von Quokka Mobile mit neuen Funktionen. Diese Version kann ungewollte Bugs enthalten.</p>
                 <img src="{{asset('mobile/images/qr-code-beta.png')}}">
-                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.0/quokka-mobile-0.1.0-beta.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile Beta herunterladen</btn></a>
+                <a class="mt-4 text-center" href="https://github.com/managementtechniksysteme/quokka-mobile/releases/download/v0.1.1/quokka-mobile-0.1.1-beta.apk"><btn class="btn btn-lg btn-primary" type="btn-link">Quokka Mobile Beta herunterladen</btn></a>
             </div>
         </div>
 

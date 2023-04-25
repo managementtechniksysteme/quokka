@@ -128,7 +128,7 @@ class DeliveryNoteController extends Controller
     {
         $validatedData = $request->validated();
 
-        $deliveryNote->update($validatedData)
+        $deliveryNote->update($validatedData);
 
         if ($deliveryNote->status === 'signed') {
             $deliveryNote->status = 'new';
@@ -382,20 +382,24 @@ class DeliveryNoteController extends Controller
 
     private function downloadPDF(DeliveryNote $deliveryNote)
     {
-        return $deliveryNote->document();
-    }
+        $deliveryNote->load('media');
 
-    private function addSignature(DeliveryNote $deliveryNote, string $signature)
-    {
-        $deliveryNote->addSignature($signature);
+        $title = str_replace(array('\\','/',':','*','?','"','<','>','|'),'_', $deliveryNote->title);
 
-        (new Latex())
+        $filename = "LI $title.pdf";
+
+        return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
             ->view('latex.delivery_note', [
                 'deliveryNote' => $deliveryNote,
             ])
-            ->savePdf(storage_path($deliveryNote->document()->getPath()));
+            ->download($filename);
+    }
+
+    private function addSignature(DeliveryNote $deliveryNote, string $signature)
+    {
+        $deliveryNote->addSignature($signature);
 
         $deliveryNote->status = 'signed';
         $deliveryNote->save();

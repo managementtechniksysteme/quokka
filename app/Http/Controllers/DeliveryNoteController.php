@@ -109,7 +109,7 @@ class DeliveryNoteController extends Controller
             ->load('media')
             ->load('activities.causer');
 
-        return view('delivery_notes.show')
+        return view('delivery_note.show')
             ->with(compact('deliveryNote'));
     }
 
@@ -409,19 +409,19 @@ class DeliveryNoteController extends Controller
         event(new DeliveryNoteSignedEvent($deliveryNote));
     }
 
-    private function getConditionalRedirect(?string $target, ConstructionReport $constructionReport)
+    private function getConditionalRedirect(?string $target, DeliveryNote $deliveryNote)
     {
         switch ($target) {
             case 'project':
                 $route = 'projects.show';
-                $parameters = ['project' => $constructionReport->project, 'tab' => 'construction_reports'];
+                $parameters = ['project' => $deliveryNote->project, 'tab' => 'delivery_notes'];
                 break;
             case 'show':
-                $route = 'construction-reports.show';
-                $parameters = ['construction_report' => $constructionReport];
+                $route = 'delivery-notes.show';
+                $parameters = ['delivery_note' => $deliveryNote];
                 break;
             default:
-                $route = 'construction-reports.index';
+                $route = 'delivery-notes.index';
                 $parameters = [];
                 break;
         }

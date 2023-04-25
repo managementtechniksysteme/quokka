@@ -2,7 +2,6 @@
 
 namespace App\SpotlightCommands;
 
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use LivewireUI\Spotlight\Spotlight;
@@ -10,6 +9,7 @@ use LivewireUI\Spotlight\SpotlightCommand;
 use LivewireUI\Spotlight\SpotlightCommandDependencies;
 use LivewireUI\Spotlight\SpotlightCommandDependency;
 use LivewireUI\Spotlight\SpotlightSearchResult;
+use Spatie\Permission\Models\Role;
 
 class RoleShowCommand extends SpotlightCommand
 {

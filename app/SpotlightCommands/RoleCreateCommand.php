@@ -2,10 +2,10 @@
 
 namespace App\SpotlightCommands;
 
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use LivewireUI\Spotlight\Spotlight;
 use LivewireUI\Spotlight\SpotlightCommand;
+use Spatie\Permission\Models\Role;
 
 class RoleCreateCommand extends SpotlightCommand
 {

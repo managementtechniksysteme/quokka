@@ -3,7 +3,6 @@
 namespace App\SpotlightCommands;
 
 use App\Models\FinanceGroup;
-use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use LivewireUI\Spotlight\Spotlight;

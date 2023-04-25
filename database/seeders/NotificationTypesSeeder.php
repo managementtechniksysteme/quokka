@@ -40,6 +40,7 @@ class NotificationTypesSeeder extends Seeder
             ConstructionReportInvolvedNotification::class,
             ConstructionReportMentionNotification::class,
             ConstructionReportSignedNotification::class,
+            DeliveryNoteSignedNotification::class,
             FlowMeterInspectionReportMentionNotification::class,
             FlowMeterInspectionReportSignedNotification::class,
             HolidayAllowanceAdjustmentNotification::class,

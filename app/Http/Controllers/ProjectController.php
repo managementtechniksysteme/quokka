@@ -12,6 +12,7 @@ use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\Company;
 use App\Models\ConstructionReport;
+use App\Models\DeliveryNote;
 use App\Models\FinanceRecord;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
@@ -142,6 +143,7 @@ class ProjectController extends Controller
 
         $project
             ->loadCount('interimInvoices')
+            ->loadCount('deliveryNotes')
             ->loadCount('tasks')
             ->loadCount('memos')
             ->loadCount('serviceReports')
@@ -182,6 +184,21 @@ class ProjectController extends Controller
                     ->with(compact('project'))
                     ->with('financeRecordsCount', $financeRecordsCount)
                     ->with(compact('interimInvoices'));
+
+            case 'delivery_notes':
+                if(Auth::user()->cannot('viewAny', DeliveryNote::class)) {
+                    return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
+                }
+
+                $deliveryNotes = $project
+                    ->deliveryNotes()
+                    ->order()
+                    ->paginate(Auth::user()->settings->list_pagination_size)
+                    ->appends($request->except('page'));
+
+                return view('project.show_tab_delivery_notes')
+                    ->with(compact('project'))
+                    ->with(compact('deliveryNotes'));
 
             case 'tasks':
                 if(Auth::user()->cannot('viewAny', Task::class)) {

@@ -2,7 +2,6 @@
 
 namespace App\SpotlightCommands;
 
-use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

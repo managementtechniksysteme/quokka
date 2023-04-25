@@ -133,6 +133,19 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('/construction-reports/{construction_report}/email-signature-request', [ConstructionReportController::class, 'emailSignatureRequest']);
     Route::get('/construction-reports/{construction_report}/finish', [ConstructionReportController::class, 'finish'])->name('construction-reports.finish');
 
+    Route::resource('/delivery-notes', DeliveryNoteController::class)->except('index');
+    Route::get('/delivery-notes/{delivery_note}/download', [DeliveryNoteController::class, 'download'])->name('delivery-notes.download');
+    Route::get('/delivery-notes/{delivery_note}/email', [DeliveryNoteController::class, 'showEmail'])->name('delivery-notes.email');
+    Route::post('/delivery-notes/{delivery_note}/email', [DeliveryNoteController::class, 'email']);
+    Route::get('/delivery-notes/{delivery_note}/sign', [DeliveryNoteController::class, 'showSignatureRequest'])->name('delivery-notes.sign');
+    Route::post('/delivery-notes/{delivery_note}/sign', [DeliveryNoteController::class, 'sign']);
+    Route::get('/delivery-notes/{delivery_note}/email-download-request', [DeliveryNoteController::class, 'showEmailDownloadRequest'])->name('delivery-notes.email-download-request');
+    Route::post('/delivery-notes/{delivery_note}/email-download-request', [DeliveryNoteController::class, 'emailDownloadRequest']);
+    Route::get('/delivery-notes/{delivery_note}/email-signature-request', [DeliveryNoteController::class, 'showEmailSignatureRequest'])->name('delivery-notes.email-signature-request');
+    Route::post('/delivery-notes/{delivery_note}/email-signature-request', [DeliveryNoteController::class, 'emailSignatureRequest']);
+    Route::get('/delivery-notes/{delivery_note}/finish', [DeliveryNoteController::class, 'finish'])->name('delivery-notes.finish');
+
+
     Route::resource('employees', EmployeeController::class);
     Route::get('/employees/{employee}/access-grant', [EmployeeController::class, 'grantAccess'])->name('employees.access-grant');
     Route::get('/employees/{employee}/access-deny', [EmployeeController::class, 'denyAccess'])->name('employees.access-deny');

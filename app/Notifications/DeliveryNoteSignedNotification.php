@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\ConstructionReport;
+use App\Models\DeliveryNote;
 use App\Traits\TargetsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,12 +13,12 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class ConstructionReportSignedNotification extends Notification implements ShouldQueue
+class DeliveryNoteSignedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     use TargetsNotification;
 
-    public ConstructionReport $constructionReport;
+    public DeliveryNote $deliveryNote;
     private array $vibrationDuration = ['100'];
 
     /**
@@ -26,9 +26,9 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
      *
      * @return void
      */
-    public function __construct(ConstructionReport $constructionReport)
+    public function __construct(DeliveryNote $deliveryNote)
     {
-        $this->constructionReport = $constructionReport;
+        $this->deliveryNote = $deliveryNote;
     }
 
     /**
@@ -49,10 +49,10 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
     public function toDatabase($notifiable)
     {
         return [
-            'model' => ConstructionReport::class,
-            'type' => 'ConstructionReport',
-            'id' => $this->constructionReport->id,
-            'route' => route('construction-reports.show', $this->constructionReport->id),
+            'model' => DeliveryNote::class,
+            'type' => 'DeliveryNote',
+            'id' => $this->deliveryNote->id,
+            'route' => route('delivery-notes.show', $this->deliveryNote->id),
         ];
     }
 
@@ -65,19 +65,19 @@ class ConstructionReportSignedNotification extends Notification implements Shoul
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Ein Bautagesbericht wurde unterschrieben (Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.')')
-            ->markdown('emails.construction_report.notification_signed', ['constructionReport' => $this->constructionReport]);
+            ->subject('Ein Lieferschein wurde unterschrieben ('.$this->deliveryNote->title.', Projekt '.$this->deliveryNote->project->name.')')
+            ->markdown('emails.delivery_note.notification_signed', ['deliveryNote' => $this->deliveryNote]);
     }
 
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('Ein Bautagesbericht wurde unterschrieben')
+            ->title('Ein Lieferschein wurde unterschrieben')
             ->icon('/icons/icon_512.png')
             ->badge('/icons/icon_alpha_512.png')
-            ->body('Der Bautagesbericht Projekt '.$this->constructionReport->project->name.' #'.$this->constructionReport->number.' wurde unterschrieben.')
-            ->tag(ConstructionReport::class.':'.$this->constructionReport->id)
-            ->data(['url' => route('construction-reports.show', $this->constructionReport)])
+            ->body('Der Lieferschein ' . $this->deliveryNote->title . ' (Projekt '.$this->deliveryNote->project->name.') wurde unterschrieben.')
+            ->tag(DeliveryNote::class.':'.$this->deliveryNote->id)
+            ->data(['url' => route('delivery-notes.show', $this->deliveryNote)])
             ->vibrate($this->vibrationDuration);
     }
 }

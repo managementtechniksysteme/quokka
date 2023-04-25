@@ -108,7 +108,7 @@
                         </li>
                     @endif
 
-                    @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class))
+                    @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class) || auth()->user()->can('viewAny', \App\Models\AdditionsReport::class) || auth()->user()->can('viewAny', \App\Models\InspectionReport::class) || auth()->user()->can('viewAny', \App\Models\FlowMeterInspectionReport::class) || auth()->user()->can('viewAny', \App\Models\ConstructionReport::class) || auth()->user()->can('viewAny', \App\Models\DeliveryNote::class))
                         <li class="nav-item dropdown">
                             <a class="nav-link @cannot('viewAny', \App\Models\Task::class) disabled @endcannot d-inline-flex align-items-center pr-0" href="{{ route('tasks.index') }}">
                                 <svg class="icon icon-20 mr-1">
@@ -167,6 +167,14 @@
                                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                                             </svg>
                                             Bautagesberichte
+                                        </a>
+                                    @endcan
+                                    @can('viewAny', \App\Models\DeliveryNote::class)
+                                        <a class="dropdown-item  d-inline-flex align-items-center" href="{{ route('delivery-notes.index') }}">
+                                            <svg class="icon icon-16 mr-1">
+                                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
+                                            </svg>
+                                            Lieferscheine
                                         </a>
                                     @endcan
                                 </div>

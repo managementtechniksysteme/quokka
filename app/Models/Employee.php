@@ -141,6 +141,11 @@ class Employee extends Model
         return $this->hasMany(Note::class, 'employee_id');
     }
 
+    public function deliveryNOtes()
+    {
+        return $this->hasMany(DeliveryNote::class, 'employee_id');
+    }
+
     public function isCurrentlyOnHoliday()
     {
         $currentHolidayAccounting = $this->accounting()

@@ -88,6 +88,11 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->hasMany(InterimInvoice::class);
     }
 
+    public function deliveryNotes()
+    {
+        return $this->hasMany(DeliveryNote::class);
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class);

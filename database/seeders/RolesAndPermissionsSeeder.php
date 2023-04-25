@@ -102,6 +102,18 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'construction-reports.get-signature.other']);
         Permission::firstOrCreate(['name' => 'construction-reports.approve']);
 
+        // delivery notes
+        Permission::firstOrCreate(['name' => 'delivery-notes.view']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.create']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.update']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.delete']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.email']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.createpdf']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.send-signature-request']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.send-download-request']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.get-signature']);
+        Permission::firstOrCreate(['name' => 'delivery-notes.approve']);
+
         // employees
         Permission::firstOrCreate(['name' => 'employees.view']);
         Permission::firstOrCreate(['name' => 'employees.create']);
@@ -429,6 +441,14 @@ class RolesAndPermissionsSeeder extends Seeder
         $employee->givePermissionTo('construction-reports.get-signature.own');
         $employee->givePermissionTo('construction-reports.get-signature.involved');
         $employee->givePermissionTo('construction-reports.get-signature.other');
+
+        // delivery notes
+        $employee->givePermissionTo('delivery-notes.view');
+        $employee->givePermissionTo('delivery-notes.email');
+        $employee->givePermissionTo('delivery-notes.createpdf');
+        $employee->givePermissionTo('delivery-notes.send-signature-request');
+        $employee->givePermissionTo('delivery-notes.send-download-request');
+        $employee->givePermissionTo('delivery-notes.get-signature');
 
         // flow meter inspection reports
         $employee->givePermissionTo('flow-meter-inspection-reports.view.own');

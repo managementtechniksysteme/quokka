@@ -19,6 +19,11 @@
             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
         </svg>
         @break
+    @case(\App\Models\DeliveryNote::class)
+        <svg class="icon icon-baseline mr-1">
+            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
+        </svg>
+        @break
     @case(\App\Models\Employee::class)
         <svg class="icon icon-baseline mr-1">
             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>

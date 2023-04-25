@@ -2,7 +2,6 @@
 
 namespace App\SpotlightCommands;
 
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use LivewireUI\Spotlight\Spotlight;
 use LivewireUI\Spotlight\SpotlightCommand;

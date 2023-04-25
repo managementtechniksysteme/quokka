@@ -15,6 +15,9 @@ use App\SpotlightCommands\CompanyShowCommand;
 use App\SpotlightCommands\ConstructionReportCreateCommand;
 use App\SpotlightCommands\ConstructionReportIndexCommand;
 use App\SpotlightCommands\ConstructionReportShowCommand;
+use App\SpotlightCommands\DeliveryNoteCreateCommand;
+use App\SpotlightCommands\DeliveryNoteIndexCommand;
+use App\SpotlightCommands\DeliveryNoteShowCommand;
 use App\SpotlightCommands\EmployeeCreateCommand;
 use App\SpotlightCommands\EmployeeIndexCommand;
 use App\SpotlightCommands\EmployeeShowCommand;
@@ -120,6 +123,9 @@ return [
         ConstructionReportCreateCommand::class,
         ConstructionReportIndexCommand::class,
         ConstructionReportShowCommand::class,
+        DeliveryNoteCreateCommand::class,
+        DeliveryNoteIndexCommand::class,
+        DeliveryNoteShowCommand::class,
         EmployeeCreateCommand::class,
         EmployeeIndexCommand::class,
         EmployeeShowCommand::class,

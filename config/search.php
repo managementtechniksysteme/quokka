@@ -4,6 +4,7 @@ use App\Models\AdditionsReport;
 use App\Models\Address;
 use App\Models\Company;
 use App\Models\ConstructionReport;
+use App\Models\DeliveryNote;
 use App\Models\Employee;
 use App\Models\FinanceGroup;
 use App\Models\FinanceRecord;
@@ -38,6 +39,7 @@ return [
         Address::class,
         Company::class,
         ConstructionReport::class,
+        DeliveryNote::class,
         Employee::class,
         FinanceGroup::class,
         FinanceRecord::class,

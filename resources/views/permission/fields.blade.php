@@ -1782,6 +1782,145 @@
     </div>
 </div>
 
+
+
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 mr-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
+            </svg>
+            Teilrechnungen
+        </p>
+        <p class="text-muted">
+            Berechtigungen für die Lieferscheine.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_view') is-invalid @enderror" name="delivery-notes_view" id="delivery-notes_view" value="true" @if(old('delivery-notes_view', optional($permissions)->hasPermissionTo('delivery-notes.view'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_view">Lieferscheine anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_view') d-block @enderror">
+                @error('delivery-notes_view')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_create') is-invalid @enderror" name="delivery-notes_create" id="delivery-notes_create" value="true" @if(old('delivery-notes_create', optional($permissions)->hasPermissionTo('delivery-notes.create'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_create">Lieferscheine erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_create') d-block @enderror">
+                @error('delivery-notes_create')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_update') is-invalid @enderror" name="delivery-notes_update" id="delivery-notes_update" value="true" @if(old('delivery-notes_update', optional($permissions)->hasPermissionTo('delivery-notes.update'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_update">Lieferscheine bearbeiten</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_update') d-block @enderror">
+                @error('delivery-notes_update')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_delete') is-invalid @enderror" name="delivery-notes_delete" id="delivery-notes_delete" value="true" @if(old('delivery-notes_delete', optional($permissions)->hasPermissionTo('delivery-notes.delete'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_delete">Lieferscheine entfernen (falls Status neu)</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_delete') d-block @enderror">
+                @error('delivery-notes_delete')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_email') is-invalid @enderror" name="delivery-notes_email" id="delivery-notes_email" value="true" @if(old('delivery-notes_email', optional($permissions)->hasPermissionTo('delivery-notes.email'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_email">Lieferscheine per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_email') d-block @enderror">
+                @error('delivery-notes_email')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_createpdf') is-invalid @enderror" name="delivery-notes_createpdf" id="delivery-notes_createpdf" value="true" @if(old('delivery-notes_createpdf', optional($permissions)->hasPermissionTo('delivery-notes.createpdf'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_createpdf">PDF Dateien von Lieferscheinen erstellen</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_createpdf') d-block @enderror">
+                @error('delivery-notes_createpdf')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_send-signature-request') is-invalid @enderror" name="delivery-notes_send-signature-request" id="delivery-notes_send-signature-request" value="true" @if(old('delivery-notes_send-signature-request', optional($permissions)->hasPermissionTo('delivery-notes.send-signature-request'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_send-signature-request">Anfrage zur Unterschrift von Lieferscheinen per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_send-signature-request') d-block @enderror">
+                @error('delivery-notes_send-signature-request')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_send-download-request') is-invalid @enderror" name="delivery-notes_send-download-request" id="delivery-notes_send-download-request" value="true" @if(old('delivery-notes_send-download-request', optional($permissions)->hasPermissionTo('delivery-notes.send-download-request'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_send-download-request">Anfrage zum Herunterladen von Lieferscheinen per E-Mail versenden</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_send-download-request') d-block @enderror">
+                @error('delivery-notes_send-download-request')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_get-signature') is-invalid @enderror" name="delivery-notes_get-signature" id="delivery-notes_get-signature" value="true" @if(old('delivery-notes_get-signature', optional($permissions)->hasPermissionTo('delivery-notes.get-signature'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_get-signature">Lieferscheine unterschreiben lassen</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_get-signature') d-block @enderror">
+                @error('delivery-notes_get-signature')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input @error('delivery-notes_approve') is-invalid @enderror" name="delivery-notes_approve" id="delivery-notes_approve" value="true" @if(old('delivery-notes_approve', optional($permissions)->hasPermissionTo('delivery-notes.approve'))) checked @endif>
+                <label class="custom-control-label" for="delivery-notes_approve">Lieferscheine als erledigt markieren</label>
+            </div>
+            <div class="invalid-feedback @error('delivery-notes_approve') d-block @enderror">
+                @error('delivery-notes_approve')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">

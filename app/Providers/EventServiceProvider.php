@@ -17,6 +17,7 @@ use App\Listeners\SendCommentMentionNotification;
 use App\Listeners\SendConstructionReportInvolvedNotification;
 use App\Listeners\SendConstructionReportMentionNotification;
 use App\Listeners\SendConstructionReportSignedNotification;
+use App\Listeners\SendDeliveryNoteSignedNotification;
 use App\Listeners\SendFlowMeterInspectionReportMentionNotification;
 use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
 use App\Listeners\SendInspectionReportMentionNotification;
@@ -57,7 +58,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         DeliveryNoteSignedEvent::class => [
-            DeliveryNoteSignedNotification::class,
+            SendDeliveryNoteSignedNotification::class,
         ],
 
         ConstructionReportSignedEvent::class => [

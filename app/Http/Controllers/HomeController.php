@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdditionsReport;
 use App\Models\ConstructionReport;
+use App\Models\DeliveryNote;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\ServiceReport;
@@ -73,6 +74,10 @@ class HomeController extends Controller
             ->with('signedConstructionReports', ConstructionReport::signedConstructionReports())
             ->with('mtdSignedConstructionReports', ConstructionReport::mtdSignedConstructionReports())
             ->with('signedFlowMeterInspectionReports', FlowMeterInspectionReport::signedFlowMeterInspectionReports())
-            ->with('mtdSignedFlowMeterInspectionReports', FlowMeterInspectionReport::mtdSignedFlowMeterInspectionReports());
+            ->with('mtdSignedFlowMeterInspectionReports', FlowMeterInspectionReport::mtdSignedFlowMeterInspectionReports())
+            ->with('newDeliveryNotes', DeliveryNote::newDeliveryNotes())
+            ->with('mtdNewDeliveryNotes', DeliveryNote::mtdNewDeliveryNotes())
+            ->with('signedDeliveryNotes', DeliveryNote::signedDeliveryNotes())
+            ->with('mtdSignedDeliveryNotes', DeliveryNote::mtdSignedDeliveryNotes());
     }
 }

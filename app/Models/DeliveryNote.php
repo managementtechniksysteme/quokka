@@ -158,6 +158,16 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status === 'finished';
     }
 
+    public static function mtdNewDeliveryNotes()
+    {
+        $now = Carbon::now();
+        $firstOfMonth = Carbon::today()->firstOfMonth();
+
+        return DeliveryNote::whereStatus('new')
+            ->whereBetween('created_at', [$firstOfMonth, $now])
+            ->count();
+    }
+
     public static function newDeliveryNotes()
     {
         return DeliveryNote::whereStatus('new')->count();

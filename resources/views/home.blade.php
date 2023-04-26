@@ -609,5 +609,76 @@
             @endif
         </p>
 
+        <h4 class="mt-4">
+            <svg class="icon-bs icon-baseline text-muted mr-1">
+                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
+            </svg>
+            Lieferscheine
+        </h4>
+
+        <div class="row">
+            @can('viewAny', \App\Models\DeliveryNote::class)
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow-sm">
+                        <a class="stretched-link outline-none" href="{{ route('delivery-notes.index', ['search' => 'ist:neu']) }}"></a>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col pr-0">
+                                    <h5 class="card-title text-uppercase text-muted m-0">offene LI</h5>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($newDeliveryNotes) }}</span>
+                                </div>
+                                <div class="col-auto pl-0">
+                                    <svg class="icon-bs icon-32 @if($newDeliveryNotes) text-blue-500 @else text-gray-500 @endif">
+                                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <span class="text-muted">
+                                        {{ Number::toLocal($mtdNewDeliveryNotes) }} MTD
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endcan
+
+            @can('delivery-notes.approve')
+                <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow-sm">
+                        <a class="stretched-link outline-none" href="{{ route('delivery-notes.index', ['search' => 'ist:unterschrieben']) }}"></a>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col pr-0">
+                                    <h5 class="card-title text-uppercase text-muted m-0">erledigbare LI</h5>
+                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedDeliveryNotes) }}</span>
+                                </div>
+                                <div class="col-auto pl-0">
+                                    <svg class="icon-bs icon-32 @if($signedDeliveryNotes) text-yellow-500 @else text-gray-500 @endif">
+                                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <span class="text-muted">
+                                        {{ Number::toLocal($mtdSignedDeliveryNotes) }} MTD
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endcan
+        </div>
+
+        <p class="small">
+            <span class="font-weight-bold">Legende:</span>
+            LI - Lieferscheine,
+            MTD - Month to Date (seit Monatsbeginn),
+            ges. - gesamt
+        </p>
     </div>
 @endsection

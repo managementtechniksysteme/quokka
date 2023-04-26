@@ -118,6 +118,19 @@
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
                     <svg class="icon icon-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                    </svg>
+                    Datum
+                </div>
+            </div>
+            <div class="col">
+                {{ $deliveryNote->written_on }}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-2">
+                <div class="text-muted d-flex align-items-center">
+                    <svg class="icon icon-16 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     Mitarbeiter

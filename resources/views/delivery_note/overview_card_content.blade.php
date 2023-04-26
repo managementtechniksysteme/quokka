@@ -11,25 +11,25 @@
                     @switch($deliveryNote->status)
                         @case('new')
                             @if($deliveryNote->signatureRequest)
-                                <svg class="icon icon-16 ml-2 mr-1">
+                                <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                                 </svg>
                                 {{ $deliveryNote->signatureRequest->created_at }}
                             @else
-                                <svg class="icon icon-16 ml-2 mr-1">
+                                <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 {{ $deliveryNote->created_at }}
                             @endif
                             @break
                         @case('signed')
-                            <svg class="icon icon-16 ml-2 mr-1">
+                            <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             {{ $deliveryNote->signature()->created_at }}
                         @break
                         @case('finished')
-                            <svg class="icon icon-16 ml-2 mr-1">
+                            <svg class="icon icon-16 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             {{ $deliveryNote->updated_at }}
@@ -44,14 +44,14 @@
                     <span class="mw-100 text-truncate">
                         {{ $deliveryNote->employee->person->name }}
                     </span>
-                    <div class="mw-100 text-truncate">
-                        @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                    @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                        <div class="mw-100 text-truncate ml-2 d-inline-flex align-items-center">
                             <svg class="icon icon-16 mx-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                             </svg>
                             {{ $deliveryNote->project->name }}
-                        @endunless
-                    </div>
+                        </div>
+                    @endunless
                 </div>
             </div>
         </div>

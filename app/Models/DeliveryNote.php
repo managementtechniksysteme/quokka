@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
-use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasDownloadRequest;
 use App\Traits\HasSignatureRequest;
@@ -16,12 +16,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
 
-class DeliveryNote extends Model
+class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
 {
     use FiltersLatestChanges;
     use FiltersSearch;
-    use FiltersPermissions;
     use HasSignatureRequest;
     use HasDownloadRequest;
     use LogsActivity;
@@ -33,6 +33,7 @@ class DeliveryNote extends Model
 
     protected $fillable = [
         'status',
+        'written_on',
         'title',
         'comment',
         'employee_id',
@@ -51,6 +52,10 @@ class DeliveryNote extends Model
         'ist:unterschrieben' => ['status', 'signed'],
         'ist:u' => ['status', 'signed'],
         'ist:erledigt' => ['status', 'finished'],
+        'nummer:(.*)' => ['title', '{value}'],
+        'n:(.*)' => ['title', '{value}'],
+        'titel:(.*)' => ['title', '{value}'],
+        't:(.*)' => ['title', '{value}'],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],

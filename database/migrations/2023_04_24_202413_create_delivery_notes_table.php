@@ -11,6 +11,7 @@ class CreateDeliveryNotesTable extends Migration
         Schema::create('delivery_notes', function (Blueprint $table) {
             $table->id();
             $table->enum('status', ['new', 'signed', 'finished']);
+            $table->date('written_on');
             $table->string('title')->unique();
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('project_id');

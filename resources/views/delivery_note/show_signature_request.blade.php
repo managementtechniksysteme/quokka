@@ -8,7 +8,7 @@
 
                 <h3>
                     Lieferschein unterschreiben
-                    <small class="text-muted">{{ $serviceReport->title }}</small>
+                    <small class="text-muted">{{ $deliveryNote->title }}</small>
                 </h3>
             </div>
         </div>

@@ -7,7 +7,7 @@ Klicken Sie bitte auf den folgenden Button, um den Lierferschein herunterzuladen
 @include("emails.delivery_note.delivery_note_content_request")
 
 @component('mail::button', ['url' => route('delivery-notes.customer-sign', $deliveryNote->signatureRequest->token)])
-    Lieferscein herunterladen und unterschreiben
+    Lieferschein herunterladen und unterschreiben
 @endcomponent
 
 Danke,<br />

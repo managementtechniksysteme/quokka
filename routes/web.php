@@ -22,6 +22,7 @@ use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
+use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\FinanceController;
@@ -81,6 +82,11 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/construction-reports/download/{token}', [ConstructionReportController::class, 'customerDownload'])->name('construction-reports.customer-download');
     Route::post('/construction-reports/email-download-request/{token}', [ConstructionReportController::class, 'customerEmailDownloadRequest'])->name('construction-reports.customer-email-download-request');
 
+    Route::get('/delivery-notes/sign/{token}', [DeliveryNoteController::class, 'customerShowSignatureRequest'])->name('delivery-notes.customer-sign');
+    Route::post('/delivery-notes/sign/{token}', [DeliveryNoteController::class, 'customerSign']);
+    Route::get('/delivery-notes/download/{token}', [DeliveryNoteController::class, 'customerDownload'])->name('delivery-notes.customer-download');
+    Route::post('/delivery-notes/email-download-request/{token}', [DeliveryNoteController::class, 'customerEmailDownloadRequest'])->name('delivery-notes.customer-email-download-request');
+
     Route::get('/flow-meter-inspection-reports/sign/{token}', [FlowMeterInspectionReportController::class, 'customerShowSignatureRequest'])->name('flow-meter-inspection-reports.customer-sign');
     Route::post('/flow-meter-inspection-reports/sign/{token}', [FlowMeterInspectionReportController::class, 'customerSign']);
     Route::get('/flow-meter-inspection-reports/download/{token}', [FlowMeterInspectionReportController::class, 'customerDownload'])->name('flow-meter-inspection-reports.customer-download');
@@ -133,7 +139,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('/construction-reports/{construction_report}/email-signature-request', [ConstructionReportController::class, 'emailSignatureRequest']);
     Route::get('/construction-reports/{construction_report}/finish', [ConstructionReportController::class, 'finish'])->name('construction-reports.finish');
 
-    Route::resource('/delivery-notes', DeliveryNoteController::class)->except('index');
+    Route::resource('/delivery-notes', DeliveryNoteController::class);
     Route::get('/delivery-notes/{delivery_note}/download', [DeliveryNoteController::class, 'download'])->name('delivery-notes.download');
     Route::get('/delivery-notes/{delivery_note}/email', [DeliveryNoteController::class, 'showEmail'])->name('delivery-notes.email');
     Route::post('/delivery-notes/{delivery_note}/email', [DeliveryNoteController::class, 'email']);

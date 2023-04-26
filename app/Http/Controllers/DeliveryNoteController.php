@@ -43,7 +43,7 @@ class DeliveryNoteController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(DeliveryNote::class, 'construction_report');
+        $this->authorizeResource(DeliveryNote::class, 'delivery_note');
     }
 
     public function index(Request $request)
@@ -75,7 +75,7 @@ class DeliveryNoteController extends Controller
 
         return view('delivery_note.create')
             ->with('deliveryNote', null)
-            ->with('currentProject', $currentProject)
+            ->with('currentProject', null)
             ->with('projects', $projects->toJson());
     }
 
@@ -83,7 +83,7 @@ class DeliveryNoteController extends Controller
     {
         $validatedData = $request->validated();
 
-        $deliveryNote = DeliveryNoteCreateRequest::make($validatedData);
+        $deliveryNote = DeliveryNote::make($validatedData);
         $deliveryNote->employee_id = Auth::user()->employee_id;
         $deliveryNote->status = 'new';
 
@@ -153,7 +153,7 @@ class DeliveryNoteController extends Controller
                 ->with('success', 'Der Lieferschein wurde erfolgreich bearbeitet.');
         } else {
             return redirect()
-                ->route('delivery-notess.show', $deliveryNote)
+                ->route('delivery-notes.show', $deliveryNote)
                 ->with('success', 'Der Lieferschein wurde erfolgreich bearbeitet.');
         }
     }
@@ -244,7 +244,7 @@ class DeliveryNoteController extends Controller
         $deliveryNote
             ->load('project.company.contactPerson');
 
-        return view('construction_report.show_signature_request')->with(compact('deliveryNote'));
+        return view('delivery_note.show_signature_request')->with(compact('deliveryNote'));
     }
 
     public function customerShowSignatureRequest(Request $request, string $token)
@@ -382,6 +382,10 @@ class DeliveryNoteController extends Controller
 
     private function downloadPDF(DeliveryNote $deliveryNote)
     {
+        if(!$deliveryNote->signature()) {
+            return $deliveryNote->document();
+        }
+
         $deliveryNote->load('media');
 
         $title = str_replace(array('\\','/',':','*','?','"','<','>','|'),'_', $deliveryNote->title);

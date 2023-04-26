@@ -21,7 +21,6 @@
         </p>
         <p class="text-muted">
             Bei der Bearbeitung eines bereits unterschriebenen Lieferscheins wird die vorhandene Unterschrift entferent.
-            In diesem Fall muss auch eine neue PDF Datei hochgeladen werden.
         </p>
     </div>
 
@@ -33,7 +32,7 @@
 
         <div class="form-group">
             <label for="written_on">Datum</label>
-            <input type="date" class="form-control @error('inspected_on') is-invalid @enderror" id="written_on"
+            <input type="date" class="form-control @error('written_on') is-invalid @enderror" id="written_on"
                    name="written_on" placeholder=""
                    value="{{ old('written_on', optional(optional($deliveryNote)->written_on)->format('Y-m-d')) }}"
                    required/>
@@ -53,13 +52,13 @@
                     <span class="input-group-text">LI-</span>
                 </div>
                 <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="101595/2023" value="{{ old('title', optional($deliveryNote)->title) }}" required />
-            </div>
-            <div class="invalid-feedback">
-                @error('title')
-                {{ $message }}
-                @else
-                    Gib bitte die Nummer des Lieferscheins ein.
-                    @enderror
+                <div class="invalid-feedback">
+                    @error('title')
+                    {{ $message }}
+                    @else
+                        Gib bitte die Nummer des Lieferscheins ein.
+                        @enderror
+                </div>
             </div>
         </div>
 
@@ -73,8 +72,8 @@
                         <svg class="icon icon-24 mr-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
-                        Der Lieferschein wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
-                        Eine neue PDF Datei muss ebenfalls hochgeladen werden.
+                        Der Lieferschein wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift
+                        entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
                     </div>
                 </div>
             @endif
@@ -158,11 +157,13 @@
                 <input type="file" accept="application/pdf" class="custom-file-input" id="document"
                        name="document">
                 <label class="custom-file-label" for="document">Lieferschein auswählen</label>
-            </div>
-            <div class="invalid-feedback @error('document') d-block @enderror">
-                @error('document')
-                {{ $message }}
-                @enderror
+                <div class="invalid-feedback @error('document') d-block @enderror">
+                    @error('document')
+                    {{ $message }}
+                    @else
+                        Wähle bitte das PDF Dokument des Lieferscheins aus.
+                        @enderror
+                </div>
             </div>
         </div>
     </div>

@@ -522,6 +522,47 @@
                         <tr>
                             <td class="text-muted" colspan="3">
                                 <svg class="icon-bs icon-baseline mr-2">
+                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#package"></use>
+                                </svg>
+                                Lieferscheine
+                            </td>
+                        </tr>
+
+                        <tr class="hover-highlight">
+                            <td>
+                                Bei Unterschrift eines Lieferscheins
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="email[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]"
+                                           id="email[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}"
+                                           @if(old("email[{$notifications[\App\Notifications\DeliveryNoteSignedNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\DeliveryNoteSignedNotification::class], $emailNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="email[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input"
+                                           name="webpush[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]"
+                                           id="webpush[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]"
+                                           value="{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}"
+                                           @if(old("webpush[{$notifications[\App\Notifications\DeliveryNoteSignedNotification::class]}]") || (!old('_token') && in_array($notifications[\App\Notifications\DeliveryNoteSignedNotification::class], $webPushNotifications))) checked @endif
+                                    >
+                                    <label class="custom-control-label"
+                                           for="webpush[{{ $notifications[\App\Notifications\DeliveryNoteSignedNotification::class] }}]">
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-muted" colspan="3">
+                                <svg class="icon-bs icon-baseline mr-2">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                 </svg>
                                 Prüfberichte

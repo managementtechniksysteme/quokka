@@ -12,7 +12,7 @@ class DeliveryNotePolicy
 
     public function viewAny(User $user): bool
     {
-
+        return $user->can('delivery-notes.view');
     }
 
     public function view(User $user, DeliveryNote $deliveryNote): bool

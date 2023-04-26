@@ -190,14 +190,17 @@ class ProjectController extends Controller
                     return redirect()->route('projects.show', [$project, 'tab' => 'overview']);
                 }
 
-                $deliveryNotes = $project
-                    ->deliveryNotes()
+                DeliveryNote::handleDefaultFilter($request);
+
+                $deliveryNotes = $project->deliveryNotes()
+                    ->filterSearch($request->search)
                     ->order()
                     ->paginate(Auth::user()->settings->list_pagination_size)
                     ->appends($request->except('page'));
 
                 return view('project.show_tab_delivery_notes')
                     ->with(compact('project'))
+                    ->with('financeRecordsCount', $financeRecordsCount)
                     ->with(compact('deliveryNotes'));
 
             case 'tasks':

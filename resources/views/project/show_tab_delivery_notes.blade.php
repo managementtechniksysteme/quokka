@@ -1,7 +1,7 @@
 @extends('project.show')
 
 @section('tab')
-    @unless ($project->$deliveryNotes->isEmpty() && !Request::get('search'))
+    @unless ($project->deliveryNotes->isEmpty() && !Request::get('search'))
         @can('create', \App\Models\DeliveryNote::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('delivery-notes.create', ['project' => $project->id]) }}">
                 <svg class="icon icon-16 mr-2">

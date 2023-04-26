@@ -13,7 +13,7 @@ class DeliveryNoteUpdateRequest extends FormRequest
 
         $rules = [
             'written_on' => 'required|date',
-            'title' => 'required|unique:delivery_notes,'.$this->delivery_note->id,
+            'title' => 'required|unique:delivery_notes,title,'.$this->delivery_note->id,
             'comment' => 'nullable',
             'document' => 'mimes:pdf',
             'project_id' => 'required|exists:projects,id',

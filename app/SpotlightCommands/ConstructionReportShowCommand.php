@@ -15,7 +15,7 @@ class ConstructionReportShowCommand extends SpotlightCommand
 {
     protected string $name = 'Bautagesbericht anzeigen';
 
-    protected string $description = 'Einen spezifisches Bautagesbericht anzeigen';
+    protected string $description = 'Einen spezifischen Bautagesbericht anzeigen';
 
     public function dependencies(): ?SpotlightCommandDependencies
     {

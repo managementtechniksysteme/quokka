@@ -90,7 +90,7 @@
                     @can('viewAny', \App\Models\DeliveryNote::class)
                         <a class="menu-item @if (request()->tab == 'delivery_notes') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'delivery_notes']) }}">
                             <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#packages"></use>
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
                             </svg>
                             Lieferscheine
                             <span class="ml-auto">{{ $project->delivery_notes_count > 0 ? $project->delivery_notes_count : '' }}</span>

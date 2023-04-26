@@ -17,7 +17,15 @@
         <div class="container my-4">
             <p class="lead d-flex align-items-center">
                 <svg class="text-muted icon icon-20 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                </svg>
+                <span class="text-muted mr-3">Datum: </span>
+                {{ $deliveryNote->written_on }}
+            </p>
+
+            <p class="lead d-flex align-items-center">
+                <svg class="text-muted icon icon-20 mr-1">
+                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                 </svg>
                 <span class="text-muted mr-3">Projekt: </span>
                 {{ $deliveryNote->project->name }}

@@ -1,6 +1,7 @@
 @component('mail::message')
 # Lieferschein {{ $deliveryNote->title }}
 
+**Datum:** {{ $deliveryNote->written_on }}<br />
 **Projekt:** {{ $deliveryNote->project->name }}<br />
 **Status:**
 {{ trans($deliveryNote->status) }}

@@ -32,7 +32,7 @@ class DeliveryNoteDownloadRequestMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject('Lieferschein ' . $this->deliveryNote->title . ' herunterladen (Projekt '.$this->constructionReport->project->name.')')
+            ->subject('Lieferschein ' . $this->deliveryNote->title . ' herunterladen (Projekt '.$this->deliveryNote->project->name.')')
             ->markdown('emails.delivery_note.download_request');
     }
 }

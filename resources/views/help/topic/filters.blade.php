@@ -40,6 +40,9 @@
         @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
         <a href="#leistungen"># Leistungen</a><br />
         @endcan
+        @can('viewAny', \App\Models\DeliveryNote::class)
+        <a href="#lieferscheine"># Lieferscheine</a><br />
+        @endcan
         @can('viewAny', \App\Models\Employee::class)
         <a href="#mitarbeiter"># Mitarbeiter</a><br />
         @endcan
@@ -581,6 +584,74 @@
             @endmarkdown
         </div>
         @endif
+
+   @can('viewAny', \App\Models\DeliveryNote::class)
+        <a id="lieferscheine"></a>
+        <h4 class="mt-4">Lieferscheine</h4>
+
+        @markdown
+        **Standardattribute**
+        * Nummer (Titel)
+        * Bemerkungen
+        * Name des zugeordneten Projektes
+        * Name der Firma, welcher das Projekt zugeordnet ist
+
+        **Spezielle Suchbegriffe**
+        * `ist:neu`
+        Der Lieferschein hat den Status `neu`.
+
+        * `ist:unterschrieben` oder `ist:u`
+        Der Lieferschein hat den Status `unterschrieben`.
+
+        * `ist:erledigt`
+        Der Lieferschein hat den Status `erledigt`.
+
+        * `nummer:<Nummer>` oder `n:<Nummer>` oder `titel:<Nummer>` oder `t:<Nummer>`
+        Der Lieferschein hat die Nummer `<Nummer>`
+
+        * `projekt:<Projekt Name>` oder `p:<Projekt Name>`
+        Der Lieferschein ist dem Projekt mit dem Namen `<Projekt Name>` zugeordnet.
+
+        * `firma:<Firma Name>` oder `f:<Firma Name>`
+        Der Lieferschein ist der Firma mit dem Namen `<Firma Name>` zugeordnet.
+
+        * `mitarbeiter:<{{ config('app.name') }} Benutzername>` oder `m:<{{ config('app.name') }} Benutzername>`
+        Der Lieferschein wurde vom Mitarbeiter mit dem {{ config('app.name') }} Benutzernamen `<{{ config('app.name') }} Benutzername>` verfasst.
+
+        **Beispiele**
+        @endmarkdown
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            101595
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Lieferscheine, welche in der Numbmer (Titel) die Zeichenfolge `101595` aufweisen oder sich der Begriff `101595` in den Bemerkungen befindet.
+            Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
+
+            Mögliche Ergebnisse
+            * 101595/2023
+            @endmarkdown
+        </div>
+
+        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+            @markdown
+            ```
+            "p:MTS000000 [Intern]" m:sst
+            ```
+            @endmarkdown
+        </div>
+        <div class="markdown-example-output border mb-2 p-2">
+            @markdown
+            Filtert Lieferscheine, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
+            Benutzernamen `sst` verfasst wurden.
+            @endmarkdown
+        </div>
+        @endcan
 
         @can('viewAny', \App\Models\Employee::class)
         <a id="mitarbeiter"></a>

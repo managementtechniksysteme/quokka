@@ -35,7 +35,7 @@ class DeliveryNoteMail extends Mailable implements ShouldQueue
     public function build()
     {
         $mail = $this
-            ->subject('Lieferschein ' . $this->deliveryNote->title . '(Projekt' . $this->deliveryNote->project->name . ')')
+            ->subject('Lieferschein ' . $this->deliveryNote->title . ' (Projekt' . $this->deliveryNote->project->name . ')')
             ->markdown('emails.delivery_note.delivery_note');
 
         if ($this->mail_attachments) {

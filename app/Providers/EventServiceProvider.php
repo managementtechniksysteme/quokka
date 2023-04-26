@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AdditionsReportSignedEvent;
 use App\Events\ConstructionReportSignedEvent;
+use App\Events\DeliveryNoteSignedEvent;
 use App\Events\FlowMeterInspectionReportSignedEvent;
 use App\Events\InspectionReportSignedEvent;
 use App\Events\ServiceReportSignedEvent;
@@ -27,6 +28,7 @@ use App\Listeners\SendServiceReportSignedNotification;
 use App\Listeners\SendTaskInvolvedNotification;
 use App\Listeners\SendTaskMentionNotification;
 use App\Models\Accounting;
+use App\Notifications\DeliveryNoteSignedNotification;
 use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Observers\AccountingObserver;
 use Illuminate\Auth\Events\Registered;
@@ -52,6 +54,10 @@ class EventServiceProvider extends ServiceProvider
 
         AdditionsReportSignedEvent::class => [
             SendAdditionsReportSignedNotification::class,
+        ],
+
+        DeliveryNoteSignedEvent::class => [
+            DeliveryNoteSignedNotification::class,
         ],
 
         ConstructionReportSignedEvent::class => [

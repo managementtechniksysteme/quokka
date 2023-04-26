@@ -43,7 +43,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label for="start">Start</label>
-                        <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start') }}" />
+                        <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $project->starts_on?->format('Y-m-d')) ?? '' }}" />
                         <div class="invalid-feedback">
                             @error('start')
                             {{ $message }}

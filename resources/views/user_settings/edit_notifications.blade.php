@@ -521,8 +521,8 @@
 
                         <tr>
                             <td class="text-muted" colspan="3">
-                                <svg class="icon-bs icon-baseline mr-2">
-                                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#package"></use>
+                                <svg class="icon icon-baseline mr-2">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
                                 </svg>
                                 Lieferscheine
                             </td>

@@ -13,6 +13,7 @@ use App\Notifications\CommentMentionNotification;
 use App\Notifications\ConstructionReportInvolvedNotification;
 use App\Notifications\ConstructionReportMentionNotification;
 use App\Notifications\ConstructionReportSignedNotification;
+use App\Notifications\DeliveryNoteSignedNotification;
 use App\Notifications\FlowMeterInspectionReportMentionNotification;
 use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Notifications\HolidayAllowanceAdjustmentNotification;

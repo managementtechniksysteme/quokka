@@ -94,8 +94,7 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
 
     public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection
     {
-        return DeliveryNote::filterPermissions()
-            ->filterSearch($query)
+        return DeliveryNote::filterSearch($query)
             ->with('project')
             ->when($latestQuantity && $latestQuantity > 0, function ($query) use ($latestQuantity) {
                 return $query->latest('updated_at')->limit($latestQuantity);

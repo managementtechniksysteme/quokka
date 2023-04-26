@@ -57,7 +57,7 @@
 \begin{ignorelinebreaks}
 @if($project->costs || $project->current_billed_financial_costs || $project->current_costs || $project->wage_costs || $project->current_wage_costs || $project->material_costs || $project->current_material_costs)
 @can('projects.view.estimates')
-\footnotesize{\textbf{Kosten ohne Filter:}}\\
+\footnotesize{\textbf{Kosten (Zeitraum aus Stammdaten von {!! Latex::escape($project->starts_on) !!}@if($project->ends_on)bis {!! Latex::escape($project->ends_on) !!}@endif):}}\\
 @if($project->costs || $project->current_costs)
 \footnotesize{Auftragsvolumen: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) : '') !!}}
 @if($project->current_costs)
@@ -176,7 +176,7 @@
 
 
 \begin{minipage}{.5\textwidth}
-\footnotesize{\textbf{Projektcontrolling:}}\\
+\footnotesize{\textbf{Projektcontrolling im Filterzeitraum:}}\\
 \begin{tikzpicture}
 \begin{axis}[
 axis line style={draw=none},
@@ -210,7 +210,7 @@ nodes near coords align={vertical}
 \end{tikzpicture}
 \end{minipage}
 \begin{minipage}{.5\textwidth}
-\footnotesize{\textbf{Finanzcontrolling:}}\\
+\footnotesize{\textbf{Finanzcontrolling im Stammdatenzeitraum:}}\\
 \begin{tikzpicture}
 \begin{axis}[
 axis line style={draw=none},

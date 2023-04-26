@@ -15,7 +15,14 @@
     </div>
 
     <div class="container my-4">
-        bda69a8
+    @markdown
+    ### v0.1.33-626f76e (26.04.2023)
+    * Lieferscheine wurden analog zu Berichten implementiert.
+    * Überschriften für Kosten und Graphen im Ausdruck von Pojekten wurden um Zeiträume erweitert.
+    * Beim Erstellen von Projekt PDF Dateien wird beim Filter automatisch das Startdatum aus den Stammdaten
+      vorausgefüllt.
+    @endmarkdown
+
     @markdown
     ### v0.1.32-bda69a8 (20.04.2023)
     *  Die Projektcontrolling Graphen in PDF Ausdrücken von Projektübersichten berücksichtigen nun den gefilterten

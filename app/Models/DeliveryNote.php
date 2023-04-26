@@ -103,7 +103,7 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
             ->map(function(DeliveryNote $deliveryNote) {
                 return new GlobalSearchResult(
                     DeliveryNote::class,
-                    'Bautagesbericht',
+                    'Lieferschein',
                     $deliveryNote->id,
                     "$deliveryNote->title ({$deliveryNote->project->name})",
                     route('delivery-notes.show', $deliveryNote),

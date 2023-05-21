@@ -245,7 +245,6 @@
 
                     <li class="nav-item dropdown">
                         <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="notification-badge mr-1 mt-1 h-12 w-12"></span>
                             <svg class="icon icon-20 mr-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
                             </svg>
@@ -253,12 +252,11 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center text-red" href="{{ route('quokka-mobile.index') }}">
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('quokka-mobile.index') }}">
                                 <svg class="icon icon-16 mr-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
                                 </svg>
                                 Quokka Mobile
-                                <span class="badge badge-red-100 text-red-800 ml-1">neu</span>
                             </a>
                             @can('tools-viewlatestchanges')
                                 <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('latest-changes.index') }}">

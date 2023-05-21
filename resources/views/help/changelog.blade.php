@@ -16,6 +16,11 @@
 
     <div class="container my-4">
     @markdown
+    ### v0.1.34-b5f0ed1 (21.05.2023)
+    * Lieferscheine könnnen vor dem Unterschreiben zur Überprüfung heruntergeladen werden.
+    @endmarkdown
+
+    @markdown
     ### v0.1.33-626f76e (26.04.2023)
     * Lieferscheine wurden analog zu Berichten implementiert.
     * Überschriften für Kosten und Graphen im Ausdruck von Pojekten wurden um Zeiträume erweitert.

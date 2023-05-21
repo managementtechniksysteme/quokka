@@ -44,13 +44,29 @@
                 </div>
             @endif
 
+            <h4 class="mt-4">Lieferschein anzeigen</h4>
+
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">
                     <svg class="icon icon-24 mr-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
-                    Der Lieferschein kann nach erfolgreicher Unterschrift heruntergeladen werden.
+                    Der Lieferschein kann nach erfolgreicher Unterschrift erneut heruntergeladen werden.
                 </div>
+            </div>
+
+            <p>
+                Zur Überprüfungt kann der Lieferschein ohne Unterschrift angezeig werden. Klicken Sie auf den Button,
+                um den Lieferschein zu überprüfen.
+            </p>
+
+            <div class="text-center">
+                <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('delivery-notes.customer-download', $deliveryNote->downloadRequest->token) }}">
+                    <svg class="icon icon-16 mr-2">
+                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
+                    </svg>
+                    Lieferschein anzeigen
+                </a>
             </div>
 
             <h4 class="mt-4">Lieferschein unterschreiben</h4>

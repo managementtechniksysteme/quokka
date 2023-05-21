@@ -252,10 +252,13 @@ class DeliveryNoteController extends Controller
         $deliveryNote = SignatureRequest::fromToken(DeliveryNote::class, $token);
 
         if ($deliveryNote) {
+            $deliveryNote->generateDownloadRequest();
+
             $deliveryNote
                 ->load('project')
                 ->load('employee.person')
-                ->load('signatureRequest');
+                ->load('signatureRequest')
+                ->load('downloadRequest');
         } else {
             $request->session()->flash('warning', 'Kein Lieferschein zum Unterschreiben und Herunterladen vorhanden.');
         }

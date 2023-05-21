@@ -32,12 +32,6 @@ class LogSentMessageListener  implements ShouldQueue
             $bccAddresses[$bccAddress->getAddress()] = $bccAddress->getName() ?: null;
         }
 
-        \Log::info("Email properties");
-        \Log::info(print_r($toAddresses, true));
-        \Log::info(print_r($ccAddresses, true));
-        \Log::info(print_r($bccAddresses, true));
-
-
         activity()
             ->withProperties([
                 'subject' => $event->message->getSubject(),

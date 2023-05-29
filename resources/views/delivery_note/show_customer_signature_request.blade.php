@@ -56,7 +56,7 @@
             </div>
 
             <p>
-                Zur Überprüfungt kann der Lieferschein ohne Unterschrift angezeig werden. Klicken Sie auf den Button,
+                Zur Überprüfung kann der Lieferschein ohne Unterschrift angezeigt werden. Klicken Sie auf den Button,
                 um den Lieferschein zu überprüfen.
             </p>
 

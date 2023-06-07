@@ -128,8 +128,8 @@ class FinanceRecordController extends Controller
                 $parameters = ['finance_group' => $financeRecord->financeGroup, 'finance_record' => $financeRecord];
                 break;
             default:
-                $route = 'finance-records.index';
-                $parameters = [];
+                $route = 'finance-groups.show';
+                $parameters = ['finance.group' => $financeRecord->financeGroup];
                 break;
         }
 

@@ -129,7 +129,7 @@ class FinanceRecordController extends Controller
                 break;
             default:
                 $route = 'finance-groups.show';
-                $parameters = ['finance.group' => $financeRecord->financeGroup];
+                $parameters = ['finance_group' => $financeRecord->financeGroup];
                 break;
         }
 

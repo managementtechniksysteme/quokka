@@ -8,6 +8,7 @@ use App\Models\ApplicationSettings;
 use App\Models\FinanceGroup;
 use App\Models\FinanceRecord;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class FinanceRecordController extends Controller
 {

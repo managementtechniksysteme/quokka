@@ -1,6 +1,7 @@
 @component('mail::message')
 # Notiz vom {{ $note->created_at->format('d.m.Y, H:i') }}
 
+**Verfasser:** {{ $note->employee->person->name }}<br />
 @if($note->title)
 **Titel:** {{ $note->title }}<br />
 @endif

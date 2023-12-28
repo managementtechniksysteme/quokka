@@ -38,7 +38,7 @@ class AccountingObserver
         elseif ($this->changedFromHolidayService($accounting)) {
             DB::transaction(function () use ($accounting) {
                 Auth::user()->employee()->lockForUpdate()->get();
-                $this->addHolidayToEmployee($accounting, $accounting->amount);
+                $this->addHolidayToEmployee($accounting, $accounting->getOriginal('amount'));
             });
         }
         elseif ($this->changedToHolidayService($accounting)) {

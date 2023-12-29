@@ -17,10 +17,7 @@ class AccountingObserver
         }
 
         if($this->isHolidayService($accounting)) {
-            DB::transaction(function () use ($accounting) {
-                $accounting->employee()->lockForUpdate()->get();
-                $this->removeHolidayFromEmployee($accounting->employee, $accounting->amount);
-            });
+            $this->removeHolidayFromEmployee($accounting->employee, $accounting->amount);
         }
     }
 
@@ -31,22 +28,13 @@ class AccountingObserver
         }
 
         if($this->stayedHolidayService($accounting)) {
-            DB::transaction(function () use ($accounting) {
-                $accounting->employee()->lockForUpdate()->get();
-                $this->addHolidayToEmployee($accounting->employee, $accounting->getOriginal('amount') - $accounting->amount);
-            });
+            $this->addHolidayToEmployee($accounting->employee, $accounting->getOriginal('amount') - $accounting->amount);
         }
         elseif ($this->changedFromHolidayService($accounting)) {
-            DB::transaction(function () use ($accounting) {
-                $accounting->employee()->lockForUpdate()->get();
-                $this->addHolidayToEmployee($accounting->employee, $accounting->getOriginal('amount'));
-            });
+            $this->addHolidayToEmployee($accounting->employee, $accounting->getOriginal('amount'));
         }
         elseif ($this->changedToHolidayService($accounting)) {
-            DB::transaction(function () use ($accounting) {
-                $accounting->employee()->lockForUpdate()->get();
-                $this->removeHolidayFromEmployee($accounting->employee, $accounting->amount);
-            });
+            $this->removeHolidayFromEmployee($accounting->employee, $accounting->amount);
         }
     }
 
@@ -57,10 +45,7 @@ class AccountingObserver
         }
 
         if($this->wasHolidayService($accounting)) {
-            DB::transaction(function () use ($accounting) {
-                $accounting->employee()->lockForUpdate()->get();
-                $this->addHolidayToEmployee($accounting->employee, $accounting->amount);
-            });
+            $this->addHolidayToEmployee($accounting->employee, $accounting->amount);
         }
     }
 

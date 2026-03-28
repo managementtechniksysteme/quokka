@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia

@@ -16,7 +16,7 @@ am {{ $additionsReport->updated_at }}
 @break
 @endswitch
 <br />**Datum:** {{ $additionsReport->services_provided_on }}<br />
-**Regiestunden:** {{ Number::toLocal($additionsReport->hours) }}<br />
+**Regiestunden:** {{ Number::format($additionsReport->hours) }}<br />
 **Wetter:** {{ trans($additionsReport->weather) }}
 ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)<br />
 **Personalstand:**<br />

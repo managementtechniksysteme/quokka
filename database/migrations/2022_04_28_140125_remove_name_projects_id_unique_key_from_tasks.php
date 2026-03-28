@@ -8,9 +8,11 @@ class RemoveNameProjectsIdUniqueKeyFromTasks extends Migration
 {
     public function up()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropUnique(['name', 'project_id']);
-        });
+        if (Schema::hasIndex('tasks', 'tasks_name_project_id_unique')) {
+            Schema::table('tasks', function (Blueprint $table) {
+                $table->dropUnique(['name', 'project_id']);
+            });
+        }
     }
 
     public function down()

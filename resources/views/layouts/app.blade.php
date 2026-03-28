@@ -72,10 +72,6 @@
 
     <title>{{ config('app.name') }}</title>
 
-    @livewireStyles
-
-    <!-- Alpine.js (standalone until Livewire 3 upgrade) -->
-    <script defer src="{{ asset('js/alpine.min.js') }}"></script>
     @auth
         <script>
             window.VAPID_PUBLIC_KEY = {!! json_encode(config('webpush.vapid.public_key')) !!}
@@ -97,10 +93,10 @@
         @yield('content')
     </main>
 </div>
-@livewireScripts
-@auth
+
+{{-- @auth
     @livewire('livewire-ui-spotlight')
-@endauth
+@endauth --}}
 </body>
 
 </html>

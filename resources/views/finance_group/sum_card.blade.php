@@ -9,7 +9,7 @@
                 <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                 </svg>
-                <strong>{{ Number::toLocal($sum, 2) }}</strong>
+                <strong>{{ Number::format($sum, 2) }}</strong>
             </span>
         </div>
 

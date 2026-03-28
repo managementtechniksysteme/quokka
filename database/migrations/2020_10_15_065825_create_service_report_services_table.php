@@ -16,8 +16,8 @@ class CreateServiceReportServicesTable extends Migration
         Schema::create('service_report_services', function (Blueprint $table) {
             $table->unsignedBigInteger('service_report_id');
             $table->date('provided_on');
-            $table->unsignedDouble('hours');
-            $table->unsignedDouble('allowances');
+            $table->double('hours');
+            $table->double('allowances');
             $table->unsignedInteger('kilometres');
             $table->timestamps();
 

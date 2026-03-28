@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Stunden</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdHourlyBasedServices) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdHourlyBasedServices) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -52,7 +52,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Diäten</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdAllowances) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdAllowances) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -62,7 +62,7 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col">
-                                    <span class="text-muted">{{ Number::toLocal($employeeMtdAllowancesInCurrency) }}€</span>
+                                    <span class="text-muted">{{ Number::format($employeeMtdAllowancesInCurrency) }}€</span>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Überstunden</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdOvertime) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdOvertime) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -86,11 +86,11 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <span class="text-muted">
-                                        {{ Number::toLocal($employeeMtdOvertime50) }} 50%
+                                        {{ Number::format($employeeMtdOvertime50) }} 50%
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($employeeMtdOvertime100) }} 100%
+                                        {{ Number::format($employeeMtdOvertime100) }} 100%
                                     </span>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Kilometer</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdKilometres) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdKilometres) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -115,11 +115,11 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <span class="text-muted">
-                                        {{ Number::toLocal($employeeMtdCompanyKilometres) }} Firma
+                                        {{ Number::format($employeeMtdCompanyKilometres) }} Firma
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($employeeMtdPrivateKilometres) }} privat ({{ Number::toLocal($employeeMtdPrivateKilometresInCurrency) }}€)
+                                        {{ Number::format($employeeMtdPrivateKilometres) }} privat ({{ Number::format($employeeMtdPrivateKilometresInCurrency) }}€)
                                     </span>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted m-0">Verf. Urlaub</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeHolidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($employeeHolidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
@@ -166,7 +166,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erstellt MTD</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdCreatedTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdCreatedTasks) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeMtdCreatedTasks) text-blue-500 @else text-gray-500 @endif">
@@ -177,11 +177,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdCreatedTasksResponsibleFor) }} ver.
+                                    {{ Number::format($employeeMtdCreatedTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal($employeeMtdCreatedTasksInvolvedIn) }}  bet.
+                                    {{ Number::format($employeeMtdCreatedTasksInvolvedIn) }}  bet.
                                 </span>
                             </div>
                         </div>
@@ -195,7 +195,7 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erledigt MTD</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdFinishedTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeMtdFinishedTasks) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeMtdFinishedTasks) text-green-500 @else text-gray-500 @endif">
@@ -206,11 +206,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdFinishedTasksResponsibleFor) }} ver.
+                                    {{ Number::format($employeeMtdFinishedTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal($employeeMtdFinishedTasksInvolvedIn) }} bet.
+                                    {{ Number::format($employeeMtdFinishedTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -224,7 +224,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Überfällig</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeOverdueTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeOverdueTasks) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 text-gray-500 @if($employeeOverdueTasks) text-red-500 @else text-gray-500 @endif">
@@ -235,11 +235,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeOverdueTasksResponsibleFor) }} ver.
+                                    {{ Number::format($employeeOverdueTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal($employeeOverdueTasksInvolvedIn) }} bet.
+                                    {{ Number::format($employeeOverdueTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -253,7 +253,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Bald fällig</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeDueSoonTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeDueSoonTasks) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeDueSoonTasks) text-yellow-500 @else text-gray-500 @endif">
@@ -264,11 +264,11 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeDueSoonTasksResponsibleFor) }} ver.
+                                    {{ Number::format($employeeDueSoonTasksResponsibleFor) }} ver.
                                     <svg class="icon-bs icon-baseline text-muted">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                     </svg>
-                                    {{ Number::toLocal($employeeDueSoonTasksInvolvedIn) }} bet.
+                                    {{ Number::format($employeeDueSoonTasksInvolvedIn) }} bet.
                                 </span>
                             </div>
                         </div>
@@ -299,7 +299,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene SB</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewServiceReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeNewServiceReports) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewServiceReports) text-blue-500 @else text-gray-500 @endif">
@@ -310,12 +310,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdNewServiceReports) }} MTD
+                                    {{ Number::format($employeeMtdNewServiceReports) }} MTD
                                     @if(Auth::user()->can('service-reports.view.own') && Auth::user()->can('service-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($newServiceReports) }} ges.
+                                        {{ Number::format($newServiceReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -330,7 +330,7 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene RB</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewAdditionsReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeNewAdditionsReports) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewAdditionsReports) text-blue-500 @else text-gray-500 @endif">
@@ -341,18 +341,18 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdNewAdditionsReports) }} MTD
+                                    {{ Number::format($employeeMtdNewAdditionsReports) }} MTD
                                     @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('additions-reports.view.involved'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($employeeNewAdditionsReportsInvolvedIn) }} bet.
+                                        {{ Number::format($employeeNewAdditionsReportsInvolvedIn) }} bet.
                                     @endif
                                     @if(Auth::user()->can('additions-reports.view.own') && Auth::user()->can('additions-reports.view.involved') && Auth::user()->can('additions-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($newAdditionsReports) }} ges.
+                                        {{ Number::format($newAdditionsReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -367,7 +367,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene PB</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewInspectionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeNewInspectionReports) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewInspectionReports) text-blue-500 @else text-gray-500 @endif">
@@ -378,12 +378,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdNewInspectionReports) }} MTD
+                                    {{ Number::format($employeeMtdNewInspectionReports) }} MTD
                                     @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('inspection-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($newInspectionReports) }} ges.
+                                        {{ Number::format($newInspectionReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -398,7 +398,7 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene BT</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewConstructionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeNewConstructionReports) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewConstructionReports) text-blue-500 @else text-gray-500 @endif">
@@ -409,18 +409,18 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdNewConstructionReports) }} MTD
+                                    {{ Number::format($employeeMtdNewConstructionReports) }} MTD
                                     @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.involved'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($employeeNewConstructionReportsInvolvedIn) }} bet.
+                                        {{ Number::format($employeeNewConstructionReportsInvolvedIn) }} bet.
                                     @endif
                                     @if(Auth::user()->can('construction-reports.view.own') && Auth::user()->can('construction-reports.view.involved') && Auth::user()->can('construction-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($newConstructionReports) }} ges.
+                                        {{ Number::format($newConstructionReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -437,7 +437,7 @@
                         <div class="row">
                             <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene DM</h5>
-                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewFlowMeterInspectionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::format($employeeNewFlowMeterInspectionReports) }}</span>
                             </div>
                             <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewFlowMeterInspectionReports) text-blue-500 @else text-gray-500 @endif">
@@ -448,12 +448,12 @@
                         <div class="row mt-2">
                             <div class="col">
                                 <span class="text-muted">
-                                    {{ Number::toLocal($employeeMtdNewFlowMeterInspectionReports) }} MTD
+                                    {{ Number::format($employeeMtdNewFlowMeterInspectionReports) }} MTD
                                     @if(Auth::user()->can('inspection-reports.view.own') && Auth::user()->can('flow-meter-inspection-reports.view.other'))
                                         <svg class="icon-bs icon-baseline text-muted">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#dot"></use>
                                         </svg>
-                                        {{ Number::toLocal($newFlowMeterInspectionReports) }} ges.
+                                        {{ Number::format($newFlowMeterInspectionReports) }} ges.
                                     @endif
                                 </span>
                             </div>
@@ -473,7 +473,7 @@
                                 <div class="row">
                                     <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare SB</h5>
-                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedServiceReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::format($signedServiceReports) }}</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedServiceReports) text-yellow-500 @else text-gray-500 @endif">
@@ -483,7 +483,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal($mtdSignedServiceReports) }} MTD</span>
+                                        <span class="text-muted">{{ Number::format($mtdSignedServiceReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -498,7 +498,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare RB</h5>
-                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedAdditionsReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::format($signedAdditionsReports) }}</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedAdditionsReports) text-yellow-500 @else text-gray-500 @endif">
@@ -508,7 +508,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal($mtdSignedAdditionsReports) }} MTD</span>
+                                        <span class="text-muted">{{ Number::format($mtdSignedAdditionsReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -523,7 +523,7 @@
                                 <div class="row">
                                     <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare PB</h5>
-                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedInspectionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::format($signedInspectionReports) }}</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedInspectionReports) text-yellow-500 @else text-gray-500 @endif">
@@ -533,7 +533,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal($mtdSignedInspectionReports) }} MTD</span>
+                                        <span class="text-muted">{{ Number::format($mtdSignedInspectionReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -548,7 +548,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare BT</h5>
-                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedConstructionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::format($signedConstructionReports) }}</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedConstructionReports) text-yellow-500 @else text-gray-500 @endif">
@@ -558,7 +558,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal($mtdSignedConstructionReports) }} MTD</span>
+                                        <span class="text-muted">{{ Number::format($mtdSignedConstructionReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -576,7 +576,7 @@
                                 <div class="row">
                                     <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare DM</h5>
-                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedFlowMeterInspectionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::format($signedFlowMeterInspectionReports) }}</span>
                                     </div>
                                     <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedFlowMeterInspectionReports) text-yellow-500 @else text-gray-500 @endif">
@@ -586,7 +586,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <span class="text-muted">{{ Number::toLocal($mtdSignedFlowMeterInspectionReports) }} MTD</span>
+                                        <span class="text-muted">{{ Number::format($mtdSignedFlowMeterInspectionReports) }} MTD</span>
                                     </div>
                                 </div>
                             </div>
@@ -625,7 +625,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">offene LI</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($newDeliveryNotes) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($newDeliveryNotes) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 @if($newDeliveryNotes) text-blue-500 @else text-gray-500 @endif">
@@ -636,7 +636,7 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <span class="text-muted">
-                                        {{ Number::toLocal($mtdNewDeliveryNotes) }} MTD
+                                        {{ Number::format($mtdNewDeliveryNotes) }} MTD
                                     </span>
                                 </div>
                             </div>
@@ -653,7 +653,7 @@
                             <div class="row">
                                 <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">erledigbare LI</h5>
-                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($signedDeliveryNotes) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::format($signedDeliveryNotes) }}</span>
                                 </div>
                                 <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 @if($signedDeliveryNotes) text-yellow-500 @else text-gray-500 @endif">
@@ -664,7 +664,7 @@
                             <div class="row mt-2">
                                 <div class="col">
                                     <span class="text-muted">
-                                        {{ Number::toLocal($mtdSignedDeliveryNotes) }} MTD
+                                        {{ Number::format($mtdSignedDeliveryNotes) }} MTD
                                     </span>
                                 </div>
                             </div>

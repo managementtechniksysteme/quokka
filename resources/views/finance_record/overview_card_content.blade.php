@@ -23,7 +23,7 @@
                 <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                 </svg>
-                {{ Number::toLocal($financeRecord->amount, 2) }}
+                {{ Number::format($financeRecord->amount, 2) }}
             </span>
         </div>
 

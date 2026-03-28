@@ -13,7 +13,7 @@
                         <svg class="icon icon-16 me-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                         </svg>
-                        {{ Number::toLocal($additionsReport->hours) }}
+                        {{ Number::format($additionsReport->hours) }}
                         @switch($additionsReport->status)
                             @case('new')
                                 @if($additionsReport->signatureRequest)

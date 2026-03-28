@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use NotificationChannels\WebPush\HasPushSubscriptions;
-use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Models\Concerns\CausesActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;

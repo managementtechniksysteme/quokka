@@ -13,7 +13,7 @@ class CreateAdditionsReportsTable extends Migration
             $table->unsignedInteger('number');
             $table->enum('status', ['new', 'signed', 'finished']);
             $table->date('services_provided_on');
-            $table->unsignedDouble('hours');
+            $table->double('hours');
             $table->text('other_visitors')->nullable();
             $table->text('inspection_comment')->nullable();
             $table->text('missing_documents')->nullable();

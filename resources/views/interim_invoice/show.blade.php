@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="col">
-	        {{ Number::toLocal($interimInvoice->amount, 2) }}
+	        {{ Number::format($interimInvoice->amount, 2) }}
         </div>
       </div>
 

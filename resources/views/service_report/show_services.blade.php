@@ -10,8 +10,8 @@
         @foreach($serviceReport->services as $service)
             <tr>
                 <th scope="row">{{ $service->provided_on }}</th>
-                <td>{{ Number::toLocal($service->hours) }}</td>
-                <td>{{ Number::toLocal($service->kilometres) }}</td>
+                <td>{{ Number::format($service->hours) }}</td>
+                <td>{{ Number::format($service->kilometres) }}</td>
             </tr>
         @endforeach
     </tbody>

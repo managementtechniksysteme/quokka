@@ -45,6 +45,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Models\Role;
@@ -68,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function configureApp(): void
     {
-        Paginator::useBootstrapFive();
+        Paginator::useBootstrap();
 
         Carbon::setLocale(config('app.locale'));
         Carbon::setToStringFormat('d.m.Y');
@@ -134,5 +135,9 @@ class AppServiceProvider extends ServiceProvider
     private function configureViews(): void
     {
         View::composer('errors::500', Error500ViewComposer::class);
+
+        Blade::directive('version', function ($format) {
+            return "<?php echo sprintf('v%s.%s.%s-%s', config('version.major'), config('version.minor'), config('version.patch'), config('version.commit')); ?>";
+        });
     }
 }

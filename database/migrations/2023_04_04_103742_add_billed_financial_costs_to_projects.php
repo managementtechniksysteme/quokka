@@ -10,7 +10,7 @@ class AddBilledFinancialCostsToProjects extends Migration
     {
         if (!Schema::hasColumn('projects', 'billed_financial_costs')) {
             Schema::table('projects', function (Blueprint $table) {
-                $table->unsignedDouble('billed_financial_costs')->nullable()->default(null);
+                $table->double('billed_financial_costs')->nullable()->default(null);
             });
         }
     }

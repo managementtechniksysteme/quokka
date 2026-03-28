@@ -264,7 +264,7 @@
                         Betriebsstunden
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->uvc_lamp_operating_hours) }}h
+                        {{ Number::format($inspectionReport->uvc_lamp_operating_hours) }}h
                     </div>
                 </div>
                 <div class="row">
@@ -272,7 +272,7 @@
                         Impulse
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->uvc_lamp_impulses) }}
+                        {{ Number::format($inspectionReport->uvc_lamp_impulses) }}
                     </div>
                 </div>
                 <div class="row">
@@ -280,8 +280,8 @@
                         UV Intensität bei Ankunft, Abfahrt
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->uvc_lamp_uv_intensity_arrival) }}{{ $inspectionReport->uvc_lamp_values_unit_string }},
-                        {{ Number::toLocal($inspectionReport->uvc_lamp_uv_intensity_departure) }}{{ $inspectionReport->uvc_lamp_values_unit_string }}
+                        {{ Number::format($inspectionReport->uvc_lamp_uv_intensity_arrival) }}{{ $inspectionReport->uvc_lamp_values_unit_string }},
+                        {{ Number::format($inspectionReport->uvc_lamp_uv_intensity_departure) }}{{ $inspectionReport->uvc_lamp_values_unit_string }}
                     </div>
                 </div>
                 <div class="row">
@@ -325,7 +325,7 @@
                         Voralarm
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->uvc_sensor_pre_alarm) }}{{ $inspectionReport->uvc_sensor_values_unit_string }}
+                        {{ Number::format($inspectionReport->uvc_sensor_pre_alarm) }}{{ $inspectionReport->uvc_sensor_values_unit_string }}
                     </div>
                 </div>
                 <div class="row">
@@ -333,7 +333,7 @@
                         Abschaltpunkt
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->uvc_sensor_cut_off_point) }}{{ $inspectionReport->uvc_sensor_values_unit_string }}
+                        {{ Number::format($inspectionReport->uvc_sensor_cut_off_point) }}{{ $inspectionReport->uvc_sensor_values_unit_string }}
                     </div>
                 </div>
             </div>
@@ -356,7 +356,7 @@
                         Durchfluss
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->water_flow_rate) }} m³/h
+                        {{ Number::format($inspectionReport->water_flow_rate) }} m³/h
                     </div>
                 </div>
                 <div class="row">
@@ -364,8 +364,8 @@
                         min<span class="d-lg-none">imale</span><span class="d-none d-lg-inline">.</span>, gem<span class="d-lg-none">essene</span><span class="d-none d-lg-inline">.</span> Trans<span class="d-lg-none d-xl-inline">mission</span><span class="d-none d-lg-inline d-xl-none">. </span>[100mm]
                     </div>
                     <div class="col-lg-6">
-                        {{ Number::toLocal($inspectionReport->water_minimum_uv_transmission) }}%,
-                        {{ Number::toLocal($inspectionReport->water_measured_uv_transmission) }}%
+                        {{ Number::format($inspectionReport->water_minimum_uv_transmission) }}%,
+                        {{ Number::format($inspectionReport->water_measured_uv_transmission) }}%
                     </div>
                 </div>
                 <div class="row">

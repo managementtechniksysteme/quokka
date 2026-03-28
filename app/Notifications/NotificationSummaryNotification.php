@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
-use PragmaRX\Version\Package\Version;
+
 
 class NotificationSummaryNotification extends Notification implements ShouldQueue
 {

@@ -16,11 +16,11 @@
                     <svg class="icon icon-16 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                     </svg>
-                    {{ Number::toLocal($serviceReport->services_sum_hours) }}
+                    {{ Number::format($serviceReport->services_sum_hours) }}
                     <svg class="icon icon-16 ms-2 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
-                    {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
+                    {{ Number::format($serviceReport->services_sum_kilometres) }}
                     @switch($serviceReport->status)
                         @case('new')
                             @if($serviceReport->signatureRequest)

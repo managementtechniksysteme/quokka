@@ -37,7 +37,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                        <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($groupTotals['revenue'], 2) }}{{ $currencyUnit }}</span>
+                        <span class="h2 fw-bold text-green m-0">{{ Number::format($groupTotals['revenue'], 2) }}{{ $currencyUnit }}</span>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                        <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($groupTotals['expense'], 2) }}{{ $currencyUnit }}</span>
+                        <span class="h2 fw-bold text-red m-0">{{ Number::format($groupTotals['expense'], 2) }}{{ $currencyUnit }}</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title text-uppercase text-muted mb-2">Differenz</h5>
-                        <span class="h2 fw-bold @if($groupTotals['revenue'] + $groupTotals['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($groupTotals['revenue'] + $groupTotals['expense'], 2) }}{{ $currencyUnit }}</span>
+                        <span class="h2 fw-bold @if($groupTotals['revenue'] + $groupTotals['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::format($groupTotals['revenue'] + $groupTotals['expense'], 2) }}{{ $currencyUnit }}</span>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                            <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($groupData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold text-green m-0">{{ Number::format($groupData['revenue'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                            <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($groupData['expense'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold text-red m-0">{{ Number::format($groupData['expense'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">Differenz</h5>
-                            <span class="h2 fw-bold @if($groupData['revenue'] + $groupData['expense'] >= 0) text-green @else text-red @endif m-0">{{ Number::toLocal($groupData['revenue'] + $groupData['expense'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold @if($groupData['revenue'] + $groupData['expense'] >= 0) text-green @else text-red @endif m-0">{{ Number::format($groupData['revenue'] + $groupData['expense'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>

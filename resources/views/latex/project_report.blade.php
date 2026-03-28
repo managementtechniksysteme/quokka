@@ -45,13 +45,13 @@
 \hline
 \endhead
 @foreach($report as $entry)
-\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->service_provided_on)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->service) !!}} & \footnotesize{{!! Latex::escape(Str::upper($entry->username)) !!}} & \footnotesize{{!! Latex::escape(Number::toLocal($entry->amount)) !!}} & \footnotesize{{!! Latex::escape($entry->comment ? Str::replace("\n", ', ', $entry->comment) : '') !!}} \\
+\footnotesize{{!! Latex::escape(\Carbon\Carbon::parse($entry->service_provided_on)->translatedFormat('D d.m.Y')) !!}} & \footnotesize{{!! Latex::escape($entry->service) !!}} & \footnotesize{{!! Latex::escape(Str::upper($entry->username)) !!}} & \footnotesize{{!! Latex::escape(Number::format($entry->amount)) !!}} & \footnotesize{{!! Latex::escape($entry->comment ? Str::replace("\n", ', ', $entry->comment) : '') !!}} \\
 \hline
 @endforeach
 \end{longtable}
 \footnotesize{\textbf{Summen:}}\\
 @foreach($sums as $sum)
-\footnotesize{{!! Latex::escape($sum->service) !!}}\footnotesize{: }\footnotesize{{!! Latex::escape(Number::toLocal($sum->amount)) !!}}\\
+\footnotesize{{!! Latex::escape($sum->service) !!}}\footnotesize{: }\footnotesize{{!! Latex::escape(Number::format($sum->amount)) !!}}\\
 @endforeach
 \\
 \begin{ignorelinebreaks}
@@ -59,12 +59,12 @@
 @can('projects.view.estimates')
 \footnotesize{\textbf{Kosten (Zeitraum aus Stammdaten von {!! Latex::escape($project->starts_on) !!}@if($project->ends_on)bis {!! Latex::escape($project->ends_on) !!}@endif):}}\\
 @if($project->costs || $project->current_costs)
-\footnotesize{Auftragsvolumen: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::toLocal($project->costs) : '') !!}}
+\footnotesize{Auftragsvolumen: }\footnotesize{{!! Latex::escape($project->costs ? $currencyUnit . ' ' . Number::format($project->costs) : '') !!}}
 @if($project->current_costs)
 @if($project->costs)\footnotesize{ - }@endif
-\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::format($project->current_costs)) !!}}
 @if($project->current_costs_percentage)
-\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::format($project->current_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_costs_status)
 @case('success')
 \textcolor{success}{\textbf{$\downarrow$}}
@@ -81,12 +81,12 @@
 \\
 @endif
 @if($project->current_billed_financial_costs || $project->current_costs)
-\footnotesize{verrechnet: }\footnotesize{{!! Latex::escape($project->current_billed_financial_costs ? $currencyUnit . ' ' . Number::toLocal($project->current_billed_financial_costs) : '') !!}}
+\footnotesize{verrechnet: }\footnotesize{{!! Latex::escape($project->current_billed_financial_costs ? $currencyUnit . ' ' . Number::format($project->current_billed_financial_costs) : '') !!}}
 @if($project->current_costs)
 @if($project->costs)\footnotesize{ - }@endif
-\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::format($project->current_costs)) !!}}
 @if($project->current_billed_costs_percentage)
-\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_billed_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::format($project->current_billed_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_billed_costs_status)
 @case('success')
 \textcolor{success}{\textbf{$\downarrow$}}
@@ -103,12 +103,12 @@
 \\
 @endif
 @if($project->wage_costs || $project->current_wage_costs)
-\footnotesize{Lohnvolumen: }\footnotesize{{!! Latex::escape($project->wage_costs ? $currencyUnit . ' ' . Number::toLocal($project->wage_costs) : '') !!}}
+\footnotesize{Lohnvolumen: }\footnotesize{{!! Latex::escape($project->wage_costs ? $currencyUnit . ' ' . Number::format($project->wage_costs) : '') !!}}
 @if($project->current_wage_costs)
 @if($project->wage_costs)\footnotesize{ - }@endif
-\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_wage_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::format($project->current_wage_costs)) !!}}
 @if($project->current_wage_costs_percentage)
-\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_wage_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::format($project->current_wage_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_wage_costs_status)
 @case('success')
 \textcolor{success}{\textbf{$\downarrow$}}
@@ -125,12 +125,12 @@
 \\
 @endif
 @if($project->material_costs || $project->current_material_costs)
-\footnotesize{Materialvolumen: }\footnotesize{{!! Latex::escape($project->material_costs ? $currencyUnit . ' ' . Number::toLocal($project->material_costs) : '') !!}}
+\footnotesize{Materialvolumen: }\footnotesize{{!! Latex::escape($project->material_costs ? $currencyUnit . ' ' . Number::format($project->material_costs) : '') !!}}
 @if($project->current_material_costs)
 @if($project->material_costs)\footnotesize{ - }@endif
-\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_material_costs)) !!}}
+\footnotesize{gebucht: }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::format($project->current_material_costs)) !!}}
 @if($project->current_material_costs_percentage)
-\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_material_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
+\footnotesize{ (}\footnotesize{{!! Latex::escape(Number::format($project->current_material_costs_percentage, 1)) !!}}\footnotesize{{!! Latex::escape('%') !!}}\footnotesize{) }
 @switch($project->current_material_costs_status)
 @case('success')
 \textcolor{success}{\textbf{$\downarrow$}}
@@ -147,7 +147,7 @@
 \\
 @endif
 @if($project->current_kilometre_costs)
-\footnotesize{Fahrtkosten (}\footnotesize{{!! Latex::escape(Number::toLocal($project->current_kilometres) . 'km') !!}}\footnotesize{) }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::toLocal($project->current_kilometre_costs)) !!}}
+\footnotesize{Fahrtkosten (}\footnotesize{{!! Latex::escape(Number::format($project->current_kilometres) . 'km') !!}}\footnotesize{) }\footnotesize{{!! Latex::escape($currencyUnit . ' ' . Number::format($project->current_kilometre_costs)) !!}}
 \\
 @endif
 @if($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectWageCostsWarningPercentage || $projectMaterialCostsWarningPercentage)

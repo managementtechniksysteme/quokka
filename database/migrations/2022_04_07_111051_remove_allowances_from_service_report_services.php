@@ -19,7 +19,7 @@ class RemoveAllowancesFromServiceReportServices extends Migration
     {
         if (!Schema::hasColumn('service_report_services', 'allowances')) {
             Schema::table('service_report_services', function (Blueprint $table) {
-                $table->unsignedDouble('allowances')->after('hours');
+                $table->double('allowances')->after('hours');
             });
         }
     }

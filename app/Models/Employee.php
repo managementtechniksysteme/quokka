@@ -24,12 +24,15 @@ class Employee extends Model
     protected $primaryKey = 'person_id';
     public $incrementing = false;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'person_id' => 'int',
         'entered_on' => 'date',
         'left_on' => 'date',
         'holidays' => 'double',
     ];
+    }
 
     protected $fillable = [
         'person_id', 'entered_on', 'left_on', 'holidays',

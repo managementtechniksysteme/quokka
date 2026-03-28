@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   php-fpm:
     build:
@@ -18,8 +16,44 @@ services:
     networks:
       - quokka
 
+  queue-worker:
+    build:
+      args:
+        user: quokka
+        uid: 1000
+      context: ./
+      dockerfile: docker/php-fpm/Dockerfile
+    image: php-fpm-laravel
+    container_name : quokka-queue-worker
+    command: php artisan queue:work
+    hostname: queue-worker
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www:z
+    networks:
+      - quokka
+
+  schedule-worker:
+    build:
+      args:
+        user: quokka
+        uid: 1000
+      context: ./
+      dockerfile: docker/php-fpm/Dockerfile
+    image: php-fpm-laravel
+    container_name : quokka-schedule-worker
+    command: php artisan schedule:work
+    hostname: queue-worker
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www:z
+    networks:
+      - quokka
+
   nodejs:
-    image: node:16
+    image: node:22
     container_name: quokka-nodejs
     hostname: nodejs
     restart: unless-stopped
@@ -31,7 +65,7 @@ services:
       - quokka
 
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:11.4
     container_name: quokka-mariadb
     hostname: mariadb
     restart: unless-stopped
@@ -48,12 +82,12 @@ services:
       - quokka
 
   nginx:
-    image: nginx:1.21.0-alpine
+    image: nginx:1.27-alpine
     container_name: quokka-nginx
     hostname: nginx
     restart: unless-stopped
     ports:
-      - 8000:80
+      - 8001:80
     volumes:
       - ./:/var/www
       - ./docker/nginx/config:/etc/nginx/conf.d:z
@@ -61,7 +95,7 @@ services:
       - quokka
 
   redis:
-    image: redis:6.2-alpine
+    image: redis:7-alpine
     container_name: quokka-redis
     hostname: redis
     restart: unless-stopped

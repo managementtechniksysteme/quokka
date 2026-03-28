@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class SignatureRequest extends Model
 {
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'requestable_id' => 'int',
     ];
+    }
 
     protected $fillable = [
         'requestable_id', 'requestable_type', 'token',

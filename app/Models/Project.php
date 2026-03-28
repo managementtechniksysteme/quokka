@@ -20,7 +20,9 @@ class Project extends Model implements FiltersGlobalSearch
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'starts_on' => 'date',
         'ends_on' => 'date',
         'material_costs' => 'double',
@@ -29,6 +31,7 @@ class Project extends Model implements FiltersGlobalSearch
         'is_pre_execution' => 'bool',
         'include_in_finances' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'is_pre_execution', 'include_in_finances', 'material_costs', 'wage_costs', 'billed_financial_costs', 'comment', 'company_id',

@@ -26,12 +26,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'starts_on' => 'date',
         'ends_on' => 'date',
         'due_on' => 'date',
         'private' => 'boolean',
     ];
+    }
 
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'due_on', 'private', 'priority', 'status', 'billed', 'comment', 'project_id',

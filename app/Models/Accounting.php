@@ -17,12 +17,15 @@ class Accounting extends Model
 
     protected $table = 'accounting';
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'service_provided_on' => 'date',
         'service_provided_started_at' => 'datetime:H:i',
         'service_provided_ended_at' => 'datetime:H:i',
         'amount' => 'double',
     ];
+    }
 
     protected $fillable = [
         'service_provided_on',

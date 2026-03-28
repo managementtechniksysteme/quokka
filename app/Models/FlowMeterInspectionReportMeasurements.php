@@ -22,7 +22,9 @@ use Spatie\MediaLibrary\HasMedia;
 
 class FlowMeterInspectionReportMeasurements extends Model
 {
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'q_percent' => 'int',
         'q_value' => 'double',
         'started_at' => 'datetime',
@@ -39,6 +41,7 @@ class FlowMeterInspectionReportMeasurements extends Model
         'measurement_difference' => 'double',
         'q_value_average_mobile' => 'double'
     ];
+    }
 
     protected $fillable = [
         'q_percent',

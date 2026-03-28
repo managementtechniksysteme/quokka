@@ -28,9 +28,12 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'number' => 'int',
     ];
+    }
 
     protected $fillable = [
         'number', 'status', 'comment', 'project_id', 'employee_id',

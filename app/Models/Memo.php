@@ -21,12 +21,15 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'number' => 'int',
         'draft' => 'bool',
         'meeting_held_on' => 'date',
         'next_meeting_on' => 'date',
     ];
+    }
 
     protected $fillable = [
         'number', 'draft', 'title', 'meeting_held_on', 'next_meeting_on', 'comment', 'project_id',

@@ -16,10 +16,13 @@ class FinanceRecord extends Model implements FiltersGlobalSearch
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'billed_on' => 'date',
         'amount' => 'double',
     ];
+    }
 
     protected $fillable = [
         'billed_on', 'title', 'comment', 'amount', 'finance_group_id',

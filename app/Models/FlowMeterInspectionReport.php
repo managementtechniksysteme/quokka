@@ -29,7 +29,9 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'inspected_on' => 'date',
         'temperature' => 'int',
         'treatment_plant_size' => 'int',
@@ -89,6 +91,7 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
         'equipment_in_tolerance_range' => 'bool',
         'further_inspection_required' => 'bool'
     ];
+    }
 
     protected $fillable = [
         'status',

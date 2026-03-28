@@ -9,10 +9,13 @@ class InterimInvoice extends Model
 {
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'billed_on' => 'date',
         'amount' => 'double',
     ];
+    }
 
     protected $fillable = [
         'title', 'billed_on', 'amount', 'comment', 'project_id',

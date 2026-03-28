@@ -27,9 +27,12 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'written_on' => 'date',
     ];
+    }
 
     protected $fillable = [
         'status',

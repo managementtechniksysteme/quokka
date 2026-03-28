@@ -28,7 +28,9 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'inspected_on' => 'date',
         'uvc_lamp_quantity' => 'int',
         'uvc_lamp_operating_hours' => 'int',
@@ -46,6 +48,7 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         'water_minimum_uv_transmission' => 'double',
         'water_measured_uv_transmission' => 'double',
     ];
+    }
 
     protected $fillable = [
         'status',

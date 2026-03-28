@@ -28,13 +28,16 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
     use LogsActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'number' => 'int',
         'services_provided_on' => 'date',
         'hours' => 'double',
         'minimum_temperature' => 'int',
         'maximum_temperature' => 'int',
     ];
+    }
 
     protected $fillable = [
         'number',

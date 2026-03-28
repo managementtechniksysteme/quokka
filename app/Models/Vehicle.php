@@ -20,9 +20,12 @@ class Vehicle extends Model implements FiltersGlobalSearch
         'make_model', 'current_kilometres'
     ];
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'private' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'make', 'model', 'registration_identifier', 'private', 'comment',

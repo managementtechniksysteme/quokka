@@ -14,11 +14,14 @@ class ServiceReportService extends Model
     protected $primaryKey = null;
     public $incrementing = false;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'provided_on' => 'date',
         'hours' => 'double',
         'kilometres' => 'int',
     ];
+    }
 
     protected $fillable = [
         'provided_on', 'hours', 'kilometres', 'service_report_id',

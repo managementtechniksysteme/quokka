@@ -16,6 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
+    use CausesActivity;
     use HasApiTokens;
     use HasFactory;
     use HasPushSubscriptions;
@@ -24,9 +25,12 @@ class User extends Authenticatable implements HasMedia
     use Notifiable;
     use SoftDeletes;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'employee_id' => 'int',
     ];
+    }
 
     /**
      * The attributes that are mass assignable.

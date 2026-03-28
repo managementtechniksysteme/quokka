@@ -16,7 +16,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
             </svg>
             Stammdaten
@@ -28,8 +28,8 @@
 
     <div class="col-md-8">
 
-        <div class="form-row">
-                <div class="form-group col pr-0">
+        <div class="row g-3">
+                <div class="mb-3 col pe-0">
                     <label for="person_id">Person</label>
                     <person-dropdown :people="{{ $people }}" :current_person="{{ $currentPerson ?? 'null' }}"></person-dropdown>
                     <div class="invalid-feedback @error('person_id') d-block @enderror">
@@ -39,10 +39,10 @@
                     </div>
                 </div>
 
-                <div class="form-group col-auto pl-0 ml-1">
+                <div class="mb-3 col-auto ps-0 ms-1">
                     <label>&nbsp;</label>
                     <a class="btn btn-outline-secondary d-flex align-items-center" href="{{ route('people.create') }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Person anlegen
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="entered_on">Eintrittsdatum</label>
             <input type="date" class="form-control @error('entered_on') is-invalid @enderror" id="entered_on" name="entered_on" placeholder="" value="{{ old('entered_on', optional(optional($employee)->entered_on)->format('Y-m-d')) }}" required />
             <div class="invalid-feedback">
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="left_on">Austrittsdatum</label>
             <input type="date" class="form-control @error('left_on') is-invalid @enderror" id="left_on" name="left_on" placeholder="" value="{{ old('left_on', optional(optional($employee)->left_on)->format('Y-m-d')) }}" />
             <div class="invalid-feedback">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="holidays">Urlaubstage</label>
             <input type="number" step="{{ $holidaysSteps }}" class="form-control @error('holidays') is-invalid @enderror" id="holidays" name="holidays" placeholder="25" value="{{ old('holidays', optional($employee)->holidays) }}" required />
             <div class="invalid-feedback">
@@ -89,7 +89,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
             </svg>
             Quokka Benutzer
@@ -107,7 +107,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="username">Benutzername</label>
             <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="qu" value="{{ old('username', optional(optional($employee)->user)->username) }}" />
             <div class="invalid-feedback">
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="password">Passwort</label>
             <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" value="{{ old('password') }}" />
             <div class="invalid-feedback">
@@ -127,7 +127,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="password_confirmation">Passwort bestätigen</label>
             <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" />
             <div class="invalid-feedback">
@@ -137,7 +137,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="avatar_colour">Avatar Farbe</label>
             <avatar-colour-selector :avatar_colours="{{ $avatarColours ?? '[]' }}" :current_avatar_colour="{{ $currentAvatarColour ?? 'null' }}" v-cloak></avatar-colour-selector>
         </div>

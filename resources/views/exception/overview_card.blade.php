@@ -6,21 +6,21 @@
                 {{ $exception['uuid'] }}
             </div>
             <div class="text-muted d-inline-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                 </svg>
                 {{ $exception['created_at']->format('d.m.Y H:i:s') }}
             </div>
         </div>
 
-        <div class="d-none d-md-block ml-2">
+        <div class="d-none d-md-block ms-2">
             @can('tools-deleteexceptions')
                 <form action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
                     @csrf
                     @method('DELETE')
 
                     <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                         </svg>
                         Entfernen

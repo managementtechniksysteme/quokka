@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
             </svg>
             Finanzgruppe Details
@@ -22,7 +22,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="title">Titel</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="Mustergruppe" value="{{ old('title', optional($financeGroup)->title) }}" />
             <div class="invalid-feedback">
@@ -32,13 +32,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zur Finanzgruppe"  value="{{ old('comment', optional($financeGroup)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown

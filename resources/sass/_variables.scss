@@ -1,5 +1,9 @@
-// Body
-$body-bg: #fdfeff;
+// Enable negative margins (e.g. ms-n1 for split dropdown toggles in navbar)
+$enable-negative-margins: true;
+
+// Links
+$link-decoration: none;
+$link-hover-decoration: underline;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;

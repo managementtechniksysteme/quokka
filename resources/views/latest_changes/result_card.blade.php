@@ -12,8 +12,8 @@
             </div>
         </div>
 
-        <div class="d-none d-md-flex text-muted text-right">
-            <svg class="icon icon-16 mr-1">
+        <div class="d-none d-md-flex text-muted text-end">
+            <svg class="icon icon-16 me-1">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
             </svg>
             {{ $result->updated_at->format('d.m.Y H:i') }}

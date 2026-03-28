@@ -11,7 +11,7 @@
                     @error('username')
                         <notification type="danger" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="icon icon-24 mr-2">
+                                <svg class="icon icon-24 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>
                                 </svg>
                                 {{ $message }}
@@ -23,7 +23,7 @@
                     @if (session('status'))
                         <notification type="info" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="icon icon-24 mr-2">
+                                <svg class="icon icon-24 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>
                                 {{ session('status') }}
@@ -35,8 +35,8 @@
                     <form class="needs-validation" method="POST" action="{{ route('password.email') }}" novalidate>
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                        <div class="mb-3 row">
+                            <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
                                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="mb-3 row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Send Password Reset Link') }}

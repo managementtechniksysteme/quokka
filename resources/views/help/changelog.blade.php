@@ -6,7 +6,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 {{ config('app.name') }} Versionshinweise

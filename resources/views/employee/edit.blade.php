@@ -19,9 +19,9 @@
             @endcomponent
 
             <div class="row">
-                <div class="col-md-8 ml-auto">
+                <div class="col-md-8 ms-auto">
                     <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('employees.edit-permissions', $employee) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                         </svg>
                         Berechtigungen bearbeiten
@@ -30,7 +30,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                 </svg>
                 Mitarbeiter speichern

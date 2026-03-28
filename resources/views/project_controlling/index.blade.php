@@ -13,7 +13,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
                 </svg>
                 Projektcontrolling
@@ -25,7 +25,7 @@
 
         <div class="alert alert-info mt-1" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 <p class="m-0">
@@ -37,8 +37,8 @@
         </div>
 
         <form class="needs-validation mt-4" action="{{ route('project-controlling.index') }}" method="get" novalidate>
-            <div class="form-row">
-                <div class="col-lg-6 form-group">
+            <div class="row g-3">
+                <div class="col-lg-6 mb-3">
                     <label for="project">Projekt</label>
                     <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" inputname="project" v-cloak></project-dropdown>
                     <div class="invalid-feedback @error('project_id') d-block @enderror">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-lg-2 form-group">
+                <div class="col-sm-6 col-lg-2 mb-3">
                     <label for="start">Startdatum</label>
                     <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $start?->format('Y-m-d')) ?? '' }}" />
                     <div class="invalid-feedback">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-lg-2 form-group">
+                <div class="col-sm-6 col-lg-2 mb-3">
                     <label for="end">Enddatum</label>
                     <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" placeholder="" value="{{ old('end', $end?->format('Y-m-d')) ?? '' }}" />
                     <div class="invalid-feedback">
@@ -68,19 +68,19 @@
                     </div>
                 </div>
 
-                <div class="col-lg-2 form-group d-none d-lg-block">
+                <div class="col-lg-2 mb-3 d-none d-lg-block">
                     <label>&nbsp;</label>
                     <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center w-100">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
                         </svg>
                         Anzeigen
                     </button>
                 </div>
 
-                <div class="col form-group d-block d-lg-none">
+                <div class="col mb-3 d-block d-lg-none">
                     <button type="submit" class="btn btn-primary d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
                         </svg>
                         Anzeigen
@@ -94,7 +94,7 @@
 
                 <div class="col-lg-6">
                     <h4>
-                        <svg class="icon icon-baseline text-muted mr-1">
+                        <svg class="icon icon-baseline text-muted me-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
                         </svg>
                         Projektcontrolling
@@ -105,7 +105,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                                    <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Differnz</h5>
-                                    <span class="h2 font-weight-bold @if($accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold @if($accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
 
                 <div class="col-lg-6">
                     <h4>
-                        <svg class="icon icon-baseline text-muted mr-1">
+                        <svg class="icon icon-baseline text-muted me-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Finanzcontrolling
@@ -149,7 +149,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                    <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($manuelFinanceData['total_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($manuelFinanceData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                    <span class="h2 font-weight-bold @if($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold @if($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>

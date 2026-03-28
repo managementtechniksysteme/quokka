@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use>
             </svg>
             Details der Notiz
@@ -15,7 +15,7 @@
 
     <div class="col-md-8">
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="name">Titel</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="Musternotiz" value="{{ old('title', optional($note)->title) }}" />
             <div class="invalid-feedback">
@@ -25,13 +25,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zur Notiz"  value="{{ old('comment', optional($note)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -51,7 +51,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Anhänge
@@ -65,7 +65,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label>
                 Anhänge
             </label>

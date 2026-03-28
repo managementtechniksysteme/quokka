@@ -5,7 +5,7 @@
         <div class="bg-gray-100 mt-0">
             <div class="container py-4">
                 <h3>
-                    <svg class="icon icon-baseline text-muted mr-1">
+                    <svg class="icon icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                     </svg>
                     Lieferschein unterschreiben und herunterladen
@@ -16,27 +16,27 @@
 
         <div class="container my-4">
             <p class="lead d-flex align-items-center">
-                <svg class="text-muted icon icon-20 mr-1">
+                <svg class="text-muted icon icon-20 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                 </svg>
-                <span class="text-muted mr-3">Datum: </span>
+                <span class="text-muted me-3">Datum: </span>
                 {{ $deliveryNote->written_on }}
             </p>
 
             <p class="lead d-flex align-items-center">
-                <svg class="text-muted icon icon-20 mr-1">
+                <svg class="text-muted icon icon-20 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                 </svg>
-                <span class="text-muted mr-3">Projekt: </span>
+                <span class="text-muted me-3">Projekt: </span>
                 {{ $deliveryNote->project->name }}
             </p>
 
             @if($deliveryNote->comment)
                 <p class="lead d-flex align-items-center">
-                    <svg class="text-muted icon icon-20 mr-1">
+                    <svg class="text-muted icon icon-20 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
-                    <span class="text-muted mr-3">Bemerkungen</span>
+                    <span class="text-muted me-3">Bemerkungen</span>
                 </p>
 
                 <div class="markdown">
@@ -48,7 +48,7 @@
 
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Der Lieferschein kann nach erfolgreicher Unterschrift erneut heruntergeladen werden.
@@ -62,7 +62,7 @@
 
             <div class="text-center">
                 <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('delivery-notes.customer-download', $deliveryNote->downloadRequest->token) }}">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
                     </svg>
                     Lieferschein anzeigen
@@ -88,13 +88,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Lieferschein unterschreiben
                         </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="icon icon-16 mr-2">
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                         </svg>
                         Empfänger
@@ -43,7 +43,7 @@
 
                 <div class="col-md-8">
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="email">Empfänger</label>
                         <email-selector :people="{{ $people }}" :current_to="{{ $currentTo ?? '[]'}}" :current_cc="{{ $currentCC ?? '[]' }}" :current_bcc="{{ $currentBCC ?? '[]' }}"></email-selector>
                         <div class="invalid-feedback @error('email_to') d-block @enderror @error('email_to.*') d-block @enderror @error('email_cc') d-block @enderror @error('email_cc.*') d-block @enderror @error('email_bcc') d-block @enderror @error('email_bcc.*') d-block @enderror">
@@ -74,7 +74,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Aufgabe senden

@@ -6,7 +6,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
                 </svg>
                 Quokka Mobile
@@ -49,7 +49,7 @@
 
         <div class="alert alert-warning mt-1" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                 </svg>
                 <p class="m-0">
@@ -77,7 +77,7 @@
         <h3 class="mt-5">Funktionsüberblick</h3>
 
         <div class="row">
-            <div class="card-deck">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <img class="card-img-top" src="{{asset('mobile/images/login.png')}}">

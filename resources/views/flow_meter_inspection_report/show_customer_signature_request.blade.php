@@ -5,7 +5,7 @@
         <div class="bg-gray-100 mt-0">
             <div class="container py-4">
                 <h3>
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                     </svg>
                     Prüfbericht für Durchflussmesseinrichtungen unterschreiben und herunterladen
@@ -19,7 +19,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                         </svg>
                         Techniker
@@ -33,7 +33,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Datum
@@ -47,7 +47,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             @switch($flowMeterInspectionReport->weather)
                                 @case('sunny')
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
@@ -74,7 +74,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 mr-2">
+                        <svg class="icon-bs icon-16 me-2">
                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
                         </svg>
                         Anlage
@@ -88,7 +88,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
                         </svg>
                         Messstelle
@@ -102,7 +102,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 mr-2">
+                        <svg class="icon-bs icon-16 me-2">
                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
                         </svg>
                         Abweichung Messwerte
@@ -116,7 +116,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 mr-2">
+                        <svg class="icon-bs icon-16 me-2">
                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
                         </svg>
                         Abweichung Zählerstände
@@ -130,7 +130,7 @@
             <div class="row mt-3">
                 <div class="col">
                     <div class="d-flex align-items-center @if($flowMeterInspectionReport->equipment_in_tolerance_range) text-success @else text-danger @endif">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             @if($flowMeterInspectionReport->equipment_in_tolerance_range)
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
                             @else
@@ -146,7 +146,7 @@
                 <div class="row mt-3">
                     <div class="col-sm-3">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                             </svg>
                             Festgestellte Mängel
@@ -159,7 +159,7 @@
                 <div class="row mt-3">
                     <div class="col-sm-3">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#repeat"></use>
                             </svg>
                             Zweitprüfung erforderlich
@@ -173,7 +173,7 @@
 
             @if ($flowMeterInspectionReport->comment)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
                     Sonstige Bemerkungen
@@ -185,7 +185,7 @@
 
             @if ($flowMeterInspectionReport->comment)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
                     Sonstige Bemerkungen
@@ -197,7 +197,7 @@
 
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Der Prüfbericht kann nach erfolgreicher Unterschrift heruntergeladen werden.
@@ -223,13 +223,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Prüfbericht unterschreiben
                         </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="icon icon-16 mr-2">
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

@@ -7,16 +7,21 @@
     url("../fonts/nunito-v12-latin-regular.woff2") format("woff2");
 }
 
-// Variables
+// Bootstrap functions (needed before variables)
+@import "~bootstrap/scss/functions";
+
+// Our variable overrides (before BS5 defaults)
 @import "variables";
 
-// Bootstrap colors
+// BS5 variable defaults (provides all color-100 through color-900 variants)
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+
+// Extended theme-colors map (references BS5 color variables above)
 @import "bootstrap_colors";
 
-// Bootstrap fixed REM spacers
-@import "bootstrap_spacers";
 
-// Bootstrap
+// Bootstrap (functions/variables reimported but !default prevents overrides)
 @import "~bootstrap/scss/bootstrap";
 
 // Vue Easymde
@@ -39,6 +44,10 @@
   display: none;
 }
 
+body {
+  background-color: #fdfeff;
+}
+
 // Always show scroll bars to avoid content shifting
 // Set height to maximum minus navbar
 main {
@@ -53,7 +62,7 @@ main {
 
 // General body background color for other elements
 .bg-general {
-  background-color: $body-bg;
+  background-color: #fdfeff;
 }
 
 // Icons
@@ -136,14 +145,13 @@ img.empty-state {
 }
 
 // Overview dropdown
+.dropdown-toggle-vertical-points {
+  text-decoration: none;
+}
+
 .dropdown-toggle-vertical-points:after {
   border: none;
   content: "\2807";
-}
-
-.dropdown-toggle-vertical-points:hover,
-.dropdown-toggle-vertical-points:focus {
-  text-decoration: none;
 }
 
 // Success dropdown button with blue text and white text with blue background on hover
@@ -274,9 +282,16 @@ a.outline-none {
   max-width: 4em;
 }
 
-// Status border
+// Status border — only the left edge should be colored;
+// BS5 border-* utilities set border-color on all sides, so we reset them.
 .border-status {
   border-left: 3px solid;
+
+  &.border-primary { border-color: inherit !important; border-left-color: $primary !important; }
+  &.border-success { border-color: inherit !important; border-left-color: $success !important; }
+  &.border-warning { border-color: inherit !important; border-left-color: $warning !important; }
+  &.border-danger  { border-color: inherit !important; border-left-color: $danger !important; }
+  &.border-info    { border-color: inherit !important; border-left-color: $info !important; }
 }
 
 // Border for finished activity card

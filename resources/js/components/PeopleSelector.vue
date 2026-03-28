@@ -9,7 +9,7 @@
                 <div class="col">
                     {{person.name}}
                 </div>
-                <div class="col-auto ml-auto">
+                <div class="col-auto ms-auto">
                     <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelected(person)">Entfernen</button>
                 </div>
             </div>

@@ -5,7 +5,7 @@
         <div class="bg-gray-100 mt-0">
             <div class="container py-4">
                 <h3>
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                     </svg>
                     Bautagesbericht unterschreiben und herunterladen
@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-sm-5 col-md col-lg-4">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
                                 Datum
@@ -33,7 +33,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-5 col-md col-lg-4">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     @switch($constructionReport->weather)
                                         @case('sunny')
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
@@ -60,7 +60,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-5 col-md col-lg-4">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="@if($constructionReport->isNew()) text-primary @elseif($constructionReport->isSigned()) text-warning @else text-success @endif icon icon-16 mr-2">
+                                <svg class="@if($constructionReport->isNew()) text-primary @elseif($constructionReport->isSigned()) text-warning @else text-success @endif icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                                 </svg>
                                 Status
@@ -91,7 +91,7 @@
                     <div class="row">
                         <div class="col-sm-5 col-md-12 col-lg">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                 </svg>
                                 Personalstand
@@ -110,7 +110,7 @@
                         <div class="row mt-3">
                             <div class="col-sm-5 col-md-12 col-lg">
                                 <div class="text-muted d-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
+                                    <svg class="icon icon-16 me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                     </svg>
                                     Anwesende Personen
@@ -130,7 +130,7 @@
                         <div class="row mt-3">
                             <div class="col-sm-5 col-md-12 col-lg">
                                 <div class="text-muted d-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
+                                    <svg class="icon icon-16 me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                     </svg>
                                     Sonstige Besucher
@@ -146,7 +146,7 @@
 
             @if ($constructionReport->inspection_comment)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
                     Güte- und Funktionsprüfung
@@ -156,7 +156,7 @@
 
             @if ($constructionReport->missing_documents)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                     </svg>
                     Fehlende Ausführungsunterlagen
@@ -166,7 +166,7 @@
 
             @if ($constructionReport->special_occurrences)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     Besondere Vorkommnisse
@@ -176,7 +176,7 @@
 
             @if ($constructionReport->imminent_danger)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>
                     </svg>
                     Gefahr in Verzug
@@ -186,7 +186,7 @@
 
             @if ($constructionReport->concerns)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#flag"></use>
                     </svg>
                     Bedenken
@@ -196,7 +196,7 @@
 
             @if ($constructionReport->comment)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
                     Leistungsfortschritt
@@ -208,7 +208,7 @@
 
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Der Bautagesbericht kann nach erfolgreicher Unterschrift heruntergeladen werden.
@@ -234,13 +234,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Bautagesbericht unterschreiben
                         </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="icon icon-16 mr-2">
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

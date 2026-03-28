@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
             </svg>
             Lohndienstleistung
@@ -20,7 +20,7 @@
 
     <div class="col-md-8">
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="unit">Einheit</label>
             <service-unit-dropdown :units="{{ $units }}" current_unit="{{ $currentUnit ?? "''" }}" v-cloak></service-unit-dropdown>
             <div class="invalid-feedback">
@@ -32,12 +32,10 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="costs">Kosten pro Einheit</label>
             <div class="input-group">
-                <div class="input-group-prepend">
                     <span class="input-group-text">€</span>
-                </div>
                 <input type="number" min="0" step="0.1" class="form-control @error('costs') is-invalid @enderror" id="costs" name="costs" placeholder="" value="{{ old('costs', optional($wageService)->costs) }}" />
                 <div class="invalid-feedback @error('costs') d-block @enderror">
                     @error('costs')

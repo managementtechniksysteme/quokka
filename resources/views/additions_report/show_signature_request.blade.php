@@ -31,7 +31,7 @@
                 <div class="row mt-4">
                     <div class="col-md-4">
                         <p class="d-inline-flex align-items-center mb-1">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                             </svg>
                             Anfrage zum Download senden
@@ -44,16 +44,16 @@
                     <div class="col-md-8">
                         <div class="alert alert-info" role="alert">
                             <div class="d-inline-flex align-items-center">
-                                <svg class="icon icon-24 mr-2">
+                                <svg class="icon icon-24 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                                 </svg>
                                 Die Email Adresse kann im nächsten Schritt angegeben werden.
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input @error('send_download_request') is-invalid @enderror" name="send_download_request" id="send_download_request" value="true">
-                                <label class="custom-control-label" for="send_download_request">Anfrage zum Download nach dem Unterschreiben senden.</label>
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input @error('send_download_request') is-invalid @enderror" name="send_download_request" id="send_download_request" value="true">
+                                <label class="form-check-label" for="send_download_request">Anfrage zum Download nach dem Unterschreiben senden.</label>
                             </div>
                             <div class="invalid-feedback @error('send_download_request') d-block @enderror">
                                 @error('send_download_request')
@@ -67,13 +67,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Regiebericht unterschreiben
                         </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="icon icon-16 mr-2">
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

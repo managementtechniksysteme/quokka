@@ -6,7 +6,7 @@
 	  @include('interim_invoice/breadcrumb')
 
             <h3>
-                <svg class="icon icon-baseline mr-1">
+                <svg class="icon icon-baseline me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                 </svg>
                 Teilrechnung bearbeiten
@@ -22,7 +22,7 @@
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                 </svg>
                 Teilrechnung speichern

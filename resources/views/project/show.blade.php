@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $project->name }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ms-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
             <div class="scroll-x d-flex">
                 @can('update', $project)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('projects.edit', $project) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -28,7 +28,7 @@
                 @endcan
                 @can('email', $project)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -36,14 +36,14 @@
                 @endcan
                 @can('createPdf', $project)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('projects.download', $project) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
@@ -54,7 +54,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -69,9 +69,9 @@
     <div class="container my-4">
         <div class="row mt-4">
             <div class="d-none d-lg-block col-lg-3">
-                <div class="menu border-right pr-3">
+                <div class="menu border-end pe-3">
                     <a class="menu-item @if (request()->tab == 'overview') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'overview']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                         </svg>
                         Stammdaten
@@ -79,87 +79,87 @@
 
                     @can('viewAny', \App\Models\InterimInvoice::class)
                         <a class="menu-item @if (request()->tab == 'interim_invoices') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'interim_invoices']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                             </svg>
                             Teilrechnungen
-                            <span class="ml-auto">{{ $project->interim_invoices_count > 0 ? $project->interim_invoices_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->interim_invoices_count > 0 ? $project->interim_invoices_count : '' }}</span>
                         </a>
                     @endcan
 
                     @can('viewAny', \App\Models\DeliveryNote::class)
                         <a class="menu-item @if (request()->tab == 'delivery_notes') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'delivery_notes']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
                             </svg>
                             Lieferscheine
-                            <span class="ml-auto">{{ $project->delivery_notes_count > 0 ? $project->delivery_notes_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->delivery_notes_count > 0 ? $project->delivery_notes_count : '' }}</span>
                         </a>
                     @endcan
 
                     @can('viewAny', \App\Models\Task::class)
                         <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Aufgaben
-                            <span class="ml-auto">{{ $project->tasks_count > 0 ? $project->tasks_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->tasks_count > 0 ? $project->tasks_count : '' }}</span>
                         </a>
                     @endcan
 
                     @can('viewAny', \App\Models\Memo::class)
                         <a class="menu-item @if (request()->tab == 'memos') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'memos']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                             </svg>
                             Aktenvermerke
-                            <span class="ml-auto">{{ $project->memos_count > 0 ? $project->memos_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->memos_count > 0 ? $project->memos_count : '' }}</span>
                         </a>
                     @endcan
 
                     @can('viewAny', \App\Models\ServiceReport::class)
                         <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                             </svg>
                             Serviceberichte
-                            <span class="ml-auto">{{ $project->service_reports_count > 0 ? $project->service_reports_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->service_reports_count > 0 ? $project->service_reports_count : '' }}</span>
                         </a>
                     @endcan
                     @can('viewAny', \App\Models\AdditionsReport::class)
                         <a class="menu-item @if (request()->tab == 'additions_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'additions_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                             </svg>
                             Regieberichte
-                            <span class="ml-auto">{{ $project->additions_reports_count > 0 ? $project->additions_reports_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->additions_reports_count > 0 ? $project->additions_reports_count : '' }}</span>
                         </a>
                     @endcan
                     @can('viewAny', \App\Models\InspectionReport::class)
                         <a class="menu-item @if (request()->tab == 'inspection_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'inspection_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte
-                            <span class="ml-auto">{{ $project->inspection_reports_count > 0 ? $project->inspection_reports_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->inspection_reports_count > 0 ? $project->inspection_reports_count : '' }}</span>
                         </a>
                     @endcan
                     @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
                         <a class="menu-item @if (request()->tab == 'flow_meter_inspection_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'flow_meter_inspection_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte für Durchflussmesseinrichtungen
-                            <span class="ml-auto">{{ $project->flow_meter_inspection_reports_count > 0 ? $project->flow_meter_inspection_reports_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->flow_meter_inspection_reports_count > 0 ? $project->flow_meter_inspection_reports_count : '' }}</span>
                         </a>
                     @endcan
                     @can('viewAny', \App\Models\ConstructionReport::class)
                         <a class="menu-item @if (request()->tab == 'construction_reports') active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'construction_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                             </svg>
                             Bautagesberichte
-                            <span class="ml-auto">{{ $project->construction_reports_count > 0 ? $project->construction_reports_count : '' }}</span>
+                            <span class="ms-auto">{{ $project->construction_reports_count > 0 ? $project->construction_reports_count : '' }}</span>
                         </a>
                     @endcan
                 </div>
@@ -168,7 +168,7 @@
             <div class="menu d-block d-lg-none col mb-4">
                 <div class="scroll-x border-bottom pb-1">
                     <a class="menu-item @if (request()->tab == 'overview') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'overview']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                         </svg>
                         Stammdaten
@@ -176,7 +176,7 @@
 
                     @can('viewAny', \App\Models\InterimInvoice::class)
                         <a class="menu-item @if (request()->tab == 'interim_invoices') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'interim_invoices']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                             </svg>
                             Teilrechnungen
@@ -185,7 +185,7 @@
 
                     @can('viewAny', \App\Models\DeliveryNote::class)
                         <a class="menu-item @if (request()->tab == 'delivery_notes') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'delivery_notes']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
                             </svg>
                             Lieferscheine
@@ -194,7 +194,7 @@
 
                     @can('viewAny', \App\Models\Task::class)
                         <a class="menu-item @if (request()->tab == 'tasks') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'tasks']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Aufgaben
@@ -203,7 +203,7 @@
 
                     @can('viewAny', \App\Models\Memo::class)
                         <a class="menu-item @if (request()->tab == 'memos') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'memos']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
                             </svg>
                             Aktenvermerke
@@ -212,7 +212,7 @@
 
                     @can('viewAny', \App\Models\ServiceReport::class)
                         <a class="menu-item @if (request()->tab == 'service_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'service_reports']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
                             </svg>
                             Serviceberichte
@@ -221,7 +221,7 @@
 
                     @can('viewAny', \App\Models\AdditionsReport::class)
                         <a class="menu-item @if (request()->tab == 'additions_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'additions_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                             </svg>
                             Regieberichte
@@ -230,7 +230,7 @@
 
                     @can('viewAny', \App\Models\InspectionReport::class)
                         <a class="menu-item @if (request()->tab == 'inspection_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'inspection_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte
@@ -239,7 +239,7 @@
 
                     @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
                         <a class="menu-item @if (request()->tab == 'flow_meter_inspection_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'flow_meter_inspection_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                             </svg>
                             Prüfberichte für Durchflussmesseinrichtungen
@@ -248,7 +248,7 @@
 
                     @can('viewAny', \App\Models\ConstructionReport::class)
                         <a class="menu-item @if (request()->tab == 'construction_reports') active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('projects.show', [$project, 'tab' => 'construction_reports']) }}">
-                            <svg class="icon-bs icon-16 mr-2">
+                            <svg class="icon-bs icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                             </svg>
                             Bautagesberichte

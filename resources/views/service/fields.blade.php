@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
             </svg>
             Leistungsdetails
@@ -15,7 +15,7 @@
 
     <div class="col-md-8">
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="name">Name</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Techniker" value="{{ old('name', optional($service)->name) }}" required />
             <div class="invalid-feedback">
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="description">Beschreibung</label>
             <input type="text" class="form-control @error('description') is-invalid @enderror" id="description" name="description" placeholder="Techniker Leistung" value="{{ old('description', optional($service)->description) }}" required />
             <div class="invalid-feedback">

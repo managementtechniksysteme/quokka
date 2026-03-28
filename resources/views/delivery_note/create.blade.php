@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline mr-1">
+                <svg class="icon icon-baseline me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
                 </svg>
                 Lieferschein anlegen
@@ -18,7 +18,7 @@
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
                 </svg>
                 Lieferschein speichern

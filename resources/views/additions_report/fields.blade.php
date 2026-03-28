@@ -20,7 +20,7 @@
 @unless(Auth::user()->signature())
     <div class="alert alert-warning mt-1" role="alert">
         <div class="d-inline-flex align-items-center">
-            <svg class="icon icon-24 mr-2">
+            <svg class="icon icon-24 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
             </svg>
             <p class="m-0">
@@ -36,7 +36,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
             </svg>
             Stammdaten
@@ -51,26 +51,26 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="employee">Ersteller</label>
             <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($additionsReport)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="status">Status</label>
             </div>
             @if(optional($additionsReport)->status === 'signed')
                 <div class="alert alert-warning mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
+                        <svg class="icon icon-24 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Der Regiebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
                     </div>
                 </div>
             @endif
-            <div class="btn-group btn-group-toggle">
+            <div class="btn-group">
                 <label class="btn btn-outline-secondary @if(optional($additionsReport)->status == 'new' || !$additionsReport) active @else disabled @endif">
                     <input type="radio" name="status" id="new" @if(optional($additionsReport)->status == 'new' || !$additionsReport) checked @endif disabled> neu
                 </label>
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="services_provided_on">Datum</label>
             <input type="date" class="form-control @error('services_provided_on') is-invalid @enderror" id="services_provided_on" name="services_provided_on" placeholder="" value="{{ old('services_provided_on', optional(optional($additionsReport)->services_provided_on)->format('Y-m-d')) }}" required />
             <div class="invalid-feedback">
@@ -95,13 +95,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="hours">Regiestunden</label>
             <div class="input-group">
                 <input type="number" min="{{ $minAccountingAmount }}" step="{{ $minAccountingAmount }}" class="form-control @error('hours') is-invalid @enderror" id="hours" name="hours" placeholder="5" value="{{ old('hours', optional($additionsReport)->hours) }}" required />
-                <div class="input-group-append">
                     <span class="input-group-text">%</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('hours')
                         {{ $message }}
@@ -112,7 +110,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="project_id">Projekt (Bauvorhaben)</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
@@ -127,7 +125,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
             </svg>
             Anwesende Personen
@@ -138,7 +136,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="involved_ids">Personalstand</label>
             <people-selector inputname="involved_ids[]" :people="{{ $employees }}" :current_people="{{ $currentInvolvedEmployees ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('involved_ids') d-block @enderror">
@@ -148,7 +146,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="present_ids">Anwesende Personen</label>
             <people-selector inputname="present_ids[]" :people="{{ $people }}" :current_people="{{ $currentPresentPeople ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('present_ids') d-block @enderror">
@@ -158,7 +156,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="other_visitors">Sonstige Besucher</label>
             <input type="text" class="form-control @error('other_visitors') is-invalid @enderror" id="other_visitors" name="other_visitors" placeholder="Max Mustermann" value="{{ old('other_visitors', optional($additionsReport)->other_visitors) }}" />
             <div class="invalid-feedback @error('other_visitors') d-block @enderror">
@@ -173,7 +171,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
             </svg>
             Beeinflussende Faktoren
@@ -184,7 +182,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="inspection_comment">Güte- und Funktionsprüfung</label>
             <textarea class="form-control @error('inspection_comment') is-invalid @enderror" id="inspection_comment" name="inspection_comment" placeholder="Angaben zur Prüfung">{{ old('inspection_comment', optional($additionsReport)->inspection_comment) }}</textarea>
             <div class="invalid-feedback @error('inspection_comment') d-block @enderror">
@@ -193,7 +191,7 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="missing_documents">Fehlende Ausführungsunterlagen</label>
             <textarea class="form-control @error('missing_documents') is-invalid @enderror" id="missing_documents" name="missing_documents" placeholder="Angaben zu den fehlenden Unterlagen">{{ old('missing_documents', optional($additionsReport)->missing_documents) }}</textarea>
             <div class="invalid-feedback @error('missing_documents') d-block @enderror">
@@ -202,7 +200,7 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="special_occurrences">Besondere Vorkommnisse</label>
             <textarea class="form-control @error('special_occurrences') is-invalid @enderror" id="special_occurrences" name="special_occurrences" placeholder="Angaben zu den Vorkommnissen">{{ old('special_occurrences', optional($additionsReport)->special_occurrences) }}</textarea>
             <div class="invalid-feedback @error('special_occurrences') d-block @enderror">
@@ -211,7 +209,7 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="imminent_danger">Gefahr in Verzug</label>
             <textarea class="form-control @error('imminent_danger') is-invalid @enderror" id="imminent_danger" name="imminent_danger" placeholder="Angaben zur Gefahr">{{ old('imminent_danger', optional($additionsReport)->imminent_danger) }}</textarea>
             <div class="invalid-feedback @error('imminent_danger') d-block @enderror">
@@ -220,7 +218,7 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="concerns">Bedenken</label>
             <textarea class="form-control @error('concerns') is-invalid @enderror" id="concerns" name="concerns" placeholder="Angaben zu den Bedenken">{{ old('concerns', optional($additionsReport)->concerns) }}</textarea>
             <div class="invalid-feedback @error('concerns') d-block @enderror">
@@ -235,7 +233,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>
             </svg>
             Wetter
@@ -246,11 +244,11 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="priority">Wetter</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('weather') is-invalid @enderror" data-toggle="buttons">
+            <div class="btn-group @error('weather') is-invalid @enderror" data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('weather', optional($additionsReport)->weather) == 'sunny') active @endif">
                     <input type="radio" name="weather" id="sunny" value="sunny" autocomplete="off" @if(old('weather', optional($additionsReport)->weather) == 'sunny') checked @endif> sonnig
                 </label>
@@ -270,13 +268,11 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="minimum_temperature">Minimale Temperatur</label>
             <div class="input-group">
                 <input type="number" step="1" class="form-control @error('minimum_temperature') is-invalid @enderror" id="minimum_temperature" name="minimum_temperature" placeholder="18" value="{{ old('minimum_temperature', optional($additionsReport)->minimum_temperature) }}" required />
-                <div class="input-group-append">
                     <span class="input-group-text">°C</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('minimum_temperature')
                     {{ $message }}
@@ -286,13 +282,11 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label for="maximum_temperature">Maximale Temperatur</label>
             <div class="input-group">
                 <input type="number" step="1" class="form-control @error('maximum_temperature') is-invalid @enderror" id="maximum_temperature" name="maximum_temperature" placeholder="22" value="{{ old('maximum_temperature', optional($additionsReport)->maximum_temperature) }}" required />
-                <div class="input-group-append">
                     <span class="input-group-text">°C</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('maximum_temperature')
                     {{ $message }}
@@ -308,7 +302,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Leistungsfortschritt
@@ -319,13 +313,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Leistungsfortschritt
             </label>
             <markdown-editor name="comment" placeholder="Leistungsfortschritt"  value="{{ old('comment', optional($additionsReport)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -342,7 +336,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Anhänge
@@ -356,7 +350,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label>
                 Anhänge
             </label>
@@ -382,7 +376,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
             </svg>
             Anfrage zur Unterschrift senden
@@ -395,16 +389,16 @@
     <div class="col-md-8">
         <div class="alert alert-info" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 Die Email Adresse kann im nächsten Schritt angegeben werden.
             </div>
         </div>
-        <div class="form-group">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
-                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
+                <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
             </div>
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                 @error('send_signature_request')

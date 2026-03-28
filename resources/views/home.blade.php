@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon-bs icon-baseline text-muted mr-1">
+                <svg class="icon-bs icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#{{ DateTimeHelpers::iconStringForTimeOfDay(\Carbon\Carbon::now()) }}"></use>
                 </svg>
                 Übersicht - {{ DateTimeHelpers::greetingForTimeOfDay(\Carbon\Carbon::now()) }}, {{ Auth::user()->employee->person->first_name }}!
@@ -15,7 +15,7 @@
     <div class="container py-4">
         @can('accounting.view.own')
             <h4>
-                <svg class="icon-bs icon-baseline text-muted mr-1">
+                <svg class="icon-bs icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use>
                 </svg>
                 Leistungen diesen Monat
@@ -27,11 +27,11 @@
                         <a class="stretched-link outline-none" href="{{ route('accounting.index') }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Stunden</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdHourlyBasedServices) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdHourlyBasedServices) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use>
                                     </svg>
@@ -50,11 +50,11 @@
                         <a class="stretched-link outline-none" href="{{ route('accounting.index') }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Diäten</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdAllowances) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdAllowances) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#wallet2"></use>
                                     </svg>
@@ -73,11 +73,11 @@
                         <a class="stretched-link outline-none" href="{{ route('accounting.index') }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Überstunden</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdOvertime) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdOvertime) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-circle"></use>
                                     </svg>
@@ -102,11 +102,11 @@
                         <a class="stretched-link outline-none" href="{{ route('logbook.index') }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">Kilometer</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdKilometres) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdKilometres) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use>
                                     </svg>
@@ -132,9 +132,9 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted m-0">Verf. Urlaub</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeHolidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeHolidays) }}{{ \App\Models\ApplicationSettings::get()->holidayService->unit_string }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 text-gray-500">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>
                                     </svg>
@@ -152,7 +152,7 @@
         @endcan
 
         <h4>
-            <svg class="icon-bs icon-baseline text-muted mr-1">
+            <svg class="icon-bs icon-baseline text-muted me-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
             </svg>
             Aufgaben
@@ -164,11 +164,11 @@
                     <a class="stretched-link outline-none" href="{{ route('tasks.index', ['sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erstellt MTD</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdCreatedTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdCreatedTasks) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeMtdCreatedTasks) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-square"></use>
                                 </svg>
@@ -195,9 +195,9 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">Erledigt MTD</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeMtdFinishedTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeMtdFinishedTasks) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeMtdFinishedTasks) text-green-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
                                 </svg>
@@ -222,11 +222,11 @@
                     <a class="stretched-link outline-none" href="{{ route('tasks.index', ['search' => 'ist:überfällig', 'sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Überfällig</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeOverdueTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeOverdueTasks) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 text-gray-500 @if($employeeOverdueTasks) text-red-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-x"></use>
                                 </svg>
@@ -251,11 +251,11 @@
                     <a class="stretched-link outline-none" href="{{ route('tasks.index', ['search' => 'ist:bald_fällig', 'sort' => 'due_on-desc']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">Bald fällig</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeDueSoonTasks) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeDueSoonTasks) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeDueSoonTasks) text-yellow-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-day"></use>
                                 </svg>
@@ -278,14 +278,14 @@
         </div>
 
         <p class="small">
-            <span class="font-weight-bold">Legende:</span>
+            <span class="fw-bold">Legende:</span>
             ver. - verantwortlich für die Aufgabe,
             bet. - an der Aufgabe beteiligt,
             MTD - Month to Date (seit Monatsbeginn)
         </p>
 
         <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted mr-1">
+            <svg class="icon-bs icon-baseline text-muted me-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#card-text"></use>
             </svg>
             Berichte
@@ -297,11 +297,11 @@
                     <a class="stretched-link outline-none" href="{{ route('service-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene SB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewServiceReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewServiceReports) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewServiceReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use>
                                 </svg>
@@ -330,9 +330,9 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene RB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewAdditionsReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewAdditionsReports) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewAdditionsReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                 </svg>
@@ -365,11 +365,11 @@
                     <a class="stretched-link outline-none" href="{{ route('inspection-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene PB</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewInspectionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewInspectionReports) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewInspectionReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                 </svg>
@@ -398,9 +398,9 @@
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene BT</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewConstructionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewConstructionReports) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewConstructionReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                                 </svg>
@@ -435,11 +435,11 @@
                     <a class="stretched-link outline-none" href="{{ route('flow-meter-inspection-reports.index', ['search' => 'ist:neu']) }}"></a>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col pr-0">
+                            <div class="col pe-0">
                                 <h5 class="card-title text-uppercase text-muted m-0">offene DM</h5>
-                                <span class="h2 font-weight-bold m-0">{{ Number::toLocal($employeeNewFlowMeterInspectionReports) }}</span>
+                                <span class="h2 fw-bold m-0">{{ Number::toLocal($employeeNewFlowMeterInspectionReports) }}</span>
                             </div>
-                            <div class="col-auto pl-0">
+                            <div class="col-auto ps-0">
                                 <svg class="icon-bs icon-32 @if($employeeNewFlowMeterInspectionReports) text-blue-500 @else text-gray-500 @endif">
                                     <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                 </svg>
@@ -471,11 +471,11 @@
                             <a class="stretched-link outline-none" href="{{ route('service-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col pr-0">
+                                    <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare SB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedServiceReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedServiceReports) }}</span>
                                     </div>
-                                    <div class="col-auto pl-0">
+                                    <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedServiceReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use>
                                         </svg>
@@ -498,9 +498,9 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare RB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedAdditionsReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedAdditionsReports) }}</span>
                                     </div>
-                                    <div class="col-auto pl-0">
+                                    <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedAdditionsReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
                                         </svg>
@@ -521,11 +521,11 @@
                             <a class="stretched-link outline-none" href="{{ route('inspection-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col pr-0">
+                                    <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare PB</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedInspectionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedInspectionReports) }}</span>
                                     </div>
-                                    <div class="col-auto pl-0">
+                                    <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedInspectionReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                         </svg>
@@ -548,9 +548,9 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare BT</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedConstructionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedConstructionReports) }}</span>
                                     </div>
-                                    <div class="col-auto pl-0">
+                                    <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedConstructionReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
                                         </svg>
@@ -574,11 +574,11 @@
                             <a class="stretched-link outline-none" href="{{ route('flow-meter-inspection-reports.index', ['search' => 'ist:unterschrieben']) }}"></a>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col pr-0">
+                                    <div class="col pe-0">
                                         <h5 class="card-title text-uppercase text-muted m-0">erledigbare DM</h5>
-                                        <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedFlowMeterInspectionReports) }}</span>
+                                        <span class="h2 fw-bold m-0">{{ Number::toLocal($signedFlowMeterInspectionReports) }}</span>
                                     </div>
-                                    <div class="col-auto pl-0">
+                                    <div class="col-auto ps-0">
                                         <svg class="icon-bs icon-32 @if($signedFlowMeterInspectionReports) text-yellow-500 @else text-gray-500 @endif">
                                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                                         </svg>
@@ -597,7 +597,7 @@
         @endcan
 
         <p class="small">
-            <span class="font-weight-bold">Legende:</span>
+            <span class="fw-bold">Legende:</span>
             SB - Serviceberichte,
             RB - Regieberichte,
             PB - Prüfberichte,
@@ -610,7 +610,7 @@
         </p>
 
         <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted mr-1">
+            <svg class="icon-bs icon-baseline text-muted me-1">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
             </svg>
             Lieferscheine
@@ -623,11 +623,11 @@
                         <a class="stretched-link outline-none" href="{{ route('delivery-notes.index', ['search' => 'ist:neu']) }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">offene LI</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($newDeliveryNotes) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($newDeliveryNotes) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 @if($newDeliveryNotes) text-blue-500 @else text-gray-500 @endif">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
                                     </svg>
@@ -651,11 +651,11 @@
                         <a class="stretched-link outline-none" href="{{ route('delivery-notes.index', ['search' => 'ist:unterschrieben']) }}"></a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col pr-0">
+                                <div class="col pe-0">
                                     <h5 class="card-title text-uppercase text-muted m-0">erledigbare LI</h5>
-                                    <span class="h2 font-weight-bold m-0">{{ Number::toLocal($signedDeliveryNotes) }}</span>
+                                    <span class="h2 fw-bold m-0">{{ Number::toLocal($signedDeliveryNotes) }}</span>
                                 </div>
-                                <div class="col-auto pl-0">
+                                <div class="col-auto ps-0">
                                     <svg class="icon-bs icon-32 @if($signedDeliveryNotes) text-yellow-500 @else text-gray-500 @endif">
                                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use>
                                     </svg>
@@ -675,7 +675,7 @@
         </div>
 
         <p class="small">
-            <span class="font-weight-bold">Legende:</span>
+            <span class="fw-bold">Legende:</span>
             LI - Lieferscheine,
             MTD - Month to Date (seit Monatsbeginn),
             ges. - gesamt

@@ -9,7 +9,7 @@
                 Prüfbericht
                 <small class="text-muted">Anlage {{ $inspectionReport->equipment_identifier }} (Projekt {{ $inspectionReport->project->name }}) vom {{ $inspectionReport->inspected_on }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ms-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
                 @unless($inspectionReport->isFinished())
                     @can('approve', $inspectionReport)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.finish', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Erledigen
@@ -29,7 +29,7 @@
                 @endunless
                 @can('update', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.edit', $inspectionReport) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -37,7 +37,7 @@
                 @endcan
                 @can('create', \App\Models\InspectionReport::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.create', ['template' => $inspectionReport]) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
                         </svg>
                         Kopieren
@@ -45,7 +45,7 @@
                 @endcan
                 @can('email', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.email', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -53,21 +53,21 @@
                 @endcan
                 @can('createPdf', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.download', $inspectionReport) }}" target="_blank">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
                 </a>
                 @can('sign', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.sign', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                         </svg>
                         Unterschreiben lassen
@@ -75,7 +75,7 @@
                 @endcan
                 @can('emailSignatureRequest', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.email-signature-request', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Unterschrift Anfrage senden
@@ -83,7 +83,7 @@
                 @endcan
                 @can('emailDownloadRequest', $inspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('inspection-reports.email-download-request', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                         </svg>
                         Download Link senden
@@ -95,7 +95,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -111,7 +111,7 @@
         <div class="row">
             <div class="col-sm-auto">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
                     Projekt
@@ -127,7 +127,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                             </svg>
                             Techniker
@@ -140,7 +140,7 @@
                 <div class="row mt-3">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="@if($inspectionReport->isNew()) text-primary @elseif($inspectionReport->isSigned()) text-warning @else text-success @endif icon icon-16 mr-2">
+                            <svg class="@if($inspectionReport->isNew()) text-primary @elseif($inspectionReport->isSigned()) text-warning @else text-success @endif icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                             </svg>
                             Status
@@ -171,7 +171,7 @@
                 <div class="row mt-3">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             Datum
@@ -187,7 +187,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 @switch($inspectionReport->weather)
                                     @case('sunny')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
@@ -213,7 +213,7 @@
                 <div class="row mt-3">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#list"></use>
                             </svg>
                             Anlagentyp
@@ -226,7 +226,7 @@
                 <div class="row mt-3">
                     <div class="col-lg-6">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#hash"></use>
                             </svg>
                             Anlagen-/Gerätenummer
@@ -244,10 +244,10 @@
                 <div class="row">
                     <div class="col">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                             </svg>
-                            <span class="font-weight-bolder">UVC Strahler</span>
+                            <span class="fw-bolder">UVC Strahler</span>
                         </div>
                     </div>
                 </div>
@@ -297,10 +297,10 @@
                 <div class="row">
                     <div class="col">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                             </svg>
-                            <span class="font-weight-bolder">UVC Sensor</span>
+                            <span class="fw-bolder">UVC Sensor</span>
                         </div>
                     </div>
                 </div>
@@ -344,10 +344,10 @@
                 <div class="row">
                     <div class="col">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#droplet"></use>
                             </svg>
-                            <span class="font-weight-bolder">Wasser</span>
+                            <span class="fw-bolder">Wasser</span>
                         </div>
                     </div>
                 </div>
@@ -389,10 +389,10 @@
                 <div class="row">
                     <div class="col">
                         <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#circle"></use>
                             </svg>
-                            <span class="font-weight-bolder"><span class="d-inline d-sm-none d-md-inline">Überprüfung der </span>Quarzschutzrohre</span>
+                            <span class="fw-bolder"><span class="d-inline d-sm-none d-md-inline">Überprüfung der </span>Quarzschutzrohre</span>
                         </div>
                     </div>
                 </div>
@@ -417,7 +417,7 @@
 
         @if ($inspectionReport->comment)
             <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                 </svg>
                 Durchgeführte Arbeiten und Bemerkungen
@@ -431,13 +431,13 @@
             <div class="row text-muted d-flex align-items-center mt-1">
                 <div class="col">
                     <div class="d-none d-md-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
                     </div>
-                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseInspectionReportAttachments-{{ $inspectionReport->id }}" role="button" aria-expanded="false" aria-controls="collapseInspectionReportAttachments-{{ $inspectionReport->id }}">
-                        <svg class="icon icon-16 mr-2">
+                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseInspectionReportAttachments-{{ $inspectionReport->id }}" role="button" aria-expanded="false" aria-controls="collapseInspectionReportAttachments-{{ $inspectionReport->id }}">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
@@ -450,9 +450,9 @@
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif
@@ -472,9 +472,9 @@
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif

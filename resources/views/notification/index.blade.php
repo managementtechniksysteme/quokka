@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container @if(Auth::user()->unreadNotifications()->count()) pt-4 @else py-4 @endif">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                 </svg>
                 Benachrichtigungen
@@ -19,7 +19,7 @@
                         @csrf
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Alle als gelesen markieren
@@ -36,7 +36,7 @@
         @if(\App\Models\ApplicationSettings::get()->prune_read_notifications)
             <div class="alert alert-warning mt-3" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     <p class="m-0">
@@ -51,9 +51,10 @@
                 @component('notification.overview_card', [ 'notification' => $notification, ])
                 @endcomponent
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1"/>
-                @endif
+                    @if(!$loop->last)
+                        <hr class="m-0 mx-1" />
+                    @endif
+
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/astronaut.svg') }}" alt="no data"/>
@@ -69,7 +70,7 @@
         @if( $readNotificationCount && !request()->has('show-read') )
             <div class="d-flex justify-content-center mt-4">
                 <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('notifications.index', ['show-read' => true]) }}">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                     </svg>
                     Gelesene Benachrichtigungen anzeigen

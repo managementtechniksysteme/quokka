@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                 </svg>
                 Rollen
@@ -16,7 +16,7 @@
             <div class="scroll-x d-flex">
                 @can('create', \Spatie\Permission\Models\Role::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('roles.create') }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Rolle anlegen
@@ -30,7 +30,7 @@
         @unless ($roles->isEmpty() && !Request::get('search'))
             <div class="alert alert-warning mt-1" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                     </svg>
                     Bearbeitete oder gelöschte Rollen wirken sich nicht auf Benutzer aus. Benutzer sind direkt mit
@@ -46,7 +46,6 @@
                     <form action="{{ route('roles.index') }}" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Rollen suchen" autocomplete="off" />
-                            <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
@@ -59,7 +58,6 @@
                                         </svg>
                                     </a>
                                 @endif
-                            </div>
                         </div>
 
                     </form>
@@ -75,9 +73,10 @@
                 @component('role.overview_card', [ 'role' => $role ])
                 @endcomponent
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
-                @endif
+                    @if(!$loop->last)
+                        <hr class="m-0 mx-1" />
+                    @endif
+
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
@@ -88,7 +87,7 @@
                         @can('create', \Spatie\Permission\Models\Role::class)
                             <p class="lead">Lege eine neue Rolle an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('roles.create') }}">
-                                <svg class="icon icon-20 mr-2">
+                                <svg class="icon icon-20 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 Rolle anlegen

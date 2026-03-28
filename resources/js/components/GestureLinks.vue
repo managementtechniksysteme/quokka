@@ -1,12 +1,12 @@
 <template>
     <div class="gesture-area rounded" ref="gestureArea" v-hammer:pan="onPan">
         <div v-bind:class="panClasses" class="overlay rounded position-absolute w-100 h-100 z-10" ref="overlay">
-            <div v-bind:class="panRightClasses" class="rounded bg-blue-100 text-blue-800 align-items-center justify-content-center h-100 w-100 mr-auto">
+            <div v-bind:class="panRightClasses" class="rounded bg-blue-100 text-blue-800 align-items-center justify-content-center h-100 w-100 me-auto">
                 <svg class="icon icon-24">
                     <use xlink:href="/svg/feather-sprite.svg#edit"></use>
                 </svg>
             </div>
-            <div v-bind:class="panLeftClasses" class="rounded bg-yellow-100 text-yellow-800 align-items-center justify-content-center h-100 w-100 ml-auto">
+            <div v-bind:class="panLeftClasses" class="rounded bg-yellow-100 text-yellow-800 align-items-center justify-content-center h-100 w-100 ms-auto">
                 <svg class="icon icon-24">
                     <use xlink:href="/svg/feather-sprite.svg#star"></use>
                 </svg>

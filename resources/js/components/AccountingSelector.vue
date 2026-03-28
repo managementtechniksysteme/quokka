@@ -5,7 +5,7 @@
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
+              <svg class="icon icon-24 me-2">
                   <use xlink:href="/svg/feather-sprite.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
@@ -13,7 +13,7 @@
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
+              <svg class="icon icon-24 me-2">
                   <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
@@ -31,22 +31,22 @@
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
 
-                          <div class="form-row">
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
+                          <div class="row g-3">
+                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
                                   <label for="filter_start">Start</label>
                                   <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
                                   <div v-if="filter_start_errors" class="invalid-feedback">
                                       {{ filter_start_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
                                   <label for="filter_end">Ende</label>
                                   <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
                                   <div v-if="filter_end_errors" class="invalid-feedback">
                                       {{ filter_end_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
                                   <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -55,7 +55,7 @@
                                       {{ filter_project_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
                                   <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :value="filter_service" :selectOnTab="true" @input="setFilterService">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -64,24 +64,24 @@
                                       {{ filter_service_errors[0] }}
                                   </div>
                               </div>
-                              <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
-                                      <label class="custom-control-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
+                              <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="mb-3 col-12">
+                                  <div class="form-check form-switch">
+                                      <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                                      <label class="form-check-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
                                   </div>
                                   <div v-if="filter_only_own_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_only_own_errors}">
                                       {{ filter_only_own_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
-                                      <label class="custom-control-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
+                              <div class="mb-3 col-12">
+                                  <div class="form-check form-switch">
+                                      <input type="checkbox" class="form-check-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                                      <label class="form-check-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
                                   </div>
                               </div>
                           </div>
                           <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="icon icon-16 mr-2">
+                              <svg class="icon icon-16 me-2">
                                   <use xlink:href="/svg/feather-sprite.svg#filter"></use>
                               </svg>
                               Einträge filtern
@@ -95,29 +95,29 @@
                       <h3>Leistungen abrechnen</h3>
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
-                          <div class="form-row">
-                              <div class="form-group col-6 col-md-4 col-lg-3 col-xl-12">
+                          <div class="row g-3">
+                              <div class="mb-3 col-6 col-md-4 col-lg-3 col-xl-12">
                                   <label for="service_provided_on">Datum</label>
                                   <input type="date" class="form-control" v-bind:class="{'is-invalid': service_provided_on_invalid}" id="service_provided_on" name="service_provided_on" placeholder="" required v-model="date" />
                                   <div class="invalid-feedback">
                                       Datum muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-3 col-md-4 col-lg-3 col-xl-12">
                                   <label for="service_provided_started_at">Start</label>
                                   <input type="time" :max="service_provided_ended_at" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" :disabled="this.service !== null && this.service.unit !== services_hour_unit" required v-model="service_provided_started_at" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Start muss eine gültige Uhrzeit sein.
                                   </div>
                               </div>
-                              <div class="form-group col-3 col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-3 col-md-4 col-lg-3 col-xl-12">
                                   <label for="service_provided_ended_at">Ende</label>
                                   <input type="time" :min="service_provided_started_at" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" required :disabled="this.service !== null && this.service.unit !== services_hour_unit" v-model="service_provided_ended_at"  @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Ende muss eine gültige Uhrzeit sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
                                   <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -126,7 +126,7 @@
                                       Projekt muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
                                   <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="service" :selectOnTab="true" @input="setService">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -135,7 +135,7 @@
                                       Leistung muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label for="amount">Menge</label>
                                   <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
                                   <div class="invalid-feedback">
@@ -143,14 +143,14 @@
                                       <span v-else>Menge muss mindestens 0.01 sein.</span>
                                   </div>
                               </div>
-                              <div class="form-group col-lg-3 col-xl-12">
+                              <div class="mb-3 col-lg-3 col-xl-12">
                                   <label for="comment">Bemerkungen</label>
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
-                              <div class="form-group d-none d-lg-block d-xl-none col-lg-3">
+                              <div class="mb-3 d-none d-lg-block d-xl-none col-lg-3">
                                   <label for="addaccounting">&nbsp;</label>
                                   <button id="addaccounting" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
-                                      <svg class="icon icon-16 mr-2">
+                                      <svg class="icon icon-16 me-2">
                                           <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                       </svg>
                                       Hinzufügen
@@ -159,7 +159,7 @@
                           </div>
                           <div class="d-block d-lg-none d-xl-block mt-4">
                               <button id="addaccounting" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
                                   Hinzufügen
@@ -173,7 +173,7 @@
                   <div class="sticky-top bg-general">
                       <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           <h3 class="d-inline-block">
-                              <svg class="icon icon-baseline text-muted mr-1">
+                              <svg class="icon icon-baseline text-muted me-1">
                                   <use xlink:href="/svg/feather-sprite.svg#clock"></use>
                               </svg>
                               Leistungsabrechnung
@@ -186,23 +186,23 @@
 
                           </h3>
 
-                          <div class="float-right">
+                          <div class="float-end">
                               <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length === 1" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                   </svg>
                                   Auswertung
                               </button>
 
                               <div v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="dropdown">
-                                  <button class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                                    <svg class="icon icon-16 mr-2">
+                                  <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                    <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                     </svg>
                                     Auswertung
                                   </button>
 
-                                  <div class="dropdown-menu dropdown-menu-right min-w-200">
+                                  <div class="dropdown-menu dropdown-menu-end min-w-200">
                                       <form @submit.prevent="onReportSubmit">
                                           <div v-for="employeeId in this.getShownEmployeeIds()" class="d-inline-block form-check mx-2 my-1">
                                               <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">
@@ -214,7 +214,7 @@
                                               </label>
                                           </div>
                                           <button class="btn btn-sm btn-primary mx-2 mt-2" type="submit">
-                                              <svg class="icon icon-16 mr-2">
+                                              <svg class="icon icon-16 me-2">
                                                   <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                               </svg>
                                               Erstellen
@@ -224,7 +224,7 @@
                               </div>
 
                               <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && !this.selectedAccountingContainsUnsaved() && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#settings"></use>
                                   </svg>
                                   Servicebericht erstellen
@@ -234,7 +234,7 @@
 
                       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
-                              <svg class="icon icon-24 mr-2">
+                              <svg class="icon icon-24 me-2">
                                   <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                               </svg>
                               <p class="m-0">
@@ -250,7 +250,7 @@
                           <thead>
                               <tr>
                                   <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
+                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
                                           <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
@@ -263,7 +263,7 @@
                                   <th scope="col" class="col-2">Leistung</th>
                                   <th scope="col" class="col-1">Menge</th>
                                   <th scope="col" class="col-1-5">Mitarbeiter</th>
-                                  <th scope="col" class="col-auto text-right">
+                                  <th scope="col" class="col-auto text-end">
                                       <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
                                           <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
@@ -329,7 +329,7 @@
                                           <input v-if="acc.edit === 'amount'" type="number" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
                                       </td>
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
-                                      <td class="col-auto text-right">
+                                      <td class="col-auto text-end">
                                           <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
                                               <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
@@ -358,8 +358,8 @@
                                       <tr v-if="acc.show_details"  v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                                           <td class="border-0" ></td>
                                           <td colspan="7" class="border-0">
-                                              <div class="form-group">
-                                                  <label for="table_comment"><span class="font-weight-bold">Bemerkungen:</span></label>
+                                              <div class="mb-3">
+                                                  <label for="table_comment"><span class="fw-bold">Bemerkungen:</span></label>
                                                   <p v-if="acc.edit !== 'comment'" class="whitespace-preline" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
                                                   <textarea v-if="acc.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
                                               </div>
@@ -380,9 +380,9 @@
 
                       <p v-if="accounting.length" class="mt-3">
                           Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
-                          <span class="badge badge-green-100 text-green-800">wird angelegt</span>
-                          <span class="badge badge-yellow-100 text-yellow-800">wird bearbeitet</span>
-                          <span class="badge badge-red-100 text-red-800">wird entfernt</span>
+                          <span class="badge bg-green-100 text-green-800">wird angelegt</span>
+                          <span class="badge bg-yellow-100 text-yellow-800">wird bearbeitet</span>
+                          <span class="badge bg-red-100 text-red-800">wird entfernt</span>
                       </p>
                   </div>
 
@@ -393,7 +393,7 @@
                   </div>
 
                   <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
-                      <svg class="icon icon-16 mr-2">
+                      <svg class="icon icon-16 me-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
                       Änderungen speichern

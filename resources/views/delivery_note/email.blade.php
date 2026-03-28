@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                         </svg>
                         Empfänger
@@ -43,7 +43,7 @@
 
                 <div class="col-md-8">
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="email">Empfänger</label>
                         <email-selector :people="{{ $people }}" :current_to="{{ $currentTo ?? '[]'}}" :current_cc="{{ $currentCC ?? '[]' }}" :current_bcc="{{ $currentBCC ?? '[]' }}"></email-selector>
                         <div class="invalid-feedback @error('email_to') d-block @enderror @error('email_to.*') d-block @enderror @error('email_cc') d-block @enderror @error('email_cc.*') d-block @enderror @error('email_bcc') d-block @enderror @error('email_bcc.*') d-block @enderror">
@@ -75,7 +75,7 @@
                 <div class="row mt-4">
                     <div class="col-md-4">
                         <p class="d-inline-flex align-items-center mb-1">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
                             </svg>
                             Anhänge
@@ -86,14 +86,14 @@
                     </div>
 
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label>
                             Anhang
                         </label>
 
                         <div class="row my-2 align-items-center">
                             <div class="col d-inline-flex align-items-center">
-                                <svg class="icon attachment-img-preview mr-2">
+                                <svg class="icon attachment-img-preview me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                 </svg>
                                 <div>
@@ -102,10 +102,10 @@
                                 </div>
                                 <a href="{{ $deliveryNote->document()->getUrl() }}" class="stretched-link outline-none"></a>
                             </div>
-                            <div class="col-auto ml-auto">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input @error('attachment_ids[]') is-invalid @enderror" name="attachment_ids[]" id="attachment_ids[{{ $deliveryNote->document()->id }}]" value="{{ $deliveryNote->document()->id }}" @if(empty(Request::old()) || (is_array(old('attachment_ids')) && in_array($deliveryNote->document()->id, old('attachment_ids')))) checked @endif>
-                                    <label class="custom-control-label" for="attachment_ids[{{ $deliveryNote->document()->id }}]">&nbsp;</label>
+                            <div class="col-auto ms-auto">
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input @error('attachment_ids[]') is-invalid @enderror" name="attachment_ids[]" id="attachment_ids[{{ $deliveryNote->document()->id }}]" value="{{ $deliveryNote->document()->id }}" @if(empty(Request::old()) || (is_array(old('attachment_ids')) && in_array($deliveryNote->document()->id, old('attachment_ids')))) checked @endif>
+                                    <label class="form-check-label" for="attachment_ids[{{ $deliveryNote->document()->id }}]">&nbsp;</label>
                                 </div>
                                 <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                                 </div>
@@ -123,7 +123,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Lieferschein senden

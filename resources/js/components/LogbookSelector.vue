@@ -5,7 +5,7 @@
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
+              <svg class="icon icon-24 me-2">
                   <use xlink:href="/svg/feather-sprite.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
@@ -13,7 +13,7 @@
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
+              <svg class="icon icon-24 me-2">
                   <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
@@ -31,22 +31,22 @@
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
 
-                          <div class="form-row">
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
+                          <div class="row g-3">
+                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
                                   <label for="filter_start">Start</label>
                                   <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
                                   <div v-if="filter_start_errors" class="invalid-feedback">
                                       {{ filter_start_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
                                   <label for="filter_end">Ende</label>
                                   <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
                                   <div v-if="filter_end_errors" class="invalid-feedback">
                                       {{ filter_end_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Fahrzeug</label>
                                   <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -55,7 +55,7 @@
                                       {{ filter_vehicle_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
                                   <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -64,24 +64,24 @@
                                       {{ filter_project_errors[0] }}
                                   </div>
                               </div>
-                              <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
-                                      <label class="custom-control-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
+                              <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="mb-3 col-12">
+                                  <div class="form-check form-switch">
+                                      <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                                      <label class="form-check-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
                                   </div>
                                   <div v-if="filter_only_own_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_only_own_errors}">
                                       {{ filter_only_own_errors[0] }}
                                   </div>
                               </div>
-                              <div class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
-                                      <label class="custom-control-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
+                              <div class="mb-3 col-12">
+                                  <div class="form-check form-switch">
+                                      <input type="checkbox" class="form-check-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                                      <label class="form-check-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
                                   </div>
                               </div>
                           </div>
                           <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="icon icon-16 mr-2">
+                              <svg class="icon icon-16 me-2">
                                   <use xlink:href="/svg/feather-sprite.svg#filter"></use>
                               </svg>
                               Einträge filtern
@@ -95,8 +95,8 @@
                       <h3>Fahrt eintragen</h3>
 
                       <form class="needs-validation mt-4" action="" method="post" novalidate>
-                          <div class="form-row">
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
+                          <div class="row g-3">
+                              <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Fahrzeug</label>
                                   <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -105,42 +105,42 @@
                                       Fahrzeug muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-12">
+                              <div class="mb-3 col-4 col-md-4 col-lg-2 col-xl-12">
                                   <label for="driven_on">Datum</label>
                                   <input type="date" class="form-control" v-bind:class="{'is-invalid': driven_on_invalid}" id="driven_on" name="driven_on" placeholder="" required v-model="driven_on" />
                                   <div class="invalid-feedback">
                                       Datum muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
+                              <div class="mb-3 col-4 col-md-4 col-lg-2 col-xl-6">
                                   <label for="start_kilometres">Start Kilometer</label>
                                   <input type="number" :min="0" step="1" class="form-control" v-bind:class="{'is-invalid': start_kilometres_invalid}" id="start_kilometres" name="start_kilometres" placeholder="131337" required v-model="start_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Start Kilometer müssen mindestens 0 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
+                              <div class="mb-3 col-4 col-md-4 col-lg-2 col-xl-6">
                                   <label for="end_kilometres">Ende Kilometer</label>
                                   <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       Ende Kilometer müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
+                              <div class="mb-3 col-6 col-md-4 col-lg-2 col-xl-6">
                                   <label for="driven_kilometres">gefahrene KM</label>
                                   <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
                                   <div class="invalid-feedback">
                                       gefahrene Kilometer müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
+                              <div class="mb-3 col-6 col-md-4 col-lg-2 col-xl-6">
                                   <label for="litres_refuelled">getankte Liter</label>
                                   <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" required v-model="litres_refuelled" />
                                   <div class="invalid-feedback">
                                       getankte Liter müssen mindestens 1 sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Start</label>
                                   <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -149,7 +149,7 @@
                                       Start muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Ziel</label>
                                   <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -158,7 +158,7 @@
                                       Ziel muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
+                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
                                   <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
@@ -167,16 +167,16 @@
                                       Projekt muss ausgefüllt sein.
                                   </div>
                               </div>
-                              <div class="form-group col-lg-3 col-xl-12">
+                              <div class="mb-3 col-lg-3 col-xl-12">
                                   <label for="comment">Bemerkungen</label>
                                   <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
                               </div>
-                              <div class="form-group col-12">
-                                  <div class="custom-control custom-switch d-flex align-items-center">
-                                      <input type="checkbox" class="custom-control-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
-                                      <label class="custom-control-label" for="return_trip">Hin- und Rückfahrt</label>
-                                      <a data-toggle="collapse" href="#returnTripHelpCollapse">
-                                          <svg class="icon icon-16 ml-2 text-muted">
+                              <div class="mb-3 col-12">
+                                  <div class="form-check form-switch d-flex align-items-center">
+                                      <input type="checkbox" class="form-check-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
+                                      <label class="form-check-label" for="return_trip">Hin- und Rückfahrt</label>
+                                      <a data-bs-toggle="collapse" href="#returnTripHelpCollapse">
+                                          <svg class="icon icon-16 ms-2 text-muted">
                                               <use xlink:href="/svg/feather-sprite.svg#help-circle"></use>
                                           </svg>
                                       </a>
@@ -189,7 +189,7 @@
                           </div>
                           <div class="mt-4">
                               <button id="addlogbook" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addLogbook()">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#plus"></use>
                                   </svg>
                                   Hinzufügen
@@ -203,7 +203,7 @@
                   <div class="sticky-top bg-general">
                       <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           <h3 class="d-inline-block">
-                              <svg class="icon icon-baseline text-muted mr-1">
+                              <svg class="icon icon-baseline text-muted me-1">
                                   <use xlink:href="/svg/feather-sprite.svg#book"></use>
                               </svg>
                               Fahrtenbuch
@@ -215,16 +215,16 @@
                               </small>
                           </h3>
 
-                          <div class="float-right">
+                          <div class="float-end">
                               <button v-if="permissions.includes('logbook.createpdf') && this.logbook.length" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf()" @keydown.enter.prevent="createPdf()">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#printer"></use>
                                   </svg>
                                   Auswertung
                               </button>
 
                               <button v-if="permissions.includes('service-reports.create') && this.getSelectedLogbook().length && !this.selectedLogbookContainsUnsaved() && this.selectedLogbookIsOwn() && this.selectedLogbookIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
-                                  <svg class="icon icon-16 mr-2">
+                                  <svg class="icon icon-16 me-2">
                                       <use xlink:href="/svg/feather-sprite.svg#settings"></use>
                                   </svg>
                                   Servicebericht erstellen
@@ -234,7 +234,7 @@
 
                       <div v-if="getUnsavedLogbook().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
-                              <svg class="icon icon-24 mr-2">
+                              <svg class="icon icon-24 me-2">
                                   <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                               </svg>
                               <p class="m-0">
@@ -250,7 +250,7 @@
                           <thead>
                               <tr>
                                   <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorLogbook().length, 'errorstoggle text-red-100': getErrorLogbook().length, 'text-red-500': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
+                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorLogbook().length, 'errorstoggle text-red-100': getErrorLogbook().length, 'text-red-500': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
                                           <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                                           </svg>
@@ -264,7 +264,7 @@
                                   <th scope="col" class="col-1">get. L</th>
                                   <th scope="col" class="col-1-5">Start</th>
                                   <th scope="col" class="col-1-5">Ziel</th>
-                                  <th scope="col" class="col-auto text-right">
+                                  <th scope="col" class="col-auto text-end">
                                       <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="removeSelectedLogbook()">
                                           <svg class="icon icon-16">
                                               <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
@@ -341,7 +341,7 @@
                                           </v-select>
                                       </td>
 
-                                      <td class="col-auto text-right">
+                                      <td class="col-auto text-end">
                                           <button v-if="book.action !== 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
                                               <svg class="icon icon-16">
                                                   <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
@@ -371,7 +371,7 @@
                                           <td class="border-0" ></td>
                                           <td colspan="7" class="border-0">
                                               <div class="row">
-                                                  <div class="col-2 font-weight-bold">Projekt:</div>
+                                                  <div class="col-2 fw-bold">Projekt:</div>
                                                   <div class="col-4">
                                                       <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
                                                       <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
@@ -380,11 +380,11 @@
                                                   </div>
                                               </div>
                                               <div class="row mt-2">
-                                                  <div class="col-2 font-weight-bold">Mitarbeiter:</div>
+                                                  <div class="col-2 fw-bold">Mitarbeiter:</div>
                                                   <div class="col-4">{{ getEmployeeName(book.employee_id) }}</div>
                                               </div>
-                                              <div class="form-group mt-2">
-                                                  <label for="table_comment"><span class="font-weight-bold">Bemerkungen:</span></label>
+                                              <div class="mb-3 mt-2">
+                                                  <label for="table_comment"><span class="fw-bold">Bemerkungen:</span></label>
                                                   <p v-if="book.edit !== 'comment'" class="whitespace-preline" @click="setEdit(book, 'comment')">{{ book.comment ? book.comment : 'nicht angegeben' }}</p>
                                                   <textarea v-if="book.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="book.comment" @blur="changeLogbookComment($event, book)" />
                                               </div>
@@ -407,9 +407,9 @@
 
                       <p v-if="logbook.length" class="mt-3">
                           Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
-                          <span class="badge badge-green-100 text-green-800">wird angelegt</span>
-                          <span class="badge badge-yellow-100 text-yellow-800">wird bearbeitet</span>
-                          <span class="badge badge-red-100 text-red-800">wird entfernt</span>
+                          <span class="badge bg-green-100 text-green-800">wird angelegt</span>
+                          <span class="badge bg-yellow-100 text-yellow-800">wird bearbeitet</span>
+                          <span class="badge bg-red-100 text-red-800">wird entfernt</span>
                       </p>
                   </div>
 
@@ -420,7 +420,7 @@
                   </div>
 
                   <button v-if="logbook.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedLogbook().length" @click="saveData()">
-                      <svg class="icon icon-16 mr-2">
+                      <svg class="icon icon-16 me-2">
                           <use xlink:href="/svg/feather-sprite.svg#save"></use>
                       </svg>
                       Änderungen speichern

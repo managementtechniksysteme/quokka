@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
             </svg>
             Stammdaten
@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-md-4">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="make">Marke</label>
             <input type="text" class="form-control @error('make') is-invalid @enderror" id="make" name="make" placeholder="Mustermarke" value="{{ old('make', optional($vehicle)->make) }}" required />
             <div class="invalid-feedback">
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="model">Modell</label>
             <input type="text" class="form-control @error('model') is-invalid @enderror" id="model" name="model" placeholder="Mustermodell" value="{{ old('model', optional($vehicle)->model) }}" required />
             <div class="invalid-feedback">
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="registration_identifier">Kennzeichen</label>
             <input type="text" class="form-control @error('registration_identifier') is-invalid @enderror" id="registration_identifier" name="registration_identifier" placeholder="VW-XYZ1" value="{{ old('registration_identifier', optional($vehicle)->registration_identifier) }}" required />
             <div class="invalid-feedback">
@@ -50,11 +50,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="private">Privatfahrzeug</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('private') is-invalid @enderror" data-toggle="buttons">
+            <div class="btn-group @error('private') is-invalid @enderror" data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('private', optional($vehicle)->private) == true) active @endif">
                     <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($vehicle)->private) == true) checked @endif> ja
                 </label>
@@ -75,7 +75,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -86,13 +86,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zum Fahrzeug"  value="{{ old('comment', optional($vehicle)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown

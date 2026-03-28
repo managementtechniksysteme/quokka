@@ -84,7 +84,7 @@
 
         <div class="alert alert-info">
             <div class="d-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 <b>Hinweis</b>
@@ -104,7 +104,7 @@
 
         <div class="alert alert-info">
             <div class="d-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 <b>Hinweis</b>

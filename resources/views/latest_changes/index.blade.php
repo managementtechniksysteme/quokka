@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                 </svg>
                 Letzte Änderungen
@@ -19,7 +19,7 @@
         <div class="mt-3">
             @unless($changesToday->isEmpty())
                 <h4 class="mt-4">
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-date"></use>
                     </svg>
                     Heute
@@ -34,7 +34,7 @@
             @endunless
             @unless($changesYesterday->isEmpty())
                 <h4 class="mt-4">
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-minus"></use>
                     </svg>
                     Gestern
@@ -49,7 +49,7 @@
             @endunless
             @unless($changesThisWeek->isEmpty())
                 <h4 class="mt-4">
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-range"></use>
                     </svg>
                     Diese Woche
@@ -65,7 +65,7 @@
             @unless($changesOlderThanThisWeek->isEmpty())
                 @unless($changesThisWeek->isEmpty() && $changesYesterday->isEmpty() && $changesToday->isEmpty())
                     <h4 class="mt-4">
-                        <svg class="icon-bs icon-baseline text-muted mr-1">
+                        <svg class="icon-bs icon-baseline text-muted me-1">
                             <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                         </svg>
                         Vorher

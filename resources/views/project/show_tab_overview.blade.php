@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
                 </svg>
                 Firma
@@ -18,7 +18,7 @@
     <div class="row mt-3">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                 </svg>
                 Zeitraum
@@ -37,7 +37,7 @@
     <div class="row mt-3">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
                 </svg>
                 Vorphase
@@ -50,7 +50,7 @@
     <div class="row mt-3">
         <div class="col-sm-2">
             <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
                 </svg>
                 In Finanzen
@@ -65,7 +65,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Auftragsvolumen
@@ -78,7 +78,7 @@
                         gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
                         @if($project->current_costs_percentage)
                             ({{ Number::toLocal($project->current_costs_percentage, 1) }}%)
-                            <svg class="icon icon-16 ml-2 text-{{ $project->current_costs_status }}">
+                            <svg class="icon icon-16 ms-2 text-{{ $project->current_costs_status }}">
                                 @switch($project->current_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -100,7 +100,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         verrechnet
@@ -113,7 +113,7 @@
                         gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_costs) }}
                         @if($project->current_billed_costs_percentage)
                             ({{ Number::toLocal($project->current_billed_costs_percentage, 1) }}%)
-                            <svg class="icon icon-16 ml-2 text-{{ $project->current_billed_costs_status }}">
+                            <svg class="icon icon-16 ms-2 text-{{ $project->current_billed_costs_status }}">
                                 @switch($project->current_billed_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -135,7 +135,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Lohnvolumen
@@ -148,7 +148,7 @@
                         gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_wage_costs) }}
                         @if($project->current_wage_costs_percentage)
                             ({{ Number::toLocal($project->current_wage_costs_percentage, 1) }}%)
-                            <svg class="icon icon-16 ml-2 text-{{ $project->current_wage_costs_status }}">
+                            <svg class="icon icon-16 ms-2 text-{{ $project->current_wage_costs_status }}">
                                 @switch($project->current_wage_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -170,7 +170,7 @@
             <div class="row mt-3">
                 <div class="col-sm-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                         </svg>
                         Materialvolumen
@@ -183,7 +183,7 @@
                         gebucht: {{ $currencyUnit . ' ' . Number::toLocal($project->current_material_costs) }}
                         @if($project->current_material_costs_percentage)
                             ({{ Number::toLocal($project->current_material_costs_percentage, 1) }}%)
-                            <svg class="icon icon-16 ml-2 text-{{ $project->current_material_costs_status }}">
+                            <svg class="icon icon-16 ms-2 text-{{ $project->current_material_costs_status }}">
                                 @switch($project->current_material_costs_status)
                                     @case('success')
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
@@ -206,7 +206,7 @@
         <div class="row mt-3">
             <div class="col-sm-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
                     </svg>
                     Kilometer
@@ -240,7 +240,7 @@
 
     @if ($project->comment)
         <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen

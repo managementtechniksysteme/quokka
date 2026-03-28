@@ -11,7 +11,7 @@
 @unless(Auth::user()->signature())
     <div class="alert alert-warning mt-1" role="alert">
         <div class="d-inline-flex align-items-center">
-            <svg class="icon icon-24 mr-2">
+            <svg class="icon icon-24 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
             </svg>
             <p class="m-0">
@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
             </svg>
             Stammdaten
@@ -41,21 +41,21 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="employee">Techniker</label>
             <input type="text" class="form-control" name="employee" id="employee"
                    placeholder="{{ optional($flowMeterInspectionReport)->employee->person->name ?? Auth::user()->person->name }}"
                    disabled/>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="status">Status</label>
             </div>
             @if(optional($flowMeterInspectionReport)->status === 'signed')
                 <div class="alert alert-warning mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
+                        <svg class="icon icon-24 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Der Prüfbericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             @endif
-            <div class="btn-group btn-group-toggle">
+            <div class="btn-group">
                 <label class="btn btn-outline-secondary @if(optional($flowMeterInspectionReport)->status == 'new' || !$flowMeterInspectionReport) active @else disabled @endif">
                     <input type="radio" name="status" id="new"
                            @if(optional($flowMeterInspectionReport)->status == 'new' || !$flowMeterInspectionReport) checked
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="inspected_on">Datum</label>
             <input type="date" class="form-control @error('inspected_on') is-invalid @enderror" id="inspected_on"
                    name="inspected_on" placeholder=""
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="equipment_identifier">Zu überprüfende Anlage</label>
             <input type="text" class="form-control @error('equipment_identifier') is-invalid @enderror"
                    id="equipment_identifier" name="equipment_identifier" placeholder="Kläranlage Musterort"
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="area_1">Bereich 1</label>
             <input type="text" class="form-control @error('area_1') is-invalid @enderror" id="area_1"
                    name="area_1" placeholder="Musterbereich 1"
@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="area_2">Bereich 2</label>
             <input type="text" class="form-control @error('area_2') is-invalid @enderror" id="area_2"
                    name="area_2" placeholder="Musterbereich 2"
@@ -136,7 +136,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="area_3">Bereich 3</label>
             <input type="text" class="form-control @error('area_3') is-invalid @enderror"
                    id="area_3" name="area_3" placeholder="Musterbereich 3"
@@ -148,7 +148,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="treatment_plant_size">Ausbaugröße (Bemessungswert) der Kläranlage</label>
             <input type="number" min="0" class="form-control @error('treatment_plant_size') is-invalid @enderror"
                    id="treatment_plant_size" name="treatment_plant_size" placeholder="100000"
@@ -160,11 +160,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="weather">Wetter</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('weather') is-invalid @enderror" data-toggle="buttons">
+            <div class="btn-group @error('weather') is-invalid @enderror" data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('weather', optional($flowMeterInspectionReport)->weather) == 'sunny') active @endif">
                     <input type="radio" name="weather" id="sunny" value="sunny" autocomplete="off"
                            @if(old('weather', optional($flowMeterInspectionReport)->weather) == 'sunny') checked @endif>
@@ -193,13 +193,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="temperature">Temperatur</label>
             <div class="input-group">
                 <input type="number" step="1" class="form-control @error('temperature') is-invalid @enderror" id="temperature" name="temperature" placeholder="18" value="{{ old('temperature', optional($flowMeterInspectionReport)->temperature) }}" required />
-                <div class="input-group-append">
                     <span class="input-group-text">°C</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('temperature')
                     {{ $message }}
@@ -210,7 +208,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="project_id">Projekt</label>
             <project-dropdown :projects="{{ $projects }}"
                               :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
@@ -226,7 +224,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use>
             </svg>
             Messstelle
@@ -237,7 +235,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measuring_point">Bezeichnung der Messstelle</label>
             <input type="text" class="form-control @error('measuring_point') is-invalid @enderror" id="measuring_point"
                    name="measuring_point" placeholder="Ablaufmessung"
@@ -252,7 +250,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="installation_point">Einbauort</label>
             <input type="text" class="form-control @error('installation_point') is-invalid @enderror"
                    id="installation_point" name="installation_point" placeholder="Kläranlage"
@@ -267,7 +265,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="medium">Medium</label>
             <input type="text" class="form-control @error('medium') is-invalid @enderror" id="medium" name="medium"
                    placeholder="Abwasser" value="{{ old('medium', optional($flowMeterInspectionReport)->medium) }}"
@@ -281,7 +279,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="commissioning_year">Jahr der Inbetriebnahme</label>
             <input type="number" min="0" class="form-control @error('commissioning_year') is-invalid @enderror"
                    id="commissioning_year" name="commissioning_year" placeholder="1991"
@@ -293,7 +291,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="responsible_person">Zuständiger Mitarbeiter für die Messeinrichtung</label>
             <input type="text" class="form-control @error('responsible_person') is-invalid @enderror"
                    id="responsible_person" name="responsible_person" placeholder="Max Mustermann"
@@ -308,7 +306,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="responsible_person_instructed_on">Zuständiger Mitarbeiter eingeschult am</label>
             <input type="date" class="form-control @error('responsible_person_instructed_on') is-invalid @enderror"
                    id="responsible_person_instructed_on" name="responsible_person_instructed_on"
@@ -324,7 +322,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="instructor">Zuständiger Mitarbeiter eingeschult durch</label>
             <input type="text" class="form-control @error('instructor') is-invalid @enderror" id="instructor"
                    name="instructor" placeholder="Max Mustermann"
@@ -338,7 +336,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="information_providing_people">Auskunft gebende Mitarbeiter</label>
             <input type="text" class="form-control @error('information_providing_people') is-invalid @enderror"
                    id="information_providing_people" name="information_providing_people" placeholder="Max Mustermann"
@@ -350,7 +348,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="last_inspected_on">Datum der letzten Vollprüfung</label>
             <input type="date" class="form-control @error('last_inspected_on') is-invalid @enderror"
                    id="last_inspected_on" name="last_inspected_on" placeholder="1991-01-01"
@@ -362,7 +360,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="last_inspected_by">Prüfstelle der letzten Vollprüfung</label>
             <input type="text" class="form-control @error('last_inspected_by') is-invalid @enderror"
                    id="last_inspected_by" name="last_inspected_by" placeholder="Musterfirma"
@@ -374,7 +372,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="last_inspection_project">Projekt/Nummer der letzten Vollprüfung</label>
             <input type="text" class="form-control @error('last_inspection_project') is-invalid @enderror"
                    id="last_inspection_project" name="last_inspection_project" placeholder="Musterprojekt"
@@ -391,7 +389,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
             </svg>
             Stationäre Messeinrichtung
@@ -402,16 +400,14 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="profile_outer_diameter">Außendurchmesser des Profils</label>
             <div class="input-group">
                 <input type="number" min="0" class="form-control @error('profile_outer_diameter') is-invalid @enderror"
                        id="profile_outer_diameter" name="profile_outer_diameter" placeholder="600"
                        value="{{ old('profile_outer_diameter', optional($flowMeterInspectionReport)->profile_outer_diameter) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">mm</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('profile_outer_diameter')
                     {{ $message }}
@@ -422,16 +418,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="profile_wall_thickness">Wandstärke des Profils</label>
             <div class="input-group">
                 <input type="number" min="0" class="form-control @error('profile_wall_thickness') is-invalid @enderror"
                        id="profile_wall_thickness" name="profile_wall_thickness" placeholder="3"
                        value="{{ old('profile_wall_thickness', optional($flowMeterInspectionReport)->profile_wall_thickness) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">mm</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('profile_wall_thickness')
                     {{ $message }}
@@ -442,7 +436,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="profile_material">Material des Profils</label>
             <input type="text" class="form-control @error('profile_material') is-invalid @enderror"
                    id="profile_material" name="profile_material" placeholder="Material"
@@ -457,12 +451,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="without_cross_section_reduction">Querschnittsverengung</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('without_cross_section_reduction') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('without_cross_section_reduction') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('without_cross_section_reduction') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->without_cross_section_reduction === true)) active @endif">
                     <input type="radio" name="without_cross_section_reduction" id=1 value=1 autocomplete="off"
                            @if(old('without_cross_section_reduction') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->without_cross_section_reduction === true)) checked @endif>
@@ -481,11 +475,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="fully_filled">Füllstand</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('fully_filled') is-invalid @enderror" data-toggle="buttons">
+            <div class="btn-group @error('fully_filled') is-invalid @enderror" data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('fully_filled') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->fully_filled === true)) active @endif">
                     <input type="radio" name="fully_filled" id=1 value=1 autocomplete="off"
                            @if(old('fully_filled') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->fully_filled === true)) checked @endif>
@@ -504,12 +498,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="speed_measurement_type">Messart</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('speed_measurement_type') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('speed_measurement_type') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('speed_measurement_type', optional($flowMeterInspectionReport)->speed_measurement_type) == 'doppler_ultrasonic') active @endif">
                     <input type="radio" name="speed_measurement_type" id="doppler_ultrasonic" value="doppler_ultrasonic"
                            autocomplete="off"
@@ -546,7 +540,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="speed_measurement_type_other">Andere Messart</label>
             <input type="text" class="form-control @error('speed_measurement_type_other') is-invalid @enderror"
                    id="speed_measurement_type_other" name="speed_measurement_type_other" placeholder="Messart"
@@ -558,7 +552,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="water_level_measurement_type">Art der Wasserstandsmessung (bei teilgefüllten
                 Messstrecken)</label>
             <input type="text" class="form-control @error('water_level_measurement_type') is-invalid @enderror"
@@ -576,7 +570,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
             </svg>
             Funktionskontrolle Bauwerk
@@ -587,7 +581,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="equipment_changes">Veränderungen am Messsystem</label>
             <input type="text" class="form-control @error('equipment_changes') is-invalid @enderror"
                    id="equipment_changes" name="equipment_changes" placeholder="Einbau Laufzeitmessung"
@@ -599,12 +593,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="documentation_existent">Dokumentation vorhanden</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('documentation_existent') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('documentation_existent') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('documentation_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->documentation_existent === true)) active @endif">
                     <input type="radio" name="documentation_existent" id=1 value=1 autocomplete="off"
                            @if(old('documentation_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->documentation_existent === true)) checked @endif>
@@ -623,12 +617,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="inspection_book_existent">Prüfbuch vorhanden</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('inspection_book_existent') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('inspection_book_existent') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('inspection_book_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->inspection_book_existent === true)) active @endif">
                     <input type="radio" name="inspection_book_existent" id=1 value=1 autocomplete="off"
                            @if(old('inspection_book_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->inspection_book_existent === true)) checked @endif>
@@ -647,12 +641,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="inspection_requirements_existent">Wartungsvorschrift vorhanden</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('inspection_requirements_existent') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('inspection_requirements_existent') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('inspection_requirements_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->inspection_requirements_existent === true)) active @endif">
                     <input type="radio" name="inspection_requirements_existent" id=1 value=1 autocomplete="off"
                            @if(old('inspection_requirements_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->inspection_requirements_existent === true)) checked @endif>
@@ -671,12 +665,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="documentation_current">Einbaubedingungen stimmen mit der Dokumentation überein</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('documentation_current') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('documentation_current') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('documentation_current') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->documentation_current === true)) active @endif">
                     <input type="radio" name="documentation_current" id=1 value=1 autocomplete="off"
                            @if(old('documentation_current') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->documentation_current === true)) checked @endif>
@@ -695,7 +689,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="equipment_changes_to_documentation">Vorgenommene Änderungen gegenüber der Dokumentation</label>
             <input type="text" class="form-control @error('equipment_changes_to_documentation') is-invalid @enderror"
                    id="equipment_changes_to_documentation" name="equipment_changes_to_documentation"
@@ -708,7 +702,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measuring_pipe_type">Messrohr Fabrikat</label>
             <input type="text" class="form-control @error('measuring_pipe_type') is-invalid @enderror"
                    id="measuring_pipe_type" name="measuring_pipe_type" placeholder="Fabrikat"
@@ -720,16 +714,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measuring_pipe_minimum_speed">Messrohr Mindestgeschwindigkeit</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('measuring_pipe_minimum_speed') is-invalid @enderror"
                        id="measuring_pipe_minimum_speed" name="measuring_pipe_minimum_speed" placeholder="0,03"
                        value="{{ old('measuring_pipe_minimum_speed', optional($flowMeterInspectionReport)->measuring_pipe_minimum_speed) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">m/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measuring_pipe_minimum_speed')
                     {{ $message }}
@@ -738,12 +730,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measuring_pipe_minimum_speed_unit">Messrohr Mindesgeschwindigkeit Einheit</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measuring_pipe_minimum_speed_unit') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measuring_pipe_minimum_speed_unit') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measuring_pipe_minimum_speed_unit', optional($flowMeterInspectionReport)->measuring_pipe_minimum_speed_unit) == 'm_s') active @endif">
                     <input type="radio" name="measuring_pipe_minimum_speed_unit" id="m_s" value="m_s" autocomplete="off"
                            @if(old('measuring_pipe_minimum_speed_unit', optional($flowMeterInspectionReport)->measuring_pipe_minimum_speed_unit) == 'm_s') checked @endif>
@@ -762,16 +754,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measuring_pipe_maximum_flow_rate">Messrohr Messbereich 100% Durchflussrate</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('measuring_pipe_maximum_flow_rate') is-invalid @enderror"
                        id="measuring_pipe_maximum_flow_rate" name="measuring_pipe_maximum_flow_rate" placeholder="282"
                        value="{{ old('measuring_pipe_maximum_flow_rate', optional($flowMeterInspectionReport)->measuring_pipe_maximum_flow_rate) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s oder m³/h</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measuring_pipe_maximum_flow_rate')
                     {{ $message }}
@@ -780,13 +770,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measuring_pipe_maximum_flow_rate_unit">Messrohr Messbereich 100% Durchflussrate
                     Einheit</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measuring_pipe_maximum_flow_rate_unit') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measuring_pipe_maximum_flow_rate_unit') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measuring_pipe_maximum_flow_rate_unit', optional($flowMeterInspectionReport)->measuring_pipe_maximum_flow_rate_unit) == 'l_s') active @endif">
                     <input type="radio" name="measuring_pipe_maximum_flow_rate_unit" id="l_s" value="l_s"
                            autocomplete="off"
@@ -812,16 +802,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measuring_pipe_maximum_speed">Messrohr Messbereich 100% Geschwindigkeit</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('measuring_pipe_maximum_speed') is-invalid @enderror"
                        id="measuring_pipe_maximum_speed" name="measuring_pipe_maximum_speed" placeholder="10"
                        value="{{ old('measuring_pipe_maximum_speed', optional($flowMeterInspectionReport)->measuring_pipe_maximum_speed) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">m/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measuring_pipe_maximum_speed')
                     {{ $message }}
@@ -830,12 +818,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measuring_pipe_maximum_speed_unit">Messrohr Messbereich 100% Geschwindigkeit Einheit</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measuring_pipe_maximum_speed_unit') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measuring_pipe_maximum_speed_unit') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measuring_pipe_maximum_speed_unit', optional($flowMeterInspectionReport)->measuring_pipe_maximum_speed_unit) == 'm_s') active @endif">
                     <input type="radio" name="measuring_pipe_maximum_speed_unit" id="m_s" value="m_s" autocomplete="off"
                            @if(old('measuring_pipe_maximum_speed_unit', optional($flowMeterInspectionReport)->measuring_pipe_maximum_speed_unit) == 'm_s') checked @endif>
@@ -854,16 +842,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="mucus_suppression">Schleimmengenunterdrückung</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('mucus_suppression') is-invalid @enderror" id="mucus_suppression"
                        name="mucus_suppression" placeholder="1"
                        value="{{ old('mucus_suppression', optional($flowMeterInspectionReport)->mucus_suppression) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">% oder l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('mucus_suppression')
                     {{ $message }}
@@ -872,12 +858,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="mucus_suppression_unit">Messrohr Messbereich 100% Durchflussrate Einheit</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('mucus_suppression_unit') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('mucus_suppression_unit') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('mucus_suppression_unit', optional($flowMeterInspectionReport)->mucus_suppression_unit) == 'percent') active @endif">
                     <input type="radio" name="mucus_suppression_unit" id="percent" value="percent" autocomplete="off"
                            @if(old('mucus_suppression_unit', optional($flowMeterInspectionReport)->mucus_suppression_unit) == 'percent') checked @endif>
@@ -901,15 +887,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="q_min">Beobachteter minimaler Durchfluss Q<sub>min</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any" class="form-control @error('q_min') is-invalid @enderror"
                        id="q_min" name="q_min" placeholder="33"
                        value="{{ old('q_min', optional($flowMeterInspectionReport)->q_min) }}" required/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('q_min')
                     {{ $message }}
@@ -920,15 +904,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="q_max">Beobachteter maximaler Durchfluss Q<sub>max</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any" class="form-control @error('q_max') is-invalid @enderror"
                        id="q_max" name="q_max" placeholder="225"
                        value="{{ old('q_max', optional($flowMeterInspectionReport)->q_max) }}" required/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('q_max')
                     {{ $message }}
@@ -939,12 +921,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="flow_range_type">Feststellung des Durchflussbereiches</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('flow_range_type') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('flow_range_type') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('flow_range_type', optional($flowMeterInspectionReport)->flow_range_type) == 'guess') active @endif">
                     <input type="radio" name="flow_range_type" id="guess" value="guess" autocomplete="off"
                            @if(old('flow_range_type', optional($flowMeterInspectionReport)->flow_range_type) == 'guess') checked @endif>
@@ -969,7 +951,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use>
             </svg>
             Messsystem - Messwertaufnehmer Wasserstand
@@ -980,7 +962,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="water_level_meter">System</label>
             <input type="text" class="form-control @error('water_level_meter') is-invalid @enderror"
                    id="water_level_meter" name="water_level_meter" placeholder="System"
@@ -992,7 +974,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="water_level_meter_make">Fabrikat</label>
             <input type="text" class="form-control @error('water_level_meter_make') is-invalid @enderror"
                    id="water_level_meter_make" name="water_level_meter_make" placeholder="Fabrikat"
@@ -1004,7 +986,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="water_level_meter_type">Type</label>
             <input type="text" class="form-control @error('water_level_meter_type') is-invalid @enderror"
                    id="water_level_meter_type" name="water_level_meter_type" placeholder="Type"
@@ -1016,7 +998,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="water_level_meter_identifier">Seriennummer</label>
             <input type="text" class="form-control @error('water_level_meter_identifier') is-invalid @enderror"
                    id="water_level_meter_identifier" name="water_level_meter_identifier" placeholder="Seriennummer"
@@ -1033,7 +1015,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use>
             </svg>
             Messsystem - Messwertaufnehmer Fließgeschwindigkeit
@@ -1044,7 +1026,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="flow_rate_meter">System</label>
             <input type="text" class="form-control @error('flow_rate_meter') is-invalid @enderror" id="flow_rate_meter"
                    name="flow_rate_meter" placeholder="System"
@@ -1059,7 +1041,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="flow_rate_meter_make">Fabrikat</label>
             <input type="text" class="form-control @error('flow_rate_meter_make') is-invalid @enderror"
                    id="flow_rate_meter_make" name="flow_rate_meter_make" placeholder="Fabrikat"
@@ -1074,7 +1056,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="flow_rate_meter_type">Type</label>
             <input type="text" class="form-control @error('flow_rate_meter_type') is-invalid @enderror"
                    id="flow_rate_meter_type" name="flow_rate_meter_type" placeholder="Type"
@@ -1089,7 +1071,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="flow_rate_meter_identifier">Seriennummer</label>
             <input type="text" class="form-control @error('flow_rate_meter_identifier') is-invalid @enderror"
                    id="flow_rate_meter_identifier" name="flow_rate_meter_identifier" placeholder="Seriennummer"
@@ -1109,7 +1091,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use>
             </svg>
             Messsystem - Messwertumformer
@@ -1120,12 +1102,12 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_transformer_point">Ort der Umformung</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_transformer_point') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_transformer_point') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_transformer_point', optional($flowMeterInspectionReport)->measurement_transformer_point) == 'local') active @endif">
                     <input type="radio" name="measurement_transformer_point" id="local" value="local" autocomplete="off"
                            @if(old('measurement_transformer_point', optional($flowMeterInspectionReport)->measurement_transformer_point) == 'local') checked @endif>
@@ -1145,7 +1127,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_make">Fabrikat</label>
             <input type="text" class="form-control @error('measurement_transformer_make') is-invalid @enderror"
                    id="measurement_transformer_make" name="measurement_transformer_make" placeholder="Fabrikat"
@@ -1160,7 +1142,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_type">Type</label>
             <input type="text" class="form-control @error('measurement_transformer_type') is-invalid @enderror"
                    id="measurement_transformer_type" name="measurement_transformer_type" placeholder="Type"
@@ -1175,7 +1157,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_identifier">Seriennummer</label>
             <input type="text" class="form-control @error('measurement_transformer_identifier') is-invalid @enderror"
                    id="measurement_transformer_identifier" name="measurement_transformer_identifier"
@@ -1191,7 +1173,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_minimum_level">minimaler Signalausgang</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -1199,9 +1181,7 @@
                        id="measurement_transformer_minimum_level" name="measurement_transformer_minimum_level"
                        placeholder="4"
                        value="{{ old('measurement_transformer_minimum_level', optional($flowMeterInspectionReport)->measurement_transformer_minimum_level) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">mA oder V</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_transformer_minimum_level')
                     {{ $message }}
@@ -1210,7 +1190,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_maximum_level">maximaler Signalausgang</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -1218,9 +1198,7 @@
                        id="measurement_transformer_maximum_level" name="measurement_transformer_maximum_level"
                        placeholder="20"
                        value="{{ old('measurement_transformer_maximum_level', optional($flowMeterInspectionReport)->measurement_transformer_maximum_level) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">mA oder V</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_transformer_maximum_level')
                     {{ $message }}
@@ -1229,12 +1207,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_transformer_level_unit">Messeinheit</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_transformer_level_unit') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_transformer_level_unit') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_transformer_level_unit', optional($flowMeterInspectionReport)->measurement_transformer_level_unit) == 'mA') active @endif">
                     <input type="radio" name="measurement_transformer_level_unit" id="mA" value="mA" autocomplete="off"
                            @if(old('measurement_transformer_level_unit', optional($flowMeterInspectionReport)->measurement_transformer_level_unit) == 'mA') checked @endif>
@@ -1259,7 +1237,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_range_100_percent">Programmierter Messbereich 100%</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -1268,9 +1246,7 @@
                        placeholder="250"
                        value="{{ old('measurement_transformer_range_100_percent', optional($flowMeterInspectionReport)->measurement_transformer_range_100_percent) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_transformer_range_100_percent')
                     {{ $message }}
@@ -1281,7 +1257,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_impulses">Impulsausgang</label>
             <div class="input-group">
                 <input type="number" min="0"
@@ -1289,9 +1265,7 @@
                        id="measurement_transformer_impulses" name="measurement_transformer_impulses" placeholder="1"
                        value="{{ old('measurement_transformer_impulses', optional($flowMeterInspectionReport)->measurement_transformer_impulses) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">Impulse/m³</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_transformer_impulses')
                     {{ $message }}
@@ -1302,7 +1276,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_transformer_data_logging">Aufzeichnung der Durchflusssummen und Momentanwerte für die Betriebsprotokolle</label>
             <input type="text"
                    class="form-control @error('measurement_transformer_data_logging') is-invalid @enderror"
@@ -1324,7 +1298,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#water"></use>
             </svg>
             Bestandsaufnahme Oberwasserseite
@@ -1335,16 +1309,14 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="headwater_pipe_diameter">Rohrdurchmesser innen</label>
             <div class="input-group">
                 <input type="number" min="0" class="form-control @error('headwater_pipe_diameter') is-invalid @enderror"
                        id="headwater_pipe_diameter" name="headwater_pipe_diameter" placeholder="600"
                        value="{{ old('headwater_pipe_diameter', optional($flowMeterInspectionReport)->headwater_pipe_diameter) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">mm</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('headwater_pipe_diameter')
                     {{ $message }}
@@ -1355,7 +1327,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="headwater_calming_section">Länge der einlaufseitigen Beruhigungsstrecke</label>
             <input type="text" class="form-control @error('headwater_calming_section') is-invalid @enderror"
                    id="headwater_calming_section" name="headwater_calming_section" placeholder="5 x Rohrdurchmesser"
@@ -1370,7 +1342,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="headwater_calming_section_assessment">Beurteilung der Beruhigungsstrecke</label>
             <input type="text" class="form-control @error('headwater_calming_section_assessment') is-invalid @enderror"
                    id="headwater_calming_section_assessment" name="headwater_calming_section_assessment"
@@ -1391,7 +1363,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#moisture"></use>
             </svg>
             Bestandsaufnahme Messstrecke
@@ -1402,16 +1374,14 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_slope">Gefälle der Messstrecke</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('measurement_section_slope') is-invalid @enderror"
                        id="measurement_section_slope" name="measurement_section_slope" placeholder="9"
                        value="{{ old('measurement_section_slope', optional($flowMeterInspectionReport)->measurement_section_slope) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">‰</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_section_slope')
                     {{ $message }}
@@ -1420,7 +1390,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_slope_assessment_type">Vermessung durchgeführt mittels</label>
             <input type="text"
                    class="form-control @error('measurement_section_slope_assessment_type') is-invalid @enderror"
@@ -1434,13 +1404,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_installation_according_to_manufacturer">Einbaubedingungen laut
                     Hersteller erfüllt</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_installation_according_to_manufacturer') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_installation_according_to_manufacturer') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_installation_according_to_manufacturer') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_installation_according_to_manufacturer === true)) active @endif">
                     <input type="radio" name="measurement_section_installation_according_to_manufacturer" id=1 value=1
                            autocomplete="off"
@@ -1461,7 +1431,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_minimum_speed_undercut_point">Unterschreitung der Mindestgeschwindigkeit
                 unterhalb von</label>
             <div class="input-group">
@@ -1470,9 +1440,7 @@
                        id="measurement_section_minimum_speed_undercut_point"
                        name="measurement_section_minimum_speed_undercut_point" placeholder="1"
                        value="{{ old('measurement_section_minimum_speed_undercut_point', optional($flowMeterInspectionReport)->measurement_section_minimum_speed_undercut_point) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_section_minimum_speed_undercut_point')
                     {{ $message }}
@@ -1486,7 +1454,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#moisture"></use>
             </svg>
             Beurteilung der Messstrecke
@@ -1497,7 +1465,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_pipe_diameter">Querschnitt des Messrohrs innen</label>
             <div class="input-group">
                 <input type="number" min="0"
@@ -1505,9 +1473,7 @@
                        id="measurement_section_pipe_diameter" name="measurement_section_pipe_diameter" placeholder="600"
                        value="{{ old('measurement_section_pipe_diameter', optional($flowMeterInspectionReport)->measurement_section_pipe_diameter) }}"
                        required />
-                <div class="input-group-append">
                     <span class="input-group-text">mm</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_section_pipe_diameter')
                     {{ $message }}
@@ -1516,12 +1482,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_access_possible">Zugänglichkeit gegeben</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_access_possible') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_access_possible') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_access_possible') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_access_possible === true)) active @endif">
                     <input type="radio" name="measurement_section_access_possible" id=1 value=1 autocomplete="off"
                            @if(old('measurement_section_access_possible') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_access_possible === true)) checked @endif>
@@ -1545,13 +1511,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_required_fill_level_existent">Geforderte Fließtiefe bei der
                     Vergleichsmessung</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_required_fill_level_existent') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_required_fill_level_existent') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_required_fill_level_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_required_fill_level_existent === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_required_fill_level_existent" id=1 value=1
                            autocomplete="off"
@@ -1577,13 +1543,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_visible_inspection_inside_possible">Optische Kontrolle im Messrohr
                     möglich</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_visible_inspection_inside_possible') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_visible_inspection_inside_possible') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_visible_inspection_inside_possible') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_visible_inspection_inside_possible === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_visible_inspection_inside_possible" id=1 value=1
                            autocomplete="off"
@@ -1609,7 +1575,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_pipe_visible_inspection_inside">Alternative Möglichkeit zur inneren
                 optischen Kontrolle</label>
             <input type="text"
@@ -1624,13 +1590,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_contaminated">Ablagerungen, Verschmutzungen im Messrohr, am
                     Messwertaufnehmer</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_contaminated') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_contaminated') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_contaminated') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_contaminated === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_contaminated" id=1 value=1 autocomplete="off"
                            @if(old('measurement_section_pipe_contaminated') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_contaminated === true)) checked @endif>
@@ -1654,12 +1620,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_cleaning_possible">Reinigung des Messrohres möglich</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_cleaning_possible') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_cleaning_possible') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_cleaning_possible') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_cleaning_possible === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_cleaning_possible" id=1 value=1
                            autocomplete="off"
@@ -1685,7 +1651,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_section_pipe_last_cleaned_on">Letzte Reinigung des Messrohrs</label>
             <input type="date"
                    class="form-control @error('measurement_section_pipe_last_cleaned_on') is-invalid @enderror"
@@ -1699,12 +1665,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_sensor_cleaned">Messwertaufnehmer ist gereinigt</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_sensor_cleaned') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_sensor_cleaned') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_sensor_cleaned') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_sensor_cleaned === true)) active @endif">
                     <input type="radio" name="measurement_section_sensor_cleaned" id=1 value=1 autocomplete="off"
                            @if(old('measurement_section_sensor_cleaned') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_sensor_cleaned === true)) checked @endif>
@@ -1728,12 +1694,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_sensor_damaged">Messwertaufnehmer ist mechanisch beschädigt</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_sensor_damaged') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_sensor_damaged') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_sensor_damaged') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_sensor_damaged === true)) active @endif">
                     <input type="radio" name="measurement_section_sensor_damaged" id=1 value=1 autocomplete="off"
                            @if(old('measurement_section_sensor_damaged') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_sensor_damaged === true)) checked @endif>
@@ -1757,12 +1723,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_inside_surface_ok">Innere Oberfläche in Ordnung</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_inside_surface_ok') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_inside_surface_ok') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_inside_surface_ok') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_inside_surface_ok === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_inside_surface_ok" id=1 value=1
                            autocomplete="off"
@@ -1788,12 +1754,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_grounding_existent">Erdung des Messrohres ist gegeben</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_grounding_existent') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_grounding_existent') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_grounding_existent') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_grounding_existent === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_grounding_existent" id=1 value=1
                            autocomplete="off"
@@ -1819,12 +1785,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="measurement_section_pipe_air_pockets_visible">Lufteinschlüsse erkennbar</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('measurement_section_pipe_air_pockets_visible') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('measurement_section_pipe_air_pockets_visible') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('measurement_section_pipe_air_pockets_visible') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->measurement_section_pipe_air_pockets_visible === true)) active @endif">
                     <input type="radio" name="measurement_section_pipe_air_pockets_visible" id=1 value=1
                            autocomplete="off"
@@ -1856,7 +1822,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#water"></use>
             </svg>
             Bestandsaufnahme Unterwasserseite
@@ -1867,16 +1833,14 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tailwater_pipe_diameter">Rohrdurchmesser innen</label>
             <div class="input-group">
                 <input type="number" min="0" class="form-control @error('tailwater_pipe_diameter') is-invalid @enderror"
                        id="tailwater_pipe_diameter" name="tailwater_pipe_diameter" placeholder="600"
                        value="{{ old('tailwater_pipe_diameter', optional($flowMeterInspectionReport)->tailwater_pipe_diameter) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">mm</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('tailwater_pipe_diameter')
                     {{ $message }}
@@ -1887,12 +1851,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="tailwater_pipe_fully_filled">Füllstand</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('tailwater_pipe_fully_filled') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('tailwater_pipe_fully_filled') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('tailwater_pipe_fully_filled') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_pipe_fully_filled === true)) active @endif">
                     <input type="radio" name="tailwater_pipe_fully_filled" id=1 value=1 autocomplete="off"
                            @if(old('tailwater_pipe_fully_filled') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_pipe_fully_filled === true)) checked @endif>
@@ -1911,16 +1875,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tailwater_runout_section_slope">Gefälle der Auslaufstrecke</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('tailwater_runout_section_slope') is-invalid @enderror"
                        id="tailwater_runout_section_slope" name="tailwater_runout_section_slope" placeholder="9"
                        value="{{ old('tailwater_runout_section_slope', optional($flowMeterInspectionReport)->tailwater_runout_section_slope) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">‰</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('tailwater_runout_section_slope')
                     {{ $message }}
@@ -1929,7 +1891,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tailwater_runout_section_slope_assessment_type">Vermessung durchgeführt mittels</label>
             <input type="text"
                    class="form-control @error('tailwater_runout_section_slope_assessment_type') is-invalid @enderror"
@@ -1948,7 +1910,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#water"></use>
             </svg>
             Beurteilung der Auslaufstrecke
@@ -1959,7 +1921,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tailwater_runout_section_assessment">Beurteilung der Auslaufstrecke</label>
             <input type="text" class="form-control @error('tailwater_runout_section_assessment') is-invalid @enderror"
                    id="tailwater_runout_section_assessment" name="tailwater_runout_section_assessment"
@@ -1975,12 +1937,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="tailwater_measurement_pipe_can_run_dry">Leerlaufen des Messrohrs ist möglich</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('tailwater_measurement_pipe_can_run_dry') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('tailwater_measurement_pipe_can_run_dry') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('tailwater_measurement_pipe_can_run_dry') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_measurement_pipe_can_run_dry === true)) active @endif">
                     <input type="radio" name="tailwater_measurement_pipe_can_run_dry" id=1 value=1 autocomplete="off"
                            @if(old('tailwater_measurement_pipe_can_run_dry') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_measurement_pipe_can_run_dry === true)) checked @endif>
@@ -1999,13 +1961,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="tailwater_flow_conditions_influenced">Strömungsverhältnisse werden vom Vorfluter oder
                     anderen Einleitungen beeinflusst</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('tailwater_flow_conditions_influenced') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('tailwater_flow_conditions_influenced') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('tailwater_flow_conditions_influenced') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_flow_conditions_influenced === true)) active @endif">
                     <input type="radio" name="tailwater_flow_conditions_influenced" id=1 value=1 autocomplete="off"
                            @if(old('tailwater_flow_conditions_influenced') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->tailwater_flow_conditions_influenced === true)) checked @endif>
@@ -2024,7 +1986,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tailwater_flow_conditions_influencer">Beeinflussung durch</label>
             <input type="text" class="form-control @error('tailwater_flow_conditions_influencer') is-invalid @enderror"
                    id="tailwater_flow_conditions_influencer" name="tailwater_flow_conditions_influencer"
@@ -2042,7 +2004,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check-circle"></use>
             </svg>
             Funktionskontrolle Messsystem
@@ -2053,7 +2015,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="zero_flow_rate_testing_conditions">Wie wird der Null-Durchfluss geprüft?</label>
             <input type="text" class="form-control @error('zero_flow_rate_testing_conditions') is-invalid @enderror"
                    id="zero_flow_rate_testing_conditions" name="zero_flow_rate_testing_conditions"
@@ -2066,7 +2028,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="zero_flow_rate_reading_points">Ablesepunkte des Null-Durchflusses</label>
             <input type="text" class="form-control @error('zero_flow_rate_reading_points') is-invalid @enderror"
                    id="zero_flow_rate_reading_points" name="zero_flow_rate_reading_points"
@@ -2079,16 +2041,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="zero_flow_rate_displayed_flow">Angezeigter Durchfluss bei Null-Durchfluss</label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
                        class="form-control @error('zero_flow_rate_displayed_flow') is-invalid @enderror"
                        id="zero_flow_rate_displayed_flow" name="zero_flow_rate_displayed_flow" placeholder="0"
                        value="{{ old('zero_flow_rate_displayed_flow', optional($flowMeterInspectionReport)->zero_flow_rate_displayed_flow) }}"/>
-                <div class="input-group-append">
                     <span class="input-group-text">l/s</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('zero_flow_rate_displayed_flow')
                     {{ $message }}
@@ -2102,7 +2062,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-slash-minus"></use>
             </svg>
             Vergleichsmessung
@@ -2115,13 +2075,13 @@
     <div class="col-md-8">
         <ul class="nav nav-tabs nav-fill mb-2" id="comparison-measurement" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="mobile-tab" data-toggle="tab" href="#mobile" role="tab"
+                <a class="nav-link active" id="mobile-tab" data-bs-toggle="tab" href="#mobile" role="tab"
                    aria-controls="mobile" aria-selected="true"
                    onclick="document.getElementById('comparison_measurements_process').value = 'mobile_measurement_equipment'">mobile
                     Messeinrichtung</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="volumetric-tab" data-toggle="tab" href="#volumetric" role="tab"
+                <a class="nav-link" id="volumetric-tab" data-bs-toggle="tab" href="#volumetric" role="tab"
                    aria-controls="volumetric" aria-selected="false"
                    onclick="document.getElementById('comparison_measurements_process').value = 'volumetric'">volumetrisch</a>
             </li>
@@ -2132,12 +2092,12 @@
 
         <div class="tab-content" id="comparison-measurement-content">
             <div class="tab-pane fade show active" id="mobile" role="tabpanel" aria-labelledby="mobile-tab">
-                <div class="form-group">
+                <div class="mb-3">
                     <div>
                         <label for="comparison_measurement_mobile_type">Geschwindikteitsmessung</label>
                     </div>
-                    <div class="btn-group btn-group-toggle @error('comparison_measurement_mobile_type') is-invalid @enderror"
-                         data-toggle="buttons">
+                    <div class="btn-group @error('comparison_measurement_mobile_type') is-invalid @enderror"
+                         data-bs-toggle="buttons">
                         <label class="btn btn-outline-secondary @if(old('comparison_measurement_mobile_type', optional($flowMeterInspectionReport)->comparison_measurement_mobile_type) == 'doppler_ultrasonic') active @endif">
                             <input type="radio" name="comparison_measurement_mobile_type" id="doppler_ultrasonic"
                                    value="doppler_ultrasonic" autocomplete="off"
@@ -2178,7 +2138,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_type_other">Andere Geschwindigkeitsmessung</label>
                     <input type="text"
                            class="form-control @error('comparison_measurement_mobile_type_other') is-invalid @enderror"
@@ -2192,7 +2152,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_installation_point">Einbauort der
                         Vergleichsmessung</label>
                     <input type="text"
@@ -2207,7 +2167,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_make">Prüfmittel Fabrikat</label>
                     <input type="text"
                            class="form-control @error('comparison_measurement_mobile_equipment_make') is-invalid @enderror"
@@ -2221,7 +2181,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_type">Prüfmittel Type</label>
                     <input type="text"
                            class="form-control @error('comparison_measurement_mobile_equipment_type') is-invalid @enderror"
@@ -2235,7 +2195,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_identifier">Prüfmittel Seriennummer</label>
                     <input type="text"
                            class="form-control @error('comparison_measurement_mobile_equipment_identifier') is-invalid @enderror"
@@ -2249,7 +2209,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_q_min">Minimaler Durchfluss Q<sub>min</sub>
                         (Herstellerangabe)</label>
                     <div class="input-group">
@@ -2258,9 +2218,7 @@
                                id="comparison_measurement_mobile_equipment_q_min"
                                name="comparison_measurement_mobile_equipment_q_min" placeholder="0"
                                value="{{ old('comparison_measurement_mobile_equipment_q_min', optional($flowMeterInspectionReport)->comparison_measurement_mobile_equipment_q_min) }}"/>
-                        <div class="input-group-append">
                             <span class="input-group-text">l/s</span>
-                        </div>
                         <div class="invalid-feedback">
                             @error('comparison_measurement_mobile_equipment_q_min')
                             {{ $message }}
@@ -2269,7 +2227,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_maximum_flow_rate">Messbereich 100%
                         Durchflussrate (Herstellerangabe)</label>
                     <div class="input-group">
@@ -2278,9 +2236,7 @@
                                id="comparison_measurement_mobile_equipment_maximum_flow_rate"
                                name="comparison_measurement_mobile_equipment_maximum_flow_rate" placeholder="282"
                                value="{{ old('comparison_measurement_mobile_equipment_maximum_flow_rate', optional($flowMeterInspectionReport)->comparison_measurement_mobile_equipment_maximum_flow_rate) }}"/>
-                        <div class="input-group-append">
                             <span class="input-group-text">l/s oder m³/h</span>
-                        </div>
                         <div class="invalid-feedback">
                             @error('comparison_measurement_mobile_equipment_maximum_flow_rate')
                             {{ $message }}
@@ -2289,13 +2245,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <div>
                         <label for="comparison_measurement_mobile_equipment_maximum_flow_rate_unit">Messbereich 100%
                             Durchflussrate Einheit</label>
                     </div>
-                    <div class="btn-group btn-group-toggle @error('comparison_measurement_mobile_equipment_maximum_flow_rate_unit') is-invalid @enderror"
-                         data-toggle="buttons">
+                    <div class="btn-group @error('comparison_measurement_mobile_equipment_maximum_flow_rate_unit') is-invalid @enderror"
+                         data-bs-toggle="buttons">
                         <label class="btn btn-outline-secondary @if(old('comparison_measurement_mobile_equipment_maximum_flow_rate_unit', optional($flowMeterInspectionReport)->comparison_measurement_mobile_equipment_maximum_flow_rate_unit) == 'l_s') active @endif">
                             <input type="radio" name="comparison_measurement_mobile_equipment_maximum_flow_rate_unit"
                                    id="l_s" value="l_s" autocomplete="off"
@@ -2316,7 +2272,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_maximum_speed">Messbereich 100% Geschwindigkeit
                         (Herstellerangabe)</label>
                     <div class="input-group">
@@ -2325,9 +2281,7 @@
                                id="comparison_measurement_mobile_equipment_maximum_speed"
                                name="comparison_measurement_mobile_equipment_maximum_speed" placeholder="10"
                                value="{{ old('comparison_measurement_mobile_equipment_maximum_speed', optional($flowMeterInspectionReport)->comparison_measurement_mobile_equipment_maximum_speed) }}"/>
-                        <div class="input-group-append">
                             <span class="input-group-text">m/s</span>
-                        </div>
                         <div class="invalid-feedback">
                             @error('comparison_measurement_mobile_equipment_maximum_speed')
                             {{ $message }}
@@ -2336,13 +2290,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <div>
                         <label for="comparison_measurement_mobile_equipment_maximum_speed_unit">Messbereich 100%
                             Geschwindigkeit Einheit</label>
                     </div>
-                    <div class="btn-group btn-group-toggle @error('comparison_measurement_mobile_equipment_maximum_speed_unit') is-invalid @enderror"
-                         data-toggle="buttons">
+                    <div class="btn-group @error('comparison_measurement_mobile_equipment_maximum_speed_unit') is-invalid @enderror"
+                         data-bs-toggle="buttons">
                         <label class="btn btn-outline-secondary @if(old('comparison_measurement_mobile_equipment_maximum_speed_unit', optional($flowMeterInspectionReport)->comparison_measurement_mobile_equipment_maximum_speed_unit) == 'm_s') active @endif">
                             <input type="radio" name="comparison_measurement_mobile_equipment_maximum_speed_unit"
                                    id="m_s" value="m_s" autocomplete="off"
@@ -2357,7 +2311,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_last_calibrated_on">Letzte Kalibrierung</label>
                     <input type="date"
                            class="form-control @error('comparison_measurement_mobile_equipment_last_calibrated_on') is-invalid @enderror"
@@ -2371,7 +2325,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_last_cal_provider">Kalibrierung
                         durchgeführt von</label>
                     <input type="text"
@@ -2387,7 +2341,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_mobile_equipment_last_cal_doc_identifier">Kalibrierung
                         Dokumentation, Geschäftszahl</label>
                     <input type="text"
@@ -2405,7 +2359,7 @@
             </div>
 
             <div class="tab-pane fade" id="volumetric" role="tabpanel" aria-labelledby="volumetric-tab">
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_volumetric_basin">Förderbecken</label>
                     <input type="text"
                            class="form-control @error('comparison_measurement_volumetric_basin') is-invalid @enderror"
@@ -2419,7 +2373,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_volumetric_basin_cross_section_area">Querschnittsfläche
                         des Vergleichsbehälters</label>
                     <div class="input-group">
@@ -2429,9 +2383,7 @@
                                name="comparison_measurement_volumetric_basin_cross_section_area"
                                placeholder="25"
                                value="{{ old('comparison_measurement_volumetric_basin_cross_section_area', optional($flowMeterInspectionReport)->comparison_measurement_volumetric_basin_cross_section_area) }}"/>
-                        <div class="input-group-append">
                             <span class="input-group-text">m²</span>
-                        </div>
                         <div class="invalid-feedback">
                             @error('comparison_measurement_volumetric_basin_cross_section_area')
                             {{ $message }}
@@ -2440,7 +2392,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="comparison_measurement_volumetric_height_measurement_equipment">Verwendete
                         Höhenmessung</label>
                     <input type="text"
@@ -2463,7 +2415,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#card-text"></use>
             </svg>
             Dokumentation der Vergleichsmessung
@@ -2477,11 +2429,11 @@
         <ul class="nav nav-tabs nav-fill mb-2" id="comparison-measurements" role="tablist">
             @foreach( $comparison_measurement_q_percentages as $q_percentage )
                 <li class="nav-item">
-                    <a class="nav-link @if($loop->last) active @endif @error('measurements.'.$q_percentage.'.*') text-danger @enderror" id="q{{ $q_percentage }}-tab" data-toggle="tab"
+                    <a class="nav-link @if($loop->last) active @endif @error('measurements.'.$q_percentage.'.*') text-danger @enderror" id="q{{ $q_percentage }}-tab" data-bs-toggle="tab"
                        href="#q{{ $q_percentage }}" role="tab" aria-controls="q{{ $q_percentage }}"
                        aria-selected="true">
                         @error('measurements.'.$q_percentage.'.*')
-                            <svg class="icon-bs icon-baseline text-danger mr-1">
+                            <svg class="icon-bs icon-baseline text-danger me-1">
                                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use>
                             </svg>
                         @enderror
@@ -2496,7 +2448,7 @@
             @foreach( $comparison_measurement_q_percentages as $q_percentage )
                 <div class="tab-pane fade show @if($loop->last) active @endif" id="q{{ $q_percentage }}"
                      role="tabpanel" aria-labelledby="q{{ $q_percentage }}-tab">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][q_value]">Q<sub>{{ $q_percentage === 100 ? 'gesamt' : $q_percentage.'%' }}</sub></label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2504,9 +2456,7 @@
                                    id="measurements[{{ $q_percentage }}][q_value]"
                                    name="measurements[{{ $q_percentage }}][q_value]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.q_value', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->q_value) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">l/s</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.q_value')
                                     {{ $message }}
@@ -2515,7 +2465,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][started_at]">Datum und Uhrzeit Start</label>
                         <input type="datetime-local" class="form-control @error('measurements.'.$q_percentage.'.started_at') is-invalid @enderror" id="measurements[{{ $q_percentage }}][started_at]" name="measurements[{{ $q_percentage }}][started_at]" value="{{ old('measurements.'.$q_percentage.'.started_at', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->started_at_for_input_field) }}" />
                         <div class="invalid-feedback">
@@ -2525,7 +2475,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][ended_at]">Datum und Uhrzeit Ende</label>
                         <input type="datetime-local" class="form-control @error('measurements.'.$q_percentage.'.ended_at') is-invalid @enderror" id="measurements[{{ $q_percentage }}][ended_at]" name="measurements[{{ $q_percentage }}][ended_at]" value="{{ old('measurements.'.$q_percentage.'.ended_at', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->ended_at_for_input_field) }}" />
                         <div class="invalid-feedback">
@@ -2535,7 +2485,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][measurement_transformer_reading_start]">Messwertumformer Zählerstand Start</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2543,9 +2493,7 @@
                                    id="measurements[{{ $q_percentage }}][measurement_transformer_reading_start]"
                                    name="measurements[{{ $q_percentage }}][measurement_transformer_reading_start]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.measurement_transformer_reading_start', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->measurement_transformer_reading_start) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.measurement_transformer_reading_start')
                                     {{ $message }}
@@ -2554,7 +2502,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][measurement_transformer_reading_end]">Messwertumformer Zählerstand Ende</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2562,9 +2510,7 @@
                                    id="measurements[{{ $q_percentage }}][measurement_transformer_reading_end]"
                                    name="measurements[{{ $q_percentage }}][measurement_transformer_reading_end]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.measurement_transformer_reading_end', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->measurement_transformer_reading_end) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.measurement_transformer_reading_end')
                                     {{ $message }}
@@ -2573,7 +2519,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][measurement_transformer_reading_sum]">Messwertumformer Summe</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2581,9 +2527,7 @@
                                    id="measurements[{{ $q_percentage }}][measurement_transformer_reading_sum]"
                                    name="measurements[{{ $q_percentage }}][measurement_transformer_reading_sum]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.measurement_transformer_reading_sum', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->measurement_transformer_reading_sum) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.measurement_transformer_reading_sum')
                                     {{ $message }}
@@ -2592,7 +2536,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][pcs_reading_start]">Prozessleitsystem Zählerstand Start</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2600,9 +2544,7 @@
                                    id="measurements[{{ $q_percentage }}][pcs_reading_start]"
                                    name="measurements[{{ $q_percentage }}][pcs_reading_start]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.pcs_reading_start', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->pcs_reading_start) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.pcs_reading_start')
                                     {{ $message }}
@@ -2611,7 +2553,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][pcs_reading_end]">Prozessleitsystem Zählerstand Ende</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2619,9 +2561,7 @@
                                    id="measurements[{{ $q_percentage }}][pcs_reading_end]"
                                    name="measurements[{{ $q_percentage }}][pcs_reading_end]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.pcs_reading_end', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->pcs_reading_end) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.pcs_reading_end')
                                     {{ $message }}
@@ -2630,7 +2570,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][pcs_reading_sum]">Prozessleitsystem Summe</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2638,9 +2578,7 @@
                                    id="measurements[{{ $q_percentage }}][pcs_reading_sum]"
                                    name="measurements[{{ $q_percentage }}][pcs_reading_sum]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.pcs_reading_sum', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->pcs_reading_sum) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.pcs_reading_sum')
                                     {{ $message }}
@@ -2649,7 +2587,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][comparison_measurement_start]">Vergleichsmessung Start</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2657,9 +2595,7 @@
                                    id="measurements[{{ $q_percentage }}][comparison_measurement_start]"
                                    name="measurements[{{ $q_percentage }}][comparison_measurement_start]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.comparison_measurement_start', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->comparison_measurement_start) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.comparison_measurement_start')
                                     {{ $message }}
@@ -2668,7 +2604,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][comparison_measurement_end]">Vergleichsmessung Ende</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2676,9 +2612,7 @@
                                    id="measurements[{{ $q_percentage }}][comparison_measurement_end]"
                                    name="measurements[{{ $q_percentage }}][comparison_measurement_end]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.comparison_measurement_end', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->comparison_measurement_end) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.comparison_measurement_end')
                                     {{ $message }}
@@ -2687,7 +2621,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][comparison_measurement_sum]">Vergleichsmessung Summe</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2695,9 +2629,7 @@
                                    id="measurements[{{ $q_percentage }}][comparison_measurement_sum]"
                                    name="measurements[{{ $q_percentage }}][comparison_measurement_sum]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.comparison_measurement_sum', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->comparison_measurement_sum) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">m³</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.comparison_measurement_sum')
                                     {{ $message }}
@@ -2706,7 +2638,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][measurement_difference]">Abweichung Vergleichsmessung/stationär</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2714,9 +2646,7 @@
                                    id="measurements[{{ $q_percentage }}][measurement_difference]"
                                    name="measurements[{{ $q_percentage }}][measurement_difference]" placeholder="3"
                                    value="{{ old('measurements.'.$q_percentage.'.measurement_difference', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->measurement_difference) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">%</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.measurement_difference')
                                     {{ $message }}
@@ -2725,7 +2655,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="measurements[{{ $q_percentage }}][q_value_average_mobile]">Errechneter Mittelwert mobil</label>
                         <div class="input-group">
                             <input type="number" min="0" step="any"
@@ -2733,9 +2663,7 @@
                                    id="measurements[{{ $q_percentage }}][q_value_average_mobile]"
                                    name="measurements[{{ $q_percentage }}][q_value_average_mobile]" placeholder="10"
                                    value="{{ old('measurements.'.$q_percentage.'.q_value_average_mobile', optional(optional($flowMeterInspectionReport)->{'measurementsQ'.$q_percentage})->q_value_average_mobile) }}"/>
-                            <div class="input-group-append">
                                 <span class="input-group-text">l/s</span>
-                            </div>
                             <div class="invalid-feedback">
                                 @error('measurements.'.$q_percentage.'.q_value_average_mobile')
                                     {{ $message }}
@@ -2752,7 +2680,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
+            <svg class="icon-bs icon-16 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
             </svg>
             Zusammenfassende Beurteilung
@@ -2763,7 +2691,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_difference_up_to_30_q_max">Abweichung Messwerte stationär zur Vergleichmessung von 0,1 Q<sub>max</sub> bis 0,3 Q<sub>max</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -2772,9 +2700,7 @@
                        name="measurement_difference_up_to_30_q_max" placeholder="3"
                        value="{{ old('measurement_difference_up_to_30_q_max', optional($flowMeterInspectionReport)->measurement_difference_up_to_30_q_max) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">%</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_difference_up_to_30_q_max')
                         {{ $message }}
@@ -2785,7 +2711,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="measurement_difference_above_30_q_max">Abweichung Messwerte stationär zur Vergleichmessung über 0,3 Q<sub>max</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -2794,9 +2720,7 @@
                        name="measurement_difference_above_30_q_max" placeholder="2"
                        value="{{ old('measurement_difference_above_30_q_max', optional($flowMeterInspectionReport)->measurement_difference_above_30_q_max) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">%</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('measurement_difference_above_30_q_max')
                         {{ $message }}
@@ -2807,7 +2731,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="reading_difference_up_to_30_q_max">Abweichung Zähölerstände stationär zur Vergleichmessung von 0,1 Q<sub>max</sub> bis 0,3 Q<sub>max</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -2816,9 +2740,7 @@
                        name="reading_difference_up_to_30_q_max" placeholder="5"
                        value="{{ old('reading_difference_up_to_30_q_max', optional($flowMeterInspectionReport)->reading_difference_up_to_30_q_max) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">%</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('reading_difference_up_to_30_q_max')
                         {{ $message }}
@@ -2829,7 +2751,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="reading_difference_above_30_q_max">Abweichung Zählerstände stationär zur Vergleichmessung über 0,3 Q<sub>max</sub></label>
             <div class="input-group">
                 <input type="number" min="0" step="any"
@@ -2838,9 +2760,7 @@
                        name="reading_difference_above_30_q_max" placeholder="3"
                        value="{{ old('reading_difference_above_30_q_max', optional($flowMeterInspectionReport)->reading_difference_above_30_q_max) }}"
                        required/>
-                <div class="input-group-append">
                     <span class="input-group-text">%</span>
-                </div>
                 <div class="invalid-feedback">
                     @error('reading_difference_above_30_q_max')
                         {{ $message }}
@@ -2851,12 +2771,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="equipment_in_tolerance_range"><strong>Das Messsystem arbeitet innerhalb des Toleranzbereichs des ÖWAV Regelblatts 38</strong></label>
             </div>
-            <div class="btn-group btn-group-toggle @error('equipment_in_tolerance_range') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('equipment_in_tolerance_range') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('equipment_in_tolerance_range') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->equipment_in_tolerance_range === true)) active @endif">
                     <input type="radio" name="equipment_in_tolerance_range" id=1 value=1 autocomplete="off"
                            @if(old('equipment_in_tolerance_range') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->equipment_in_tolerance_range === true)) checked @endif>
@@ -2875,7 +2795,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="equipment_deficiencies">Festgestelle Mängel beim Messsystem</label>
             <input type="text"
                    class="form-control @error('equipment_deficiencies') is-invalid @enderror"
@@ -2889,12 +2809,12 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="further_inspection_required">Zweitprüfung/Vollprüfung nach Korrektur erforderlich</label>
             </div>
-            <div class="btn-group btn-group-toggle @error('further_inspection_required') is-invalid @enderror"
-                 data-toggle="buttons">
+            <div class="btn-group @error('further_inspection_required') is-invalid @enderror"
+                 data-bs-toggle="buttons">
                 <label class="btn btn-outline-secondary @if(old('further_inspection_required') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->further_inspection_required === true)) active @endif">
                     <input type="radio" name="further_inspection_required" id=1 value=1 autocomplete="off"
                            @if(old('further_inspection_required') === '1' || ($flowMeterInspectionReport && $flowMeterInspectionReport->further_inspection_required === true)) checked @endif>
@@ -2924,7 +2844,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Kommentare zur Prüfung
@@ -2935,13 +2855,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Kommentare zur Prüfung
             </label>
             <markdown-editor name="comment" placeholder="Kommentare zur Prüfung"  value="{{ old('comment', optional($flowMeterInspectionReport)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -2958,7 +2878,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Anhänge
@@ -2974,7 +2894,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="appendix_description">Beschreibung des Anhang Inhaltes</label>
             <input type="text"
                    class="form-control @error('appendix_description') is-invalid @enderror"
@@ -2990,7 +2910,7 @@
 
         <div class="alert alert-warning mt-1" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                 </svg>
                 <p class="m-0">
@@ -3000,13 +2920,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label>PDF Anhang für den
                 Ausdruck{{ $flowMeterInspectionReport ? ' (Ohne Auswahl wird der aktuelle Anhang beibehalten)' : '' }}</label>
-            <div class="custom-file">
-                <input type="file" accept="application/pdf" class="custom-file-input" id="appendix"
+            <div class="mb-3">
+                <input type="file" accept="application/pdf" class="form-control" id="appendix"
                        name="appendix">
-                <label class="custom-file-label" for="appendix">PDF Anhang auswählen</label>
+                <label class="form-label" for="appendix">PDF Anhang auswählen</label>
             </div>
             <div class="invalid-feedback @error('appendix') d-block @enderror">
                 @error('appendix')
@@ -3015,7 +2935,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label>
                 Andere Anhänge
             </label>
@@ -3043,7 +2963,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
             </svg>
             Anfrage zur Unterschrift senden
@@ -3057,18 +2977,18 @@
     <div class="col-md-8">
         <div class="alert alert-info" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 Die Email Adresse kann im nächsten Schritt angegeben werden.
             </div>
         </div>
-        <div class="form-group">
-            <div class="custom-control custom-switch">
+        <div class="mb-3">
+            <div class="form-check form-switch">
                 <input type="checkbox"
-                       class="custom-control-input @error('send_signature_request') is-invalid @enderror"
+                       class="form-check-input @error('send_signature_request') is-invalid @enderror"
                        name="send_signature_request" id="send_signature_request" value="true">
-                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem
+                <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem
                     Speichern senden.</label>
             </div>
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">

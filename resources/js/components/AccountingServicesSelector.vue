@@ -9,7 +9,7 @@
                 <div class="col">
                     {{service.name_with_unit}}
                 </div>
-                <div class="col-auto ml-auto">
+                <div class="col-auto ms-auto">
                     <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelected(service)">Entfernen</button>
                 </div>
             </div>

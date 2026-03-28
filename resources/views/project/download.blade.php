@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Zeitraum
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="start">Start</label>
                         <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $project->starts_on?->format('Y-m-d')) ?? '' }}" />
                         <div class="invalid-feedback">
@@ -50,7 +50,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="end">Ende</label>
                         <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" placeholder="" value="{{ old('end') }}" />
                         <div class="invalid-feedback">
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Mitarbeiter
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="employee_ids">Mitarbeiter</label>
                         <people-selector inputname="employee_ids[]" :people="{{ $employees }}" :current_people="{{ $currentEmployees ?? 'null' }}" v-cloak></people-selector>
                         <div class="invalid-feedback @error('employee_ids') d-block @enderror">
@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                         </svg>
                         Leistungen
@@ -102,7 +102,7 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="service_ids">Leistungen</label>
                         <accounting-services-selector inputname="service_ids[]" :services="{{ $services }}" :current_services="{{ $currentServices ?? 'null' }}" v-cloak></accounting-services-selector>
                         <div class="invalid-feedback @error('service_ids') d-block @enderror">
@@ -115,7 +115,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                 </svg>
                 PDF erstellen

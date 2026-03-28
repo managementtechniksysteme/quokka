@@ -8,7 +8,7 @@
             </div>
             <div class="text-muted">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-1">
+                    <svg class="icon icon-16 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use>
                     </svg>
                     {{ trans_choice('messages.permissions', $role->permissions_count) }}
@@ -16,14 +16,14 @@
             </div>
         </div>
 
-        <div class="d-none d-md-block ml-2">
+        <div class="d-none d-md-block ms-2">
             <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="roleOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="roleOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="roleOverviewDropdown">
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="roleOverviewDropdown">
                     @can('update', $role)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.edit', $role) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                             </svg>
                             Bearbeiten
@@ -31,7 +31,7 @@
                     @endcan
                     @can('create', \Spatie\Permission\Models\Role::class)
                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('roles.create', ['template' => $role]) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
                             </svg>
                             Kopieren
@@ -39,7 +39,7 @@
                     @endcan
                     @can('email', $role)
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                             </svg>
                             Email senden
@@ -47,14 +47,14 @@
                     @endcan
                     @can('createPdf', $role)
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                             </svg>
                             PDF erstellen
                         </a>
                     @endcan
                     <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                         Favorisieren
@@ -65,7 +65,7 @@
                             @method('DELETE')
 
                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                 </svg>
                                 Entfernen

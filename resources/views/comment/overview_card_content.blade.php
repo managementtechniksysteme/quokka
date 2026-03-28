@@ -1,6 +1,6 @@
 <div class="py-2">
     <div class="row">
-        <div class="col-auto d-none d-md-block pr-0">
+        <div class="col-auto d-none d-md-block pe-0">
             <div class="avatar bg-{{ $comment->employee->user->settings->avatar_colour }}-200 rounded-circle border border-{{ $comment->employee->user->settings->avatar_colour }}-800 d-inline-flex align-items-center justify-content-center">
                 <h4 class="text-{{ $comment->employee->user->settings->avatar_colour }}-800 m-0">{{ $comment->employee->user->username_avatar_string }}</h4>
             </div>
@@ -8,15 +8,15 @@
         <div class="col">
             <div class="rounded-top border bg-gray-100 px-2 py-1">
                 <div class="row">
-                    <div class="col-auto mr-auto">
+                    <div class="col-auto me-auto">
                         <div class="lead">{{ $comment->employee->person->name }}</div>
                         <p class="text-muted d-inline-flex align-items-center m-0">
-                            <svg class="icon icon-16 mr-1">
+                            <svg class="icon icon-16 me-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $comment->created_at->format('d.m.Y H:i') }}
                             @if($comment->created_at->lt($comment->updated_at))
-                                <svg class="icon icon-16 ml-2 mr-1">
+                                <svg class="icon icon-16 ms-2 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit-2"></use>
                                 </svg>
                                 {{ $comment->updated_at->format('d.m.Y H:i') }}
@@ -27,12 +27,12 @@
                     @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
                         <div class="col-auto d-inline-flex align-items-center">
                             <div class="dropdown d-inline">
-                                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="commentOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="commentOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentOverviewDropdown">
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOverviewDropdown">
                                     @can('update', $comment)
                                         <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
-                                            <svg class="icon icon-16 mr-2">
+                                            <svg class="icon icon-16 me-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                                             </svg>
                                             Bearbeiten
@@ -44,7 +44,7 @@
                                             @method('DELETE')
 
                                             <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                                <svg class="icon icon-16 mr-2">
+                                                <svg class="icon icon-16 me-2">
                                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                                                 </svg>
                                                 Entfernen
@@ -72,13 +72,13 @@
                     <div class="row text-muted d-flex align-items-center mt-1">
                         <div class="col">
                             <div class="d-none d-md-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                                 </svg>
                                 Anhänge
                             </div>
-                            <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseCommentAttachments-{{ $comment->id }}" role="button" aria-expanded="false" aria-controls="collapseCommentAttachments-{{ $comment->id }}">
-                                <svg class="icon icon-16 mr-2">
+                            <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseCommentAttachments-{{ $comment->id }}" role="button" aria-expanded="false" aria-controls="collapseCommentAttachments-{{ $comment->id }}">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                                 </svg>
                                 Anhänge
@@ -91,9 +91,9 @@
                                 <div class="col-12 col-md-6 col-lg-3 mt-1">
                                     <div class="attachment bg-gray-100 border d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                         @if($attachment->hasGeneratedConversion('thumbnail'))
-                                            <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                            <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
-                                            <svg class="icon attachment-img-preview mr-2">
+                                            <svg class="icon attachment-img-preview me-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                             </svg>
                                         @endif
@@ -113,9 +113,9 @@
                                 <div class="col-12 col-md-6 col-lg-3 mt-1">
                                     <div class="attachment bg-gray-100 border d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                         @if($attachment->hasGeneratedConversion('thumbnail'))
-                                            <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                            <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
-                                            <svg class="icon attachment-img-preview mr-2">
+                                            <svg class="icon attachment-img-preview me-2">
                                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                             </svg>
                                         @endif

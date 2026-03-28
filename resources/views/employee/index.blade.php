@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container pt-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                 </svg>
                 Mitarbeiter
@@ -16,7 +16,7 @@
             <div class="scroll-x d-flex">
                 @can('create', \App\Models\Employee::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Mitarbeiter anlegen
@@ -35,7 +35,6 @@
                     <form action="{{ route('employees.index') }}" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen" autocomplete="off" />
-                            <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
@@ -48,7 +47,6 @@
                                         </svg>
                                     </a>
                                 @endif
-                            </div>
                         </div>
 
                     </form>
@@ -63,9 +61,10 @@
                 @component('employee.overview_card', [ 'employee' => $employee ])
                 @endcomponent
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
-                @endif
+                    @if(!$loop->last)
+                        <hr class="m-0 mx-1" />
+                    @endif
+
             @empty
                 <div class="text-center mt-4">
                     <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
@@ -76,7 +75,7 @@
                         @can('create', \App\Models\Employee::class)
                             <p class="lead">Lege einen neuen Mitarbeiter an.</p>
                             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('employees.create') }}">
-                                <svg class="icon icon-20 mr-2">
+                                <svg class="icon icon-20 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                                 </svg>
                                 Mitarbeiter anlegen

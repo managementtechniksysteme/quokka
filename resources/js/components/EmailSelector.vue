@@ -1,16 +1,16 @@
 <template>
     <div>
         <div class="row align-items-center">
-            <div class="col pr-0">
+            <div class="col pe-0">
                 <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :value="selected_input" :selectOnTab="true" @input="setSelected" taggable>
                     <template v-slot:no-options>Keine passenden Einträge.</template>
                 </v-select>
             </div>
 
-            <div class="col-auto pl-0 ml-1">
-                <button type="button" class="btn btn-primary ml-1" @click="addSelected(selected_input, selected_to)">AN</button>
-                <button type="button" class="btn btn-outline-secondary ml-1" @click="addSelected(selected_input, selected_cc)">CC</button>
-                <button type="button" class="btn btn-outline-secondary ml-1" @click="addSelected(selected_input, selected_bcc)">BCC</button>
+            <div class="col-auto ps-0 ms-1">
+                <button type="button" class="btn btn-primary ms-1" @click="addSelected(selected_input, selected_to)">AN</button>
+                <button type="button" class="btn btn-outline-secondary ms-1" @click="addSelected(selected_input, selected_cc)">CC</button>
+                <button type="button" class="btn btn-outline-secondary ms-1" @click="addSelected(selected_input, selected_bcc)">BCC</button>
             </div>
 
         </div>
@@ -28,7 +28,7 @@
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
 
                     </div>
-                    <div class="col-auto ml-auto">
+                    <div class="col-auto ms-auto">
                         <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedTo(mailable, selected_to)">Entfernen</button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="col">
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
-                    <div class="col-auto ml-auto">
+                    <div class="col-auto ms-auto">
                         <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedCC(mailable, selected_cc)">Entfernen</button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div class="col">
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
-                    <div class="col-auto ml-auto">
+                    <div class="col-auto ms-auto">
                         <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedBCC(mailable, selected_bcc)">Entfernen</button>
                     </div>
                 </div>

@@ -51,11 +51,11 @@
                 <ul x-ref="results" class="m-0 p-0 spotlight-results overflow-auto">
                     <template x-for="(item, i) in filteredItems()" :key>
                         <li>
-                            <button @click="go(item[0].item.id)" class="d-block w-100 border-0 outline-none px-6 py-3 text-left"
+                            <button @click="go(item[0].item.id)" class="d-block w-100 border-0 outline-none px-6 py-3 text-start"
                                     :class="{ 'bg-gray-700': selected === i, 'bg-hover-gray-800': selected !== i }">
                                 <span x-text="item[0].item.name"
                                       :class="{'text-gray-300': selected !== i, 'text-white': selected === i }"></span>
-                                <span x-text="item[0].item.description" class="ml-1"
+                                <span x-text="item[0].item.description" class="ms-1"
                                       :class="{'text-gray-500': selected !== i, 'text-gray-400': selected === i }"></span>
                             </button>
                         </li>

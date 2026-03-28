@@ -19,7 +19,7 @@
 
 
         <button id="uuid-button" class="mx-auto bg-gray-100 outline-none mt-2" data-clipboard-text="{{ $exceptionUuid }}">
-            <svg class="icon-bs icon-baseline text-gray-500 mr-2">
+            <svg class="icon-bs icon-baseline text-gray-500 me-2">
                 <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use>
             </svg>
             <span id="uuid-button-text" class="text-sm text-gray-500 uppercase tracking-wider">Kopieren</span>

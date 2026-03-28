@@ -4,7 +4,7 @@
     @unless ($project->interimInvoices->isEmpty())
         @can('create', \App\Models\InterimInvoice::class)
             <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                 </svg>
                 Teilrechnung anlegen
@@ -17,9 +17,10 @@
             @component('interim_invoice.overview_card', [ 'interimInvoice'=> $interimInvoice ])
             @endcomponent
 
-            @if(!$loop->last)
-                <hr class="m-0 mx-1" />
-            @endif
+                @if(!$loop->last)
+                    <hr class="m-0 mx-1" />
+                @endif
+
         @empty
             <div class="text-center">
                 <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
@@ -27,7 +28,7 @@
                 @can('create', \App\Models\InterimInvoice::class)
                     <p class="lead">Lege eine neue Teilrechnung an.</p>
                     <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
-                        <svg class="icon icon-20 mr-2">
+                        <svg class="icon icon-20 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Teilrechnung anlegen

@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>
             Stammdaten
@@ -25,12 +25,12 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="employee">Mitarbeiter</label>
             <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($deliveryNote)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="written_on">Datum</label>
             <input type="date" class="form-control @error('written_on') is-invalid @enderror" id="written_on"
                    name="written_on" placeholder=""
@@ -45,12 +45,10 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="title">Lieferscheinnummer (Titel)</label>
             <div class="input-group">
-                <div class="input-group-prepend">
                     <span class="input-group-text">LI-</span>
-                </div>
                 <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="101595/2023" value="{{ old('title', optional($deliveryNote)->title) }}" required />
                 <div class="invalid-feedback">
                     @error('title')
@@ -62,14 +60,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="status">Status</label>
             </div>
             @if(optional($deliveryNote)->status === 'signed')
                 <div class="alert alert-warning mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
+                        <svg class="icon icon-24 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Der Lieferschein wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift
@@ -77,7 +75,7 @@
                     </div>
                 </div>
             @endif
-            <div class="btn-group btn-group-toggle">
+            <div class="btn-group">
                 <label class="btn btn-outline-secondary @if(optional($deliveryNote)->status == 'new' || !$deliveryNote) active @else disabled @endif">
                     <input type="radio" name="status" id="new" @if(optional($deliveryNote)->status == 'new' || !$deliveryNote) checked @endif disabled> neu
                 </label>
@@ -90,7 +88,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="project_id">Projekt</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
@@ -106,7 +104,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -117,13 +115,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zum Lieferschein"  value="{{ old('comment', optional($deliveryNote)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -140,7 +138,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Lieferschein
@@ -151,12 +149,12 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label>Lieferschein im PDF Format{{ $deliveryNote ? ' (Ohne Auswahl wird der aktuelle Lieferschein beibehalten)' : '' }}</label>
-            <div class="custom-file">
-                <input type="file" accept="application/pdf" class="custom-file-input" id="document"
+            <div class="mb-3">
+                <input type="file" accept="application/pdf" class="form-control" id="document"
                        name="document">
-                <label class="custom-file-label" for="document">Lieferschein auswählen</label>
+                <label class="form-label" for="document">Lieferschein auswählen</label>
                 <div class="invalid-feedback @error('document') d-block @enderror">
                     @error('document')
                     {{ $message }}
@@ -173,7 +171,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
             </svg>
             Anfrage zur Unterschrift senden
@@ -186,16 +184,16 @@
     <div class="col-md-8">
         <div class="alert alert-info" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 Die Email Adresse kann im nächsten Schritt angegeben werden.
             </div>
         </div>
-        <div class="form-group">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
-                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
+                <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
             </div>
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                 @error('send_signature_request')

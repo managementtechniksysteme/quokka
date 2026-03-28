@@ -11,8 +11,8 @@
             </div>
         </div>
 
-        <div class="d-none d-lg-flex flex-shrink-0 align-items-center mr-4 @if($notification->read_at) text-gray-500 @else text-muted @endif">
-            <svg class="icon icon-16 mr-1">
+        <div class="d-none d-lg-flex flex-shrink-0 align-items-center me-4 @if($notification->read_at) text-gray-500 @else text-muted @endif">
+            <svg class="icon icon-16 me-1">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
             </svg>
             {{ $notification->created_at->format('d.m.Y H:i') }}
@@ -25,7 +25,7 @@
                     @method('DELETE')
 
                     <button type="submit" class="btn btn-outline-success d-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                         </svg>
                         Gelesen

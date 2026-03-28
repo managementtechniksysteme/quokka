@@ -1,5 +1,5 @@
 <div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 mr-2">
+    <svg class="icon icon-16 me-2">
         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-circle"></use>
     </svg>
     <a href="{{ route('exceptions.index') }}">Fehlerdateien</a>

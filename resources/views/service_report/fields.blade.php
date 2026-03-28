@@ -15,7 +15,7 @@
 @unless(Auth::user()->signature())
     <div class="alert alert-warning mt-1" role="alert">
         <div class="d-inline-flex align-items-center">
-            <svg class="icon icon-24 mr-2">
+            <svg class="icon icon-24 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
             </svg>
             <p class="m-0">
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
             </svg>
             Stammdaten
@@ -45,26 +45,26 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="employee">Techniker</label>
             <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($serviceReport)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <div>
                 <label for="status">Status</label>
             </div>
             @if(optional($serviceReport)->status === 'signed')
                 <div class="alert alert-warning mt-1" role="alert">
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
+                        <svg class="icon icon-24 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
                     </div>
                 </div>
             @endif
-            <div class="btn-group btn-group-toggle">
+            <div class="btn-group">
                 <label class="btn btn-outline-secondary @if(optional($serviceReport)->status == 'new' || !$serviceReport) active @else disabled @endif">
                     <input type="radio" name="status" id="new" @if(optional($serviceReport)->status == 'new' || !$serviceReport) checked @endif disabled> neu
                 </label>
@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="project_id">Projekt</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" change_event="onservicereportprojectchange"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
@@ -92,7 +92,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
             </svg>
             Serviceleistungen
@@ -118,7 +118,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -129,13 +129,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zum Servicebericht"  value="{{ old('comment', optional($serviceReport)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown
@@ -152,7 +152,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
             </svg>
             Anhänge
@@ -166,7 +166,7 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label>
                 Anhänge
             </label>
@@ -192,7 +192,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
             </svg>
             Anfrage zur Unterschrift senden
@@ -205,16 +205,16 @@
     <div class="col-md-8">
         <div class="alert alert-info" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
+                <svg class="icon icon-24 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                 </svg>
                 Die Email Adresse kann im nächsten Schritt angegeben werden.
             </div>
         </div>
-        <div class="form-group">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
-                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
+                <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
             </div>
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                 @error('send_signature_request')

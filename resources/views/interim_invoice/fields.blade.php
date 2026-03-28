@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
             </svg>
             Teilrechnung Details
@@ -15,7 +15,7 @@
 
     <div class="col-md-8">
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="name">Titel</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="Erste Teilrechnung" value="{{ old('title', optional($interimInvoice)->title) }}" required />
             <div class="invalid-feedback">
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="billed_on">Rechnungsdatum</label>
             <input type="date" class="form-control @error('billed_on') is-invalid @enderror" id="billed_on" name="billed_on" placeholder="" value="{{ old('billed_on', optional(optional($interimInvoice)->billed_on)->format('Y-m-d')) }}" required />
             <div class="invalid-feedback">
@@ -39,12 +39,10 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="amount">Summe</label>
             <div class="input-group">
-                <div class="input-group-prepend">
                     <span class="input-group-text">{{ $currencyUnit }}</span>
-                </div>
                 <input type="number" min="0" step="0.01" class="form-control @error('amount') is-invalid @enderror" id="amount" name="amount" placeholder="" value="{{ old('amount', optional($interimInvoice)->amount) }}" />
                 <div class="invalid-feedback">
                     @error('amount')
@@ -63,7 +61,7 @@
 <div class="row mt-4">
     <div class="col-md-4">
         <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
+            <svg class="icon icon-16 me-2">
                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
             </svg>
             Bemerkungen
@@ -74,13 +72,13 @@
     </div>
 
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="comment">
                 Bemerkungen
             </label>
             <markdown-editor name="comment" placeholder="Bemerkungen zur Teilrechnung"  value="{{ old('comment', optional($interimInvoice)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
+                <svg class="icon icon-16 me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
                 </svg>
                 Hilfe zu Markdown

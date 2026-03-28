@@ -1,6 +1,6 @@
 <div class="py-2">
     <div class="row">
-        <div class="col-auto d-none d-md-block pr-0">
+        <div class="col-auto d-none d-md-block pe-0">
             <div class="avatar @if(isset($activity->properties['attributes']['status']) && $activity->properties['attributes']['status'] === 'finished') bg-green-200 @else bg-yellow-200 @endif rounded-circle border @if(isset($activity->properties['attributes']['status']) && $activity->properties['attributes']['status'] === 'finished') border-green-800 @else border-yellow-800 @endif d-inline-flex align-items-center justify-content-center">
                 <h4 class="@if(isset($activity->properties['attributes']['status']) && $activity->properties['attributes']['status'] === 'finished') text-green-800 @else text-yellow-800 @endif m-0">
                     <svg class="icon icon-baseline">
@@ -16,10 +16,10 @@
         <div class="col">
             <div class="rounded-top border @if(isset($activity->properties['attributes']['status']) && $activity->properties['attributes']['status'] === 'finished') border-activity-finished-header @endif bg-gray-100 px-2 py-1">
                 <div class="row">
-                    <div class="col-auto mr-auto">
+                    <div class="col-auto me-auto">
                         <div class="lead">{{ $activity->causer->employee->person->name }}</div>
                         <p class="text-muted d-inline-flex align-items-center m-0">
-                            <svg class="icon icon-16 mr-1">
+                            <svg class="icon icon-16 me-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                             </svg>
                             {{ $activity->created_at->format('d.m.Y H:i') }}
@@ -33,7 +33,7 @@
                     <div class="col">
                         @if(isset($activity->properties['attributes']['name']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                                 </svg>
                                 Name
@@ -46,7 +46,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['project_id']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                                 </svg>
                                 Projekt
@@ -59,7 +59,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['employee_id']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 Verantwortliche Person
@@ -72,7 +72,7 @@
                         @endif
                         @if(isset($activity->properties['old']['involved_ids']) || isset($activity->properties['attributes']['involved_ids']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
                                 </svg>
                                 Mitwirkende Personen
@@ -95,7 +95,7 @@
                         @endif
                         @if(isset($activity->properties['old']['due_on']) || isset($activity->properties['attributes']['due_on']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
                                 Fälligkeitsdatum
@@ -108,7 +108,7 @@
                         @endif
                         @if(isset($activity->properties['old']['starts_on']) || isset($activity->properties['old']['ends_on']) || isset($activity->properties['attributes']['starts_on']) || isset($activity->properties['attributes']['ends_on']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
                                 Zeitraum
@@ -127,7 +127,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['priority']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                                 </svg>
                                 Priorität
@@ -140,7 +140,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['status']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                                 </svg>
                                 Status
@@ -153,7 +153,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['billed']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                                 </svg>
                                 Verrechnungsstatus
@@ -186,7 +186,7 @@
                         @endif
                         @if(isset($activity->properties['attributes']['private']))
                             <div class="text-muted">
-                                <svg class="icon icon-baseline mr-1">
+                                <svg class="icon icon-baseline me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
                                 </svg>
                                 Sichtbarkeitsstatus
@@ -200,7 +200,7 @@
                         @if(isset($activity->properties['attributes']['comment']))
                             @if(isset($activity->properties['attributes']['comment']))
                                 <div class="text-muted">
-                                    <svg class="icon icon-baseline mr-1">
+                                    <svg class="icon icon-baseline me-1">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                                     </svg>
                                     Bemerkungen

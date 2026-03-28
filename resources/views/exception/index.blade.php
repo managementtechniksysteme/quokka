@@ -4,7 +4,7 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
+                <svg class="icon icon-baseline text-muted me-1">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                 </svg>
                 Fehlerdateien
@@ -24,7 +24,6 @@
                     <form action="{{ route('exceptions.index') }}" method="get">
                         <div class="input-group">
                             <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Fehlerdatei suchen" autocomplete="off" />
-                            <div class="input-group-append">
                                 <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
                                     <svg class="icon icon-16">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
@@ -37,7 +36,6 @@
                                         </svg>
                                     </a>
                                 @endif
-                            </div>
                         </div>
 
                     </form>
@@ -52,9 +50,10 @@
                 @component('exception.overview_card', [ 'exception' => $exception ])
                 @endcomponent
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
-                @endif
+                    @if(!$loop->last)
+                        <hr class="m-0 mx-1" />
+                    @endif
+
             @empty
                 <div class="text-center mt-4">
                     @if(Request::get('search'))

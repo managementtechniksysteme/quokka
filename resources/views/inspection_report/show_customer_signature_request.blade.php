@@ -5,7 +5,7 @@
         <div class="bg-gray-100 mt-0">
             <div class="container py-4">
                 <h3>
-                    <svg class="icon-bs icon-baseline text-muted mr-1">
+                    <svg class="icon-bs icon-baseline text-muted me-1">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
                     </svg>
                     Prüfbericht unterschreiben und herunterladen
@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                                 </svg>
                                 Techniker
@@ -33,7 +33,7 @@
                     <div class="row mt-3">
                         <div class="col-lg-6">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                                 </svg>
                                 Datum
@@ -49,7 +49,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     @switch($inspectionReport->weather)
                                         @case('sunny')
                                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
@@ -75,7 +75,7 @@
                     <div class="row mt-3">
                         <div class="col-lg-6">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#list"></use>
                                 </svg>
                                 Anlagentyp
@@ -88,7 +88,7 @@
                     <div class="row mt-3">
                         <div class="col-lg-6">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#hash"></use>
                                 </svg>
                                 Anlagen-/Gerätenummer
@@ -106,10 +106,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
                                 </svg>
-                                <span class="font-weight-bolder">UVC Strahler</span>
+                                <span class="fw-bolder">UVC Strahler</span>
                             </div>
                         </div>
                     </div>
@@ -159,10 +159,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
                                 </svg>
-                                <span class="font-weight-bolder">UVC Sensor</span>
+                                <span class="fw-bolder">UVC Sensor</span>
                             </div>
                         </div>
                     </div>
@@ -206,10 +206,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#droplet"></use>
                                 </svg>
-                                <span class="font-weight-bolder">Wasser</span>
+                                <span class="fw-bolder">Wasser</span>
                             </div>
                         </div>
                     </div>
@@ -251,10 +251,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
+                                <svg class="icon icon-16 me-2">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#circle"></use>
                                 </svg>
-                                <span class="font-weight-bolder"><span class="d-inline d-sm-none d-md-inline">Überprüfung der </span>Quarzschutzrohre</span>
+                                <span class="fw-bolder"><span class="d-inline d-sm-none d-md-inline">Überprüfung der </span>Quarzschutzrohre</span>
                             </div>
                         </div>
                     </div>
@@ -279,7 +279,7 @@
 
             @if ($inspectionReport->comment)
                 <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                     </svg>
                     Durchgeführte Arbeiten und Bemerkungen
@@ -291,7 +291,7 @@
 
             <div class="alert alert-info mt-4" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
                     </svg>
                     Der Prüfbericht kann nach erfolgreicher Unterschrift heruntergeladen werden.
@@ -317,13 +317,13 @@
                 <div class="row mt-4">
                     <div class="col">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                             </svg>
                             Prüfbericht unterschreiben
                         </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ml-1" href="">
-                            <svg class="icon icon-16 mr-2">
+                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Zurücksetzen

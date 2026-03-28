@@ -9,7 +9,7 @@
                 Prüfbericht für Durchflussmesseinrichtungen
                 <small class="text-muted">Anlage {{ $flowMeterInspectionReport->equipment_identifier }} (Projekt {{ $flowMeterInspectionReport->project->name }}) vom {{ $flowMeterInspectionReport->inspected_on }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ms-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
                 @unless($flowMeterInspectionReport->isFinished())
                     @can('approve', $flowMeterInspectionReport)
                         <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.finish', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
                             </svg>
                             Erledigen
@@ -29,7 +29,7 @@
                 @endunless
                 @can('update', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.edit', $flowMeterInspectionReport) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -37,7 +37,7 @@
                 @endcan
                 @can('create', \App\Models\FlowMeterInspectionReport::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.create', ['template' => $flowMeterInspectionReport]) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
                         </svg>
                         Kopieren
@@ -45,7 +45,7 @@
                 @endcan
                 @can('email', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Email versenden
@@ -53,21 +53,21 @@
                 @endcan
                 @can('createPdf', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.download', $flowMeterInspectionReport) }}" target="_blank">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                     </svg>
                     Favorisieren
                 </a>
                 @can('sign', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.sign', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
                         </svg>
                         Unterschreiben lassen
@@ -75,7 +75,7 @@
                 @endcan
                 @can('emailSignatureRequest', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email-signature-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
                         </svg>
                         Unterschrift Anfrage senden
@@ -83,7 +83,7 @@
                 @endcan
                 @can('emailDownloadRequest', $flowMeterInspectionReport)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email-download-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
                         </svg>
                         Download Link senden
@@ -95,7 +95,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -111,7 +111,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
                     </svg>
                     Projekt
@@ -125,7 +125,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
                     </svg>
                     Techniker
@@ -139,7 +139,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="@if($flowMeterInspectionReport->isNew()) text-primary @elseif($flowMeterInspectionReport->isSigned()) text-warning @else text-success @endif icon icon-16 mr-2">
+                    <svg class="@if($flowMeterInspectionReport->isNew()) text-primary @elseif($flowMeterInspectionReport->isSigned()) text-warning @else text-success @endif icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
                     </svg>
                     Status
@@ -171,7 +171,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
                     </svg>
                     Datum
@@ -185,7 +185,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         @switch($flowMeterInspectionReport->weather)
                             @case('sunny')
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
@@ -212,7 +212,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon-bs icon-16 mr-2">
+                    <svg class="icon-bs icon-16 me-2">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
                     </svg>
                     Anlage
@@ -226,7 +226,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon-bs icon-16 mr-2">
+                    <svg class="icon-bs icon-16 me-2">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
                     </svg>
                     Messstelle
@@ -240,7 +240,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon-bs icon-16 mr-2">
+                    <svg class="icon-bs icon-16 me-2">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
                     </svg>
                     Abweichung Messwerte
@@ -254,7 +254,7 @@
         <div class="row mt-3">
             <div class="col-sm-3">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon-bs icon-16 mr-2">
+                    <svg class="icon-bs icon-16 me-2">
                         <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
                     </svg>
                     Abweichung Zählerstände
@@ -268,7 +268,7 @@
         <div class="row mt-3">
             <div class="col">
                 <div class="d-flex align-items-center @if($flowMeterInspectionReport->equipment_in_tolerance_range) text-success @else text-danger @endif">
-                    <svg class="icon icon-16 mr-2">
+                    <svg class="icon icon-16 me-2">
                         @if($flowMeterInspectionReport->equipment_in_tolerance_range)
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
                         @else
@@ -284,7 +284,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
                         </svg>
                         Festgestellte Mängel
@@ -297,7 +297,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#repeat"></use>
                         </svg>
                         Zweitprüfung erforderlich
@@ -311,7 +311,7 @@
 
         @if ($flowMeterInspectionReport->comment)
             <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                 </svg>
                 Sonstige Bemerkungen
@@ -325,7 +325,7 @@
             <div class="row mt-3">
                 <div class="col-sm-3">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link"></use>
                         </svg>
                         PDF Anhang
@@ -341,13 +341,13 @@
             <div class="row text-muted d-flex align-items-center mt-1">
                 <div class="col">
                     <div class="d-none d-md-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
                     </div>
-                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-toggle="collapse" href="#collapseFlowMeterInspectionReportAttachments-{{ $flowMeterInspectionReport->id }}" role="button" aria-expanded="false" aria-controls="collapseFlowMeterInspectionReportAttachments-{{ $flowMeterInspectionReport->id }}">
-                        <svg class="icon icon-16 mr-2">
+                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseFlowMeterInspectionReportAttachments-{{ $flowMeterInspectionReport->id }}" role="button" aria-expanded="false" aria-controls="collapseFlowMeterInspectionReportAttachments-{{ $flowMeterInspectionReport->id }}">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
@@ -360,9 +360,9 @@
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif
@@ -382,9 +382,9 @@
                         <div class="col-12 col-md-6 col-lg-3 mt-1">
                             <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview mr-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview mr-2">
+                                    <svg class="icon attachment-img-preview me-2">
                                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
                                     </svg>
                                 @endif

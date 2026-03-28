@@ -10,7 +10,7 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $financeGroup->title }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ml-1">
+                        <svg class="icon icon-16 text-yellow ms-1">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
                         </svg>
                     @endif
@@ -20,7 +20,7 @@
             <div class="scroll-x d-flex">
                 @can('update', $financeGroup)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('finance-groups.edit', $financeGroup) }}">
-                        <svg class="icon icon-16 mr-2">
+                        <svg class="icon icon-16 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
                         </svg>
                         Bearbeiten
@@ -32,7 +32,7 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mr-2">
+                            <svg class="icon icon-16 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
                             </svg>
                             Entfernen
@@ -46,7 +46,7 @@
     <div class="container my-4">
         @if ($financeGroup->comment)
             <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
+                <svg class="icon icon-16 me-2">
                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
                 </svg>
                 Bemerkungen
@@ -67,7 +67,7 @@
             <div class="mb-2">
                 @can('create', \App\Models\FinanceRecord::class)
                     <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
-                        <svg class="icon icon-20 mr-2">
+                        <svg class="icon icon-20 me-2">
                             <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                         </svg>
                         Finanzeintrag anlegen
@@ -94,7 +94,7 @@
                     @can('create', \App\Models\FinanceRecord::class)
                         <p class="lead">Lege einen neuen Finanzeintrag an.</p>
                         <a class="btn btn-lg btn-primary d-inline-flex align-items-center" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
-                            <svg class="icon icon-20 mr-2">
+                            <svg class="icon icon-20 me-2">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
                             </svg>
                             Finanzeintrag anlegen

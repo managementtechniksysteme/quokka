@@ -1,28 +1,28 @@
 <template>
   <div>
-        <div class="form-row">
-            <div class="form-group col-6 col-lg-3">
+        <div class="row g-3">
+            <div class="mb-3 col-6 col-lg-3">
                 <label for="date">Datum</label>
                 <input type="date" class="form-control" v-bind:class="{'is-invalid': provided_on_invalid}" id="date" name="date" placeholder="" required v-model="date" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Datum muss ausgefüllt sein.
                 </div>
             </div>
-            <div class="form-group col-6 col-lg-3">
+            <div class="mb-3 col-6 col-lg-3">
                 <label for="hours">Stunden</label>
                 <input type="number" class="form-control" v-bind:class="{'is-invalid': hours_invalid}" min="0.5" step="0.5" id="hours" name="hours" placeholder="5" v-model="hours" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Stunden muss mindestens 0.5 sein.
                 </div>
             </div>
-            <div class="form-group col-6 col-lg-3">
+            <div class="mb-3 col-6 col-lg-3">
                 <label for="kilometres">gefahrene KM</label>
                 <input type="number" class="form-control" v-bind:class="{'is-invalid': kilometres_invalid}" min="1" step="1" id="kilometres" name="kilometres" placeholder="12" v-model="kilometres" @keydown.enter.prevent="addService()" />
                 <div class="invalid-feedback">
                     Kilometer muss mindestens 1 sein.
                 </div>
             </div>
-            <div class="form-group col-6 col-lg-3">
+            <div class="mb-3 col-6 col-lg-3">
                 <label for="submit">&nbsp;</label>
                 <button id="submit" type="button" class="form-control btn btn-outline-secondary" @click="addService()" @keydown.enter.prevent="addService()">Hinzufügen</button>
             </div>
@@ -31,7 +31,7 @@
         <div v-if="services.length" class="mt-2">
             <div v-if="overlapping_reports.length" class="alert alert-warning mt-1" role="alert">
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 mr-2">
+                    <svg class="icon icon-24 me-2">
                         <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
                     </svg>
                     <div class="m-0">
@@ -52,7 +52,7 @@
                         <th scope="col" class="col-4 col-lg-3">Datum</th>
                         <th scope="col" class="col-2">Stunden</th>
                         <th scope="col" class="col-3 col-lg-5">gef<span class="d-inline d-md-none">.</span><span class="d-none d-md-inline">ahrene</span> KM</th>
-                        <th scope="col" class="col-auto text-right"></th>
+                        <th scope="col" class="col-auto text-end"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,7 +74,7 @@
                             <span v-if="service.edit !== 'kilometres'">{{ service.kilometres }}</span>
                             <input v-if="service.edit === 'kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_kilometres_invalid}" ref="table_input" id="table_kilometres" name="table_kilometres" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
                         </td>
-                        <td class="col-auto text-right"><button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button></td>
+                        <td class="col-auto text-end"><button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="{'h-100': $screen.xl}">
 
-      <vue-topprogress ref="top_progress" color="#007BFF" errorColor="#DC3545"></vue-topprogress>
+      <top-progress ref="top_progress" color="#007BFF" errorColor="#DC3545"></top-progress>
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
@@ -48,7 +48,7 @@
                               </div>
                               <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle">
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :modelValue="filter_vehicle" :selectOnTab="true" @update:modelValue="setFilterVehicle">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div v-if="filter_vehicle_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_vehicle_errors}">
@@ -98,7 +98,7 @@
                           <div class="row g-3">
                               <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle">
+                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="vehicle" :selectOnTab="true" @update:modelValue="setVehicle">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">
@@ -160,7 +160,7 @@
                               </div>
                               <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="project" :selectOnTab="true" @update:modelValue="setProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
@@ -304,7 +304,7 @@
 
                                       <td class="col-1-5" @click="setEdit(book, 'vehicle')">
                                           <span v-if="book.edit !== 'vehicle'">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</span>
-                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :value="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @input="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)">
+                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @update:modelValue="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)">
                                               <template v-slot:no-options>Keine passenden Einträge.</template>
                                           </v-select>
                                       </td>
@@ -330,13 +330,13 @@
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'origin')">
                                           <span v-if="book.edit !== 'origin'">{{ book.origin }}</span>
-                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" @input="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
+                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" @update:modelValue="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
                                               <template v-slot:no-options>Keine passenden Einträge.</template>
                                           </v-select>
                                       </td>
                                       <td class="col-1-5" @click="setEdit(book, 'destination')">
                                           <span v-if="book.edit !== 'destination'">{{ book.destination }}</span>
-                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" @input="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)">
+                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :modelValue="destination" :selectOnTab="true" @update:modelValue="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)">
                                               <template v-slot:no-options>Keine passenden Einträge.</template>
                                           </v-select>
                                       </td>
@@ -374,7 +374,7 @@
                                                   <div class="col-2 fw-bold">Projekt:</div>
                                                   <div class="col-4">
                                                       <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
-                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
+                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :modelValue="getProject(book.project_id)" :selectOnTab="true" @update:modelValue="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
                                                           <template v-slot:no-options>Keine passenden Einträge.</template>
                                                       </v-select>
                                                   </div>

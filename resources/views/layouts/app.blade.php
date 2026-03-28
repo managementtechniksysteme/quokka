@@ -40,8 +40,8 @@
     <!-- Layout mode -->
     <meta name="layoutmode" content="standard">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Styles and Scripts (Vite) -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <!-- Main Link Tags  -->
     <link href="/icons/icon_48.png" rel="icon" type="image/png" sizes="48x48">
@@ -74,15 +74,13 @@
 
     @livewireStyles
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Alpine.js (standalone until Livewire 3 upgrade) -->
     <script defer src="{{ asset('js/alpine.min.js') }}"></script>
     @auth
-        <script defer>
-            let VAPID_PUBLIC_KEY = {!! json_encode(config('webpush.vapid.public_key')) !!}
+        <script>
+            window.VAPID_PUBLIC_KEY = {!! json_encode(config('webpush.vapid.public_key')) !!}
         </script>
         <script src="{{ asset('js/init.js') }}" defer></script>
-        <script src="{{ asset('js/webpush.js') }}" defer></script>
     @endauth
 
     <!-- Manifest -->

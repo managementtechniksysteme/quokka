@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="{'h-100': $screen.xl}">
 
-      <vue-topprogress ref="top_progress" color="#007BFF" errorColor="#DC3545"></vue-topprogress>
+      <top-progress ref="top_progress" color="#007BFF" errorColor="#DC3545"></top-progress>
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
@@ -57,7 +57,7 @@
                               </div>
                               <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :value="filter_service" :selectOnTab="true" @input="setFilterService">
+                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :modelValue="filter_service" :selectOnTab="true" @update:modelValue="setFilterService">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div v-if="filter_service_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_service_errors}">
@@ -119,7 +119,7 @@
                               </div>
                               <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="project" :selectOnTab="true" @update:modelValue="setProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
@@ -128,7 +128,7 @@
                               </div>
                               <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
                                   <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :value="service" :selectOnTab="true" @input="setService">
+                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :modelValue="service" :selectOnTab="true" @update:modelValue="setService">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': service_invalid}">
@@ -314,13 +314,13 @@
                                       </td>
                                       <td class="col-2" @click="setEdit(acc, 'project')">
                                           <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
-                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(acc.project_id)" :selectOnTab="true" @input="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
+                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :modelValue="getProject(acc.project_id)" :selectOnTab="true" @update:modelValue="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
                                               <template v-slot:no-options>Keine passenden Einträge.</template>
                                           </v-select>
                                       </td>
                                       <td class="col-1" @click="setEdit(acc, 'service')">
                                           <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
-                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :value="getService(acc.service_id)" :selectOnTab="true" @input="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)">
+                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :modelValue="getService(acc.service_id)" :selectOnTab="true" @update:modelValue="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)">
                                               <template v-slot:no-options>Keine passenden Einträge.</template>
                                           </v-select>
                                       </td>

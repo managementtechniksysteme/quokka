@@ -1,60 +1,40 @@
-@import "~vue-select/src/scss/vue-select.scss";
+@import "vue-select/dist/vue-select.css";
 
-// Fixes for Vue Select to display correctly with Bootstrap CSS
-.v-select.vs--disabled > .vs__dropdown-toggle {
-    @extend .form-control;
-    display: flex;
-    background-color: #e9ecef;
+// Override vue-select CSS variables for Bootstrap 5 integration
+:root {
+    --vs-border-color: #{$input-border-color};
+    --vs-border-radius: #{$input-border-radius};
+    --vs-font-size: #{$font-size-base};
+    --vs-line-height: #{$line-height-base};
+    --vs-search-input-placeholder-color: #{$input-placeholder-color};
+    --vs-state-disabled-bg: #{$input-disabled-bg};
 }
 
-.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::placeholder {
-    color: #495057;
-    opacity: 1;
+// Match Bootstrap form-control height and padding
+.vs__dropdown-toggle {
+    padding: $input-padding-y $input-padding-x;
+    min-height: $input-height;
+    background-color: #fff;
 }
 
-.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::-ms-input-placeholder  {
-    color: #495057;
-}
-
-.v-select.vs--disabled > .vs__dropdown-toggle > .vs__selected-options > .vs__search {
-    background-color: #e9ecef;
-}
-
-.v-select > .vs__dropdown-toggle {
-    @extend .form-control;
-    display: flex;
-}
-
-.vs__actions {
+.vs__search,
+.vs__search:focus {
+    margin: 0;
     padding: 0;
-    display: flex;
-    align-items: center;
 }
 
-.vs__clear {
-    display: flex;
-    align-items: center;
-}
-
-.vs__dropdown-option {
-    padding: 0.375rem 0.75rem;
-}
-
-.vs__selected-options {
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.vs__search, .vs__search:focus, .vs__selected {
-    margin-top: 0;
-    margin-left: 0;
-    padding-left: 0;
+.vs__selected {
+    margin: 0;
+    padding: 0;
 }
 
 // Small vue select
-.dropdown-sm > .vs__dropdown-toggle {
-    height: calc(1.5em + 0.5rem + 2px) !important;
-    padding: 0.25rem 0.5rem  !important;
-    font-size: 0.7875rem  !important;
-    line-height: 1.5  !important;
+.dropdown-sm {
+    --vs-font-size: 0.7875rem;
+    --vs-line-height: 1.5;
+
+    .vs__dropdown-toggle {
+        min-height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+    }
 }

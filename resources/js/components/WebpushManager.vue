@@ -6,7 +6,7 @@
                 <p>Push Benachrictungen sind auf diesem Gerät deaktiviert. Aktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
                 <button class="btn btn-primary d-inlin-flex align-items-center" @click="subscribeUser">
                     <svg class="icon icon-16 me-2">
-                        <use xlink:href="svg/feather-sprite.svg#bell"></use>
+                        <use xlink:href="/svg/feather-sprite.svg#bell"></use>
                     </svg>
                     Push Benachrichtigungen aktivieren
                 </button>
@@ -15,7 +15,7 @@
                 <p>Push Benachrictungen sind auf diesem Gerät aktiviert. Deaktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
                 <button class="btn btn-outline-danger d-inline-flex align-items-center" @click="unsubscribeUser">
                     <svg class="icon icon-16 me-2">
-                        <use xlink:href="svg/feather-sprite.svg#bell-off"></use>
+                        <use xlink:href="/svg/feather-sprite.svg#bell-off"></use>
                     </svg>
                     Push Benachrichtigungen deaktivieren
                 </button>
@@ -25,7 +25,7 @@
                 <notification type="success" v-cloak>
                     <div class="d-inline-flex align-items-center">
                         <svg class="icon icon-24 me-2">
-                            <use xlink:href="svg/feather-sprite.svg#check"></use>
+                            <use xlink:href="/svg/feather-sprite.svg#check"></use>
                         </svg>
                         {{success_notification}}
                     </div>
@@ -35,7 +35,7 @@
                 <notification type="danger" v-cloak>
                     <div class="d-inline-flex align-items-center">
                         <svg class="icon icon-24 me-2">
-                            <use xlink:href="svg/feather-sprite.svg#alert-octagon"></use>
+                            <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
                         </svg>
                         {{error_notification}}
                     </div>

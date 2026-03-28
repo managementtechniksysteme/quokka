@@ -2,7 +2,7 @@
     <div>
         <div class="row align-items-center">
             <div class="col pe-0">
-                <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :value="selected_input" :selectOnTab="true" @input="setSelected" taggable>
+                <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :modelValue="selected_input" :selectOnTab="true" @update:modelValue="setSelected" taggable>
                     <template v-slot:no-options>Keine passenden Einträge.</template>
                 </v-select>
             </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" :id="group_inputname" :name="inputname"  :value="selected.id" />
-        <v-select :options="finance_groups" label="title" placeholder="Finanzgruppe auswählen" :value="selected" :selectOnTab="true" @input="setSelected">
+        <v-select :options="finance_groups" label="title" placeholder="Finanzgruppe auswählen" v-model="selected" :selectOnTab="true">
             <template v-slot:no-options>Keine passenden Einträge.</template>
         </v-select>
     </div>

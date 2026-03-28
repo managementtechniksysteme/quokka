@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-select :options="unselected" label="name" placeholder="Person auswählen" value="" :selectOnTab="true" @input="addSelected">
+        <v-select :options="unselected" label="name" placeholder="Person auswählen" :modelValue="null" :selectOnTab="true" @update:modelValue="addSelected">
             <template v-slot:no-options>Keine passenden Einträge.</template>
         </v-select>
         <div v-if="selected.length" class="container-fluid mt-2">

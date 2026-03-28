@@ -1,13 +1,17 @@
 <template>
     <div>
-        <VueSignaturePad class="bg-white border" :width="width" :height="height" ref="signaturePad" :options="{ onBegin, onEnd }" />
+        <vue-signature-pad class="bg-white border" :width="width" :height="height" ref="signaturePad" :options="{ onBegin, onEnd }" />
         <input v-if="signature" type="hidden" name="signature" id="signature" :value="signature" />
     </div>
 </template>
 
 <script>
+    import VueSignaturePad from 'vue3-signature-pad';
+
     export default {
-        name: 'SignaturePad',
+        name: 'SignaturePadWrapper',
+
+        components: { VueSignaturePad },
 
         data() {
             return {

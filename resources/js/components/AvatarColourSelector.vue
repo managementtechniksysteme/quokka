@@ -6,8 +6,8 @@
 </template>
 
 <script>
-    import VSwatches from 'vue-swatches'
-    import 'vue-swatches/dist/vue-swatches.css'
+    import VSwatches from 'vue3-swatches'
+    import 'vue3-swatches/dist/style.css'
 
     export default {
         name: "AvatarColourSelector",

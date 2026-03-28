@@ -64,13 +64,11 @@
                 <div>
                     <label for="draft">Entwurf</label>
                 </div>
-                <div class="btn-group @error('draft') is-invalid @enderror" data-bs-toggle="buttons">
-                    <label class="btn btn-outline-secondary @if(old('draft', optional($memo)->draft) == true) active @endif">
-                        <input type="radio" name="draft" id="1" value="1" autocomplete="off" @if(old('draft', optional($memo)->draft) == true) checked @endif> ja
-                    </label>
-                    <label class="btn btn-outline-secondary @if(old('draft', optional($memo)->draft) == false) active @endif">
-                        <input type="radio" name="draft" id="0" value="0" autocomplete="off" @if(old('draft', optional($memo)->draft) == false) checked @endif> nein
-                    </label>
+                <div class="btn-group @error('draft') is-invalid @enderror" >
+                    <input type="radio" class="btn-check" name="draft" id="draft-1" value="1" autocomplete="off" @if(old('draft', optional($memo)->draft) == true) checked @endif>
+                    <label class="btn btn-outline-secondary" for="draft-1">ja</label>
+                    <input type="radio" class="btn-check" name="draft" id="draft-0" value="0" autocomplete="off" @if(old('draft', optional($memo)->draft) == false) checked @endif>
+                    <label class="btn btn-outline-secondary" for="draft-0">nein</label>
                 </div>
                 <div class="invalid-feedback @error('draft') d-block @enderror">
                     @error('draft')

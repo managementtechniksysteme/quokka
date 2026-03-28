@@ -76,15 +76,12 @@
                 </div>
             @endif
             <div class="btn-group">
-                <label class="btn btn-outline-secondary @if(optional($deliveryNote)->status == 'new' || !$deliveryNote) active @else disabled @endif">
-                    <input type="radio" name="status" id="new" @if(optional($deliveryNote)->status == 'new' || !$deliveryNote) checked @endif disabled> neu
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($deliveryNote)->status == 'signed') active @else disabled  @endif">
-                    <input type="radio" name="status" id="signed" @if(optional($deliveryNote)->status == 'signed') checked @endif disabled> unterschrieben
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($deliveryNote)->status == 'finished') active @else disabled  @endif">
-                    <input type="radio" name="status" id="finished" @if(optional($deliveryNote)->status == 'finished') checked @endif disabled> erledigt
-                </label>
+                <input type="radio" class="btn-check" name="status" id="status-new" value="new" @if(optional($deliveryNote)->status == 'new' || !$deliveryNote) checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-new">neu</label>
+                <input type="radio" class="btn-check" name="status" id="status-signed" value="signed" @if(optional($deliveryNote)->status == 'signed') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-signed">unterschrieben</label>
+                <input type="radio" class="btn-check" name="status" id="status-finished" value="finished" @if(optional($deliveryNote)->status == 'finished') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
             </div>
         </div>
 

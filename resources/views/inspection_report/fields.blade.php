@@ -61,71 +61,14 @@
                 </div>
             @endif
             <div class="btn-group">
-                <label class="btn btn-outline-secondary @if(optional($inspectionReport)->status == 'new' || !$inspectionReport) active @else disabled @endif">
-                    <input type="radio" name="status" id="new" @if(optional($inspectionReport)->status == 'new' || !$inspectionReport) checked @endif disabled> neu
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($inspectionReport)->status == 'signed') active @else disabled  @endif">
-                    <input type="radio" name="status" id="signed" @if(optional($inspectionReport)->status == 'signed') checked @endif disabled> unterschrieben
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($inspectionReport)->status == 'finished') active @else disabled  @endif">
-                    <input type="radio" name="status" id="finished" @if(optional($inspectionReport)->status == 'finished') checked @endif disabled> erledigt
-                </label>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="inspected_on">Datum</label>
-            <input type="date" class="form-control @error('inspected_on') is-invalid @enderror" id="inspected_on" name="inspected_on" placeholder="" value="{{ old('inspected_on', optional(optional($inspectionReport)->inspected_on)->format('Y-m-d')) }}" required />
-            <div class="invalid-feedback">
-                @error('inspected_on')
-                {{ $message }}
-                @else
-                    Gib bitte das Datum der Überprüfung ein.
-                @enderror
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="equipment_type">Anlagentyp</label>
-            <input type="text" class="form-control @error('equipment_type') is-invalid @enderror" id="equipment_type" name="equipment_type" placeholder="2AF300T" value="{{ old('equipment_type', optional($inspectionReport)->equipment_type) }}" required />
-            <div class="invalid-feedback">
-                @error('equipment_type')
-                {{ $message }}
-                @else
-                    Gib bitte den Anlagentyp ein.
-                @enderror
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="equipment_identifier">Anlagen-/Gerätenummer</label>
-            <input type="text" class="form-control @error('equipment_identifier') is-invalid @enderror" id="equipment_identifier" name="equipment_identifier" placeholder="A012345.1234" value="{{ old('equipment_identifier', optional($inspectionReport)->equipment_identifier) }}" required />
-            <div class="invalid-feedback">
-                @error('equipment_identifier')
-                {{ $message }}
-                @else
-                    Gib bitte die Anlagen-/Gerätenummer ein.
-                @enderror
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <div>
-                <label for="priority">Wetter</label>
-            </div>
-            <div class="btn-group @error('weather') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('weather', optional($inspectionReport)->weather) == 'sunny') active @endif">
-                    <input type="radio" name="weather" id="sunny" value="sunny" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'sunny') checked @endif> sonnig
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($inspectionReport)->weather) == 'cloudy') active @endif">
-                    <input type="radio" name="weather" id="cloudy" value="cloudy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'cloudy') checked @endif> bewölkt
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($inspectionReport)->weather) == 'rainy') active @endif">
-                    <input type="radio" name="weather" id="rainy" value="rainy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'rainy') checked @endif> regnerisch
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($inspectionReport)->weather) == 'snowy') active @endif">
-                    <input type="radio" name="weather" id="snowy" value="snowy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'snowy') checked @endif> Schnee
-                </label>
+                <input type="radio" class="btn-check" name="weather" id="weather-sunny" value="sunny" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'sunny') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-sunny">sonnig</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-cloudy" value="cloudy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'cloudy') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-cloudy">bewölkt</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-rainy" value="rainy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'rainy') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-rainy">regnerisch</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-snowy" value="snowy" autocomplete="off" @if(old('weather', optional($inspectionReport)->weather) == 'snowy') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-snowy">Schnee</label>
             </div>
             <div class="invalid-feedback @error('weather') d-block @enderror">
                 @error('weather')
@@ -245,13 +188,11 @@
             <div>
                 <label for="uvc_lamp_values_unit">Angaben der UV Intensitäten in</label>
             </div>
-            <div class="btn-group @error('uvc_lamp_values_unit') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'percent') active @endif">
-                    <input type="radio" name="uvc_lamp_values_unit" id="percent" value="percent" autocomplete="off" @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'percent') checked @endif> %
-                </label>
-                <label class="btn btn-outline-secondary @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'W_m2') active @endif">
-                    <input type="radio" name="uvc_lamp_values_unit" id="W_m2" value="W_m2" autocomplete="off" @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'W_m2') checked @endif> W/m²
-                </label>
+            <div class="btn-group @error('uvc_lamp_values_unit') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="uvc_lamp_values_unit" id="uvc_lamp_values_unit-percent" value="percent" autocomplete="off" @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'percent') checked @endif>
+                <label class="btn btn-outline-secondary" for="uvc_lamp_values_unit-percent">%</label>
+                <input type="radio" class="btn-check" name="uvc_lamp_values_unit" id="uvc_lamp_values_unit-W_m2" value="W_m2" autocomplete="off" @if(old('uvc_lamp_values_unit', optional($inspectionReport)->uvc_lamp_values_unit) == 'W_m2') checked @endif>
+                <label class="btn btn-outline-secondary" for="uvc_lamp_values_unit-W_m2">W/m²</label>
             </div>
             <div class="invalid-feedback @error('uvc_lamp_values_unit') d-block @enderror">
                 @error('uvc_lamp_values_unit')
@@ -264,106 +205,11 @@
             <div>
                 <label for="uvc_lamp_replacement_available">Ersatzstrahler vorhanden</label>
             </div>
-            <div class="btn-group @error('uvc_lamp_replacement_available') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('uvc_lamp_replacement_available') === '1' || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === true)) active @endif">
-                    <input type="radio" name="uvc_lamp_replacement_available" id=1 value=1 autocomplete="off" @if(old('uvc_lamp_replacement_available') === '1' || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === true)) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('uvc_lamp_replacement_available') === '0' || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === false)) active @endif">
-                    <input type="radio" name="uvc_lamp_replacement_available" id=0 value=0 autocomplete="off" @if(old('uvc_lamp_replacement_available') === '0' || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === false)) checked @endif> nein
-                </label>
-                <label class="btn btn-outline-secondary @if((old('_token') && old('uvc_lamp_replacement_available') === null) || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === null)) active @endif">
-                    <input type="radio" name="uvc_lamp_replacement_available" id="" value="" autocomplete="off" @if((old('_token') && old('uvc_lamp_replacement_available') === null) || ($inspectionReport && $inspectionReport->uvc_lamp_replacement_available === null)) checked @endif> keine Angabe
-                </label>
-            </div>
-            <div class="invalid-feedback @error('uvc_lamp_replacement_available') d-block @enderror">
-                @error('uvc_lamp_replacement_available')
-                    {{ $message }}
-                @enderror
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
-            </svg>
-            UVC Sensor
-        </p>
-        <p class="text-muted">
-            Angaben zum UVC Sensor.
-        </p>
-    </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
-            <label for="uvc_sensor_type">Typ</label>
-            <input type="text" class="form-control @error('uvc_sensor_type') is-invalid @enderror" id="uvc_sensor_type" name="uvc_sensor_type" placeholder="Diginorm" value="{{ old('uvc_sensor_type', optional($inspectionReport)->uvc_sensor_type) }}" required />
-            <div class="invalid-feedback">
-                @error('uvc_sensor_type')
-                    {{ $message }}
-                @else
-                    Gib bitte den Typ des UVC Sensors ein.
-                @enderror
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="uvc_sensor_identifier">Seriennummer</label>
-            <input type="text" class="form-control @error('uvc_sensor_identifier') is-invalid @enderror" id="uvc_sensor_identifier" name="uvc_sensor_identifier" placeholder="1234abc89def" value="{{ old('uvc_sensor_identifier', optional($inspectionReport)->uvc_sensor_identifier) }}" required />
-            <div class="invalid-feedback">
-                @error('uvc_sensor_identifier')
-                    {{ $message }}
-                @else
-                    Gib bitte den Typ des UVC Sensors ein.
-                @enderror
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="uvc_sensor_pre_alarm">Voralarm</label>
-            <div class="input-group">
-                <input type="number" min="0" step="any" class="form-control @error('uvc_sensor_pre_alarm') is-invalid @enderror" id="uvc_sensor_pre_alarm" name="uvc_sensor_pre_alarm" placeholder="68" value="{{ old('uvc_sensor_pre_alarm', optional($inspectionReport)->uvc_sensor_pre_alarm) }}" required />
-                    <span class="input-group-text">% oder W/m²</span>
-                <div class="invalid-feedback">
-                    @error('uvc_sensor_pre_alarm')
-                        {{ $message }}
-                    @else
-                        Gib bitte den Voralarm des UVC Sensors ein.
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="uvc_sensor_cut_off_point">Abschaltpunkt</label>
-            <div class="input-group">
-                <input type="number" min="0" step="any" class="form-control @error('uvc_sensor_cut_off_point') is-invalid @enderror" id="uvc_sensor_cut_off_point" name="uvc_sensor_cut_off_point" placeholder="62.9" value="{{ old('uvc_sensor_cut_off_point', optional($inspectionReport)->uvc_sensor_cut_off_point) }}" required />
-                    <span class="input-group-text">% oder W/m²</span>
-                <div class="invalid-feedback">
-                    @error('uvc_sensor_cut_off_point')
-                    {{ $message }}
-                    @else
-                        Gib bitte den Abschaltpunkt des UVC Sensors ein.
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <div>
-                <label for="uvc_sensor_values_unit">Angaben der Werte in</label>
-            </div>
-            <div class="btn-group @error('uvc_sensor_values_unit') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'percent') active @endif">
-                    <input type="radio" name="uvc_sensor_values_unit" id="percent" value="percent" autocomplete="off" @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'percent') checked @endif> %
-                </label>
-                <label class="btn btn-outline-secondary @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'W_m2') active @endif">
-                    <input type="radio" name="uvc_sensor_values_unit" id="W_m2" value="W_m2" autocomplete="off" @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'W_m2') checked @endif> W/m²
-                </label>
+            <div class="btn-group @error('uvc_lamp_replacement_available') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="uvc_sensor_values_unit" id="uvc_sensor_values_unit-percent" value="percent" autocomplete="off" @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'percent') checked @endif>
+                <label class="btn btn-outline-secondary" for="uvc_sensor_values_unit-percent">%</label>
+                <input type="radio" class="btn-check" name="uvc_sensor_values_unit" id="uvc_sensor_values_unit-W_m2" value="W_m2" autocomplete="off" @if(old('uvc_sensor_values_unit', optional($inspectionReport)->uvc_sensor_values_unit) == 'W_m2') checked @endif>
+                <label class="btn btn-outline-secondary" for="uvc_sensor_values_unit-W_m2">W/m²</label>
             </div>
             <div class="invalid-feedback @error('uvc_sensor_values_unit') d-block @enderror">
                 @error('uvc_sensor_values_unit')
@@ -393,16 +239,13 @@
             <div>
                 <label for="quartz_tube_contaminated">Verschmutzung</label>
             </div>
-            <div class="btn-group @error('quartz_tube_contaminated') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('quartz_tube_contaminated') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === true)) active @endif">
-                    <input type="radio" name="quartz_tube_contaminated" id=1 value=1 autocomplete="off" @if(old('quartz_tube_contaminated') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === true)) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('quartz_tube_contaminated') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === false)) active @endif">
-                    <input type="radio" name="quartz_tube_contaminated" id=0 value=0 autocomplete="off" @if(old('quartz_tube_contaminated') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === false)) checked @endif> nein
-                </label>
-                <label class="btn btn-outline-secondary @if((old('_token') && old('quartz_tube_contaminated') === null) || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === null)) active @endif">
-                    <input type="radio" name="quartz_tube_contaminated" id="" value="" autocomplete="off" @if((old('_token') && old('quartz_tube_contaminated') === null) || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === null)) checked @endif> keine Angabe
-                </label>
+            <div class="btn-group @error('quartz_tube_contaminated') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="quartz_tube_contaminated" id="quartz_tube_contaminated-1" value="1" autocomplete="off" @if(old('quartz_tube_contaminated') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === true)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_contaminated-1">ja</label>
+                <input type="radio" class="btn-check" name="quartz_tube_contaminated" id="quartz_tube_contaminated-0" value="0" autocomplete="off" @if(old('quartz_tube_contaminated') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === false)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_contaminated-0">nein</label>
+                <input type="radio" class="btn-check" name="quartz_tube_contaminated" id="quartz_tube_contaminated-none" value="" autocomplete="off" @if((old('_token') && old('quartz_tube_contaminated') === null) || ($inspectionReport && $inspectionReport->quartz_tube_contaminated === null)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_contaminated-none">keine Angabe</label>
             </div>
             <div class="invalid-feedback @error('quartz_tube_contaminated') d-block @enderror">
                 @error('quartz_tube_contaminated')
@@ -415,16 +258,13 @@
             <div>
                 <label for="quartz_tube_leaking">Undicht</label>
             </div>
-            <div class="btn-group @error('quartz_tube_leaking') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('quartz_tube_leaking') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === true)) active @endif">
-                    <input type="radio" name="quartz_tube_leaking" id=1 value=1 autocomplete="off" @if(old('quartz_tube_leaking') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === true)) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('quartz_tube_leaking') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === false)) active @endif">
-                    <input type="radio" name="quartz_tube_leaking" id=0 value=0 autocomplete="off" @if(old('quartz_tube_leaking') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === false)) checked @endif> nein
-                </label>
-                <label class="btn btn-outline-secondary @if((old('_token') && old('quartz_tube_leaking') === null) || ($inspectionReport && $inspectionReport->quartz_tube_leaking === null)) active @endif">
-                    <input type="radio" name="quartz_tube_leaking" id="" value="" autocomplete="off" @if((old('_token') && old('quartz_tube_leaking') === null) || ($inspectionReport && $inspectionReport->quartz_tube_leaking === null)) checked @endif> keine Angabe
-                </label>
+            <div class="btn-group @error('quartz_tube_leaking') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="quartz_tube_leaking" id="quartz_tube_leaking-1" value="1" autocomplete="off" @if(old('quartz_tube_leaking') === '1' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === true)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_leaking-1">ja</label>
+                <input type="radio" class="btn-check" name="quartz_tube_leaking" id="quartz_tube_leaking-0" value="0" autocomplete="off" @if(old('quartz_tube_leaking') === '0' || ($inspectionReport && $inspectionReport->quartz_tube_leaking === false)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_leaking-0">nein</label>
+                <input type="radio" class="btn-check" name="quartz_tube_leaking" id="quartz_tube_leaking-none" value="" autocomplete="off" @if((old('_token') && old('quartz_tube_leaking') === null) || ($inspectionReport && $inspectionReport->quartz_tube_leaking === null)) checked @endif>
+                <label class="btn btn-outline-secondary" for="quartz_tube_leaking-none">keine Angabe</label>
             </div>
             <div class="invalid-feedback @error('quartz_tube_leaking') d-block @enderror">
                 @error('quartz_tube_leaking')
@@ -499,16 +339,13 @@
             <div>
                 <label for="water_suspended_load_visible">Schwebestoffe sichtbar</label>
             </div>
-            <div class="btn-group @error('water_suspended_load_visible') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('water_suspended_load_visible') === '1' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === true)) active @endif">
-                    <input type="radio" name="water_suspended_load_visible" id=1 value=1 autocomplete="off" @if(old('water_suspended_load_visible') === '1' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === true)) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('water_suspended_load_visible') === '0' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === false)) active @endif">
-                    <input type="radio" name="water_suspended_load_visible" id=0 value=0 autocomplete="off" @if(old('water_suspended_load_visible') === '0' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === false)) checked @endif> nein
-                </label>
-                <label class="btn btn-outline-secondary @if((old('_token') && old('water_suspended_load_visible') === null) || ($inspectionReport && $inspectionReport->water_suspended_load_visible === null)) active @endif">
-                    <input type="radio" name="water_suspended_load_visible" id="" value="" autocomplete="off" @if((old('_token') && old('water_suspended_load_visible') === null) || ($inspectionReport && $inspectionReport->water_suspended_load_visible === null)) checked @endif> keine Angabe
-                </label>
+            <div class="btn-group @error('water_suspended_load_visible') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="water_suspended_load_visible" id="water_suspended_load_visible-1" value="1" autocomplete="off" @if(old('water_suspended_load_visible') === '1' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === true)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_suspended_load_visible-1">ja</label>
+                <input type="radio" class="btn-check" name="water_suspended_load_visible" id="water_suspended_load_visible-0" value="0" autocomplete="off" @if(old('water_suspended_load_visible') === '0' || ($inspectionReport && $inspectionReport->water_suspended_load_visible === false)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_suspended_load_visible-0">nein</label>
+                <input type="radio" class="btn-check" name="water_suspended_load_visible" id="water_suspended_load_visible-none" value="" autocomplete="off" @if((old('_token') && old('water_suspended_load_visible') === null) || ($inspectionReport && $inspectionReport->water_suspended_load_visible === null)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_suspended_load_visible-none">keine Angabe</label>
             </div>
             <div class="invalid-feedback @error('water_suspended_load_visible') d-block @enderror">
                 @error('water_suspended_load_visible')
@@ -521,16 +358,13 @@
             <div>
                 <label for="water_air_bubble_free">Luftblasenfrei</label>
             </div>
-            <div class="btn-group @error('water_air_bubble_free') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('water_air_bubble_free') === '1' || ($inspectionReport && $inspectionReport->water_air_bubble_free === true)) active @endif">
-                    <input type="radio" name="water_air_bubble_free" id=1 value=1 autocomplete="off" @if(old('water_air_bubble_free') === '1' || ($inspectionReport && $inspectionReport->water_air_bubble_free === true)) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('water_air_bubble_free') === '0' || ($inspectionReport && $inspectionReport->water_air_bubble_free === false)) active @endif">
-                    <input type="radio" name="water_air_bubble_free" id=0 value=0 autocomplete="off" @if(old('water_air_bubble_free') === '0' || ($inspectionReport && $inspectionReport->water_air_bubble_free === false)) checked @endif> nein
-                </label>
-                <label class="btn btn-outline-secondary @if((old('_token') && old('water_air_bubble_free') === null) || ($inspectionReport && $inspectionReport->water_air_bubble_free === null)) active @endif">
-                    <input type="radio" name="water_air_bubble_free" id="" value="" autocomplete="off" @if((old('_token') && old('water_air_bubble_free') === null) || ($inspectionReport && $inspectionReport->water_air_bubble_free === null)) checked @endif> keine Angabe
-                </label>
+            <div class="btn-group @error('water_air_bubble_free') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="water_air_bubble_free" id="water_air_bubble_free-1" value="1" autocomplete="off" @if(old('water_air_bubble_free') === '1' || ($inspectionReport && $inspectionReport->water_air_bubble_free === true)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_air_bubble_free-1">ja</label>
+                <input type="radio" class="btn-check" name="water_air_bubble_free" id="water_air_bubble_free-0" value="0" autocomplete="off" @if(old('water_air_bubble_free') === '0' || ($inspectionReport && $inspectionReport->water_air_bubble_free === false)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_air_bubble_free-0">nein</label>
+                <input type="radio" class="btn-check" name="water_air_bubble_free" id="water_air_bubble_free-none" value="" autocomplete="off" @if((old('_token') && old('water_air_bubble_free') === null) || ($inspectionReport && $inspectionReport->water_air_bubble_free === null)) checked @endif>
+                <label class="btn btn-outline-secondary" for="water_air_bubble_free-none">keine Angabe</label>
             </div>
             <div class="invalid-feedback @error('water_air_bubble_free') d-block @enderror">
                 @error('water_air_bubble_free')

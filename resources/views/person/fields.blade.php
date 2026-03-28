@@ -75,16 +75,13 @@
             <div>
                 <label for="gender">Geschlecht</label>
             </div>
-            <div class="btn-group @error('gender') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('gender', optional($person)->gender) == 'male') active @endif">
-                    <input type="radio" name="gender" id="male" value="male" autocomplete="off" @if(old('gender', optional($person)->gender) == 'male') checked @endif> männlich
-                </label>
-                <label class="btn btn-outline-secondary @if(old('gender', optional($person)->gender) == 'female') active @endif">
-                    <input type="radio" name="gender" id="female" value="female" autocomplete="off" @if(old('gender', optional($person)->gender) == 'female') checked @endif> weiblich
-                </label>
-                <label class="btn btn-outline-secondary @if(old('gender', optional($person)->gender) == 'neutral') active @endif">
-                    <input type="radio" name="gender" id="neutral" value="neutral" autocomplete="off" @if(old('gender', optional($person)->gender) == 'neutral') checked @endif> neutral
-                </label>
+            <div class="btn-group @error('gender') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="gender" id="gender-male" value="male" autocomplete="off" @if(old('gender', optional($person)->gender) == 'male') checked @endif>
+                <label class="btn btn-outline-secondary" for="gender-male">männlich</label>
+                <input type="radio" class="btn-check" name="gender" id="gender-female" value="female" autocomplete="off" @if(old('gender', optional($person)->gender) == 'female') checked @endif>
+                <label class="btn btn-outline-secondary" for="gender-female">weiblich</label>
+                <input type="radio" class="btn-check" name="gender" id="gender-neutral" value="neutral" autocomplete="off" @if(old('gender', optional($person)->gender) == 'neutral') checked @endif>
+                <label class="btn btn-outline-secondary" for="gender-neutral">neutral</label>
             </div>
             <div class="invalid-feedback @error('gender') d-block @enderror">
                 @error('gender')

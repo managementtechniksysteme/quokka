@@ -23,13 +23,11 @@
                     <div>
                         <label for="notify_self">Über eigene Aktionen benachrichtigen?</label>
                     </div>
-                    <div class="btn-group @error('notify_self') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == true) active @endif">
-                            <input type="radio" name="notify_self" id="1" value="1" autocomplete="off" @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == true) checked @endif> benachrichtigen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == false) active @endif">
-                            <input type="radio" name="notify_self" id="0" value="0" autocomplete="off" @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == false) checked @endif> nicht benachrichtigen
-                        </label>
+                    <div class="btn-group @error('notify_self') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="notify_self" id="notify_self-1" value="1" autocomplete="off" @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="notify_self-1">benachrichtigen</label>
+                        <input type="radio" class="btn-check" name="notify_self" id="notify_self-0" value="0" autocomplete="off" @if(old('notify_self', optional(Auth::user()->settings)->notify_self) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="notify_self-0">nicht benachrichtigen</label>
                     </div>
                     <div class="invalid-feedback @error('notify_self') d-block @enderror">
                         @error('notify_self')

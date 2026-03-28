@@ -65,15 +65,12 @@
                 </div>
             @endif
             <div class="btn-group">
-                <label class="btn btn-outline-secondary @if(optional($serviceReport)->status == 'new' || !$serviceReport) active @else disabled @endif">
-                    <input type="radio" name="status" id="new" @if(optional($serviceReport)->status == 'new' || !$serviceReport) checked @endif disabled> neu
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($serviceReport)->status == 'signed') active @else disabled  @endif">
-                    <input type="radio" name="status" id="signed" @if(optional($serviceReport)->status == 'signed') checked @endif disabled> unterschrieben
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($serviceReport)->status == 'finished') active @else disabled  @endif">
-                    <input type="radio" name="status" id="finished" @if(optional($serviceReport)->status == 'finished') checked @endif disabled> erledigt
-                </label>
+                <input type="radio" class="btn-check" name="status" id="status-new" value="new" @if(optional($serviceReport)->status == 'new' || !$serviceReport) checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-new">neu</label>
+                <input type="radio" class="btn-check" name="status" id="status-signed" value="signed" @if(optional($serviceReport)->status == 'signed') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-signed">unterschrieben</label>
+                <input type="radio" class="btn-check" name="status" id="status-finished" value="finished" @if(optional($serviceReport)->status == 'finished') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
             </div>
         </div>
 

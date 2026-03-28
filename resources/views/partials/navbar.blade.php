@@ -55,7 +55,7 @@
                                 Firmen
                             </a>
                             @if(auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
-                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret h-20"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
@@ -89,7 +89,7 @@
                                 Projekte
                             </a>
                             @can('finances-view')
-                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarCompaniesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret h-20"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarCompaniesDropdown">
@@ -113,7 +113,7 @@
                                 Aufgaben
                             </a>
                             @if(auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class))
-                                <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarTasksDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret h-20"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarTasksDropdown">
@@ -187,7 +187,7 @@
                                 Abrechnung
                             </a>
                             @can('viewAny', \App\Models\Logbook::class)
-                                <a id="navbarAccountingDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarAccountingDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret h-20"></span>
                                 </a>
 
@@ -212,7 +212,7 @@
                                 Finanzen
                             </a>
 
-                            <a id="navbarFinancesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a id="navbarFinancesDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="caret h-20"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarFinancesDropdown">
@@ -299,7 +299,7 @@
                                 Einstellungen
                             </a>
                             @if(auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
-                                <a id="navbarSettingsDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarSettingsDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="caret h-20"></span>
                                 </a>
 
@@ -349,7 +349,7 @@
                                 </svg>
                                 Hilfe
                             </a>
-                            <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0 ms-n1" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center ps-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="caret h-20"></span>
                             </a>
 

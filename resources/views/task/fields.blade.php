@@ -83,16 +83,13 @@
             <div>
                 <label for="priority">Priorität</label>
             </div>
-            <div class="btn-group @error('priority') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('priority', optional($task)->priority) == 'low') active @endif">
-                    <input type="radio" name="priority" id="low" value="low" autocomplete="off" @if(old('priority', optional($task)->priority) == 'low') checked @endif> niedrig
-                </label>
-                <label class="btn btn-outline-secondary @if(old('priority', optional($task)->priority) == 'medium') active @endif">
-                    <input type="radio" name="priority" id="medium" value="medium" autocomplete="off" @if(old('priority', optional($task)->priority) == 'medium') checked @endif> mittel
-                </label>
-                <label class="btn btn-outline-secondary @if(old('priority', optional($task)->priority) == 'high') active @endif">
-                    <input type="radio" name="priority" id="high" value="high" autocomplete="off" @if(old('priority', optional($task)->priority) == 'high') checked @endif> hoch
-                </label>
+            <div class="btn-group @error('priority') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="priority" id="priority-low" value="low" autocomplete="off" @if(old('priority', optional($task)->priority) == 'low') checked @endif>
+                <label class="btn btn-outline-secondary" for="priority-low">niedrig</label>
+                <input type="radio" class="btn-check" name="priority" id="priority-medium" value="medium" autocomplete="off" @if(old('priority', optional($task)->priority) == 'medium') checked @endif>
+                <label class="btn btn-outline-secondary" for="priority-medium">mittel</label>
+                <input type="radio" class="btn-check" name="priority" id="priority-high" value="high" autocomplete="off" @if(old('priority', optional($task)->priority) == 'high') checked @endif>
+                <label class="btn btn-outline-secondary" for="priority-high">hoch</label>
             </div>
             <div class="invalid-feedback @error('priority') d-block @enderror">
                 @error('priority')
@@ -105,16 +102,13 @@
             <div>
                 <label for="status">Status</label>
             </div>
-            <div class="btn-group @error('status') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('status', optional($task)->status) == 'new') active @endif">
-                    <input type="radio" name="status" id="new" value="new" autocomplete="off" @if(old('status', optional($task)->status) == 'new') checked @endif> neu
-                </label>
-                <label class="btn btn-outline-secondary @if(old('status', optional($task)->status) == 'in progress') active @endif">
-                    <input type="radio" name="status" id="in progress" value="in progress" autocomplete="off" @if(old('status', optional($task)->status) == 'in progress') checked @endif> in Bearbeitung
-                </label>
-                <label class="btn btn-outline-secondary @if(old('status', optional($task)->status) == 'finished') active @endif">
-                    <input type="radio" name="status" id="finished" value="finished" autocomplete="off" @if(old('status', optional($task)->status) == 'finished') checked @endif> erledigt
-                </label>
+            <div class="btn-group @error('status') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="status" id="status-new" value="new" autocomplete="off" @if(old('status', optional($task)->status) == 'new') checked @endif>
+                <label class="btn btn-outline-secondary" for="status-new">neu</label>
+                <input type="radio" class="btn-check" name="status" id="status-in-progress" value="in progress" autocomplete="off" @if(old('status', optional($task)->status) == 'in progress') checked @endif>
+                <label class="btn btn-outline-secondary" for="status-in-progress">in Bearbeitung</label>
+                <input type="radio" class="btn-check" name="status" id="status-finished" value="finished" autocomplete="off" @if(old('status', optional($task)->status) == 'finished') checked @endif>
+                <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
             </div>
             <div class="invalid-feedback @error('status') d-block @enderror">
                 @error('status')
@@ -127,16 +121,13 @@
             <div>
                 <label for="billed">Verrechnungsstatus</label>
             </div>
-            <div class="btn-group @error('billed') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('billed', optional($task)->billed) == 'yes') active @endif">
-                    <input type="radio" name="billed" id="yes" value="yes" autocomplete="off" @if(old('billed', optional($task)->billed) == 'yes') checked @endif> verrechnet
-                </label>
-                <label class="btn btn-outline-secondary @if(old('billed', optional($task)->billed) == 'no') active @endif">
-                    <input type="radio" name="billed" id="no" value="no" autocomplete="off" @if(old('billed', optional($task)->billed) == 'no') checked @endif> nicht verrechnet
-                </label>
-                <label class="btn btn-outline-secondary @if(old('billed', optional($task)->billed) == 'warranty') active @endif">
-                    <input type="radio" name="billed" id="warranty" value="warranty" autocomplete="off" @if(old('billed', optional($task)->billed) == 'warranty') checked @endif> Garantie
-                </label>
+            <div class="btn-group @error('billed') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="billed" id="billed-yes" value="yes" autocomplete="off" @if(old('billed', optional($task)->billed) == 'yes') checked @endif>
+                <label class="btn btn-outline-secondary" for="billed-yes">verrechnet</label>
+                <input type="radio" class="btn-check" name="billed" id="billed-no" value="no" autocomplete="off" @if(old('billed', optional($task)->billed) == 'no') checked @endif>
+                <label class="btn btn-outline-secondary" for="billed-no">nicht verrechnet</label>
+                <input type="radio" class="btn-check" name="billed" id="billed-warranty" value="warranty" autocomplete="off" @if(old('billed', optional($task)->billed) == 'warranty') checked @endif>
+                <label class="btn btn-outline-secondary" for="billed-warranty">Garantie</label>
             </div>
             <div class="invalid-feedback @error('billed') d-block @enderror">
                 @error('billed')
@@ -176,16 +167,14 @@
             <div>
                 <label for="gender">Sichtbarkeitsstatus</label>
             </div>
-            <div class="btn-group @error('private') is-invalid @enderror" data-bs-toggle="buttons">
+            <div class="btn-group @error('private') is-invalid @enderror" >
                 @can('tasks.create')
-                    <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '0') active @endif">
-                        <input type="radio" name="private" id="0" value="0" autocomplete="off" @if(old('private', optional($task)->private) == '0' || auth()->user()->cannot('tasks.create.private')) checked @endif> öffentlich
-                    </label>
+                    <input type="radio" class="btn-check" name="private" id="private-0" value="0" autocomplete="off" @if(old('private', optional($task)->private) == '0' || auth()->user()->cannot('tasks.create.private')) checked @endif>
+                    <label class="btn btn-outline-secondary" for="private-0">öffentlich</label>
                 @endcan
                 @can('tasks.create.private')
-                    <label class="btn btn-outline-secondary @if(old('private', optional($task)->private) == '1') active @endif">
-                        <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($task)->private) == '1' || auth()->user()->cannot('tasks.create')) checked @endif> privat
-                    </label>
+                    <input type="radio" class="btn-check" name="private" id="private-1" value="1" autocomplete="off" @if(old('private', optional($task)->private) == '1' || auth()->user()->cannot('tasks.create')) checked @endif>
+                    <label class="btn btn-outline-secondary" for="private-1">privat</label>
                 @endcan
             </div>
             <div class="invalid-feedback @error('private') d-block @enderror">

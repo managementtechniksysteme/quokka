@@ -432,13 +432,11 @@
                     <div>
                         <label for="prune_read_notifications">Gelesene Benachrichtigungen, die älter als einen Monat sind, automatisch aus dem System entfernen?</label>
                     </div>
-                    <div class="btn-group @error('prune_read_notifications') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == true) active @endif">
-                            <input type="radio" name="prune_read_notifications" id="1" value="1" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == true) checked @endif> entfernen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == false) active @endif">
-                            <input type="radio" name="prune_read_notifications" id="0" value="0" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == false) checked @endif> nicht entfernen
-                        </label>
+                    <div class="btn-group @error('prune_read_notifications') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="prune_read_notifications" id="prune_read_notifications-1" value="1" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="prune_read_notifications-1">entfernen</label>
+                        <input type="radio" class="btn-check" name="prune_read_notifications" id="prune_read_notifications-0" value="0" autocomplete="off" @if(old('prune_read_notifications', $applicationSettings->prune_read_notifications) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="prune_read_notifications-0">nicht entfernen</label>
                     </div>
                     <div class="invalid-feedback @error('prune_read_notifications') d-block @enderror">
                         @error('prune_read_notifications')
@@ -466,13 +464,11 @@
                     <div>
                         <label for="prune_sent_emails">Gesendete Emails, die älter als einen Monat sind, automatisch aus dem System entfernen?</label>
                     </div>
-                    <div class="btn-group @error('prune_sent_emails') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == true) active @endif">
-                            <input type="radio" name="prune_sent_emails" id="1" value="1" autocomplete="off" @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == true) checked @endif> entfernen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == false) active @endif">
-                            <input type="radio" name="prune_sent_emails" id="0" value="0" autocomplete="off" @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == false) checked @endif> nicht entfernen
-                        </label>
+                    <div class="btn-group @error('prune_sent_emails') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="prune_sent_emails" id="prune_sent_emails-1" value="1" autocomplete="off" @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="prune_sent_emails-1">entfernen</label>
+                        <input type="radio" class="btn-check" name="prune_sent_emails" id="prune_sent_emails-0" value="0" autocomplete="off" @if(old('prune_sent_emails', $applicationSettings->prune_sent_emails) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="prune_sent_emails-0">nicht entfernen</label>
                     </div>
                     <div class="invalid-feedback @error('prune_sent_emails') d-block @enderror">
                         @error('prune_sent_emails')

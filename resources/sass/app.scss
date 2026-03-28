@@ -8,21 +8,21 @@
 }
 
 // Bootstrap functions (needed before variables)
-@import "~bootstrap/scss/functions";
+@import "bootstrap/scss/functions";
 
 // Our variable overrides (before BS5 defaults)
 @import "variables";
 
 // BS5 variable defaults (provides all color-100 through color-900 variants)
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/variables-dark";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
 
 // Extended theme-colors map (references BS5 color variables above)
 @import "bootstrap_colors";
 
 
 // Bootstrap (functions/variables reimported but !default prevents overrides)
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // Vue Easymde
 @import "easymde";
@@ -411,7 +411,7 @@ a.outline-none {
 .collapse-leave-active {
   transition: opacity 0.5s;
 }
-.collapse-enter,
+.collapse-enter-from,
 .collapse-leave-to {
   opacity: 0;
 }

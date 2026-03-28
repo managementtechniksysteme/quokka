@@ -54,13 +54,11 @@
             <div>
                 <label for="private">Privatfahrzeug</label>
             </div>
-            <div class="btn-group @error('private') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('private', optional($vehicle)->private) == true) active @endif">
-                    <input type="radio" name="private" id="1" value="1" autocomplete="off" @if(old('private', optional($vehicle)->private) == true) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('private', optional($vehicle)->private) == false) active @endif">
-                    <input type="radio" name="private" id="0" value="0" autocomplete="off" @if(old('private', optional($vehicle)->private) == false) checked @endif> nein
-                </label>
+            <div class="btn-group @error('private') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="private" id="private-1" value="1" autocomplete="off" @if(old('private', optional($vehicle)->private) == true) checked @endif>
+                <label class="btn btn-outline-secondary" for="private-1">ja</label>
+                <input type="radio" class="btn-check" name="private" id="private-0" value="0" autocomplete="off" @if(old('private', optional($vehicle)->private) == false) checked @endif>
+                <label class="btn btn-outline-secondary" for="private-0">nein</label>
             </div>
             <div class="invalid-feedback @error('private') d-block @enderror">
                 @error('private')

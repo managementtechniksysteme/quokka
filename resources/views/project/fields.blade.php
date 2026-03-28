@@ -56,13 +56,11 @@
             <div>
                 <label for="is_pre_execution">Befindet sich das Projekt in der Vorphase?</label>
             </div>
-            <div class="btn-group @error('is_pre_execution') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('is_pre_execution', optional($project)->is_pre_execution) == true) active @endif">
-                    <input type="radio" name="is_pre_execution" id="1" value="1" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == true) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('is_pre_execution', optional($project)->is_pre_execution) == false) active @endif">
-                    <input type="radio" name="is_pre_execution" id="0" value="0" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == false) checked @endif> nein
-                </label>
+            <div class="btn-group @error('is_pre_execution') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="is_pre_execution" id="is_pre_execution-1" value="1" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == true) checked @endif>
+                <label class="btn btn-outline-secondary" for="is_pre_execution-1">ja</label>
+                <input type="radio" class="btn-check" name="is_pre_execution" id="is_pre_execution-0" value="0" autocomplete="off" @if(old('is_pre_execution', optional($project)->is_pre_execution) == false) checked @endif>
+                <label class="btn btn-outline-secondary" for="is_pre_execution-0">nein</label>
             </div>
             <div class="invalid-feedback @error('is_pre_execution') d-block @enderror">
                 @error('is_pre_execution')
@@ -75,13 +73,11 @@
             <div>
                 <label for="include_in_finances">Sollen dem Projekt zugehörigen Leistungen in den Finanzen berücksichtigt werden?</label>
             </div>
-            <div class="btn-group @error('include_in_finances') is-invalid @enderror" data-bs-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('include_in_finances', optional($project)->include_in_finances) == true) active @endif">
-                    <input type="radio" name="include_in_finances" id="1" value="1" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == true) checked @endif> ja
-                </label>
-                <label class="btn btn-outline-secondary @if(old('include_in_finances', optional($project)->include_in_finances) == false) active @endif">
-                    <input type="radio" name="include_in_finances" id="0" value="0" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == false) checked @endif> nein
-                </label>
+            <div class="btn-group @error('include_in_finances') is-invalid @enderror" >
+                <input type="radio" class="btn-check" name="include_in_finances" id="include_in_finances-1" value="1" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == true) checked @endif>
+                <label class="btn btn-outline-secondary" for="include_in_finances-1">ja</label>
+                <input type="radio" class="btn-check" name="include_in_finances" id="include_in_finances-0" value="0" autocomplete="off" @if(old('include_in_finances', optional($project)->include_in_finances) == false) checked @endif>
+                <label class="btn btn-outline-secondary" for="include_in_finances-0">nein</label>
             </div>
             <div class="invalid-feedback @error('include_in_finances') d-block @enderror">
                 @error('include_in_finances')

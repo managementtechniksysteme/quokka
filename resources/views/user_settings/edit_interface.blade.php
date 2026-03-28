@@ -27,25 +27,19 @@
                     <div>
                         <label for="list_pagination_size">Anzahl der Listenelemente pro Seite</label>
                     </div>
-                    <div class="btn-group @error('list_pagination_size') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '5') active @endif">
-                            <input type="radio" name="list_pagination_size" id="5" value="5" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '5') checked @endif> 5
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '10') active @endif">
-                            <input type="radio" name="list_pagination_size" id="10" value="10" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '10') checked @endif> 10
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '15') active @endif">
-                            <input type="radio" name="list_pagination_size" id="15" value="15" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '15') checked @endif> 15
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '20') active @endif">
-                            <input type="radio" name="list_pagination_size" id="20" value="20" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '20') checked @endif> 20
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '25') active @endif">
-                            <input type="radio" name="list_pagination_size" id="25" value="25" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '25') checked @endif> 25
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '30') active @endif">
-                            <input type="radio" name="list_pagination_size" id="30" value="30" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '30') checked @endif> 30
-                        </label>
+                    <div class="btn-group @error('list_pagination_size') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-5" value="5" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '5') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-5">5</label>
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-10" value="10" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '10') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-10">10</label>
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-15" value="15" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '15') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-15">15</label>
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-20" value="20" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '20') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-20">20</label>
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-25" value="25" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '25') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-25">25</label>
+                        <input type="radio" class="btn-check" name="list_pagination_size" id="list_pagination_size-30" value="30" autocomplete="off" @if(old('list_pagination_size', optional(Auth::user()->settings)->list_pagination_size) == '30') checked @endif>
+                        <label class="btn btn-outline-secondary" for="list_pagination_size-30">30</label>
                     </div>
                     <div class="invalid-feedback @error('list_pagination_size') d-block @enderror">
                         @error('list_pagination_size')
@@ -59,31 +53,23 @@
                         <div>
                             <label for="latest_changes_quantity">Anzahl der Elemente auf der Übersichtsseite für letzte Änderungen</label>
                         </div>
-                        <div class="btn-group @error('latest_changes_quantity') is-invalid @enderror" data-bs-toggle="buttons">
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '5') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="5" value="5" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '5') checked @endif> 5
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '10') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="10" value="10" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '10') checked @endif> 10
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '15') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="15" value="15" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '15') checked @endif> 15
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '20') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="20" value="20" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '20') checked @endif> 20
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '25') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="25" value="25" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '25') checked @endif> 25
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '30') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="30" value="30" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '30') checked @endif> 30
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '40') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="40" value="40" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '40') checked @endif> 40
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '50') active @endif">
-                                <input type="radio" name="latest_changes_quantity" id="50" value="50" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '50') checked @endif> 50
-                            </label>
+                        <div class="btn-group @error('latest_changes_quantity') is-invalid @enderror" >
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-5" value="5" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '5') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-5">5</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-10" value="10" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '10') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-10">10</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-15" value="15" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '15') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-15">15</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-20" value="20" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '20') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-20">20</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-25" value="25" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '25') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-25">25</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-30" value="30" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '30') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-30">30</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-40" value="40" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '40') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-40">40</label>
+                            <input type="radio" class="btn-check" name="latest_changes_quantity" id="latest_changes_quantity-50" value="50" autocomplete="off" @if(old('latest_changes_quantity', optional(Auth::user()->settings)->latest_changes_quantity) == '50') checked @endif>
+                            <label class="btn btn-outline-secondary" for="latest_changes_quantity-50">50</label>
                         </div>
                         <div class="invalid-feedback @error('latest_changes_quantity') d-block @enderror">
                             @error('latest_changes_quantity')
@@ -97,13 +83,11 @@
                     <div>
                         <label for="show_finished_items">Erledigte Elemente (z.B. Aufgaben) in Listen anzeigen?</label>
                     </div>
-                    <div class="btn-group @error('show_finished_items') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == true) active @endif">
-                            <input type="radio" name="show_finished_items" id="1" value="1" autocomplete="off" @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == true) checked @endif> Elemente anzeigen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == false) active @endif">
-                            <input type="radio" name="show_finished_items" id="0" value="0" autocomplete="off" @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == false) checked @endif> Elemente nicht anzeigen
-                        </label>
+                    <div class="btn-group @error('show_finished_items') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="show_finished_items" id="show_finished_items-1" value="1" autocomplete="off" @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_finished_items-1">Elemente anzeigen</label>
+                        <input type="radio" class="btn-check" name="show_finished_items" id="show_finished_items-0" value="0" autocomplete="off" @if(old('show_finished_items', optional(Auth::user()->settings)->show_finished_items) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_finished_items-0">Elemente nicht anzeigen</label>
                     </div>
                     <div class="invalid-feedback @error('show_finished_items') d-block @enderror">
                         @error('show_finished_items')
@@ -116,13 +100,11 @@
                     <div>
                         <label for="show_signed_reports">Unterschriebene Elemente in Listen von Berichten anzeigen?</label>
                     </div>
-                    <div class="btn-group @error('show_signed_reports') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == true) active @endif">
-                            <input type="radio" name="show_signed_reports" id="1" value="1" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == true) checked @endif> Elemente anzeigen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == false) active @endif">
-                            <input type="radio" name="show_signed_reports" id="0" value="0" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == false) checked @endif> Elemente nicht anzeigen
-                        </label>
+                    <div class="btn-group @error('show_signed_reports') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="show_signed_reports" id="show_signed_reports-1" value="1" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_signed_reports-1">Elemente anzeigen</label>
+                        <input type="radio" class="btn-check" name="show_signed_reports" id="show_signed_reports-0" value="0" autocomplete="off" @if(old('show_signed_reports', optional(Auth::user()->settings)->show_signed_reports) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_signed_reports-0">Elemente nicht anzeigen</label>
                     </div>
                     <div class="invalid-feedback @error('show_signed_reports') d-block @enderror">
                         @error('show_signed_reports')
@@ -135,13 +117,11 @@
                     <div>
                         <label for="show_finished_items">Nur eigene Elemente in Listen von Berichten anzeigen?</label>
                     </div>
-                    <div class="btn-group @error('show_only_own_reports') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == true) active @endif">
-                            <input type="radio" name="show_only_own_reports" id="1" value="1" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == true) checked @endif> Nur eigene Elemente anzeigen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == false) active @endif">
-                            <input type="radio" name="show_only_own_reports" id="0" value="0" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == false) checked @endif> Auch andere Elemente anzeigen
-                        </label>
+                    <div class="btn-group @error('show_only_own_reports') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="show_only_own_reports" id="show_only_own_reports-1" value="1" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_only_own_reports-1">Nur eigene Elemente anzeigen</label>
+                        <input type="radio" class="btn-check" name="show_only_own_reports" id="show_only_own_reports-0" value="0" autocomplete="off" @if(old('show_only_own_reports', optional(Auth::user()->settings)->show_only_own_reports) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="show_only_own_reports-0">Auch andere Elemente anzeigen</label>
                     </div>
                     <div class="invalid-feedback @error('show_only_own_reports') d-block @enderror">
                         @error('show_only_own_reports')
@@ -155,13 +135,11 @@
                         <div>
                             <label for="show_finished_items">Kostenindikatoren in Projektlisten anzeigen?</label>
                         </div>
-                        <div class="btn-group @error('show_cost_estimates') is-invalid @enderror" data-bs-toggle="buttons">
-                            <label class="btn btn-outline-secondary @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == true) active @endif">
-                                <input type="radio" name="show_cost_estimates" id="1" value="1" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == true) checked @endif> Kostenindikatoren anzeigen
-                            </label>
-                            <label class="btn btn-outline-secondary @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == false) active @endif">
-                                <input type="radio" name="show_cost_estimates" id="0" value="0" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == false) checked @endif> Kostenindikatoren nicht anzeigen
-                            </label>
+                        <div class="btn-group @error('show_cost_estimates') is-invalid @enderror" >
+                            <input type="radio" class="btn-check" name="show_cost_estimates" id="show_cost_estimates-1" value="1" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == true) checked @endif>
+                            <label class="btn btn-outline-secondary" for="show_cost_estimates-1">Kostenindikatoren anzeigen</label>
+                            <input type="radio" class="btn-check" name="show_cost_estimates" id="show_cost_estimates-0" value="0" autocomplete="off" @if(old('show_cost_estimates', optional(Auth::user()->settings)->show_cost_estimates) == false) checked @endif>
+                            <label class="btn btn-outline-secondary" for="show_cost_estimates-0">Kostenindikatoren nicht anzeigen</label>
                         </div>
                         <div class="invalid-feedback @error('show_cost_estimates') d-block @enderror">
                             @error('show_cost_estimates')
@@ -195,13 +173,11 @@
                     <div>
                         <label for="show_finished_items">Sortierreihenfolge von Kommentaren</label>
                     </div>
-                    <div class="btn-group @error('task_comments_sort_newest_first') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == true) active @endif">
-                            <input type="radio" name="task_comments_sort_newest_first" id="1" value="1" autocomplete="off" @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == true) checked @endif> Neuere zuerst
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == false) active @endif">
-                            <input type="radio" name="task_comments_sort_newest_first" id="0" value="0" autocomplete="off" @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == false) checked @endif> Ältere zuerst
-                        </label>
+                    <div class="btn-group @error('task_comments_sort_newest_first') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="task_comments_sort_newest_first" id="task_comments_sort_newest_first-1" value="1" autocomplete="off" @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="task_comments_sort_newest_first-1">Neuere zuerst</label>
+                        <input type="radio" class="btn-check" name="task_comments_sort_newest_first" id="task_comments_sort_newest_first-0" value="0" autocomplete="off" @if(old('task_comments_sort_newest_first', optional(Auth::user()->settings)->task_comments_sort_newest_first) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="task_comments_sort_newest_first-0">Ältere zuerst</label>
                     </div>
                     <div class="invalid-feedback @error('task_comments_sort_newest_first') d-block @enderror">
                         @error('task_comments_sort_newest_first')
@@ -236,13 +212,11 @@
                     <div>
                         <label for="accounting_expand_errors">Automatisches Anzeigen von Fehlern</label>
                     </div>
-                    <div class="btn-group @error('accounting_expand_errors') is-invalid @enderror" data-bs-toggle="buttons">
-                        <label class="btn btn-outline-secondary @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == true) active @endif">
-                            <input type="radio" name="accounting_expand_errors" id="1" value="1" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == true) checked @endif> Probleme automatisch anzeigen
-                        </label>
-                        <label class="btn btn-outline-secondary @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == false) active @endif">
-                            <input type="radio" name="accounting_expand_errors" id="0" value="0" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == false) checked @endif> Probleme nicht automatisch anzeigen
-                        </label>
+                    <div class="btn-group @error('accounting_expand_errors') is-invalid @enderror" >
+                        <input type="radio" class="btn-check" name="accounting_expand_errors" id="accounting_expand_errors-1" value="1" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == true) checked @endif>
+                        <label class="btn btn-outline-secondary" for="accounting_expand_errors-1">Probleme automatisch anzeigen</label>
+                        <input type="radio" class="btn-check" name="accounting_expand_errors" id="accounting_expand_errors-0" value="0" autocomplete="off" @if(old('accounting_expand_errors', optional(Auth::user()->settings)->accounting_expand_errors) == false) checked @endif>
+                        <label class="btn btn-outline-secondary" for="accounting_expand_errors-0">Probleme nicht automatisch anzeigen</label>
                     </div>
                     <div class="invalid-feedback @error('accounting_expand_errors') d-block @enderror">
                         @error('accounting_expand_errors')

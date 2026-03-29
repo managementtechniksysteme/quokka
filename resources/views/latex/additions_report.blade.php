@@ -16,10 +16,10 @@
 \begin{tabular}{@{}lp{13.5cm}@{}}
 \footnotesize{\textbf{Bauvorhaben:}} & \footnotesize{{!! Latex::escape($additionsReport->project->name) !!}} \\
 \footnotesize{\textbf{Datum:}} & \footnotesize{{!! Latex::escape($additionsReport->services_provided_on) !!}} \\
-\footnotesize{\textbf{Regiestunden:}} & \footnotesize{{!! Latex::escape(Number::format($additionsReport->hours)) !!}} \\
+\footnotesize{\textbf{Regiestunden:}} & \footnotesize{{!! Latex::escape(Number::toLocal($additionsReport->hours)) !!}} \\
 \footnotesize{\textbf{Wetter:}} & \footnotesize{{!! Latex::escape(trans($additionsReport->weather)) !!}
-({!! Latex::escape(Number::format($additionsReport->minimum_temperature)) !!}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis
-{!! Latex::escape(Number::format($additionsReport->maximum_temperature)) !!}@endif\textdegree{}C)} \\
+({!! Latex::escape(Number::toLocal($additionsReport->minimum_temperature)) !!}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis
+{!! Latex::escape(Number::toLocal($additionsReport->maximum_temperature)) !!}@endif\textdegree{}C)} \\
 \footnotesize{\textbf{Personalstand:}} &
 @foreach($additionsReport->involvedEmployees as $employee)
 \footnotesize{{!! Latex::escape($employee->person->name) !!}}@unless($loop->last)\footnotesize{, }@endunless

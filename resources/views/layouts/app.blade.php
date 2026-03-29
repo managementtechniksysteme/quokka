@@ -94,9 +94,9 @@
     </main>
 </div>
 
-{{-- @auth
+@auth
     @livewire('livewire-ui-spotlight')
-@endauth --}}
+@endauth
 </body>
 
 </html>

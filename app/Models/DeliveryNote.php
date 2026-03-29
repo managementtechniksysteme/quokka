@@ -15,7 +15,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
@@ -24,7 +24,7 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersSearch;
     use HasSignatureRequest;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
     protected function casts(): array

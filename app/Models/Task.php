@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements FiltersGlobalSearch, HasMedia
@@ -23,7 +23,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachments;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
     protected function casts(): array

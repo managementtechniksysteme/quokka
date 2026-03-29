@@ -18,7 +18,7 @@
                     <svg class="icon icon-16 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                     </svg>
-                    {{ Number::format($financeGroup->finance_records_sum_amount, 2) }}
+                    {{ Number::toLocal($financeGroup->finance_records_sum_amount, 2) }}
             </span>
             @endif
 

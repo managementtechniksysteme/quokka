@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col @if($financeRecord->amount >= 0) text-muted @else text-danger @endif">
-                {{ Number::format($financeRecord->amount) }}
+                {{ Number::toLocal($financeRecord->amount) }}
             </div>
         </div>
 

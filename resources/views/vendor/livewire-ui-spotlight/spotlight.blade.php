@@ -6,7 +6,7 @@
         <style>{!! file_get_contents($cssPath) !!}</style>
     @endisset
 
-    <div x-data="LivewireUISpotlight({ componentId: '{{ $this->id }}', placeholder: '{{ trans('livewire-ui-spotlight::spotlight.placeholder') }}', commands: {{ $commands }} })"
+    <div x-data="LivewireUISpotlight({ componentId: '{{ $this->id() }}', placeholder: '{{ trans('livewire-ui-spotlight::spotlight.placeholder') }}', commands: {{ $commands }} })"
          x-init="init()"
          x-show="isOpen"
          x-cloak
@@ -44,14 +44,14 @@
                 <input @keydown.tab.prevent="" @keydown.prevent.stop.enter="go()" @keydown.prevent.arrow-up="selectUp()"
                        @keydown.prevent.arrow-down="selectDown()" x-ref="input" x-model.debounce.500ms="input"
                        type="text"
-                       class="spotlight-input w-100 bg-transparent px-6 py-4 text-gray-300 lead border-0 outline-none"
+                       class="spotlight-input w-100 bg-transparent text-gray-300 lead border-0 outline-none"
                        x-bind:placeholder="inputPlaceholder">
             </div>
             <div class="border-top border-gray-800" x-show="filteredItems().length > 0">
                 <ul x-ref="results" class="m-0 p-0 spotlight-results overflow-auto">
                     <template x-for="(item, i) in filteredItems()" :key>
                         <li>
-                            <button @click="go(item[0].item.id)" class="d-block w-100 border-0 outline-none px-6 py-3 text-start"
+                            <button @click="go(item[0].item.id)" class="d-block w-100 border-0 outline-none text-start"
                                     :class="{ 'bg-gray-700': selected === i, 'bg-hover-gray-800': selected !== i }">
                                 <span x-text="item[0].item.name"
                                       :class="{'text-gray-300': selected !== i, 'text-white': selected === i }"></span>

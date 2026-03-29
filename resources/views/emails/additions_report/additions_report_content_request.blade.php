@@ -2,7 +2,7 @@
 
 **Bauvorhaben:** {{ $additionsReport->project->name }} #{{ $additionsReport->number }}<br />
 **Datum:** {{ $additionsReport->services_provided_on }}<br />
-**Regiestunden:** {{ Number::format($additionsReport->hours) }}<br />
+**Regiestunden:** {{ Number::toLocal($additionsReport->hours) }}<br />
 **Wetter:** {{ trans($additionsReport->weather) }}
 ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)<br />
 **Personalstand:**<br />

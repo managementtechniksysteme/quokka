@@ -105,7 +105,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                                    <span class="h2 fw-bold text-green m-0">{{ Number::format($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                    <span class="h2 fw-bold text-red m-0">{{ Number::format($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Differnz</h5>
-                                    <span class="h2 fw-bold @if($accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::format($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold @if($accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                    <span class="h2 fw-bold text-green m-0">{{ Number::format($manuelFinanceData['total_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($manuelFinanceData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                    <span class="h2 fw-bold text-red m-0">{{ Number::format($manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
                             <div class="card shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                    <span class="h2 fw-bold @if($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::format($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                    <span class="h2 fw-bold @if($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                                 </div>
                             </div>
                         </div>

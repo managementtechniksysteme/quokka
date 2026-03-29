@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="col-sm-7 col-md col-lg-8">
-                            {{ Number::format($additionsReport->hours) }}
+                            {{ Number::toLocal($additionsReport->hours) }}
                         </div>
                     </div>
                     <div class="row mt-3">

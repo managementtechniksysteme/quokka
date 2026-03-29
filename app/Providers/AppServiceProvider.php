@@ -79,7 +79,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $loader = AliasLoader::getInstance();
         $loader->alias('DateTimeHelpers', DateTime::class);
+        $loader->alias('Email', \App\Helpers\Email::class);
+        $loader->alias('Html', \App\Helpers\Html::class);
+        $loader->alias('Latex', \App\Helpers\Latex::class);
         $loader->alias('NotificationHelper', NotificationHelper::class);
+        $loader->alias('Number', \App\Helpers\Number::class);
     }
 
     private function configureAuth(): void

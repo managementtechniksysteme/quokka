@@ -16,7 +16,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, HasMedia
@@ -26,7 +26,7 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
     protected function casts(): array

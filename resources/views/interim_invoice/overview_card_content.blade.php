@@ -17,7 +17,7 @@
                     <svg class="icon icon-16 ms-2 me-1">
                         <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
                     </svg>
-                    {{ Number::format($interimInvoice->amount, 2) }}
+                    {{ Number::toLocal($interimInvoice->amount, 2) }}
                 </div>
             </div>
 

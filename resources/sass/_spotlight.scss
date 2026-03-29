@@ -36,10 +36,15 @@
 
 .spotlight-input {
     caret-color: $gray-500;
+    padding: 1rem 1.5rem;
 }
 
 .spotlight-results {
     max-height: 256px;
+}
+
+.spotlight-results button {
+    padding: 0.75rem 1.5rem;
 }
 
 .animate-spin{

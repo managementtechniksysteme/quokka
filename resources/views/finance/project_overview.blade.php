@@ -47,7 +47,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                <span class="h2 fw-bold text-green m-0">{{ Number::format($currentlyOpenProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                <span class="h2 fw-bold text-red m-0">{{ Number::format($currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                <span class="h2 fw-bold @if($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::format($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold @if($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                <span class="h2 fw-bold text-green m-0">{{ Number::format($preExecutionProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                <span class="h2 fw-bold text-red m-0">{{ Number::format($preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                <span class="h2 fw-bold @if($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::format($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                                <span class="h2 fw-bold @if($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                            <span class="h2 fw-bold text-green m-0">{{ Number::format($projectData['total_volume'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($projectData['total_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                            <span class="h2 fw-bold text-red m-0">{{ Number::format($projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                            <span class="h2 fw-bold @if($projectData['total_volume'] + $projectData['billed_volume'] >= 0) text-green @else text-red @endif m-0">{{ Number::format($projectData['total_volume'] + $projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
+                            <span class="h2 fw-bold @if($projectData['total_volume'] + $projectData['billed_volume'] >= 0) text-green @else text-red @endif m-0">{{ Number::toLocal($projectData['total_volume'] + $projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
                         </div>
                     </div>
                 </div>

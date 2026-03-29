@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
@@ -25,7 +25,7 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
     protected function casts(): array

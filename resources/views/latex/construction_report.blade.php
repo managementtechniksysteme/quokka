@@ -17,8 +17,8 @@
 \footnotesize{\textbf{Bauvorhaben:}} & \footnotesize{{!! Latex::escape($constructionReport->project->name) !!}} \\
 \footnotesize{\textbf{Datum:}} & \footnotesize{{!! Latex::escape($constructionReport->services_provided_on) !!}} \\
 \footnotesize{\textbf{Wetter:}} & \footnotesize{{!! Latex::escape(trans($constructionReport->weather)) !!}
-({!! Latex::escape(Number::format($constructionReport->minimum_temperature)) !!}@if($constructionReport->minimum_temperature !== $constructionReport->maximum_temperature) bis
-{!! Latex::escape(Number::format($constructionReport->maximum_temperature)) !!}@endif\textdegree{}C)} \\
+({!! Latex::escape(Number::toLocal($constructionReport->minimum_temperature)) !!}@if($constructionReport->minimum_temperature !== $constructionReport->maximum_temperature) bis
+{!! Latex::escape(Number::toLocal($constructionReport->maximum_temperature)) !!}@endif\textdegree{}C)} \\
 \footnotesize{\textbf{Personalstand:}} &
 @foreach($constructionReport->involvedEmployees as $employee)
 \footnotesize{{!! Latex::escape($employee->person->name) !!}}@unless($loop->last)\footnotesize{, }@endunless

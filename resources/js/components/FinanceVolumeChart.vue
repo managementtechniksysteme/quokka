@@ -41,8 +41,9 @@
                     },
                     colors: ['#5CB85C', '#D9534F', this.total_volume + this.billed_volume >=0 ? '#5CB85C' : '#D9534F'],
                     xaxis: {
-                        categories: ['Auftragsvolumen', 'verrechnet', 'offen'],
+                        categories: [''],
                         labels: {
+                            show: false,
                             style: {
                                 fontFamily: 'Roboto',
                             }
@@ -86,15 +87,15 @@
                     },
                     plotOptions: {
                         bar: {
-                            distributed: true,
                             borderRadius: 0,
                         }
                     }
                 },
-                series: [{
-                    name: 'series',
-                    data: [this.total_volume, this.billed_volume, this.total_volume + this.billed_volume]
-                }]
+                series: [
+                    { name: 'Auftragsvolumen', data: [this.total_volume] },
+                    { name: 'verrechnet', data: [this.billed_volume] },
+                    { name: 'offen', data: [this.total_volume + this.billed_volume] }
+                ]
             }
         },
 

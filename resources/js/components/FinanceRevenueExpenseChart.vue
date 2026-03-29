@@ -41,8 +41,9 @@
                     },
                     colors: ['#5CB85C', '#D9534F', this.revenue + this.expense >=0 ? '#5CB85C' : '#D9534F'],
                     xaxis: {
-                        categories: ['Einnahmen', 'Ausgaben', 'Differenz'],
+                        categories: [''],
                         labels: {
+                            show: false,
                             style: {
                                 fontFamily: 'Roboto',
                             }
@@ -86,15 +87,15 @@
                     },
                     plotOptions: {
                         bar: {
-                            distributed: true,
                             borderRadius: 0,
                         }
                     }
                 },
-                series: [{
-                    name: 'series',
-                    data: [this.revenue, this.expense, this.revenue + this.expense]
-                }]
+                series: [
+                    { name: 'Einnahmen', data: [this.revenue] },
+                    { name: 'Ausgaben', data: [this.expense] },
+                    { name: 'Differenz', data: [this.revenue + this.expense] }
+                ]
             }
         },
 

@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -165,7 +165,7 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         return LogOptions::defaults()
             ->logOnly(['status'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function registerMediaCollections(): void

@@ -202,21 +202,21 @@ class TaskController extends Controller
             if($batchId && $batch->count() > 1) {
                 $activity = $batch->pop();
 
-                $attributes = $activity->properties['attributes'];
-                $old = $activity->properties['old'];
+                $attributes = $activity->attribute_changes['attributes'];
+                $old = $activity->attribute_changes['old'];
 
                 foreach ($batch as $batchActivity) {
                     $attributes = array_merge(
-                        $attributes, $batchActivity->properties['attributes']
+                        $attributes, $batchActivity->attribute_changes['attributes']
                     );
-                    $old = array_merge($old, $batchActivity->properties['old']);
+                    $old = array_merge($old, $batchActivity->attribute_changes['old']);
                 }
 
-                $properties = [];
-                $properties['attributes'] = $attributes;
-                $properties['old'] = $old;
+                $changes = [];
+                $changes['attributes'] = $attributes;
+                $changes['old'] = $old;
 
-                $activity->properties = $properties;
+                $activity->attribute_changes = $changes;
 
                 $combinedActivities = $combinedActivities->push($activity);
             }

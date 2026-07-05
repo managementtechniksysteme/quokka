@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -305,7 +305,7 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
         return LogOptions::defaults()
             ->logOnly(['status'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function registerMediaCollections(): void

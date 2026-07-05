@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
@@ -155,7 +155,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             ->logAll()
             ->dontLogIfAttributesChangedOnly(['created_at', 'updated_at'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function project()

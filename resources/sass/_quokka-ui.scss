@@ -1,0 +1,786 @@
+// =============================================================================
+//  Quokka UI — redesign layer
+// -----------------------------------------------------------------------------
+//  Import AFTER bootstrap in app.scss:
+//      @import "bootstrap/scss/bootstrap";
+//      ...
+//      @import "quokka-ui";
+//
+//  Tokens are RUNTIME CSS custom properties (--q-*) with a light + dark set,
+//  keyed off Bootstrap 5.3's `data-bs-theme` on <html>. The theme switcher in
+//  the user menu sets that attribute (System follows prefers-color-scheme), so
+//  every `q-*` component — and Bootstrap's own components — theme together with
+//  no recompile. Naming stays flat, kebab-case, `q-` prefixed.
+// =============================================================================
+
+// --- Theme-independent scale (compile-time constants) ------------------------
+$q-radius:         14px;                 // cards
+$q-radius-sm:      10px;                 // buttons, fields, chips-square
+$q-radius-pill:    999px;
+$q-gap:            1rem;
+$q-pad:            1.25rem;
+
+// --- Runtime theme tokens ----------------------------------------------------
+// Light is the default (:root) and [data-bs-theme="light"]; dark overrides
+// under [data-bs-theme="dark"]. `--q-accent` tracks $primary (indigo) in light
+// and lifts to a brighter indigo in dark for contrast. Keep the semantic
+// colours (green/amber/red/sky/violet) meaning ONE thing each.
+:root,
+[data-bs-theme="light"] {
+    color-scheme: light;
+    --q-bg:#eef0f4; --q-surface:#ffffff; --q-surface-2:#f7f8fa; --q-surface-3:#f1f3f6;
+    --q-border:#e5e8ee; --q-border-2:#edeff3;
+    --q-text:#1b1e26; --q-muted:#69707d; --q-faint:#9aa1ad;
+    --q-accent:#{$primary};
+    // accent-tinted fill (recomputes per theme since it reads --q-accent)
+    --q-accent-tint: color-mix(in srgb, var(--q-accent) 13%, transparent);
+    --q-amber:#b7791f; --q-amber-bg:#fef3c7;
+    --q-green:#15803d; --q-green-bg:#dcfce7;
+    --q-red:#b91c1c;   --q-red-bg:#fee2e2;
+    --q-sky:#0369a1;   --q-sky-bg:#e0f2fe;
+    --q-violet:#6d28d9;
+    --q-shadow:0 1px 2px rgba(16,20,28,.04),0 1px 3px rgba(16,20,28,.05);
+    --q-shadow-lg:0 6px 22px rgba(16,20,28,.09),0 2px 6px rgba(16,20,28,.05);
+}
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+    --q-bg:#0c0f13; --q-surface:#161a20; --q-surface-2:#1b2027; --q-surface-3:#20262f;
+    --q-border:#272d37; --q-border-2:#21262e;
+    --q-text:#e9ebf0; --q-muted:#9aa2af; --q-faint:#69707f;
+    --q-accent:#818cf8;
+    --q-amber:#f5c451; --q-amber-bg:#36280f;
+    --q-green:#7ee0a0; --q-green-bg:#123020;
+    --q-red:#f8a3a3;   --q-red-bg:#361717;
+    --q-sky:#7dd3fc;   --q-sky-bg:#0c2c3f;
+    --q-violet:#c4b5fd;
+    --q-shadow:0 1px 2px rgba(0,0,0,.4);
+    --q-shadow-lg:0 10px 34px rgba(0,0,0,.55);
+}
+
+// =============================================================================
+//  A. Page canvas + content column
+// =============================================================================
+.q-page      { background: var(--q-bg); min-height: 100%; }
+.q-container { max-width: 1140px; margin: 0 auto; padding: 1.5rem 1.75rem 2.5rem; }
+.q-container--narrow { max-width: 760px; }
+
+.q-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+.q-eyebrow   { font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--q-faint); margin-bottom: .4rem; }
+.q-title     { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; margin: 0; color: var(--q-text); }
+.q-subtitle  { font-size: .8rem; color: var(--q-muted); margin-top: .15rem; }
+.q-head-icon { width: 42px; height: 42px; border-radius: 12px; background: var(--q-accent-tint); color: var(--q-accent); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+// =============================================================================
+//  B. Card — surface primitive
+// =============================================================================
+.q-card {
+    background: var(--q-surface);
+    border: 1px solid var(--q-border);
+    border-radius: $q-radius;
+    box-shadow: var(--q-shadow);
+    overflow: hidden;
+    transition: box-shadow .16s, border-color .16s;
+
+    &--flush { overflow: visible; }
+    &--quiet { background: var(--q-surface-2); border-color: var(--q-border-2); box-shadow: none; }
+}
+.q-card__head {
+    padding: .9rem $q-pad;
+    border-bottom: 1px solid var(--q-border-2);
+    font-weight: 700; font-size: .82rem; color: var(--q-text);
+    .text-muted { font-weight: 400; }
+}
+.q-card__body { padding: $q-pad; }
+
+// =============================================================================
+//  C. List row
+// =============================================================================
+.q-list {
+    overflow: visible;   // let a row's kebab dropdown escape the card
+    .q-row + .q-row { border-top: 1px solid var(--q-border-2); }
+    .q-row:first-child { border-top-left-radius: $q-radius; border-top-right-radius: $q-radius; }
+    .q-row:last-child  { border-bottom-left-radius: $q-radius; border-bottom-right-radius: $q-radius; }
+    .q-row .dropdown { z-index: 2; }          // above the row's stretched-link
+    // the open dropdown jumps above every sibling row (BS doesn't reliably put
+    // .show on the .dropdown wrapper, so match the open menu with :has)
+    .q-row .dropdown.show,
+    .q-row .dropdown:has(.dropdown-menu.show) { z-index: 1030; }
+}
+.q-row {
+    position: relative; display: flex; align-items: center; gap: .9rem;
+    padding: .85rem 1.1rem; transition: background .12s;
+    &:hover { background: var(--q-surface-2); }
+    // absolute so the empty link doesn't take a flex slot (which the row gap
+    // would then pad on its right, shoving the avatar inward)
+    > .stretched-link { position: absolute; inset: 0; z-index: 1; }
+}
+.q-row__main  { flex: 1; min-width: 0; }
+.q-row__title { font-size: .95rem; font-weight: 700; color: var(--q-text); }
+.q-row__sub   { font-weight: 500; color: var(--q-faint); }   // faint secondary in the title line
+.q-row__desc  { font-size: .82rem; color: var(--q-muted); }  // muted description line (e.g. notification body)
+// lift a non-dropdown row action (e.g. a mark-read form button) above the
+// row's stretched-link, the same way .q-row .dropdown is lifted
+.q-row__action { position: relative; z-index: 2; }
+// read notification rows read as "done": title + description dim to faint
+.q-row--read .q-row__title,
+.q-row--read .q-row__desc { color: var(--q-faint); }
+
+.q-avatar {
+    flex-shrink: 0; width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 11px; font-size: .8rem; font-weight: 700;
+    background: var(--q-accent-tint); color: var(--q-accent);
+    &--round { border-radius: 50%; }
+    &--muted { background: var(--q-surface-3); color: var(--q-muted); }
+    // compact avatar for inline use (e.g. a person inside a detail field row)
+    &--sm { width: 28px; height: 28px; font-size: .58rem; border-radius: 8px; }
+    // a round avatar must stay circular even when shrunk — --sm's radius would
+    // otherwise win (declared later) and square off identity avatars.
+    &--sm#{&}--round { border-radius: 50%; }
+    // identity-avatar palette — a colour is hashed from the entity name (see
+    // HasAvatarColour) so person/company initials read with variety, like Gmail.
+    // Same accent-tint recipe as the default, across the full --q-* palette.
+    &--accent { background: var(--q-accent-tint); color: var(--q-accent); }
+    &--sky    { background: color-mix(in srgb, var(--q-sky) 16%, transparent);    color: var(--q-sky); }
+    &--violet { background: color-mix(in srgb, var(--q-violet) 16%, transparent); color: var(--q-violet); }
+    &--green  { background: color-mix(in srgb, var(--q-green) 16%, transparent);  color: var(--q-green); }
+    &--amber  { background: color-mix(in srgb, var(--q-amber) 16%, transparent);  color: var(--q-amber); }
+    &--red    { background: color-mix(in srgb, var(--q-red) 16%, transparent);    color: var(--q-red); }
+    // icon-glyph avatars that reuse the shared partials/model_icon (which sizes
+    // the glyph via icon-baseline + carries a me-1 margin): size it to 20px and
+    // strip the margin/baseline shift so it centres — same trick as .q-activity__icon.
+    &--icon { font-size: 20px; }
+    &--icon svg { margin: 0 !important; bottom: 0; }
+}
+
+.q-metric        { text-align: right; }
+.q-metric__value { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; color: var(--q-text); }
+.q-metric__label { font-size: .625rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--q-faint); }
+.q-metric--faint .q-metric__value { color: var(--q-faint); }
+.q-metric--danger .q-metric__value { color: var(--q-red); }
+
+// =============================================================================
+//  D. Meta chips + status chip
+// =============================================================================
+.q-meta { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem; margin-top: .4rem; }
+.q-chip {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .72rem; font-weight: 500; padding: .18rem .55rem;
+    border-radius: $q-radius-pill; color: var(--q-muted);
+    background: var(--q-surface-2); border: 1px solid var(--q-border-2);
+    .icon { color: var(--q-faint); }
+}
+// the shared partials/model_icon (icon-baseline + a me-1 margin) reused inside a
+// chip: strip the margin + baseline shift so it aligns like a normal chip icon
+// (spacing comes from the chip gap). No-op for the plain icon-12 chip icons.
+.q-chip svg { margin: 0 !important; position: static; }
+// keep chips legible when a row hover uses the same surface-2 tint
+.q-row:hover .q-chip { background: var(--q-surface); border-color: var(--q-border); }
+// amber warning chip — for a notable non-status flag on a row (e.g. a locked
+// user account). Only the fill + text/icon are tinted; the border stays the
+// same faint --q-border-2 as every other chip (no coloured border, for
+// coherence). Holds its amber tint through the row hover.
+.q-chip--warning {
+    color: var(--q-amber); background: var(--q-amber-bg);
+    .icon { color: var(--q-amber); }
+}
+.q-row:hover .q-chip--warning { background: var(--q-amber-bg); }
+// red danger chip — e.g. an overdue task due-date. Same treatment in red.
+.q-chip--danger {
+    color: var(--q-red); background: var(--q-red-bg);
+    .icon { color: var(--q-red); }
+}
+.q-row:hover .q-chip--danger { background: var(--q-red-bg); }
+// green success chip — e.g. a captured signature. Same treatment in green.
+.q-chip--success {
+    color: var(--q-green); background: var(--q-green-bg);
+    .icon { color: var(--q-green); }
+}
+
+// Status chip — the single state signal. Keys are the ENGLISH slugs the models
+// store (Str::slug($model->status)); German only appears via __() for display.
+//   new / in-progress / finished / signed  → tasks, reports, delivery notes
+//   overdue                                → computed "überfällig" task state
+.q-status {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .72rem; font-weight: 600; padding: .18rem .6rem;
+    border-radius: $q-radius-pill;
+    &::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+}
+.q-status--new         { color: var(--q-sky);    background: var(--q-sky-bg); }
+.q-status--in-progress { color: var(--q-amber);  background: var(--q-amber-bg); }
+.q-status--finished    { color: var(--q-green);  background: var(--q-green-bg); }
+// signed is the workflow's MIDDLE state (new → signed → finished), so it shares
+// the amber "middle" coding with in-progress — keeps the colour language uniform
+.q-status--signed      { color: var(--q-amber);  background: var(--q-amber-bg); }
+.q-status--overdue     { color: var(--q-red);    background: var(--q-red-bg); }
+
+// =============================================================================
+//  E. Meta strip — quiet fact bar on detail pages
+// =============================================================================
+.q-metastrip {
+    display: flex; flex-wrap: wrap; align-items: center;
+    background: var(--q-surface); border: 1px solid var(--q-border);
+    border-radius: 12px; box-shadow: var(--q-shadow);
+    padding: .7rem .25rem; margin-bottom: 1.25rem;
+}
+.q-metastrip__item {
+    display: flex; flex-direction: column; gap: .15rem; padding: .2rem 1.15rem;
+    & + & { border-left: 1px solid var(--q-border-2); }
+    dt { font-size: .6rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--q-faint); margin: 0; }
+    dd { font-size: .8rem; font-weight: 600; margin: 0; color: var(--q-text); }
+}
+
+// =============================================================================
+//  F. Detail layout + left sub-nav
+// =============================================================================
+.q-detail { display: grid; grid-template-columns: 1fr 250px; gap: 1.25rem; align-items: start; }
+// aside-first variant: fixed-width sub-nav on the LEFT, content on the right
+// (e.g. the Leistungen tabbed index). Source order is aside then content.
+.q-detail--aside-start { grid-template-columns: 250px 1fr; }
+.q-detail__aside {
+    position: sticky; top: .9rem;
+    background: var(--q-surface-2); border: 1px solid var(--q-border-2);
+    border-radius: $q-radius; padding: 1rem 1.05rem;
+}
+@include media-breakpoint-down(md) { .q-detail, .q-detail--aside-start { grid-template-columns: 1fr; } }
+
+.q-subnav { display: flex; flex-direction: column; gap: .3rem; position: sticky; top: .9rem; }
+.q-subnav__item {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .7rem .8rem; border-radius: $q-radius-sm;
+    font-weight: 600; font-size: .85rem; color: var(--q-muted);
+    transition: background .12s, color .12s;
+    // hover fill is --q-surface-2, not --q-surface-3: the sub-nav sits on the page
+    // canvas (--q-bg), and in light mode surface-3 ≈ bg so it'd be invisible.
+    // surface-2 lifts clearly against the canvas without going full-white.
+    &:hover { background: var(--q-surface-2); color: var(--q-text); text-decoration: none; }
+    // active tab mirrors the navbar: muted accent pill at rest, brighter fill on
+    // hover while HOLDING the accent text (don't fall back to the neutral hover)
+    &.active { background: var(--q-accent-tint); color: var(--q-accent); }
+    &.active:hover { background: color-mix(in srgb, var(--q-accent) 22%, transparent); color: var(--q-accent); }
+}
+// count on the right of a sub-nav item — a small pill tinted from the item's own
+// currentColor, so it reads muted when inactive and accent when the tab is active.
+.q-subnav__count {
+    font-size: .72rem; font-weight: 700; font-variant-numeric: tabular-nums;
+    padding: .1rem .5rem; border-radius: $q-radius-pill;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+}
+
+// heading for a detail-page tab's content — labels the list and holds the
+// tab-level action buttons on its right, keeping them clearly scoped to the tab
+// (NOT merged into the company-level actions in the page header).
+.q-subhead { font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; color: var(--q-text); margin: 0; }
+
+// Detail-page breadcrumb — plain text links above the page head.
+.q-breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; font-size: .8rem; color: var(--q-muted); margin-bottom: 1rem; }
+.q-breadcrumb a { color: var(--q-accent); text-decoration: none; }
+.q-breadcrumb a:hover { text-decoration: underline; }
+.q-breadcrumb__sep { color: var(--q-faint); }
+
+// Detail content columns: main content (1fr) beside a fixed 280px side card
+// (e.g. Kontakt card + Adresse card on the company detail page).
+.q-fieldcols { display: grid; grid-template-columns: 1fr 280px; gap: 1.15rem; align-items: start; }
+@include media-breakpoint-down(lg) { .q-fieldcols { grid-template-columns: 1fr; } }
+
+// Info row — icon-avatar + stacked faint-label / value, inside a detail card.
+// Non-link fields get a muted avatar; link fields (email, website) get accent.
+.q-inforow { display: flex; align-items: center; gap: .85rem; padding: .8rem 0; }
+.q-inforow + .q-inforow { border-top: 1px solid var(--q-border-2); }
+.q-inforow:first-child { padding-top: 0; }
+.q-inforow:last-child  { padding-bottom: 0; }
+.q-inforow__icon {
+    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--q-accent-tint); color: var(--q-accent);
+    &--muted { background: var(--q-surface-3); color: var(--q-muted); }
+}
+.q-inforow__main  { flex: 1; min-width: 0; }
+.q-inforow__label { font-size: .7rem; color: var(--q-faint); }
+.q-inforow__value { font-size: .85rem; font-weight: 600; color: var(--q-text); }
+.q-inforow__value a, a.q-inforow__value { color: var(--q-accent); }
+.q-inforow__value--empty { font-weight: 500; color: var(--q-faint); }
+
+// Address side card — a hatched "map" banner + address lines + a maps button.
+.q-address__map {
+    height: 120px; position: relative;
+    background-image: repeating-linear-gradient(45deg,
+        var(--q-surface-2), var(--q-surface-2) 10px,
+        var(--q-surface-3) 10px, var(--q-surface-3) 20px);
+    .icon, .icon-bs { position: absolute; left: 14px; top: 12px; color: var(--q-accent); }
+}
+.q-address__body { padding: .95rem 1.1rem; }
+.q-address__label { font-size: .6rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--q-faint); margin-bottom: .55rem; }
+.q-address__lines { font-size: .85rem; line-height: 1.55; font-weight: 500; margin-bottom: .85rem; }
+
+// =============================================================================
+//  G. Segmented control
+// =============================================================================
+.q-segmented { display: inline-flex; gap: 2px; background: var(--q-surface-3); border-radius: $q-radius-sm; padding: 3px; }
+.q-segmented__opt {
+    padding: .45rem .85rem; border-radius: 8px;
+    font-size: .8rem; font-weight: 600; color: var(--q-muted);
+    border: 0; background: transparent; cursor: pointer;
+    &.active { background: var(--q-surface); color: var(--q-text); box-shadow: var(--q-shadow); }
+    &.active.is-warning { color: var(--q-amber); }
+    &.active.is-success { color: var(--q-green); }
+    &.active.is-danger  { color: var(--q-red); }
+}
+
+// =============================================================================
+//  H. Form sections + sticky save bar
+// =============================================================================
+.q-form-section { @extend .q-card; margin-bottom: $q-gap; }
+.q-form-section__head { @extend .q-card__head; }
+.q-form-section__head .q-form-section__desc { display: block; margin-top: .25rem; font-weight: 400; font-size: .78rem; color: var(--q-muted); }
+.q-form-section__body { @extend .q-card__body; }
+
+.q-savebar {
+    position: sticky; bottom: 0; z-index: 10;
+    display: flex; justify-content: center; padding: 0 0 1rem; pointer-events: none;
+    &__inner {
+        width: 100%; max-width: 1140px; pointer-events: auto;
+        display: flex; align-items: center; justify-content: flex-end; gap: .6rem;
+        background: var(--q-surface); border: 1px solid var(--q-border);
+        border-radius: 12px; box-shadow: var(--q-shadow-lg); padding: .75rem 1rem;
+    }
+}
+
+// =============================================================================
+//  I. Grid page (accounting / logbook)
+// =============================================================================
+.q-grid { display: grid; grid-template-columns: 230px 1fr 290px; gap: 1rem; align-items: start; }
+.q-grid__filter, .q-grid__form { position: sticky; top: .9rem; @extend .q-card; }
+.q-grid__filter .q-card__body,
+.q-grid__form   .q-card__body { padding: 1rem 1.05rem; }
+@include media-breakpoint-down(lg) { .q-grid { grid-template-columns: 1fr; } }
+
+.q-trow { border-left: 3px solid transparent;
+    &.is-created  { border-left-color: var(--q-green); }
+    &.is-edited   { border-left-color: var(--q-amber); }
+    &.is-removed  { border-left-color: var(--q-red); opacity: .55; }
+}
+
+// =============================================================================
+//  J. Buttons + K. Monospace
+// =============================================================================
+.btn { border-radius: $q-radius-sm; font-weight: 600; }
+// fields share the button radius so input-group ends line up (fixes the
+// less-rounded input corner vs more-rounded button corner mismatch)
+.form-control, .form-select { border-radius: $q-radius-sm; }
+// soft secondary button — surface fill + hairline border + normal text
+.q-btn { background: var(--q-surface); border: 1px solid var(--q-border); color: var(--q-text); }
+.q-btn:hover, .q-btn:focus { background: var(--q-surface-2); color: var(--q-text); border-color: var(--q-border); }
+.q-btn-icon { width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+.q-mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+// =============================================================================
+//  Dropdown menus + row kebab (shared by list rows and the navbar)
+// =============================================================================
+.dropdown-menu {
+    border: 1px solid var(--q-border);
+    border-radius: 11px;
+    box-shadow: var(--q-shadow-lg);
+    padding: 6px;
+    // Popper writes an inline `margin:0` on the menu, so the gap needs
+    // !important to take (a small gap from the toggle, like the navbar)
+    margin-top: 7px !important;
+}
+.dropdown-item {
+    border-radius: 8px;
+    padding: .5rem .6rem;
+    font-weight: 600; font-size: .82rem;
+    color: var(--q-muted);
+    &:hover, &:focus { background: var(--q-surface-2); color: var(--q-text); }
+    &:active { background: var(--q-accent-tint); color: var(--q-accent); }
+}
+.dropdown-item.dropdown-item-danger:hover,
+.dropdown-item.dropdown-item-danger:focus { background: var(--q-red-bg); color: var(--q-red); }
+
+// Row kebab — subtle bordered icon button (matches the mockup)
+.q-kebab {
+    flex-shrink: 0;
+    // square icon button sized naturally: the uniform 20px glyph + this padding +
+    // border land on the same height as a .btn, with no fixed width/height.
+    padding: .5rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 9px;
+    border: 1px solid var(--q-border);
+    background: var(--q-surface);
+    color: var(--q-muted);
+    cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
+    &:hover, &[aria-expanded="true"] { background: var(--q-surface-2); color: var(--q-text); }
+    // destructive variant — a lone delete icon button: muted red at rest,
+    // bright red + tint on hover (same cue as .dropdown-item-danger)
+    &.q-kebab--danger { color: color-mix(in srgb, var(--q-red) 65%, var(--q-muted)); }
+    &.q-kebab--danger:hover { background: var(--q-red-bg); color: var(--q-red); border-color: transparent; }
+}
+
+// =============================================================================
+//  Flash toast — top banner for session success/info/warning/danger (the Vue
+//  <notification> component). Slides in, auto-dismisses after 5s. Ported from
+//  HTrack's ht-toast onto the --q-* tokens so it theme-adapts.
+// =============================================================================
+.q-toast {
+    position: fixed; top: 0; left: 0; width: 100%;
+    z-index: 1090;   // above the fixed navbar (1030)
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+    min-height: 3.8rem; padding: 13px 16px;
+    font-size: 15px; font-weight: 600; text-align: center;
+    color: var(--q-toast-fg);
+    background: var(--q-toast-tint);
+    border-bottom: 1px solid var(--q-border);
+    box-shadow: var(--q-shadow-lg);
+    .icon { color: var(--q-toast-fg); }
+}
+.q-toast--success { --q-toast-fg: var(--q-green); --q-toast-tint: var(--q-green-bg); }
+.q-toast--info    { --q-toast-fg: var(--q-sky);   --q-toast-tint: var(--q-sky-bg); }
+.q-toast--warning { --q-toast-fg: var(--q-amber); --q-toast-tint: var(--q-amber-bg); }
+.q-toast--danger  { --q-toast-fg: var(--q-red);   --q-toast-tint: var(--q-red-bg); }
+.q-toast.show { animation: q-toast-in .35s ease, q-toast-out .35s ease 4.65s; }
+@keyframes q-toast-in  { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes q-toast-out { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100%); opacity: 0; } }
+
+// =============================================================================
+//  L. Top navigation bar — reskins the Bootstrap `.navbar` in
+//     partials/navbar.blade.php. Add `.q-topbar` to the root <nav> (and drop
+//     `navbar-light bg-white` so it themes with data-bs-theme). All BS5
+//     markup/behaviour (collapse, dropdowns, spotlight) stays as-is.
+// =============================================================================
+.q-topbar {
+    background: var(--q-surface);
+    border-bottom: 1px solid var(--q-border);
+    box-shadow: none;
+    padding-top: 0; padding-bottom: 0;
+    min-height: 3.8rem;
+
+    .navbar-brand {
+        display: inline-flex; align-items: center; gap: .55rem;
+        font-weight: 800; font-size: 1.12rem; letter-spacing: -.02em;
+        color: var(--q-text);
+    }
+    .q-brand-badge {
+        width: 28px; height: 28px; border-radius: 8px;
+        background: var(--q-accent); color: #fff;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: .95rem; flex-shrink: 0;
+    }
+
+    // small gap between the nav pills so hover/active neighbours don't touch
+    .navbar-nav { gap: .2rem; }
+
+    // Top-level items are ONE pill per <li>, even when the item is a "split"
+    // (a label link + a separate caret toggle link). Putting the hover/active
+    // background on the .nav-item — not on each .nav-link — means hovering
+    // either half lights the whole item as a single surface: no seam between
+    // the two links, and no bleed into neighbouring items.
+    .navbar-nav .nav-item {
+        display: flex; align-items: center;
+        border-radius: 9px; transition: background .12s;
+    }
+    .navbar-nav .nav-link {
+        display: inline-flex; align-items: center; gap: .4rem;
+        padding: .5rem .8rem; border-radius: 9px;
+        font-weight: 600; font-size: .86rem;
+        color: var(--q-muted); background: transparent;
+        transition: color .12s;
+        &.disabled { color: var(--q-faint); }
+    }
+    .navbar-nav .nav-link.dropdown-toggle.ps-0 {
+        padding-left: .3rem; margin-left: -.2rem;
+        &::after { margin-left: 0; }
+    }
+    .navbar-nav .nav-item:hover,
+    .navbar-nav .nav-item:focus-within,
+    .navbar-nav .nav-item.show {
+        background: var(--q-surface-3);
+        > .nav-link:not(.disabled) { color: var(--q-text); }
+    }
+    // Active items read as a muted accent pill (accent-tint + accent text).
+    // On hover they must STAY accent — not fall back to the neutral text hover
+    // above — so brighten the fill instead and hold the accent text (the
+    // muted→bright convention every other navbar item follows).
+    .navbar-nav .nav-item.active {
+        background: var(--q-accent-tint);
+        > .nav-link { color: var(--q-accent); }
+    }
+    .navbar-nav .nav-item.active:hover,
+    .navbar-nav .nav-item.active:focus-within,
+    .navbar-nav .nav-item.active.show {
+        background: color-mix(in srgb, var(--q-accent) 22%, transparent);
+        > .nav-link:not(.disabled) { color: var(--q-accent); }
+    }
+
+    // User menu: the unread-notification bell and the avatar chip follow the
+    // same muted→bright cue as the nav links — dimmed at rest, full on hover of
+    // the surrounding item (or while the menu is open).
+    .q-nav-bell {
+        color: color-mix(in srgb, var(--q-red) 62%, var(--q-muted));
+        transition: color .12s;
+    }
+    .q-user-avatar { opacity: .82; transition: opacity .12s; }
+    .navbar-nav .nav-item:hover,
+    .navbar-nav .nav-item:focus-within,
+    .navbar-nav .nav-item.show {
+        .q-nav-bell { color: var(--q-red); }
+        .q-user-avatar { opacity: 1; }
+    }
+
+    .dropdown-menu {
+        border: 1px solid var(--q-border); border-radius: 11px;
+        box-shadow: var(--q-shadow-lg); padding: 6px; margin-top: 7px;
+    }
+    .dropdown-item {
+        display: flex; align-items: center; gap: .55rem;
+        border-radius: 8px; padding: .5rem .6rem;
+        font-weight: 600; font-size: .82rem; color: var(--q-muted);
+        &:hover, &:focus { background: var(--q-surface-2); color: var(--q-text); }
+        &:active { background: var(--q-accent-tint); color: var(--q-accent); }
+    }
+
+    .global-search {
+        background: var(--q-surface-2);
+        border-color: var(--q-border) !important;
+        border-radius: 9px !important;   // beat BS .rounded-1 so the whole field matches
+        overflow: hidden;                // clip the button hover to the rounded corners
+        .form-control, .input-group-text, .global-search-append-button { background: transparent; }
+        .btn { border-radius: 0; }       // segments sit flush to the field edge (no inner rounding gap)
+    }
+
+    // pure-dropdown carets (Tools etc.): tighten the gap to match the split items
+    .navbar-nav > .nav-item > .nav-link.dropdown-toggle:not(.ps-0)::after { margin-left: -.2rem; }
+
+    // user menu: initials in the user's chosen colour (bg/text set by utilities)
+    .q-user-avatar { width: 32px; height: 32px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .72rem; line-height: 1; }
+}
+
+// =============================================================================
+//  M. Theme switcher — active option indicator, driven purely by the
+//     `data-theme-pref` attribute the inline no-flash script writes on <html>.
+// =============================================================================
+.q-theme-check { visibility: hidden; margin-left: auto; color: var(--q-accent); }
+html[data-theme-pref="system"] .q-theme-opt--system .q-theme-check,
+html[data-theme-pref="light"]  .q-theme-opt--light  .q-theme-check,
+html[data-theme-pref="dark"]   .q-theme-opt--dark   .q-theme-check { visibility: visible; }
+
+// =============================================================================
+//  N. Dashboard — stat tiles, report matrix, "waiting" banner (home.blade.php)
+// =============================================================================
+.q-section-label { display: flex; align-items: baseline; gap: .55rem; margin: 0 0 .7rem; font-size: .9rem; font-weight: 700; color: var(--q-text); }
+.q-section-label .hint { font-size: .72rem; font-weight: 400; color: var(--q-faint); }
+
+.q-tiles { display: grid; gap: .8rem; margin-bottom: 1.6rem; }
+.q-tiles--5 { grid-template-columns: repeat(5, 1fr); }
+.q-tiles--4 { grid-template-columns: repeat(4, 1fr); }
+@include media-breakpoint-down(xl) { .q-tiles--5, .q-tiles--4 { grid-template-columns: repeat(2, 1fr); } }
+@include media-breakpoint-down(sm) { .q-tiles--5, .q-tiles--4 { grid-template-columns: 1fr; } }
+
+.q-tile { display: block; padding: .95rem 1rem; color: inherit; text-decoration: none; }
+a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
+.q-tile__head  { display: flex; align-items: center; justify-content: space-between; }
+.q-tile__label { font-size: .6rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--q-faint); }
+.q-tile__icon  { width: 26px; height: 26px; border-radius: 8px; background: var(--q-surface-3); color: var(--q-faint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.q-tile__value { font-size: 1.45rem; font-weight: 800; letter-spacing: -.02em; margin-top: .55rem; line-height: 1.1; color: var(--q-text); }
+.q-tile__unit  { font-size: .85rem; font-weight: 600; color: var(--q-faint); margin-left: .2rem; }
+.q-tile__sub   { font-size: .72rem; color: var(--q-muted); margin-top: .25rem; min-height: 1rem; }
+.q-tile--info    .q-tile__icon { background: var(--q-sky-bg);   color: var(--q-sky); }
+.q-tile--success .q-tile__icon { background: var(--q-green-bg); color: var(--q-green); }
+.q-tile--warning .q-tile__icon { background: var(--q-amber-bg); color: var(--q-amber); }
+.q-tile--danger  .q-tile__icon { background: var(--q-red-bg);   color: var(--q-red); }
+// urgent tiles also colour their label (header) — like the finishable report count
+.q-tile--warning .q-tile__label { color: var(--q-amber); }
+.q-tile--danger  .q-tile__label { color: var(--q-red); }
+
+// "warten auf Erledigung" banner
+.q-banner {
+    display: flex; align-items: center; gap: .5rem;
+    border-radius: 11px; padding: .55rem .9rem; margin-bottom: .8rem; font-size: .82rem; color: var(--q-text);
+    background: color-mix(in srgb, var(--q-amber) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--q-amber) 22%, transparent);
+    .icon { color: var(--q-amber); flex-shrink: 0; }
+    &__count { font-weight: 700; }
+    &__label { color: var(--q-muted); }
+}
+// full-bleed strip inside a card (clipped to the card's rounded corners)
+.q-banner--inset { margin: 0; border-radius: 0; border-width: 0 0 1px 0; }
+// informational (blue) banner — neutral notice rather than an amber warning
+.q-banner--info {
+    background: color-mix(in srgb, var(--q-sky) 8%, transparent);
+    border-color: color-mix(in srgb, var(--q-sky) 22%, transparent);
+    .icon { color: var(--q-sky); }
+}
+
+// Report matrix (one card; Typ × Offen / Erledigbar / MTD / Gesamt)
+.q-matrix__grid { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem 7rem 6.5rem; column-gap: .4rem; align-items: center; }
+.q-matrix__head { padding: .7rem 1.15rem; border-bottom: 1px solid var(--q-border-2); }
+.q-matrix__h    { font-size: .58rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint); white-space: nowrap; }
+.q-matrix__row  { padding: .7rem 1.15rem; color: inherit; text-decoration: none; transition: background .12s; }
+.q-matrix__row + .q-matrix__row { border-top: 1px solid var(--q-border-2); }
+a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; color: inherit; }
+.q-matrix__name { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+.q-matrix__name span:last-child { font-size: .84rem; font-weight: 500; color: var(--q-text); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.q-matrix__grid .num  { text-align: right; font-variant-numeric: tabular-nums; }
+.q-matrix__row .num   { font-size: .84rem; }
+.q-matrix__grid .num--offen  { font-weight: 600; color: var(--q-muted); }
+.q-matrix__grid .num--action { font-weight: 800; color: var(--q-amber); }
+.q-matrix__grid .num--action.is-zero { font-weight: 600; color: var(--q-faint); }
+.q-matrix__grid .num--muted  { color: var(--q-muted); }
+.q-matrix__grid .num--none   { color: var(--q-faint); }
+.q-ab { display: inline-flex; align-items: center; justify-content: center; min-width: 2rem; font-size: .62rem; font-weight: 700; border-radius: 5px; padding: .12rem .35rem; background: var(--q-surface-3); color: var(--q-muted); flex-shrink: 0; }
+// accent variant — e.g. delivery notes, which aren't a report type
+.q-ab--accent { background: var(--q-accent-tint); color: var(--q-accent); }
+
+.q-legend { font-size: .72rem; color: var(--q-faint); margin-top: .9rem; }
+.q-legend b { color: var(--q-muted); font-weight: 600; }
+
+// dashboard split: report matrix (left) + activity feed (right)
+.q-dash-cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 1.15rem; align-items: stretch; }
+.q-dash-cols > div { display: flex; flex-direction: column; min-width: 0; }
+.q-dash-cols > div > .q-card { flex: 1 1 auto; }   // shorter card fills to equal height
+@include media-breakpoint-down(lg) { .q-dash-cols { grid-template-columns: 1fr; } }
+.q-link { color: var(--q-accent); font-weight: 600; font-size: .72rem; text-decoration: none; }
+.q-link:hover { text-decoration: underline; }
+
+.q-activity { display: flex; flex-direction: column; }
+.q-activity__item { display: flex; gap: .6rem; align-items: center; padding: .65rem 1rem; color: inherit; text-decoration: none; transition: background .12s; }
+.q-activity__item + .q-activity__item { border-top: 1px solid var(--q-border-2); }
+.q-activity__item:hover { background: var(--q-surface-2); text-decoration: none; color: inherit; }
+.q-activity__icon { width: 30px; height: 30px; border-radius: 8px; font-size: 15px; background: var(--q-surface-3); color: var(--q-muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.q-activity__icon svg { margin: 0 !important; }
+.q-activity__body { min-width: 0; display: flex; flex-direction: column; }
+.q-activity__title { font-size: .82rem; font-weight: 600; color: var(--q-text); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.q-activity__meta { font-size: .7rem; color: var(--q-faint); margin-top: .1rem; }
+.q-activity__empty { padding: 1.1rem; font-size: .8rem; color: var(--q-faint); text-align: center; }
+
+// =============================================================================
+//  P1. Stat strip — the horizontal key/value bar under a detail header
+//  (task detail: Projekt / Fällig / Zeitraum / Verrechnung). Cells divided by
+//  hairlines; mono uppercase labels over bold values. Wraps on narrow widths.
+// =============================================================================
+.q-statbar {
+    display: flex; flex-wrap: wrap; align-items: center;
+    background: var(--q-surface); border: 1px solid var(--q-border);
+    border-radius: $q-radius; box-shadow: var(--q-shadow);
+    padding: .7rem .25rem;
+}
+.q-statbar__cell { display: flex; flex-direction: column; gap: .2rem; padding: .2rem 1.15rem; }
+.q-statbar__cell + .q-statbar__cell { border-left: 1px solid var(--q-border-2); }
+.q-statbar__label { font-size: .6rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--q-faint); }
+.q-statbar__value { font-size: .8rem; font-weight: 600; color: var(--q-text); }
+.q-statbar__value a { color: var(--q-accent); }
+.q-statbar__value--empty { font-weight: 500; color: var(--q-faint); }
+.q-statbar__urgent { color: var(--q-red); }
+.q-statbar__soon   { color: var(--q-amber); }
+.q-statbar__sep    { color: var(--q-faint); }   // punctuation stays neutral; only the state word carries colour
+
+// =============================================================================
+//  P2. Sticky detail aside (task detail: Verantwortlich / Mitwirkende)
+// =============================================================================
+.q-aside { background: var(--q-surface-2); border: 1px solid var(--q-border-2); border-radius: $q-radius; padding: 1rem 1.05rem; }
+.q-aside__label { font-size: .6rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--q-faint); margin-bottom: .7rem; }
+.q-aside__group + .q-aside__group { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--q-border-2); }
+.q-aside__person { display: flex; align-items: center; gap: .65rem; }
+.q-aside__person + .q-aside__person { margin-top: .65rem; }
+.q-aside__name { font-size: .8rem; font-weight: 600; color: var(--q-text); min-width: 0; }
+.q-aside__person--muted .q-aside__name { font-weight: 500; color: var(--q-muted); }
+
+// =============================================================================
+//  P3. Comment / activity feed (task detail "Aktivitäten und Diskussion")
+//  A feed entry = round identity avatar (who) + name/date line + a bubble.
+//  User comments get a surface-2 bubble; logged changes (events) are quieter.
+// =============================================================================
+.q-feed { display: flex; flex-direction: column; gap: 1.15rem; }
+.q-comment { display: flex; gap: .8rem; align-items: flex-start; }
+.q-comment__main { flex: 1; min-width: 0; }
+// header sits on one baseline row; the kebab is lifted out of the flow (absolute)
+// so a comment's row is the same height as an event's — both avatars top-align.
+.q-comment__head { display: flex; align-items: baseline; gap: .55rem; margin-bottom: .7rem; position: relative; padding-right: 2.4rem; }
+.q-comment__head .dropdown { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.q-comment__author { font-size: .85rem; font-weight: 700; color: var(--q-text); }
+.q-comment__date { font-size: .72rem; color: var(--q-faint); }
+.q-comment__date .icon { color: var(--q-faint); position: relative; top: 2px; }
+.q-comment__bubble {
+    background: var(--q-surface-2); border: 1px solid var(--q-border-2);
+    border-radius: $q-radius-sm; padding: .7rem .85rem;
+    font-size: .85rem; line-height: 1.6; color: var(--q-text);
+}
+.q-comment__bubble .markdown > :last-child { margin-bottom: 0; }
+.q-comment--event .q-comment__bubble { background: transparent; border-style: dashed; }
+
+// an attribute change inside an event bubble: field label over an old → new diff
+.q-change + .q-change { margin-top: .55rem; padding-top: .55rem; border-top: 1px solid var(--q-border-2); }
+.q-change__label { display: inline-flex; align-items: center; gap: .35rem; font-size: .68rem; color: var(--q-faint); margin-bottom: .1rem; }
+.q-change__label .icon { color: var(--q-faint); }
+.q-change__diff { font-size: .82rem; color: var(--q-text); }
+.q-change__diff del { color: var(--q-faint); }
+.q-change__diff .icon { color: var(--q-faint); }
+
+// =============================================================================
+//  P4. Attachment tile (task/comment detail)
+// =============================================================================
+.q-attach {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .5rem .6rem; height: 100%;
+    background: var(--q-surface-2); border: 1px solid var(--q-border-2);
+    border-radius: $q-radius-sm; color: var(--q-text); text-decoration: none;
+    transition: background .12s, border-color .12s, box-shadow .12s;
+}
+.q-attach:hover { background: var(--q-surface); border-color: var(--q-border); color: var(--q-text); }
+// inside a comment bubble the tile would share the bubble's surface-2 and vanish —
+// lift it to the base surface + a firmer border so the pane reads as its own element.
+.q-comment__bubble .q-attach { background: var(--q-surface); border-color: var(--q-border); }
+.q-comment__bubble .q-attach:hover { background: var(--q-surface); border-color: var(--q-border); box-shadow: var(--q-shadow); }
+.q-comment__bubble .q-attach__preview--icon { background: var(--q-surface-2); }
+.q-attach__preview { width: 38px; height: 38px; border-radius: $q-radius-sm; object-fit: cover; flex-shrink: 0; }
+.q-attach__preview--icon { display: flex; align-items: center; justify-content: center; background: var(--q-surface-3); color: var(--q-muted); }
+.q-attach__name { font-size: .8rem; font-weight: 600; }
+.q-attach__size { font-size: .7rem; color: var(--q-faint); }
+
+// =============================================================================
+//  R. Report detail (Servicebericht et al.) — line-item table + signature panel
+// =============================================================================
+// a compact line-item table rendered inside a .q-card (service lines): mono
+// uppercase column heads, right-aligned tabular numbers, a highlighted sum row.
+.q-lines__head, .q-lines__row, .q-lines__sum {
+    display: grid; grid-template-columns: 1fr 120px 150px; align-items: center;
+    padding: .65rem 1.25rem;
+}
+.q-lines__head { border-bottom: 1px solid var(--q-border-2); }
+.q-lines__head span { font-size: .6rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint); }
+.q-lines__row { border-bottom: 1px solid var(--q-border-2); font-size: .85rem; font-weight: 600; transition: background .12s; }
+.q-lines__row:hover { background: var(--q-surface-2); }
+.q-lines__sum { background: var(--q-surface-2); font-size: .85rem; }
+.q-lines__num { text-align: right; font-variant-numeric: tabular-nums; }
+.q-lines__num--muted { color: var(--q-muted); }
+.q-lines__sumlabel { font-weight: 700; color: var(--q-muted); }
+.q-lines__sumval { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+.q-lines__empty { padding: 1rem 1.25rem; color: var(--q-faint); font-size: .85rem; }
+
+// signature panel (right column of a report detail)
+.q-signbox {
+    border: 1.5px dashed var(--q-border); border-radius: $q-radius-sm;
+    min-height: 78px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: .35rem; color: var(--q-faint); font-size: .78rem;
+    margin-bottom: .85rem;
+}
+.q-sign-img {
+    width: 100%; border: 1px solid var(--q-border-2); border-radius: $q-radius-sm;
+    background: #fff; padding: .5rem; margin-bottom: .6rem;
+}
+.q-sign-date { font-size: .74rem; color: var(--q-faint); }
+
+// Vue <signature-pad> canvas — round + clip to match the redesign's fields.
+// The signing surface stays LIGHT in both themes on purpose: the signature is
+// captured as dark ink on transparent and archived onto a white PDF, so the pen
+// must read dark while signing (a dark pad would make the ink invisible). In dark
+// mode we soften the pure-white glare to a light "paper" tone + a firmer frame.
+.q-signpad {
+    display: block; background: #fff;
+    border: 1px solid var(--q-border); border-radius: $q-radius-sm;
+    overflow: hidden; box-shadow: var(--q-shadow);
+}
+[data-bs-theme="dark"] .q-signpad {
+    background: #e9edf2; border-color: color-mix(in srgb, #000 45%, var(--q-border));
+}

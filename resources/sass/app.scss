@@ -39,13 +39,17 @@
 // Markdown
 @import "markdown";
 
+// Quokka redesign layer (must come after Bootstrap so it can build on its
+// tokens/mixins; see _quokka-ui.scss)
+@import "quokka-ui";
+
 // Vue: wait for components to fully load before showing content
 [v-cloak] {
   display: none;
 }
 
 body {
-  background-color: #fdfeff;
+  background-color: var(--q-bg);
 }
 
 // Always show scroll bars to avoid content shifting
@@ -57,7 +61,8 @@ main {
   width: 100%;
   position: absolute;
   top: 3.8rem;
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 // General body background color for other elements
@@ -154,60 +159,45 @@ img.empty-state {
   content: "\2807";
 }
 
-// Success dropdown button with blue text and white text with blue background on hover
+// coloured dropdown items
 .dropdown-item-primary {
-  color: $primary !important;
+  color: color-mix(in srgb, var(--q-accent) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-primary:hover {
-  color: $primary !important;
+.dropdown-item-primary:hover,
+.dropdown-item-primary:focus {
+  color: var(--q-accent) !important;
+  background-color: var(--q-accent-tint) !important;
 }
 
-.dropdown-item-primary:active {
-  color: #ffffff !important;
-  background-color: $primary !important;
-}
-
-// Success dropdown button with green text and white text with green background on hover
 .dropdown-item-success {
-  color: $success !important;
+  color: color-mix(in srgb, var(--q-green) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-success:hover {
-  color: $success !important;
+.dropdown-item-success:hover,
+.dropdown-item-success:focus {
+  color: var(--q-green) !important;
+  background-color: var(--q-green-bg) !important;
 }
 
-.dropdown-item-success:active {
-  color: #ffffff !important;
-  background-color: $success !important;
-}
-
-// Success dropdown button with yellow text and yellow background on hover
 .dropdown-item-warning {
-  color: $yellow !important;
+  color: color-mix(in srgb, var(--q-amber) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-warning:hover {
-  color: $yellow !important;
+.dropdown-item-warning:hover,
+.dropdown-item-warning:focus {
+  color: var(--q-amber) !important;
+  background-color: var(--q-amber-bg) !important;
 }
 
-.dropdown-item-warning:active {
-  color: $dark !important;
-  background-color: $yellow !important;
-}
-
-// Danger dropdown button with red text and white text with red background on hover
 .dropdown-item-danger {
-  color: $danger !important;
+  color: color-mix(in srgb, var(--q-red) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-danger:hover {
-  color: $danger !important;
-}
-
-.dropdown-item-danger:active {
-  color: #ffffff !important;
-  background-color: $danger !important;
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus {
+  color: var(--q-red) !important;
+  background-color: var(--q-red-bg) !important;
 }
 
 // No outline
@@ -431,7 +421,7 @@ a.outline-none {
 }
 
 .global-search:focus-within {
-  border: 1px solid $secondary !important;
+  border: 1px solid $primary !important;
 }
 
 .global-search-input {
@@ -445,7 +435,7 @@ a.outline-none {
 
 .global-search-append-button:hover {
   color: $white !important;
-  background-color: $secondary !important;
+  background-color: $primary !important;
 }
 
 // Notification badge

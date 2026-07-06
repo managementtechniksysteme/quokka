@@ -1,93 +1,92 @@
 @extends('layouts.app')
 
 @section('content')
-    @if($serviceReport)
-        <div class="bg-gray-100 mt-0">
-            <div class="container py-4">
-                <h3>
-                    <svg class="icon icon-baseline text-muted me-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
-                    </svg>
-                    Servicebericht unterschreiben und herunterladen
-                    <small class="text-muted">{{ $serviceReport->project->name }} #{{ $serviceReport->number }}</small>
-                </h3>
-            </div>
-        </div>
-
-        <div class="container my-4">
-            <p class="lead d-flex align-items-center">
-                <svg class="text-muted icon icon-20 me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                </svg>
-                <span class="text-muted me-3">Techniker: </span>
-                {{ $serviceReport->employee->person->name }}
-            </p>
-
-            <p class="lead d-flex align-items-center">
-                <svg class="text-muted icon icon-20 me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                </svg>
-                <span class="text-muted me-3">Serviceleistungen</span>
-            </p>
-
-            @include("service_report.show_services")
-
-            <p class="lead d-flex align-items-center">
-                <svg class="text-muted icon icon-20 me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                </svg>
-                <span class="text-muted me-3">Kurzbericht</span>
-            </p>
-
-            <div class="markdown">
-                {!! Html::fromMarkdown($serviceReport->comment) !!}
-            </div>
-
-            <div class="alert alert-info mt-4" role="alert">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                    </svg>
-                    Der Servicebericht kann nach erfolgreicher Unterschrift heruntergeladen werden.
-                </div>
-            </div>
-
-            <h4 class="mt-4">Servicebericht unterschreiben</h4>
-
-            <p>Unterschreiben Sie bitte in folgendem Feld.<br />
-            Am Computer unterschreiben Sie mid der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für ihr Gerät passenden Eingabestift.<br />
-            Klicken Sie danach auf den <strong>Servicebericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.</p>
-
-            <form action="{{ route('service-reports.customer-sign', $serviceReport->signatureRequest->token) }}" method="post">
-                @csrf
-
-                <signature-pad></signature-pad>
-                <div class="invalid-feedback @error('signature') d-block @enderror">
-                    @error('signature')
-                        {{ $message }}
-                    @enderror
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            Servicebericht unterschreiben
-                        </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                            </svg>
-                            Zurücksetzen
-                        </a>
+    <div class="q-container">
+        @if($serviceReport)
+            <div class="q-page-head">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="q-avatar">
+                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use></svg>
+                    </span>
+                    <div>
+                        <div class="q-eyebrow">Servicebericht · #{{ $serviceReport->number }}</div>
+                        <h1 class="q-title">{{ $serviceReport->project->name }}</h1>
                     </div>
                 </div>
+            </div>
 
-            </form>
-        </div>
-    @else
-        @include('service_report.sign_invalid_content')
-    @endif
+            <div class="q-statbar mb-4">
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Techniker</span>
+                    <span class="q-statbar__value">{{ $serviceReport->employee->person->name }}</span>
+                </div>
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Stunden</span>
+                    <span class="q-statbar__value">{{ Number::toLocal($serviceReport->total_hours) }} h</span>
+                </div>
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Kilometer</span>
+                    <span class="q-statbar__value">{{ Number::toLocal($serviceReport->total_kilometres) }} km</span>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                <div class="q-card">
+                    <div class="q-card__head">Serviceleistungen</div>
+                    @include('service_report.show_services')
+                </div>
+
+                @if($serviceReport->comment)
+                    <div class="q-card">
+                        <div class="q-card__head">Kurzbericht</div>
+                        <div class="q-card__body">
+                            <div class="markdown">
+                                {!! Html::fromMarkdown($serviceReport->comment) !!}
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="q-card">
+                    <div class="q-card__head">Servicebericht unterschreiben</div>
+                    <div class="q-card__body">
+                        <div class="q-banner q-banner--info">
+                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+                            <span>Der Servicebericht kann nach erfolgreicher Unterschrift heruntergeladen werden.</span>
+                        </div>
+
+                        <p class="text-muted">
+                            Unterschreiben Sie bitte in folgendem Feld.<br />
+                            Am Computer unterschreiben Sie mit der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für Ihr Gerät passenden Eingabestift.<br />
+                            Klicken Sie danach auf den <strong>Servicebericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.
+                        </p>
+
+                        <form action="{{ route('service-reports.customer-sign', $serviceReport->signatureRequest->token) }}" method="post">
+                            @csrf
+
+                            <signature-pad></signature-pad>
+                            <div class="invalid-feedback @error('signature') d-block @enderror">
+                                @error('signature')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    Servicebericht unterschreiben
+                                </button>
+                                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
+                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    Zurücksetzen
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @else
+            @include('service_report.sign_invalid_content')
+        @endif
+    </div>
 @endsection

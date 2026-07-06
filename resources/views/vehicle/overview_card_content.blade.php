@@ -1,97 +1,70 @@
-<div class="overview-card rounded">
-    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
+<div class="q-row">
+    <a class="stretched-link outline-none" href="{{ route('vehicles.show', $vehicle) }}"></a>
 
-        <div class="mw-100 d-flex flex-grow-1 h-100 align-items-center">
+    <span class="q-avatar">
+        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use></svg>
+    </span>
 
-            <div class="mw-100 flex-grow-1 h-100 position-relative">
-
-                <div class="mw-100 flex-grow-1 position-relative">
-                    <a class="stretched-link outline-none" href="{{ route('vehicles.show', $vehicle) }}"></a>
-                    <div class="mw-100 text-truncate">
-                        {{ $vehicle->registration_identifier }}
-                    </div>
-                    <div class="text-muted">
-                        <div class="d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
-                            </svg>
-                            {{ $vehicle->make_model }}
-
-                            @if($vehicle->current_kilometres)
-                                <svg class="icon icon-16 ms-2 me-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#database"></use>
-                                </svg>
-                                {{ $vehicle->current_kilometres_string }}
-                            @endif
-
-                        </div>
-                    </div>
-                </div>
+    <div class="q-row__main">
+        <div class="q-row__title text-truncate">{{ $vehicle->registration_identifier }}@if($vehicle->make_model) <span class="q-row__sub">· {{ $vehicle->make_model }}</span>@endif</div>
+        @if($vehicle->private || $vehicle->current_kilometres)
+            <div class="q-meta">
+                @if($vehicle->private)
+                    <span class="q-chip">
+                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use></svg>
+                        privat
+                    </span>
+                @endif
+                @if($vehicle->current_kilometres)
+                    <span class="q-chip">
+                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#database"></use></svg>
+                        {{ $vehicle->current_kilometres_string }}
+                    </span>
+                @endif
             </div>
+        @endif
+    </div>
 
-            @if($vehicle->private)
-                <div class="d-block ms-2">
-                    <div class="text-warning d-inline-flex align-items-center">
-                        <svg class="icon icon-16 me-md-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                        </svg>
-                        <span class="text-muted d-none d-lg-inline-block">privat</span>
-                    </div>
-                </div>
-            @endif
+    {{-- kebab: same actions as before, lifted above the row's stretched-link --}}
+    <div class="dropdown">
+        <button class="q-kebab" type="button" id="vehicleOverviewDropdown-{{ $vehicle->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="vehicleOverviewDropdown-{{ $vehicle->id }}">
+            @can('update', $vehicle)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.edit', $vehicle) }}">
+                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                    Bearbeiten
+                </a>
+            @endcan
+            @can('email', $vehicle)
+                <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                    Email senden
+                </a>
+            @endcan
+            @can('createPdf', $vehicle)
+                <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                    PDF erstellen
+                </a>
+            @endcan
+            <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                Favorisieren
+            </a>
+            @can('delete', $vehicle)
+                <form action="{{ route('vehicles.destroy', $vehicle) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                        <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                        Entfernen
+                    </button>
+                </form>
+            @endcan
         </div>
-
-        <div class="d-none d-md-block ms-2">
-            <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="vehicleOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="vehicleOverviewDropdown">
-                    @can('update', $vehicle)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('vehicles.edit', $vehicle) }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                            </svg>
-                            Bearbeiten
-                        </a>
-                    @endcan
-                    @can('email', $vehicle)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                            </svg>
-                            Email senden
-                        </a>
-                    @endcan
-                    @can('createPdf', $vehicle)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                            </svg>
-                            PDF erstellen
-                        </a>
-                    @endcan
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                        </svg>
-                        Favorisieren
-                    </a>
-                    @can('delete', $vehicle)
-                        <form action="{{ route('vehicles.destroy', $vehicle) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                                </svg>
-                                Entfernen
-                            </button>
-                        </form>
-                    @endcan
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>

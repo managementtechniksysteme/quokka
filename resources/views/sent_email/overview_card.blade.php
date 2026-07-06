@@ -1,38 +1,27 @@
-<div class="overview-card rounded">
-    <div class="d-flex flex-grow-1 p-3 align-items-center">
-        <div class="d-flex flex-column flex-grow-1 h-100">
-            <div class="text-muted">
-                <svg class="icon icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                </svg>
-                {{ $activity->properties['subject'] }}
-            </div>
+<div class="q-row">
+    <span class="q-avatar">
+        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+    </span>
+
+    <div class="q-row__main">
+        <div class="q-row__title text-truncate">{{ $activity->properties['subject'] }}</div>
+        <div class="q-meta">
+            <span class="q-chip">
+                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                {{ $activity->created_at->format('d.m.Y H:i') }}
+            </span>
             @if(!empty($activity->properties['to']))
-                <div class="flex-wrap">
-                    <span class="text-muted">An:</span>
-                    {{  Email::concatEmails($activity->properties['to']) }}
-                </div>
+                <span class="q-chip">
+                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                    <span class="text-truncate">{{ Email::concatEmails($activity->properties['to']) }}</span>
+                </span>
             @endif
             @if(!empty($activity->properties['cc']))
-                <div class="flex-wrap">
-                    <span class="text-muted">CC:</span>
-                    {{  Email::concatEmails($activity->properties['cc']) }}
-                </div>
+                <span class="q-chip"><span class="text-truncate">CC: {{ Email::concatEmails($activity->properties['cc']) }}</span></span>
             @endif
             @if(!empty($activity->properties['bcc']))
-                <div class="flex-wrap">
-                    <span class="text-muted">BCC:</span>
-                    {{  Email::concatEmails($activity->properties['bcc']) }}
-                </div>
+                <span class="q-chip"><span class="text-truncate">BCC: {{ Email::concatEmails($activity->properties['bcc']) }}</span></span>
             @endif
         </div>
-
-        <div class="d-none d-lg-flex flex-shrink-0 align-items-center me-4 text-muted">
-            <svg class="icon icon-16 me-1">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-            </svg>
-            {{ $activity->created_at->format('d.m.Y H:i') }}
-        </div>
-
     </div>
 </div>

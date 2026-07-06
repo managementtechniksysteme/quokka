@@ -1,74 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline text-muted me-1">
-                    @switch($tab)
-                        @case('wage-services')
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                            @break
-                        @case('material-services')
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                            @break
-                    @endswitch
-                </svg>
-                Leistungen
-            </h3>
+    <div class="q-container">
+
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon icon-20">
+                        @switch($tab)
+                            @case('wage-services')
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                                @break
+                            @case('material-services')
+                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
+                                @break
+                        @endswitch
+                    </svg>
+                </span>
+                <div>
+                    <h1 class="q-title">Leistungen</h1>
+                    <div class="q-subtitle">Lohn- und Materialleistungen</div>
+                </div>
+            </div>
+
+            @yield('head-action')
         </div>
-    </div>
 
-    <div class="container my-4">
-        <div class="row mt-4">
-            <div class="d-none d-lg-block col-lg-3">
-                <div class="menu border-end pe-3">
+        <div class="q-detail q-detail--aside-start">
+            <aside>
+                <nav class="q-subnav">
                     @can('viewAny', \App\Models\WageService::class)
-                        <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                            </svg>
-                            Lohndienstleistungen
-                            <span class="ms-auto">{{ $wageServicesCount }}</span>
+                        <a class="q-subnav__item @if (request()->is('wage-services')) active @endif" href="{{ route('wage-services.index') }}">
+                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use></svg>
+                            <span class="flex-grow-1">Lohndienstleistungen</span>
+                            <span class="q-subnav__count">{{ $wageServicesCount }}</span>
                         </a>
                     @endcan
 
                     @can('viewAny', \App\Models\MaterialService::class)
-                        <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                            </svg>
-                            Materialleistungen
-                            <span class="ms-auto">{{ $materialServicesCount }}</span>
+                        <a class="q-subnav__item @if (request()->is('material-services')) active @endif" href="{{ route('material-services.index') }}">
+                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use></svg>
+                            <span class="flex-grow-1">Materialleistungen</span>
+                            <span class="q-subnav__count">{{ $materialServicesCount }}</span>
                         </a>
                     @endcan
-                </div>
-            </div>
+                </nav>
+            </aside>
 
-            <div class="menu d-block d-lg-none col mb-4">
-                <div class="scroll-x border-bottom pb-1">
-                    @can('viewAny', \App\Models\WageService::class)
-                        <a class="menu-item @if (request()->is('wage-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('wage-services.index') }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-                            </svg>
-                            Lohndienstleistungen
-                        </a>
-                    @endcan
-
-                    @can('viewAny', \App\Models\MaterialService::class)
-                        <a class="menu-item @if (request()->is('material-services')) active @endif rounded text-muted d-inline-flex align-items-center p-2" href="{{ route('material-services.index') }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                            </svg>
-                            Materialleistungen
-                        </a>
-                    @endcan
-                </div>
-            </div>
-
-            <div class="col-lg-9">
-                @yield ('tab')
+            <div>
+                @yield('tab')
             </div>
         </div>
 

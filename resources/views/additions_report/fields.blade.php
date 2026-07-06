@@ -71,6 +71,181 @@
                 </div>
             @endif
             <div class="btn-group">
+                <input type="radio" class="btn-check" name="status" id="status-new" autocomplete="off" @if(optional($additionsReport)->status == 'new' || !$additionsReport) checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-new">neu</label>
+                <input type="radio" class="btn-check" name="status" id="status-signed" autocomplete="off" @if(optional($additionsReport)->status == 'signed') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-signed">unterschrieben</label>
+                <input type="radio" class="btn-check" name="status" id="status-finished" autocomplete="off" @if(optional($additionsReport)->status == 'finished') checked @endif disabled>
+                <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="services_provided_on">Datum</label>
+            <input type="date" class="form-control @error('services_provided_on') is-invalid @enderror" id="services_provided_on" name="services_provided_on" value="{{ old('services_provided_on', optional(optional($additionsReport)->services_provided_on)->format('Y-m-d')) }}" required />
+            <div class="invalid-feedback">
+                @error('services_provided_on')
+                    {{ $message }}
+                @else
+                    Gib bitte das Datum der Leistungserbringung an.
+                @enderror
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="hours">Regiestunden</label>
+            <div class="input-group">
+                <input type="number" min="{{ $minAccountingAmount }}" step="{{ $minAccountingAmount }}" class="form-control @error('hours') is-invalid @enderror" id="hours" name="hours" placeholder="5" value="{{ old('hours', optional($additionsReport)->hours) }}" required />
+                <span class="input-group-text">h</span>
+                <div class="invalid-feedback">
+                    @error('hours')
+                        {{ $message }}
+                    @else
+                        Gib bitte die Anzahl an Stunden an.
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="project_id">Projekt (Bauvorhaben)</label>
+            <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
+            <div class="invalid-feedback @error('project_id') d-block @enderror">
+                @error('project_id')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 me-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
+            </svg>
+            Anwesende Personen
+        </p>
+        <p class="text-muted">
+            Anwensendes Personal sowie weitere Personen.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="mb-3">
+            <label for="involved_ids">Personalstand</label>
+            <people-selector inputname="involved_ids[]" :people="{{ $employees }}" :current_people="{{ $currentInvolvedEmployees ?? 'null' }}" v-cloak></people-selector>
+            <div class="invalid-feedback @error('involved_ids') d-block @enderror">
+                @error('involved_ids')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="present_ids">Anwesende Personen</label>
+            <people-selector inputname="present_ids[]" :people="{{ $people }}" :current_people="{{ $currentPresentPeople ?? 'null' }}" v-cloak></people-selector>
+            <div class="invalid-feedback @error('present_ids') d-block @enderror">
+                @error('present_ids')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="other_visitors">Sonstige Besucher</label>
+            <input type="text" class="form-control @error('other_visitors') is-invalid @enderror" id="other_visitors" name="other_visitors" placeholder="Max Mustermann" value="{{ old('other_visitors', optional($additionsReport)->other_visitors) }}" />
+            <div class="invalid-feedback @error('other_visitors') d-block @enderror">
+                @error('other_visitors')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 me-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+            </svg>
+            Beeinflussende Faktoren
+        </p>
+        <p class="text-muted">
+            Faktoren sowie Umstände, welche den Leistungsfortschritt beeinflussten.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="mb-3">
+            <label for="inspection_comment">Güte- und Funktionsprüfung</label>
+            <textarea class="form-control @error('inspection_comment') is-invalid @enderror" id="inspection_comment" name="inspection_comment" placeholder="Angaben zur Prüfung">{{ old('inspection_comment', optional($additionsReport)->inspection_comment) }}</textarea>
+            <div class="invalid-feedback @error('inspection_comment') d-block @enderror">
+                @error('inspection_comment')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="missing_documents">Fehlende Ausführungsunterlagen</label>
+            <textarea class="form-control @error('missing_documents') is-invalid @enderror" id="missing_documents" name="missing_documents" placeholder="Angaben zu den fehlenden Unterlagen">{{ old('missing_documents', optional($additionsReport)->missing_documents) }}</textarea>
+            <div class="invalid-feedback @error('missing_documents') d-block @enderror">
+                @error('missing_documents')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="special_occurrences">Besondere Vorkommnisse</label>
+            <textarea class="form-control @error('special_occurrences') is-invalid @enderror" id="special_occurrences" name="special_occurrences" placeholder="Angaben zu den Vorkommnissen">{{ old('special_occurrences', optional($additionsReport)->special_occurrences) }}</textarea>
+            <div class="invalid-feedback @error('special_occurrences') d-block @enderror">
+                @error('special_occurrences')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="imminent_danger">Gefahr in Verzug</label>
+            <textarea class="form-control @error('imminent_danger') is-invalid @enderror" id="imminent_danger" name="imminent_danger" placeholder="Angaben zur Gefahr">{{ old('imminent_danger', optional($additionsReport)->imminent_danger) }}</textarea>
+            <div class="invalid-feedback @error('imminent_danger') d-block @enderror">
+                @error('imminent_danger')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="concerns">Bedenken</label>
+            <textarea class="form-control @error('concerns') is-invalid @enderror" id="concerns" name="concerns" placeholder="Angaben zu den Bedenken">{{ old('concerns', optional($additionsReport)->concerns) }}</textarea>
+            <div class="invalid-feedback @error('concerns') d-block @enderror">
+                @error('concerns')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p class="d-inline-flex align-items-center mb-1">
+            <svg class="icon icon-16 me-2">
+                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>
+            </svg>
+            Wetter
+        </p>
+        <p class="text-muted">
+            Angaben zum Wetter sowie Temperaturen vor Ort.
+        </p>
+    </div>
+
+    <div class="col-md-8">
+        <div class="mb-3">
+            <div>
+                <label for="weather">Wetter</label>
+            </div>
+            <div class="btn-group @error('weather') is-invalid @enderror">
                 <input type="radio" class="btn-check" name="weather" id="weather-sunny" value="sunny" autocomplete="off" @if(old('weather', optional($additionsReport)->weather) == 'sunny') checked @endif>
                 <label class="btn btn-outline-secondary" for="weather-sunny">sonnig</label>
                 <input type="radio" class="btn-check" name="weather" id="weather-cloudy" value="cloudy" autocomplete="off" @if(old('weather', optional($additionsReport)->weather) == 'cloudy') checked @endif>
@@ -90,13 +265,13 @@
             <label for="minimum_temperature">Minimale Temperatur</label>
             <div class="input-group">
                 <input type="number" step="1" class="form-control @error('minimum_temperature') is-invalid @enderror" id="minimum_temperature" name="minimum_temperature" placeholder="18" value="{{ old('minimum_temperature', optional($additionsReport)->minimum_temperature) }}" required />
-                    <span class="input-group-text">°C</span>
+                <span class="input-group-text">°C</span>
                 <div class="invalid-feedback">
                     @error('minimum_temperature')
                     {{ $message }}
                     @else
                         Gib bitte die minimale Temperatur an.
-                        @enderror
+                    @enderror
                 </div>
             </div>
         </div>
@@ -104,7 +279,7 @@
             <label for="maximum_temperature">Maximale Temperatur</label>
             <div class="input-group">
                 <input type="number" step="1" class="form-control @error('maximum_temperature') is-invalid @enderror" id="maximum_temperature" name="maximum_temperature" placeholder="22" value="{{ old('maximum_temperature', optional($additionsReport)->maximum_temperature) }}" required />
-                    <span class="input-group-text">°C</span>
+                <span class="input-group-text">°C</span>
                 <div class="invalid-feedback">
                     @error('maximum_temperature')
                     {{ $message }}

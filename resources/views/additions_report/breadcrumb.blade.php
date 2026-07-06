@@ -1,8 +1,7 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon-bs icon-16 me-2">
-        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
-    </svg>
-    <a href="{{ route('additions-reports.index') }}">Regieberichte</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('additions-reports.show', $additionsReport) }}">{{ $additionsReport->project->name }} #{{ $additionsReport->number }}</a>
-</div>
+<nav class="q-breadcrumb">
+    <a href="{{ route('companies.show', $additionsReport->project->company) }}">{{ $additionsReport->project->company->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <a href="{{ route('projects.show', $additionsReport->project) }}">{{ $additionsReport->project->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>Regiebericht #{{ $additionsReport->number }}</span>
+</nav>

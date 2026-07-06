@@ -215,6 +215,15 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
         };
     }
 
+    public function getHasInfluencingFactorsAttribute()
+    {
+        return (bool) ($this->inspection_comment
+            || $this->missing_documents
+            || $this->special_occurrences
+            || $this->imminent_danger
+            || $this->concerns);
+    }
+
     public static function newAdditionsReports()
     {
         return AdditionsReport::whereStatus('new')->count();

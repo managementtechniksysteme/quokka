@@ -99,6 +99,15 @@ class User extends Authenticatable implements HasMedia
         return strtoupper($this->username);
     }
 
+    // Hex for the user's chosen avatar colour, or null when none is set so the
+    // view can fall back to the theme accent (--q-accent) like every other row.
+    public function getAvatarColourHexAttribute()
+    {
+        $name = $this->settings?->avatar_colour;
+
+        return $name ? (UserSettings::avatarColourFromName($name)['color'] ?? null) : null;
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('signature')->singleFile()->useDisk('local');

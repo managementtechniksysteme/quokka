@@ -6,6 +6,7 @@ use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
+use App\Traits\HasAvatarColour;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ class Company extends Model implements FiltersGlobalSearch
 {
     use FiltersLatestChanges;
     use FiltersSearch;
+    use HasAvatarColour;
     use HasFactory;
     use OrdersResults;
 
@@ -99,5 +101,11 @@ class Company extends Model implements FiltersGlobalSearch
     public function getFullNameAttribute()
     {
         return $this->name.($this->name_2 ? (' '.$this->name_2) : '');
+    }
+
+    public function getInitialsAttribute()
+    {
+        return \Illuminate\Support\Str::of($this->full_name)->explode(' ')->filter()
+            ->take(2)->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))->implode('');
     }
 }

@@ -255,6 +255,15 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status === 'finished';
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
     public static function newInspectionReports()
     {
         return InspectionReport::whereStatus('new')->count();

@@ -6,6 +6,7 @@ use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
+use App\Traits\HasAvatarColour;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ class Person extends Model implements FiltersGlobalSearch
 {
     use FiltersLatestChanges;
     use FiltersSearch;
+    use HasAvatarColour;
     use HasFactory;
     use Notifiable;
     use OrdersResults;
@@ -104,6 +106,12 @@ class Person extends Model implements FiltersGlobalSearch
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getInitialsAttribute()
+    {
+        return \Illuminate\Support\Str::of($this->name)->explode(' ')->filter()
+            ->take(2)->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))->implode('');
     }
 
     public function mailableEntity()

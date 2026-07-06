@@ -164,6 +164,25 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status === 'finished';
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        return $this->services->sum('hours');
+    }
+
+    public function getTotalKilometresAttribute()
+    {
+        return $this->services->sum('kilometres');
+    }
+
     public static function newServiceReports()
     {
         return ServiceReport::whereStatus('new')->count();

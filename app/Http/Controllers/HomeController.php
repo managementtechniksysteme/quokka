@@ -8,6 +8,7 @@ use App\Models\DeliveryNote;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\InspectionReport;
 use App\Models\ServiceReport;
+use App\Support\GlobalSearch\GlobalSearch;
 use Illuminate\Http\Request;
      use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,63 @@ class HomeController extends Controller
         if (Auth::user()->employee->isCurrentlyOnHoliday() && ! $request->has('skip-holiday')) {
             return view('holiday');
         }
+
+        $user = Auth::user();
+
+        $reportRows = [
+            [
+                'ab' => 'SB', 'name' => 'Serviceberichte',
+                'route' => route('service-reports.index', ['search' => 'ist:neu']),
+                'offen' => $user->employee->new_service_reports,
+                'erledigbar' => $user->can('service-reports.approve') ? ServiceReport::signedServiceReports() : null,
+                'gesamt' => ($user->can('service-reports.view.own') && $user->can('service-reports.view.other')) ? ServiceReport::newServiceReports() : null,
+                'show' => true,
+            ],
+            [
+                'ab' => 'RB', 'name' => 'Regieberichte',
+                'route' => route('additions-reports.index', ['search' => 'ist:neu']),
+                'offen' => $user->employee->new_additions_reports,
+                'erledigbar' => $user->can('additions-reports.approve') ? AdditionsReport::signedAdditionsReports() : null,
+                'gesamt' => ($user->can('additions-reports.view.own') && $user->can('additions-reports.view.involved') && $user->can('additions-reports.view.other')) ? AdditionsReport::newAdditionsReports() : null,
+                'show' => true,
+            ],
+            [
+                'ab' => 'PB', 'name' => 'Prüfberichte',
+                'route' => route('inspection-reports.index', ['search' => 'ist:neu']),
+                'offen' => $user->employee->new_inspection_reports,
+                'erledigbar' => $user->can('inspection-reports.approve') ? InspectionReport::signedInspectionReports() : null,
+                'gesamt' => ($user->can('inspection-reports.view.own') && $user->can('inspection-reports.view.other')) ? InspectionReport::newInspectionReports() : null,
+                'show' => true,
+            ],
+            [
+                'ab' => 'DM', 'name' => 'Prüfberichte Durchflussmesseinrichtungen',
+                'route' => route('flow-meter-inspection-reports.index', ['search' => 'ist:neu']),
+                'offen' => $user->employee->new_flow_meter_inspection_reports,
+                'erledigbar' => $user->can('flow-meter-inspection-reports.approve') ? FlowMeterInspectionReport::signedFlowMeterInspectionReports() : null,
+                'gesamt' => ($user->can('inspection-reports.view.own') && $user->can('flow-meter-inspection-reports.view.other')) ? FlowMeterInspectionReport::newFlowMeterInspectionReports() : null,
+                'show' => true,
+            ],
+            [
+                'ab' => 'BT', 'name' => 'Bautagesberichte',
+                'route' => route('construction-reports.index', ['search' => 'ist:neu']),
+                'offen' => $user->employee->new_construction_reports,
+                'erledigbar' => $user->can('construction-reports.approve') ? ConstructionReport::signedConstructionReports() : null,
+                'gesamt' => ($user->can('construction-reports.view.own') && $user->can('construction-reports.view.involved') && $user->can('construction-reports.view.other')) ? ConstructionReport::newConstructionReports() : null,
+                'show' => true,
+            ],
+            [
+                'ab' => 'LI', 'name' => 'Lieferscheine',
+                'route' => route('delivery-notes.index', ['search' => 'ist:neu']),
+                'offen' => null,
+                'erledigbar' => $user->can('delivery-notes.approve') ? DeliveryNote::signedDeliveryNotes() : null,
+                'gesamt' => DeliveryNote::newDeliveryNotes(),
+                'show' => $user->can('viewAny', DeliveryNote::class),
+                'accent' => true,
+            ],
+        ];
+
+        $reportRows = array_values(array_filter($reportRows, fn ($r) => $r['show']));
+        $totalErledigbar = collect($reportRows)->sum(fn ($r) => $r['erledigbar'] ?? 0);
 
         return view('home')
             ->with('employeeMtdHourlyBasedServices', Auth::user()->employee->mtd_hourly_based_services)
@@ -48,36 +106,8 @@ class HomeController extends Controller
             ->with('employeeDueSoonTasks', Auth::user()->employee->due_soon_tasks)
             ->with('employeeDueSoonTasksResponsibleFor', Auth::user()->employee->due_soon_tasks_responsible_for)
             ->with('employeeDueSoonTasksInvolvedIn', Auth::user()->employee->due_soon_tasks_involved_in)
-            ->with('employeeNewServiceReports', Auth::user()->employee->new_service_reports)
-            ->with('employeeMtdNewServiceReports', Auth::user()->employee->mtd_new_service_reports)
-            ->with('newServiceReports', ServiceReport::newServiceReports())
-            ->with('employeeNewAdditionsReports', Auth::user()->employee->new_additions_reports)
-            ->with('employeeMtdNewAdditionsReports', Auth::user()->employee->mtd_new_additions_reports)
-            ->with('employeeNewAdditionsReportsInvolvedIn', Auth::user()->employee->new_additions_reports_involved_in)
-            ->with('newAdditionsReports', AdditionsReport::newAdditionsReports())
-            ->with('employeeNewInspectionReports', Auth::user()->employee->new_inspection_reports)
-            ->with('employeeMtdNewInspectionReports', Auth::user()->employee->mtd_new_inspection_reports)
-            ->with('newInspectionReports', InspectionReport::newInspectionReports())
-            ->with('employeeNewConstructionReports', Auth::user()->employee->new_construction_reports)
-            ->with('employeeMtdNewConstructionReports', Auth::user()->employee->mtd_new_construction_reports)
-            ->with('employeeNewConstructionReportsInvolvedIn', Auth::user()->employee->new_construction_reports_involved_in)
-            ->with('newConstructionReports', ConstructionReport::newConstructionReports())
-            ->with('employeeNewFlowMeterInspectionReports', Auth::user()->employee->new_flow_meter_inspection_reports)
-            ->with('employeeMtdNewFlowMeterInspectionReports', Auth::user()->employee->mtd_new_flow_meter_inspection_reports)
-            ->with('newFlowMeterInspectionReports', FlowMeterInspectionReport::newFlowMeterInspectionReports())
-            ->with('signedServiceReports', ServiceReport::signedServiceReports())
-            ->with('mtdSignedServiceReports', ServiceReport::mtdSignedServiceReports())
-            ->with('signedAdditionsReports', AdditionsReport::signedAdditionsReports())
-            ->with('mtdSignedAdditionsReports', AdditionsReport::mtdSignedAdditionsReports())
-            ->with('signedInspectionReports', InspectionReport::signedInspectionReports())
-            ->with('mtdSignedInspectionReports', InspectionReport::mtdSignedInspectionReports())
-            ->with('signedConstructionReports', ConstructionReport::signedConstructionReports())
-            ->with('mtdSignedConstructionReports', ConstructionReport::mtdSignedConstructionReports())
-            ->with('signedFlowMeterInspectionReports', FlowMeterInspectionReport::signedFlowMeterInspectionReports())
-            ->with('mtdSignedFlowMeterInspectionReports', FlowMeterInspectionReport::mtdSignedFlowMeterInspectionReports())
-            ->with('newDeliveryNotes', DeliveryNote::newDeliveryNotes())
-            ->with('mtdNewDeliveryNotes', DeliveryNote::mtdNewDeliveryNotes())
-            ->with('signedDeliveryNotes', DeliveryNote::signedDeliveryNotes())
-            ->with('mtdSignedDeliveryNotes', DeliveryNote::mtdSignedDeliveryNotes());
+            ->with('reportRows', $reportRows)
+            ->with('totalErledigbar', $totalErledigbar)
+            ->with('latestChanges', Auth::user()->can('tools-viewlatestchanges') ? GlobalSearch::getLatestChanges(5) : collect());
     }
 }

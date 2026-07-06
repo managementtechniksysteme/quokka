@@ -233,4 +233,13 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     {
         return $this->status === 'finished';
     }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'in progress' => 'in Arbeit',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
 }

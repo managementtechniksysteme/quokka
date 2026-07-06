@@ -154,6 +154,26 @@ class Project extends Model implements FiltersGlobalSearch
         return $this->is_pre_execution ? 'ja' : 'nein';
     }
 
+    public function getStateAttribute() {
+        if ($this->is_pre_execution) {
+            return 'new';
+        }
+
+        if ($this->ends_on && $this->ends_on->isBefore(today())) {
+            return 'finished';
+        }
+
+        return 'in-progress';
+    }
+
+    public function getStateLabelAttribute() {
+        return match ($this->state) {
+            'new' => 'Vorphase',
+            'finished' => 'beendet',
+            default => 'aktiv',
+        };
+    }
+
     public function getIncludedInFinancesStringAttribute() {
         return $this->include_in_finances ? 'ja' : 'nein';
     }

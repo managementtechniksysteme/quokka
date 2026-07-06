@@ -545,6 +545,15 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
         return $this->status === 'finished';
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
     public static function newFlowMeterInspectionReports()
     {
         return FlowMeterInspectionReport::whereStatus('new')->count();

@@ -206,6 +206,15 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status === 'finished';
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
     public static function newConstructionReports()
     {
         return ConstructionReport::whereStatus('new')->count();

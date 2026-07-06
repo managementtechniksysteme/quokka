@@ -160,6 +160,15 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status === 'finished';
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
     public static function mtdNewDeliveryNotes()
     {
         $now = Carbon::now();

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vue-signature-pad class="bg-white border" :width="width" :height="height" ref="signaturePad" :options="{ onBegin, onEnd }" />
+        <vue-signature-pad class="q-signpad" :width="width" :height="height" ref="signaturePad" :options="{ onBegin, onEnd }" />
         <input v-if="signature" type="hidden" name="signature" id="signature" :value="signature" />
     </div>
 </template>

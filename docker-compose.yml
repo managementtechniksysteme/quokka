@@ -6,7 +6,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
-    image: php-fpm-laravel
+    image: php-fpm-laravel-latex
     container_name : quokka-php-fpm
     hostname: php-fpm
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
-    image: php-fpm-laravel
+    image: php-fpm-laravel-latex
     container_name : quokka-queue-worker
     command: php artisan queue:work
     hostname: queue-worker
@@ -41,7 +41,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
-    image: php-fpm-laravel
+    image: php-fpm-laravel-latex
     container_name : quokka-schedule-worker
     command: php artisan schedule:work
     hostname: queue-worker
@@ -59,6 +59,8 @@ services:
     restart: unless-stopped
     tty: true
     working_dir: /root
+    ports:
+      - 5173:5173
     volumes:
       - ./:/root:z
     networks:

@@ -1,6 +1,7 @@
-<nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm fixed-top">
+<nav class="navbar navbar-expand-xl fixed-top q-topbar">
     <div class="container-fluid">
         <a class="navbar-brand me-0 me-xl-2" href="{{ route('home') }}">
+            <span class="q-brand-badge">{{ Str::substr(config('app.name'), 0, 1) }}</span>
             {{ config('app.name') }}
         </a>
 
@@ -47,7 +48,7 @@
             <ul class="navbar-nav">
                 @auth
                     @if(auth()->user()->can('viewAny', \App\Models\Company::class) || auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('companies.*', 'people.*', 'addresses.*')])>
                             <a class="nav-link @cannot('viewAny', \App\Models\Company::class) disabled @endcannot d-inline-flex align-items-center pe-0" href="{{ route('companies.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
@@ -81,7 +82,7 @@
                     @endif
 
                     @if(auth()->user()->can('viewAny', \App\Models\Project::class) || auth()->user()->can('finances-view'))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('projects.*', 'project-controlling.*')])>
                             <a class="nav-link @cannot('viewAny', \App\Models\Project::class) disabled @endcan d-inline-flex align-items-center pe-0" href="{{ route('projects.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
@@ -105,7 +106,7 @@
                     @endif
 
                     @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class) || auth()->user()->can('viewAny', \App\Models\AdditionsReport::class) || auth()->user()->can('viewAny', \App\Models\InspectionReport::class) || auth()->user()->can('viewAny', \App\Models\FlowMeterInspectionReport::class) || auth()->user()->can('viewAny', \App\Models\ConstructionReport::class) || auth()->user()->can('viewAny', \App\Models\DeliveryNote::class))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('tasks.*', 'memos.*', 'service-reports.*', 'additions-reports.*', 'inspection-reports.*', 'flow-meter-inspection-reports.*', 'construction-reports.*', 'delivery-notes.*')])>
                             <a class="nav-link @cannot('viewAny', \App\Models\Task::class) disabled @endcannot d-inline-flex align-items-center pe-0" href="{{ route('tasks.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
@@ -179,7 +180,7 @@
                     @endif
 
                     @if(auth()->user()->can('viewAny', \App\Models\Accounting::class) || auth()->user()->can('viewAny', \App\Models\Logbook::class))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('accounting.*', 'logbook.*')])>
                             <a class="nav-link @cannot('viewAny', \App\Models\Accounting::class) disabled @endcannot d-inline-flex align-items-center pe-0" href="{{ route('accounting.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
@@ -204,7 +205,7 @@
                     @endif
 
                     @if(auth()->user()->can('finances-view') || auth()->user()->can('viewAny', \App\Models\FinanceGroup::class))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('finances.*', 'project-finances.*', 'finance-groups.*')])>
                             <a class="nav-link @cannot('finances-view') disabled @endcannot d-inline-flex align-items-center pe-0" href="{{ route('finances.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
@@ -239,7 +240,7 @@
                     @endif
 
 
-                    <li class="nav-item dropdown">
+                    <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('quokka-mobile.*', 'latest-changes.*', 'sent-emails.*', 'qr-scan.*', 'exceptions.*')])>
                         <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-20 me-1">
                                 <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#tool"></use>
@@ -291,7 +292,7 @@
 
 
                     @if(auth()->user()->can('application-settings-update') || auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('application-settings.*', 'employees.*', 'roles.*', 'wage-services.*', 'material-services.*', 'vehicles.*')])>
                             <a class="nav-link @cannot('application-settings-update') disabled @endcannot d-inline-flex align-items-center pe-0" href="{{ route('application-settings.edit') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
@@ -342,7 +343,7 @@
                     @endif
 
                     @can('help-view')
-                        <li class="nav-item dropdown">
+                        <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('help.*', 'changelog.*')])>
                             <a class="nav-link d-inline-flex align-items-center pe-0" href="{{ route('help.index') }}">
                                 <svg class="icon icon-20 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
@@ -417,17 +418,12 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-inline-flex align-items-center @if(Session::has('impersonatorId')) text-red @endif" id="navbarUserDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg class="icon icon-20 me-1 @if(Auth::user()->unreadNotifications()->count()) text-red @endif" >
-                                @if(Session::has('impersonatorId'))
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user-plus"></use>
-                                @elseif(Auth::user()->unreadNotifications()->count())
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
-                                @else
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                                @endif
-                            </svg>
-                            {{ Auth::user()->person->first_name }}
+                        @php $avatarHex = \App\Models\UserSettings::avatarColourFromName(Auth::user()->settings->avatar_colour ?? 'gray')['color']; @endphp
+                        <a class="nav-link d-inline-flex align-items-center gap-2 outline-none" id="navbarUserDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @if(Auth::user()->unreadNotifications()->count())
+                                <svg class="icon icon-20 q-nav-bell"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use></svg>
+                            @endif
+                            <span class="q-user-avatar @if(Session::has('impersonatorId')) border border-2 border-danger @endif" style="background: color-mix(in srgb, {{ $avatarHex }} 20%, transparent); color: {{ $avatarHex }};">{{ Auth::user()->username_avatar_string }}</span>
                         </a>
 
 
@@ -438,7 +434,7 @@
                                 </svg>
                                 Übersicht
                             </a>
-                            <a class="dropdown-item  d-inline-flex align-items-center @if(Auth::user()->unreadNotifications()->count()) text-red @endif" href="{{ route('notifications.index') }}">
+                            <a class="dropdown-item  d-inline-flex align-items-center @if(Auth::user()->unreadNotifications()->count()) dropdown-item-danger @endif" href="{{ route('notifications.index') }}">
                                 <svg class="icon icon-16 me-1">
                                     <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use>
                                 </svg>
@@ -458,6 +454,37 @@
                                 </svg>
                                 Einstellungen
                             </a>
+
+                            <div class="dropdown-divider"></div>
+                            <button type="button" class="dropdown-item q-theme-opt q-theme-opt--system d-inline-flex align-items-center" onclick="setQuokkaTheme('system')">
+                                <svg class="icon icon-16 me-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#monitor"></use>
+                                </svg>
+                                System
+                                <svg class="icon icon-16 q-theme-check">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
+                                </svg>
+                            </button>
+                            <button type="button" class="dropdown-item q-theme-opt q-theme-opt--light d-inline-flex align-items-center" onclick="setQuokkaTheme('light')">
+                                <svg class="icon icon-16 me-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
+                                </svg>
+                                Hell
+                                <svg class="icon icon-16 q-theme-check">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
+                                </svg>
+                            </button>
+                            <button type="button" class="dropdown-item q-theme-opt q-theme-opt--dark d-inline-flex align-items-center" onclick="setQuokkaTheme('dark')">
+                                <svg class="icon icon-16 me-1">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#moon"></use>
+                                </svg>
+                                Dunkel
+                                <svg class="icon icon-16 q-theme-check">
+                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
+                                </svg>
+                            </button>
+                            <div class="dropdown-divider"></div>
+
                             @if(Session::has('impersonatorId'))
                                 @can('impersonate', Auth::user()->employee)
                                     <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('employees.impersonate', Auth::user()->employee) }}">

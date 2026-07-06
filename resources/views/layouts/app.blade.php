@@ -5,6 +5,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Theme: set data-bs-theme before paint so there's no light flash. -->
+    <meta name="color-scheme" content="light dark">
+    <script>
+        // Pref stored as: system | light | dark (System follows the OS setting,
+        // which also lets extensions like DarkReader behave correctly).
+        (function () {
+            var KEY = 'quokka-theme';
+            var mq = window.matchMedia('(prefers-color-scheme: dark)');
+            function resolve(pref) { return pref === 'dark' || (pref !== 'light' && mq.matches) ? 'dark' : 'light'; }
+            window.applyQuokkaTheme = function (pref) {
+                pref = pref || localStorage.getItem(KEY) || 'system';
+                var root = document.documentElement;
+                root.setAttribute('data-bs-theme', resolve(pref));
+                root.setAttribute('data-theme-pref', pref);
+            };
+            window.setQuokkaTheme = function (pref) { localStorage.setItem(KEY, pref); window.applyQuokkaTheme(pref); };
+            window.applyQuokkaTheme();
+            mq.addEventListener('change', function () {
+                if ((localStorage.getItem(KEY) || 'system') === 'system') window.applyQuokkaTheme('system');
+            });
+        })();
+    </script>
+
     <meta name="description" content="Die {{ config('app.name') }} Projektmanagement Applikation.">
 
     <!-- PWA -->
@@ -89,7 +113,7 @@
     @include('partials.notifications')
     @include('partials.navbar')
 
-    <main>
+    <main class="q-page">
         @yield('content')
     </main>
 </div>

@@ -1,216 +1,39 @@
-<div class="mt-4">
-
-    <div class="row">
-        <div class="col-sm-5 col-md-4 col-lg-2">
-            <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                </svg>
-                Projekt
-            </div>
-        </div>
-        <div class="col-sm-7">
-            <a href="{{ route('projects.show', $task->project) }}">{{ $task->project->name }}</a>
-        </div>
-    </div>
-
-    <div class="row mt-3 mt-md-4">
-        <div class="col-md-8 col-lg">
-            <div class="row">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->isOverdue()) text-danger @elseif($task->isDueSoon()) text-warning @else text-muted @endif icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                        </svg>
-                        Fälligkeitsdatum
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->due_on ? $task->due_on : 'nicht angegeben' }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                        </svg>
-                        Zeitraum
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ $task->starts_on ?? 'kein Start' }}
-                    <svg class="icon icon-16 mx-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
-                    </svg>
-                    {{ $task->ends_on ? $task->ends_on : 'kein Ende' }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                        </svg>
-                        Priorität
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->priority) }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->isNew()) text-primary @elseif($task->isInProgress()) text-warning @else text-success @endif icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
-                        </svg>
-                        Status
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->status) }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
-                        </svg>
-                        Verrechnungsstatus
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->billed_string) }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md col-lg-4">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="@if($task->private) text-warning @else text-muted @endif icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use>
-                        </svg>
-                        Sichtbarkeitsstatus
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md col-lg-8">
-                    {{ __($task->visibility_string) }}
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-lg">
-            <div class="row mt-3 mt-md-0">
-                <div class="col-sm-5 col-md-12 col-lg">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                        </svg>
-                        Verantwortliche Person
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md-12 col-lg">
-                    {{ $task->responsibleEmployee->person->name }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-5 col-md-12 col-lg">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                        </svg>
-                        Mitwirkende Personen
-                    </div>
-                </div>
-                <div class="col-sm-7 col-md-12 col-lg">
-                    @forelse($task->involvedEmployees as $employee)
-                        {{ $employee->person->name }}
-                        @unless($loop->last)
-                            <br />
-                        @endunless
-                    @empty
-                        keine Personen angegeben
-                    @endforelse
-                </div>
+{{-- Beschreibung --}}
+@if ($task->comment)
+    <div class="q-card">
+        <div class="q-card__head">Beschreibung</div>
+        <div class="q-card__body">
+            <div class="markdown">
+                {!! Html::fromMarkdown($task->comment) !!}
             </div>
         </div>
     </div>
+@endif
 
-    @if ($task->comment)
-        <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Bemerkungen
-        </div>
-        <div class="markdown">
-            {!! Html::fromMarkdown($task->comment) !!}
-        </div>
-    @endif
-
-    @if($task->attachments()->count() > 0)
-        <div class="row text-muted d-flex align-items-center mt-1">
-            <div class="col">
-                <div class="d-none d-md-inline-flex align-items-center">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-                    </svg>
-                    Anhänge
-                </div>
-                <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseTaskAttachments-{{ $task->id }}" role="button" aria-expanded="false" aria-controls="collapseTaskAttachments-{{ $task->id }}">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-                    </svg>
-                    Anhänge
-                </a>
-            </div>
-        </div>
-        <div class="d-none d-md-block">
-            <div class="row">
+{{-- Anhänge --}}
+@if($task->attachments()->count() > 0)
+    <div class="q-card">
+        <div class="q-card__head">Anhänge</div>
+        <div class="q-card__body">
+            <div class="row g-2">
                 @foreach($task->attachments() as $attachment)
-                    <div class="col-12 col-md-6 col-lg-3 mt-1">
-                        <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <a href="{{ $attachment->getUrl() }}" class="q-attach">
                             @if($attachment->hasGeneratedConversion('thumbnail'))
-                                <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                             @else
-                                <svg class="icon attachment-img-preview me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
-                                </svg>
+                                <span class="q-attach__preview q-attach__preview--icon">
+                                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                </span>
                             @endif
-                            <div class="min-w-0">
-                                <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
-                                <div class="text-muted">{{ $attachment->human_readable_size }}</div>
-                            </div>
-                            <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
-                        </div>
+                            <span class="min-w-0">
+                                <span class="q-attach__name text-truncate d-block">{{ $attachment->file_name }}</span>
+                                <span class="q-attach__size">{{ $attachment->human_readable_size }}</span>
+                            </span>
+                        </a>
                     </div>
                 @endforeach
             </div>
         </div>
-        <div class="collapse d-md-none" id="collapseTaskAttachments-{{ $task->id }}">
-            <div class="row">
-                @foreach($task->attachments() as $attachment)
-                    <div class="col-12 col-md-6 col-lg-3 mt-1">
-                        <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
-                            @if($attachment->hasGeneratedConversion('thumbnail'))
-                                <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
-                            @else
-                                <svg class="icon attachment-img-preview me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
-                                </svg>
-                            @endif
-                            <div class="min-w-0">
-                                <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
-                                <div class="text-muted">{{ $attachment->human_readable_size }}</div>
-                            </div>
-                            <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
-
-</div>
-
+    </div>
+@endif

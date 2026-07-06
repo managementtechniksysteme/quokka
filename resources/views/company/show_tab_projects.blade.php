@@ -1,193 +1,68 @@
 @extends('company.show')
 
 @section('tab')
-    @unless ($company->projects->isEmpty() && !Request::get('search'))
-        @can('create', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                </svg>
-                Projekt anlegen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Projektliste erstellen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\Task::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank"s>
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Aufgabenliste erstellen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\ServiceReport::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"s>
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Serviceberichtliste erstellen
-            </a>
-        @endcan
-
-        <div class="row mt-4">
-
-            <div class="col col-lg-6">
-
-                <form action="{{ route('companies.show', $company) }}" method="get">
-                    @if(request()->tab)
-                        <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                    @endif
-                    @if(request()->sort)
-                        <input type="hidden" id="sort" name="sort" value="{{ request()->sort }}">
-                    @endif
-
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Projekte suchen" autocomplete="off" />
-                            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                <svg class="icon icon-16">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                                </svg>
-                            </button>
-                            @if (Request::get('search'))
-                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
-                                    <svg class="icon icon-16">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
-                                    </svg>
-                                </a>
-                            @endif
-                    </div>
-
-                </form>
-
-            </div>
-
-            <div class="col-auto ms-auto">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary w-100 dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                        </svg>
-                        Sortierung
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end w-100">
-                        <form action="{{ route('companies.show', $company) }}" method="get">
-                            @if(request()->tab)
-                                <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                            @endif
-                            @if(request()->search)
-                                <input type="hidden" id="search" name="search" value="{{ request()->search }}">
-                            @endif
-
-                            <button type="submit" name="sort" value="name-asc" class="dropdown-item w-100 d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Name
-                            </button>
-                            <button type="submit" name="sort" value="name-desc" class="dropdown-item w-100 d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Name
-                            </button>
-
-                            <button type="submit" name="sort" value="wage-costs-asc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Lohnkosten
-                            </button>
-                            <button type="submit" name="sort" value="wage-costs-desc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Lohnkosten
-                            </button>
-
-                            <button type="submit" name="sort" value="material-costs-asc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Materialkosten
-                            </button>
-                            <button type="submit" name="sort" value="material-desc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Materialkosten
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
+    @if ($company->projects->isEmpty())
+        <div class="text-center mt-5">
+            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
+            @can('create', \App\Models\Project::class)
+                <p class="lead">Lege ein neues Projekt an.</p>
+                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    Projekt anlegen
+                </a>
+            @endcan
         </div>
-    @endunless
+    @else
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h2 class="q-subhead">Projekte</h2>
 
-    <div class="mt-3">
-        @forelse ($projects as $project)
-            @component('project.overview_card', [ 'project' => $project, 'secondaryInformation' => 'dates', 'actionRedirect' => 'company' ])
-            @endcomponent
+            <div class="ms-auto d-flex align-items-center gap-2">
+                @can('create', \App\Models\Project::class)
+                    <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                        Projekt anlegen
+                    </a>
+                @endcan
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
-                @endif
-
-        @empty
-            <div class="text-center">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Projekte passend zur Suche gefunden.</p>
-                @else
-                    <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
-                    @can('create', \App\Models\Project::class)
-                        <p class="lead">Lege ein neues Projekt an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                            <svg class="icon icon-20 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Projekt anlegen
-                        </a>
-                    @endcan
+                @if(Auth::user()->can('downloadList', \App\Models\Project::class) || Auth::user()->can('downloadList', \App\Models\Task::class) || Auth::user()->can('downloadList', \App\Models\ServiceReport::class))
+                    <div class="dropdown">
+                        <button class="q-kebab" type="button" id="projectsListDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Listen erstellen">
+                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            @can('downloadList', \App\Models\Project::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use></svg>Projektliste</a>
+                            @endcan
+                            @can('downloadList', \App\Models\Task::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>Aufgabenliste</a>
+                            @endcan
+                            @can('downloadList', \App\Models\ServiceReport::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use></svg>Serviceberichtliste</a>
+                            @endcan
+                        </div>
+                    </div>
                 @endif
             </div>
-        @endforelse
-    </div>
+        </div>
 
-    <div class="mt-2">
-        {{ $projects->links() }}
-    </div>
+        @include('partials.list_filter', [
+            'action' => route('companies.show', $company),
+            'placeholder' => 'Projekte suchen',
+            'sorts' => ['name-asc' => 'Name', 'name-desc' => 'Name', 'wage-costs-asc' => 'Lohnkosten', 'wage-costs-desc' => 'Lohnkosten', 'material-costs-asc' => 'Materialkosten', 'material-desc' => 'Materialkosten'],
+        ])
 
-    @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
-        @if($projects->count() > 0 && ($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
-            <p class="mt-3 small">
-                Die Pfeile für die
-                <span class="fw-bolder"><u>G</u></span>esamt, <span class="fw-bold"><u>v</u></span>errechnet, <span class="fw-bold"><u>L</u></span>ohn und <span class="fw-bold"><u>M</u></span>aterialosten
-                zeigen folgende Information:<br />
-                <svg class="icon icon-baseline text-success">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                </svg>
-                Die aktuellen Kosten liegen unter der Warnschwelle.<br />
-                <svg class="icon icon-baseline text-warning">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
-                </svg>
-                Die aktuellen Kosten liegen zwischen der Warnschwelle und den geschätzten Kosten.<br />
-                <svg class="icon icon-baseline text-danger">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                </svg>
-                Die aktuellen Kosten liegen über den geschätzten Kosten.<br />
-                Warnschwellen:
-                @if($projectOverallCostsWarningPercentage)Gesamtkosten: {{ $projectOverallCostsWarningPercentage }}% @endif
-                @if($projectBilledCostsWarningPercentage)verrechnete Kosten: {{ $projectBilledCostsWarningPercentage }}% @endif
-                @if($projectWageCostsWarningPercentage)Lohnkosten: {{ $projectWageCostsWarningPercentage }}% @endif
-                @if($projectMaterialCostsWarningPercentage)Materialkosten: {{ $projectMaterialCostsWarningPercentage }}% @endif
-            </p>
+        @if ($projects->isEmpty())
+            <div class="q-card"><div class="q-card__body text-center text-muted py-4">Keine Projekte passend zur Suche gefunden.</div></div>
+        @else
+            <div class="q-card q-list">
+                @foreach ($projects as $project)
+                    @include('project.overview_card_content', ['project' => $project, 'secondaryInformation' => 'dates', 'actionRedirect' => 'company'])
+                @endforeach
+            </div>
+            <div class="mt-3">{{ $projects->links() }}</div>
+
+            @include('project.cost_legend')
         @endif
     @endif
 @endsection

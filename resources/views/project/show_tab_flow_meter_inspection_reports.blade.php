@@ -1,156 +1,50 @@
 @extends('project.show')
 
 @section('tab')
-    @unless ($project->flowMeterInspectionReports->isEmpty() && !Request::get('search'))
-        @can('create', \App\Models\FlowMeterInspectionReport::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                </svg>
-                Prüfbericht anlegen
-            </a>
-        @endcan
-
-        <div class="row mt-4">
-
-            <div class="col col-lg-6">
-
-                <form action="{{ route('projects.show', $project) }}" method="get">
-                    @if(request()->tab)
-                        <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                    @endif
-                    @if(request()->sort)
-                        <input type="hidden" id="sort" name="sort" value="{{ request()->sort }}">
-                    @endif
-
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Prüfberichte suchen" autocomplete="off" />
-                            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                <svg class="icon icon-16">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                                </svg>
-                            </button>
-                            @if (Request::get('search'))
-                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=' }}" @endif>
-                                    <svg class="icon icon-16">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
-                                    </svg>
-                                </a>
-                            @endif
-                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item"
-                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
-                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
-                                    @endif>
-                                    Meine Prüfberichte
-                                </a>
-                                <a class="dropdown-item"
-                                   @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . ' ist:neu' . '&sort=' . Request::get('sort') }}"
-                                   @else href="{{ Request::url() . '?tab=' . Request::get('tab') . '&search=t:' . Auth::user()->username . ' ist:neu' }}"
-                                    @endif>
-                                    Meine nicht unterschriebenen Prüfberichte
-                                </a>
-                            </div>
-                    </div>
-
-                </form>
-
-            </div>
-
-            <div class="col-auto ms-auto">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary w-100 dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                        </svg>
-                        Sortierung
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end w-100">
-                        <form action="{{ route('projects.show', $project) }}" method="get">
-                            @if(request()->tab)
-                                <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                            @endif
-                            @if(request()->has('search'))
-                                <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
-                            @endif
-
-                            <button type="submit" name="sort" value="inspected_on-asc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Datum
-                            </button>
-                            <button type="submit" name="sort" value="inspected_on-desc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Datum
-                            </button>
-
-                            <button type="submit" name="sort" value="status-asc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Status
-                            </button>
-                            <button type="submit" name="sort" value="status-desc" class="dropdown-item w-100  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Status
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
+    @if ($project->flowMeterInspectionReports->isEmpty())
+        <div class="text-center mt-5">
+            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Prüfberichte für Durchflussmesseinrichtungen zugeordnet.</p>
+            @can('create', \App\Models\FlowMeterInspectionReport::class)
+                <p class="lead">Lege einen neuen Prüfbericht an.</p>
+                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
+                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    Prüfbericht anlegen
+                </a>
+            @endcan
         </div>
-    @endunless
+    @else
+        @php $u = Auth::user(); $fin = $u->settings->show_finished_items ? '' : ' !ist:erledigt'; @endphp
 
-    <div class="mt-3">
-        @forelse ($flowMeterInspectionReports as $flowMeterInspectionReport)
-            @component('flow_meter_inspection_report.overview_card', [ 'flowMeterInspectionReport' => $flowMeterInspectionReport, 'secondaryInformation' => 'withoutProject', 'actionRedirect' => 'project' ])
-            @endcomponent
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h2 class="q-subhead">Prüfberichte Durchflussmesseinrichtungen</h2>
+            @can('create', \App\Models\FlowMeterInspectionReport::class)
+                <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
+                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    Prüfbericht anlegen
+                </a>
+            @endcan
+        </div>
 
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
-                @endif
+        @include('partials.list_filter', [
+            'action' => route('projects.show', $project),
+            'placeholder' => 'Prüfberichte suchen',
+            'sorts' => ['number-asc' => 'Nummer', 'number-desc' => 'Nummer', 'status-asc' => 'Status', 'status-desc' => 'Status'],
+            'quickFilters' => [
+                'Meine Prüfberichte' => 't:' . $u->username . $fin,
+                'Meine nicht unterschriebenen Prüfberichte' => 't:' . $u->username . ' ist:neu',
+            ],
+        ])
 
-        @empty
-            <div class="text-center">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Prüfberichte für Durchflussmesseinrichtungen passend zur Suche gefunden.</p>
-                @else
-                    <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Prüfberichte für Durchflussmesseinrichtungen zugeordnet.</p>
-                    @can('create', \App\Models\FlowMeterInspectionReport::class)
-                        <p class="lead">Lege einen neuen Prüfbericht an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
-                            <svg class="icon icon-20 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Prüfbericht anlegen
-                        </a>
-                    @endcan
-                @endif
+        @if ($flowMeterInspectionReports->isEmpty())
+            <div class="q-card"><div class="q-card__body text-center text-muted py-4">Keine Prüfberichte passend zur aktuellen Filterung.</div></div>
+        @else
+            <div class="q-card q-list">
+                @foreach ($flowMeterInspectionReports as $flowMeterInspectionReport)
+                    @include('flow_meter_inspection_report.overview_card_content', ['flowMeterInspectionReport' => $flowMeterInspectionReport, 'secondaryInformation' => 'withoutProject', 'actionRedirect' => 'project'])
+                @endforeach
             </div>
-        @endforelse
-    </div>
-
-    <div class="mt-2">
-        {{ $flowMeterInspectionReports->links() }}
-    </div>
-
-    @if($flowMeterInspectionReports->count() > 0)
-        <p class="mt-3 small">
-            Der linke farbliche Rand zeigt den Status des jeweiligen Prüfberichtes:
-            <span class="badge bg-blue-100 text-blue-800">neu</span>
-            <span class="badge bg-yellow-100 text-yellow-800">unterschrieben</span>
-            <span class="badge bg-green-100 text-green-800">erledigt</span>
-        </p>
+            <div class="mt-3">{{ $flowMeterInspectionReports->links() }}</div>
+        @endif
     @endif
-
 @endsection

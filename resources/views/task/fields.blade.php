@@ -106,7 +106,7 @@
                 <input type="radio" class="btn-check" name="status" id="status-new" value="new" autocomplete="off" @if(old('status', optional($task)->status) == 'new') checked @endif>
                 <label class="btn btn-outline-secondary" for="status-new">neu</label>
                 <input type="radio" class="btn-check" name="status" id="status-in-progress" value="in progress" autocomplete="off" @if(old('status', optional($task)->status) == 'in progress') checked @endif>
-                <label class="btn btn-outline-secondary" for="status-in-progress">in Bearbeitung</label>
+                <label class="btn btn-outline-secondary" for="status-in-progress">in Arbeit</label>
                 <input type="radio" class="btn-check" name="status" id="status-finished" value="finished" autocomplete="off" @if(old('status', optional($task)->status) == 'finished') checked @endif>
                 <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
             </div>

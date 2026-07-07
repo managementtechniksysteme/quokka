@@ -34,18 +34,57 @@
     background-color: $gray-800 !important;
 }
 
+// =============================================================================
+//  Command palette — themed to match the redesign. Consumes the runtime --q-*
+//  tokens so it adapts to light/dark (data-bs-theme) like the rest of the UI.
+//  Imported after _quokka-ui.scss so the $q-radius tokens are in scope here.
+// =============================================================================
+.q-spotlight__backdrop {
+    background: rgba(3, 6, 12, .55);
+    backdrop-filter: blur(2px);
+}
+
+.q-spotlight__panel {
+    background: var(--q-surface);
+    border: 1px solid var(--q-border);
+    border-radius: $q-radius;
+    box-shadow: var(--q-shadow-lg);
+}
+
+.q-spotlight__spinner {
+    color: var(--q-muted);
+}
+
+.q-spotlight__divider {
+    border-top: 1px solid var(--q-border-2);
+}
+
 .spotlight-input {
-    caret-color: $gray-500;
-    padding: 1rem 1.5rem;
+    caret-color: var(--q-accent);
+    color: var(--q-text);
+    padding: 1rem 1.35rem;
+
+    &::placeholder { color: var(--q-faint); }
 }
 
 .spotlight-results {
-    max-height: 256px;
+    max-height: 320px;
+    padding: .35rem;
 }
 
-.spotlight-results button {
-    padding: 0.75rem 1.5rem;
+.q-spotlight__item {
+    background: transparent;
+    padding: .6rem .95rem;
+    border-radius: $q-radius-sm;
+    transition: background .12s;
+
+    &:hover { background: var(--q-surface-2); }
+    &.is-selected { background: var(--q-accent-tint); }
 }
+
+.q-spotlight__item-name { color: var(--q-text); font-weight: 600; }
+.q-spotlight__item-desc { color: var(--q-muted); }
+.q-spotlight__item.is-selected .q-spotlight__item-desc { color: var(--q-text); }
 
 .animate-spin{
     -webkit-animation:spin 1s linear infinite;

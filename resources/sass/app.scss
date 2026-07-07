@@ -33,15 +33,15 @@
 // Vue Select
 @import "select";
 
-// Spotlight
-@import "spotlight";
-
 // Markdown
 @import "markdown";
 
 // Quokka redesign layer (must come after Bootstrap so it can build on its
 // tokens/mixins; see _quokka-ui.scss)
 @import "quokka-ui";
+
+// Spotlight — after the redesign layer so it can reuse its $q-radius tokens
+@import "spotlight";
 
 // Vue: wait for components to fully load before showing content
 [v-cloak] {

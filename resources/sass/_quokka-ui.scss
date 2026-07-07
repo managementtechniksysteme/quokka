@@ -691,7 +691,7 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 //  A feed entry = round identity avatar (who) + name/date line + a bubble.
 //  User comments get a surface-2 bubble; logged changes (events) are quieter.
 // =============================================================================
-.q-feed { display: flex; flex-direction: column; gap: 1.15rem; }
+.q-feed { display: flex; flex-direction: column; gap: 1.9rem; }
 .q-comment { display: flex; gap: .8rem; align-items: flex-start; }
 .q-comment__main { flex: 1; min-width: 0; }
 // header sits on one baseline row; the kebab is lifted out of the flow (absolute)

@@ -200,7 +200,8 @@ class ServiceReportController extends Controller
             ->load('activities.causer');
 
         return view('service_report.show')
-            ->with(compact('serviceReport'));
+            ->with(compact('serviceReport'))
+            ->with('signature', $serviceReport->signature());
     }
 
     /**

@@ -20,7 +20,7 @@
                             @switch($serviceReport->status)
                                 @case('signed')
                                     <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
-                                    {{ optional($serviceReport->signature())->created_at }}
+                                    {{ optional($signature)->created_at }}
                                     @break
                                 @case('finished')
                                     <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
@@ -175,7 +175,6 @@
             </div>
 
             {{-- Unterschrift --}}
-            @php $signature = $serviceReport->signature(); @endphp
             <div class="q-card">
                 <div class="q-card__head d-flex align-items-center justify-content-between">
                     <span>Unterschrift</span>

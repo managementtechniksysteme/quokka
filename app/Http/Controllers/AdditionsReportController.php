@@ -151,7 +151,8 @@ class AdditionsReportController extends Controller
             ->load('activities.causer');
 
         return view('additions_report.show')
-            ->with(compact('additionsReport'));
+            ->with(compact('additionsReport'))
+            ->with('signature', $additionsReport->signature());
     }
 
     public function edit(AdditionsReport $additionsReport)

@@ -20,7 +20,7 @@
                             @switch($additionsReport->status)
                                 @case('signed')
                                     <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
-                                    {{ optional($additionsReport->signature())->created_at }}
+                                    {{ optional($signature)->created_at }}
                                     @break
                                 @case('finished')
                                     <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
@@ -221,9 +221,10 @@
                 @endif
             </div>
 
-            <div class="q-detail__aside">
+            <div class="d-flex flex-column gap-3">
                 {{-- Beteiligte Personen --}}
-                <aside class="q-aside">
+                <div class="q-card q-card--quiet">
+                    <div class="q-card__body">
                     <div class="q-aside__group">
                         <div class="q-aside__label">Personalstand · {{ $additionsReport->involvedEmployees->count() }}</div>
                         @forelse($additionsReport->involvedEmployees as $employee)
@@ -258,11 +259,11 @@
                             </div>
                         </div>
                     @endif
-                </aside>
+                    </div>
+                </div>
 
                 {{-- Unterschrift --}}
-                @php $signature = $additionsReport->signature(); @endphp
-                <div class="q-card">
+                <div class="q-card q-card--quiet">
                 <div class="q-card__head d-flex align-items-center justify-content-between">
                     <span>Unterschrift</span>
                     @if($signature)

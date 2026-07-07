@@ -119,10 +119,12 @@
                 <span class="q-statbar__label">Stunden</span>
                 <span class="q-statbar__value">{{ Number::toLocal($serviceReport->total_hours) }} h</span>
             </div>
-            <div class="q-statbar__cell">
-                <span class="q-statbar__label">Kilometer</span>
-                <span class="q-statbar__value">{{ Number::toLocal($serviceReport->total_kilometres) }} km</span>
-            </div>
+            @if($serviceReport->total_kilometres > 0)
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Kilometer</span>
+                    <span class="q-statbar__value">{{ Number::toLocal($serviceReport->total_kilometres) }} km</span>
+                </div>
+            @endif
         </div>
 
         <div class="q-detail">

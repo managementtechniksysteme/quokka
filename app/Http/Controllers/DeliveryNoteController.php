@@ -110,7 +110,8 @@ class DeliveryNoteController extends Controller
             ->load('activities.causer');
 
         return view('delivery_note.show')
-            ->with(compact('deliveryNote'));
+            ->with(compact('deliveryNote'))
+            ->with('signature', $deliveryNote->signature());
     }
 
     public function edit(DeliveryNote $deliveryNote)

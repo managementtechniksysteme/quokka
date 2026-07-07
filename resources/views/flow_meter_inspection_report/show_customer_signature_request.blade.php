@@ -1,245 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-    @if($flowMeterInspectionReport)
-        <div class="bg-gray-100 mt-0">
-            <div class="container py-4">
-                <h3>
-                    <svg class="icon-bs icon-baseline text-muted me-1">
-                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
-                    </svg>
-                    Prüfbericht für Durchflussmesseinrichtungen unterschreiben und herunterladen
-                    <small class="text-muted">Anlage {{ $flowMeterInspectionReport->equipment_identifier }} vom {{ $flowMeterInspectionReport->inspected_on }}</small>
-                </h3>
-            </div>
-        </div>
-
-        <div class="container my-4">
-
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                        </svg>
-                        Techniker
+    <div class="q-container">
+        @if($flowMeterInspectionReport)
+            <div class="q-page-head">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="q-avatar">
+                        <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
+                    </span>
+                    <div>
+                        <div class="q-eyebrow">Durchfluss-Prüfbericht</div>
+                        <h1 class="q-title">Anlage {{ $flowMeterInspectionReport->equipment_identifier }}</h1>
                     </div>
                 </div>
-                <div class="col">
-                    {{ $flowMeterInspectionReport->employee->person->name }}
-                </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                        </svg>
-                        Datum
-                    </div>
+            <div class="q-statbar mb-4">
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Techniker</span>
+                    <span class="q-statbar__value">{{ $flowMeterInspectionReport->employee->person->name }}</span>
                 </div>
-                <div class="col">
-                    {{ $flowMeterInspectionReport->inspected_on }}
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Datum</span>
+                    <span class="q-statbar__value">{{ $flowMeterInspectionReport->inspected_on }}</span>
                 </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Wetter</span>
+                    <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                        <svg class="icon icon-16">
                             @switch($flowMeterInspectionReport->weather)
-                                @case('sunny')
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
-                                    @break
-                                @case('cloudy')
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>
-                                    @break
-                                @case('rainy')
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>
-                                    @break
-                                @case('snowy')
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>
-                                    @break
+                                @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
+                                @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
+                                @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
                             @endswitch
                         </svg>
-                        Wetter
-                    </div>
+                        {{ __($flowMeterInspectionReport->weather) }} ({{ $flowMeterInspectionReport->temperature }} °C)
+                    </span>
                 </div>
-                <div class="col">
-                    {{ __($flowMeterInspectionReport->weather) }} ({{ $flowMeterInspectionReport->temperature }} °C)
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#building"></use>
-                        </svg>
-                        Anlage
-                    </div>
-                </div>
-                <div class="col">
-                    {{ $flowMeterInspectionReport->equipment_identifier }}
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Messstelle</span>
+                    <span class="q-statbar__value">{{ $flowMeterInspectionReport->measuring_point }}</span>
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-                        </svg>
-                        Messstelle
-                    </div>
-                </div>
-                <div class="col">
-                    {{ $flowMeterInspectionReport->measuring_point }}
-                </div>
-            </div>
+            <div class="d-flex flex-column gap-3">
+                @include('flow_meter_inspection_report._verdict')
+                @include('flow_meter_inspection_report._content')
 
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
-                        </svg>
-                        Abweichung Messwerte
-                    </div>
-                </div>
-                <div class="col">
-                    von 0,1 Q<sub>max</sub> bis 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->measurement_difference_up_to_30_q_max }}, über 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->measurement_difference_above_30_q_max }}
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-left-right"></use>
-                        </svg>
-                        Abweichung Zählerstände
-                    </div>
-                </div>
-                <div class="col">
-                    von 0,1 Q<sub>max</sub> bis 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->reading_difference_up_to_30_q_max }}, über 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->reading_difference_above_30_q_max }}
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="d-flex align-items-center @if($flowMeterInspectionReport->equipment_in_tolerance_range) text-success @else text-danger @endif">
-                        <svg class="icon icon-16 me-2">
-                            @if($flowMeterInspectionReport->equipment_in_tolerance_range)
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use>
-                            @else
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x"></use>
-                            @endif
-                        </svg>
-                        Das Messystem arbeitet {{ $flowMeterInspectionReport->equipment_in_tolerance_range ? 'innerhalb' : 'außerhalb' }} des Toleranzbereichs des ÖWAV Regelblatts 38.
-                    </div>
-                </div>
-            </div>
-
-            @if($flowMeterInspectionReport->equipment_deficiencies)
-                <div class="row mt-3">
-                    <div class="col-sm-3">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                            </svg>
-                            Festgestellte Mängel
+                {{-- Unterschreiben --}}
+                <div class="q-card">
+                    <div class="q-card__head">Prüfbericht unterschreiben</div>
+                    <div class="q-card__body">
+                        <div class="q-banner q-banner--info">
+                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+                            <span>Der Prüfbericht kann nach erfolgreicher Unterschrift heruntergeladen werden.</span>
                         </div>
-                    </div>
-                    <div class="col">
-                        {{ $flowMeterInspectionReport->equipment_deficiencies }}
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-sm-3">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#repeat"></use>
-                            </svg>
-                            Zweitprüfung erforderlich
-                        </div>
-                    </div>
-                    <div class="col">
-                        {{ $flowMeterInspectionReport->further_inspection_required_string }}
-                    </div>
-                </div>
-            @endif
 
-            @if ($flowMeterInspectionReport->comment)
-                <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                    </svg>
-                    Sonstige Bemerkungen
-                </div>
-                <div class="markdown">
-                    {!! Html::fromMarkdown($flowMeterInspectionReport->comment) !!}
-                </div>
-            @endif
+                        <p class="text-muted">
+                            Unterschreiben Sie bitte in folgendem Feld.<br />
+                            Am Computer unterschreiben Sie mit der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für Ihr Gerät passenden Eingabestift.<br />
+                            Klicken Sie danach auf den <strong>Prüfbericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.
+                        </p>
 
-            @if ($flowMeterInspectionReport->comment)
-                <div class="text-muted d-flex align-items-center mt-4">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                    </svg>
-                    Sonstige Bemerkungen
-                </div>
-                <div class="markdown">
-                    {!! Html::fromMarkdown($flowMeterInspectionReport->comment) !!}
-                </div>
-            @endif
+                        <form action="{{ route('flow-meter-inspection-reports.customer-sign', $flowMeterInspectionReport->signatureRequest->token) }}" method="post">
+                            @csrf
 
-            <div class="alert alert-info mt-4" role="alert">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                    </svg>
-                    Der Prüfbericht kann nach erfolgreicher Unterschrift heruntergeladen werden.
+                            <signature-pad></signature-pad>
+                            <div class="invalid-feedback @error('signature') d-block @enderror">
+                                @error('signature')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    Prüfbericht unterschreiben
+                                </button>
+                                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
+                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    Zurücksetzen
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-            <h4 class="mt-4">Prüfbericht unterschreiben</h4>
-
-            <p>Unterschreiben Sie bitte in folgendem Feld.<br />
-                Am Computer unterschreiben Sie mid der Maus, indem Sie die linke Maustaste gedrückt halten. Am Mobiltelefon, Tablet oder anderen Geräten mit Touchscreen benutzen Sie Ihren Finger oder einen für ihr Gerät passenden Eingabestift.<br />
-                Klicken Sie danach auf den <strong>Prüfbericht unterschreiben</strong> Button. Mit dem <strong>Zurücksetzen</strong> Button können Sie die Eingabe löschen.</p>
-
-            <form action="{{ route('flow-meter-inspection-reports.customer-sign', $flowMeterInspectionReport->signatureRequest->token) }}" method="post">
-                @csrf
-
-                <signature-pad></signature-pad>
-                <div class="invalid-feedback @error('signature') d-block @enderror">
-                    @error('signature')
-                    {{ $message }}
-                    @enderror
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            Prüfbericht unterschreiben
-                        </button>
-                        <a class="btn btn-outline-secondary d-inline-flex align-items-center ms-1" href="">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                            </svg>
-                            Zurücksetzen
-                        </a>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-    @else
-        @include('flow_meter_inspection_report.sign_invalid_content')
-    @endif
+        @else
+            @include('flow_meter_inspection_report.sign_invalid_content')
+        @endif
+    </div>
 @endsection

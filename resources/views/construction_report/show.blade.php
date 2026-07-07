@@ -1,390 +1,298 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container pt-4">
-            @include('construction_report.breadcrumb')
+    <div class="q-container">
 
-            <h3>
-                Bautagesbericht
-                <small class="text-muted d-inline-flex align-items-center">
-                    {{ $constructionReport->project->name }} #{{ $constructionReport->number }}
-                    @if(false)
-                        <svg class="icon icon-16 text-yellow ms-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                        </svg>
-                    @endif
-                </small>
-            </h3>
+        @include('construction_report.breadcrumb')
 
-            <div class="scroll-x d-flex">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Bautagesbericht · #{{ $constructionReport->number }}</div>
+                    <h1 class="q-title">{{ $constructionReport->project->name }}</h1>
+                    <div class="q-meta">
+                        <span class="q-status q-status--{{ $constructionReport->status }}">{{ $constructionReport->status_label }}</span>
+
+                        <span class="q-chip">
+                            @switch($constructionReport->status)
+                                @case('signed')
+                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    {{ optional($signature)->created_at }}
+                                    @break
+                                @case('finished')
+                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                                    {{ $constructionReport->updated_at }}@if($constructionReport->activities->last()?->causer) · {{ Str::upper($constructionReport->activities->last()->causer->username) }}@endif
+                                    @break
+                                @default
+                                    @if($constructionReport->signatureRequest)
+                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                                        {{ $constructionReport->signatureRequest->created_at }}
+                                    @else
+                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                        {{ $constructionReport->created_at }}
+                                    @endif
+                            @endswitch
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
                 @unless($constructionReport->isFinished())
                     @can('approve', $constructionReport)
-                        <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.finish', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                            </svg>
+                        <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.finish', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
+                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
                             Erledigen
                         </a>
                     @endcan
                 @endunless
                 @can('update', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.edit', $constructionReport) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                        </svg>
+                    <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.edit', $constructionReport) }}">
+                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
-                @can('email', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.email', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                        </svg>
-                        Email versenden
-                    </a>
-                @endcan
-                @can('createPdf', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.download', $constructionReport) }}" target="_blank">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                        </svg>
-                        PDF erstellen
-                    </a>
-                @endcan
-                <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                    </svg>
-                    Favorisieren
-                </a>
-                @can('sign', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.sign', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                        </svg>
-                        Unterschreiben lassen
-                    </a>
-                @endcan
-                @can('emailSignatureRequest', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.email-signature-request', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                        </svg>
-                        Unterschrift Anfrage senden
-                    </a>
-                @endcan
-                @can('emailDownloadRequest', $constructionReport)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.email-download-request', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
-                        </svg>
-                        Download Link senden
-                    </a>
-                @endcan
-                @can('delete', $constructionReport)
-                    <form action="{{ route('construction-reports.destroy', $constructionReport) }}" method="post" >
-                        @csrf
-                        @method('DELETE')
 
-                        <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                            </svg>
-                            Entfernen
-                        </button>
-                    </form>
-                @endcan
-            </div>
-
-        </div>
-    </div>
-
-    <div class="container my-4">
-        <div class="row">
-            <div class="col-sm-5 col-md-4 col-lg-2">
-                <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                    </svg>
-                    Bauvorhaben
+                <div class="dropdown">
+                    <button class="q-kebab" type="button" id="constructionReportShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="constructionReportShowDropdown">
+                        @can('email', $constructionReport)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('construction-reports.email', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
+                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                Email versenden
+                            </a>
+                        @endcan
+                        @can('createPdf', $constructionReport)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('construction-reports.download', $constructionReport) }}" target="_blank">
+                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                PDF erstellen
+                            </a>
+                        @endcan
+                        @can('emailSignatureRequest', $constructionReport)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('construction-reports.email-signature-request', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
+                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                Unterschrift Anfrage senden
+                            </a>
+                        @endcan
+                        @can('emailDownloadRequest', $constructionReport)
+                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('construction-reports.email-download-request', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
+                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use></svg>
+                                Download Link senden
+                            </a>
+                        @endcan
+                        <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            Favorisieren
+                        </a>
+                        @can('delete', $constructionReport)
+                            <form action="{{ route('construction-reports.destroy', $constructionReport) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    Entfernen
+                                </button>
+                            </form>
+                        @endcan
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-7">
-                <a href="{{ route('projects.show', $constructionReport->project) }}">{{ $constructionReport->project->name }}</a>
             </div>
         </div>
 
-        <div class="row mt-3 mt-md-4">
-            <div class="col-md-8 col-lg">
-                <div class="row">
-                    <div class="col-sm-5 col-md col-lg-4">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                            </svg>
-                            Datum
-                        </div>
-                    </div>
-                    <div class="col-sm-7 col-md col-lg-8">
-                        {{ $constructionReport->services_provided_on }}
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-sm-5 col-md col-lg-4">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                @switch($constructionReport->weather)
-                                    @case('sunny')
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>
-                                        @break
-                                    @case('cloudy')
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>
-                                        @break
-                                    @case('rainy')
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>
-                                        @break
-                                    @case('snowy')
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>
-                                        @break
-                                @endswitch
-                            </svg>
-                            Wetter
-                        </div>
-                    </div>
-                    <div class="col-sm-7 col-md col-lg-8">
-                        {{ __($constructionReport->weather) }}
-                        ({{ $constructionReport->minimum_temperature }}@if($constructionReport->minimum_temperature !== $constructionReport->maximum_temperature) bis {{ $constructionReport->maximum_temperature }}@endif °C)
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-sm-5 col-md col-lg-4">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="@if($constructionReport->isNew()) text-primary @elseif($constructionReport->isSigned()) text-warning @else text-success @endif icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use>
-                            </svg>
-                            Status
-                        </div>
-                    </div>
-                    <div class="col-sm-7 col-md col-lg-8">
-                        {{ __($constructionReport->status) }}
-                        @switch($constructionReport->status)
-                            @case('new')
-                                @if($constructionReport->signatureRequest)
-                                    (Anfrage zur Unterschrift gesendet am {{ $constructionReport->signatureRequest->created_at }})
-                                @else
-                                    (erstellt am {{ $constructionReport->created_at }})
-                                @endif
-                                @break
-                            @case('signed')
-                                am {{ $constructionReport->signature()->created_at }}
-                                @break
-                            @case('finished')
-                                am {{ $constructionReport->updated_at }}
-                                @if($constructionReport->activities->last())
-                                    ({{ Str::upper($constructionReport->activities->last()->causer->username) }})
-                                @endif
-                                @break
+        <div class="q-statbar mb-4">
+            <div class="q-statbar__cell">
+                <span class="q-statbar__label">Bauvorhaben</span>
+                <span class="q-statbar__value text-truncate">
+                    <a href="{{ route('projects.show', $constructionReport->project) }}">{{ $constructionReport->project->name }}</a>
+                </span>
+            </div>
+            <div class="q-statbar__cell">
+                <span class="q-statbar__label">Ersteller</span>
+                <span class="q-statbar__value">{{ $constructionReport->employee->person->name }}</span>
+            </div>
+            <div class="q-statbar__cell">
+                <span class="q-statbar__label">Datum</span>
+                <span class="q-statbar__value">{{ $constructionReport->services_provided_on }}</span>
+            </div>
+            <div class="q-statbar__cell">
+                <span class="q-statbar__label">Wetter</span>
+                <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                    <svg class="icon icon-16">
+                        @switch($constructionReport->weather)
+                            @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
+                            @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
+                            @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
+                            @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
                         @endswitch
-                    </div>
-                </div>
+                    </svg>
+                    {{ __($constructionReport->weather) }} ({{ $constructionReport->minimum_temperature }}@if($constructionReport->minimum_temperature !== $constructionReport->maximum_temperature) bis {{ $constructionReport->maximum_temperature }}@endif °C)
+                </span>
             </div>
+        </div>
 
-            <div class="col-md-4 col-lg">
-                <div class="row mt-3 mt-md-0">
-                    <div class="col-sm-5 col-md-12 col-lg">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                            </svg>
-                            Ersteller
+        <div class="q-detail">
+            <div class="d-flex flex-column gap-3">
+                {{-- Beeinflussende Faktoren --}}
+                @if ($constructionReport->has_influencing_factors)
+                    <div class="q-card">
+                        <div class="q-card__head">Beeinflussende Faktoren</div>
+                        <div class="q-card__body d-flex flex-column gap-3">
+                            @if ($constructionReport->inspection_comment)
+                                <div>
+                                    <div class="q-section-label">Güte- und Funktionsprüfung</div>
+                                    <div>{{ $constructionReport->inspection_comment }}</div>
+                                </div>
+                            @endif
+                            @if ($constructionReport->missing_documents)
+                                <div>
+                                    <div class="q-section-label">Fehlende Ausführungsunterlagen</div>
+                                    <div>{{ $constructionReport->missing_documents }}</div>
+                                </div>
+                            @endif
+                            @if ($constructionReport->special_occurrences)
+                                <div>
+                                    <div class="q-section-label">Besondere Vorkommnisse</div>
+                                    <div>{{ $constructionReport->special_occurrences }}</div>
+                                </div>
+                            @endif
+                            @if ($constructionReport->imminent_danger)
+                                <div>
+                                    <div class="q-section-label">Gefahr in Verzug</div>
+                                    <div>{{ $constructionReport->imminent_danger }}</div>
+                                </div>
+                            @endif
+                            @if ($constructionReport->concerns)
+                                <div>
+                                    <div class="q-section-label">Bedenken</div>
+                                    <div>{{ $constructionReport->concerns }}</div>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-sm-7 col-md-12 col-lg">
-                        {{ $constructionReport->employee->person->name }}
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-sm-5 col-md-12 col-lg">
-                        <div class="text-muted d-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                            </svg>
-                            Personalstand
-                        </div>
-                    </div>
-                    <div class="col-sm-7 col-md-12 col-lg">
-                        @foreach($constructionReport->involvedEmployees as $employee)
-                            {{ $employee->person->name }}
-                            @unless($loop->last)
-                                <br />
-                            @endunless
-                        @endforeach
-                    </div>
-                </div>
-                @if($constructionReport->presentPeople->count())
-                    <div class="row mt-3">
-                        <div class="col-sm-5 col-md-12 col-lg">
-                            <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                                </svg>
-                                Anwesende Personen
+                @endif
+
+                {{-- Leistungsfortschritt --}}
+                @if ($constructionReport->comment)
+                    <div class="q-card">
+                        <div class="q-card__head">Leistungsfortschritt</div>
+                        <div class="q-card__body">
+                            <div class="markdown">
+                                {!! Html::fromMarkdown($constructionReport->comment) !!}
                             </div>
                         </div>
-                        <div class="col-sm-7 col-md-12 col-lg">
+                    </div>
+                @endif
+
+                {{-- Anhänge --}}
+                @if($constructionReport->attachments()->count() > 0)
+                    <div class="q-card">
+                        <div class="q-card__head">Anhänge</div>
+                        <div class="q-card__body">
+                            <div class="row g-2">
+                                @foreach($constructionReport->attachments() as $attachment)
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <a href="{{ $attachment->getUrl() }}" class="q-attach">
+                                            @if($attachment->hasGeneratedConversion('thumbnail'))
+                                                <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
+                                            @else
+                                                <span class="q-attach__preview q-attach__preview--icon">
+                                                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                                </span>
+                                            @endif
+                                            <span class="min-w-0">
+                                                <span class="q-attach__name text-truncate d-block">{{ $attachment->file_name }}</span>
+                                                <span class="q-attach__size">{{ $attachment->human_readable_size }}</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                {{-- Beteiligte Personen --}}
+                <div class="q-card q-card--quiet">
+                    <div class="q-card__body">
+                    <div class="q-aside__group">
+                        <div class="q-aside__label">Personalstand · {{ $constructionReport->involvedEmployees->count() }}</div>
+                        @forelse($constructionReport->involvedEmployees as $employee)
+                            <div class="q-aside__person">
+                                @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
+                                <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
+                            </div>
+                        @empty
+                            <div class="q-aside__person q-aside__person--muted">
+                                <span class="q-aside__name">nicht angegeben</span>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    @if($constructionReport->presentPeople->count())
+                        <div class="q-aside__group">
+                            <div class="q-aside__label">Anwesende Personen · {{ $constructionReport->presentPeople->count() }}</div>
                             @foreach($constructionReport->presentPeople as $person)
-                                {{ $person->name }}
-                                @unless($loop->last)
-                                    <br />
-                                @endunless
+                                <div class="q-aside__person">
+                                    <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
+                                    <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                </div>
                             @endforeach
                         </div>
-                    </div>
-                @endif
-                @if($constructionReport->other_visitors)
-                    <div class="row mt-3">
-                        <div class="col-sm-5 col-md-12 col-lg">
-                            <div class="text-muted d-flex align-items-center">
-                                <svg class="icon icon-16 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-                                </svg>
-                                Sonstige Besucher
+                    @endif
+
+                    @if($constructionReport->other_visitors)
+                        <div class="q-aside__group">
+                            <div class="q-aside__label">Sonstige Besucher</div>
+                            <div class="q-aside__person q-aside__person--muted">
+                                <span class="q-aside__name">{{ $constructionReport->other_visitors }}</span>
                             </div>
                         </div>
-                        <div class="col-sm-7 col-md-12 col-lg">
-                            {{ $constructionReport->other_visitors }}
-                        </div>
+                    @endif
                     </div>
-                @endif
+                </div>
+
+                {{-- Unterschrift --}}
+                <div class="q-card q-card--quiet">
+                <div class="q-card__head d-flex align-items-center justify-content-between">
+                    <span>Unterschrift</span>
+                    @if($signature)
+                        <span class="q-chip q-chip--success">
+                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            vorhanden
+                        </span>
+                    @else
+                        <span class="q-chip q-chip--warning">
+                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use></svg>
+                            ausstehend
+                        </span>
+                    @endif
+                </div>
+                <div class="q-card__body">
+                    @if($signature)
+                        <img class="q-sign-img" src="{{ $signature->getUrl() }}" alt="Unterschrift" />
+                        <div class="q-sign-date">unterschrieben am {{ $signature->created_at }}</div>
+                    @else
+                        <div class="q-signbox">
+                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                            Keine Unterschrift
+                        </div>
+                        @can('sign', $constructionReport)
+                            <a class="btn btn-primary text-white w-100 d-inline-flex align-items-center justify-content-center gap-2" href="{{ route('construction-reports.sign', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
+                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                Unterschreiben lassen
+                            </a>
+                        @endcan
+                    @endif
+                </div>
+            </div>
             </div>
         </div>
-
-        @if ($constructionReport->inspection_comment)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                </svg>
-                Güte- und Funktionsprüfung
-            </div>
-            <p>{{ $constructionReport->inspection_comment }}</p>
-        @endif
-
-        @if ($constructionReport->missing_documents)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-                </svg>
-                Fehlende Ausführungsunterlagen
-            </div>
-            <p>{{ $constructionReport->missing_documents }}</p>
-        @endif
-
-        @if ($constructionReport->special_occurrences)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                </svg>
-                Besondere Vorkommnisse
-            </div>
-            <p>{{ $constructionReport->special_occurrences }}</p>
-        @endif
-
-        @if ($constructionReport->imminent_danger)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>
-                </svg>
-                Gefahr in Verzug
-            </div>
-            <p>{{ $constructionReport->imminent_danger }}</p>
-        @endif
-
-        @if ($constructionReport->concerns)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#flag"></use>
-                </svg>
-                Bedenken
-            </div>
-            <p>{{ $constructionReport->concerns }}</p>
-        @endif
-
-        @if ($constructionReport->comment)
-            <div class="text-muted d-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-                </svg>
-                Leistungsfortschritt
-            </div>
-            <div class="markdown">
-                {!! Html::fromMarkdown($constructionReport->comment) !!}
-            </div>
-        @endif
-
-        @if($constructionReport->attachments()->count() > 0)
-            <div class="row text-muted d-flex align-items-center mt-1">
-                <div class="col">
-                    <div class="d-none d-md-inline-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-                        </svg>
-                        Anhänge
-                    </div>
-                    <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseConstructionReportAttachments-{{ $constructionReport->id }}" role="button" aria-expanded="false" aria-controls="collapseConstructionReportAttachments-{{ $constructionReport->id }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-                        </svg>
-                        Anhänge
-                    </a>
-                </div>
-            </div>
-            <div class="d-none d-md-block">
-                <div class="row">
-                    @foreach($constructionReport->attachments() as $attachment)
-                        <div class="col-12 col-md-6 col-lg-3 mt-1">
-                            <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
-                                @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
-                                @else
-                                    <svg class="icon attachment-img-preview me-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
-                                    </svg>
-                                @endif
-                                <div class="min-w-0">
-                                    <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
-                                    <div class="text-muted">{{ $attachment->human_readable_size }}</div>
-                                </div>
-                                <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="collapse d-md-none" id="collapseConstructionReportAttachments-{{ $constructionReport->id }}">
-                <div class="row">
-                    @foreach($constructionReport->attachments() as $attachment)
-                        <div class="col-12 col-md-6 col-lg-3 mt-1">
-                            <div class="attachment bg-gray-100 border border-gray-300 d-inline-flex align-items-center position-relative w-100 h-100 p-1">
-                                @if($attachment->hasGeneratedConversion('thumbnail'))
-                                    <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
-                                @else
-                                    <svg class="icon attachment-img-preview me-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
-                                    </svg>
-                                @endif
-                                <div class="min-w-0">
-                                    <div class="min-w-0 text-truncate">{{ $attachment->file_name }}</div>
-                                    <div class="text-muted">{{ $attachment->human_readable_size }}</div>
-                                </div>
-                                <a href="{{ $attachment->getUrl() }}" class="stretched-link outline-none"></a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
     </div>
-
 @endsection

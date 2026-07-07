@@ -1,8 +1,7 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 me-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
-    </svg>
-    <a href="{{ route('delivery-notes.index') }}">Lieferscheine</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('delivery-notes.show', $deliveryNote) }}">{{ $deliveryNote->title }}</a>
-</div>
+<nav class="q-breadcrumb">
+    <a href="{{ route('companies.show', $deliveryNote->project->company) }}">{{ $deliveryNote->project->company->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <a href="{{ route('projects.show', $deliveryNote->project) }}">{{ $deliveryNote->project->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>Lieferschein «{{ $deliveryNote->title }}»</span>
+</nav>

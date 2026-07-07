@@ -79,7 +79,7 @@ class ConstructionReportController extends Controller
         $projects = Project::order()->get();
 
         $currentInvolvedEmployees = collect([Auth::user()->employee->person]);
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $people = Person::order()->get();
 
@@ -151,7 +151,8 @@ class ConstructionReportController extends Controller
             ->load('activities.causer');
 
         return view('construction_report.show')
-            ->with(compact('constructionReport'));
+            ->with(compact('constructionReport'))
+            ->with('signature', $constructionReport->signature());
     }
 
     public function edit(ConstructionReport $constructionReport)
@@ -160,7 +161,7 @@ class ConstructionReportController extends Controller
         $projects = Project::order()->get();
 
         $currentInvolvedEmployees = Person::order()->find($constructionReport->involvedEmployees->pluck('person_id'));
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentPresentPeople = $constructionReport->presentPeople ?? null;
         $people = Person::order()->get();

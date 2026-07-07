@@ -139,7 +139,8 @@ class InspectionReportController extends Controller
             ->load('activities.causer');
 
         return view('inspection_report.show')
-            ->with(compact('inspectionReport'));
+            ->with(compact('inspectionReport'))
+            ->with('signature', $inspectionReport->signature());
     }
 
     public function edit(InspectionReport $inspectionReport)

@@ -156,7 +156,8 @@ class FlowMeterInspectionReportController extends Controller
             ->load('activities.causer');
 
         return view('flow_meter_inspection_report.show')
-            ->with(compact('flowMeterInspectionReport'));
+            ->with(compact('flowMeterInspectionReport'))
+            ->with('signature', $flowMeterInspectionReport->signature());
     }
 
     public function edit(FlowMeterInspectionReport $flowMeterInspectionReport)

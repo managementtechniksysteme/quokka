@@ -24,33 +24,27 @@
                     <span class="q-statbar__label">Regiestunden</span>
                     <span class="q-statbar__value">{{ Number::toLocal($additionsReport->hours) }}</span>
                 </div>
+                <div class="q-statbar__cell">
+                    <span class="q-statbar__label">Wetter</span>
+                    <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                        <svg class="icon icon-16">
+                            @switch($additionsReport->weather)
+                                @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
+                                @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
+                                @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
+                            @endswitch
+                        </svg>
+                        {{ __($additionsReport->weather) }} ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)
+                    </span>
+                </div>
             </div>
 
             <div class="d-flex flex-column gap-3">
-                {{-- Rahmendaten --}}
+                {{-- Beteiligte --}}
                 <div class="q-card">
-                    <div class="q-card__head">Rahmendaten</div>
+                    <div class="q-card__head">Beteiligte</div>
                     <div class="q-card__body">
-                        <div class="q-inforow">
-                            <span class="q-inforow__icon">
-                                <svg class="icon icon-16">
-                                    @switch($additionsReport->weather)
-                                        @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
-                                        @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
-                                        @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
-                                        @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
-                                    @endswitch
-                                </svg>
-                            </span>
-                            <div class="q-inforow__main">
-                                <div class="q-inforow__label">Wetter</div>
-                                <div class="q-inforow__value">
-                                    {{ __($additionsReport->weather) }}
-                                    ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="q-inforow">
                             <span class="q-inforow__icon">
                                 <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
@@ -97,38 +91,42 @@
                     </div>
                 </div>
 
-                @if ($additionsReport->inspection_comment)
+                {{-- Beeinflussende Faktoren --}}
+                @if ($additionsReport->has_influencing_factors)
                     <div class="q-card">
-                        <div class="q-card__head">Güte- und Funktionsprüfung</div>
-                        <div class="q-card__body">{{ $additionsReport->inspection_comment }}</div>
-                    </div>
-                @endif
-
-                @if ($additionsReport->missing_documents)
-                    <div class="q-card">
-                        <div class="q-card__head">Fehlende Ausführungsunterlagen</div>
-                        <div class="q-card__body">{{ $additionsReport->missing_documents }}</div>
-                    </div>
-                @endif
-
-                @if ($additionsReport->special_occurrences)
-                    <div class="q-card">
-                        <div class="q-card__head">Besondere Vorkommnisse</div>
-                        <div class="q-card__body">{{ $additionsReport->special_occurrences }}</div>
-                    </div>
-                @endif
-
-                @if ($additionsReport->imminent_danger)
-                    <div class="q-card">
-                        <div class="q-card__head">Gefahr in Verzug</div>
-                        <div class="q-card__body">{{ $additionsReport->imminent_danger }}</div>
-                    </div>
-                @endif
-
-                @if ($additionsReport->concerns)
-                    <div class="q-card">
-                        <div class="q-card__head">Bedenken</div>
-                        <div class="q-card__body">{{ $additionsReport->concerns }}</div>
+                        <div class="q-card__head">Beeinflussende Faktoren</div>
+                        <div class="q-card__body d-flex flex-column gap-3">
+                            @if ($additionsReport->inspection_comment)
+                                <div>
+                                    <div class="q-section-label">Güte- und Funktionsprüfung</div>
+                                    <div>{{ $additionsReport->inspection_comment }}</div>
+                                </div>
+                            @endif
+                            @if ($additionsReport->missing_documents)
+                                <div>
+                                    <div class="q-section-label">Fehlende Ausführungsunterlagen</div>
+                                    <div>{{ $additionsReport->missing_documents }}</div>
+                                </div>
+                            @endif
+                            @if ($additionsReport->special_occurrences)
+                                <div>
+                                    <div class="q-section-label">Besondere Vorkommnisse</div>
+                                    <div>{{ $additionsReport->special_occurrences }}</div>
+                                </div>
+                            @endif
+                            @if ($additionsReport->imminent_danger)
+                                <div>
+                                    <div class="q-section-label">Gefahr in Verzug</div>
+                                    <div>{{ $additionsReport->imminent_danger }}</div>
+                                </div>
+                            @endif
+                            @if ($additionsReport->concerns)
+                                <div>
+                                    <div class="q-section-label">Bedenken</div>
+                                    <div>{{ $additionsReport->concerns }}</div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 @endif
 

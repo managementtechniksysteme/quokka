@@ -1,19 +1,24 @@
 @import "easymde/dist/easymde.min.css";
 
-// Fixes for EasyMDE (hide editor preview in edit mode, smaller toolbar, don't hide behind fixed menu bar)
-.vue-easymde > .EasyMDEContainer > .editor-toolbar.fullscreen {
+// Fullscreen + side-by-side panels must sit ABOVE the fixed navbar (z-index
+// 1030), or their toolbar (with the exit buttons) hides behind it and the mode
+// can't be left. Scoped on .EasyMDEContainer (a descendant selector that always
+// matches) — the old `.vue-easymde > …` chain didn't match the wrapper, so
+// EasyMDE's tiny default z-index was losing to the navbar.
+.EasyMDEContainer .editor-toolbar.fullscreen,
+.EasyMDEContainer .CodeMirror.fullscreen,
+.EasyMDEContainer .CodeMirror-fullscreen,
+.EasyMDEContainer .editor-preview-side {
     z-index: 2000;
 }
 
-.vue-easymde > .EasyMDEContainer > .CodeMirror.fullscreen {
-    z-index: 2000;
-}
-
-.vue-easymde > .EasyMDEContainer > .CodeMirror > :not(.editor-preview-active).editor-preview {
+// hide the inline preview pane while editing (only show when active)
+.EasyMDEContainer .CodeMirror > :not(.editor-preview-active).editor-preview {
     display: none;
 }
 
-.vue-easymde > .EasyMDEContainer > :not(.fullscreen).editor-toolbar > button {
+// smaller toolbar buttons (non-fullscreen)
+.EasyMDEContainer :not(.fullscreen).editor-toolbar > button {
     width: 24px;
     height: 24px;
 }

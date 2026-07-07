@@ -1,28 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                </svg>
-                Aufgabe anlegen
-            </h3>
+    <div class="q-container">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Aufgabe anlegen</div>
+                    <h1 class="q-title">Neue Aufgabe</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('tasks.store') }}" method="post" novalidate>
-            @component('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentAttachments' => $currentAttachments ])
-            @endcomponent
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('tasks.store') }}" method="post" novalidate>
+            @include('task.fields', [ 'task' => $task, 'currentProject' => $currentProject, 'projects' => $projects, 'currentResponsibleEmployee' => $currentResponsibleEmployee, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentAttachments' => $currentAttachments ])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Aufgabe speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.index') }}"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use></svg>
+                    Aufgabe speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

@@ -79,7 +79,7 @@ class AdditionsReportController extends Controller
         $projects = Project::order()->get();
 
         $currentInvolvedEmployees = collect([Auth::user()->employee->person]);
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $people = Person::order()->get();
 
@@ -161,7 +161,7 @@ class AdditionsReportController extends Controller
         $projects = Project::order()->get();
 
         $currentInvolvedEmployees = Person::order()->find($additionsReport->involvedEmployees->pluck('person_id'));
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentPresentPeople = $additionsReport->presentPeople ?? null;
         $people = Person::order()->get();

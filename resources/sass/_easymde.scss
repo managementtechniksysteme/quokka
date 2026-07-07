@@ -23,3 +23,58 @@
     width: auto;
     margin-bottom: 0;
 }
+
+// =============================================================================
+//  EasyMDE / CodeMirror themed to the redesign --q-* tokens. Ships light-only
+//  by default; these overrides give it a proper light + dark treatment (via the
+//  runtime tokens under data-bs-theme) that matches the .q-form surface-2 fields.
+//  Radius hard-coded (10px = $q-radius-sm) — imported before _quokka-ui.scss.
+// =============================================================================
+.EasyMDEContainer {
+    // toolbar
+    .editor-toolbar {
+        background: var(--q-surface-2);
+        border-color: var(--q-border);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+
+        button {
+            color: var(--q-muted);
+            border-color: transparent;
+            &:hover { background: var(--q-surface-3); border-color: var(--q-border); color: var(--q-text); }
+            &.active { background: var(--q-accent-tint); border-color: var(--q-accent); color: var(--q-accent); }
+        }
+        i.separator { border-left-color: var(--q-border); border-right-color: transparent; }
+    }
+
+    // editor surface
+    .CodeMirror {
+        background: var(--q-surface);
+        color: var(--q-text);
+        border-color: var(--q-border);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .CodeMirror-cursor { border-left-color: var(--q-text); }
+    .CodeMirror-selected { background: var(--q-accent-tint) !important; }
+    .CodeMirror-focused .CodeMirror-selected { background: var(--q-accent-tint) !important; }
+
+    // markdown syntax tokens
+    .cm-header { color: var(--q-text); }
+    .cm-strong { color: var(--q-text); }
+    .cm-em { color: var(--q-text); }
+    .cm-link, .cm-url { color: var(--q-accent); }
+    .cm-quote { color: var(--q-muted); }
+    .cm-comment {
+        color: var(--q-muted);
+        background: var(--q-surface-2);
+        border-radius: 4px;
+    }
+
+    // preview pane + status bar
+    .editor-preview, .editor-preview-side {
+        background: var(--q-surface);
+        color: var(--q-text);
+    }
+    .editor-statusbar { color: var(--q-faint); }
+}

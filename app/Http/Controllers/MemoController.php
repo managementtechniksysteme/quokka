@@ -124,7 +124,7 @@ class MemoController extends Controller
         $projects = Project::order()->get();
 
         $currentEmployeeComposer = $currentEmployeeComposer ?? Auth::user()->employee->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $people = Person::order()->get();
 
@@ -221,7 +221,7 @@ class MemoController extends Controller
         $projects = Project::order()->get();
 
         $currentEmployeeComposer = $memo->employeeComposer->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentPersonRecipient = $memo->personRecipient ?? null;
         $currentPresentPeople = $memo->presentPeople ?? null;

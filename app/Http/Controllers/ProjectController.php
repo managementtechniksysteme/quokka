@@ -417,7 +417,7 @@ class ProjectController extends Controller
 
     public function showDownload(Project $project)
     {
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
         $services = Service::order()->get();
 
         return view('project.download')->with(compact('project'))->with(compact('employees'))->with(compact('services'));

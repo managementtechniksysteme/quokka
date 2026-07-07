@@ -123,7 +123,7 @@ class TaskController extends Controller
         $projects = Project::order()->get();
 
         $currentResponsibleEmployee = $currentResponsibleEmployee ?? Auth::user()->employee->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('task.create')
             ->with('task', $templateTask)
@@ -245,7 +245,7 @@ class TaskController extends Controller
         $projects = Project::order()->get();
 
         $currentResponsibleEmployee = $task->responsibleEmployee->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentInvolvedEmployees = Person::order()->find($task->involvedEmployees->pluck('person_id')) ?? null;
 

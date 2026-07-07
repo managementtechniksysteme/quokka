@@ -1,28 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use>
-                </svg>
-                Lieferschein anlegen
-            </h3>
+    <div class="q-container">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Lieferschein anlegen</div>
+                    <h1 class="q-title">Neuer Lieferschein</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('delivery-notes.store') }}" method="post" novalidate>
-            @component('delivery_note.fields', [ 'deliveryNote' => $deliveryNote, 'currentProject' => $currentProject, 'projects' => $projects ])
-            @endcomponent
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('delivery-notes.store') }}" method="post" novalidate>
+            @include('delivery_note.fields', [ 'deliveryNote' => $deliveryNote, 'currentProject' => $currentProject, 'projects' => $projects ])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Lieferschein speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.index') }}"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use></svg>
+                    Lieferschein speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

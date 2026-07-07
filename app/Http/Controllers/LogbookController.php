@@ -57,7 +57,7 @@ class LogbookController extends Controller
 
         $vehicles = Vehicle::order()->get();
         $projects = Project::order()->get();
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
         $currentEmployee = Auth::user()->employee->person;
         $expandErrors = Auth::user()->settings->accounting_expand_errors;
         $filterDefaultDays = Auth::user()->settings->accounting_filter_default_days;

@@ -1,32 +1,59 @@
 @import "vue-select/dist/vue-select.css";
 
-// Override vue-select CSS variables for Bootstrap 5 integration
+// =============================================================================
+//  vue-select themed to the redesign --q-* tokens. These reference the runtime
+//  CSS custom properties, so every <v-select> (project/person/company/people/…
+//  dropdowns) adapts to light/dark via data-bs-theme and matches the .q-form
+//  surface-2 fields. Radius hard-coded (10px = $q-radius-sm) because this
+//  partial is imported before _quokka-ui.scss.
+// =============================================================================
 :root {
-    --vs-border-color: #{$input-border-color};
-    --vs-border-radius: #{$input-border-radius};
+    --vs-border-color: var(--q-border);
+    --vs-border-radius: 10px;
     --vs-font-size: #{$font-size-base};
     --vs-line-height: #{$line-height-base};
-    --vs-search-input-placeholder-color: #{$input-placeholder-color};
-    --vs-state-disabled-bg: #{$input-disabled-bg};
+    --vs-controls-color: var(--q-muted);
+
+    --vs-search-input-color: var(--q-text);
+    --vs-search-input-placeholder-color: var(--q-faint);
+
+    // selected pills (multi-select)
+    --vs-selected-bg: var(--q-surface-3);
+    --vs-selected-color: var(--q-text);
+    --vs-selected-border-color: var(--q-border);
+
+    // dropdown menu + options
+    --vs-dropdown-bg: var(--q-surface);
+    --vs-dropdown-color: var(--q-text);
+    --vs-dropdown-option-color: var(--q-text);
+    --vs-dropdown-option--active-bg: var(--q-accent-tint);
+    --vs-dropdown-option--active-color: var(--q-text);
+
+    --vs-state-disabled-bg: var(--q-surface-3);
+    --vs-state-disabled-color: var(--q-faint);
+    --vs-state-disabled-controls-color: var(--q-faint);
 }
 
-// Match Bootstrap form-control height and padding
+// control surface — matches .q-form .form-control (surface-2 + accent focus ring)
 .vs__dropdown-toggle {
     padding: $input-padding-y $input-padding-x;
     min-height: $input-height;
-    background-color: #fff;
+    background-color: var(--q-surface-2);
+    border-color: var(--q-border);
+}
+.vs--open .vs__dropdown-toggle {
+    border-color: var(--q-accent);
+    box-shadow: 0 0 0 3px var(--q-accent-tint);
 }
 
-.vs__search,
-.vs__search:focus {
-    margin: 0;
-    padding: 0;
+.vs__dropdown-menu {
+    border-color: var(--q-border);
+    box-shadow: var(--q-shadow-lg);
 }
 
-.vs__selected {
-    margin: 0;
-    padding: 0;
-}
+.vs__search, .vs__search:focus { margin: 0; padding: 0; }
+.vs__selected { margin: 0; padding: 0; }
+.vs__clear, .vs__open-indicator { fill: var(--q-muted); }
 
 // Small vue select
 .dropdown-sm {

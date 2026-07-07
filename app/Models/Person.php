@@ -24,6 +24,7 @@ class Person extends Model implements FiltersGlobalSearch
 
     protected $appends = [
         'name',
+        'avatar',
     ];
 
     protected $fillable = [
@@ -112,6 +113,26 @@ class Person extends Model implements FiltersGlobalSearch
     {
         return \Illuminate\Support\Str::of($this->name)->explode(' ')->filter()
             ->take(2)->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))->implode('');
+    }
+
+    /**
+     * Round-avatar data for the JS components. Mirrors partials/employee_avatar:
+     * when this person is shown as an employee (its employee.user relation is
+     * eager-loaded) it uses the user's chosen colour + username initials; otherwise
+     * the person's hashed colour + name initials. Relation-aware so serializing a
+     * list of plain people triggers no employee/user queries.
+     */
+    public function getAvatarAttribute()
+    {
+        $user = ($this->relationLoaded('employee') && $this->employee && $this->employee->relationLoaded('user'))
+            ? $this->employee->user
+            : null;
+
+        return [
+            'initials' => $user ? $user->username_avatar_string : $this->initials,
+            'colour' => $this->avatar_colour,
+            'hex' => $user?->avatar_colour_hex,
+        ];
     }
 
     public function mailableEntity()

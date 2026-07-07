@@ -93,6 +93,135 @@ $q-pad:            1.25rem;
 .q-card__body { padding: $q-pad; }
 
 // =============================================================================
+//  Forms — section cards use the pre-existing .q-form-section (@extends .q-card,
+//  with __head/__desc/__body — see section below). This block themes the CONTROLS
+//  inside a redesigned form to the --q-* tokens. Scoped to .q-form so only
+//  migrated forms are affected. Plain block (not flex) so section margins collapse
+//  with the footer's margin-top instead of stacking.
+// =============================================================================
+.q-form {
+    // field label (muted, above its control) — but not the segmented .btn
+    // labels or switch labels, which are handled separately below
+    label:not(.btn):not(.form-check-label),
+    .form-label {
+        display: block; font-size: .75rem; font-weight: 600; color: var(--q-muted); margin-bottom: .35rem;
+    }
+
+    // input-group (e.g. "LI-" prefix + title): round the OUTER corners to match
+    // the standalone fields — Bootstrap otherwise squares them off.
+    .input-group > :first-child { border-top-left-radius: $q-radius-sm; border-bottom-left-radius: $q-radius-sm; }
+    .input-group > :last-child  { border-top-right-radius: $q-radius-sm; border-bottom-right-radius: $q-radius-sm; }
+
+    .form-control, .form-select {
+        background: var(--q-surface-2);
+        border: 1px solid var(--q-border);
+        border-radius: $q-radius-sm;
+        color: var(--q-text);
+        font-size: .85rem;
+        padding: .6rem .8rem;
+
+        &::placeholder { color: var(--q-faint); }
+        &:focus {
+            background: var(--q-surface);
+            border-color: var(--q-accent);
+            box-shadow: 0 0 0 3px var(--q-accent-tint);
+        }
+        &:disabled, &[readonly] { background: var(--q-surface-3); color: var(--q-faint); }
+        &.is-invalid { border-color: var(--q-red); }
+    }
+
+    .input-group-text {
+        background: var(--q-surface-3); border: 1px solid var(--q-border);
+        color: var(--q-muted); font-size: .85rem;
+    }
+
+    .invalid-feedback { color: var(--q-red); font-size: .78rem; }
+
+    // Segmented picker — iOS-style pill track (Claude Design mockup). The
+    // .btn-group is the track (surface-3, rounded, 3px pad); each .btn a segment;
+    // the checked segment lifts to the base surface with a shadow + bold text.
+    // Active colour is accent by default, or semantic via a .q-seg--* tone class.
+    .btn-group {
+        display: inline-flex; max-width: 100%;
+        background: var(--q-surface-3); border-radius: $q-radius-sm;
+        padding: 3px; gap: 2px;
+    }
+    .btn-group > .btn {
+        border: 0 !important; margin: 0 !important; border-radius: 8px !important;
+        padding: .4rem .75rem; font-size: .8rem; font-weight: 600;
+        color: var(--q-muted); background: transparent;
+        &:hover { color: var(--q-text); }
+    }
+    .btn-check:checked + .btn {
+        background: var(--q-surface); box-shadow: var(--q-shadow);
+        color: var(--q-accent); font-weight: 700;
+    }
+    // opt-in semantic active colours (tone class on the segment label)
+    .btn-check:checked + .btn.q-seg--sky   { color: var(--q-sky); }
+    .btn-check:checked + .btn.q-seg--amber { color: var(--q-amber); }
+    .btn-check:checked + .btn.q-seg--green { color: var(--q-green); }
+    .btn-check:checked + .btn.q-seg--red   { color: var(--q-red); }
+    .btn-check:disabled + .btn { opacity: .6; }
+
+    // switches / checkboxes
+    .form-check-input:checked { background-color: var(--q-accent); border-color: var(--q-accent); }
+    .form-check-input:focus { border-color: var(--q-accent); box-shadow: 0 0 0 3px var(--q-accent-tint); }
+    .form-check-label { font-size: .85rem; font-weight: 400; color: var(--q-text); margin-bottom: 0; }
+
+    // side-by-side field rows
+    &__row { display: grid; gap: .9rem; }
+    &__row--2 { grid-template-columns: 1fr 1fr; }
+    &__row--3 { grid-template-columns: 1fr 1fr 1fr; }
+    @media (max-width: 575.98px) { &__row { grid-template-columns: 1fr; } }
+}
+
+// form footer — a floating, rounded action card that sticks just above the
+// viewport bottom while the form scrolls and comes to rest at the end. Frosted
+// (blurred translucent surface) + shadow so it reads as lifted above the form.
+.q-form-actions {
+    position: sticky; bottom: 1rem; z-index: 5;
+    display: flex; justify-content: flex-end; align-items: center; gap: .5rem;
+    // bleed ~1rem past the content column on each side (a "tad wider"), staying
+    // inside the .q-container padding so it never reaches the edges.
+    margin: 1.5rem -1rem 0;
+    padding: .7rem .8rem;
+    background: color-mix(in srgb, var(--q-surface) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--q-border);
+    border-radius: $q-radius;
+    box-shadow: var(--q-shadow-lg);
+}
+
+// selected-items output rendered by the vue selectors (PeopleSelector /
+// AttachmentsSelector: a .container-fluid of .row.hover-highlight items). Themed
+// as a clean bordered list with a quiet remove control, matching the field look.
+.q-form {
+    .container-fluid { padding-left: 0; padding-right: 0; }
+
+    .hover-highlight {
+        border-radius: $q-radius-sm;
+        transition: background .12s;
+        &:hover { background: var(--q-surface-2); }
+        & + .hover-highlight { border-top: 1px solid var(--q-border-2); }
+    }
+
+    .attachment-img-preview { border-radius: 8px; border: 1px solid var(--q-border-2); }
+
+    // quiet "Entfernen" control instead of the heavy outline-danger button
+    .hover-highlight .btn-outline-danger {
+        --bs-btn-color: var(--q-muted);
+        --bs-btn-border-color: transparent;
+        --bs-btn-bg: transparent;
+        --bs-btn-hover-color: var(--q-red);
+        --bs-btn-hover-bg: var(--q-red-bg);
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-active-color: var(--q-red);
+        --bs-btn-active-bg: var(--q-red-bg);
+        font-size: .78rem;
+    }
+}
+
+// =============================================================================
 //  C. List row
 // =============================================================================
 .q-list {
@@ -302,6 +431,24 @@ $q-pad:            1.25rem;
 .q-inforow__value a, a.q-inforow__value { color: var(--q-accent); }
 .q-inforow__value--empty { font-weight: 500; color: var(--q-faint); }
 
+// =============================================================================
+//  SPEC GRID
+//  Dense label -> value readout for measurement/inspection cards. Two columns
+//  on wider viewports (label | value), stacked on narrow ones. Rows are hair-
+//  lined the same way q-inforow separates its items.
+// =============================================================================
+.q-spec { display: flex; flex-direction: column; }
+.q-spec__row {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: .15rem .9rem; padding: .6rem 0; align-items: baseline;
+}
+.q-spec__row + .q-spec__row { border-top: 1px solid var(--q-border-2); }
+.q-spec__row:first-child { padding-top: 0; }
+.q-spec__row:last-child  { padding-bottom: 0; }
+.q-spec__label { font-size: .78rem; color: var(--q-faint); }
+.q-spec__value { font-size: .85rem; font-weight: 600; color: var(--q-text); }
+@media (max-width: 575.98px) { .q-spec__row { grid-template-columns: 1fr; } }
+
 // Address side card — a hatched "map" banner + address lines + a maps button.
 .q-address__map {
     height: 120px; position: relative;
@@ -331,7 +478,10 @@ $q-pad:            1.25rem;
 // =============================================================================
 //  H. Form sections + sticky save bar
 // =============================================================================
-.q-form-section { @extend .q-card; margin-bottom: $q-gap; }
+// overflow visible (overrides .q-card's hidden) so vue-select dropdowns can
+// extend past the card edge instead of being clipped. The head/body have no
+// corner-poking backgrounds, so the rounded corners still read fine.
+.q-form-section { @extend .q-card; margin-bottom: $q-gap; overflow: visible; }
 .q-form-section__head { @extend .q-card__head; }
 .q-form-section__head .q-form-section__desc { display: block; margin-top: .25rem; font-weight: 400; font-size: .78rem; color: var(--q-muted); }
 .q-form-section__body { @extend .q-card__body; }
@@ -611,6 +761,17 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     border-color: color-mix(in srgb, var(--q-sky) 22%, transparent);
     .icon { color: var(--q-sky); }
 }
+// pass / fail verdicts (e.g. tolerance-range result)
+.q-banner--success {
+    background: color-mix(in srgb, var(--q-green) 9%, transparent);
+    border-color: color-mix(in srgb, var(--q-green) 24%, transparent);
+    .icon { color: var(--q-green); }
+}
+.q-banner--danger {
+    background: color-mix(in srgb, var(--q-red) 9%, transparent);
+    border-color: color-mix(in srgb, var(--q-red) 24%, transparent);
+    .icon { color: var(--q-red); }
+}
 
 // Report matrix (one card; Typ × Offen / Erledigbar / MTD / Gesamt)
 .q-matrix__grid { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem 7rem 6.5rem; column-gap: .4rem; align-items: center; }
@@ -727,14 +888,21 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     border-radius: $q-radius-sm; color: var(--q-text); text-decoration: none;
     transition: background .12s, border-color .12s, box-shadow .12s;
 }
-.q-attach:hover { background: var(--q-surface); border-color: var(--q-border); color: var(--q-text); }
+// consistent hover EVERYWHERE (standalone card, comment bubble, appendix, …):
+// never change the fill (it "melts" into whatever surface it sits on) — lift with
+// a shadow + firmer border and underline the name, like a link.
+.q-attach:hover { border-color: var(--q-border); box-shadow: var(--q-shadow); color: var(--q-text); }
+.q-attach:hover .q-attach__name { text-decoration: underline; }
 // inside a comment bubble the tile would share the bubble's surface-2 and vanish —
 // lift it to the base surface + a firmer border so the pane reads as its own element.
 .q-comment__bubble .q-attach { background: var(--q-surface); border-color: var(--q-border); }
-.q-comment__bubble .q-attach:hover { background: var(--q-surface); border-color: var(--q-border); box-shadow: var(--q-shadow); }
 .q-comment__bubble .q-attach__preview--icon { background: var(--q-surface-2); }
 .q-attach__preview { width: 38px; height: 38px; border-radius: $q-radius-sm; object-fit: cover; flex-shrink: 0; }
-.q-attach__preview--icon { display: flex; align-items: center; justify-content: center; background: var(--q-surface-3); color: var(--q-muted); }
+// the icon placeholder must contrast with the tile it sits on: the standalone
+// tile is surface-2, so the box goes to base surface + a border (a "document"
+// thumbnail). Inside a comment bubble the tile is already surface, so there the
+// box drops to surface-2 (override below).
+.q-attach__preview--icon { display: flex; align-items: center; justify-content: center; background: var(--q-surface); border: 1px solid var(--q-border-2); color: var(--q-muted); }
 .q-attach__name { font-size: .8rem; font-weight: 600; }
 .q-attach__size { font-size: .7rem; color: var(--q-faint); }
 

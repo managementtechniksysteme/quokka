@@ -125,6 +125,11 @@ class TaskController extends Controller
         $currentResponsibleEmployee = $currentResponsibleEmployee ?? Auth::user()->employee->person;
         $employees = Person::has('employee')->with('employee.user')->order()->get();
 
+        // load employee.user so the pre-selected people serialize with employee
+        // (username) avatar initials, matching the dropdown options
+        $currentResponsibleEmployee?->load('employee.user');
+        $currentInvolvedEmployees?->load('employee.user');
+
         return view('task.create')
             ->with('task', $templateTask)
             ->with('currentProject', $currentProject)
@@ -248,6 +253,11 @@ class TaskController extends Controller
         $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentInvolvedEmployees = Person::order()->find($task->involvedEmployees->pluck('person_id')) ?? null;
+
+        // load employee.user so the pre-selected people serialize with employee
+        // (username) avatar initials, matching the dropdown options
+        $currentResponsibleEmployee?->load('employee.user');
+        $currentInvolvedEmployees?->load('employee.user');
 
         $currentAttachments = $task->attachmentsWithUrl();
 

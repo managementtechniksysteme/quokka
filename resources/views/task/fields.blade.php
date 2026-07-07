@@ -8,11 +8,11 @@
 @endif
 
 @if (old('employee_id'))
-    @php $currentResponsibleEmployee = Person::find(old('employee_id')); @endphp
+    @php $currentResponsibleEmployee = Person::with('employee.user')->find(old('employee_id')); @endphp
 @endif
 
 @if (old('involved_ids'))
-    @php $currentInvolvedEmployees = Person::order()->find(old('involved_ids'))->toJson(); @endphp
+    @php $currentInvolvedEmployees = Person::order()->with('employee.user')->find(old('involved_ids'))->toJson(); @endphp
 @endif
 
 @csrf

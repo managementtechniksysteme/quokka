@@ -40,6 +40,10 @@ class GlobalSearchCommand extends SpotlightCommand
 
     public function searchGlobalSearchResult(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return GlobalSearch::search($query)
             ->map(function (GlobalSearchResult $globalSearchResult) {
                 return new SpotlightSearchResult(

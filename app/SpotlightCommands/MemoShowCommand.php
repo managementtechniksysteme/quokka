@@ -29,11 +29,15 @@ class MemoShowCommand extends SpotlightCommand
 
     public function searchMemo(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Memo::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Memo $memo) {
                 return new SpotlightSearchResult(
                     $memo->id,

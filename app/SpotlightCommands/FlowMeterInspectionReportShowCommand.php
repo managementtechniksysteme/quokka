@@ -29,11 +29,15 @@ class FlowMeterInspectionReportShowCommand extends SpotlightCommand
 
     public function searchFlowMeterInspectionReport(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return FlowMeterInspectionReport::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (FlowMeterInspectionReport $flowMeterInspectionReport) {
                 return new SpotlightSearchResult(
                     $flowMeterInspectionReport->id,

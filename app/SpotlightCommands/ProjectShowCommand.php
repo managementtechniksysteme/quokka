@@ -29,10 +29,14 @@ class ProjectShowCommand extends SpotlightCommand
 
     public function searchProject(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Project::filterSearch($query)
             ->order()
             ->with('company')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Project $project) {
                 return new SpotlightSearchResult(
                     $project->id,

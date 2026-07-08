@@ -29,9 +29,13 @@ class RoleShowCommand extends SpotlightCommand
 
     public function searchRole(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Role::where('name', 'LIKE', "%$query%")
             ->orderBy('name')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Role $role) {
                 return new SpotlightSearchResult(
                     $role->id,

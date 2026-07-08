@@ -29,10 +29,14 @@ class DeliveryNoteShowCommand extends SpotlightCommand
 
     public function searchDeliveryNote(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return DeliveryNote::filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (DeliveryNote $deliveryNote) {
                 return new SpotlightSearchResult(
                     $deliveryNote->id,

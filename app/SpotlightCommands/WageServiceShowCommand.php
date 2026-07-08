@@ -29,9 +29,13 @@ class WageServiceShowCommand extends SpotlightCommand
 
     public function searchWageService(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return WageService::filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (WageService $wageService) {
                 return new SpotlightSearchResult(
                     $wageService->id,

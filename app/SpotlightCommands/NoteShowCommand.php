@@ -29,10 +29,14 @@ class NoteShowCommand extends SpotlightCommand
 
     public function searchNote(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return \Auth::user()->employee->notes()
             ->filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (Note $note) {
                 return new SpotlightSearchResult(
                     $note->id,

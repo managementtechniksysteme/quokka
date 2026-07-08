@@ -29,9 +29,13 @@ class EmployeeShowCommand extends SpotlightCommand
 
     public function searchEmployee(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Employee::filterSearch($query)
             ->with('person')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Employee $employee) {
                 return new SpotlightSearchResult(
                     $employee->person_id,

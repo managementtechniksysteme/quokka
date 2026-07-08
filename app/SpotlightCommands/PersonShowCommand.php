@@ -29,10 +29,14 @@ class PersonShowCommand extends SpotlightCommand
 
     public function searchPerson(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Person::filterSearch($query)
             ->order()
             ->with('company')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Person $person) {
                 return new SpotlightSearchResult(
                     $person->id,

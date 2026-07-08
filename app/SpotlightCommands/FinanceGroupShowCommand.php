@@ -29,9 +29,13 @@ class FinanceGroupShowCommand extends SpotlightCommand
 
     public function searchFinanceGroup(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return FinanceGroup::filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (FinanceGroup $financeGroup) {
                 return new SpotlightSearchResult(
                     $financeGroup->id,

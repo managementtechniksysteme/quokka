@@ -36,6 +36,10 @@ class EmployeeStartImpersonationCommand extends SpotlightCommand
 
     public function searchEmployee(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         $exludedIds = [
             Session::has('impersonatorId') ? Session::get('impersonatorId') : Auth::id(),
         ];
@@ -47,7 +51,7 @@ class EmployeeStartImpersonationCommand extends SpotlightCommand
         return Employee::filterSearch($query)
             ->whereNotIn('person_id', $exludedIds)
             ->with('person')
-            ->get()
+            ->limit(15)->get()
             ->map(function (Employee $employee) {
                 return new SpotlightSearchResult(
                     $employee->person_id,

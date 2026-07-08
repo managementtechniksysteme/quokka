@@ -29,9 +29,13 @@ class CompanyShowCommand extends SpotlightCommand
 
     public function searchCompany(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Company::filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (Company $company) {
                 return new SpotlightSearchResult(
                     $company->id,

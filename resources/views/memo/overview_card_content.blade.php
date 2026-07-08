@@ -2,7 +2,7 @@
     <a class="stretched-link outline-none" href="{{ route('memos.show', $memo) }}"></a>
 
     <span class="q-avatar">
-        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use></svg>
     </span>
 
     <div class="q-row__main">

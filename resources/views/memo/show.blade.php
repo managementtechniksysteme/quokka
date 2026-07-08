@@ -15,7 +15,7 @@
                     <h1 class="q-title">{{ $memo->title }}</h1>
                     <div class="q-meta">
                         @if($memo->draft)
-                            <span class="q-status q-status--new">Entwurf</span>
+                            <span class="q-status q-status--in-progress">Entwurf</span>
                         @endif
 
                         <span class="q-chip">

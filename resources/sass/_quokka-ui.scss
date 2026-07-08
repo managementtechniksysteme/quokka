@@ -130,6 +130,22 @@ $q-pad:            1.25rem;
         &.is-invalid { border-color: var(--q-red); }
     }
 
+    // file input: theme the browser's file-select button and round its left
+    // corners so it follows the field's rounded outer edge instead of clashing.
+    input[type="file"].form-control { padding-top: .3rem; padding-bottom: .3rem; }
+    input[type="file"].form-control::file-selector-button {
+        margin: -.3rem .8rem -.3rem -.8rem;
+        padding: .5rem .8rem;
+        background: var(--q-surface-3);
+        color: var(--q-muted);
+        border: 0;
+        border-inline-end: 1px solid var(--q-border);
+        border-start-start-radius: 9px;
+        border-end-start-radius: 9px;
+        transition: background .12s, color .12s;
+    }
+    input[type="file"].form-control:hover::file-selector-button { background: var(--q-border); color: var(--q-text); }
+
     .input-group-text {
         background: var(--q-surface-3); border: 1px solid var(--q-border);
         color: var(--q-muted); font-size: .85rem;

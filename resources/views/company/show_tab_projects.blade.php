@@ -2,13 +2,12 @@
 
 @section('tab')
     @if ($company->projects->isEmpty())
-        <div class="text-center mt-5">
-            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-            <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+            <p>Dieser Firma sind noch keine Projekte zugeordnet.</p>
             @can('create', \App\Models\Project::class)
-                <p class="lead">Lege ein neues Projekt an.</p>
-                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Projekt anlegen
                 </a>
             @endcan

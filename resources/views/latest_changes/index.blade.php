@@ -18,9 +18,9 @@
         </div>
 
         @if($results->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                <p class="lead text-muted">Es wurden keine Ergebnisse passend zur Suche gefunden.</p>
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use></svg>
+                <p>Keine Ergebnisse für diese Suche gefunden.</p>
             </div>
         @else
             @php

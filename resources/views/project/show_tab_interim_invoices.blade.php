@@ -22,13 +22,12 @@
             {{ $interimInvoices->links() }}
         </div>
     @else
-        <div class="text-center mt-5">
-            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-            <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Teilrechnungen zugeordnet.</p>
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
+            <p>Diesem Projekt sind noch keine Teilrechnungen zugeordnet.</p>
             @can('create', \App\Models\InterimInvoice::class)
-                <p class="lead">Lege eine neue Teilrechnung an.</p>
-                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Teilrechnung anlegen
                 </a>
             @endcan

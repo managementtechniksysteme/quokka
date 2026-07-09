@@ -53,16 +53,15 @@
     @endunless
 
     @if($materialServices->isEmpty())
-        <div class="text-center mt-5">
-            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box"></use></svg>
             @if(Request::get('search'))
-                <p class="lead text-muted">Es wurden keine Materialleistungen passend zur Suche gefunden.</p>
+                <p>Keine Materialleistungen für diese Suche gefunden.</p>
             @else
-                <p class="lead text-muted">Es sind keine Materialleistungen im System vorhanden.</p>
+                <p>Es sind noch keine Materialleistungen vorhanden.</p>
                 @can('create', \App\Models\MaterialService::class)
-                    <p class="lead">Lege eine neue Materialleistung an.</p>
-                    <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('material-services.create') }}">
-                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                    <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('material-services.create') }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                         Materialleistung anlegen
                     </a>
                 @endcan

@@ -34,9 +34,9 @@
                 @endforeach
             </div>
         @else
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                <p class="lead text-muted">Es sind keine Hilfethemen vorhanden.</p>
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
+                <p>Keine Hilfethemen vorhanden.</p>
             </div>
         @endif
     </div>

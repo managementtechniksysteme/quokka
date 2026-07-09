@@ -52,16 +52,15 @@
         @endunless
 
         @if($roles->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Rollen passend zur Suche gefunden.</p>
+                    <p>Keine Rollen für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Rollen im System vorhanden.</p>
+                    <p>Es sind noch keine Rollen vorhanden.</p>
                     @can('create', \Spatie\Permission\Models\Role::class)
-                        <p class="lead">Lege eine neue Rolle an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Rolle anlegen
                         </a>
                     @endcan

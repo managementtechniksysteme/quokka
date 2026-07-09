@@ -73,16 +73,15 @@
         @endunless
 
         @if($addresses->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Adressen passend zur Suche gefunden.</p>
+                    <p>Keine Adressen für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Adressen im System vorhanden.</p>
+                    <p>Es sind noch keine Adressen vorhanden.</p>
                     @can('create', \App\Models\Address::class)
-                        <p class="lead">Lege eine neue Adresse an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('addresses.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('addresses.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Adresse anlegen
                         </a>
                     @endcan

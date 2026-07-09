@@ -36,13 +36,13 @@
         @endunless
 
         @if($exceptions->isEmpty())
-            <div class="text-center mt-5">
+            <div class="q-empty-state">
                 @if(Request::get('search'))
-                    <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Es wurden keine Fehlerdateien passend zur Suche gefunden.</p>
+                    <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+                    <p>Keine Fehlerdateien für diese Suche gefunden.</p>
                 @else
-                    <img class="empty-state" src="{{ asset('svg/astronaut.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Es sind keine Fehlerdateien im System vorhanden.</p>
+                    <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check-circle"></use></svg>
+                    <p>Keine Fehlerdateien vorhanden.</p>
                 @endif
             </div>
         @else

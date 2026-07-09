@@ -16,7 +16,7 @@
 
         <div class="d-flex flex-column gap-3">
             <div class="q-card text-center" style="padding: 2.5rem 1.5rem;">
-                <img class="empty-state" src="{{ asset('svg/approve.svg') }}" alt="unterschrieben" />
+                <svg class="q-empty-icon" style="margin-bottom:.5rem"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-circle"></use></svg>
                 <p class="lead text-muted mt-2 mb-0">Vielen Dank, dass Sie den Lieferschein unterschrieben haben.</p>
             </div>
 

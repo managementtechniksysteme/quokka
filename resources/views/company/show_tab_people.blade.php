@@ -2,13 +2,12 @@
 
 @section('tab')
     @if ($company->people->isEmpty())
-        <div class="text-center mt-5">
-            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-            <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Personen zugeordnet.</p>
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
+            <p>Dieser Firma sind noch keine Personen zugeordnet.</p>
             @can('create', \App\Models\Person::class)
-                <p class="lead">Lege eine neue Person an.</p>
-                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('people.create', ['company' => $company->id]) }}">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('people.create', ['company' => $company->id]) }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Person anlegen
                 </a>
             @endcan

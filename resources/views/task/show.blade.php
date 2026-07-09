@@ -156,13 +156,12 @@
                                         @break
                                 @endswitch
                             @empty
-                                <div class="text-center py-4">
-                                    <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                                    <p class="lead text-muted">Zu der Aufgabe {{ $task->name }} gibt es noch keine Aktivitäten.</p>
+                                <div class="q-empty-state">
+                                    <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use></svg>
+                                    <p>Noch keine Aktivitäten zu dieser Aufgabe.</p>
                                     @can('create', [\App\Models\TaskComment::class, $task])
-                                        <p class="lead">Lege einen neuen Kommentar an.</p>
-                                        <a class="btn btn-lg btn-primary d-inline-flex align-items-center gap-2" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('comments.create', ['task' => $task->id]) }}">
+                                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                             Kommentar anlegen
                                         </a>
                                     @endcan

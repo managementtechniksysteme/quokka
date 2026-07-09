@@ -118,16 +118,15 @@
         @endunless
 
         @if($tasks->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Aufgaben passend zur Suche gefunden.</p>
+                    <p>Keine Aufgaben für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Aufgaben im System vorhanden.</p>
+                    <p>Es sind noch keine Aufgaben vorhanden.</p>
                     @can('create', \App\Models\Task::class)
-                        <p class="lead">Lege eine neue Aufgabe an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('tasks.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Aufgabe anlegen
                         </a>
                     @endcan

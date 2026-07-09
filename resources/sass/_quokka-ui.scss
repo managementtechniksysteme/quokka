@@ -828,6 +828,28 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     .icon { color: var(--q-red); }
 }
 
+// Empty-state block (lists with no items)
+.q-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 1rem 3rem;
+    gap: 0.4rem;
+    color: var(--q-muted);
+    font-size: .9rem;
+    p { margin: 0; }
+    .btn { margin-top: .75rem; }
+}
+.q-empty-icon {
+    fill: currentColor;
+    display: block;
+    width: 5rem;
+    height: 5rem;
+    color: var(--q-border);
+    margin-bottom: .75rem;
+}
+
 // Example blocks (used in help pages)
 .q-example-input {
     padding: 0.5rem;

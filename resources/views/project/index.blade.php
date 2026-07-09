@@ -87,16 +87,15 @@
         @endunless
 
         @if($projects->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Projekte passend zur Suche gefunden.</p>
+                    <p>Keine Projekte für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Projekte im System vorhanden.</p>
+                    <p>Es sind noch keine Projekte vorhanden.</p>
                     @can('create', \App\Models\Project::class)
-                        <p class="lead">Lege ein neues Projekt an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('projects.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Projekt anlegen
                         </a>
                     @endcan

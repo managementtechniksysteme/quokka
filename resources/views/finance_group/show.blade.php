@@ -78,12 +78,12 @@
             </div>
 
             @if($financeRecords->isEmpty())
-                <div class="text-center py-5">
-                    <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    <p class="lead text-muted">Zu der Finanzgruppe {{ $financeGroup->title }} gibt es noch keine Finanzeinträge.</p>
+                <div class="q-empty-state">
+                    <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#layers"></use></svg>
+                    <p>Noch keine Finanzeinträge in dieser Gruppe.</p>
                     @can('create', \App\Models\FinanceRecord::class)
-                        <a class="btn btn-primary d-inline-flex align-items-center gap-2" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Finanzeintrag anlegen
                         </a>
                     @endcan

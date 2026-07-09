@@ -88,16 +88,15 @@
         @endunless
 
         @if($flowMeterInspectionReports->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Prüfberichte passend zur Suche gefunden.</p>
+                    <p>Keine Prüfberichte für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Prüfberichte im System vorhanden.</p>
+                    <p>Es sind noch keine Prüfberichte vorhanden.</p>
                     @can('create', \App\Models\FlowMeterInspectionReport::class)
-                        <p class="lead">Lege einen neuen Prüfbericht an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Prüfbericht anlegen
                         </a>
                     @endcan

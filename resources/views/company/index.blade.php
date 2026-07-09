@@ -68,16 +68,15 @@
         @endunless
 
         @if($companies->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#briefcase"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Firmen passend zur Suche gefunden.</p>
+                    <p>Keine Firmen für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Firmen im System vorhanden.</p>
+                    <p>Es sind noch keine Firmen vorhanden.</p>
                     @can('create', \App\Models\Company::class)
-                        <p class="lead">Lege eine neue Firma an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('companies.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('companies.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Firma anlegen
                         </a>
                     @endcan

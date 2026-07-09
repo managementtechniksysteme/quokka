@@ -81,16 +81,15 @@
         @endunless
 
         @if($notes->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#book"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Notizen passend zur Suche gefunden.</p>
+                    <p>Keine Notizen für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Notizen im Notizbuch vorhanden.</p>
+                    <p>Es sind noch keine Notizen vorhanden.</p>
                     @can('create', \App\Models\Note::class)
-                        <p class="lead">Lege eine neue Notiz an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('notes.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('notes.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Notiz anlegen
                         </a>
                     @endcan

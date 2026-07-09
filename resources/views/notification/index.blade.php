@@ -35,12 +35,12 @@
         @endif
 
         @if($notifications->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/astronaut.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use></svg>
                 @if(request()->has('show-read'))
-                    <p class="lead text-muted">Du hast keine Benachrichtigungen.</p>
+                    <p>Keine Benachrichtigungen vorhanden.</p>
                 @else
-                    <p class="lead text-muted">Du hast keine ungelesenen Benachrichtigungen.</p>
+                    <p>Keine ungelesenen Benachrichtigungen.</p>
                 @endif
             </div>
         @else

@@ -96,16 +96,15 @@
         @endunless
 
         @if($serviceReports->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Serviceberichte passend zur Suche gefunden.</p>
+                    <p>Keine Serviceberichte für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Serviceberichte im System vorhanden.</p>
+                    <p>Es sind noch keine Serviceberichte vorhanden.</p>
                     @can('create', \App\Models\ServiceReport::class)
-                        <p class="lead">Lege einen neuen Servicebericht an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('service-reports.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('service-reports.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Servicebericht anlegen
                         </a>
                     @endcan

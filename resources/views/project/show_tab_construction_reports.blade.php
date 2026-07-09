@@ -2,13 +2,12 @@
 
 @section('tab')
     @if ($project->constructionReports->isEmpty())
-        <div class="text-center mt-5">
-            <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-            <p class="lead text-muted">Dem Projekt {{ $project->name }} sind keine Bautagesberichte zugeordnet.</p>
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+            <p>Diesem Projekt sind noch keine Bautagesberichte zugeordnet.</p>
             @can('create', \App\Models\ConstructionReport::class)
-                <p class="lead">Lege einen neuen Bautagesbericht an.</p>
-                <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create', ['project' => $project->id]) }}">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create', ['project' => $project->id]) }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Bautagesbericht anlegen
                 </a>
             @endcan

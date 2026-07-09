@@ -73,16 +73,15 @@
         @endunless
 
         @if($vehicles->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Fahrzeuge passend zur Suche gefunden.</p>
+                    <p>Keine Fahrzeuge für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine Fahrzeuge im System vorhanden.</p>
+                    <p>Es sind noch keine Fahrzeuge vorhanden.</p>
                     @can('create', \App\Models\Vehicle::class)
-                        <p class="lead">Lege ein neues Fahrzeug an.</p>
-                        <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('vehicles.create') }}">
-                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('vehicles.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Fahrzeug anlegen
                         </a>
                     @endcan

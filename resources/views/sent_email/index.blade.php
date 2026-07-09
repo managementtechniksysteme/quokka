@@ -43,12 +43,12 @@
         @endunless
 
         @if($activities->isEmpty())
-            <div class="text-center mt-5">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                 @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine gesendeten Emails passend zur Suche gefunden.</p>
+                    <p>Keine gesendeten E-Mails für diese Suche gefunden.</p>
                 @else
-                    <p class="lead text-muted">Es sind keine gesendeten Emails im System vorhanden.</p>
+                    <p>Noch keine E-Mails gesendet.</p>
                 @endif
             </div>
         @else

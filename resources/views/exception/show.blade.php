@@ -19,8 +19,8 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                            <svg class="icon-bs icon-16 me-2">
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use>
                             </svg>
                             Entfernen
                         </button>

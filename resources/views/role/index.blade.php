@@ -6,7 +6,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#key"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Rollen</h1>
@@ -18,7 +18,7 @@
 
             @can('create', \Spatie\Permission\Models\Role::class)
                 <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Rolle anlegen
                 </a>
             @endcan
@@ -26,7 +26,7 @@
 
         @unless ($roles->isEmpty() && !Request::get('search'))
             <div class="q-banner mb-3">
-                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
                 <span>
                     Bearbeitete oder gelöschte Rollen wirken sich nicht auf Benutzer aus. Benutzer sind direkt mit
                     Berechtigungen, nicht mit Rollen, verknüpft! Bei gewünschten Änderungen müssen einem Benutzer
@@ -39,11 +39,11 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Rollen suchen" autocomplete="off" />
                         <button class="btn q-btn d-flex align-items-center" type="submit">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
                         @if (Request::get('search'))
                             <a class="btn q-btn d-flex align-items-center" href="{{ Request::url() }}">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
                     </div>
@@ -61,7 +61,7 @@
                     @can('create', \Spatie\Permission\Models\Role::class)
                         <p class="lead">Lege eine neue Rolle an.</p>
                         <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Rolle anlegen
                         </a>
                     @endcan

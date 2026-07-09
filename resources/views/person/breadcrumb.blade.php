@@ -1,8 +1,5 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 me-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-    </svg>
+<nav class="q-breadcrumb">
     <a href="{{ route('people.index') }}">Personen</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('people.show', $person) }}">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</a>
-</div>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</span>
+</nav>

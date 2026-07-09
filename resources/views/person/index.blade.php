@@ -6,7 +6,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Personen</h1>
@@ -18,7 +18,7 @@
 
             @can('create', \App\Models\Person::class)
                 <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('people.create') }}">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Person anlegen
                 </a>
             @endcan
@@ -33,11 +33,11 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Personen suchen" autocomplete="off" />
                         <button class="btn q-btn d-flex align-items-center" type="submit">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
                         @if (Request::get('search'))
                             <a class="btn q-btn d-flex align-items-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
                     </div>
@@ -45,7 +45,7 @@
 
                 <div class="dropdown ms-auto">
                     <button class="btn q-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
                         Sortierung
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -58,16 +58,16 @@
                             @endif
 
                             <button type="submit" name="sort" value="first-name-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>Vorname
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Vorname
                             </button>
                             <button type="submit" name="sort" value="first-name-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg>Vorname
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Vorname
                             </button>
                             <button type="submit" name="sort" value="last-name-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>Nachname
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Nachname
                             </button>
                             <button type="submit" name="sort" value="last-name-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg>Nachname
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Nachname
                             </button>
                         </form>
                     </div>
@@ -85,7 +85,7 @@
                     @can('create', \App\Models\Person::class)
                         <p class="lead">Lege eine neue Person an.</p>
                         <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('people.create') }}">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Person anlegen
                         </a>
                     @endcan

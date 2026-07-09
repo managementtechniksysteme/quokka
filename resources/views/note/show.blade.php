@@ -10,8 +10,8 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $note->created_at->format('d.m.Y, H:i') }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ms-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        <svg class="icon-bs icon-16 text-yellow ms-1">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use>
                         </svg>
                     @endif
                 </small>
@@ -20,55 +20,55 @@
             <div class="scroll-x d-flex">
                 @can('update', $note)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('notes.edit', $note) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use>
                         </svg>
                         Bearbeiten
                     </a>
                 @endcan
                 @can('create', \App\Models\Note::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('notes.create', ['template' => $note]) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use>
                         </svg>
                         Kopieren
                     </a>
                 @endcan
                 @can('create', \App\Models\Task::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('tasks.create', ['note' => $note]) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use>
                         </svg>
                         Aufgabe erstellen
                     </a>
                 @endcan
                 @can('create', \App\Models\Memo::class)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('memos.create', ['note' => $note]) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#voicemail"></use>
                         </svg>
                         Aktenvermerk erstellen
                     </a>
                 @endcan
                 @can('email', $note)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('notes.email', ['note' => $note, 'redirect' => 'show']) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use>
                         </svg>
                         Email versenden
                     </a>
                 @endcan
                 @can('createPdf', $note)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('notes.download', $note) }}" target="_blank">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use>
                         </svg>
                         PDF erstellen
                     </a>
                 @endcan
                 <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="#">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                    <svg class="icon-bs icon-16 me-2">
+                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use>
                     </svg>
                     Favorisieren
                 </a>
@@ -78,8 +78,8 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                            <svg class="icon-bs icon-16 me-2">
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use>
                             </svg>
                             Entfernen
                         </button>
@@ -95,8 +95,8 @@
         <div class="row">
             <div class="col-sm-5 col-md-4 col-lg-2">
                 <div class="text-muted d-flex align-items-center">
-                    <svg class="icon icon-16 me-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                    <svg class="icon-bs icon-16 me-2">
+                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                     </svg>
                     Datum
                 </div>
@@ -110,8 +110,8 @@
             <div class="row mt-3">
                 <div class="col-sm-5 col-md-4 col-lg-2">
                     <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book-open"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#book"></use>
                         </svg>
                         Titel
                     </div>
@@ -123,8 +123,8 @@
         @endif
 
         <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+            <svg class="icon-bs icon-16 me-2">
+                <use href="{{ asset('svg/bootstrap-icons.svg') }}#chat-dots"></use>
             </svg>
             Bemerkungen
         </div>
@@ -136,14 +136,14 @@
             <div class="row text-muted d-flex align-items-center mt-1">
                 <div class="col">
                     <div class="d-none d-md-inline-flex align-items-center">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
                     </div>
                     <a class="d-inline-flex d-md-none d-inline-flex align-items-center" data-bs-toggle="collapse" href="#collapseNoteAttachments-{{ $note->id }}" role="button" aria-expanded="false" aria-controls="collapseNoteAttachments-{{ $note->id }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#paperclip"></use>
                         </svg>
                         Anhänge
                     </a>
@@ -157,8 +157,8 @@
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
                                     <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview me-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                                    <svg class="icon-bs attachment-img-preview me-2">
+                                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use>
                                     </svg>
                                 @endif
                                 <div class="min-w-0">
@@ -179,8 +179,8 @@
                                 @if($attachment->hasGeneratedConversion('thumbnail'))
                                     <img class="attachment-img-preview me-2" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
-                                    <svg class="icon attachment-img-preview me-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use>
+                                    <svg class="icon-bs attachment-img-preview me-2">
+                                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use>
                                     </svg>
                                 @endif
                                 <div class="min-w-0">

@@ -1,7 +1,7 @@
 @php $isFinished = isset($activity->attribute_changes['attributes']['status']) && $activity->attribute_changes['attributes']['status'] === 'finished'; @endphp
 <div class="q-comment q-comment--event">
     <span class="q-avatar q-avatar--round {{ $isFinished ? 'q-avatar--green' : 'q-avatar--muted' }}">
-        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#{{ $isFinished ? 'check-square' : 'activity' }}"></use></svg>
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $isFinished ? 'check-square' : 'activity' }}"></use></svg>
     </span>
 
     <div class="q-comment__main">
@@ -16,12 +16,12 @@
             @if(isset($activity->attribute_changes['attributes']['name']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                         Name
                     </div>
                     <div class="q-change__diff">
                         <del>{{ $activity->attribute_changes['old']['name'] }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ $activity->attribute_changes['attributes']['name'] }}
                     </div>
                 </div>
@@ -29,12 +29,12 @@
             @if(isset($activity->attribute_changes['attributes']['project_id']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
                         Projekt
                     </div>
                     <div class="q-change__diff">
                         <del>{{ \App\Models\Project::find($activity->attribute_changes['old']['project_id'])?->name ?? 'unbekannt' }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ \App\Models\Project::find($activity->attribute_changes['attributes']['project_id'])?->name ?? 'unbekannt' }}
                     </div>
                 </div>
@@ -42,12 +42,12 @@
             @if(isset($activity->attribute_changes['attributes']['employee_id']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
                         Verantwortliche Person
                     </div>
                     <div class="q-change__diff">
                         <del>{{ \App\Models\Person::find($activity->attribute_changes['old']['employee_id'])?->name ?? 'unbekannt' }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ \App\Models\Person::find($activity->attribute_changes['attributes']['employee_id'])?->name ?? 'unbekannt' }}
                     </div>
                 </div>
@@ -55,7 +55,7 @@
             @if(isset($activity->attribute_changes['old']['involved_ids']) || isset($activity->attribute_changes['attributes']['involved_ids']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                         Mitwirkende Personen
                     </div>
                     <div class="q-change__diff">
@@ -66,7 +66,7 @@
                                 {{ \App\Models\Person::order()->find($activity->attribute_changes['old']['involved_ids'])->implode('name', ', ') }}
                             @endempty
                         </del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         @empty($activity->attribute_changes['attributes']['involved_ids'])
                             keine angegeben
                         @else
@@ -78,12 +78,12 @@
             @if(isset($activity->attribute_changes['old']['due_on']) || isset($activity->attribute_changes['attributes']['due_on']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                         Fälligkeitsdatum
                     </div>
                     <div class="q-change__diff">
                         <del>{{ isset($activity->attribute_changes['old']['due_on']) ? Carbon\Carbon::parse($activity->attribute_changes['old']['due_on']) : 'kein Datum' }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ isset($activity->attribute_changes['attributes']['due_on']) ? Carbon\Carbon::parse($activity->attribute_changes['attributes']['due_on']) : 'kein Datum' }}
                     </div>
                 </div>
@@ -91,7 +91,7 @@
             @if(isset($activity->attribute_changes['old']['starts_on']) || isset($activity->attribute_changes['old']['ends_on']) || isset($activity->attribute_changes['attributes']['starts_on']) || isset($activity->attribute_changes['attributes']['ends_on']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                         Zeitraum
                     </div>
                     <div class="q-change__diff">
@@ -100,7 +100,7 @@
                             bis
                             {{ isset($activity->attribute_changes['old']['ends_on']) ? Carbon\Carbon::parse($activity->attribute_changes['old']['ends_on']) : 'kein Ende' }}
                         </del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ isset($activity->attribute_changes['attributes']['starts_on']) ? Carbon\Carbon::parse($activity->attribute_changes['attributes']['starts_on']) : 'kein Start' }}
                         bis
                         {{ isset($activity->attribute_changes['attributes']['ends_on']) ? Carbon\Carbon::parse($activity->attribute_changes['attributes']['ends_on']) : 'kein Ende' }}
@@ -110,12 +110,12 @@
             @if(isset($activity->attribute_changes['attributes']['priority']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
                         Priorität
                     </div>
                     <div class="q-change__diff">
                         <del>{{ trans($activity->attribute_changes['old']['priority']) }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ trans($activity->attribute_changes['attributes']['priority']) }}
                     </div>
                 </div>
@@ -123,12 +123,12 @@
             @if(isset($activity->attribute_changes['attributes']['status']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#git-commit"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#record-circle"></use></svg>
                         Status
                     </div>
                     <div class="q-change__diff">
                         <del>{{ trans($activity->attribute_changes['old']['status']) }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ trans($activity->attribute_changes['attributes']['status']) }}
                     </div>
                 </div>
@@ -136,7 +136,7 @@
             @if(isset($activity->attribute_changes['attributes']['billed']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
                         Verrechnungsstatus
                     </div>
                     <div class="q-change__diff">
@@ -145,7 +145,7 @@
                             @case('no') <del>{{ trans('not billed') }}</del> @break
                             @case('warranty') <del>{{ trans('warranty') }}</del> @break
                         @endswitch
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         @switch($activity->attribute_changes['attributes']['billed'])
                             @case('yes') {{ trans('billed') }} @break
                             @case('no') {{ trans('not billed') }} @break
@@ -157,12 +157,12 @@
             @if(isset($activity->attribute_changes['attributes']['private']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
                         Sichtbarkeitsstatus
                     </div>
                     <div class="q-change__diff">
                         <del>{{ trans($activity->attribute_changes['old']['private'] ? 'private' : 'public') }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ trans($activity->attribute_changes['attributes']['private'] ? 'private' : 'public') }}
                     </div>
                 </div>
@@ -170,12 +170,12 @@
             @if(isset($activity->attribute_changes['attributes']['comment']))
                 <div class="q-change">
                     <div class="q-change__label">
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chat-dots"></use></svg>
                         Bemerkungen
                     </div>
                     <div class="q-change__diff">
                         <del>{{ Str::limit($activity->attribute_changes['old']['comment'], 20) }}</del>
-                        <svg class="icon icon-12 mx-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12 mx-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         {{ Str::limit($activity->attribute_changes['attributes']['comment'], 20) }}
                     </div>
                 </div>

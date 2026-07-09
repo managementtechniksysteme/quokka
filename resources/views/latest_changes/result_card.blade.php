@@ -13,7 +13,7 @@
                 {{ $result->type }}
             </span>
             <span class="q-chip">
-                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $result->updated_at->format('d.m.Y H:i') }}
             </span>
         </div>

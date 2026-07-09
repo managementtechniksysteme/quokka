@@ -8,7 +8,7 @@
             @can('create', \App\Models\FlowMeterInspectionReport::class)
                 <p class="lead">Lege einen neuen Prüfbericht an.</p>
                 <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Prüfbericht anlegen
                 </a>
             @endcan
@@ -20,7 +20,7 @@
             <h2 class="q-subhead">Prüfberichte Durchflussmesseinrichtungen</h2>
             @can('create', \App\Models\FlowMeterInspectionReport::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.create', ['project' => $project->id]) }}">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Prüfbericht anlegen
                 </a>
             @endcan

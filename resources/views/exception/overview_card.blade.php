@@ -2,14 +2,14 @@
     <a class="stretched-link outline-none" href="{{ route('exceptions.show', $exception['uuid']) }}"></a>
 
     <span class="q-avatar">
-        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
     </span>
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate q-mono">{{ $exception['uuid'] }}</div>
         <div class="q-meta">
             <span class="q-chip">
-                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $exception['created_at']->format('d.m.Y H:i:s') }}
             </span>
         </div>
@@ -22,7 +22,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="q-kebab q-kebab--danger" title="Entfernen">
-                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
             </button>
         </form>
     @endcan

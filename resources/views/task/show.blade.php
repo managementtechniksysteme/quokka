@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Aufgabe</div>
@@ -18,13 +18,13 @@
 
                         @if($task->private)
                             <span class="q-chip">
-                                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#lock"></use></svg>
+                                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
                                 privat
                             </span>
                         @endif
 
                         <span class="q-chip">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#flag"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#flag"></use></svg>
                             Priorität {{ __($task->priority) }}
                         </span>
                     </div>
@@ -35,43 +35,43 @@
                 @unless($task->status === 'finished')
                     @can('update', $task)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             Erledigen
                         </a>
                     @endcan
                 @endunless
                 @can('update', $task)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.edit', $task) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
 
                 <div class="dropdown">
                     <button class="q-kebab" type="button" id="taskShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="taskShowDropdown">
                         @can('create', \App\Models\Task::class)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.create', ['template' => $task]) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg>
                                 Kopieren
                             </a>
                         @endcan
                         @can('email', $task)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.email', ['task' => $task, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Email versenden
                             </a>
                         @endcan
                         @can('createPdf', $task)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('tasks.download', $task) }}" target="_blank">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF erstellen
                             </a>
                         @endcan
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
                             Favorisieren
                         </a>
                         @can('delete', $task)
@@ -79,7 +79,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -137,7 +137,7 @@
                         @unless($activities->isEmpty())
                             @can('create', [\App\Models\TaskComment::class, $task])
                                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                     Kommentar
                                 </a>
                             @endcan
@@ -162,7 +162,7 @@
                                     @can('create', [\App\Models\TaskComment::class, $task])
                                         <p class="lead">Lege einen neuen Kommentar an.</p>
                                         <a class="btn btn-lg btn-primary d-inline-flex align-items-center gap-2" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                             Kommentar anlegen
                                         </a>
                                     @endcan

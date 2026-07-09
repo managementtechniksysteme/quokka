@@ -1,8 +1,5 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 me-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-    </svg>
+<nav class="q-breadcrumb">
     <a href="{{ route('addresses.index') }}">Adressen</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('addresses.show', $address) }}">{{ $address->address_line }}</a>
-</div>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>{{ $address->address_line }}</span>
+</nav>

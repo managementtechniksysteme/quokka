@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Lieferschein</div>
@@ -19,19 +19,19 @@
                         <span class="q-chip">
                             @switch($deliveryNote->status)
                                 @case('signed')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     {{ optional($signature)->created_at }}
                                     @break
                                 @case('finished')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                                     {{ $deliveryNote->updated_at }}@if($deliveryNote->activities->last()?->causer) · {{ Str::upper($deliveryNote->activities->last()->causer->username) }}@endif
                                     @break
                                 @default
                                     @if($deliveryNote->signatureRequest)
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
                                         {{ $deliveryNote->signatureRequest->created_at }}
                                     @else
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                         {{ $deliveryNote->created_at }}
                                     @endif
                             @endswitch
@@ -44,49 +44,49 @@
                 @unless($deliveryNote->isFinished())
                     @can('approve', $deliveryNote)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.finish', ['delivery_note' => $deliveryNote, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             Erledigen
                         </a>
                     @endcan
                 @endunless
                 @can('update', $deliveryNote)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.edit', $deliveryNote) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
 
                 <div class="dropdown">
                     <button class="q-kebab" type="button" id="deliveryNoteShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryNoteShowDropdown">
                         @can('email', $deliveryNote)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email', ['delivery_note' => $deliveryNote, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Email versenden
                             </a>
                         @endcan
                         @can('createPdf', $deliveryNote)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.download', $deliveryNote) }}" target="_blank">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF herunterladen
                             </a>
                         @endcan
                         @can('emailSignatureRequest', $deliveryNote)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-signature-request', ['delivery_note' => $deliveryNote, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Unterschrift Anfrage senden
                             </a>
                         @endcan
                         @can('emailDownloadRequest', $deliveryNote)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-download-request', ['delivery_note' => $deliveryNote, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg>
                                 Download Link senden
                             </a>
                         @endcan
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
                             Favorisieren
                         </a>
                         @can('delete', $deliveryNote)
@@ -94,7 +94,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -139,13 +139,13 @@
                 <div class="q-card">
                     <div class="q-card__head">Lieferschein</div>
                     <div class="q-card__body">
-                        <div class="q-signbox">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                        <div class="q-placeholder">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                             Lieferschein als PDF
                         </div>
                         @can('createPdf', $deliveryNote)
                             <a class="btn q-btn w-100 d-inline-flex align-items-center justify-content-center gap-2" href="{{ route('delivery-notes.download', $deliveryNote) }}" target="_blank">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF herunterladen
                             </a>
                         @endcan
@@ -159,12 +159,12 @@
                     <span>Unterschrift</span>
                     @if($signature)
                         <span class="q-chip q-chip--success">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             vorhanden
                         </span>
                     @else
                         <span class="q-chip q-chip--warning">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
                             ausstehend
                         </span>
                     @endif
@@ -174,13 +174,13 @@
                         <img class="q-sign-img" src="{{ $signature->getUrl() }}" alt="Unterschrift" />
                         <div class="q-sign-date">unterschrieben am {{ $signature->created_at }}</div>
                     @else
-                        <div class="q-signbox">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                        <div class="q-placeholder">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                             Keine Unterschrift
                         </div>
                         @can('sign', $deliveryNote)
                             <a class="btn btn-primary text-white w-100 d-inline-flex align-items-center justify-content-center gap-2" href="{{ route('delivery-notes.sign', ['delivery_note' => $deliveryNote, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                 Unterschreiben lassen
                             </a>
                         @endcan

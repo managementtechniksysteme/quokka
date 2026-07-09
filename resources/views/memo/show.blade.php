@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#voicemail"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#voicemail"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Aktenvermerk · #{{ $memo->number }}</div>
@@ -19,7 +19,7 @@
                         @endif
 
                         <span class="q-chip">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             {{ $memo->created_at }}
                         </span>
                     </div>
@@ -30,43 +30,43 @@
                 @if($memo->draft)
                     @can('update', $memo)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('memos.publish', ['memo' => $memo, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             Veröffentlichen
                         </a>
                     @endcan
                 @endif
                 @can('update', $memo)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('memos.edit', $memo) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
 
                 <div class="dropdown">
                     <button class="q-kebab" type="button" id="memoShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="memoShowDropdown">
                         @can('create', \App\Models\Memo::class)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.create', ['template' => $memo]) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg>
                                 Kopieren
                             </a>
                         @endcan
                         @can('email', $memo)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.email', ['memo' => $memo, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Email versenden
                             </a>
                         @endcan
                         @can('createPdf', $memo)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('memos.download', $memo) }}" target="_blank">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF erstellen
                             </a>
                         @endcan
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
                             Favorisieren
                         </a>
                         @can('delete', $memo)
@@ -74,7 +74,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -140,7 +140,7 @@
                                                 <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                             @else
                                                 <span class="q-attach__preview q-attach__preview--icon">
-                                                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                                 </span>
                                             @endif
                                             <span class="min-w-0">

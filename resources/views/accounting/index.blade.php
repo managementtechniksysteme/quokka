@@ -4,8 +4,8 @@
     <div class="bg-gray-100 mt-0 d-xl-none">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
+                <svg class="icon-bs icon-baseline text-muted me-1">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use>
                 </svg>
                 Leistungsabrechnung
             </h3>

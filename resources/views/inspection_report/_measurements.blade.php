@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-6">
         <div class="q-card h-100">
             <div class="q-card__head d-flex align-items-center gap-2">
-                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use></svg>
                 UVC Strahler
             </div>
             <div class="q-card__body">
@@ -36,7 +36,7 @@
     <div class="col-12 col-lg-6">
         <div class="q-card h-100">
             <div class="q-card__head d-flex align-items-center gap-2">
-                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use></svg>
                 UVC Sensor
             </div>
             <div class="q-card__body">
@@ -65,7 +65,7 @@
     <div class="col-12 col-lg-6">
         <div class="q-card h-100">
             <div class="q-card__head d-flex align-items-center gap-2">
-                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#droplet"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#droplet"></use></svg>
                 Wasser
             </div>
             <div class="q-card__body">
@@ -94,7 +94,7 @@
     <div class="col-12 col-lg-6">
         <div class="q-card h-100">
             <div class="q-card__head d-flex align-items-center gap-2">
-                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#circle"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#circle"></use></svg>
                 Überprüfung der Quarzschutzrohre
             </div>
             <div class="q-card__body">

@@ -6,7 +6,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#book"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#book"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Notizbuch</h1>
@@ -19,13 +19,13 @@
             <div class="d-flex gap-2">
                 @can('create', \App\Models\Note::class)
                     <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('notes.create') }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                         Notiz anlegen
                     </a>
                 @endcan
                 @can('downloadList', \App\Models\Note::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('notes.download-list') }}" target="_blank">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                         PDF Liste
                     </a>
                 @endcan
@@ -41,11 +41,11 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Notizen suchen" autocomplete="off" />
                         <button class="btn q-btn d-flex align-items-center" type="submit">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
                         @if (Request::get('search'))
                             <a class="btn q-btn d-flex align-items-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
                     </div>
@@ -53,7 +53,7 @@
 
                 <div class="dropdown ms-auto">
                     <button class="btn q-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
                         Sortierung
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -63,16 +63,16 @@
                             @endif
 
                             <button type="submit" name="sort" value="created_at-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>Datum
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Datum
                             </button>
                             <button type="submit" name="sort" value="created_at-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg>Datum
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Datum
                             </button>
                             <button type="submit" name="sort" value="title-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>Titel
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Titel
                             </button>
                             <button type="submit" name="sort" value="title-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg>Titel
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Titel
                             </button>
                         </form>
                     </div>
@@ -90,7 +90,7 @@
                     @can('create', \App\Models\Note::class)
                         <p class="lead">Lege eine neue Notiz an.</p>
                         <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('notes.create') }}">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                             Notiz anlegen
                         </a>
                     @endcan

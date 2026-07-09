@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Prüfbericht · Anlage {{ $inspectionReport->equipment_identifier }}</div>
@@ -19,19 +19,19 @@
                         <span class="q-chip">
                             @switch($inspectionReport->status)
                                 @case('signed')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     {{ optional($signature)->created_at }}
                                     @break
                                 @case('finished')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                                     {{ $inspectionReport->updated_at }}@if($inspectionReport->activities->last()?->causer) · {{ Str::upper($inspectionReport->activities->last()->causer->username) }}@endif
                                     @break
                                 @default
                                     @if($inspectionReport->signatureRequest)
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
                                         {{ $inspectionReport->signatureRequest->created_at }}
                                     @else
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                         {{ $inspectionReport->created_at }}
                                     @endif
                             @endswitch
@@ -44,55 +44,55 @@
                 @unless($inspectionReport->isFinished())
                     @can('approve', $inspectionReport)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('inspection-reports.finish', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             Erledigen
                         </a>
                     @endcan
                 @endunless
                 @can('update', $inspectionReport)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('inspection-reports.edit', $inspectionReport) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
 
                 <div class="dropdown">
                     <button class="q-kebab" type="button" id="inspectionReportShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="inspectionReportShowDropdown">
                         @can('create', \App\Models\InspectionReport::class)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('inspection-reports.create', ['template' => $inspectionReport]) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg>
                                 Kopieren
                             </a>
                         @endcan
                         @can('email', $inspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('inspection-reports.email', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Email versenden
                             </a>
                         @endcan
                         @can('createPdf', $inspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('inspection-reports.download', $inspectionReport) }}" target="_blank">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF erstellen
                             </a>
                         @endcan
                         @can('emailSignatureRequest', $inspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('inspection-reports.email-signature-request', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Unterschrift Anfrage senden
                             </a>
                         @endcan
                         @can('emailDownloadRequest', $inspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('inspection-reports.email-download-request', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg>
                                 Download Link senden
                             </a>
                         @endcan
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
                             Favorisieren
                         </a>
                         @can('delete', $inspectionReport)
@@ -100,7 +100,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -128,12 +128,12 @@
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>
                 <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                    <svg class="icon icon-16">
+                    <svg class="icon-bs icon-16">
                         @switch($inspectionReport->weather)
-                            @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
-                            @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
-                            @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
-                            @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
+                            @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                            @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                            @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                            @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
                         @endswitch
                     </svg>
                     {{ __($inspectionReport->weather) }}
@@ -175,7 +175,7 @@
                                             <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
                                             <span class="q-attach__preview q-attach__preview--icon">
-                                                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                             </span>
                                         @endif
                                         <span class="min-w-0">
@@ -198,12 +198,12 @@
                     <span>Unterschrift</span>
                     @if($signature)
                         <span class="q-chip q-chip--success">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             vorhanden
                         </span>
                     @else
                         <span class="q-chip q-chip--warning">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
                             ausstehend
                         </span>
                     @endif
@@ -213,13 +213,13 @@
                         <img class="q-sign-img" src="{{ $signature->getUrl() }}" alt="Unterschrift" />
                         <div class="q-sign-date">unterschrieben am {{ $signature->created_at }}</div>
                     @else
-                        <div class="q-signbox">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                        <div class="q-placeholder">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                             Keine Unterschrift
                         </div>
                         @can('sign', $inspectionReport)
                             <a class="btn btn-primary text-white w-100 d-inline-flex align-items-center justify-content-center gap-2" href="{{ route('inspection-reports.sign', ['inspection_report' => $inspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                 Unterschreiben lassen
                             </a>
                         @endcan

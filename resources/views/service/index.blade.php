@@ -6,13 +6,13 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20">
+                    <svg class="icon-bs icon-20">
                         @switch($tab)
                             @case('wage-services')
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use>
                                 @break
                             @case('material-services')
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#box"></use>
                                 @break
                         @endswitch
                     </svg>
@@ -31,7 +31,7 @@
                 <nav class="q-subnav">
                     @can('viewAny', \App\Models\WageService::class)
                         <a class="q-subnav__item @if (request()->is('wage-services')) active @endif" href="{{ route('wage-services.index') }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use></svg>
                             <span class="flex-grow-1">Lohndienstleistungen</span>
                             <span class="q-subnav__count">{{ $wageServicesCount }}</span>
                         </a>
@@ -39,7 +39,7 @@
 
                     @can('viewAny', \App\Models\MaterialService::class)
                         <a class="q-subnav__item @if (request()->is('material-services')) active @endif" href="{{ route('material-services.index') }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box"></use></svg>
                             <span class="flex-grow-1">Materialleistungen</span>
                             <span class="q-subnav__count">{{ $materialServicesCount }}</span>
                         </a>

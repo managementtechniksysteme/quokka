@@ -6,7 +6,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Gesendete Emails</h1>
@@ -19,7 +19,7 @@
 
         @if(\App\Models\ApplicationSettings::get()->prune_sent_emails)
             <div class="q-banner mb-3">
-                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
                 <span>Einträge, die älter als einen Monat sind, werden automatisch aus dem System entfernt.</span>
             </div>
         @endif
@@ -30,11 +30,11 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Gesendete Emails suchen" autocomplete="off" />
                         <button class="btn q-btn d-flex align-items-center" type="submit">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
                         @if (Request::get('search'))
                             <a class="btn q-btn d-flex align-items-center" href="{{ Request::url() }}">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
                     </div>

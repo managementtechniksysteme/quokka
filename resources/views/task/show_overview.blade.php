@@ -23,7 +23,7 @@
                                 <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                             @else
                                 <span class="q-attach__preview q-attach__preview--icon">
-                                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                 </span>
                             @endif
                             <span class="min-w-0">

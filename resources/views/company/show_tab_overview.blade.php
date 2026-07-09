@@ -10,7 +10,7 @@
 
                 <div class="q-inforow">
                     <span class="q-inforow__icon">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#telephone"></use></svg>
                     </span>
                     <div class="q-inforow__main">
                         <div class="q-inforow__label">Telefon</div>
@@ -22,7 +22,7 @@
 
                 <div class="q-inforow">
                     <span class="q-inforow__icon">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                     </span>
                     <div class="q-inforow__main">
                         <div class="q-inforow__label">Fax</div>
@@ -34,7 +34,7 @@
 
                 <div class="q-inforow">
                     <span class="q-inforow__icon">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                     </span>
                     <div class="q-inforow__main">
                         <div class="q-inforow__label">Email</div>
@@ -46,7 +46,7 @@
 
                 <div class="q-inforow">
                     <span class="q-inforow__icon">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#link-45deg"></use></svg>
                     </span>
                     <div class="q-inforow__main">
                         <div class="q-inforow__label">Webseite</div>
@@ -67,7 +67,7 @@
                         </div>
                     @else
                         <span class="q-inforow__icon">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
                         </span>
                         <div class="q-inforow__main">
                             <div class="q-inforow__label">Ansprechperson</div>
@@ -83,7 +83,7 @@
         <div class="q-card">
             @if ($company->address->first())
                 <div class="q-address__map">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
                 </div>
                 <div class="q-address__body">
                     <div class="q-address__label">Adresse</div>
@@ -92,7 +92,7 @@
                         {{ $company->address->first()->postcode }} {{ $company->address->first()->city }}
                     </div>
                     <a class="btn q-btn w-100 d-inline-flex align-items-center justify-content-center gap-2" href="https://maps.google.com?q={{ $company->address->first()->address_line }}" target="_blank">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
                         Google Maps öffnen
                     </a>
                 </div>

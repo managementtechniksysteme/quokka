@@ -1,18 +1,18 @@
 <div class="q-row">
     <span class="q-avatar">
-        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
     </span>
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">{{ $activity->properties['subject'] }}</div>
         <div class="q-meta">
             <span class="q-chip">
-                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $activity->created_at->format('d.m.Y H:i') }}
             </span>
             @if(!empty($activity->properties['to']))
                 <span class="q-chip">
-                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
                     <span class="text-truncate">{{ Email::concatEmails($activity->properties['to']) }}</span>
                 </span>
             @endif

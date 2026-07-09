@@ -6,7 +6,7 @@
             <h2 class="q-subhead">Teilrechnungen</h2>
             @can('create', \App\Models\InterimInvoice::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Teilrechnung anlegen
                 </a>
             @endcan
@@ -28,7 +28,7 @@
             @can('create', \App\Models\InterimInvoice::class)
                 <p class="lead">Lege eine neue Teilrechnung an.</p>
                 <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('interim-invoices.create', ['project' => $project]) }}">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Teilrechnung anlegen
                 </a>
             @endcan

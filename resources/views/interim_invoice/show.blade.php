@@ -10,8 +10,8 @@
                 <small class="text-muted d-inline-flex align-items-center">
                     {{ $interimInvoice->title }}
                     @if(false)
-                        <svg class="icon icon-16 text-yellow ms-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
+                        <svg class="icon-bs icon-16 text-yellow ms-1">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use>
                         </svg>
                     @endif
                 </small>
@@ -20,8 +20,8 @@
             <div class="scroll-x d-flex">
                 @can('update', $interimInvoice)
                     <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('interim-invoices.edit', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use>
                         </svg>
                         Bearbeiten
                     </a>
@@ -32,8 +32,8 @@
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
+                            <svg class="icon-bs icon-16 me-2">
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use>
                             </svg>
                             Entfernen
                         </button>
@@ -47,8 +47,8 @@
       <div class="row">
         <div class="col-sm-2">
           <div class="text-muted d-flex align-items-center">
-            <svg class="icon icon-16 me-2">
-              <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+            <svg class="icon-bs icon-16 me-2">
+              <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
             </svg>
             Datum
           </div>
@@ -60,8 +60,8 @@
       <div class="row mt-3">
         <div class="col-sm-2">
           <div class="text-muted d-flex align-items-center">
-            <svg class="icon icon-16 me-2">
-              <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+            <svg class="icon-bs icon-16 me-2">
+              <use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use>
             </svg>
             Summe
           </div>
@@ -73,8 +73,8 @@
 
       @if ($interimInvoice->comment)
         <div class="text-muted d-flex align-items-center mt-4">
-          <svg class="icon icon-16 me-2">
-            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
+          <svg class="icon-bs icon-16 me-2">
+            <use href="{{ asset('svg/bootstrap-icons.svg') }}#chat-dots"></use>
           </svg>
           Bemerkungen
         </div>

@@ -6,7 +6,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bell"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Benachrichtigungen</h1>
@@ -20,7 +20,7 @@
                 <form action="{{ route('notifications.clear') }}" method="post">
                     @csrf
                     <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                         Alle als gelesen markieren
                     </button>
                 </form>
@@ -29,7 +29,7 @@
 
         @if(\App\Models\ApplicationSettings::get()->prune_read_notifications)
             <div class="q-banner mb-3">
-                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
                 <span>Gelesene Nachrichten, die älter als einen Monat sind, werden automatisch aus dem System entfernt.</span>
             </div>
         @endif
@@ -54,7 +54,7 @@
         @if($readNotificationCount && !request()->has('show-read'))
             <div class="d-flex justify-content-center mt-4">
                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('notifications.index', ['show-read' => true]) }}">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                     Gelesene Benachrichtigungen anzeigen
                 </a>
             </div>

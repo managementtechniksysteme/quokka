@@ -7,7 +7,7 @@
             <span class="q-comment__date q-mono">
                 {{ $comment->created_at->format('d.m.Y · H:i') }}
                 @if($comment->created_at->lt($comment->updated_at))
-                    <svg class="icon icon-12 ms-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit-2"></use></svg>
+                    <svg class="icon-bs icon-12 ms-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                     {{ $comment->updated_at->format('d.m.Y · H:i') }}
                 @endif
             </span>
@@ -15,12 +15,12 @@
             @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
                 <div class="dropdown ms-auto">
                     <button class="q-kebab" type="button" id="commentOverviewDropdown-{{ $comment->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOverviewDropdown-{{ $comment->id }}">
                         @can('update', $comment)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                                 Bearbeiten
                             </a>
                         @endcan
@@ -29,7 +29,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -53,7 +53,7 @@
                                     <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                 @else
                                     <span class="q-attach__preview q-attach__preview--icon">
-                                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                     </span>
                                 @endif
                                 <span class="min-w-0">

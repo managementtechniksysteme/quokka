@@ -10,7 +10,7 @@
         <div class="q-row__desc text-truncate">{{ NotificationHelper::text($notification) }}</div>
         <div class="q-meta">
             <span class="q-chip">
-                <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg>
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $notification->created_at->format('d.m.Y H:i') }}
             </span>
         </div>
@@ -21,7 +21,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="q-kebab" title="Als gelesen markieren">
-                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
             </button>
         </form>
     @endunless

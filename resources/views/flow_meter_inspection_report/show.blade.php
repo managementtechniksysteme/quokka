@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Durchfluss-Prüfbericht · Anlage {{ $flowMeterInspectionReport->equipment_identifier }}</div>
@@ -19,19 +19,19 @@
                         <span class="q-chip">
                             @switch($flowMeterInspectionReport->status)
                                 @case('signed')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     {{ optional($signature)->created_at }}
                                     @break
                                 @case('finished')
-                                    <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                                     {{ $flowMeterInspectionReport->updated_at }}@if($flowMeterInspectionReport->activities->last()?->causer) · {{ Str::upper($flowMeterInspectionReport->activities->last()->causer->username) }}@endif
                                     @break
                                 @default
                                     @if($flowMeterInspectionReport->signatureRequest)
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
                                         {{ $flowMeterInspectionReport->signatureRequest->created_at }}
                                     @else
-                                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                                         {{ $flowMeterInspectionReport->created_at }}
                                     @endif
                             @endswitch
@@ -44,55 +44,55 @@
                 @unless($flowMeterInspectionReport->isFinished())
                     @can('approve', $flowMeterInspectionReport)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.finish', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             Erledigen
                         </a>
                     @endcan
                 @endunless
                 @can('update', $flowMeterInspectionReport)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.edit', $flowMeterInspectionReport) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
                         Bearbeiten
                     </a>
                 @endcan
 
                 <div class="dropdown">
                     <button class="q-kebab" type="button" id="flowMeterInspectionReportShowDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#more-vertical"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="flowMeterInspectionReportShowDropdown">
                         @can('create', \App\Models\FlowMeterInspectionReport::class)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.create', ['template' => $flowMeterInspectionReport]) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#copy"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg>
                                 Kopieren
                             </a>
                         @endcan
                         @can('email', $flowMeterInspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Email versenden
                             </a>
                         @endcan
                         @can('createPdf', $flowMeterInspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.download', $flowMeterInspectionReport) }}" target="_blank">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                                 PDF erstellen
                             </a>
                         @endcan
                         @can('emailSignatureRequest', $flowMeterInspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email-signature-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                 Unterschrift Anfrage senden
                             </a>
                         @endcan
                         @can('emailDownloadRequest', $flowMeterInspectionReport)
                             <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('flow-meter-inspection-reports.email-download-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use></svg>
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg>
                                 Download Link senden
                             </a>
                         @endcan
                         <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                            <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use></svg>
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
                             Favorisieren
                         </a>
                         @can('delete', $flowMeterInspectionReport)
@@ -100,7 +100,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Entfernen
                                 </button>
                             </form>
@@ -128,12 +128,12 @@
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>
                 <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                    <svg class="icon icon-16">
+                    <svg class="icon-bs icon-16">
                         @switch($flowMeterInspectionReport->weather)
-                            @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
-                            @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
-                            @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
-                            @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
+                            @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                            @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                            @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                            @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
                         @endswitch
                     </svg>
                     {{ __($flowMeterInspectionReport->weather) }} ({{ $flowMeterInspectionReport->temperature }} °C)
@@ -160,7 +160,7 @@
                             <div class="col-12 col-md-6 col-lg-4">
                                 <a href="{{ $flowMeterInspectionReport->appendix()->getUrl() }}" class="q-attach">
                                     <span class="q-attach__preview q-attach__preview--icon">
-                                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                     </span>
                                     <span class="min-w-0">
                                         <span class="q-attach__name text-truncate d-block">{{ $flowMeterInspectionReport->appendix()->file_name }}</span>
@@ -186,7 +186,7 @@
                                             <img class="q-attach__preview" src="{{ $attachment->getUrl('thumbnail') }}" alt="{{ $attachment->file_name }}" />
                                         @else
                                             <span class="q-attach__preview q-attach__preview--icon">
-                                                <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                                                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                                             </span>
                                         @endif
                                         <span class="min-w-0">
@@ -209,12 +209,12 @@
                     <span>Unterschrift</span>
                     @if($signature)
                         <span class="q-chip q-chip--success">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
                             vorhanden
                         </span>
                     @else
                         <span class="q-chip q-chip--warning">
-                            <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use></svg>
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
                             ausstehend
                         </span>
                     @endif
@@ -224,13 +224,13 @@
                         <img class="q-sign-img" src="{{ $signature->getUrl() }}" alt="Unterschrift" />
                         <div class="q-sign-date">unterschrieben am {{ $signature->created_at }}</div>
                     @else
-                        <div class="q-signbox">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                        <div class="q-placeholder">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                             Keine Unterschrift
                         </div>
                         @can('sign', $flowMeterInspectionReport)
                             <a class="btn btn-primary text-white w-100 d-inline-flex align-items-center justify-content-center gap-2" href="{{ route('flow-meter-inspection-reports.sign', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                 Unterschreiben lassen
                             </a>
                         @endcan

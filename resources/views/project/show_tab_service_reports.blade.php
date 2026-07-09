@@ -8,7 +8,7 @@
             @can('create', \App\Models\ServiceReport::class)
                 <p class="lead">Lege einen neuen Servicebericht an.</p>
                 <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Servicebericht anlegen
                 </a>
             @endcan
@@ -21,13 +21,13 @@
             <div class="ms-auto d-flex align-items-center gap-2">
                 @can('create', \App\Models\ServiceReport::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('service-reports.create', ['project' => $project->id]) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                         Servicebericht anlegen
                     </a>
                 @endcan
                 @can('downloadList', \App\Models\ServiceReport::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('service-reports.download-list', ['project_id' => $project->id]) }}" target="_blank">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                         PDF Liste
                     </a>
                 @endcan

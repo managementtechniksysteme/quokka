@@ -14,19 +14,19 @@
             </div>
 
             <div class="q-inforow">
-                <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use></svg></span>
+                <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg></span>
                 <div class="q-inforow__main">
                     <div class="q-inforow__label">Zeitraum</div>
                     <div class="q-inforow__value d-flex align-items-center gap-2">
                         <span @unless($project->starts_on) class="q-inforow__value--empty" @endunless>{{ $project->starts_on ?: 'kein Start' }}</span>
-                        <svg class="icon icon-12"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use></svg>
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
                         <span @unless($project->ends_on) class="q-inforow__value--empty" @endunless>{{ $project->ends_on ?: 'kein Ende' }}</span>
                     </div>
                 </div>
             </div>
 
             <div class="q-inforow">
-                <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use></svg></span>
+                <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg></span>
                 <div class="q-inforow__main">
                     <div class="q-inforow__label">Vorphase</div>
                     <div class="q-inforow__value">{{ $project->isPreExecutionString }}</div>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="q-inforow">
-                <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use></svg></span>
+                <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg></span>
                 <div class="q-inforow__main">
                     <div class="q-inforow__label">In Finanzen</div>
                     <div class="q-inforow__value">{{ $project->includedInFinancesString }}</div>
@@ -43,7 +43,7 @@
 
             @if($project->current_kilometres)
                 <div class="q-inforow">
-                    <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use></svg></span>
+                    <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span>
                     <div class="q-inforow__main">
                         <div class="q-inforow__label">Kilometer</div>
                         <div class="q-inforow__value">
@@ -68,7 +68,7 @@
                 <div class="q-card__body">
                     @if($project->costs || $project->current_costs)
                         <div class="q-inforow">
-                            <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use></svg></span>
+                            <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg></span>
                             <div class="q-inforow__main">
                                 <div class="q-inforow__label">Auftragsvolumen</div>
                                 <div class="q-inforow__value d-flex align-items-center flex-wrap gap-1">
@@ -84,7 +84,7 @@
 
                     @if($project->current_billed_financial_costs || $project->current_costs)
                         <div class="q-inforow">
-                            <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use></svg></span>
+                            <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg></span>
                             <div class="q-inforow__main">
                                 <div class="q-inforow__label">verrechnet</div>
                                 <div class="q-inforow__value d-flex align-items-center flex-wrap gap-1">
@@ -100,7 +100,7 @@
 
                     @if($project->wage_costs || $project->current_wage_costs)
                         <div class="q-inforow">
-                            <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use></svg></span>
+                            <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg></span>
                             <div class="q-inforow__main">
                                 <div class="q-inforow__label">Lohnvolumen</div>
                                 <div class="q-inforow__value d-flex align-items-center flex-wrap gap-1">
@@ -116,7 +116,7 @@
 
                     @if($project->material_costs || $project->current_material_costs)
                         <div class="q-inforow">
-                            <span class="q-inforow__icon"><svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use></svg></span>
+                            <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg></span>
                             <div class="q-inforow__main">
                                 <div class="q-inforow__label">Materialvolumen</div>
                                 <div class="q-inforow__value d-flex align-items-center flex-wrap gap-1">

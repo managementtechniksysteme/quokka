@@ -14,8 +14,8 @@
             <div v-if="existing_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in existing_attachments">
                 <div class="col d-inline-flex align-items-center">
                     <img v-if="attachment.url !== null" class="attachment-img-preview me-2" :src="attachment.url" :alt="attachment.file_name" />
-                    <svg v-else class="icon attachment-img-preview me-2">
-                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    <svg v-else class="icon-bs attachment-img-preview me-2">
+                        <use href="/svg/bootstrap-icons.svg#file-text"></use>
                     </svg>
                     <div>
                         <div>{{attachment.file_name}}</div>
@@ -30,8 +30,8 @@
             <div v-if="new_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in new_attachments">
                 <div class="col d-inline-flex align-items-center">
                     <img v-if="attachment.preview !== null" class="attachment-img-preview me-2" :src="attachment.preview" :alt="attachment.file_name" />
-                    <svg v-else class="icon attachment-img-preview me-2">
-                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    <svg v-else class="icon-bs attachment-img-preview me-2">
+                        <use href="/svg/bootstrap-icons.svg#file-text"></use>
                     </svg>
                     <div>
                         <div contenteditable="true" @keydown.enter.prevent @blur="changeNewAttachmentName($event, attachment)" v-html="attachment.file_name"></div>

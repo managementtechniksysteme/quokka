@@ -1,90 +1,84 @@
 <template>
-  <div>
-        <div class="row g-3">
-            <div class="mb-3 col-6 col-lg-3">
+    <div>
+        <div class="row g-2">
+            <div class="col-6 col-lg-3">
                 <label for="date">Datum</label>
-                <input type="date" class="form-control" v-bind:class="{'is-invalid': provided_on_invalid}" id="date" name="date" placeholder="" required v-model="date" @keydown.enter.prevent="addService()" />
-                <div class="invalid-feedback">
-                    Datum muss ausgefüllt sein.
-                </div>
+                <input type="date" class="form-control" :class="{'is-invalid': provided_on_invalid}" id="date" required v-model="date" @keydown.enter.prevent="addService()" />
+                <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
             </div>
-            <div class="mb-3 col-6 col-lg-3">
+            <div class="col-6 col-lg-3">
                 <label for="hours">Stunden</label>
-                <input type="number" class="form-control" v-bind:class="{'is-invalid': hours_invalid}" min="0.5" step="0.5" id="hours" name="hours" placeholder="5" v-model="hours" @keydown.enter.prevent="addService()" />
-                <div class="invalid-feedback">
-                    Stunden muss mindestens 0.5 sein.
-                </div>
+                <input type="number" class="form-control" :class="{'is-invalid': hours_invalid}" min="0.5" step="0.5" id="hours" placeholder="5" v-model="hours" @keydown.enter.prevent="addService()" />
+                <div class="invalid-feedback">Stunden muss mindestens 0.5 sein.</div>
             </div>
-            <div class="mb-3 col-6 col-lg-3">
+            <div class="col-6 col-lg-3">
                 <label for="kilometres">gefahrene KM</label>
-                <input type="number" class="form-control" v-bind:class="{'is-invalid': kilometres_invalid}" min="1" step="1" id="kilometres" name="kilometres" placeholder="12" v-model="kilometres" @keydown.enter.prevent="addService()" />
-                <div class="invalid-feedback">
-                    Kilometer muss mindestens 1 sein.
-                </div>
+                <input type="number" class="form-control" :class="{'is-invalid': kilometres_invalid}" min="1" step="1" id="kilometres" placeholder="12" v-model="kilometres" @keydown.enter.prevent="addService()" />
+                <div class="invalid-feedback">Kilometer muss mindestens 1 sein.</div>
             </div>
-            <div class="mb-3 col-6 col-lg-3">
-                <label for="submit">&nbsp;</label>
-                <button id="submit" type="button" class="form-control btn btn-outline-secondary" @click="addService()" @keydown.enter.prevent="addService()">Hinzufügen</button>
+            <div class="col-6 col-lg-3">
+                <label>&nbsp;</label>
+                <button type="button" class="btn q-btn w-100 d-flex align-items-center justify-content-center gap-2" @click="addService()" @keydown.enter.prevent="addService()">
+                    <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
+                    Hinzufügen
+                </button>
             </div>
         </div>
 
-        <div v-if="services.length" class="mt-2">
-            <div v-if="overlapping_reports.length" class="alert alert-warning mt-1" role="alert">
-                <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 me-2">
-                        <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                    </svg>
-                    <div class="m-0">
-                        <p class="m-0">
-                            Zu den eingetragenen Daten existieren für das gewählte Projekt bereits folgende Serviceberichte von dir.
-                            <strong>Bitte überprüfe, ob Serviceleistungen bereits in einem Servicebericht vermerkt sind!</strong>
-                        </p>
-                        <ul class="m-0">
-                            <li v-for="report in overlapping_reports"><a :href="report.link" target="_blank">{{ report.title }}</a></li>
-                        </ul>
+        <template v-if="services.length">
+            <input v-for="(service, index) in services" :key="'sr_'+index"   type="hidden" :name="'services['+index+'][service_report_id]'" :value="service.service_report_id" />
+            <input v-for="(service, index) in services" :key="'date_'+index" type="hidden" :name="'services['+index+'][provided_on]'"      :value="service.provided_on.toISOString().substr(0, 10)" />
+            <input v-for="(service, index) in services" :key="'h_'+index"    type="hidden" :name="'services['+index+'][hours]'"             :value="service.hours" />
+            <input v-for="(service, index) in services" :key="'km_'+index"   type="hidden" :name="'services['+index+'][kilometres]'"        :value="service.kilometres" />
+
+            <div v-if="overlapping_reports.length" class="q-banner mt-3" role="alert">
+                <svg class="icon-bs icon-16" style="flex-shrink:0"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                <div>
+                    <p class="m-0">Zu den eingetragenen Daten existieren für das gewählte Projekt bereits folgende Serviceberichte von dir. <strong>Bitte überprüfe, ob Serviceleistungen bereits in einem Servicebericht vermerkt sind!</strong></p>
+                    <ul class="m-0 mt-1">
+                        <li v-for="report in overlapping_reports"><a :href="report.link" target="_blank">{{ report.title }}</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="q-card mt-3">
+                <div class="q-lines--editable">
+                    <div class="q-lines__head">
+                        <span>Datum</span>
+                        <span class="q-lines__num">Stunden</span>
+                        <span class="q-lines__num">Gef. km</span>
+                        <span></span>
+                    </div>
+                    <div v-for="(service, index) in services" :key="'row_'+index" class="q-lines__row">
+                        <div class="q-lines__cell" @click="setEdit(service, 'provided_on')">
+                            <span v-if="service.edit !== 'provided_on'">{{ service.provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
+                            <input v-else type="date" class="form-control form-control-sm" :class="{'is-invalid': table_provided_on_invalid}" ref="table_input" :value="getDateStringForInputField(service.provided_on)" required @blur="changeServiceProvidedOn($event, service)" />
+                        </div>
+                        <div class="q-lines__num q-lines__cell" @click="setEdit(service, 'hours')">
+                            <span v-if="service.edit !== 'hours'">{{ service.hours }}</span>
+                            <input v-else type="number" min="0" step="0.5" class="form-control form-control-sm" :class="{'is-invalid': table_hours_invalid}" ref="table_input" :value="service.hours" placeholder="5" @blur="changeServiceHours($event, service)" />
+                        </div>
+                        <div class="q-lines__num q-lines__cell" @click="setEdit(service, 'kilometres')">
+                            <span v-if="service.edit !== 'kilometres'">{{ service.kilometres }}</span>
+                            <input v-else type="number" min="0" step="1" class="form-control form-control-sm" :class="{'is-invalid': table_kilometres_invalid}" ref="table_input" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button>
+                        </div>
+                    </div>
+                    <div class="q-lines__sum">
+                        <span class="q-lines__sumlabel">Summe</span>
+                        <span class="q-lines__sumval">{{ totalHours }} h</span>
+                        <span class="q-lines__sumval">{{ totalKilometres }} km</span>
+                        <span></span>
                     </div>
                 </div>
             </div>
-
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col" class="col-4 col-lg-3">Datum</th>
-                        <th scope="col" class="col-2">Stunden</th>
-                        <th scope="col" class="col-3 col-lg-5">gef<span class="d-inline d-md-none">.</span><span class="d-none d-md-inline">ahrene</span> KM</th>
-                        <th scope="col" class="col-auto text-end"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(service, index) in services"  class="hover-highlight">
-                        <input v-if="services.length" type="hidden" :id="'services['+index+'][service_report_id]'" :name="'services['+index+'][service_report_id]'" :value="service.service_report_id" />
-                        <input v-if="services.length" type="hidden" :id="'services['+index+'][provided_on]'" :name="'services['+index+'][provided_on]'" :value="service.provided_on.toISOString().substr(0, 10)" />
-                        <input v-if="services.length" type="hidden" :id="'services['+index+'][hours]'" :name="'services['+index+'][hours]'" :value="service.hours" />
-                        <input v-if="services.length" type="hidden" :id="'services['+index+'][kilometres]'" :name="'services['+index+'][kilometres]'" :value="service.kilometres" />
-
-                        <th scope="row" class="col-4 col-lg-3" @click="setEdit(service, 'provided_on')">
-                            <span v-if="service.edit !== 'provided_on'">{{ service.provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                            <input v-if="service.edit === 'provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_provided_on_invalid}" ref="table_input" id="table_provided_on" name="table_provided_on" :value="getDateStringForInputField(service.provided_on)" placeholder="" required @blur="changeServiceProvidedOn($event, service)" />
-                        </th>
-                        <td class="col-2" @click="setEdit(service, 'hours')">
-                            <span v-if="service.edit !== 'hours'">{{ service.hours }}</span>
-                            <input v-if="service.edit === 'hours'" type="number" min="0" step="0.5" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_hours_invalid}" ref="table_input" id="table_hours" name="table_hours" :value="service.hours" placeholder="5" @blur="changeServiceHours($event, service)" />
-                        </td>
-                        <td class="col-3 col-lg-5" @click="setEdit(service, 'kilometres')">
-                            <span v-if="service.edit !== 'kilometres'">{{ service.kilometres }}</span>
-                            <input v-if="service.edit === 'kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_kilometres_invalid}" ref="table_input" id="table_kilometres" name="table_kilometres" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
-                        </td>
-                        <td class="col-auto text-end"><button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        </template>
     </div>
 </template>
 
 <script>
-    const ERROR_CLASS = "text-red";
-
     export default {
         name: "ServicesSelector",
 
@@ -125,6 +119,15 @@
             }
 
             document.addEventListener('onservicereportprojectchange', this.handleProjectChange);
+        },
+
+        computed: {
+            totalHours() {
+                return this.services.reduce((sum, s) => sum + Number(s.hours), 0);
+            },
+            totalKilometres() {
+                return this.services.reduce((sum, s) => sum + Number(s.kilometres), 0);
+            },
         },
 
         methods: {

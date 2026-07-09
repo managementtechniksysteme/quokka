@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "copy-assets": "cp node_modules/feather-icons/dist/feather-sprite.svg public/svg/ && cp node_modules/bootstrap-icons/bootstrap-icons.svg public/svg/ && cp node_modules/alpinejs/dist/cdn.min.js public/js/alpine.min.js && cp node_modules/clipboard/dist/clipboard.min.js public/js/"
+        "copy-assets": "cp node_modules/bootstrap-icons/bootstrap-icons.svg public/svg/ && cp node_modules/alpinejs/dist/cdn.min.js public/js/alpine.min.js && cp node_modules/clipboard/dist/clipboard.min.js public/js/"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
@@ -23,8 +23,7 @@
         "apexcharts": "^5.10.4",
         "bootstrap-icons": "^1.13.1",
         "clipboard": "^2.0.11",
-        "feather-icons": "^4.29.2",
-        "vue-qrcode-reader": "^5.7.3",
+"vue-qrcode-reader": "^5.7.3",
         "vue-select": "^4.0.0-beta.6",
         "vue3-apexcharts": "^1.11.1",
         "vue3-easymde": "^1.0.1",

@@ -5,16 +5,16 @@
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 me-2">
-                  <use xlink:href="/svg/feather-sprite.svg#check"></use>
+              <svg class="icon-bs icon-24 me-2">
+                  <use href="/svg/bootstrap-icons.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
           </div>
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 me-2">
-                  <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
+              <svg class="icon-bs icon-24 me-2">
+                  <use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
           </div>
@@ -81,8 +81,8 @@
                               </div>
                           </div>
                           <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="icon icon-16 me-2">
-                                  <use xlink:href="/svg/feather-sprite.svg#filter"></use>
+                              <svg class="icon-bs icon-16 me-2">
+                                  <use href="/svg/bootstrap-icons.svg#funnel"></use>
                               </svg>
                               Einträge filtern
                           </button>
@@ -150,8 +150,8 @@
                               <div class="mb-3 d-none d-lg-block d-xl-none col-lg-3">
                                   <label for="addaccounting">&nbsp;</label>
                                   <button id="addaccounting" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
-                                      <svg class="icon icon-16 me-2">
-                                          <use xlink:href="/svg/feather-sprite.svg#plus"></use>
+                                      <svg class="icon-bs icon-16 me-2">
+                                          <use href="/svg/bootstrap-icons.svg#plus"></use>
                                       </svg>
                                       Hinzufügen
                                   </button>
@@ -159,8 +159,8 @@
                           </div>
                           <div class="d-block d-lg-none d-xl-block mt-4">
                               <button id="addaccounting" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
-                                  <svg class="icon icon-16 me-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#plus"></use>
+                                  <svg class="icon-bs icon-16 me-2">
+                                      <use href="/svg/bootstrap-icons.svg#plus"></use>
                                   </svg>
                                   Hinzufügen
                               </button>
@@ -173,8 +173,8 @@
                   <div class="sticky-top bg-general">
                       <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
                           <h3 class="d-inline-block">
-                              <svg class="icon icon-baseline text-muted me-1">
-                                  <use xlink:href="/svg/feather-sprite.svg#clock"></use>
+                              <svg class="icon-bs icon-baseline text-muted me-1">
+                                  <use href="/svg/bootstrap-icons.svg#clock"></use>
                               </svg>
                               Leistungsabrechnung
                               <small v-if="accounting.length" class="text-muted">
@@ -188,16 +188,16 @@
 
                           <div class="float-end">
                               <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length === 1" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                  <svg class="icon icon-16 me-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                  <svg class="icon-bs icon-16 me-2">
+                                      <use href="/svg/bootstrap-icons.svg#printer"></use>
                                   </svg>
                                   Auswertung
                               </button>
 
                               <div v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="dropdown">
                                   <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                    <svg class="icon icon-16 me-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                    <svg class="icon-bs icon-16 me-2">
+                                      <use href="/svg/bootstrap-icons.svg#printer"></use>
                                     </svg>
                                     Auswertung
                                   </button>
@@ -207,15 +207,15 @@
                                           <div v-for="employeeId in this.getShownEmployeeIds()" class="d-inline-block form-check mx-2 my-1">
                                               <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">
                                               <label class="form-check-label" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="employeeId">
-                                                <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#user"></use>
+                                                <svg class="icon-bs icon-16">
+                                                  <use href="/svg/bootstrap-icons.svg#person"></use>
                                                 </svg>
                                                 {{ getEmployeeName(employeeId) }}
                                               </label>
                                           </div>
                                           <button class="btn btn-sm btn-primary mx-2 mt-2" type="submit">
-                                              <svg class="icon icon-16 me-2">
-                                                  <use xlink:href="/svg/feather-sprite.svg#printer"></use>
+                                              <svg class="icon-bs icon-16 me-2">
+                                                  <use href="/svg/bootstrap-icons.svg#printer"></use>
                                               </svg>
                                               Erstellen
                                           </button>
@@ -224,8 +224,8 @@
                               </div>
 
                               <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && !this.selectedAccountingContainsUnsaved() && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
-                                  <svg class="icon icon-16 me-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#settings"></use>
+                                  <svg class="icon-bs icon-16 me-2">
+                                      <use href="/svg/bootstrap-icons.svg#gear"></use>
                                   </svg>
                                   Servicebericht erstellen
                               </button>
@@ -234,8 +234,8 @@
 
                       <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
                           <div class="d-inline-flex align-items-center">
-                              <svg class="icon icon-24 me-2">
-                                  <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                              <svg class="icon-bs icon-24 me-2">
+                                  <use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
                               </svg>
                               <p class="m-0">
                                   Du hast ungespeicherte Änderungen. Geänderte Zeilen bleiben auch dann sichtbar, wenn der
@@ -251,8 +251,8 @@
                               <tr>
                                   <th scope="col" class="col-auto">
                                       <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                                          <svg class="icon-bs icon-16">
+                                              <use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
                                           </svg>
                                       </button>
                                   </th>
@@ -265,24 +265,24 @@
                                   <th scope="col" class="col-1-5">Mitarbeiter</th>
                                   <th scope="col" class="col-auto text-end">
                                       <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
+                                          <svg class="icon-bs icon-16">
+                                              <use href="/svg/bootstrap-icons.svg#trash"></use>
                                           </svg>
                                       </button>
                                       <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
+                                          <svg class="icon-bs icon-16">
+                                              <use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use>
                                           </svg>
                                       </button>
                                       <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon icon-16">
-                                              <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
-                                              <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
+                                          <svg class="icon-bs icon-16">
+                                              <use v-if="!selectAllHover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                              <use v-if="selectAllHover" href="/svg/bootstrap-icons.svg#check-circle"></use>
                                           </svg>
                                       </button>
                                       <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
+                                          <svg class="icon-bs icon-16">
+                                              <use href="/svg/bootstrap-icons.svg#check-circle"></use>
                                           </svg>
                                       </button>
                                   </th>
@@ -293,10 +293,10 @@
                                   <tr class="hover-highlight" v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
                                       <td class="col-auto">
                                           <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
-                                              <svg class="icon icon-16">
-                                                  <use v-if="!acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
-                                                  <use v-if="acc.errors && !acc.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                                                  <use v-if="acc.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
+                                              <svg class="icon-bs icon-16">
+                                                  <use v-if="!acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#chevron-right"></use>
+                                                  <use v-if="acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
+                                                  <use v-if="acc.show_details" href="/svg/bootstrap-icons.svg#chevron-down"></use>
                                               </svg>
                                           </button>
                                       </td>
@@ -331,24 +331,24 @@
                                       <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
                                       <td class="col-auto text-end">
                                           <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
+                                              <svg class="icon-bs icon-16">
+                                                  <use href="/svg/bootstrap-icons.svg#trash"></use>
                                               </svg>
                                           </button>
                                           <button v-if="acc.action === 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
+                                              <svg class="icon-bs icon-16">
+                                                  <use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use>
                                               </svg>
                                           </button>
                                           <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="icon icon-16">
-                                                  <use v-if="!acc.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
-                                                  <use v-if="acc.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
+                                              <svg class="icon-bs icon-16">
+                                                  <use v-if="!acc.hover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                                  <use v-if="acc.hover" href="/svg/bootstrap-icons.svg#check-circle"></use>
                                               </svg>
                                           </button>
                                           <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
+                                              <svg class="icon-bs icon-16">
+                                                  <use href="/svg/bootstrap-icons.svg#check-circle"></use>
                                               </svg>
                                           </button>
                                       </td>
@@ -393,8 +393,8 @@
                   </div>
 
                   <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
-                      <svg class="icon icon-16 me-2">
-                          <use xlink:href="/svg/feather-sprite.svg#save"></use>
+                      <svg class="icon-bs icon-16 me-2">
+                          <use href="/svg/bootstrap-icons.svg#save"></use>
                       </svg>
                       Änderungen speichern
                   </button>

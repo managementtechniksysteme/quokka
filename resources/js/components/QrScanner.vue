@@ -3,8 +3,8 @@
         <div v-if="qr_scanner_error !== null">
             <notification type="danger" v-cloak>
                 <div class="d-inline-flex align-items-center">
-                    <svg class="icon icon-24 me-2">
-                        <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
+                    <svg class="icon-bs icon-24 me-2">
+                        <use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use>
                     </svg>
                     {{qr_scanner_error}}
                 </div>
@@ -17,8 +17,8 @@
 
         <notification v-if="qr_url_error !== null" type="warning" :key="notification_key" v-cloak>
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 me-2">
-                    <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
+                <svg class="icon-bs icon-24 me-2">
+                    <use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
                 </svg>
                 {{qr_url_error}}
             </div>

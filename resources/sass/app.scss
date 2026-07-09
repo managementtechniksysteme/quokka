@@ -71,20 +71,7 @@ main {
 }
 
 // Icons
-svg.icon {
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-  display: inline-flex;
-  align-self: center;
-  min-width: 1em;
-  min-height: 1em;
-  max-width: 1em;
-  max-height: 1em;
-}
-
+svg.icon,
 svg.icon-bs {
   fill: currentColor;
   display: inline-flex;

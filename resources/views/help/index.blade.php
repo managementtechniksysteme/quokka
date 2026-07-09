@@ -8,7 +8,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
                 </span>
                 <div>
                     <h1 class="q-title">Hilfe</h1>
@@ -25,7 +25,7 @@
                     <div class="q-row">
                         <a class="stretched-link outline-none" href="{{ route('help.show', $name) }}"></a>
                         <span class="q-avatar">
-                            <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#file-text"></use></svg>
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
                         </span>
                         <div class="q-row__main">
                             <div class="q-row__title text-truncate">{{ Str::title(trans($name)) }}</div>

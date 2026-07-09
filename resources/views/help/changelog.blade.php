@@ -3,18 +3,20 @@
 @php use Illuminate\Support\Str; @endphp
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline text-muted me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                {{ config('app.name') }} Versionshinweise
-            </h3>
+    <div class="q-container q-container--narrow">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock-history"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">{{ config('app.name') }}</div>
+                    <h1 class="q-title">Versionshinweise</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
+        <div class="mt-4">
     @markdown
     ### v0.1.34-b5f0ed1 (21.05.2023)
     * Lieferscheine könnnen vor dem Unterschreiben zur Überprüfung heruntergeladen werden.
@@ -441,6 +443,7 @@
       automatisch über eine Unterschrift benachrichtigt.
       * Diverse Verbesserungen an der Benutzeroberfläche wurden implementiert.
       @endmarkdown
+        </div>
     </div>
 
 @endsection

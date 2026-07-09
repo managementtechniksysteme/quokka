@@ -1,190 +1,117 @@
 @extends('layouts.app')
 
-@php
-    use \App\Models\Project;
-@endphp
+@php use \App\Models\Project; @endphp
 
 @if (old('project'))
     @php $currentProject = Project::find(old('project')); @endphp
 @endif
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container pt-4">
-            <h3>
-                <svg class="icon icon-baseline text-muted me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                </svg>
-                Projekt Finanzübersicht
-            </h3>
+    <div class="q-container">
 
-            <div class="scroll-x d-flex">
-                @can('finances-createpdf')
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('project-finances.download') }}">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                        </svg>
-                        PDF erstellen
-                    </a>
-                @endcan
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Finanzen</div>
+                    <h1 class="q-title">Projekt Finanzübersicht</h1>
+                </div>
             </div>
+            @can('finances-createpdf')
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('project-finances.download') }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                    PDF erstellen
+                </a>
+            @endcan
         </div>
-    </div>
 
-    <div class="container my-4">
-        <div class="row">
+        {{-- Overview: Open + Pre-execution projects --}}
+        <div class="row g-4 mt-2">
 
             <div class="col-lg-6">
-                <h4>
-                    <svg class="icon-bs icon-baseline text-muted me-1">
-                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#circle"></use>
-                    </svg>
-                    Aktuell offene Projekte
-                </h4>
-
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
+                <div class="q-card h-100">
+                    <div class="q-card__head">Aktuell offene Projekte</div>
+                    <div class="d-flex" style="border-bottom: 1px solid var(--q-border-2)">
+                        <div class="flex-fill p-4 text-center">
+                            <div class="q-eyebrow">Auftragsvolumen</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-green)">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'], 2) }} {{ $currencyUnit }}</div>
+                        </div>
+                        <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                            <div class="q-eyebrow">verrechnet</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-red)">{{ Number::toLocal($currentlyOpenProjectsData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
+                        </div>
+                        <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                            <div class="q-eyebrow">offen</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--{{ $currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'] >= 0 ? 'q-green' : 'q-red' }})">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
                         </div>
                     </div>
-
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                <span class="h2 fw-bold @if($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($currentlyOpenProjectsData['total_volume'] + $currentlyOpenProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <finance-volume-chart :total_volume="{{ $currentlyOpenProjectsData['total_volume'] }}" :billed_volume="{{ $currentlyOpenProjectsData['billed_volume'] }}" v-cloak></finance-volume-chart>
                 </div>
             </div>
 
             <div class="col-lg-6">
-                <h4>
-                    <svg class="icon-bs icon-baseline text-muted me-1">
-                        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-bar-left"></use>
-                    </svg>
-                    Projekte in der Vorphase
-                </h4>
-
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
+                <div class="q-card h-100">
+                    <div class="q-card__head">Projekte in der Vorphase</div>
+                    <div class="d-flex" style="border-bottom: 1px solid var(--q-border-2)">
+                        <div class="flex-fill p-4 text-center">
+                            <div class="q-eyebrow">Auftragsvolumen</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-green)">{{ Number::toLocal($preExecutionProjectsData['total_volume'], 2) }} {{ $currencyUnit }}</div>
+                        </div>
+                        <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                            <div class="q-eyebrow">verrechnet</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-red)">{{ Number::toLocal($preExecutionProjectsData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
+                        </div>
+                        <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                            <div class="q-eyebrow">offen</div>
+                            <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--{{ $preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'] >= 0 ? 'q-green' : 'q-red' }})">{{ Number::toLocal($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
                         </div>
                     </div>
-
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                <span class="h2 fw-bold @if($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($preExecutionProjectsData['total_volume'] + $preExecutionProjectsData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <finance-volume-chart :total_volume="{{ $preExecutionProjectsData['total_volume'] }}" :billed_volume="{{ $preExecutionProjectsData['billed_volume'] }}" v-cloak></finance-volume-chart>
                 </div>
             </div>
+
         </div>
 
-        <h4 class="mt-4">
-            <svg class="icon-bs icon-baseline text-muted me-1">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use>
-            </svg>
-            Übersicht einzelner Projekte
-        </h4>
+        {{-- Per-project filter --}}
+        <div class="d-flex align-items-center gap-2 mt-4 mb-3">
+            <h2 class="q-subhead">Übersicht einzelner Projekte</h2>
+        </div>
 
-        <form class="needs-validation mt-4" action="{{ route('project-finances.index') }}" method="get" novalidate>
-            <div class="row">
-                <div class="col d-flex">
-                    <div class="mb-3 flex-grow-1 me-2">
+        <div class="q-form-section mb-0">
+            <div class="q-form-section__body">
+                <form class="needs-validation d-flex align-items-center gap-3" action="{{ route('project-finances.index') }}" method="get" novalidate>
+                    <div class="flex-grow-1">
                         <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" inputname="project" v-cloak></project-dropdown>
-                        <div class="invalid-feedback @error('project_id') d-block @enderror">
-                            @error('project_id')
-                                {{ $message }}
-                            @enderror
-                        </div>
+                        @error('project_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
-                            </svg>
-                            Anzeigen
-                        </button>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2 flex-shrink-0">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#eye"></use></svg>
+                        Anzeigen
+                    </button>
+                </form>
             </div>
-        </form>
+        </div>
 
         @if($projectData)
-            <div class="row mt-4">
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                            <span class="h2 fw-bold text-green m-0">{{ Number::toLocal($projectData['total_volume'], 2) }}{{ $currencyUnit }}</span>
-                        </div>
+            <div class="q-card mt-3">
+                <div class="d-flex flex-wrap" style="border-bottom: 1px solid var(--q-border-2)">
+                    <div class="flex-fill p-4 text-center">
+                        <div class="q-eyebrow">Auftragsvolumen</div>
+                        <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-green)">{{ Number::toLocal($projectData['total_volume'], 2) }} {{ $currencyUnit }}</div>
+                    </div>
+                    <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                        <div class="q-eyebrow">verrechnet</div>
+                        <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-red)">{{ Number::toLocal($projectData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
+                    </div>
+                    <div class="flex-fill p-4 text-center" style="border-left: 1px solid var(--q-border-2)">
+                        <div class="q-eyebrow">offen</div>
+                        <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--{{ $projectData['total_volume'] + $projectData['billed_volume'] >= 0 ? 'q-green' : 'q-red' }})">{{ Number::toLocal($projectData['total_volume'] + $projectData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
                     </div>
                 </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                            <span class="h2 fw-bold text-red m-0">{{ Number::toLocal($projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                            <span class="h2 fw-bold @if($projectData['total_volume'] + $projectData['billed_volume'] >= 0) text-green @else text-red @endif m-0">{{ Number::toLocal($projectData['total_volume'] + $projectData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
                 <finance-volume-chart :total_volume="{{ $projectData['total_volume'] }}" :billed_volume="{{ $projectData['billed_volume'] }}" v-cloak></finance-volume-chart>
             </div>
         @endif

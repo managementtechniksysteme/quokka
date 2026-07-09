@@ -7,9 +7,9 @@
         <p class="q-legend mt-3">
             Die Pfeile für die
             <b><u>G</u></b>esamt, <b><u>V</u></b>errechneten, <b><u>L</u></b>ohn und <b><u>M</u></b>aterialkosten zeigen:
-            <svg class="icon icon-baseline text-success"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg> unter der Warnschwelle ·
-            <svg class="icon icon-baseline text-warning"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use></svg> zwischen Warnschwelle und Schätzung ·
-            <svg class="icon icon-baseline text-danger"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg> über der Schätzung.
+            <svg class="icon-bs icon-baseline text-success"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg> unter der Warnschwelle ·
+            <svg class="icon-bs icon-baseline text-warning"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down-right"></use></svg> zwischen Warnschwelle und Schätzung ·
+            <svg class="icon-bs icon-baseline text-danger"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg> über der Schätzung.
             Warnschwellen:
             @if($projectOverallCostsWarningPercentage) Gesamt {{ $projectOverallCostsWarningPercentage }}% @endif
             @if($projectBilledCostsWarningPercentage) Verrechnet {{ $projectBilledCostsWarningPercentage }}% @endif

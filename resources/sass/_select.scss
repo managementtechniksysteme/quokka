@@ -10,7 +10,7 @@
 :root {
     --vs-border-color: var(--q-border);
     --vs-border-radius: 10px;
-    --vs-font-size: #{$font-size-base};
+    --vs-font-size: .85rem;
     --vs-line-height: #{$line-height-base};
     --vs-controls-color: var(--q-muted);
 
@@ -34,13 +34,19 @@
     --vs-state-disabled-controls-color: var(--q-faint);
 }
 
-// control surface — matches .q-form .form-control (surface-2 + accent focus ring)
+// control surface — matches .q-form .form-control (surface-2, .6rem padding, .85rem font)
+// Height formula: line-height × font-size + 2×padding-y + 2×border = 1.5×.85rem + 1.2rem + 2px
 .vs__dropdown-toggle {
-    padding: $input-padding-y $input-padding-x;
-    min-height: $input-height;
+    padding: .6rem .8rem;
+    min-height: calc(var(--vs-line-height) * var(--vs-font-size) + 1.2rem + 2px);
     background-color: var(--q-surface-2);
     border-color: var(--q-border);
 }
+// Single-select: pin to a fixed height so the toggle never shifts when vs--open
+// pulls .vs__selected out of the flex flow (position:absolute). min-height alone
+// isn't enough because a block-level .vs__selected can exceed the content area and
+// make the toggle taller when closed than when open.
+.vs--single .vs__dropdown-toggle { height: calc(var(--vs-line-height) * var(--vs-font-size) + 1.2rem + 2px); }
 .vs--open .vs__dropdown-toggle {
     border-color: var(--q-accent);
     box-shadow: 0 0 0 3px var(--q-accent-tint);
@@ -51,8 +57,17 @@
     box-shadow: var(--q-shadow-lg);
 }
 
-.vs__search, .vs__search:focus { margin: 0; padding: 0; }
-.vs__selected { margin: 0; padding: 0; }
+// Pin search input and selected item to the same explicit height. Using
+// var(--vs-font-size) rather than 1em so the value is always the vs token, not
+// whatever font-size is inherited from the surrounding context.
+.vs__search, .vs__search:focus { margin: 0; padding: 0; height: calc(var(--vs-line-height) * var(--vs-font-size)); }
+.vs__selected { margin: 0; padding: 0; height: calc(var(--vs-line-height) * var(--vs-font-size)); }
+
+// Avatars inside the control (selected-option slot) must fit the content area
+// (line-height × font-size ≈ 24 px). The dropdown option list has more space and
+// is unaffected because those avatars live in .vs__dropdown-menu, not here.
+.vs__dropdown-toggle .q-avatar { width: 20px; height: 20px; font-size: .5rem; }
+
 .vs__clear, .vs__open-indicator { fill: var(--q-muted); }
 
 // Small vue select

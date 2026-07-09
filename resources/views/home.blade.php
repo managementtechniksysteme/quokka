@@ -12,13 +12,13 @@
             <div class="d-flex gap-2">
                 @can('accounting.view.own')
                     <a href="{{ route('accounting.index') }}" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                        <svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
                         Leistung erfassen
                     </a>
                 @endcan
                 @can('create', \App\Models\Task::class)
                     <a href="{{ route('tasks.create') }}" class="btn q-btn d-inline-flex align-items-center gap-2">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                         Aufgabe anlegen
                     </a>
                 @endcan
@@ -36,7 +36,7 @@
                 <a href="{{ route('accounting.index') }}" class="q-card q-tile">
                     <div class="q-tile__head">
                         <span class="q-tile__label">Stunden</span>
-                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg></span>
+                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg></span>
                     </div>
                     <div class="q-tile__value">{{ Number::toLocal($employeeMtdHourlyBasedServices) }}</div>
                     <div class="q-tile__sub">geleistet</div>
@@ -45,7 +45,7 @@
                 <a href="{{ route('accounting.index') }}" class="q-card q-tile">
                     <div class="q-tile__head">
                         <span class="q-tile__label">Diäten</span>
-                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#wallet2"></use></svg></span>
+                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#wallet2"></use></svg></span>
                     </div>
                     <div class="q-tile__value">{{ Number::toLocal($employeeMtdAllowances) }}</div>
                     <div class="q-tile__sub">{{ Number::toLocal($employeeMtdAllowancesInCurrency) }}€</div>
@@ -54,7 +54,7 @@
                 <a href="{{ route('accounting.index') }}" class="q-card q-tile">
                     <div class="q-tile__head">
                         <span class="q-tile__label">Überstunden</span>
-                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-circle"></use></svg></span>
+                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus-circle"></use></svg></span>
                     </div>
                     <div class="q-tile__value">{{ Number::toLocal($employeeMtdOvertime) }}</div>
                     <div class="q-tile__sub">{{ Number::toLocal($employeeMtdOvertime50) }} 50% · {{ Number::toLocal($employeeMtdOvertime100) }} 100%</div>
@@ -63,7 +63,7 @@
                 <a href="{{ route('logbook.index') }}" class="q-card q-tile">
                     <div class="q-tile__head">
                         <span class="q-tile__label">Kilometer</span>
-                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span>
+                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span>
                     </div>
                     <div class="q-tile__value">{{ Number::toLocal($employeeMtdKilometres) }}</div>
                     <div class="q-tile__sub">{{ Number::toLocal($employeeMtdCompanyKilometres) }} Firma · {{ Number::toLocal($employeeMtdPrivateKilometres) }} privat ({{ Number::toLocal($employeeMtdPrivateKilometresInCurrency) }}€)</div>
@@ -72,7 +72,7 @@
                 <div class="q-card q-tile">
                     <div class="q-tile__head">
                         <span class="q-tile__label">Urlaub</span>
-                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use></svg></span>
+                        <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use></svg></span>
                     </div>
                     <div class="q-tile__value">{{ Number::toLocal($employeeHolidays) }}<span class="q-tile__unit">Tage</span></div>
                     <div class="q-tile__sub">verfügbar</div>
@@ -90,7 +90,7 @@
             <a href="{{ route('tasks.index', ['sort' => 'due_on-desc']) }}" class="q-card q-tile">
                 <div class="q-tile__head">
                     <span class="q-tile__label">Erstellt MTD</span>
-                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#plus-square"></use></svg></span>
+                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus-square"></use></svg></span>
                 </div>
                 <div class="q-tile__value">{{ Number::toLocal($employeeMtdCreatedTasks) }}</div>
                 <div class="q-tile__sub">{{ Number::toLocal($employeeMtdCreatedTasksResponsibleFor) }} ver. · {{ Number::toLocal($employeeMtdCreatedTasksInvolvedIn) }} bet.</div>
@@ -99,7 +99,7 @@
             <a href="{{ route('tasks.index', ['search' => 'ist:erledigt', 'sort' => 'due_on-desc']) }}" class="q-card q-tile">
                 <div class="q-tile__head">
                     <span class="q-tile__label">Erledigt MTD</span>
-                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
                 </div>
                 <div class="q-tile__value">{{ Number::toLocal($employeeMtdFinishedTasks) }}</div>
                 <div class="q-tile__sub">{{ Number::toLocal($employeeMtdFinishedTasksResponsibleFor) }} ver. · {{ Number::toLocal($employeeMtdFinishedTasksInvolvedIn) }} bet.</div>
@@ -108,7 +108,7 @@
             <a href="{{ route('tasks.index', ['search' => 'ist:überfällig', 'sort' => 'due_on-desc']) }}" @class(['q-card', 'q-tile', 'q-tile--danger' => $employeeOverdueTasks])>
                 <div class="q-tile__head">
                     <span class="q-tile__label">Überfällig</span>
-                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-x"></use></svg></span>
+                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-x"></use></svg></span>
                 </div>
                 <div class="q-tile__value">{{ Number::toLocal($employeeOverdueTasks) }}</div>
                 <div class="q-tile__sub">{{ Number::toLocal($employeeOverdueTasksResponsibleFor) }} ver. · {{ Number::toLocal($employeeOverdueTasksInvolvedIn) }} bet.</div>
@@ -117,7 +117,7 @@
             <a href="{{ route('tasks.index', ['search' => 'ist:bald_fällig', 'sort' => 'due_on-desc']) }}" @class(['q-card', 'q-tile', 'q-tile--warning' => $employeeDueSoonTasks])>
                 <div class="q-tile__head">
                     <span class="q-tile__label">Bald fällig</span>
-                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-day"></use></svg></span>
+                    <span class="q-tile__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-day"></use></svg></span>
                 </div>
                 <div class="q-tile__value">{{ Number::toLocal($employeeDueSoonTasks) }}</div>
                 <div class="q-tile__sub">{{ Number::toLocal($employeeDueSoonTasksResponsibleFor) }} ver. · {{ Number::toLocal($employeeDueSoonTasksInvolvedIn) }} bet.</div>
@@ -136,7 +136,7 @@
                 </div>
                 @if($totalErledigbar)
                     <div class="q-banner">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                         <span class="q-banner__count">{{ Number::toLocal($totalErledigbar) }}</span>
                         <span class="q-banner__label">{{ trans_choice('wartet auf Erledigung|warten auf Erledigung', $totalErledigbar) }}</span>
                     </div>

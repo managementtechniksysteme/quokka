@@ -13,11 +13,11 @@
         <div class="input-group">
             <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="{{ $placeholder }}" autocomplete="off" />
             <button class="btn q-btn d-flex align-items-center" type="submit">
-                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
             </button>
             @if(Request::get('search') !== null && Request::get('search') !== '')
                 <a class="btn q-btn d-flex align-items-center" href="{{ $action }}?tab={{ $tab }}&search={{ $sortQuery }}" title="Filter zurücksetzen">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                 </a>
             @endif
             @isset($quickFilters)
@@ -35,7 +35,7 @@
 
     <div class="dropdown">
         <button class="btn q-btn dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
             Sortierung
         </button>
         <div class="dropdown-menu dropdown-menu-end">
@@ -44,7 +44,7 @@
                 @if(Request::has('search'))<input type="hidden" name="search" value="{{ Request::get('search') ?? '' }}">@endif
                 @foreach($sorts as $value => $label)
                     <button type="submit" name="sort" value="{{ $value }}" class="dropdown-item d-inline-flex align-items-center gap-2">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-{{ \Illuminate\Support\Str::endsWith($value, '-desc') ? 'down' : 'up' }}"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-{{ \Illuminate\Support\Str::endsWith($value, '-desc') ? 'down' : 'up' }}"></use></svg>
                         {{ $label }}
                     </button>
                 @endforeach

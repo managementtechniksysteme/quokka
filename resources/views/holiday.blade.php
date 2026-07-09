@@ -9,8 +9,8 @@
 
             <p class="lead text-muted">Du kannst trotz Urlaubs in deine Übersicht.</p>
             <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('home', 'skip-holiday') }}">
-                <svg class="icon icon-20 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#activity"></use>
+                <svg class="icon-bs icon-20 me-2">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use>
                 </svg>
                 Übersicht anzeigen
             </a>

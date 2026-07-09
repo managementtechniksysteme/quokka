@@ -9,8 +9,8 @@
 
                     <div class="card-body">
                         <p class="alert alert-info mb-4 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 me-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                            <svg class="icon-bs icon-16 me-2">
+                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use>
                             </svg>
                             {{ __('You can find your six digit one time password in the authenticator app on your mobile phone.') }}
                         </p>
@@ -39,8 +39,8 @@
                             <div class="mb-3 row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                                        <svg class="icon icon-16 me-2">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#log-in"></use>
+                                        <svg class="icon-bs icon-16 me-2">
+                                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-in-right"></use>
                                         </svg>
                                         {{ __('Login') }}
                                     </button>

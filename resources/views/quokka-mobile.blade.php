@@ -6,8 +6,8 @@
     <div class="bg-gray-100 mt-0">
         <div class="container py-4">
             <h3>
-                <svg class="icon icon-baseline text-muted me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#smartphone"></use>
+                <svg class="icon-bs icon-baseline text-muted me-1">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#phone"></use>
                 </svg>
                 Quokka Mobile
             </h3>
@@ -49,8 +49,8 @@
 
         <div class="alert alert-warning mt-1" role="alert">
             <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
+                <svg class="icon-bs icon-24 me-2">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use>
                 </svg>
                 <p class="m-0">
                     Um manuell heruntergeladene Applikationen installieren zu können, welche nicht vom Google Play Store

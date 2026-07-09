@@ -57,8 +57,8 @@
                         <div class="mb-3 row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 me-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#log-in"></use>
+                                    <svg class="icon-bs icon-16 me-2">
+                                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-in-right"></use>
                                     </svg>
                                     {{ __('Login') }}
                                 </button>

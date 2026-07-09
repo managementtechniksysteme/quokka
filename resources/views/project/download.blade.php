@@ -30,8 +30,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                         </svg>
                         Zeitraum
                     </p>
@@ -65,8 +65,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                         </svg>
                         Mitarbeiter
                     </p>
@@ -91,8 +91,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon icon-16 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
+                        <svg class="icon-bs icon-16 me-2">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
                         </svg>
                         Leistungen
                     </p>
@@ -115,8 +115,8 @@
             </div>
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
+                <svg class="icon-bs icon-16 me-2">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use>
                 </svg>
                 PDF erstellen
             </button>

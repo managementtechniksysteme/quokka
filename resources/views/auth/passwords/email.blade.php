@@ -11,8 +11,8 @@
                     @error('username')
                         <notification type="danger" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="icon icon-24 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-octagon"></use>
+                                <svg class="icon-bs icon-24 me-2">
+                                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-octagon"></use>
                                 </svg>
                                 {{ $message }}
                             </div>
@@ -23,8 +23,8 @@
                     @if (session('status'))
                         <notification type="info" v-cloak>
                             <div class="d-inline-flex align-items-center">
-                                <svg class="icon icon-24 me-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
+                                <svg class="icon-bs icon-24 me-2">
+                                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use>
                                 </svg>
                                 {{ session('status') }}
                             </div>

@@ -5,7 +5,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Bautagesbericht · #{{ $constructionReport->number }}</div>
@@ -26,7 +26,7 @@
                     <p class="text-muted">Klicken Sie auf folgenden Button, um den Bautagesbericht im PDF Format zur Archivierung herunterzuladen.</p>
 
                     <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.customer-download', $constructionReport->downloadRequest->token) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                         Bautagesbericht als PDF herunterladen
                     </a>
 
@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-12 col-md-auto">
                                 <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                     Link als Email senden
                                 </button>
                             </div>

@@ -5,7 +5,7 @@
         <div class="q-page-head">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
-                    <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">Lieferschein</div>
@@ -26,7 +26,7 @@
                     <p class="text-muted">Klicken Sie auf folgenden Button, um den Lieferschein im PDF Format zur Archivierung herunterzuladen.</p>
 
                     <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.customer-download', $deliveryNote->downloadRequest->token) }}">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                         Lieferschein als PDF herunterladen
                     </a>
 
@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-12 col-md-auto">
                                 <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
                                     Link als Email senden
                                 </button>
                             </div>

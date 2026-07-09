@@ -1,32 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-	  @include('finance_record/breadcrumb')
+    <div class="q-container">
+        @include('finance_record.breadcrumb')
 
-            <h3>
-                <svg class="icon icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
-                </svg>
-                Finanzeintrag bearbeiten
-                <small class="text-muted">{{ $financeRecord->title }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Finanzeintrag bearbeiten</div>
+                    <h1 class="q-title">{{ $financeRecord->title }}</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('finance-records.update', ['finance_group' => $financeRecord->financeGroup, 'finance_record' => $financeRecord]) }}" method="post" novalidate>
+        <form class="q-form needs-validation" action="{{ route('finance-records.update', ['finance_group' => $financeRecord->financeGroup, 'finance_record' => $financeRecord]) }}" method="post" novalidate>
             @method('PATCH')
-            @component('finance_record.fields', [ 'financeRecord' => $financeRecord, 'currencyUnit' => $currencyUnit ])
-            @endcomponent
+            @include('finance_record.fields', ['financeRecord' => $financeRecord, 'currencyUnit' => $currencyUnit])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Finanzeintrag speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('finance-groups.show', $financeRecord->financeGroup) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Finanzeintrag speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

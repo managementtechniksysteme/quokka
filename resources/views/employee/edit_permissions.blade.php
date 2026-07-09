@@ -19,8 +19,8 @@
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center my-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
+                <svg class="icon-bs icon-16 me-2">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use>
                 </svg>
                 Berechtigungen zuweisen
             </button>
@@ -32,8 +32,8 @@
             @endcomponent
 
             <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
+                <svg class="icon-bs icon-16 me-2">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use>
                 </svg>
                 Berechtigungen speichern
             </button>

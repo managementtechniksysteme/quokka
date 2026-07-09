@@ -58,7 +58,7 @@
             <label for="status">Status</label>
             @if(optional($deliveryNote)->status === 'signed')
                 <div class="q-banner mb-2">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
                     <span>Der Lieferschein wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.</span>
                 </div>
             @endif
@@ -95,7 +95,7 @@
     <div class="q-form-section__body">
         <markdown-editor name="comment" placeholder="Bemerkungen zum Lieferschein" value="{{ old('comment', optional($deliveryNote)->comment) }}" v-cloak></markdown-editor>
         <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-            <svg class="icon icon-16 me-1"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use></svg>
+            <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
             Hilfe zu Markdown
         </a>
         <div class="invalid-feedback @error('comment') d-block @enderror">
@@ -135,7 +135,7 @@
     </div>
     <div class="q-form-section__body">
         <div class="q-banner q-banner--info">
-            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
             <span>Die Email Adresse kann im nächsten Schritt angegeben werden.</span>
         </div>
         <div class="form-check form-switch">

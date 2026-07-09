@@ -1,30 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('person.breadcrumb')
+    <div class="q-container">
+        @include('person.breadcrumb')
 
-            <h3>
-                Person bearbeiten
-                <small class="text-muted">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Person bearbeiten</div>
+                    <h1 class="q-title">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('people.update', $person) }}" method="post" novalidate>
+        <form class="q-form needs-validation" action="{{ route('people.update', $person) }}" method="post" novalidate>
             @method('PATCH')
-            @component('person.fields', [ 'person' => $person, 'currentAddress' => $currentAddress,
-                'addresses' => $addresses, 'currentCompany' => $currentCompany, 'companies' => $companies ])
-            @endcomponent
+            @include('person.fields', ['person' => $person, 'currentAddress' => $currentAddress, 'addresses' => $addresses, 'currentCompany' => $currentCompany, 'companies' => $companies])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Person speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('people.show', $person) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Person speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

@@ -1,28 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                </svg>
-                Projekt anlegen
-            </h3>
+    <div class="q-container">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Projekt anlegen</div>
+                    <h1 class="q-title">Neues Projekt</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('projects.store') }}" method="post" novalidate>
-            @component('project.fields', [ 'project' => $project, 'currencyUnit' => $currencyUnit, 'currentCompany' => $currentCompany, 'companies' => $companies, 'removeFinishedProjectFinanceGroup' => $removeFinishedProjectFinanceGroup ])
-            @endcomponent
+        <form class="q-form needs-validation" action="{{ route('projects.store') }}" method="post" novalidate>
+            @include('project.fields', ['project' => $project, 'currencyUnit' => $currencyUnit, 'currentCompany' => $currentCompany, 'companies' => $companies, 'removeFinishedProjectFinanceGroup' => $removeFinishedProjectFinanceGroup])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Projekt speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Projekt speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

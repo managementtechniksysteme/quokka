@@ -3,7 +3,7 @@
 @section('head-action')
     @can('create', \App\Models\WageService::class)
         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('wage-services.create') }}">
-            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
             Lohndienstleistung anlegen
         </a>
     @endcan
@@ -19,11 +19,11 @@
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Lohndienstleistungen suchen" autocomplete="off" />
                     <button class="btn q-btn d-flex align-items-center" type="submit">
-                        <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                     </button>
                     @if (Request::get('search'))
                         <a class="btn q-btn d-flex align-items-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                         </a>
                     @endif
                 </div>
@@ -31,7 +31,7 @@
 
             <div class="dropdown ms-auto">
                 <button class="btn q-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
-                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
                     Sortierung
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -41,10 +41,10 @@
                         @endif
 
                         <button type="submit" name="sort" value="name-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use></svg>Name
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Name
                         </button>
                         <button type="submit" name="sort" value="name-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use></svg>Name
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Name
                         </button>
                     </form>
                 </div>
@@ -62,7 +62,7 @@
                 @can('create', \App\Models\WageService::class)
                     <p class="lead">Lege eine neue Lohndienstleistung an.</p>
                     <a class="btn btn-primary text-white btn-lg d-inline-flex align-items-center gap-2" href="{{ route('wage-services.create') }}">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                         Lohndienstleistung anlegen
                     </a>
                 @endcan

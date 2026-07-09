@@ -1,54 +1,33 @@
-@php
-    use \App\Models\Project;
-@endphp
-
-@if (old('project_id'))
-    @php $currentProject = Project::find(old('project_id')); @endphp
-@endif
-
 @csrf
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-            </svg>
-            Finanzgruppe Details
-        </p>
-        <p class="text-muted">
-            Die Details der Finanzgruppe.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Finanzgruppe Details
+        <div class="q-form-section__desc">Die Details der Finanzgruppe.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
             <label for="title">Titel</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" placeholder="Mustergruppe" value="{{ old('title', optional($financeGroup)->title) }}" />
             <div class="invalid-feedback">
                 @error('title')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
 
-        <div class="mb-3">
-            <label for="comment">
-                Bemerkungen
-            </label>
-            <markdown-editor name="comment" placeholder="Bemerkungen zur Finanzgruppe"  value="{{ old('comment', optional($financeGroup)->comment) }}" v-cloak></markdown-editor>
+        <div>
+            <label>Bemerkungen</label>
+            <markdown-editor name="comment" placeholder="Bemerkungen zur Finanzgruppe" value="{{ old('comment', optional($financeGroup)->comment) }}" v-cloak></markdown-editor>
             <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
-                </svg>
+                <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
                 Hilfe zu Markdown
             </a>
             <div class="invalid-feedback @error('comment') d-block @enderror">
                 @error('comment')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
     </div>
-
 </div>

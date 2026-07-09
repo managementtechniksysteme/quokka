@@ -6,7 +6,7 @@
             <div class="q-page-head">
                 <div class="d-flex align-items-center gap-3">
                     <span class="q-avatar">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>
                     </span>
                     <div>
                         <div class="q-eyebrow">Servicebericht · #{{ $serviceReport->number }}</div>
@@ -51,7 +51,7 @@
                     <div class="q-card__head">Servicebericht unterschreiben</div>
                     <div class="q-card__body">
                         <div class="q-banner q-banner--info">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
                             <span>Der Servicebericht kann nach erfolgreicher Unterschrift heruntergeladen werden.</span>
                         </div>
 
@@ -73,11 +73,11 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     Servicebericht unterschreiben
                                 </button>
                                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Zurücksetzen
                                 </a>
                             </div>

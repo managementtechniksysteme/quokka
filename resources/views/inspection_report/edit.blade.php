@@ -1,29 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('inspection_report.breadcrumb')
+    <div class="q-container">
+        @include('inspection_report.breadcrumb')
 
-            <h3>
-                Prüfbericht bearbeiten
-                <small class="text-muted">Anlage {{ $inspectionReport->equipment_identifier }} (Projekt {{ $currentProject->name }}) vom {{ $inspectionReport->inspected_on }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Prüfbericht bearbeiten</div>
+                    <h1 class="q-title">Anlage {{ $inspectionReport->equipment_identifier }} (Projekt {{ $currentProject->name }}) vom {{ $inspectionReport->inspected_on }}</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('inspection-reports.update', $inspectionReport) }}" method="post" novalidate>
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('inspection-reports.update', $inspectionReport) }}" method="post" novalidate>
             @method('PATCH')
-            @component('inspection_report.fields', [ 'inspectionReport' => $inspectionReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentAttachments' => $currentAttachments ])
-            @endcomponent
+            @include('inspection_report.fields', ['inspectionReport' => $inspectionReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentAttachments' => $currentAttachments])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Prüfbericht speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('inspection-reports.show', $inspectionReport) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Prüfbericht speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

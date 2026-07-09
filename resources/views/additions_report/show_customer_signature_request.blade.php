@@ -6,7 +6,7 @@
             <div class="q-page-head">
                 <div class="d-flex align-items-center gap-3">
                     <span class="q-avatar">
-                        <svg class="icon-bs icon-20"><use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use></svg>
                     </span>
                     <div>
                         <div class="q-eyebrow">Regiebericht · #{{ $additionsReport->number }}</div>
@@ -27,12 +27,12 @@
                 <div class="q-statbar__cell">
                     <span class="q-statbar__label">Wetter</span>
                     <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                        <svg class="icon icon-16">
+                        <svg class="icon-bs icon-16">
                             @switch($additionsReport->weather)
-                                @case('sunny')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#sun"></use>@break
-                                @case('cloudy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>@break
-                                @case('rainy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-rain"></use>@break
-                                @case('snowy')<use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud-snow"></use>@break
+                                @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                                @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                                @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
                             @endswitch
                         </svg>
                         {{ __($additionsReport->weather) }} ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)
@@ -47,7 +47,7 @@
                     <div class="q-card__body">
                         <div class="q-inforow">
                             <span class="q-inforow__icon">
-                                <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                             </span>
                             <div class="q-inforow__main">
                                 <div class="q-inforow__label">Personalstand</div>
@@ -64,7 +64,7 @@
                         @if($additionsReport->presentPeople->count())
                             <div class="q-inforow">
                                 <span class="q-inforow__icon">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                                 </span>
                                 <div class="q-inforow__main">
                                     <div class="q-inforow__label">Anwesende Personen</div>
@@ -80,7 +80,7 @@
                         @if($additionsReport->other_visitors)
                             <div class="q-inforow">
                                 <span class="q-inforow__icon">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                                 </span>
                                 <div class="q-inforow__main">
                                     <div class="q-inforow__label">Sonstige Besucher</div>
@@ -146,7 +146,7 @@
                     <div class="q-card__head">Regiebericht unterschreiben</div>
                     <div class="q-card__body">
                         <div class="q-banner q-banner--info">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
                             <span>Der Regiebericht kann nach erfolgreicher Unterschrift heruntergeladen werden.</span>
                         </div>
 
@@ -168,11 +168,11 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     Regiebericht unterschreiben
                                 </button>
                                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Zurücksetzen
                                 </a>
                             </div>

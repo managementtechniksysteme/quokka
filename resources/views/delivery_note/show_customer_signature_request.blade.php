@@ -6,7 +6,7 @@
             <div class="q-page-head">
                 <div class="d-flex align-items-center gap-3">
                     <span class="q-avatar">
-                        <svg class="icon icon-20"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#package"></use></svg>
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg>
                     </span>
                     <div>
                         <div class="q-eyebrow">Lieferschein</div>
@@ -47,7 +47,7 @@
                             um den Lieferschein zu überprüfen.
                         </p>
                         <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.customer-download', $deliveryNote->downloadRequest->token) }}">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#eye"></use></svg>
                             Lieferschein anzeigen
                         </a>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="q-card__head">Lieferschein unterschreiben</div>
                     <div class="q-card__body">
                         <div class="q-banner q-banner--info">
-                            <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
                             <span>Der Lieferschein kann nach erfolgreicher Unterschrift erneut heruntergeladen werden.</span>
                         </div>
 
@@ -80,11 +80,11 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
                                     Lieferschein unterschreiben
                                 </button>
                                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
-                                    <svg class="icon icon-16"><use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use></svg>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
                                     Zurücksetzen
                                 </a>
                             </div>

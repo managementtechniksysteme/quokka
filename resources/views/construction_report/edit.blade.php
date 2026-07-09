@@ -1,29 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('construction_report.breadcrumb')
+    <div class="q-container">
+        @include('construction_report.breadcrumb')
 
-            <h3>
-                Bautagesbericht bearbeiten
-                <small class="text-muted">{{ $currentProject->name }} #{{ $constructionReport->number }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Bautagesbericht bearbeiten</div>
+                    <h1 class="q-title">{{ $currentProject->name }} #{{ $constructionReport->number }}</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('construction-reports.update', $constructionReport) }}" method="post" novalidate>
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('construction-reports.update', $constructionReport) }}" method="post" novalidate>
             @method('PATCH')
-            @component('construction_report.fields', [ 'constructionReport' => $constructionReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentPresentPeople' => $currentPresentPeople, 'people' => $people, 'currentAttachments' => $currentAttachments, 'minAccountingAmount' => $minAccountingAmount ])
-            @endcomponent
+            @include('construction_report.fields', ['constructionReport' => $constructionReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentPresentPeople' => $currentPresentPeople, 'people' => $people, 'currentAttachments' => $currentAttachments, 'minAccountingAmount' => $minAccountingAmount])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Bautagesbericht speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.show', $constructionReport) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Bautagesbericht speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

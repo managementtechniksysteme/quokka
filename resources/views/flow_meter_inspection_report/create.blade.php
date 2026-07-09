@@ -1,28 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon-bs icon-baseline me-1">
-                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
-                </svg>
-                Prüfbericht für Durchflussmesseinrichtungen anlegen
-            </h3>
+    <div class="q-container">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Prüfbericht für Durchflussmesseinrichtungen anlegen</div>
+                    <h1 class="q-title">Neuer Prüfbericht für Durchflussmesseinrichtungen</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('flow-meter-inspection-reports.store') }}" method="post" novalidate>
-            @component('flow_meter_inspection_report.fields', [ 'flowMeterInspectionReport' => $flowMeterInspectionReport, 'comparison_measurement_q_percentages' => $comparison_measurement_q_percentages, 'currentProject' => $currentProject, 'projects' => $projects, 'currentAttachments' => $currentAttachments ])
-            @endcomponent
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('flow-meter-inspection-reports.store') }}" method="post" novalidate>
+            @include('flow_meter_inspection_report.fields', ['flowMeterInspectionReport' => $flowMeterInspectionReport, 'comparison_measurement_q_percentages' => $comparison_measurement_q_percentages, 'currentProject' => $currentProject, 'projects' => $projects, 'currentAttachments' => $currentAttachments])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Prüfbericht speichern
-            </button>
+            <div class="q-form-actions">
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Prüfbericht speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

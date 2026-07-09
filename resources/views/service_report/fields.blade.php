@@ -13,68 +13,42 @@
 @csrf
 
 @unless(Auth::user()->signature())
-    <div class="alert alert-warning mt-1" role="alert">
-        <div class="d-inline-flex align-items-center">
-            <svg class="icon icon-24 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-            </svg>
-            <p class="m-0">
-                Du hast noch keine Unterschrift im System hinterlegt. Es kann nicht automatisch
-                eine Unterschrift in PDF Ausdrucke von Berichten eingefügt werden. Füge bitte eine Unterschrift in den
-                <a href="{{ route('user-settings.edit', ['tab' => 'general']) }}">allgemeinen Einstellungen</a>
-                hinzu.
-            </p>
-        </div>
+    <div class="q-banner">
+        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+        <span>Du hast noch keine Unterschrift im System hinterlegt. Es kann nicht automatisch eine Unterschrift in PDF Ausdrucke von Berichten eingefügt werden. Füge bitte eine Unterschrift in den <a href="{{ route('user-settings.edit', ['tab' => 'general']) }}">allgemeinen Einstellungen</a> hinzu.</span>
     </div>
 @endunless
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#settings"></use>
-            </svg>
-            Stammdaten
-        </p>
-        <p class="text-muted">
-            Die Stammdaten des Serviceberichtes.
-        </p>
-        <p class="text-muted">
-            Bei der Bearbeitung eines bereits unterschriebenen Serviceberichtes wird die vorhandene Unterschrift entferent.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Stammdaten
+        <div class="q-form-section__desc">Die Stammdaten des Serviceberichtes. Bei der Bearbeitung eines bereits unterschriebenen Serviceberichtes wird die vorhandene Unterschrift entfernt.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
             <label for="employee">Techniker</label>
             <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($serviceReport)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
-        <div class="mb-3">
-            <div>
-                <label for="status">Status</label>
-            </div>
+        <div>
+            <label>Status</label>
             @if(optional($serviceReport)->status === 'signed')
-                <div class="alert alert-warning mt-1" role="alert">
-                    <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 me-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                        </svg>
-                        Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
-                    </div>
+                <div class="q-banner">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+                    <span>Der Servicebericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.</span>
                 </div>
             @endif
             <div class="btn-group">
                 <input type="radio" class="btn-check" name="status" id="status-new" value="new" @if(optional($serviceReport)->status == 'new' || !$serviceReport) checked @endif disabled>
-                <label class="btn btn-outline-secondary" for="status-new">neu</label>
+                <label class="btn btn-outline-secondary q-seg--sky" for="status-new">neu</label>
                 <input type="radio" class="btn-check" name="status" id="status-signed" value="signed" @if(optional($serviceReport)->status == 'signed') checked @endif disabled>
-                <label class="btn btn-outline-secondary" for="status-signed">unterschrieben</label>
+                <label class="btn btn-outline-secondary q-seg--amber" for="status-signed">unterschrieben</label>
                 <input type="radio" class="btn-check" name="status" id="status-finished" value="finished" @if(optional($serviceReport)->status == 'finished') checked @endif disabled>
-                <label class="btn btn-outline-secondary" for="status-finished">erledigt</label>
+                <label class="btn btn-outline-secondary q-seg--green" for="status-finished">erledigt</label>
             </div>
         </div>
 
-        <div class="mb-3">
+        <div>
             <label for="project_id">Projekt</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" change_event="onservicereportprojectchange"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
@@ -86,20 +60,12 @@
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-            </svg>
-            Serviceleistungen
-        </p>
-        <p class="text-muted">
-            Serviceleistungen werden automatisch nach Datum gruppiert und Werte entsprechend summiert.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Serviceleistungen
+        <div class="q-form-section__desc">Serviceleistungen werden automatisch nach Datum gruppiert und Werte entsprechend summiert.</div>
     </div>
-
-    <div class="col-md-8">
+    <div class="q-form-section__body">
         <services-selector :current_services="{{ $currentServices ?? 'null' }}" :current_report_id="{{ $serviceReport->id ?? 'null' }}" v-cloak></services-selector>
         <div class="invalid-feedback @error('services') d-block @enderror @error('services.*') d-block @enderror">
             @error('services')
@@ -112,103 +78,60 @@
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Bemerkungen
-        </p>
-        <p class="text-muted">
-            Sonstige Bemerkungen zum Servicebericht.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Bemerkungen
+        <div class="q-form-section__desc">Sonstige Bemerkungen zum Servicebericht.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
-            <label for="comment">
-                Bemerkungen
-            </label>
-            <markdown-editor name="comment" placeholder="Bemerkungen zum Servicebericht"  value="{{ old('comment', optional($serviceReport)->comment) }}" v-cloak></markdown-editor>
-            <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 me-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
-                </svg>
-                Hilfe zu Markdown
-            </a>
-            <div class="invalid-feedback @error('comment') d-block @enderror">
-                @error('comment')
-                    {{ $message }}
-                @enderror
-            </div>
+    <div class="q-form-section__body">
+        <markdown-editor name="comment" placeholder="Bemerkungen zum Servicebericht" value="{{ old('comment', optional($serviceReport)->comment) }}" v-cloak></markdown-editor>
+        <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
+            <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
+            Hilfe zu Markdown
+        </a>
+        <div class="invalid-feedback @error('comment') d-block @enderror">
+            @error('comment')
+                {{ $message }}
+            @enderror
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-            </svg>
-            Anhänge
-        </p>
-        <p class="text-muted">
-            Dem Servicebericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
-        </p>
-        <p class="text-muted">
-            Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anhänge
+        <div class="q-form-section__desc">Dem Servicebericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
-            <label>
-                Anhänge
-            </label>
-            <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
-            <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
-                @error('remove_attachments')
+    <div class="q-form-section__body">
+        <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+        <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
+            @error('remove_attachments')
                 {{ $message }}
-                @enderror
-                @error('remove_attachments.*')
+            @enderror
+            @error('remove_attachments.*')
                 {{ $message }}
-                @enderror
-                @error('new_attachments')
+            @enderror
+            @error('new_attachments')
                 {{ $message }}
-                @enderror
-                @error('new_attachments.*')
+            @enderror
+            @error('new_attachments.*')
                 {{ $message }}
-                @enderror
-            </div>
+            @enderror
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 me-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
-            </svg>
-            Anfrage zur Unterschrift senden
-        </p>
-        <p class="text-muted">
-            Bei Aktivierung der Schaltfläche kann nach dem Speichern direkt eine Anfrage zur Unterschrift per Email versendet werden.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anfrage zur Unterschrift senden
+        <div class="q-form-section__desc">Bei Aktivierung kann nach dem Speichern direkt eine Anfrage zur Unterschrift per Email versendet werden.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="alert alert-info" role="alert">
-            <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 me-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                Die Email Adresse kann im nächsten Schritt angegeben werden.
-            </div>
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div class="q-banner q-banner--info">
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <span>Die Email Adresse kann im nächsten Schritt angegeben werden.</span>
         </div>
-        <div class="mb-3">
+        <div>
             <div class="form-check form-switch">
                 <input type="checkbox" class="form-check-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
                 <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>

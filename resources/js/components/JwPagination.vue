@@ -66,6 +66,14 @@ export default {
     },
 
     watch: {
+        // Shallow on purpose: callers mutate individual row properties
+        // (selected, edit, action, ...) constantly during normal interaction,
+        // and a deep watch here would re-fire on every one of those too —
+        // which re-emits changePage → onChangePage → deselectAll(), silently
+        // undoing selection the instant it's made. The caller is responsible
+        // for reassigning `items` to a new array reference when its actual
+        // membership changes (see AccountingSelector/LogbookSelector
+        // updateLocal*() ), which is the only case this needs to catch.
         items() {
             if (this.currentPage > this.totalPages) {
                 this.currentPage = Math.max(1, this.totalPages);

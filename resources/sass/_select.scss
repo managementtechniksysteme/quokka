@@ -70,13 +70,22 @@
 
 .vs__clear, .vs__open-indicator { fill: var(--q-muted); }
 
-// Small vue select
+// Small vue select — height formula matches .form-control-sm (2×.25rem
+// padding-y + line-height×font-size + 2px border), using the vs-* custom
+// properties directly rather than `em` so it doesn't depend on inherited
+// font-size at the call site.
 .dropdown-sm {
     --vs-font-size: 0.7875rem;
     --vs-line-height: 1.5;
 
     .vs__dropdown-toggle {
-        min-height: calc(1.5em + 0.5rem + 2px);
+        min-height: calc(var(--vs-line-height) * var(--vs-font-size) + 0.5rem + 2px);
         padding: 0.25rem 0.5rem;
+    }
+    // .vs--single .vs__dropdown-toggle (above) pins a fixed `height` using the
+    // *default* control's 1.2rem padding constant, which otherwise always wins
+    // over this block's `min-height` — override it here at matching specificity.
+    &.vs--single .vs__dropdown-toggle {
+        height: calc(var(--vs-line-height) * var(--vs-font-size) + 0.5rem + 2px);
     }
 }

@@ -31,7 +31,6 @@ import vSelect from 'vue-select';
 import VueApexCharts from 'vue3-apexcharts';
 import VueEasymde from 'vue3-easymde';
 import { VueQrcodeReader } from 'vue-qrcode-reader';
-import ScreenPlugin from './plugins/screen.js';
 
 const app = createApp({});
 
@@ -67,7 +66,6 @@ app.component('webpush-manager', WebpushManager);
 app.use(VueApexCharts);
 app.use(VueEasymde);
 app.use(VueQrcodeReader);
-app.use(ScreenPlugin);
 
 app.mount('#app');
 

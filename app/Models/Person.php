@@ -24,6 +24,7 @@ class Person extends Model implements FiltersGlobalSearch
 
     protected $appends = [
         'name',
+        'short_name',
         'avatar',
     ];
 
@@ -113,6 +114,14 @@ class Person extends Model implements FiltersGlobalSearch
     {
         return \Illuminate\Support\Str::of($this->name)->explode(' ')->filter()
             ->take(2)->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))->implode('');
+    }
+
+    // "Vorname N." — compact display for narrow table columns (accounting/logbook).
+    public function getShortNameAttribute()
+    {
+        return $this->last_name
+            ? "{$this->first_name} " . \Illuminate\Support\Str::substr($this->last_name, 0, 1) . '.'
+            : $this->first_name;
     }
 
     /**

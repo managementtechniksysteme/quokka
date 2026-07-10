@@ -72,6 +72,9 @@ $q-pad:            1.25rem;
 // Smaller, muted sibling for form-section headers — same shape language as
 // .q-head-icon but toned down to sit inside the card rather than above the page.
 .q-section-icon { width: 30px; height: 30px; border-radius: 8px;  background: var(--q-surface-3);  color: var(--q-muted);  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+// accent variant — entry-form headers (e.g. "Leistung erfassen") where the icon
+// marks an action rather than just labelling a section
+.q-section-icon--accent { background: var(--q-accent-tint); color: var(--q-accent); }
 
 // =============================================================================
 //  B. Card — surface primitive
@@ -543,7 +546,7 @@ $q-pad:            1.25rem;
 
 .q-savebar {
     position: sticky; bottom: 0; z-index: 10;
-    display: flex; justify-content: center; padding: 0 0 1rem; pointer-events: none;
+    display: flex; justify-content: center; padding: 1rem 0; pointer-events: none;
     &__inner {
         width: 100%; max-width: 1140px; pointer-events: auto;
         display: flex; align-items: center; justify-content: flex-end; gap: .6rem;
@@ -555,16 +558,131 @@ $q-pad:            1.25rem;
 // =============================================================================
 //  I. Grid page (accounting / logbook)
 // =============================================================================
-.q-grid { display: grid; grid-template-columns: 230px 1fr 290px; gap: 1rem; align-items: start; }
-.q-grid__filter, .q-grid__form { position: sticky; top: .9rem; @extend .q-card; }
-.q-grid__filter .q-card__body,
-.q-grid__form   .q-card__body { padding: 1rem 1.05rem; }
+// horizontal filter bar — two explicit rows: fields on top, switches +
+// Filtern (bottom-right) below. Two fixed rows read far more predictably
+// than letting seven independent items free-wrap into whatever fits.
+// overflow: visible — like .q-form-section/.q-list, so the Projekt/Leistung
+// v-select dropdown isn't clipped by the card's bottom edge.
+.q-filterbar { margin-bottom: 1rem; }
+.q-filterbar .q-card { overflow: visible; }
+.q-filterbar .q-card__body { display: flex; flex-direction: column; gap: .8rem; padding: .9rem 1.1rem; }
+.q-filterbar__fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: .9rem 1.1rem; }
+.q-filterbar__field { display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
+.q-filterbar__field label { font-size: .68rem; font-weight: 600; color: var(--q-muted); margin: 0; }
+// dates stay compact and fixed; Projekt/Leistung grow to fill the row's
+// leftover width now that the switches moved to their own row below. The
+// flex sizing has to target .q-filterbar__field itself (the actual flex item
+// of the row) — .v-select is a child of that column-direction wrapper, so
+// `flex` there would size its height (the column's main axis), not width.
+.q-filterbar__field { flex: 0 0 auto; }
+// no max-width — let Projekt/Leistung fill all remaining row width, so the
+// row's right edge lines up with the Filtern button on the row below.
+.q-filterbar__field--grow { flex: 1 1 200px; }
+.q-filterbar__field .form-control { width: 138px; }
+.q-filterbar__field .v-select { width: 100%; }
+// flex items default to min-width:auto, i.e. their content's min-content size —
+// for nowrap text that's the FULL unwrapped width, which silently overflows
+// the field instead of shrinking. min-width: 0 on the whole flex chain is
+// what actually lets text-overflow/ellipsis take effect.
+.q-filterbar__field .vs__dropdown-toggle,
+.q-filterbar__field .vs__selected-options,
+.q-filterbar__field .vs__selected {
+    min-width: 0;
+}
+.q-filterbar__field .vs__selected {
+    display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+// switches stay left (default flex start); only the submit button is pushed
+// to the far right.
+.q-filterbar__actions { display: flex; align-items: center; flex-wrap: wrap; gap: .9rem 1.1rem; }
+.q-filterbar__switch { display: flex; align-items: center; gap: .55rem; }
+.q-filterbar__switch label { font-size: .8rem; font-weight: 500; margin: 0; }
+.q-filterbar__submit { margin-left: auto; }
+
+// table (main) + entry-form (sticky aside) — the row below the filter bar
+.q-grid { display: grid; grid-template-columns: 1fr 290px; gap: 1rem; align-items: start; }
+// overflow: visible so the entry-form's Projekt/Leistung dropdowns escape the
+// card; harmless here since the card has no rounded-corner-sensitive children.
+.q-grid__form { position: sticky; top: .9rem; @extend .q-card; overflow: visible; }
+.q-grid__form .q-card__body { padding: 1rem 1.05rem; }
 @include media-breakpoint-down(lg) { .q-grid { grid-template-columns: 1fr; } }
 
 .q-trow { border-left: 3px solid transparent;
     &.is-created  { border-left-color: var(--q-green); }
     &.is-edited   { border-left-color: var(--q-amber); }
     &.is-removed  { border-left-color: var(--q-red); opacity: .55; }
+    // selection takes priority over the save-state colour, same as the old
+    // border-primary-wins-over-border-success/warning/danger behaviour —
+    // declared last so it wins the tie in specificity.
+    &.is-selected { border-left-color: var(--q-accent); }
+}
+
+// editable data-grid table (AccountingSelector / LogbookSelector) — a plain
+// CSS grid rather than a <table> so each row can carry save-state via .q-trow
+// and any cell can flip into an inline edit control without table quirks.
+.q-dtable__head, .q-dtable__row, .q-dtable__detail {
+    display: grid; align-items: center; column-gap: .6rem; padding: .55rem .95rem;
+}
+.q-dtable__head { border-bottom: 1px solid var(--q-border-2); }
+.q-dtable__head span { font-size: .58rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint); white-space: nowrap; }
+.q-dtable__row { border-bottom: 1px solid var(--q-border-2); font-size: .82rem; font-weight: 600; transition: background .12s; }
+.q-dtable__row:hover { background: var(--q-surface-2); }
+.q-dtable__row.is-removed { text-decoration: line-through; text-decoration-color: var(--q-red); }
+.q-dtable__cell { cursor: pointer; min-width: 0; }
+.q-dtable__cell .form-control, .q-dtable__cell .v-select { font-size: .78rem; }
+.q-dtable__num { text-align: right; font-variant-numeric: tabular-nums; }
+.q-dtable__muted { color: var(--q-muted); font-weight: 500; }
+.q-dtable__truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.q-dtable__actions { display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
+.q-dtable__detail { grid-template-columns: 1fr !important; background: var(--q-surface-2); border-bottom: 1px solid var(--q-border-2); padding: .9rem 1.1rem; font-size: .85rem; cursor: default; }
+// overflow: visible — same trade-off as .q-list: a row's v-select dropdown
+// must escape the card. Re-apply the card's corner radius to whichever
+// element ends up visually first/last, since overflow:hidden no longer clips
+// a hovered edge row's background to the card's rounded shape.
+.q-dtable { overflow: visible; }
+.q-dtable__head { border-top-left-radius: $q-radius; border-top-right-radius: $q-radius; }
+.q-dtable__row:last-of-type, .q-dtable__detail:last-child { border-bottom-left-radius: $q-radius; border-bottom-right-radius: $q-radius; }
+
+.q-accounting-grid { grid-template-columns: 28px 78px 104px minmax(90px, 1fr) 100px 54px 84px 62px; }
+// toggle · Fahrzeug · Datum · KM (Start→Ende merged) · gef. · get.L · Strecke (Start→Ziel merged) · actions
+// Gef./L pulled tight (short numbers, don't need breathing room) so Strecke —
+// the field most likely to need it — gets the freed-up width instead.
+.q-logbook-grid { grid-template-columns: 26px 62px 68px 110px 40px 34px minmax(150px, 1fr) 60px; column-gap: .45rem; }
+
+// quiet row-action icon buttons (expand/error toggle, select circle) — no
+// border in any state, unlike a bare Bootstrap .btn which still shows the
+// browser's native button chrome once :disabled kicks in. Delete/restore keep
+// the real .btn-outline-danger/.btn-outline-success variants instead (proper
+// defined disabled state, same red/green cue as everywhere else in the app).
+.q-dtable__icon-btn {
+    border: none; background: transparent; box-shadow: none;
+    &:disabled { opacity: .35; }
+}
+// remap the delete/restore .btn-outline-* variants to the theme-aware --q-*
+// tokens — plain Bootstrap --bs-danger/--bs-success aren't dark-mode-tuned
+// and read too bright/harsh against the dark surface. Unlike the borderless
+// .q-lines--editable override, these keep an always-visible outline (that's
+// the deliberate look here), just sourced from the right token.
+.q-dtable {
+    // muted at rest, full colour + tint bg on hover/active — same "brightens
+    // on hover" cue as .q-kebab--danger, just kept as an always-visible
+    // outline button rather than a borderless kebab.
+    .btn-outline-danger {
+        --bs-btn-color: color-mix(in srgb, var(--q-red) 70%, var(--q-muted));
+        --bs-btn-border-color: color-mix(in srgb, var(--q-red) 45%, var(--q-border));
+        --bs-btn-hover-color: var(--q-red); --bs-btn-hover-bg: var(--q-red-bg); --bs-btn-hover-border-color: var(--q-red);
+        --bs-btn-active-color: var(--q-red); --bs-btn-active-bg: var(--q-red-bg); --bs-btn-active-border-color: var(--q-red);
+        --bs-btn-disabled-color: color-mix(in srgb, var(--q-red) 40%, var(--q-faint));
+        --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-red) 25%, var(--q-border));
+    }
+    .btn-outline-success {
+        --bs-btn-color: color-mix(in srgb, var(--q-green) 70%, var(--q-muted));
+        --bs-btn-border-color: color-mix(in srgb, var(--q-green) 45%, var(--q-border));
+        --bs-btn-hover-color: var(--q-green); --bs-btn-hover-bg: var(--q-green-bg); --bs-btn-hover-border-color: var(--q-green);
+        --bs-btn-active-color: var(--q-green); --bs-btn-active-bg: var(--q-green-bg); --bs-btn-active-border-color: var(--q-green);
+        --bs-btn-disabled-color: color-mix(in srgb, var(--q-green) 40%, var(--q-faint));
+        --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-green) 25%, var(--q-border));
+    }
 }
 
 // =============================================================================

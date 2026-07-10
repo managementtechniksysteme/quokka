@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{'h-100': $screen.xl}">
+  <div>
 
       <top-progress ref="top_progress" color="#007BFF" errorColor="#DC3545"></top-progress>
 
@@ -20,386 +20,312 @@
           </div>
       </notification>
 
+      <div class="q-page-head">
+          <div class="d-flex align-items-center gap-3">
+              <span class="q-head-icon">
+                  <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#clock"></use></svg>
+              </span>
+              <div>
+                  <div class="q-eyebrow">Abrechnung</div>
+                  <h1 class="q-title">Leistungsabrechnung</h1>
+                  <div v-if="accounting.length" class="q-subtitle">
+                      {{ accounting.length }} {{ accounting.length === 1 ? 'Eintrag' : 'Einträge' }}
+                      <span v-if="getNewAccounting().length" style="color:var(--q-green)">+{{ getNewAccounting().length }}</span>
+                      <span v-if="getChangedAccounting().length" style="color:var(--q-amber)">±{{ getChangedAccounting().length }}</span>
+                      <span v-if="getDestroyedAccounting().length" style="color:var(--q-red)">-{{ getDestroyedAccounting().length }}</span>
+                  </div>
+              </div>
+          </div>
 
+          <div class="d-flex align-items-center gap-2">
+              <button v-if="permissions.includes('accounting.createpdf') && getShownEmployeeIds().length === 1" type="button" class="btn q-btn d-inline-flex align-items-center gap-2" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+                  Auswertung
+              </button>
 
-      <div v-bind:class="{'container': !$screen.xl, 'container-fluid h-100': $screen.xl}">
-          <div class="row" v-bind:class="{'h-100': $screen.xl}">
+              <div v-if="permissions.includes('accounting.createpdf') && getShownEmployeeIds().length > 1" class="dropdown">
+                  <button type="button" class="btn q-btn dropdown-toggle d-inline-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                      <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+                      Auswertung
+                  </button>
 
-              <div class="order-1" v-bind:class="{'col-12': !$screen.xl, 'col-xl-2 bg-gray-100': $screen.xl}">
-                  <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
-                      <h3>Anzeigefilter</h3>
-
-                      <form class="needs-validation mt-4" action="" method="post" novalidate>
-
-                          <div class="row g-3">
-                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
-                                  <label for="filter_start">Start</label>
-                                  <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
-                                  <div v-if="filter_start_errors" class="invalid-feedback">
-                                      {{ filter_start_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-6 col-lg-3 col-xl-12">
-                                  <label for="filter_end">Ende</label>
-                                  <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
-                                  <div v-if="filter_end_errors" class="invalid-feedback">
-                                      {{ filter_end_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
-                                  <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">
-                                      {{ filter_project_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
-                                  <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :disabled="filter_only_unsaved" :modelValue="filter_service" :selectOnTab="true" @update:modelValue="setFilterService">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div v-if="filter_service_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_service_errors}">
-                                      {{ filter_service_errors[0] }}
-                                  </div>
-                              </div>
-                              <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="mb-3 col-12">
-                                  <div class="form-check form-switch">
-                                      <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
-                                      <label class="form-check-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
-                                  </div>
-                                  <div v-if="filter_only_own_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_only_own_errors}">
-                                      {{ filter_only_own_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-12">
-                                  <div class="form-check form-switch">
-                                      <input type="checkbox" class="form-check-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
-                                      <label class="form-check-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
-                                  </div>
-                              </div>
+                  <div class="dropdown-menu dropdown-menu-end" style="min-width: 280px">
+                      <form @submit.prevent="onReportSubmit">
+                          <div v-for="employeeId in getShownEmployeeIds()" :key="'emp-'+employeeId" class="form-check px-3 py-1">
+                              <input type="checkbox" class="form-check-input" :id="'employee-'+employeeId" name="employee_ids[]" :value="employeeId">
+                              <label class="form-check-label d-inline-flex align-items-center gap-1" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="'employee-'+employeeId">
+                                  <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#person"></use></svg>
+                                  {{ getEmployeeName(employeeId) }}
+                              </label>
                           </div>
-                          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="icon-bs icon-16 me-2">
-                                  <use href="/svg/bootstrap-icons.svg#funnel"></use>
-                              </svg>
-                              Einträge filtern
+                          <button class="btn btn-sm btn-primary text-white mx-3 mt-1 d-inline-flex align-items-center gap-2" type="submit">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+                              Erstellen
                           </button>
                       </form>
                   </div>
               </div>
 
-              <div v-if="permissions.includes('accounting.create')" v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
-                  <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
-                      <h3>Leistungen abrechnen</h3>
+              <button v-if="permissions.includes('service-reports.create') && getSelectedAccounting().length && !selectedAccountingContainsUnsaved() && selectedAccountingIsHourBased() && selectedAccountingIsOwn() && selectedAccountingIsSingleProject()" type="button" class="btn q-btn d-inline-flex align-items-center gap-2" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#gear"></use></svg>
+                  Servicebericht erstellen
+              </button>
+          </div>
+      </div>
 
-                      <form class="needs-validation mt-4" action="" method="post" novalidate>
-                          <div class="row g-3">
-                              <div class="mb-3 col-6 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_on">Datum</label>
-                                  <input type="date" class="form-control" v-bind:class="{'is-invalid': service_provided_on_invalid}" id="service_provided_on" name="service_provided_on" placeholder="" required v-model="date" />
-                                  <div class="invalid-feedback">
-                                      Datum muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_started_at">Start</label>
-                                  <input type="time" :max="service_provided_ended_at" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" :disabled="this.service !== null && this.service.unit !== services_hour_unit" required v-model="service_provided_started_at" @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      Start muss eine gültige Uhrzeit sein.
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="service_provided_ended_at">Ende</label>
-                                  <input type="time" :min="service_provided_started_at" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" required :disabled="this.service !== null && this.service.unit !== services_hour_unit" v-model="service_provided_ended_at"  @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      Ende muss eine gültige Uhrzeit sein.
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="project" :selectOnTab="true" @update:modelValue="setProject">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
-                                      Projekt muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label>Leistung</label>
-                                  <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :modelValue="service" :selectOnTab="true" @update:modelValue="setService">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': service_invalid}">
-                                      Leistung muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-md-4 col-lg-3 col-xl-12">
-                                  <label for="amount">Menge</label>
-                                  <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" id="amount" name="amount" placeholder="5" v-model="amount"  @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      <span v-if="service !== null && this.service.type === 'wage'">Menge muss ein Vielfaches von {{min_amount}} sein.</span>
-                                      <span v-else>Menge muss mindestens 0.01 sein.</span>
-                                  </div>
-                              </div>
-                              <div class="mb-3 col-lg-3 col-xl-12">
-                                  <label for="comment">Bemerkungen</label>
-                                  <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
-                              </div>
-                              <div class="mb-3 d-none d-lg-block d-xl-none col-lg-3">
-                                  <label for="addaccounting">&nbsp;</label>
-                                  <button id="addaccounting" type="button" class="form-control btn btn-outline-secondary d-inline-flex align-items-center justify-content-center" @click="addAccounting()">
-                                      <svg class="icon-bs icon-16 me-2">
-                                          <use href="/svg/bootstrap-icons.svg#plus"></use>
-                                      </svg>
-                                      Hinzufügen
-                                  </button>
-                              </div>
+      <div v-if="getUnsavedAccounting().length" class="q-banner" role="alert">
+          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+          <div>
+              Du hast ungespeicherte Änderungen. Geänderte Zeilen bleiben auch dann sichtbar, wenn der
+              Filterbereich nachträglich geändert wird.
+          </div>
+      </div>
+
+      <div class="q-filterbar">
+          <div class="q-card">
+              <div class="q-card__body">
+                  <div class="q-filterbar__fields">
+                      <div class="q-filterbar__field">
+                          <label for="filter_start">Start</label>
+                          <input type="date" :max="filter_end" class="form-control form-control-sm" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
+                          <div v-if="filter_start_errors" class="invalid-feedback d-block">{{ filter_start_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field">
+                          <label for="filter_end">Ende</label>
+                          <input type="date" :min="filter_start" class="form-control form-control-sm" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
+                          <div v-if="filter_end_errors" class="invalid-feedback d-block">{{ filter_end_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field q-filterbar__field--grow">
+                          <label>Projekt</label>
+                          <v-select class="dropdown-sm" :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true" @input="setFilterProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field q-filterbar__field--grow">
+                          <label>Leistung</label>
+                          <v-select class="dropdown-sm" :options="services" label="name_with_unit" placeholder="Alle Leistungen" :disabled="filter_only_unsaved" :modelValue="filter_service" :selectOnTab="true" @update:modelValue="setFilterService">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_service_errors" class="invalid-feedback d-block">{{ filter_service_errors[0] }}</div>
+                      </div>
+                  </div>
+                  <div class="q-filterbar__actions">
+                      <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="q-filterbar__switch">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                              <label class="form-check-label" for="filter_only_own">Nur eigene</label>
                           </div>
-                          <div class="d-block d-lg-none d-xl-block mt-4">
-                              <button id="addaccounting" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addAccounting()">
-                                  <svg class="icon-bs icon-16 me-2">
-                                      <use href="/svg/bootstrap-icons.svg#plus"></use>
-                                  </svg>
-                                  Hinzufügen
-                              </button>
+                          <div v-if="filter_only_own_errors" class="invalid-feedback d-block">{{ filter_only_own_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__switch">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                              <label class="form-check-label" for="filter_only_unsaved">Nur ungespeicherte</label>
                           </div>
-                      </form>
+                      </div>
+                      <button type="button" class="btn q-btn q-filterbar__submit d-inline-flex align-items-center gap-2" @click="filterData()">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                          Filtern
+                      </button>
                   </div>
               </div>
+          </div>
+      </div>
 
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('accounting.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('accounting.create')}"  ref="accounting_overview">
-                  <div class="sticky-top bg-general">
-                      <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
-                          <h3 class="d-inline-block">
-                              <svg class="icon-bs icon-baseline text-muted me-1">
-                                  <use href="/svg/bootstrap-icons.svg#clock"></use>
+      <div class="q-grid">
+          <div ref="accounting_overview">
+              <div v-if="accounting.length" class="q-card q-dtable">
+                  <div class="q-dtable__head q-accounting-grid">
+                      <span>
+                          <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorAccounting().length, 'text-danger': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length, 'text-muted': getErrorAccounting().length && getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                          </button>
+                      </span>
+                      <span>Datum</span>
+                      <span>Zeit</span>
+                      <span>Projekt</span>
+                      <span>Leistung</span>
+                      <span class="q-dtable__num">Menge</span>
+                      <span>MA</span>
+                      <span class="q-dtable__actions">
+                          <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg>
+                          </button>
+                          <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="getSelectedAccounting().length === pageOfItems.length ? 'text-primary' : 'text-muted'" @click="toggleSelectAll()" @mouseenter="selectAllHover = true" @mouseleave="selectAllHover = false">
+                              <svg class="icon-bs icon-16">
+                                  <use v-if="getSelectedAccounting().length !== pageOfItems.length && !selectAllHover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                  <use v-else href="/svg/bootstrap-icons.svg#check-circle"></use>
                               </svg>
-                              Leistungsabrechnung
-                              <small v-if="accounting.length" class="text-muted">
-                                  {{ accounting.length }} {{ accounting.length === 1 ? 'Eintrag' : 'Einträge' }}
-                                  <span v-if="getNewAccounting().length" class="text-success">+{{ getNewAccounting().length }}</span>
-                                  <span v-if="getChangedAccounting().length" class="text-warning">±{{ getChangedAccounting().length }}</span>
-                                  <span v-if="getDestroyedAccounting().length" class="text-danger">-{{ getDestroyedAccounting().length }}</span>
-                              </small>
+                          </button>
+                      </span>
+                  </div>
 
-                          </h3>
-
-                          <div class="float-end">
-                              <button v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length === 1" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf(current_employee.id)" @keydown.enter.prevent="createPdf(current_employee.id)">
-                                  <svg class="icon-bs icon-16 me-2">
-                                      <use href="/svg/bootstrap-icons.svg#printer"></use>
+                  <template v-for="(acc, index) in pageOfItems" :key="'acc-' + (acc.id ?? ('new' + index))">
+                      <div class="q-dtable__row q-trow q-accounting-grid" v-bind:class="{'is-created': acc.action === 'store', 'is-edited': acc.action === 'update', 'is-removed': acc.action === 'destroy', 'is-selected': acc.selected}">
+                          <span>
+                              <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="acc.errors ? 'text-danger' : 'text-muted'" @click="toggleShowDetails(acc)">
+                                  <svg class="icon-bs icon-16">
+                                      <use v-if="!acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#chevron-right"></use>
+                                      <use v-if="acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
+                                      <use v-if="acc.show_details" href="/svg/bootstrap-icons.svg#chevron-down"></use>
                                   </svg>
-                                  Auswertung
                               </button>
+                          </span>
+                          <div class="q-dtable__cell" @click="setEdit(acc, 'service_provided_on')">
+                              <span v-if="acc.edit !== 'service_provided_on'">{{ acc.service_provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
+                              <input v-if="acc.edit === 'service_provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_on_invalid}" ref="table_input" id="table_service_provided_on" name="table_service_provided_on" :value="getDateStringForInputField(acc.service_provided_on)" placeholder="" required @blur="changeAccountingServiceProvidedOn($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedOn($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_on')" />
+                          </div>
+                          <div class="q-dtable__cell d-flex align-items-center gap-1" v-if="acc.edit !== 'service_provided_started_at' && acc.edit !== 'service_provided_ended_at' && !acc.service_provided_started_at && !acc.service_provided_ended_at">
+                              <span class="q-dtable__muted" @click="setEdit(acc, 'service_provided_started_at')">–</span>
+                          </div>
+                          <div class="q-dtable__cell d-flex align-items-center gap-1" v-else>
+                              <span v-if="acc.edit !== 'service_provided_started_at'" @click="setEdit(acc, 'service_provided_started_at')">{{ acc.service_provided_started_at ?? '–' }}</span>
+                              <input v-if="acc.edit === 'service_provided_started_at'" type="time" :max="acc.service_provided_ended_at" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_started_at_invalid}" ref="table_input" id="table_service_provided_started_at" name="table_service_provided_started_at" :value="acc.service_provided_started_at ? acc.service_provided_started_at : ''" placeholder="08:00" required @blur="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_started_at')" />
+                              <span class="q-dtable__muted" v-if="acc.edit !== 'service_provided_started_at' && acc.edit !== 'service_provided_ended_at'">–</span>
+                              <span v-if="acc.edit !== 'service_provided_ended_at'" @click="setEdit(acc, 'service_provided_ended_at')">{{ acc.service_provided_ended_at ?? '–' }}</span>
+                              <input v-if="acc.edit === 'service_provided_ended_at'" :min="acc.service_provided_started_at" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" required @blur="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_ended_at')" />
+                          </div>
+                          <div class="q-dtable__cell q-dtable__truncate" @click="setEdit(acc, 'project')" :title="getProjectName(acc.project_id)">
+                              <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
+                              <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input" label="name" placeholder="Projekt auswählen" :modelValue="getProject(acc.project_id)" :selectOnTab="true" @update:modelValue="changeAccountingProject($event, acc)" @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
+                                  <template v-slot:no-options>Keine passenden Einträge.</template>
+                              </v-select>
+                          </div>
+                          <div class="q-dtable__cell q-dtable__truncate" @click="setEdit(acc, 'service')" :title="getServiceName(acc.service_id)">
+                              <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
+                              <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input" label="name_with_unit" placeholder="Service auswählen" :modelValue="getService(acc.service_id)" :selectOnTab="true" @update:modelValue="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingService($event, acc)">
+                                  <template v-slot:no-options>Keine passenden Einträge.</template>
+                              </v-select>
+                          </div>
+                          <div class="q-dtable__cell q-dtable__num" @click="setEdit(acc, 'amount')">
+                              <span v-if="acc.edit !== 'amount'">{{ acc.amount.toLocaleString() }}</span>
+                              <input v-if="acc.edit === 'amount'" type="number" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input" id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
+                          </div>
+                          <div class="q-dtable__truncate" :title="getEmployeeName(acc.employee_id)">{{ getEmployeeShortName(acc.employee_id) }}</div>
+                          <div class="q-dtable__actions">
+                              <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
+                                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                              </button>
+                              <button v-if="acc.action === 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
+                                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg>
+                              </button>
+                              <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="acc.selected ? 'text-primary' : 'text-muted'" @click="toggleSelected(acc)" @mouseenter="acc.hover = true" @mouseleave="acc.hover = false">
+                                  <svg class="icon-bs icon-16">
+                                      <use v-if="!acc.selected && !acc.hover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                      <use v-else href="/svg/bootstrap-icons.svg#check-circle"></use>
+                                  </svg>
+                              </button>
+                          </div>
+                      </div>
 
-                              <div v-if="permissions.includes('accounting.createpdf') && this.getShownEmployeeIds().length > 1" class="dropdown">
-                                  <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                    <svg class="icon-bs icon-16 me-2">
-                                      <use href="/svg/bootstrap-icons.svg#printer"></use>
-                                    </svg>
-                                    Auswertung
-                                  </button>
-
-                                  <div class="dropdown-menu dropdown-menu-end min-w-200">
-                                      <form @submit.prevent="onReportSubmit">
-                                          <div v-for="employeeId in this.getShownEmployeeIds()" class="d-inline-block form-check mx-2 my-1">
-                                              <input type="checkbox" class="form-check-input" :id="employeeId" name="employee_ids[]" :value="employeeId">
-                                              <label class="form-check-label" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="employeeId">
-                                                <svg class="icon-bs icon-16">
-                                                  <use href="/svg/bootstrap-icons.svg#person"></use>
-                                                </svg>
-                                                {{ getEmployeeName(employeeId) }}
-                                              </label>
-                                          </div>
-                                          <button class="btn btn-sm btn-primary mx-2 mt-2" type="submit">
-                                              <svg class="icon-bs icon-16 me-2">
-                                                  <use href="/svg/bootstrap-icons.svg#printer"></use>
-                                              </svg>
-                                              Erstellen
-                                          </button>
-                                      </form>
+                      <transition name="collapse">
+                          <div v-if="acc.show_details" class="q-dtable__detail q-trow" v-bind:class="{'is-created': acc.action === 'store', 'is-edited': acc.action === 'update', 'is-removed': acc.action === 'destroy', 'is-selected': acc.selected}">
+                              <div class="mb-2">
+                                  <label for="table_comment" class="fw-bold">Bemerkungen</label>
+                                  <p v-if="acc.edit !== 'comment'" class="whitespace-preline mb-0" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
+                                  <textarea v-if="acc.edit === 'comment'" class="form-control form-control-sm" ref="table_input" id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
+                              </div>
+                              <div v-if="acc.errors" class="q-banner" style="background: color-mix(in srgb, var(--q-red) 9%, transparent); border-color: color-mix(in srgb, var(--q-red) 24%, transparent);" role="alert">
+                                  <svg class="icon-bs icon-16" style="color: var(--q-red)"><use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use></svg>
+                                  <div>
+                                      <p class="mb-0 fw-bold">Probleme in dieser Zeile</p>
+                                      <ul class="mb-0">
+                                          <li v-for="error in acc.errors">{{ error }}</li>
+                                      </ul>
                                   </div>
                               </div>
-
-                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedAccounting().length && !this.selectedAccountingContainsUnsaved() && this.selectedAccountingIsHourBased() && this.selectedAccountingIsOwn() && this.selectedAccountingIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
-                                  <svg class="icon-bs icon-16 me-2">
-                                      <use href="/svg/bootstrap-icons.svg#gear"></use>
-                                  </svg>
-                                  Servicebericht erstellen
-                              </button>
                           </div>
+                      </transition>
+                  </template>
+              </div>
+
+              <div v-if="accounting.length" class="mt-3">
+                  <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
+              </div>
+
+              <p v-if="accounting.length" class="q-legend">
+                  Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
+                  <b style="color: var(--q-green)">●</b> wird angelegt ·
+                  <b style="color: var(--q-amber)">●</b> wird bearbeitet ·
+                  <b style="color: var(--q-red)">●</b> wird entfernt
+              </p>
+
+              <div v-if="!accounting.length" class="q-empty-state">
+                  <svg class="q-empty-icon"><use href="/svg/bootstrap-icons.svg#clock"></use></svg>
+                  <p>Es sind keine Abrechnungen passend zum Anzeigefilter vorhanden.</p>
+                  <p>Rechne neue Leistungen mithilfe des Formulars ab.</p>
+              </div>
+          </div>
+
+          <div v-if="permissions.includes('accounting.create')" class="q-grid__form">
+              <div class="q-card__head d-flex align-items-center gap-2">
+                  <span class="q-section-icon q-section-icon--accent">
+                      <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
+                  </span>
+                  Leistung erfassen
+              </div>
+              <div class="q-card__body d-flex flex-column gap-3">
+                  <div>
+                      <label for="service_provided_on">Datum</label>
+                      <input type="date" class="form-control" v-bind:class="{'is-invalid': service_provided_on_invalid}" id="service_provided_on" name="service_provided_on" placeholder="" required v-model="date" />
+                      <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
+                  </div>
+                  <div class="d-flex gap-2">
+                      <div class="flex-grow-1">
+                          <label for="service_provided_started_at">Start</label>
+                          <input type="time" :max="service_provided_ended_at" class="form-control" v-bind:class="{'is-invalid': service_provided_started_at_invalid}" id="service_provided_started_at" name="service_provided_started_at" placeholder="08:00" :disabled="this.service !== null && this.service.unit !== services_hour_unit" required v-model="service_provided_started_at" @blur="autofill()" />
+                          <div class="invalid-feedback">Start muss eine gültige Uhrzeit sein.</div>
                       </div>
-
-                      <div v-if="getUnsavedAccounting().length" class="alert alert-warning" role="alert">
-                          <div class="d-inline-flex align-items-center">
-                              <svg class="icon-bs icon-24 me-2">
-                                  <use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
-                              </svg>
-                              <p class="m-0">
-                                  Du hast ungespeicherte Änderungen. Geänderte Zeilen bleiben auch dann sichtbar, wenn der
-                                  Filterbereich nachträglich geändert wird.
-                              </p>
-                          </div>
+                      <div class="flex-grow-1">
+                          <label for="service_provided_ended_at">Ende</label>
+                          <input type="time" :min="service_provided_started_at" class="form-control" v-bind:class="{'is-invalid': service_provided_ended_at_invalid}" id="service_provided_ended_at" name="service_provided_ended_at" placeholder="13:00" required :disabled="this.service !== null && this.service.unit !== services_hour_unit" v-model="service_provided_ended_at" @blur="autofill()" />
+                          <div class="invalid-feedback">Ende muss eine gültige Uhrzeit sein.</div>
                       </div>
                   </div>
-
-                  <div v-if="accounting.length" class="mt-4 p-1">
-                      <table class="table table-sm">
-                          <thead>
-                              <tr>
-                                  <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorAccounting().length, 'errorstoggle text-red-100': getErrorAccounting().length, 'text-red-500': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
-                                          <svg class="icon-bs icon-16">
-                                              <use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
-                                          </svg>
-                                      </button>
-                                  </th>
-                                  <th scope="col" class="col-1-5">Datum</th>
-                                  <th scope="col" class="col-1">Start</th>
-                                  <th scope="col" class="col-1">Ende</th>
-                                  <th scope="col" class="col-2">Projekt</th>
-                                  <th scope="col" class="col-2">Leistung</th>
-                                  <th scope="col" class="col-1">Menge</th>
-                                  <th scope="col" class="col-1-5">Mitarbeiter</th>
-                                  <th scope="col" class="col-auto text-end">
-                                      <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="removeSelectedAccounting()">
-                                          <svg class="icon-bs icon-16">
-                                              <use href="/svg/bootstrap-icons.svg#trash"></use>
-                                          </svg>
-                                      </button>
-                                      <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedAccounting().length" @click="restoreSelectedAccounting()">
-                                          <svg class="icon-bs icon-16">
-                                              <use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use>
-                                          </svg>
-                                      </button>
-                                      <button v-if="(getSelectedAccounting().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon-bs icon-16">
-                                              <use v-if="!selectAllHover" href="/svg/bootstrap-icons.svg#circle"></use>
-                                              <use v-if="selectAllHover" href="/svg/bootstrap-icons.svg#check-circle"></use>
-                                          </svg>
-                                      </button>
-                                      <button v-if="getSelectedAccounting().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon-bs icon-16">
-                                              <use href="/svg/bootstrap-icons.svg#check-circle"></use>
-                                          </svg>
-                                      </button>
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <template v-for="acc in pageOfItems">
-                                  <tr class="hover-highlight" v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
-                                      <td class="col-auto">
-                                          <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !acc.errors && !acc.show_details, 'errorstoggle text-red-100': acc.errors && !acc.show_details, 'text-dark': !acc.errors && acc.show_details, 'text-red-500': acc.errors && acc.show_details}" @click="toggleShowDetails(acc)">
-                                              <svg class="icon-bs icon-16">
-                                                  <use v-if="!acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#chevron-right"></use>
-                                                  <use v-if="acc.errors && !acc.show_details" href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
-                                                  <use v-if="acc.show_details" href="/svg/bootstrap-icons.svg#chevron-down"></use>
-                                              </svg>
-                                          </button>
-                                      </td>
-                                      <td class="col-1-5" @click="setEdit(acc, 'service_provided_on')">
-                                          <span v-if="acc.edit !== 'service_provided_on'">{{ acc.service_provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                                          <input v-if="acc.edit === 'service_provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_on_invalid}" ref="table_input" id="table_service_provided_on" name="table_service_provided_on" :value="getDateStringForInputField(acc.service_provided_on)" placeholder="" required @blur="changeAccountingServiceProvidedOn($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedOn($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_on')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service_provided_started_at')">
-                                          <span v-if="acc.edit !== 'service_provided_started_at'">{{ acc.service_provided_started_at }}</span>
-                                          <input v-if="acc.edit === 'service_provided_started_at'" type="time" :max="acc.service_provided_ended_at" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_started_at_invalid}" ref="table_input" id="table_service_provided_started_at" name="table_service_provided_started_at" :value="acc.service_provided_started_at ? acc.service_provided_started_at : ''" placeholder="08:00" required @blur="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedStartedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_started_at')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service_provided_ended_at')">
-                                          <span v-if="acc.edit !== 'service_provided_ended_at'">{{ acc.service_provided_ended_at }}</span>
-                                          <input v-if="acc.edit === 'service_provided_ended_at'" :min="acc.service_provided_started_at" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" required @blur="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_ended_at')" />
-                                      </td>
-                                      <td class="col-2" @click="setEdit(acc, 'project')">
-                                          <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
-                                          <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :modelValue="getProject(acc.project_id)" :selectOnTab="true" @update:modelValue="changeAccountingProject($event, acc)"  @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
-                                              <template v-slot:no-options>Keine passenden Einträge.</template>
-                                          </v-select>
-                                      </td>
-                                      <td class="col-1" @click="setEdit(acc, 'service')">
-                                          <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
-                                          <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input"  label="name_with_unit" placeholder="Service auswählen" :modelValue="getService(acc.service_id)" :selectOnTab="true" @update:modelValue="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)"  @keydown.enter.prevent="changeAccountingService($event, acc)">
-                                              <template v-slot:no-options>Keine passenden Einträge.</template>
-                                          </v-select>
-                                      </td>
-                                      <td class="col-1" @click="setEdit(acc, 'amount')">
-                                          <span v-if="acc.edit !== 'amount'">{{ acc.amount.toLocaleString() }}</span>
-                                          <input v-if="acc.edit === 'amount'" type="number" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_amount_invalid}" ref="table_input"  id="table_amount" name="table_amount" :value="acc.amount" placeholder="5" @blur="changeAccountingAmount($event, acc)" @keydown.enter.prevent="changeAccountingAmount($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'amount')" />
-                                      </td>
-                                      <td class="col-1-5">{{ getEmployeeName(acc.employee_id) }}</td>
-                                      <td class="col-auto text-end">
-                                          <button v-if="acc.action !== 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeAccounting(acc)">
-                                              <svg class="icon-bs icon-16">
-                                                  <use href="/svg/bootstrap-icons.svg#trash"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="acc.action === 'destroy' && canRemoveAccounting(current_employee, acc)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreAccounting(acc)">
-                                              <svg class="icon-bs icon-16">
-                                                  <use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="!acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)" @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="icon-bs icon-16">
-                                                  <use v-if="!acc.hover" href="/svg/bootstrap-icons.svg#circle"></use>
-                                                  <use v-if="acc.hover" href="/svg/bootstrap-icons.svg#check-circle"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="acc.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(acc)"  @mouseenter="acc.hover = true"  @mouseleave="acc.hover = false">
-                                              <svg class="icon-bs icon-16">
-                                                  <use href="/svg/bootstrap-icons.svg#check-circle"></use>
-                                              </svg>
-                                          </button>
-                                      </td>
-                                  </tr>
-
-                                  <transition name="collapse">
-                                      <tr v-if="acc.show_details"  v-bind:class="{'border-status border-success': acc.action === 'store' && !acc.selected, 'border-status border-warning': acc.action === 'update' && !acc.selected, 'text-muted ': acc.action === 'destroy', 'border-status border-danger': acc.action === 'destroy' && !acc.selected, 'border-status border-primary': acc.selected}">
-                                          <td class="border-0" ></td>
-                                          <td colspan="7" class="border-0">
-                                              <div class="mb-3">
-                                                  <label for="table_comment"><span class="fw-bold">Bemerkungen:</span></label>
-                                                  <p v-if="acc.edit !== 'comment'" class="whitespace-preline" @click="setEdit(acc, 'comment')">{{ acc.comment ? acc.comment : 'nicht angegeben' }}</p>
-                                                  <textarea v-if="acc.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="acc.comment" @blur="changeAccountingComment($event, acc)" />
-                                              </div>
-                                              <div v-if="acc.errors" class="alert alert-danger" role="alert">
-                                                  <p class="mb-0">Probleme in dieser Zeile</p>
-                                                  <ul class="mb-0">
-                                                      <li v-for="error in acc.errors">{{ error }}</li>
-                                                  </ul>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                  </transition>
-                              </template>
-                          </tbody>
-                      </table>
-
-                      <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
-
-                      <p v-if="accounting.length" class="mt-3">
-                          Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
-                          <span class="badge bg-green-100 text-green-800">wird angelegt</span>
-                          <span class="badge bg-yellow-100 text-yellow-800">wird bearbeitet</span>
-                          <span class="badge bg-red-100 text-red-800">wird entfernt</span>
-                      </p>
+                  <div>
+                      <label>Projekt</label>
+                      <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="project" :selectOnTab="true" @update:modelValue="setProject">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">Projekt muss ausgefüllt sein.</div>
                   </div>
-
-                  <div v-if="!accounting.length" class="text-center mt-4">
-                      <img class="empty-state" src="/svg/no-data.svg" alt="no data" />
-                      <p class="lead text-muted">Es sind keine Abrechnungen passend zum Anzeigefilter vorhanden.</p>
-                      <p class="lead">Rechne neue Leistungen mithilfe des Formulars ab.</p>
+                  <div>
+                      <label>Leistung</label>
+                      <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :modelValue="service" :selectOnTab="true" @update:modelValue="setService">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': service_invalid}">Leistung muss ausgefüllt sein.</div>
                   </div>
-
-                  <button v-if="accounting.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedAccounting().length" @click="saveData()">
-                      <svg class="icon-bs icon-16 me-2">
-                          <use href="/svg/bootstrap-icons.svg#save"></use>
-                      </svg>
-                      Änderungen speichern
+                  <div>
+                      <label for="amount">Menge</label>
+                      <input type="number" class="form-control" v-bind:class="{'is-invalid': amount_invalid}" :min="service !== null && service.type === 'wage' ? min_amount : 0.01" :step="service !== null && service.type === 'wage' ? min_amount : 0.01" id="amount" name="amount" placeholder="5" v-model="amount" @blur="autofill()" />
+                      <div class="invalid-feedback">
+                          <span v-if="service !== null && this.service.type === 'wage'">Menge muss ein Vielfaches von {{min_amount}} sein.</span>
+                          <span v-else>Menge muss mindestens 0.01 sein.</span>
+                      </div>
+                  </div>
+                  <div>
+                      <label for="comment">Bemerkungen</label>
+                      <textarea class="form-control" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
+                  </div>
+                  <button id="addaccounting" type="button" class="btn q-btn d-inline-flex align-items-center justify-content-center gap-2" @click="addAccounting()">
+                      <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
+                      Hinzufügen
                   </button>
               </div>
+          </div>
+      </div>
 
+      <div v-if="accounting.length" class="q-savebar">
+          <div class="q-savebar__inner">
+              <button ref="save_button" type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" :disabled="!getUnsavedAccounting().length" @click="saveData()">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#save"></use></svg>
+                  Änderungen speichern
+              </button>
           </div>
       </div>
 
@@ -652,6 +578,13 @@
                 });
 
                 this.sortArrayByDateTime(this.accounting);
+
+                // always reassign to a new array reference (push/sort above
+                // mutate in place) so JwPagination's shallow `items` watcher
+                // reliably notices this filter/fetch completed, without
+                // needing a deep watch that would also fire — wrongly — on
+                // per-row property toggles like `selected` during normal use.
+                this.accounting = [...this.accounting];
             },
 
             saveData() {
@@ -1369,9 +1302,18 @@
                 return employee ? employee.name : this.current_employee.name;
             },
 
+            getEmployeeShortName(employeeId) {
+                let employee = this.employees.find(employee => employee.id === employeeId);
+                return employee ? employee.short_name : this.current_employee.short_name;
+            },
+
             getShownEmployeeIds() {
+                // unsaved (not yet persisted) rows always belong to the current
+                // employee but carry employee_id: null until the server assigns
+                // one on save — map those to the real id so they don't show up
+                // as a separate ("nameless") entry in the report dropdown.
                 return this.accounting.length ?
-                    Array.from(new Set(this.accounting.map(acc => acc.employee_id))) : [];
+                    Array.from(new Set(this.accounting.map(acc => acc.employee_id ?? this.current_employee.id))) : [];
             },
 
             isTwentyFourHourTimeFormat(text) {

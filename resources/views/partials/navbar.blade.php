@@ -195,7 +195,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarAccountingDropdown">
                                     <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('logbook.index') }}">
                                         <svg class="icon-bs icon-16 me-1">
-                                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#book"></use>
+                                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#journal"></use>
                                         </svg>
                                         Fahrtenbuch
                                     </a>

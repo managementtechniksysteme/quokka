@@ -50,7 +50,7 @@
             },
 
             sortArrayByName(services) {
-                people.sort((a, b) => {
+                services.sort((a, b) => {
                     let a_lower = a.name_with_unit.toLowerCase();
                     let b_lower = b.name_with_unit.toLowerCase();
                     return a_lower > b_lower ? 1 : b_lower > a_lower ? -1 : 0;

@@ -12,114 +12,91 @@
 @endif
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('project.breadcrumb')
+    <div class="q-container q-container--narrow">
+        @include('project.breadcrumb')
 
-            <h3>
-                Projektauswertung als PDF erstellen
-                <small class="text-muted">{{ $project->name }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">{{ $project->name }}</div>
+                    <h1 class="q-title">Projektauswertung als PDF erstellen</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('projects.download', $project) }}" method="post" novalidate>
+        <form class="q-form needs-validation" action="{{ route('projects.download', $project) }}" method="post" novalidate>
             @csrf
 
-            <div class="row">
-                <div class="col-md-4">
-                    <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
-                        </svg>
-                        Zeitraum
-                    </p>
-                    <p class="text-muted">
-                        Der Zeitraum der Auswertung.
-                    </p>
+            <div class="q-form-section">
+                <div class="q-form-section__head">
+                    Zeitraum
+                    <div class="q-form-section__desc">Der Zeitraum der Auswertung.</div>
                 </div>
-
-                <div class="col-md-8">
-                    <div class="mb-3">
-                        <label for="start">Start</label>
-                        <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $project->starts_on?->format('Y-m-d')) ?? '' }}" />
-                        <div class="invalid-feedback">
-                            @error('start')
-                            {{ $message }}
-                            @enderror
+                <div class="q-form-section__body">
+                    <div class="q-form__row q-form__row--2">
+                        <div>
+                            <label for="start">Start</label>
+                            <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $project->starts_on?->format('Y-m-d')) ?? '' }}" />
+                            <div class="invalid-feedback">
+                                @error('start')
+                                    {{ $message }}
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="end">Ende</label>
-                        <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" placeholder="" value="{{ old('end') }}" />
-                        <div class="invalid-feedback">
-                            @error('end')
-                            {{ $message }}
-                            @enderror
+                        <div>
+                            <label for="end">Ende</label>
+                            <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" placeholder="" value="{{ old('end') }}" />
+                            <div class="invalid-feedback">
+                                @error('end')
+                                    {{ $message }}
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
-                        </svg>
-                        Mitarbeiter
-                    </p>
-                    <p class="text-muted">
-                        Die Mitarbeiter, welche in der Auswertung vorhanden sein sollen.
-                    </p>
+            <div class="q-form-section">
+                <div class="q-form-section__head">
+                    Mitarbeiter
+                    <div class="q-form-section__desc">Die Mitarbeiter, welche in der Auswertung vorhanden sein sollen.</div>
                 </div>
-
-                <div class="col-md-8">
-                    <div class="mb-3">
-                        <label for="employee_ids">Mitarbeiter</label>
-                        <people-selector inputname="employee_ids[]" :people="{{ $employees }}" :current_people="{{ $currentEmployees ?? 'null' }}" v-cloak></people-selector>
-                        <div class="invalid-feedback @error('employee_ids') d-block @enderror">
-                            @error('employee_ids')
+                <div class="q-form-section__body">
+                    <label for="employee_ids">Mitarbeiter</label>
+                    <people-selector inputname="employee_ids[]" :people="{{ $employees }}" :current_people="{{ $currentEmployees ?? 'null' }}" v-cloak></people-selector>
+                    <div class="invalid-feedback @error('employee_ids') d-block @enderror">
+                        @error('employee_ids')
                             {{ $message }}
-                            @enderror
-                        </div>
+                        @enderror
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <p class="d-inline-flex align-items-center mb-1">
-                        <svg class="icon-bs icon-16 me-2">
-                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use>
-                        </svg>
-                        Leistungen
-                    </p>
-                    <p class="text-muted">
-                        Die Leistungen, welche in der Auswertung vorhanden sein sollen.
-                    </p>
+            <div class="q-form-section">
+                <div class="q-form-section__head">
+                    Leistungen
+                    <div class="q-form-section__desc">Die Leistungen, welche in der Auswertung vorhanden sein sollen.</div>
                 </div>
-
-                <div class="col-md-8">
-                    <div class="mb-3">
-                        <label for="service_ids">Leistungen</label>
-                        <accounting-services-selector inputname="service_ids[]" :services="{{ $services }}" :current_services="{{ $currentServices ?? 'null' }}" v-cloak></accounting-services-selector>
-                        <div class="invalid-feedback @error('service_ids') d-block @enderror">
-                            @error('service_ids')
+                <div class="q-form-section__body">
+                    <label for="service_ids">Leistungen</label>
+                    <accounting-services-selector inputname="service_ids[]" :services="{{ $services }}" :current_services="{{ $currentServices ?? 'null' }}" v-cloak></accounting-services-selector>
+                    <div class="invalid-feedback @error('service_ids') d-block @enderror">
+                        @error('service_ids')
                             {{ $message }}
-                            @enderror
-                        </div>
+                        @enderror
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon-bs icon-16 me-2">
-                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use>
-                </svg>
-                PDF erstellen
-            </button>
+            <div class="q-form-actions">
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                    PDF erstellen
+                </button>
+            </div>
         </form>
     </div>
 @endsection

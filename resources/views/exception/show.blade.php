@@ -1,38 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container pt-4">
-            @include('exception.breadcrumb')
+    <div class="q-container">
+        @include('exception.breadcrumb')
 
-            <h3>
-                Fehlerdatei
-                <small class="text-muted d-inline-flex align-items-center">
-                    {{ $exception['uuid'] }}
-                </small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Fehlerdatei</div>
+                    <h1 class="q-title q-mono">{{ $exception['uuid'] }}</h1>
+                </div>
+            </div>
 
-            <div class="scroll-x d-flex">
-                @can('tools-deleteexceptions')
-                    <form action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post" >
-                        @csrf
-                        @method('DELETE')
+            @can('tools-deleteexceptions')
+                <form action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
+                    @csrf
+                    @method('DELETE')
 
-                        <button type="submit" class="btn btn-outline-secondary border-0 d-inline-flex align-items-center">
-                            <svg class="icon-bs icon-16 me-2">
-                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use>
-                            </svg>
-                            Entfernen
-                        </button>
-                    </form>
-                @endcan
+                    <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center gap-2">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+                        Entfernen
+                    </button>
+                </form>
+            @endcan
+        </div>
+
+        <div class="q-card">
+            <div class="q-card__body" style="overflow-x: auto;">
+                <pre class="mb-0 q-mono" style="font-size: .8rem;">{{ $exception['content'] }}</pre>
             </div>
         </div>
-    </div>
-
-    <div class="container my-4">
-        <pre>{{ $exception['content'] }}</pre>
-
-
     </div>
 @endsection

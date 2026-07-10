@@ -1016,6 +1016,9 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 @include media-breakpoint-down(lg) { .q-dash-cols { grid-template-columns: 1fr; } }
 .q-link { color: var(--q-accent); font-weight: 600; font-size: .72rem; text-decoration: none; }
 .q-link:hover { text-decoration: underline; }
+// quiet secondary link (e.g. "forgot password?") — muted at rest, accent on hover
+.q-link--quiet { color: var(--q-muted); font-size: .8rem; text-decoration: none; }
+.q-link--quiet:hover { color: var(--q-accent); text-decoration: underline; }
 
 .q-activity { display: flex; flex-direction: column; }
 .q-activity__item { display: flex; gap: .6rem; align-items: center; padding: .65rem 1rem; color: inherit; text-decoration: none; transition: background .12s; }

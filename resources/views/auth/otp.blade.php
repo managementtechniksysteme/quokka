@@ -1,54 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Two Factor Authentication') }}</div>
+    <div class="q-container d-flex justify-content-center" style="max-width: none; padding-top: 3rem;">
+        <div class="q-card" style="max-width: 460px; width: 100%;">
+            <div class="q-card__body p-4 p-md-5">
+                <h1 class="q-title mb-1">{{ __('Two Factor Authentication') }}</h1>
 
-                    <div class="card-body">
-                        <p class="alert alert-info mb-4 d-inline-flex align-items-center">
-                            <svg class="icon-bs icon-16 me-2">
-                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use>
-                            </svg>
-                            {{ __('You can find your six digit one time password in the authenticator app on your mobile phone.') }}
-                        </p>
-
-                        <form class="needs-validation" action="{{ $submitUrl }}" method="POST" novalidate>
-                            @csrf
-
-                            <input type="hidden" name="user" value="{{ $user }}">
-
-                            <div class="mb-3 row">
-                                <label for="one_time_password" class="col-md-4 col-form-label text-md-end">{{ __('One Time Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="one_time_password" type="text" pattern="\d*" maxlength="6" class="form-control{{ $errors->has('one_time_password') ? ' is-invalid' : '' }}" name="one_time_password" required autocomplete="off" autofocus>
-
-                                    <div class="invalid-feedback">
-                                        @error('one_time_password')
-                                            {{ $message }}
-                                        @else
-                                            {{ __('Please enter the six digit one time password from the authenticator app.') }}
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
-                                        <svg class="icon-bs icon-16 me-2">
-                                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-in-right"></use>
-                                        </svg>
-                                        {{ __('Login') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="q-banner q-banner--info mt-3 mb-4">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+                    <div>{{ __('You can find your six digit one time password in the authenticator app on your mobile phone.') }}</div>
                 </div>
+
+                <form class="q-form needs-validation" action="{{ $submitUrl }}" method="POST" novalidate>
+                    @csrf
+
+                    <input type="hidden" name="user" value="{{ $user }}">
+
+                    <div class="mb-4">
+                        <label for="one_time_password">{{ __('One Time Password') }}</label>
+                        <input id="one_time_password" type="text" pattern="\d*" maxlength="6" class="form-control{{ $errors->has('one_time_password') ? ' is-invalid' : '' }}" name="one_time_password" required autocomplete="off" autofocus>
+                        <div class="invalid-feedback">
+                            @error('one_time_password')
+                                {{ $message }}
+                            @else
+                                {{ __('Please enter the six digit one time password from the authenticator app.') }}
+                            @enderror
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary text-white w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-in-right"></use></svg>
+                        {{ __('Login') }}
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -45,7 +45,6 @@ use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
-use App\Http\Controllers\QuokkaMobileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SentEmailController;
@@ -230,8 +229,6 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('/projects/{project}/interim-invoices', InterimInvoiceController::class)->except(['index']);
 
     Route::resource('project-controlling', ProjectControllingController::class)->only(['index']);
-
-    Route::get('/quokka-mobile', [QuokkaMobileController::class, 'index'])->name('quokka-mobile.index');
 
     Route::resource('roles', RoleController::class);
 

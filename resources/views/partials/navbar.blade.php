@@ -240,7 +240,7 @@
                     @endif
 
 
-                    <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('quokka-mobile.*', 'latest-changes.*', 'sent-emails.*', 'qr-scan.*', 'exceptions.*')])>
+                    <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('latest-changes.*', 'sent-emails.*', 'qr-scan.*', 'exceptions.*')])>
                         <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon-bs icon-20 me-1">
                                 <use href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
@@ -249,12 +249,6 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarHelpDropdown">
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('quokka-mobile.index') }}">
-                                <svg class="icon-bs icon-16 me-1">
-                                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#phone"></use>
-                                </svg>
-                                Quokka Mobile
-                            </a>
                             @can('tools-viewlatestchanges')
                                 <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('latest-changes.index') }}">
                                     <svg class="icon-bs icon-16 me-1">

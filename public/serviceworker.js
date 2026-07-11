@@ -5,8 +5,6 @@ let urlsToCache = [
   OFFLINE_URL,
   "/js/alpine.min.js",
   "/svg/bootstrap-icons.svg",
-  "/svg/feather-sprite.svg",
-  "/svg/offline.svg",
 ];
 
 self.addEventListener("install", function (event) {

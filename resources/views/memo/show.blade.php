@@ -30,7 +30,7 @@
                 @if($memo->draft)
                     @can('update', $memo)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('memos.publish', ['memo' => $memo, 'redirect' => 'show']) }}">
-                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                             Veröffentlichen
                         </a>
                     @endcan

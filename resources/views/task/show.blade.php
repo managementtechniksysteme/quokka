@@ -35,7 +35,7 @@
                 @unless($task->status === 'finished')
                     @can('update', $task)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => 'show']) }}">
-                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                             Erledigen
                         </a>
                     @endcan

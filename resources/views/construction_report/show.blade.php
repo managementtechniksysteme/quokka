@@ -44,7 +44,7 @@
                 @unless($constructionReport->isFinished())
                     @can('approve', $constructionReport)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.finish', ['construction_report' => $constructionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                             Erledigen
                         </a>
                     @endcan

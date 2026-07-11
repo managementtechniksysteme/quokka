@@ -1,7 +1,7 @@
 @php $isFinished = isset($activity->attribute_changes['attributes']['status']) && $activity->attribute_changes['attributes']['status'] === 'finished'; @endphp
 <div class="q-comment q-comment--event">
     <span class="q-avatar q-avatar--round {{ $isFinished ? 'q-avatar--green' : 'q-avatar--muted' }}">
-        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $isFinished ? 'check-square' : 'activity' }}"></use></svg>
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $isFinished ? 'check2-square' : 'activity' }}"></use></svg>
     </span>
 
     <div class="q-comment__main">

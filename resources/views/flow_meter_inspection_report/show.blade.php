@@ -44,7 +44,7 @@
                 @unless($flowMeterInspectionReport->isFinished())
                     @can('approve', $flowMeterInspectionReport)
                         <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('flow-meter-inspection-reports.finish', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
-                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
                             Erledigen
                         </a>
                     @endcan

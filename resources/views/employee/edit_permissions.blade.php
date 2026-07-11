@@ -19,13 +19,6 @@
         <form class="q-form needs-validation" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
             @method('PATCH')
             @include('employee.fields_role', ['employee' => $employee, 'roles' => $roles])
-
-            <div class="q-form-actions">
-                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
-                    Berechtigungen zuweisen
-                </button>
-            </div>
         </form>
 
         <form class="q-form needs-validation mt-4" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
@@ -34,7 +27,7 @@
 
             <div class="q-form-actions">
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                     Berechtigungen speichern
                 </button>
             </div>

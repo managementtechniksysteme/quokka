@@ -12,7 +12,7 @@
             @if($employee->user)
                 <span class="q-chip @if($employee->user->trashed()) q-chip--warning @endif">
                     <svg class="icon-bs icon-12">
-                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $employee->user->trashed() ? 'user-x' : 'user' }}"></use>
+                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $employee->user->trashed() ? 'person-x' : 'person' }}"></use>
                     </svg>
                     <span class="text-truncate">{{ $employee->user->username }}</span>
                 </span>

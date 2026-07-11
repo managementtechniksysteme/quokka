@@ -30,7 +30,7 @@
 
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                         Passwort speichern
                     </button>
                 </div>

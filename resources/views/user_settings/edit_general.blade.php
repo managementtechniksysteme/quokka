@@ -39,7 +39,7 @@
                 Zurücksetzen
             </a>
             <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
-                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                 Unterschrift speichern
             </button>
         </div>

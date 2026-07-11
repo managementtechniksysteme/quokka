@@ -351,7 +351,7 @@
       <div v-if="logbook.length" class="q-savebar">
           <div class="q-savebar__inner">
               <button ref="save_button" type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" :disabled="!getUnsavedLogbook().length" @click="saveData()">
-                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#save"></use></svg>
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
                   Änderungen speichern
               </button>
           </div>

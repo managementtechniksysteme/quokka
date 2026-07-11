@@ -16,7 +16,7 @@
 
         <div class="d-flex flex-column gap-3">
             <div class="q-card text-center" style="padding: 2.5rem 1.5rem;">
-                <svg class="q-empty-icon" style="margin-bottom:.5rem"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-circle"></use></svg>
+                <svg class="q-empty-icon q-empty-icon--success"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-circle"></use></svg>
                 <p class="lead text-muted mt-2 mb-0">Vielen Dank, dass Sie den Servicebericht unterschrieben haben.</p>
             </div>
 

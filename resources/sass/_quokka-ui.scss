@@ -965,7 +965,12 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     width: 5rem;
     height: 5rem;
     color: var(--q-border);
-    margin-bottom: .75rem;
+    margin: 0 auto .75rem;
+    // contextual variants — e.g. a customer-facing signing/download outcome
+    // page, where the icon doubles as the success/failure signal itself
+    &--success { color: var(--q-green); }
+    &--warning { color: var(--q-amber); }
+    &--danger  { color: var(--q-red); }
 }
 
 // Example blocks (used in help pages)

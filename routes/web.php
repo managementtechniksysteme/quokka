@@ -55,7 +55,6 @@ use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WageServiceController;
 use App\Http\Controllers\WebpushController;
-use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -66,7 +65,7 @@ Auth::routes([
 Route::get('/offline', [OfflineController::class, 'index'])->name('offline.index');
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+    Route::get('/', fn () => redirect()->route('login'))->name('welcome');
 
     Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
     Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);

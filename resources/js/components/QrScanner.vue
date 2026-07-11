@@ -9,9 +9,9 @@
                     {{qr_scanner_error}}
                 </div>
             </notification>
-            <div class="text-center">
-                <img class="empty-state" src="/svg/notify.svg" alt="notify" />
-                <p class="lead text-muted">{{qr_scanner_error}}</p>
+            <div class="q-empty-state">
+                <svg class="q-empty-icon q-empty-icon--danger"><use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use></svg>
+                <p>{{qr_scanner_error}}</p>
             </div>
         </div>
 

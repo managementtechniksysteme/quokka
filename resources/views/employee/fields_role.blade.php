@@ -6,30 +6,18 @@
 
 @csrf
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 me-2">
-                <use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use>
-            </svg>
-            Rolle zuweisen
-        </p>
-        <p class="text-muted">
-            Dem Mitarbeiter alle Berechtigungen der ausgewählten Rolle zuweisen.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Rolle zuweisen
+        <div class="q-form-section__desc">Dem Mitarbeiter alle Berechtigungen der ausgewählten Rolle zuweisen.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="mb-3">
-            <label for="role_id">Rolle</label>
-            <role-dropdown :roles="{{ $roles }}" :current_role="{{ $currentRole ?? 'null' }}" v-cloak></role-dropdown>
-            <div class="invalid-feedback">
-                @error('role_id')
-                    {{ $message }}
-                @enderror
-            </div>
+    <div class="q-form-section__body">
+        <label for="role_id">Rolle</label>
+        <role-dropdown :roles="{{ $roles }}" :current_role="{{ $currentRole ?? 'null' }}" v-cloak></role-dropdown>
+        <div class="invalid-feedback">
+            @error('role_id')
+                {{ $message }}
+            @enderror
         </div>
-
     </div>
-
 </div>

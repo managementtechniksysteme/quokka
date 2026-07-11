@@ -1,42 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('employee.breadcrumb')
+    <div class="q-container">
+        @include('employee.breadcrumb')
 
-            <h3>
-                Berechtigungen bearbeiten
-                <small class="text-muted">{{ $employee->person->name }}</small>
-            </h3>
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Berechtigungen bearbeiten</div>
+                    <h1 class="q-title">{{ $employee->person->name }}</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
+        <form class="q-form needs-validation" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
             @method('PATCH')
-            @component('employee.fields_role', [ 'employee' => $employee, 'roles' => $roles ])
-            @endcomponent
+            @include('employee.fields_role', ['employee' => $employee, 'roles' => $roles])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center my-4">
-                <svg class="icon-bs icon-16 me-2">
-                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use>
-                </svg>
-                Berechtigungen zuweisen
-            </button>
+            <div class="q-form-actions">
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Berechtigungen zuweisen
+                </button>
+            </div>
         </form>
 
-        <form class="needs-validation mt-4" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
+        <form class="q-form needs-validation mt-4" action="{{ route('employees.update-permissions', $employee) }}" method="post" novalidate>
             @method('PATCH')
-            @component('employee.fields_permissions', [ 'employee' => $employee ])
-            @endcomponent
+            @include('employee.fields_permissions', ['employee' => $employee])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon-bs icon-16 me-2">
-                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use>
-                </svg>
-                Berechtigungen speichern
-            </button>
+            <div class="q-form-actions">
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#save"></use></svg>
+                    Berechtigungen speichern
+                </button>
+            </div>
         </form>
     </div>
 @endsection

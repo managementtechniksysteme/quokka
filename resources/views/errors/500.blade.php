@@ -2,31 +2,24 @@
 
 @section('title', __('Server Error'))
 @section('code', '500')
+@section('icon')
+    <svg viewBox="0 0 16 16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-octagon"></use></svg>
+@endsection
 @section('message', __('Server Error'))
+@section('description', 'Da ist etwas schiefgelaufen. Versuche es in Kürze noch einmal.')
+
 @section('support')
     @if($exceptionUuid)
-        <div class="flex items-center mx-auto mt-4 sm:px-6 lg:px-8">
-            <div class="px-4 text-sm text-gray-500 uppercase tracking-wider">
-                {{ __('Für Hilfe gib folgende Fehler Identifikation an') }}
-            </div>
-        </div>
+        <p class="q-error-eyebrow" style="margin-bottom: .35rem;">Fehler-ID für den Support</p>
+        <p class="q-error-mono" style="margin: 0 0 .85rem;">{{ $exceptionUuid }}</p>
 
-        <div class="flex items-center mx-auto mt-2 sm:px-6 lg:px-8">
-            <div class="px-4 text-sm text-gray-500 tracking-wider">
-                {{ $exceptionUuid }}
-            </div>
-        </div>
-
-
-        <button id="uuid-button" class="mx-auto bg-gray-100 outline-none mt-2" data-clipboard-text="{{ $exceptionUuid }}">
-            <svg class="icon-bs icon-baseline text-gray-500 me-2">
-                <use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use>
-            </svg>
-            <span id="uuid-button-text" class="text-sm text-gray-500 uppercase tracking-wider">Kopieren</span>
+        <button id="uuid-button" class="q-error-btn" data-clipboard-text="{{ $exceptionUuid }}" type="button">
+            <svg viewBox="0 0 16 16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+            <span id="uuid-button-text">Kopieren</span>
         </button>
-
     @endif
 @endsection
+
 @section('scripts')
     <script src="{{ asset('js/clipboard.min.js') }}"></script>
     <script type="text/javascript">

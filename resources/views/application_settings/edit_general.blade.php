@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="q-form-section__body d-flex flex-column gap-3">
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="currency_unit">Währungseinheit</label>
                         <input type="text" class="form-control @error('currency_unit') is-invalid @enderror" id="currency_unit" name="currency_unit" placeholder="€" value="{{ old('currency_unit', $applicationSettings->currency_unit) }}" required />
@@ -83,13 +83,13 @@
                     <div>
                         <label for="services_hour_unit">Stundenbasierte Einheitsbezeichnung</label>
                         <service-unit-dropdown :inputname="'services_hour_unit'" :units="{{ $wageServiceUnits }}" current_unit="{{ $currentServicesHourUnit ?? null }}" :taggable="false" v-cloak></service-unit-dropdown>
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback @error('services_hour_unit') d-block @enderror">
                             @error('services_hour_unit') {{ $message }} @enderror
                         </div>
                     </div>
                 </div>
 
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="accounting_min_amount">Minimale Menge bei Lohnleistungen</label>
                         <input type="number" min="0" step=".01" class="form-control @error('accounting_min_amount') is-invalid @enderror" id="accounting_min_amount" name="accounting_min_amount" placeholder="0.5" value="{{ old('accounting_min_amount', $applicationSettings->accounting_min_amount) }}" required />
@@ -120,7 +120,7 @@
                     </div>
                 </div>
 
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="overtime_50_service_id">Überstunden 50% Leistung</label>
                         <service-dropdown inputname="overtime_50_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentOvertime50Service ?? 'null' }}" v-cloak></service-dropdown>
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="q-form-section__body d-flex flex-column gap-3">
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="holiday_service_id">Urlaubsleistung</label>
                         <service-dropdown inputname="holiday_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentHolidayService ?? 'null' }}" v-cloak></service-dropdown>
@@ -186,7 +186,7 @@
                 </div>
             </div>
             <div class="q-form-section__body d-flex flex-column gap-3">
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="project_overall_costs_warning_percentage">Warnschwelle Gesamtkosten</label>
                         <div class="input-group has-validation">
@@ -214,7 +214,7 @@
                     </div>
                 </div>
 
-                <div class="q-form__row--2">
+                <div class="q-form__row q-form__row--2">
                     <div>
                         <label for="project_wage_costs_warning_percentage">Warnschwelle Lohnkosten</label>
                         <div class="input-group has-validation">

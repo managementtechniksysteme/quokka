@@ -29,7 +29,10 @@ $q-pad:            1.25rem;
 [data-bs-theme="light"] {
     color-scheme: light;
     --q-bg:#eef0f4; --q-surface:#ffffff; --q-surface-2:#f7f8fa; --q-surface-3:#f1f3f6;
-    --q-border:#e5e8ee; --q-border-2:#edeff3;
+    // --q-border needs to read clearly against --q-bg (border-only elements like
+    // .q-btn/.q-kebab have no shadow to fall back on); --q-border-2 stays close to
+    // --q-surface on purpose — it's only used for faint in-card dividers.
+    --q-border:#d7dce3; --q-border-2:#edeff3;
     --q-text:#1b1e26; --q-muted:#69707d; --q-faint:#9aa1ad;
     --q-accent:#{$primary};
     // accent-tinted fill (recomputes per theme since it reads --q-accent)

@@ -60,7 +60,11 @@ $q-pad:            1.25rem;
 // =============================================================================
 //  A. Page canvas + content column
 // =============================================================================
-.q-page      { background: var(--q-bg); min-height: 100%; }
+// min-height is intentionally NOT set here: .q-page is only ever applied to
+// <main> (layouts/app.blade.php), which already sizes itself against the
+// navbar height in app.scss. A min-height here would out-specificity that
+// rule and make <main> overshoot the viewport by one navbar's height.
+.q-page      { background: var(--q-bg); }
 .q-container { max-width: 1140px; margin: 0 auto; padding: 1.5rem 1.75rem 2.5rem; }
 .q-container--narrow { max-width: 760px; }
 
@@ -135,6 +139,12 @@ $q-pad:            1.25rem;
         &:disabled, &[readonly] { background: var(--q-surface-3); color: var(--q-faint); }
         &.is-invalid { border-color: var(--q-red); }
     }
+    // Bootstrap's own .form-control-sm/.form-select-sm ship the same specificity
+    // as the base rule above (one class), so declared after it here they still
+    // win by source order and restore the compact sizing the -sm modifier promises.
+    // Values match Bootstrap's real $input-padding-*-sm/$input-font-size-sm so the
+    // height stays exactly what .dropdown-sm in _select.scss is calibrated against.
+    .form-control-sm, .form-select-sm { padding: $input-padding-y-sm $input-padding-x-sm; font-size: $input-font-size-sm; }
 
     // file input: theme the browser's file-select button and round its left
     // corners so it follows the field's rounded outer edge instead of clashing.

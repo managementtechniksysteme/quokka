@@ -58,7 +58,7 @@
           </div>
       </div>
 
-      <div class="q-filterbar">
+      <div class="q-filterbar q-form">
           <div class="q-card">
               <div class="q-card__body">
                   <div class="q-filterbar__fields">
@@ -254,7 +254,7 @@
               </div>
           </div>
 
-          <div v-if="permissions.includes('logbook.create')" class="q-grid__form">
+          <div v-if="permissions.includes('logbook.create')" class="q-grid__form q-form">
               <div class="q-card__head d-flex align-items-center gap-2">
                   <span class="q-section-icon q-section-icon--accent">
                       <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>

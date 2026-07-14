@@ -734,6 +734,21 @@ $q-pad:            1.25rem;
 .dropdown-item.dropdown-item-danger:hover,
 .dropdown-item.dropdown-item-danger:focus { background: var(--q-red-bg); color: var(--q-red); }
 
+// checkbox row inside a dropdown menu (e.g. the Auswertung employee picker).
+// Deliberately not styled with px-*/py-* utilities: those are !important and
+// override .form-check's own padding-left, which breaks the checkbox's
+// margin-left: -1.5em positioning math and glues it to the menu border.
+// Extending padding-left instead keeps that math intact.
+.dropdown-menu .form-check {
+    padding-top: .45rem;
+    padding-bottom: .45rem;
+    padding-right: .6rem;
+    padding-left: calc(1.5em + .6rem);
+    margin-bottom: 0;
+    border-radius: 8px;
+    &:hover { background: var(--q-surface-2); }
+}
+
 // Row kebab — subtle bordered icon button (matches the mockup)
 .q-kebab {
     flex-shrink: 0;

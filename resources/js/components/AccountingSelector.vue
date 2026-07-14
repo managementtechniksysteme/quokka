@@ -44,21 +44,21 @@
               </button>
 
               <div v-if="permissions.includes('accounting.createpdf') && getShownEmployeeIds().length > 1" class="dropdown">
-                  <button type="button" class="btn q-btn dropdown-toggle d-inline-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                  <button type="button" class="btn q-btn dropdown-toggle d-inline-flex align-items-center gap-2" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                       <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
                       Auswertung
                   </button>
 
                   <div class="dropdown-menu dropdown-menu-end" style="min-width: 280px">
                       <form @submit.prevent="onReportSubmit">
-                          <div v-for="employeeId in getShownEmployeeIds()" :key="'emp-'+employeeId" class="form-check px-3 py-1">
+                          <div v-for="employeeId in getShownEmployeeIds()" :key="'emp-'+employeeId" class="form-check">
                               <input type="checkbox" class="form-check-input" :id="'employee-'+employeeId" name="employee_ids[]" :value="employeeId">
                               <label class="form-check-label d-inline-flex align-items-center gap-1" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="'employee-'+employeeId">
                                   <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#person"></use></svg>
                                   {{ getEmployeeName(employeeId) }}
                               </label>
                           </div>
-                          <button class="btn btn-sm btn-primary text-white mx-3 mt-1 d-inline-flex align-items-center gap-2" type="submit">
+                          <button class="btn btn-sm btn-primary text-white mx-2 mt-1 d-inline-flex align-items-center gap-2" type="submit">
                               <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
                               Erstellen
                           </button>

@@ -68,7 +68,7 @@ class DeliveryNotePolicy
 
     public function emailDownloadRequest(User $user, DeliveryNote $deliveryNote): bool
     {
-        if($deliveryNote->status !== 'new') {
+        if($deliveryNote->status === 'new') {
             return false;
         }
 

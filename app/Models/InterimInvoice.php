@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class InterimInvoice extends Model
 {
+    use HasFactory;
     use OrdersResults;
 
     protected function casts(): array

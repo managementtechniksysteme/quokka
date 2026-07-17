@@ -338,8 +338,15 @@ class Project extends Model implements FiltersGlobalSearch
     {
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
+        // MySQL supports DISTINCT together with a custom SEPARATOR in group_concat();
+        // sqlite's group_concat() can't combine the two ("DISTINCT aggregates must have
+        // exactly one argument"), so the comma-space separator can't be preserved there.
+        $commentAggregate = DB::connection()->getDriverName() === 'sqlite'
+            ? 'group_concat(distinct accounting.comment)'
+            : 'group_concat(distinct accounting.comment separator ", ")';
+
         $report = $this->accounting()
-            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, group_concat(distinct accounting.comment separator ", ") as comment')
+            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, '.$commentAggregate.' as comment')
             ->join('users', 'accounting.employee_id', '=', 'users.employee_id')
             ->join('projects', 'accounting.project_id', '=', 'projects.id')
             ->join('services', 'accounting.service_id', '=', 'services.id')

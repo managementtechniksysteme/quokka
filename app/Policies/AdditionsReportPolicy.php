@@ -81,7 +81,7 @@ class AdditionsReportPolicy
         }
 
         if($additionsReport->status === 'signed') {
-            return $user->can('sadditions-reports.approve');
+            return $user->can('additions-reports.approve');
         }
 
         if($additionsReport->employee->person_id === $user->employee_id) {

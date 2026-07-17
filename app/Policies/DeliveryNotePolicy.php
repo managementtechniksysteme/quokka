@@ -41,7 +41,7 @@ class DeliveryNotePolicy
         }
 
         if($deliveryNote->status === 'signed') {
-            return $user->can('inspection-reports.approve');
+            return $user->can('delivery-notes.approve');
         }
 
         return $user->can('delivery-notes.delete');

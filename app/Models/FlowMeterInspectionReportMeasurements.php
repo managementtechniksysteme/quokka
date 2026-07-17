@@ -2,23 +2,8 @@
 
 namespace App\Models;
 
-use App\Support\GlobalSearch\FiltersGlobalSearch;
-use App\Support\GlobalSearch\GlobalSearchResult;
-use App\Traits\FiltersLatestChanges;
-use App\Traits\FiltersPermissions;
-use App\Traits\FiltersSearch;
-use App\Traits\HasAttachmentsAndSignatureRequests;
-use App\Traits\HasDownloadRequest;
-use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Spatie\Activitylog\Support\LogOptions;
-use Spatie\Activitylog\Models\Concerns\HasActivity;
-use Spatie\MediaLibrary\HasMedia;
 
 class FlowMeterInspectionReportMeasurements extends Model
 {

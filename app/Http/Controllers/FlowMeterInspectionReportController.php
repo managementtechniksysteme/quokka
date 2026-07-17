@@ -528,7 +528,7 @@ class FlowMeterInspectionReportController extends Controller
             $measurements[$key]['flow_meter_inspection_report_id'] = $flowMeterInspectionReport->id;
         }
 
-        $changed = FlowMeterInspectionReportMeasurements::upsert($measurements, ['q_percent']);
+        $changed = FlowMeterInspectionReportMeasurements::upsert($measurements, ['q_percent', 'flow_meter_inspection_report_id']);
 
         if($changed) {
             $flowMeterInspectionReport->touch();

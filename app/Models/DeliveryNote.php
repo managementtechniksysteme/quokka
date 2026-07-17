@@ -73,8 +73,8 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
         'written_on-desc' => [['written_on', 'desc']],
         'titel-asc' => ['title'],
         'titel-desc' => [['title', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), number'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, written_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, written_on'],
     ];
 
     protected static $recordEvents = ['updated'];

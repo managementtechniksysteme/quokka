@@ -28,6 +28,7 @@ class AccountingController extends Controller
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
+            'download' => 'createPdf',
         ]);
     }
 

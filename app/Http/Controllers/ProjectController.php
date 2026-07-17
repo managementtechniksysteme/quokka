@@ -36,6 +36,7 @@ class ProjectController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'downloadList' => 'downloadList',
         ]);
     }
 

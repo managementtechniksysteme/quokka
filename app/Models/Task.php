@@ -112,12 +112,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     {
         parent::__construct($attributes);
 
+        // The day count is a plain PHP value already known before the query runs, so the
+        // boundary date is computed here rather than via MySQL-only SQL date arithmetic
+        // (date_add(curdate(), interval ... day)), which has no portable equivalent.
+        $dueSoonOn = Carbon::today()->addDays(ApplicationSettings::get()->task_due_soon_days)->toDateString();
+
         $this->filterKeys['ist:bald_fällig'] = [
             'raw' => [
-                'due_on between curdate() and date_add(curdate(), interval '.
-                ApplicationSettings::get()->task_due_soon_days.' day)',
-                'due_on not between curdate() and date_add(curdate(), interval '.
-                ApplicationSettings::get()->task_due_soon_days.' day)',
+                "due_on between CURRENT_DATE and '$dueSoonOn'",
+                "due_on not between CURRENT_DATE and '$dueSoonOn'",
             ],
         ];
     }

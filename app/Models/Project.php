@@ -42,11 +42,11 @@ class Project extends Model implements FiltersGlobalSearch
     ];
 
     protected $filterKeys = [
-        'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'ist:beendet' => ['raw' => ['ends_on < CURRENT_DATE', 'ends_on >= CURRENT_DATE or ends_on is null']],
         'ist:vorphase' => ['is_pre_execution', true],
         'ist:vp' => ['is_pre_execution', true],
-        'ist:infinanzen' => ['included_in_finances', true],
-        'ist:if' => ['included_in_finances', true],
+        'ist:infinanzen' => ['include_in_finances', true],
+        'ist:if' => ['include_in_finances', true],
         'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
     ];

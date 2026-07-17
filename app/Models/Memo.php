@@ -9,12 +9,14 @@ use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 
 class Memo extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use HasAttachments;
     use FiltersPermissions;

@@ -62,7 +62,7 @@ class TokenController extends Controller
         $tokens = $this->createTokens(
             $user,
             $validatedData[config('authapi.token_name_input')],
-            $validatedData['remember_me']
+            $validatedData['remember_me'] ?? false
         );
 
         // Return response with tokens
@@ -110,7 +110,7 @@ class TokenController extends Controller
             $tokens = $this->createTokens(
                 $user,
                 $validatedData[config('authapi.token_name_input')],
-                $validatedData['remember_me']
+                $validatedData['remember_me'] ?? false
             );
 
             // Return response with tokens

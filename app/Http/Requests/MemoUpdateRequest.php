@@ -38,7 +38,7 @@ class MemoUpdateRequest extends FormRequest
             'remove_attachments' => 'array|nullable',
             'remove_attachments.*' => 'exists:media,id',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+            'new_attachments.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
 
         if($memo->draft) {

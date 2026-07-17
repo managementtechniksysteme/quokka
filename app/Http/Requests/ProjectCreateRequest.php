@@ -13,7 +13,7 @@ class ProjectCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company' => 'sometimes|exists:projects,id',
+            'company' => 'sometimes|exists:companies,id',
         ];
     }
 }

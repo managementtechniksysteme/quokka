@@ -169,7 +169,7 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'appendix_description' => 'nullable',
             'appendix' => 'mimes:pdf',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+            'new_attachments.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
 
         if ($speed_measurement_type === 'other') {

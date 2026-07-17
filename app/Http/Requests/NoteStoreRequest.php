@@ -17,7 +17,7 @@ class NoteStoreRequest extends FormRequest
             'title' => 'nullable',
             'comment' => 'required',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+            'new_attachments.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
     }
 }

@@ -21,6 +21,11 @@ class TokenController extends Controller
 {
     use ThrottlesLogins;
 
+    public function __construct()
+    {
+        $this->middleware('signed')->only('tokenSecondFactorOneTimePassword');
+    }
+
     public function token(Request $request) : JsonResponse
     {
         $validatedData = $request->validate([
@@ -71,8 +76,6 @@ class TokenController extends Controller
 
     public function tokenSecondFactorOneTimePassword(Request $request) : JsonResponse
     {
-        $this->middleware('signed');
-
         $validatedData = $request->validate([
             $this->username() => 'required',
             'password' => 'required',

@@ -35,12 +35,14 @@ use App\Models\Accounting;
 use App\Notifications\DeliveryNoteSignedNotification;
 use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Observers\AccountingObserver;
+use App\Policies\NotificationPolicy;
 use App\Policies\RolePolicy;
 use Carbon\Carbon;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
@@ -89,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
     private function configureAuth(): void
     {
         Gate::policy(Role::class, RolePolicy::class);
+        Gate::policy(DatabaseNotification::class, NotificationPolicy::class);
 
         Gate::define('application-settings-update', fn ($user) => $user->can('application-settings.update.general'));
         Gate::define('finances-view', fn ($user) => $user->can('finances.view'));

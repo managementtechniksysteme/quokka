@@ -125,7 +125,7 @@ class ProjectController extends Controller
 
         if(isset($validatedData['ends_on'])) {
             $project->is_pre_execution = false;
-            $project->financial_costs = null;
+            $project->billed_financial_costs = null;
         }
 
         $project->save();
@@ -395,7 +395,8 @@ class ProjectController extends Controller
         }
 
         if($validatedData['include_in_finances'] || $project->ends_on !== null) {
-            $project->financial_costs = null;
+            $project->billed_financial_costs = null;
+            $project->save();
         }
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');

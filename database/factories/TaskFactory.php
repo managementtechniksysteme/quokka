@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,14 +15,29 @@ class TaskFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence,
-            'starts_on' => $this->faker->optional()->date(),
-            'ends_on' => $this->faker->optional()->date(),
             'due_on' => $this->faker->optional()->date(),
-            'private' => $this->faker->boolean,
             'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
-            'status' => $this->faker->randomElement(['new', 'in progress', 'finished']),
-            'billed' => $this->faker->randomElement(['yes', 'no', 'warranty']),
+            'status' => 'new',
+            'billed' => 'no',
+            'private' => false,
             'comment' => $this->faker->optional()->realText(),
+            'project_id' => Project::factory(),
+            'employee_id' => Employee::factory(),
         ];
+    }
+
+    public function inProgress(): static
+    {
+        return $this->state(fn () => ['status' => 'in progress']);
+    }
+
+    public function finished(): static
+    {
+        return $this->state(fn () => ['status' => 'finished', 'ends_on' => $this->faker->date()]);
+    }
+
+    public function private(): static
+    {
+        return $this->state(fn () => ['private' => true]);
     }
 }

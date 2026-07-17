@@ -32,7 +32,7 @@
 @if($service)\footnotesize{Leistung: {!! Latex::escape($service->name_with_unit) !!}}@endif
 \\
 @endif
-@if(count($employees) === 1)
+@if(count($employees) === 1 && $holidayService)
 \footnotesize{\textbf{Verfügbarer Urlaub:} {!! Latex::escape(Number::toLocal($employees[0]->holidays)) !!} {!! Latex::escape($holidayService->unit) !!}}
 @endif
 @if(count($report) > 0)

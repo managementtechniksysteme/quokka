@@ -52,7 +52,7 @@ class LogbookPolicy
         return $user->can('logbook.email');
     }
 
-    public function createPdf(User $user, Logbook $logbook): bool
+    public function createPdf(User $user): bool
     {
         return $user->can('logbook.createpdf');
     }

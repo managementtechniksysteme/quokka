@@ -28,6 +28,7 @@ class MemoController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'publish' => 'update',
         ]);
     }
 

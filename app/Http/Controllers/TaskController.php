@@ -24,7 +24,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Activitylog\Facades\LogBatch;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
@@ -266,7 +267,12 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
-        LogBatch::startBatch();
+        // spatie/laravel-activitylog v5 removed LogBatch entirely - replicate the same
+        // "one save = one merged activity feed entry" behaviour by watermarking the
+        // highest existing activity id and stamping everything created after it below
+        // with a shared batch_uuid, regardless of how many separate save()/log() calls
+        // produced them.
+        $activityIdBeforeUpdate = Activity::max('id') ?? 0;
 
         $task->update($validatedData);
 
@@ -302,7 +308,7 @@ class TaskController extends Controller
                 activity()
                     ->by(Auth::user())
                     ->on($task)
-                    ->withProperties([
+                    ->withChanges([
                         'attributes' => $attributes,
                         'old' => $old,
                     ])
@@ -324,7 +330,7 @@ class TaskController extends Controller
                 activity()
                     ->by(Auth::user())
                     ->on($task)
-                    ->withProperties([
+                    ->withChanges([
                         'attributes' => $attributes,
                         'old' => $old,
                     ])
@@ -347,7 +353,10 @@ class TaskController extends Controller
             $task->touch();
         }
 
-        LogBatch::endBatch();
+        Activity::where('subject_type', Task::class)
+            ->where('subject_id', $task->id)
+            ->where('id', '>', $activityIdBeforeUpdate)
+            ->update(['batch_uuid' => (string) Str::uuid()]);
 
         if($task->wasChanged()) {
             event(new TaskUpdatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));

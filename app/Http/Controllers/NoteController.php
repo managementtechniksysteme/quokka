@@ -24,7 +24,13 @@ class NoteController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'downloadList' => 'downloadList',
         ]);
+    }
+
+    public function resourceMethodsWithoutModels()
+    {
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
     }
 
     public function __construct()

@@ -92,7 +92,7 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         'beteiligt:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'b:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'beteiligt_mitarbeiter:(.*)' => ['involvedEmployees.user.username', '{value}'],
-        'bm:(.*)' => ['c.user.username', '{value}'],
+        'bm:(.*)' => ['involvedEmployees.user.username', '{value}'],
     ];
 
     protected $orderKeys = [

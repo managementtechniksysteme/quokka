@@ -42,10 +42,10 @@
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Name:}} & \footnotesize{{!! Latex::escape($company->name) !!}} \\
-\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($company->address->first()->street_number) !!}} \\
-\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($company->address->first()->postcode) !!} {!! Latex::escape($company->address->first()->city) !!}} \\
-\footnotesize{\textbf{Telefon:}} & \footnotesize{{!! Latex::escape($company->phone) !!}} \\
-\footnotesize{\textbf{Email:}} & \footnotesize{{!! Latex::escape($company->email) !!}} \\
+\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape(optional($company->address->first())->street_number ?? '') !!}} \\
+\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape(optional($company->address->first())->postcode ?? '') !!} {!! Latex::escape(optional($company->address->first())->city ?? '') !!}} \\
+\footnotesize{\textbf{Telefon:}} & \footnotesize{{!! Latex::escape($company->phone ?? '') !!}} \\
+\footnotesize{\textbf{Email:}} & \footnotesize{{!! Latex::escape($company->email ?? '') !!}} \\
 \footnotesize{\textbf{Sachbearbeiter:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->employee->person->name) !!}} \\
 \end{tabular}
 
@@ -62,8 +62,8 @@
 
 \begin{tabular}{@{}p{8.1cm}p{8.1cm}@{}}
 \footnotesize{\textbf{Name:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->name) !!}} \\
-\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->street_number) !!}} \\
-\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->address->first()->postcode) !!} {!! Latex::escape($company->address->first()->city) !!}} \\
+\footnotesize{\textbf{Adresse:}} & \footnotesize{{!! Latex::escape(optional($flowMeterInspectionReport->project->company->address->first())->street_number ?? '') !!}} \\
+\footnotesize{\textbf{PLZ, Ort:}} & \footnotesize{{!! Latex::escape(optional($flowMeterInspectionReport->project->company->address->first())->postcode ?? '') !!} {!! Latex::escape(optional($flowMeterInspectionReport->project->company->address->first())->city ?? '') !!}} \\
 \footnotesize{\textbf{Telefon:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->phone ?? '') !!}} \\
 \footnotesize{\textbf{Email:}} & \footnotesize{{!! Latex::escape($flowMeterInspectionReport->project->company->email ?? '') !!}} \\
 \end{tabular}

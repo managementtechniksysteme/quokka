@@ -66,7 +66,7 @@ class AccountingController extends Controller
     {
         $accounting->update($request->validated());
 
-        return new AccountingResource(Accounting);
+        return new AccountingResource($accounting);
     }
 
     public function destroy(Accounting $accounting)

@@ -35,6 +35,7 @@ class TaskController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'finish' => 'update',
         ]);
     }
 
@@ -471,8 +472,8 @@ class TaskController extends Controller
                         $query
                             ->filterPermissions()
                             ->with('responsibleEmployee.user')
-                            ->orderByRaw('field(status, "new", "in progress", "finished")')
-                            ->orderByRaw('field(priority, "high", "medium", "low")')
+                            ->orderByRaw('case status when "new" then 1 when "in progress" then 2 when "finished" then 3 end')
+                            ->orderByRaw('case priority when "high" then 1 when "medium" then 2 when "low" then 3 end')
                             ->orderBy('due_on', 'desc');
                     }])
                     ->withCount('tasks');

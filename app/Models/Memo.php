@@ -55,7 +55,7 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $filterKeys = [
-        'hat:folgetermin' => ['raw' => ['next_meeting_on >= curdate()', 'next_meeting_on < curdate() or next_meeting_on is null']],
+        'hat:folgetermin' => ['raw' => ['next_meeting_on >= CURRENT_DATE', 'next_meeting_on < CURRENT_DATE or next_meeting_on is null']],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
         'ist:entwurf' => ['draft', true],

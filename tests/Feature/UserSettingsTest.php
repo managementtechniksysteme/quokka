@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Session;
 use PragmaRX\Google2FA\Google2FA;
 
 // 1x1 transparent PNG, small enough to keep the test payload trivial.
-const TINY_PNG_BASE64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+function tinyPngBase64(): string
+{
+    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
+}
 
 test('edit general tab is shown', function () {
     $user = User::factory()->create();
@@ -154,7 +157,7 @@ test('update-signature stores a signature for the acting user', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(route('user-settings.update-signature'), [
-        'signature' => TINY_PNG_BASE64,
+        'signature' => tinyPngBase64(),
     ]);
 
     $response->assertRedirect(route('user-settings.edit', ['tab' => 'general']));

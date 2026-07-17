@@ -156,7 +156,7 @@ class UserSettingsController extends Controller
 
         $google2fa = new Google2FA();
 
-        if ($google2fa->verifyKey($otpSecret, $request[config('auth2fa.otp_input')], config('auth2fa.window'))) {
+        if ($google2fa->verifyKey($otpSecret, $request[config('auth2fa.otp_input')], config('auth2fa.otp_window'))) {
             Auth::user()->update([
                 config('auth2fa.otp_secret_column') => encrypt($otpSecret),
             ]);

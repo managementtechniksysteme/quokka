@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationType extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'type',
     ];

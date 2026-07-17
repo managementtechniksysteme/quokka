@@ -149,7 +149,7 @@ class CompanyController extends Controller
 
             case 'projects':
                 if(Auth::user()->cannot('viewAny', Project::class)) {
-                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                    return redirect()->route('companies.show', [$company, 'tab' => 'overview']);
                 }
 
                 $projects = Project::where('company_id', $company->id)
@@ -176,7 +176,7 @@ class CompanyController extends Controller
 
             case 'people':
                 if(Auth::user()->cannot('viewAny', Person::class)) {
-                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                    return redirect()->route('companies.show', [$company, 'tab' => 'overview']);
                 }
 
                 $people = Person::where('company_id', $company->id)

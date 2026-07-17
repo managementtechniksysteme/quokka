@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Company;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -13,6 +14,7 @@ class ProjectFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence,
+            'company_id' => Company::factory(),
             'starts_on' => $this->faker->optional()->date(),
             'ends_on' => $this->faker->optional()->date(),
             'comment' => $this->faker->optional()->realText(),

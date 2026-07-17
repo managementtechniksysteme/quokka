@@ -48,6 +48,7 @@ class ServiceReportController extends Controller
             'showSignatureRequest' => 'sign',
             'sign' => 'sign',
             'approve' => 'approve',
+            'finish' => 'approve',
         ]);
     }
 
@@ -573,7 +574,7 @@ class ServiceReportController extends Controller
                             ->withMax('services', 'provided_on')
                             ->withSum('services', 'hours')
                             ->withSum('services', 'kilometres')
-                            ->orderByRaw('field(status, "new", "signed", "finished")')
+                            ->orderByRaw('case status when "new" then 1 when "signed" then 2 when "finished" then 3 end')
                             ->orderBy('number');
                     }])
                     ->withCount('serviceReports');
@@ -628,7 +629,7 @@ class ServiceReportController extends Controller
 
         $reports = Auth::user()->employee->serviceReports()
             ->whereHas('services', function ($query) use ($validatedData) {
-                $query->whereIn('provided_on', $validatedData['dates']);
+                $query->whereIn(DB::raw('date(provided_on)'), $validatedData['dates']);
             })
             ->whereProjectId($validatedData['project_id'])
             ->when(isset($validatedData['report_id']), function ($query) use ($validatedData) {

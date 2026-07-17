@@ -50,7 +50,7 @@ class ReauthenticateController extends Controller
             if (! $google2fa->verifyKey(
                 decrypt($user[config('auth2fa.otp_secret_column')]),
                 $validatedData[config('auth2fa.otp_input')],
-                config('auth2fa.window')
+                config('auth2fa.otp_window')
             )) {
                 return back()->withErrors([config('auth2fa.otp_input') => Lang::get('auth2fa.otp_failed')]);
             }

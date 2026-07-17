@@ -7,13 +7,14 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use function PHPUnit\Framework\matches;
 
 class WageService extends Model implements FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;

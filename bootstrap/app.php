@@ -22,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo('/home');
         $middleware->alias([
             'reauth' => \App\Http\Middleware\Reauthenticate::class,
+            'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+            'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         ]);
         $middleware->trustProxies(
             at: '*',

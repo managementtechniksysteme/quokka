@@ -9,7 +9,9 @@ class ChangeHolidaysToDoubleInEmployees extends Migration
     public function up()
     {
         if (Schema::hasColumn('employees', 'holidays')) {
-            DB::statement('ALTER TABLE employees MODIFY holidays DOUBLE');
+            Schema::table('employees', function (Blueprint $table) {
+                $table->double('holidays')->change();
+            });
         }
     }
 
@@ -17,7 +19,7 @@ class ChangeHolidaysToDoubleInEmployees extends Migration
     {
         if (Schema::hasColumn('employees', 'holidays')) {
             Schema::table('employees', function (Blueprint $table) {
-                DB::statement('ALTER TABLE employees MODIFY holidays TINYINT UNSIGNED');
+                $table->unsignedTinyInteger('holidays')->change();
             });
         }
     }

@@ -34,7 +34,7 @@ class EmployeeUpdateRequest extends FormRequest
                 'required_with:password,avatar_colour',
                 'nullable',
             ],
-            'password' => 'confirmed|nullable'.$employee->user ? '' : '|required_with:password,avatar_colour',
+            'password' => 'confirmed|nullable'.($employee->user ? '' : '|required_with:username,avatar_colour'),
             'avatar_colour' => 'required_with:username,password|nullable',
         ];
     }

@@ -26,6 +26,10 @@ class EmployeeController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
             'impersonate' => 'impersonate',
+            'grantAccess' => 'update',
+            'denyAccess' => 'update',
+            'editPermissions' => 'update',
+            'updatePermissions' => 'update',
         ]);
     }
 

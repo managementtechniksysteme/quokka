@@ -66,7 +66,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         'ist:nicht_verrechnet' => ['billed', 'no'],
         'ist:nv' => ['billed', 'no'],
         'ist:garantie' => ['billed', 'warranty'],
-        'ist:überfällig' => ['raw' => ['due_on < curdate() and status != "finished"', 'due_on <= curdate() or (due_on > curdate() and status = "finished")']],
+        'ist:überfällig' => ['raw' => ['due_on < CURRENT_DATE and status != "finished"', 'due_on <= CURRENT_DATE or (due_on > CURRENT_DATE and status = "finished")']],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
@@ -78,15 +78,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $orderKeys = [
-        'default' => ['raw' =>'ISNULL(due_on), due_on'],
-        'due_on-asc' => ['raw' =>'ISNULL(due_on), due_on'],
+        'default' => ['raw' =>'due_on is null, due_on'],
+        'due_on-asc' => ['raw' =>'due_on is null, due_on'],
         'due_on-desc' => [['due_on', 'desc']],
         'name-asc' => ['name'],
         'name-desc' => [['name', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "in progress", "finished"), ISNULL(due_on), due_on'],
-        'status-desc' => ['raw' => 'field(status, "finished", "in progress", "new"), ISNULL(due_on), due_on'],
-        'priority-asc' => ['raw' => 'field(priority, "low", "medium", "high")'],
-        'priority-desc' => ['raw' => 'field(priority, "high", "medium", "low")'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "in progress" then 2 when "finished" then 3 end, due_on is null, due_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "in progress" then 2 when "new" then 3 end, due_on is null, due_on'],
+        'priority-asc' => ['raw' => 'case priority when "low" then 1 when "medium" then 2 when "high" then 3 end'],
+        'priority-desc' => ['raw' => 'case priority when "high" then 1 when "medium" then 2 when "low" then 3 end'],
     ];
 
     protected $permissionFilters = [

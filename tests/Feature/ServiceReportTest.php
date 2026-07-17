@@ -15,23 +15,15 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Permission\Models\Permission;
 
 const TINY_PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
-
-function grant(User $user, string $permission): void
-{
-    Permission::firstOrCreate(['name' => $permission]);
-
-    $user->givePermissionTo($permission);
-}
 
 function serviceReportUser(array $permissions = []): User
 {
     $user = User::factory()->create();
 
     foreach ($permissions as $permission) {
-        grant($user, $permission);
+        grantPermission($user, $permission);
     }
 
     return $user;

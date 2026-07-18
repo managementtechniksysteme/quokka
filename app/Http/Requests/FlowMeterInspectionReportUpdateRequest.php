@@ -156,6 +156,7 @@ class FlowMeterInspectionReportUpdateRequest extends FormRequest
             'measurements.*.comparison_measurement_start' => 'numeric|min:0|nullable',
             'measurements.*.comparison_measurement_end' => 'numeric|min:0|nullable',
             'measurements.*.comparison_measurement_sum' => 'numeric|min:0|nullable',
+            'measurements.100.comparison_measurement_sum' => 'required|numeric|min:0',
             'measurements.*.measurement_difference' => 'numeric|min:0|nullable',
             'measurements.100.measurement_difference' => 'required|numeric|min:0',
             'measurements.*.q_value_average_mobile' => 'numeric|min:0|nullable',
@@ -212,7 +213,7 @@ class FlowMeterInspectionReportUpdateRequest extends FormRequest
         }
 
         if ($comparison_measurements_process === 'mobile_measurement_equipment') {
-            $comparison_measurement_mobile_type = $this->input('speed_measurement_type');
+            $comparison_measurement_mobile_type = $this->input('comparison_measurement_mobile_type');
 
             $rules['comparison_measurement_mobile_type'] = 'required|in:doppler_ultrasonic,ultrasonic_signal_transmit_time,ultrasonic_cross_correlation,radar,other';
             if($comparison_measurement_mobile_type === 'other') {

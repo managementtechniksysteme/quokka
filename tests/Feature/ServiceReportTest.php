@@ -346,6 +346,14 @@ test('downloadList renders a real pdf for an authorized user', function () {
     $response->assertHeader('content-type', 'application/pdf');
 })->group('pdflatex');
 
+test('downloadList is forbidden without view permission', function () {
+    $user = serviceReportUser();
+
+    $response = $this->actingAs($user)->get(route('service-reports.download-list'));
+
+    $response->assertForbidden();
+});
+
 // checkOverlap
 
 test('checkOverlap reports existing service reports covering the given dates', function () {
@@ -364,6 +372,18 @@ test('checkOverlap reports existing service reports covering the given dates', f
 
     $response->assertSuccessful();
     $response->assertJsonCount(1, 'reports');
+});
+
+test('checkOverlap is forbidden without create permission', function () {
+    $user = serviceReportUser();
+    $project = Project::factory()->create();
+
+    $response = $this->actingAs($user)->get(route('service-reports.check-overlap', [
+        'project_id' => $project->id,
+        'dates' => ['2026-03-10'],
+    ]));
+
+    $response->assertForbidden();
 });
 
 // customer-facing signed routes (token-gated, no auth)

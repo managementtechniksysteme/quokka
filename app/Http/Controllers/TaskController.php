@@ -37,6 +37,7 @@ class TaskController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
             'finish' => 'update',
+            'downloadList' => 'downloadList',
         ]);
     }
 

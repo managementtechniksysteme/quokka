@@ -316,6 +316,14 @@ test('downloadList renders a real pdf for an authorized user', function () {
     $response->assertHeader('content-type', 'application/pdf');
 })->group('pdflatex');
 
+test('downloadList is forbidden without view permission', function () {
+    $user = taskUser();
+
+    $response = $this->actingAs($user)->get(route('tasks.download-list'));
+
+    $response->assertForbidden();
+});
+
 // involved employees
 
 test('store attaches involved employees, excluding the responsible one if present', function () {

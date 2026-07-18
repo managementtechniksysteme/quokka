@@ -12,9 +12,14 @@ use App\Models\Vehicle;
 use App\Models\WageService;
 use Laravel\Sanctum\Sanctum;
 
-function apiUser(): User
+function apiUser(array $permissions = []): User
 {
     $user = User::factory()->create();
+
+    foreach ($permissions as $permission) {
+        grantPermission($user, $permission);
+    }
+
     Sanctum::actingAs($user, ['authenticate']);
 
     return $user;
@@ -62,7 +67,7 @@ test('vehicles current-kilometres reflects the latest logbook entry', function (
 });
 
 test('logbook location-select-options merges origins and destinations', function () {
-    apiUser();
+    apiUser(['logbook.view.own']);
     Logbook::factory()->create(['origin' => 'Zurich', 'destination' => 'Bern']);
 
     $response = $this->getJson('/api/logbook/location-select-options');
@@ -70,6 +75,14 @@ test('logbook location-select-options merges origins and destinations', function
     $response->assertSuccessful();
     $response->assertJsonFragment(['text' => 'Zurich']);
     $response->assertJsonFragment(['text' => 'Bern']);
+});
+
+test('logbook location-select-options is forbidden without any view permission', function () {
+    apiUser();
+
+    $response = $this->getJson('/api/logbook/location-select-options');
+
+    $response->assertForbidden();
 });
 
 test('services select-options lists services with their unit', function () {

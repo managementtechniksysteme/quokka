@@ -24,12 +24,13 @@ class LogbookController extends Controller
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
+            'locationSelectOptions' => 'viewAny',
         ]);
     }
 
     public function resourceMethodsWithoutModels()
     {
-        return array_merge(parent::resourceMethodsWithoutModels(), ['download']);
+        return array_merge(parent::resourceMethodsWithoutModels(), ['download', 'locationSelectOptions']);
     }
 
     public function __construct()

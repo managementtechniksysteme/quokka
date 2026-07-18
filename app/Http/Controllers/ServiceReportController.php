@@ -49,12 +49,14 @@ class ServiceReportController extends Controller
             'sign' => 'sign',
             'approve' => 'approve',
             'finish' => 'approve',
+            'downloadList' => 'downloadList',
+            'checkOverlap' => 'viewAny',
         ]);
     }
 
     public function resourceMethodsWithoutModels()
     {
-        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList', 'checkOverlap']);
     }
 
     public function __construct()

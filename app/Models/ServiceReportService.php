@@ -42,8 +42,15 @@ class ServiceReportService extends Model
 
     public static function getServicesForAccounting(array $accountingIds): array
     {
+        // MySQL supports DISTINCT together with a custom SEPARATOR in group_concat();
+        // sqlite's group_concat() can't combine the two ("DISTINCT aggregates must have
+        // exactly one argument"), so the newline separator can't be preserved there.
+        $commentAggregate = DB::connection()->getDriverName() === 'sqlite'
+            ? 'group_concat(distinct comment)'
+            : 'group_concat(distinct comment separator "\n")';
+
         $accounting = DB::table('accounting')
-            ->selectRaw('service_provided_on as date, sum(amount) as hours, group_concat(distinct comment separator "\n") as comment, project_id')
+            ->selectRaw('service_provided_on as date, sum(amount) as hours, '.$commentAggregate.' as comment, project_id')
             ->whereIn('id', $accountingIds)
             ->groupBy('service_provided_on')
             ->groupBy('project_id')
@@ -101,8 +108,12 @@ class ServiceReportService extends Model
 
         $project = Project::find($logbook->first()->project_id);
 
+        $commentAggregate = DB::connection()->getDriverName() === 'sqlite'
+            ? 'group_concat(distinct comment)'
+            : 'group_concat(distinct comment separator "\n")';
+
         $accounting = DB::table('accounting')
-            ->selectRaw('service_provided_on as date, sum(amount) as hours, group_concat(distinct comment separator "\n") as comment')
+            ->selectRaw('service_provided_on as date, sum(amount) as hours, '.$commentAggregate.' as comment')
             ->whereBetween('service_provided_on', [$logbook->min('date'), $logbook->max('date')])
             ->where('project_id', $project->id)
             ->groupBy('service_provided_on')

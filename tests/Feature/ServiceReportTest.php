@@ -77,6 +77,37 @@ test('create form is shown for a user with create permission', function () {
     $response->assertViewIs('service_report.create');
 });
 
+test('create form prefills from accounting entries', function () {
+    $user = serviceReportUser(['service-reports.create']);
+    $wageService = \App\Models\WageService::factory()->create(['unit' => 'h']);
+    $project = Project::factory()->create();
+    $accounting = \App\Models\Accounting::factory()->create([
+        'employee_id' => $user->employee_id,
+        'service_id' => $wageService->id,
+        'project_id' => $project->id,
+        'comment' => 'first',
+    ]);
+
+    $response = $this->actingAs($user)->get(route('service-reports.create', ['accounting' => [$accounting->id]]));
+
+    $response->assertSuccessful();
+    $response->assertViewHas('currentProject', fn ($currentProject) => $currentProject->is($project));
+});
+
+test('create form prefills from logbook entries', function () {
+    $user = serviceReportUser(['service-reports.create']);
+    $project = Project::factory()->create();
+    $logbook = \App\Models\Logbook::factory()->create([
+        'employee_id' => $user->employee_id,
+        'project_id' => $project->id,
+    ]);
+
+    $response = $this->actingAs($user)->get(route('service-reports.create', ['logbook' => [$logbook->id]]));
+
+    $response->assertSuccessful();
+    $response->assertViewHas('currentProject', fn ($currentProject) => $currentProject->is($project));
+});
+
 test('store creates a service report for the authenticated employee', function () {
     Event::fake([ServiceReportCreatedEvent::class]);
     $user = serviceReportUser(['service-reports.create']);

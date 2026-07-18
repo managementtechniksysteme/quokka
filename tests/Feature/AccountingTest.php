@@ -88,6 +88,24 @@ test('store creates a material-type accounting entry', function () {
     expect($accounting->employee_id)->toBe($user->employee_id);
 });
 
+test('store rejects an hour-based wage service missing time fields, instead of crashing', function () {
+    $user = accountingUser(['accounting.create']);
+    $project = Project::factory()->create();
+    ApplicationSettings::get()->update(['services_hour_unit' => 'h']);
+    ApplicationSettings::refreshCache();
+    $service = WageService::factory()->create(['unit' => 'h']);
+
+    $response = $this->actingAs($user)->postJson(route('accounting.store'), [
+        'service_provided_on' => '2026-01-01',
+        'project_id' => $project->id,
+        'service_id' => $service->id,
+        'amount' => 1,
+    ]);
+
+    $response->assertUnprocessable();
+    $response->assertJsonValidationErrors(['service_provided_started_at', 'service_provided_ended_at']);
+});
+
 test('store is forbidden without create permission', function () {
     $user = accountingUser();
     $project = Project::factory()->create();

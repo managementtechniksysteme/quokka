@@ -113,6 +113,17 @@ test('store is forbidden without create permission', function () {
     expect(Logbook::count())->toBe(0);
 });
 
+test('store rejects a non-numeric kilometre value, instead of crashing', function () {
+    $user = logbookUser(['logbook.create']);
+
+    $response = $this->actingAs($user)->postJson(route('logbook.store'), logbookPayload([
+        'end_kilometres' => 'not-a-number',
+    ]));
+
+    $response->assertStatus(422);
+    expect(Logbook::count())->toBe(0);
+});
+
 test('store rejects inconsistent kilometre values', function () {
     $user = logbookUser(['logbook.create']);
 

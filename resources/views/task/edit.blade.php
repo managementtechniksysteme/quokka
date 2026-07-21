@@ -24,7 +24,8 @@
                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.show', $task) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
-                    Aufgabe speichern
+                    <span class="d-none d-md-inline">Aufgabe speichern</span>
+                    <span class="d-inline d-md-none">Speichern</span>
                 </button>
             </div>
         </form>

@@ -83,7 +83,8 @@
                 </a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
-                    Regiebericht senden
+                    <span class="d-none d-md-inline">Regiebericht senden</span>
+                    <span class="d-inline d-md-none">Senden</span>
                 </button>
             </div>
 

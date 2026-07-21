@@ -28,7 +28,8 @@
             <div class="q-form-actions">
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
-                    Berechtigungen speichern
+                    <span class="d-none d-md-inline">Berechtigungen speichern</span>
+                    <span class="d-inline d-md-none">Speichern</span>
                 </button>
             </div>
         </form>

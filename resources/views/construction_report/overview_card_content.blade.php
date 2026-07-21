@@ -6,8 +6,17 @@
     </span>
 
     <div class="q-row__main">
-        <div class="q-row__title text-truncate">@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $constructionReport->project->name }} <span class="q-row__sub q-mono">#{{ $constructionReport->number }}</span>@else<span class="q-mono">#{{ $constructionReport->number }}</span>@endunless</div>
-        <div class="q-meta">
+        <div class="q-row__title q-row__title--numbered">
+            @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                <span class="q-row__title-main text-truncate">{{ $constructionReport->project->name }}</span>
+                <span class="q-row__sub q-mono flex-shrink-0">#{{ $constructionReport->number }}</span>
+            @else
+                <span class="q-mono">#{{ $constructionReport->number }}</span>
+            @endunless
+        </div>
+
+        {{-- Desktop: status + date + technician, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             <span class="q-status q-status--{{ $constructionReport->status }}">{{ $constructionReport->status_label }}</span>
 
             <span class="q-chip">
@@ -19,7 +28,16 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
                 <span class="text-truncate">{{ $constructionReport->employee->person->name }}</span>
             </span>
+        </div>
 
+        {{-- Mobile: technician/"who" chip drops. --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $constructionReport->status }}">{{ $constructionReport->status_label }}</span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ $constructionReport->services_provided_on }}
+            </span>
         </div>
     </div>
 
@@ -97,4 +115,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

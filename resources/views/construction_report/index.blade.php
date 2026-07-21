@@ -4,7 +4,8 @@
     <div class="q-container">
 
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + title + count, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
                 </span>
@@ -17,15 +18,30 @@
             </div>
 
             @can('create', \App\Models\ConstructionReport::class)
-                <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create') }}">
+                <a class="btn btn-primary text-white d-none d-md-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create') }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Bautagesbericht anlegen
                 </a>
             @endcan
+
+            {{-- Mobile: count inline with the actions, create label
+                 shortened to just the entity name. --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                @unless($constructionReports->isEmpty())
+                    <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $constructionReports->total()) }}</div>
+                @endunless
+                @can('create', \App\Models\ConstructionReport::class)
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('construction-reports.create') }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        Bautagesbericht
+                    </a>
+                @endcan
+            </div>
         </div>
 
         @unless ($constructionReports->isEmpty() && !Request::get('search'))
-            <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+            {{-- Desktop: search field + quick-filter split-dropdown + sort dropdown — unchanged. --}}
+            <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
                 <form class="flex-grow-1" action="{{ route('construction-reports.index') }}" method="get">
                     @if(request()->sort)
                         <input type="hidden" name="sort" value="{{ request()->sort }}">
@@ -89,6 +105,93 @@
                             </button>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            {{-- Mobile: leading search icon inline in the field, no separate
+                 submit button. Filter joins the input-group as a fused
+                 trailing segment; sort stays a standalone icon button. --}}
+            <div class="d-flex d-md-none align-items-center gap-2 mb-3">
+                <form class="flex-grow-1" action="{{ route('construction-reports.index') }}" method="get">
+                    @if(request()->sort)
+                        <input type="hidden" name="sort" value="{{ request()->sort }}">
+                    @endif
+                    <div class="position-relative flex-grow-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Bautagesberichte suchen" autocomplete="off" />
+                            @if (Request::get('search'))
+                                <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                                </a>
+                            @endif
+                            <button type="button" class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#constructionReportQuickFilterSheet" aria-controls="constructionReportQuickFilterSheet" aria-label="Schnellfilter">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
+                            </button>
+                        </div>
+                        <svg class="icon-bs icon-16 text-muted position-absolute top-50 start-0 translate-middle-y ms-3 pe-none q-search-icon">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use>
+                        </svg>
+                    </div>
+                </form>
+
+                <button class="btn q-btn q-btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#constructionReportSortSheet" aria-controls="constructionReportSortSheet" aria-label="Sortierung">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
+                </button>
+            </div>
+
+            @php
+                $constructionReportFilterUsername = Auth::user()->username;
+                $constructionReportShowFinished = Auth::user()->settings->show_finished_items;
+                $constructionReportQuickFilters = [
+                    'Meine Bautagesberichte' => 't:' . $constructionReportFilterUsername . ($constructionReportShowFinished ? '' : ' !ist:erledigt'),
+                    'Meine nicht unterschriebenen Bautagesberichte' => 't:' . $constructionReportFilterUsername . ' ist:neu',
+                ];
+            @endphp
+            <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="constructionReportQuickFilterSheet" aria-label="Schnellfilter">
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Schnellfilter</div>
+                    @foreach($constructionReportQuickFilters as $quickFilterLabel => $quickFilterExpr)
+                        <a class="q-row" href="{{ Request::url() . '?search=' . urlencode($quickFilterExpr) . (Request::get('sort') ? '&sort=' . Request::get('sort') : '') }}">
+                            <span class="q-row__title">{{ $quickFilterLabel }}</span>
+                            @if(Request::get('search') === $quickFilterExpr)
+                                <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            @php
+                $constructionReportSortOptions = [
+                    'number-asc' => ['Nummer', 'arrow-up'],
+                    'number-desc' => ['Nummer', 'arrow-down'],
+                    'services_provided_on-asc' => ['Datum', 'arrow-up'],
+                    'services_provided_on-desc' => ['Datum', 'arrow-down'],
+                    'status-asc' => ['Status', 'arrow-up'],
+                    'status-desc' => ['Status', 'arrow-down'],
+                ];
+            @endphp
+            <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="constructionReportSortSheet" aria-label="Sortierung">
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Sortierung</div>
+                    <form action="{{ route('construction-reports.index') }}" method="get">
+                        @if(request()->has('search'))
+                            <input type="hidden" name="search" value="{{ request()->search ?? '' }}">
+                        @endif
+                        @foreach($constructionReportSortOptions as $sortValue => $sortMeta)
+                            <button type="submit" name="sort" value="{{ $sortValue }}" class="q-row">
+                                <span class="q-avatar q-avatar--muted">
+                                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $sortMeta[1] }}"></use></svg>
+                                </span>
+                                <span class="q-row__title">{{ $sortMeta[0] }}</span>
+                                @if(request('sort') === $sortValue)
+                                    <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                                @endif
+                            </button>
+                        @endforeach
+                    </form>
                 </div>
             </div>
         @endunless

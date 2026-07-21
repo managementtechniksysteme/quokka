@@ -545,7 +545,13 @@
             'delivery-notes.*' => ['Lieferscheine', 'box-seam'],
             'accounting.*' => ['Abrechnung', 'clock'],
             'logbook.*' => ['Fahrtenbuch', 'journal'],
-            'finances.*|project-finances.*|finance-groups.*' => ['Finanzen', 'currency-euro'],
+            // Split the same way people/addresses were split off Firmen
+            // (2026-07-21, user: "Finanzgruppen should get its own title as
+            // well, not Finanzen") — labels/icons reused verbatim from the
+            // Mehr sheet's own rows for this section.
+            'finances.*' => ['Finanzen', 'currency-euro'],
+            'project-finances.*' => ['Projektübersicht', 'clipboard'],
+            'finance-groups.*' => ['Manuelle Einträge', 'list'],
             'notifications.*' => ['Benachrichtigungen', 'bell'],
             'notes.*' => ['Notizbuch', 'book'],
             'user-settings.*|application-settings.*' => ['Einstellungen', 'gear'],

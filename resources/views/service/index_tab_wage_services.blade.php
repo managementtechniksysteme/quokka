@@ -2,16 +2,26 @@
 
 @section('head-action')
     @can('create', \App\Models\WageService::class)
-        <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('wage-services.create') }}">
+        <a class="btn btn-primary text-white d-none d-md-inline-flex align-items-center gap-2" href="{{ route('wage-services.create') }}">
             <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
             Lohndienstleistung anlegen
         </a>
     @endcan
 @endsection
 
+@section('head-action-mobile')
+    @can('create', \App\Models\WageService::class)
+        <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('wage-services.create') }}">
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+            Lohndienstleistung
+        </a>
+    @endcan
+@endsection
+
 @section('tab')
+    {{-- Desktop: search field + sort dropdown — unchanged. --}}
     @unless ($wageServices->isEmpty() && !Request::get('search'))
-        <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+        <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
             <form class="flex-grow-1" action="{{ route('wage-services.index') }}" method="get">
                 @if(request()->sort)
                     <input type="hidden" name="sort" value="{{ request()->sort }}">
@@ -48,6 +58,64 @@
                         </button>
                     </form>
                 </div>
+            </div>
+        </div>
+
+        {{-- Mobile: leading search icon inline in the field, no separate
+             submit button, sort as an icon-only button opening a bottom
+             sheet. No quick-filter — desktop has none either. --}}
+        <div class="d-flex d-md-none align-items-center gap-2 mb-3">
+            <form class="flex-grow-1" action="{{ route('wage-services.index') }}" method="get">
+                @if(request()->sort)
+                    <input type="hidden" name="sort" value="{{ request()->sort }}">
+                @endif
+                <div class="position-relative flex-grow-1">
+                    <div class="input-group">
+                        <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Lohndienstleistungen suchen" autocomplete="off" />
+                        @if (Request::get('search'))
+                            <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?sort=' . Request::get('sort') }}" @else href="{{ Request::url() }}" @endif>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                            </a>
+                        @endif
+                    </div>
+                    <svg class="icon-bs icon-16 text-muted position-absolute top-50 start-0 translate-middle-y ms-3 pe-none q-search-icon">
+                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use>
+                    </svg>
+                </div>
+            </form>
+
+            <button class="btn q-btn q-btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#wageServiceSortSheet" aria-controls="wageServiceSortSheet" aria-label="Sortierung">
+                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
+            </button>
+        </div>
+
+        <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="wageServiceSortSheet" aria-label="Sortierung">
+            <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+            <div class="offcanvas-body">
+                <div class="q-sheet__label">Sortierung</div>
+                <form action="{{ route('wage-services.index') }}" method="get">
+                    @if(request()->search)
+                        <input type="hidden" name="search" value="{{ request()->search }}">
+                    @endif
+                    <button type="submit" name="sort" value="name-asc" class="q-row">
+                        <span class="q-avatar q-avatar--muted">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>
+                        </span>
+                        <span class="q-row__title">Name</span>
+                        @if(request('sort', 'name-asc') === 'name-asc')
+                            <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                        @endif
+                    </button>
+                    <button type="submit" name="sort" value="name-desc" class="q-row">
+                        <span class="q-avatar q-avatar--muted">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>
+                        </span>
+                        <span class="q-row__title">Name</span>
+                        @if(request('sort') === 'name-desc')
+                            <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                        @endif
+                    </button>
+                </form>
             </div>
         </div>
     @endunless

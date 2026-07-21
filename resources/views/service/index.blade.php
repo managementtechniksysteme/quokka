@@ -4,7 +4,8 @@
     <div class="q-container">
 
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + title + subtitle, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20">
                         @switch($tab)
@@ -24,6 +25,17 @@
             </div>
 
             @yield('head-action')
+
+            {{-- Mobile: the app bar already carries "Leistungen" + its own
+                 icon (partials/navbar.blade.php's $mobilePageLabels), so
+                 this collapses to just the active tab's count, inline with
+                 its create button — same pattern as every other index page,
+                 just sourced from the shell's own tab-count vars since the
+                 count isn't otherwise available at this level. --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $tab === 'material-services' ? $materialServicesCount : $wageServicesCount) }}</div>
+                @yield('head-action-mobile')
+            </div>
         </div>
 
         <div class="q-detail q-detail--aside-start">

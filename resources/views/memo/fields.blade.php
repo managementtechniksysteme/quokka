@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <div class="q-form__row q-form__row--2">
+        <div class="q-form__row q-form__row--2 q-form__row--nostack">
             <div>
                 <label for="meeting_held_on">Datum</label>
                 <input type="date" class="form-control @error('meeting_held_on') is-invalid @enderror" id="meeting_held_on" name="meeting_held_on" value="{{ old('meeting_held_on', optional(optional($memo)->meeting_held_on)->format('Y-m-d')) }}" />

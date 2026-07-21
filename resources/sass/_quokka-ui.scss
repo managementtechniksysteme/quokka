@@ -523,11 +523,16 @@ $q-pad:            1.25rem;
 .q-detail--report .q-detail__main { grid-area: main; }
 .q-detail--report .q-detail__people { grid-area: people; }
 .q-detail--report .q-detail__signature { grid-area: signature; }
-// people card matches the other (now white) mobile cards instead of staying
-// the quiet/gray aside treatment — same "not an aside piece now" reasoning as
-// task's people card, scoped to mobile only (desktop's quiet fill untouched).
+// .q-detail__people reorder + white-bg rule is intentionally NOT scoped to
+// .q-detail--report — a plain 2-child .q-detail (e.g. memo, only a people
+// card in the 2nd column, no signature card) reorders via `order` on
+// .q-detail's own default auto-placed grid same as task's .q-aside did,
+// while .q-detail--report's 3-child pages place it via explicit grid-area
+// instead (order is simply ignored once grid-area applies) — one rule works
+// for both shapes without duplicating it per page type.
 @include media-breakpoint-down(md) {
-    .q-detail--report .q-detail__people.q-card--quiet {
+    .q-detail__people { order: -1; }
+    .q-detail__people.q-card--quiet {
         background: var(--q-surface); border-color: var(--q-border); box-shadow: var(--q-shadow);
     }
 }

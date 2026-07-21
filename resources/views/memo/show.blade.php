@@ -1,11 +1,78 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('memos.index') }}" class="q-appbar__btn" aria-label="Zurück zu Aktenvermerken">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $memo->title }}</span>
+    <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#memoShowActionsSheet" aria-controls="memoShowActionsSheet" aria-label="Aktionen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+    </button>
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="memoShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @if($memo->draft)
+                @can('update', $memo)
+                    <a class="q-row" href="{{ route('memos.publish', ['memo' => $memo, 'redirect' => 'show']) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                        <span class="q-row__title">Veröffentlichen</span>
+                    </a>
+                @endcan
+            @endif
+            @can('update', $memo)
+                <a class="q-row" href="{{ route('memos.edit', $memo) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('create', \App\Models\Memo::class)
+                <a class="q-row" href="{{ route('memos.create', ['template' => $memo]) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg></span>
+                    <span class="q-row__title">Kopieren</span>
+                </a>
+            @endcan
+            @can('email', $memo)
+                <a class="q-row" href="{{ route('memos.email', ['memo' => $memo, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $memo)
+                <a class="q-row" href="{{ route('memos.download', $memo) }}" target="_blank">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @can('delete', $memo)
+                <form action="{{ route('memos.destroy', $memo) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('memo.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('memo.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#voicemail"></use></svg>
@@ -84,6 +151,20 @@
             </div>
         </div>
 
+        {{-- Mobile-only: .q-page-head's own .q-meta (draft status + created
+             chip) is hidden along with the rest of the desktop head above
+             (2026-07-21, same fix as the other modules'). --}}
+        <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+            @if($memo->draft)
+                <span class="q-status q-status--in-progress">Entwurf</span>
+            @endif
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                {{ $memo->created_at }}
+            </span>
+        </div>
+
         <div class="q-statbar mb-4">
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Projekt</span>
@@ -156,12 +237,11 @@
                 @endif
             </div>
 
-            <div class="d-flex flex-column gap-3">
-                {{-- Beteiligte Personen --}}
-                <div class="q-card q-card--quiet">
-                    <div class="q-card__body">
-                        <div class="q-aside__group">
-                            <div class="q-aside__label">Anwesende Personen · {{ $memo->presentPeople->count() }}</div>
+            {{-- Beteiligte Personen --}}
+            <div class="q-card q-card--quiet q-detail__people">
+                <div class="q-card__body">
+                    <div class="q-aside__group">
+                        <div class="q-aside__label">Anwesende Personen · {{ $memo->presentPeople->count() }}</div>
                             @forelse($memo->presentPeople as $person)
                                 <div class="q-aside__person">
                                     <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
@@ -189,7 +269,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 @endsection

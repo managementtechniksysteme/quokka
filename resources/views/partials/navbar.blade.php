@@ -606,9 +606,9 @@
                 <svg class="icon-bs icon-16 text-muted flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                 <input type="text" name="query" id="mobileAppbarSearchInput" class="q-appbar__search-input"
                        placeholder="Suche" autocomplete="off">
-                <button type="button" class="q-appbar__btn" aria-label="Abbrechen"
+                <button type="button" class="q-appbar__search-clear" aria-label="Abbrechen"
                         onclick="document.getElementById('mobileAppbar').classList.remove('is-searching'); document.getElementById('mobileAppbarSearchInput').value = '';">
-                    <svg class="icon-bs icon-18"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
                 </button>
             </form>
         @endcan

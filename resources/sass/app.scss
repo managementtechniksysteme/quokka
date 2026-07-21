@@ -68,12 +68,19 @@ main {
   // 54px .q-appbar (see partials/navbar.blade.php + _quokka-ui.scss §S) —
   // #app only gets .is-authed when @auth, so guest pages (still on the full
   // desktop navbar at every width) are untouched.
+  //
+  // main now spans the FULL viewport here (2026-07-21) instead of starting
+  // below the app bar — the app bar became a translucent/blurred fixed
+  // overlay (like the tab bar already was), so content needs to actually
+  // scroll underneath it for the blur to have anything real behind it.
+  // .q-page's own padding-top (§S, md-down block) reserves the visual space
+  // so content doesn't start out hidden under the bar before any scrolling.
   #app.is-authed & {
     @include media-breakpoint-down(md) {
-      top: 54px;
-      height: calc(100vh - 54px);
-      max-height: calc(100vh - 54px);
-      min-height: calc(100vh - 54px);
+      top: 0;
+      height: 100vh;
+      max-height: 100vh;
+      min-height: 100vh;
     }
   }
 }

@@ -23,7 +23,10 @@
                     </div>
                 </div>
                 <div class="col-auto ms-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeExistingAttachment(attachment)">Entfernen</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeExistingAttachment(attachment)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
 
@@ -40,7 +43,10 @@
 
                 </div>
                 <div class="col-auto ms-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeNewAttachment(attachment)">Entfernen</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeNewAttachment(attachment)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
 

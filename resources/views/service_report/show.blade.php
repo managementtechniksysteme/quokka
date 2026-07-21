@@ -1,11 +1,87 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('service-reports.index') }}" class="q-appbar__btn" aria-label="Zurück zu Serviceberichten">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title q-appbar__title--numbered">
+        <span class="q-appbar__title-main">{{ $serviceReport->project->name }}</span>
+        <span class="q-appbar__title-num q-mono">#{{ $serviceReport->number }}</span>
+    </span>
+    <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#serviceReportShowActionsSheet" aria-controls="serviceReportShowActionsSheet" aria-label="Aktionen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+    </button>
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="serviceReportShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @unless($serviceReport->isFinished())
+                @can('approve', $serviceReport)
+                    <a class="q-row" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                        <span class="q-row__title">Erledigen</span>
+                    </a>
+                @endcan
+            @endunless
+            @can('update', $serviceReport)
+                <a class="q-row" href="{{ route('service-reports.edit', $serviceReport) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('email', $serviceReport)
+                <a class="q-row" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $serviceReport)
+                <a class="q-row" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            @can('emailSignatureRequest', $serviceReport)
+                <a class="q-row" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Unterschrift Anfrage senden</span>
+                </a>
+            @endcan
+            @can('emailDownloadRequest', $serviceReport)
+                <a class="q-row" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg></span>
+                    <span class="q-row__title">Download Link senden</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @can('delete', $serviceReport)
+                <form action="{{ route('service-reports.destroy', $serviceReport) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('service_report.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('service_report.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>
@@ -102,6 +178,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        {{-- Mobile-only: .q-page-head's own .q-meta (status + timestamp chip)
+             is hidden along with the rest of the desktop head above
+             (2026-07-21, same fix as task's/project's). --}}
+        <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+            <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
+
+            <span class="q-chip">
+                @switch($serviceReport->status)
+                    @case('signed')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                        {{ optional($signature)->created_at }}
+                        @break
+                    @case('finished')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        {{ $serviceReport->updated_at }}@if($serviceReport->activities->last()?->causer) · {{ Str::upper($serviceReport->activities->last()->causer->username) }}@endif
+                        @break
+                    @default
+                        @if($serviceReport->signatureRequest)
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
+                            {{ $serviceReport->signatureRequest->created_at }}
+                        @else
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            {{ $serviceReport->created_at }}
+                        @endif
+                @endswitch
+            </span>
         </div>
 
         <div class="q-statbar mb-4">

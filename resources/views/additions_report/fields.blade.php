@@ -209,7 +209,7 @@
             </div>
         </div>
 
-        <div class="q-form__row q-form__row--2">
+        <div class="q-form__row q-form__row--2 q-form__row--nostack">
             <div>
                 <label for="minimum_temperature">Minimale Temperatur</label>
                 <div class="input-group has-validation">

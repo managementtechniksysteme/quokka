@@ -507,6 +507,31 @@ $q-pad:            1.25rem;
 // future wrapper element, not just <aside>.
 @include media-breakpoint-down(md) { .q-detail, .q-detail--aside-start { grid-template-columns: 1fr; > * { min-width: 0; } } }
 
+// "Report" variant (additions/construction report show pages): main narrative
+// + a people card + a signature card as THREE direct grid children (not two,
+// like every other .q-detail usage) — named areas so mobile can reorder just
+// the people card ahead of main without touching .q-detail's own default
+// 2-child behaviour used everywhere else (2026-07-21, user: "put people card
+// above the free text card", same reasoning as task's .q-aside reorder, but
+// here people/signature are two separate cards sharing desktop's 2nd column
+// rather than one .q-aside element, so a plain `order` on a 2-child grid
+// wasn't enough — needed real named placement for a 3rd child).
+.q-detail--report {
+    grid-template-areas: "main people" "main signature";
+    @include media-breakpoint-down(md) { grid-template-areas: "people" "main" "signature"; }
+}
+.q-detail--report .q-detail__main { grid-area: main; }
+.q-detail--report .q-detail__people { grid-area: people; }
+.q-detail--report .q-detail__signature { grid-area: signature; }
+// people card matches the other (now white) mobile cards instead of staying
+// the quiet/gray aside treatment — same "not an aside piece now" reasoning as
+// task's people card, scoped to mobile only (desktop's quiet fill untouched).
+@include media-breakpoint-down(md) {
+    .q-detail--report .q-detail__people.q-card--quiet {
+        background: var(--q-surface); border-color: var(--q-border); box-shadow: var(--q-shadow);
+    }
+}
+
 .q-subnav { display: flex; flex-direction: column; gap: .3rem; position: sticky; top: .9rem; }
 .q-subnav__item {
     display: flex; align-items: center; gap: .7rem;
@@ -1175,6 +1200,27 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 .q-statbar__urgent { color: var(--q-red); }
 .q-statbar__soon   { color: var(--q-amber); }
 .q-statbar__sep    { color: var(--q-faint); }   // punctuation stays neutral; only the state word carries colour
+// Mobile: flex-wrap sizes each cell to its own content, so once cells wrap to
+// 2+ rows the divider lines drift out of alignment row-to-row (2026-07-21,
+// user: "divider line is not lined up... overflowing based on content and
+// then divided as soon as it fits" — noticed on additions_report's 5-cell
+// bar, applies to every .q-statbar sitewide, e.g. task's 4-cell one too).
+// Real grid instead of organic wrap: two equal 1fr columns so every row's
+// divider lands at the same x regardless of what each cell's own text needs.
+// First cell (always "Projekt"/"Bauvorhaben" across every module that uses
+// this bar) spans the full width on its own row instead — halving it to one
+// grid column truncated project names way too early (same user, same round:
+// "otherwise they'd be truncated way too early"). Remaining cells form the
+// 2-up grid starting fresh below it, so the divider lands on the 2nd cell of
+// EVERY pair after that first full-width row — nth-child(odd), skipping the
+// spanned :first-child itself, not nth-child(even) as if cell 1 were a normal
+// grid slot.
+@include media-breakpoint-down(md) {
+    .q-statbar { display: grid; grid-template-columns: 1fr 1fr; }
+    .q-statbar__cell { min-width: 0; border-left: none; }
+    .q-statbar__cell:first-child { grid-column: 1 / -1; }
+    .q-statbar__cell:nth-child(odd):not(:first-child) { border-left: 1px solid var(--q-border-2); }
+}
 
 // =============================================================================
 //  P2. Sticky detail aside (task detail: Verantwortlich / Mitwirkende)
@@ -1301,12 +1347,30 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 // editable variant (ServicesSelector form table): adds a 4th column for the
 // action button and gives clickable cells a pointer cursor + quiet remove button.
 .q-lines--editable {
-    .q-lines__head, .q-lines__row, .q-lines__sum { grid-template-columns: 1fr 90px 110px 52px; column-gap: .75rem; padding-right: 1.75rem; }
+    // 52px/1.75rem was sized for the OLD text-only "Entfernen" button; adding
+    // its trash icon (2026-07-21, see below) made that button wider than its
+    // own column + overflow gutter, clipping "Entfernen" to "Entferne" on
+    // desktop — widened both to fit icon+gap+label comfortably.
+    .q-lines__head, .q-lines__row, .q-lines__sum { grid-template-columns: 1fr 90px 110px 76px; column-gap: .75rem; padding-right: 2rem; }
     .q-lines__cell { cursor: pointer; }
     .btn-outline-danger {
         --bs-btn-color: var(--q-muted); --bs-btn-border-color: transparent; --bs-btn-bg: transparent;
         --bs-btn-hover-color: var(--q-red); --bs-btn-hover-bg: var(--q-red-bg); --bs-btn-hover-border-color: transparent;
         --bs-btn-active-color: var(--q-red); --bs-btn-active-bg: var(--q-red-bg);
+    }
+}
+// Mobile: the desktop column widths (120px/150px, or 90px/110px/52px for the
+// editable variant) were sized for a wide card and badly overflowed a 390px
+// phone — "12" (Gef. km) visibly clipped off the row's own right edge
+// (2026-07-21, user: "seems misaligned"). Numeric columns only ever hold
+// short values (hours/km, both ≤ 3 digits) so a much narrower fixed width is
+// plenty; the editable variant's 4th column also shrinks now that its remove
+// button goes icon-only on mobile (see ServicesSelector.vue) instead of
+// needing `padding-right` overflow room for a full "Entfernen" label.
+@include media-breakpoint-down(md) {
+    .q-lines__head, .q-lines__row, .q-lines__sum { grid-template-columns: 1fr 55px 65px; column-gap: .5rem; }
+    .q-lines--editable {
+        .q-lines__head, .q-lines__row, .q-lines__sum { grid-template-columns: 1fr 55px 65px 32px; column-gap: .5rem; padding-right: 1.25rem; }
     }
 }
 
@@ -1415,6 +1479,14 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     &--tint { background: var(--q-accent-tint); color: var(--q-accent); }
 }
 .q-appbar__title { flex: 1; min-width: 0; font-weight: 800; font-size: 1.08rem; color: var(--q-text); @extend .text-truncate; }
+// Numbered-report variant (service/additions/construction report show pages):
+// same #number-gets-truncated-away risk as .q-row__title--numbered on list
+// rows (2026-07-21, user: "header treatment for number needed, truncation
+// hides it") — same fix, a dedicated truncating span for the project name +
+// a flex-shrink:0 span for "#number" so the number can never be squeezed out.
+.q-appbar__title--numbered { display: flex; align-items: baseline; gap: .35rem; }
+.q-appbar__title-main { min-width: 0; @extend .text-truncate; }
+.q-appbar__title-num { flex-shrink: 0; font-size: .85rem; font-weight: 700; color: var(--q-muted); }
 // Each button is its own small floating glass pill now (2026-07-21, same
 // "doesn't look like a real bar" round) — was flat/transparent, relying on
 // the (now removed) shared bar background to read as a control at all; on

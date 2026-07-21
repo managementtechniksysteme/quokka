@@ -63,7 +63,10 @@
                             <input v-else type="number" min="0" step="1" class="form-control form-control-sm" :class="{'is-invalid': table_kilometres_invalid}" ref="table_input" :value="service.kilometres" placeholder="12" @blur="changeServiceKilometres($event, service)" />
                         </div>
                         <div class="text-end">
-                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeService(service)">Entfernen</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeService(service)">
+                                <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                                <span class="d-none d-md-inline">Entfernen</span>
+                            </button>
                         </div>
                     </div>
                     <div class="q-lines__sum">

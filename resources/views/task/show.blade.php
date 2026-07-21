@@ -160,7 +160,26 @@
             </div>
         </div>
 
-        <div class="q-statbar mb-4 mt-2 pt-1 mt-md-0 pt-md-0">
+        {{-- Mobile-only: .q-page-head's own .q-meta (status/private/priority)
+             is hidden along with the rest of the desktop head above — without
+             this, none of that info was visible on mobile at all (2026-07-21,
+             user: "we've kinda let that slip through the cracks"). Same
+             .q-meta markup as the hidden desktop copy, just relocated. --}}
+        <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+            <span class="q-status q-status--{{ Str::slug($task->status) }}">{{ $task->status_label }}</span>
+            @if($task->private)
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
+                    privat
+                </span>
+            @endif
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#flag"></use></svg>
+                Priorität {{ __($task->priority) }}
+            </span>
+        </div>
+
+        <div class="q-statbar mb-4">
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Projekt</span>
                 <span class="q-statbar__value text-truncate">

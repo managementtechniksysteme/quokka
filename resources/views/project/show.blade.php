@@ -127,9 +127,18 @@
             </div>
         </div>
 
-        {{-- Mobile: less top margin than desktop, same reasoning as
-             company/show.blade.php (no breadcrumb/page-head above it here). --}}
-        <div class="q-detail q-detail--aside-start mt-2 pt-1 mt-md-4 pt-md-2">
+        {{-- Mobile-only: .q-page-head's own status badge is hidden along with
+             the rest of the desktop head above (2026-07-21, same fix as
+             task's). Company chip deliberately dropped here — Stammdaten
+             (the default tab, right below) already shows "Firma" with the
+             same name+avatar, no extra tap needed, so repeating it here would
+             just be the same info twice on a screen with little room to
+             spare (same reasoning as the earlier metastrip rejection). --}}
+        <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+            <span class="q-status q-status--{{ $project->state }}">{{ $project->state_label }}</span>
+        </div>
+
+        <div class="q-detail q-detail--aside-start mt-md-4 pt-md-2">
             <aside>
                 <nav class="q-subnav">
                     <a class="q-subnav__item @if (request()->tab == 'overview' || !request()->tab) active @endif" href="{{ route('projects.show', [$project, 'tab' => 'overview']) }}">

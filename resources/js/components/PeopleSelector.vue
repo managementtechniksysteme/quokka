@@ -17,7 +17,10 @@
                     <span>{{ person.name }}</span>
                 </div>
                 <div class="col-auto ms-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelected(person)">Entfernen</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelected(person)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
         </div>

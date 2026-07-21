@@ -314,28 +314,6 @@ app.mount('#app');
         if (themeColorMeta && defaultThemeColor) {
             themeColorMeta.setAttribute('content', open ? grayForCurrentTheme() : defaultThemeColor);
         }
-        nudgeScroll();
-    }
-
-    // LOW-CONFIDENCE attempt (2026-07-21, user: "give it a go"): iOS's
-    // black-translucent status bar reportedly doesn't recomposite on an
-    // arbitrary CSS/class change alone — it's widely reported to key off
-    // actual scroll events. A 1px scroll-and-back on the real scroll
-    // container tries to force a repaint of that region without waiting for
-    // the user's own next scroll. Most likely a no-op: this app's `main` is
-    // its own internally-scrolling element (position:absolute,
-    // overflow-y:auto) while `body`/`html` never scroll at all — the same
-    // root cause already identified (and deliberately left unfixed) for
-    // Safari's URL bar never collapsing here. If this doesn't help either,
-    // that's the real, same, architectural reason — not a bug in this nudge.
-    function nudgeScroll() {
-        var scroller = document.querySelector('#app.is-authed main');
-        if (!scroller) return;
-        var y = scroller.scrollTop;
-        scroller.scrollTop = y + 1;
-        requestAnimationFrame(function () {
-            scroller.scrollTop = y;
-        });
     }
 
     document.addEventListener('shown.bs.offcanvas', refresh);

@@ -4,14 +4,16 @@
         <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $isFinished ? 'check2-square' : 'activity' }}"></use></svg>
     </span>
 
-    <div class="q-comment__main">
-        <div class="q-comment__head">
+    <div class="q-comment__head">
+        <div class="q-comment__meta">
             <span class="q-comment__author">{{ $activity->causer->employee->person->name }}</span>
             <span class="q-comment__date q-mono">
                 {{ $activity->created_at->format('d.m.Y · H:i') }}
             </span>
         </div>
+    </div>
 
+    <div class="q-comment__body">
         <div class="q-comment__bubble">
             @if(isset($activity->attribute_changes['attributes']['name']))
                 <div class="q-change">

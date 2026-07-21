@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="q-form__row q-form__row--3">
+        <div class="q-form__row q-form__row--3 q-form__row--dates-3">
             <div>
                 <label for="starts_on">Startdatum</label>
                 <input type="date" class="form-control @error('starts_on') is-invalid @enderror" id="starts_on" name="starts_on" placeholder="" value="{{ old('starts_on', optional(optional($task)->starts_on)->format('Y-m-d')) }}" />

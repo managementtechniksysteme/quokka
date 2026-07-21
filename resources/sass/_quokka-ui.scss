@@ -231,6 +231,22 @@ $q-pad:            1.25rem;
     // genuinely need the stack, so this is opt-in per row, not a change to
     // the default) (2026-07-21, user: project's Start-/Enddatum).
     @media (max-width: 575.98px) { &__row--nostack { grid-template-columns: 1fr 1fr; } }
+    // A 3-item row where two of the three read naturally as a pair (task's
+    // Start-/Enddatum) and the third is its own thing (Fälligkeitsdatum) —
+    // mobile re-flows to 2-up-then-1-full via order/grid-column only, DOM
+    // order and desktop's untouched 3-col row stay exactly as they were
+    // (2026-07-21, user: "inline start, end date, due date below" for task,
+    // narrower ask than project's plain 2-col --nostack). Assumes the row's
+    // DOM order is [start, due, end] — 1st/3rd children pair up, 2nd drops
+    // to its own full-width line below.
+    @media (max-width: 575.98px) {
+        &__row--dates-3 {
+            grid-template-columns: 1fr 1fr;
+            > :nth-child(1) { order: 1; }
+            > :nth-child(3) { order: 2; }
+            > :nth-child(2) { order: 3; grid-column: 1 / -1; }
+        }
+    }
 
     // q-btn inside a section body (e.g. the ServicesSelector add button) must
     // match form-control sizing so it aligns in row/col layouts beside inputs.
@@ -1170,6 +1186,15 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 .q-aside__person + .q-aside__person { margin-top: .65rem; }
 .q-aside__name { font-size: .8rem; font-weight: 600; color: var(--q-text); min-width: 0; }
 .q-aside__person--muted .q-aside__name { font-weight: 500; color: var(--q-muted); }
+// Mobile: the aside stops being a sidebar (there's no side to sit on — .q-detail
+// collapses to 1 column) and reads more like just another content card, so it
+// moves ABOVE the main content (people is orienting context, worth seeing
+// first) and swaps its surface-2/quiet treatment for the same white .q-card
+// surface everything else uses (2026-07-21, user: "make it the same white
+// background as others since it's not an aside piece now").
+@include media-breakpoint-down(md) {
+    .q-aside { order: -1; background: var(--q-surface); border-color: var(--q-border); box-shadow: var(--q-shadow); }
+}
 
 // =============================================================================
 //  P3. Comment / activity feed (task detail "Aktivitäten und Diskussion")
@@ -1177,12 +1202,23 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 //  User comments get a surface-2 bubble; logged changes (events) are quieter.
 // =============================================================================
 .q-feed { display: flex; flex-direction: column; gap: 1.9rem; }
-.q-comment { display: flex; gap: .8rem; align-items: flex-start; }
-.q-comment__main { flex: 1; min-width: 0; }
-// header sits on one baseline row; the kebab is lifted out of the flow (absolute)
-// so a comment's row is the same height as an event's — both avatars top-align.
-.q-comment__head { display: flex; align-items: baseline; gap: .55rem; margin-bottom: .7rem; position: relative; padding-right: 2.4rem; }
-.q-comment__head .dropdown { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+// Grid, not flex: the avatar spans both the head and body rows on desktop (its
+// original look), but mobile (below) reassigns the body row to span BOTH
+// columns instead — reclaiming the avatar's width for the bubble instead of
+// leaving it as dead space under the avatar (2026-07-21, user: "space is so
+// valuable... don't have the person or activity avatar on empty space").
+.q-comment {
+    display: grid; grid-template-columns: auto 1fr;
+    grid-template-areas: "avatar head" "avatar body";
+    column-gap: .8rem; row-gap: .1rem; align-items: start;
+}
+.q-comment > .q-avatar { grid-area: avatar; }
+.q-comment__body { grid-area: body; min-width: 0; }
+// kebab is a normal flex child now (ms-auto), not absolutely positioned —
+// the old position:absolute + padding-right:2.4rem reservation was squeezing
+// author+date into too little room on mobile ("date shoved into the kebab").
+.q-comment__head { grid-area: head; display: flex; align-items: center; gap: .55rem; margin-bottom: .6rem; }
+.q-comment__meta { display: flex; align-items: baseline; gap: .55rem; min-width: 0; flex: 1; }
 .q-comment__author { font-size: .85rem; font-weight: 700; color: var(--q-text); }
 .q-comment__date { font-size: .72rem; color: var(--q-faint); }
 .q-comment__date .icon { color: var(--q-faint); position: relative; top: 2px; }
@@ -1193,6 +1229,19 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 }
 .q-comment__bubble .markdown > :last-child { margin-bottom: 0; }
 .q-comment--event .q-comment__bubble { background: transparent; border-style: dashed; }
+
+// Mobile: body row spans both columns (avatar's width goes to the bubble, not
+// dead space beneath it) and the name/date meta stacks so it doesn't compete
+// with the kebab for width (2026-07-21, real device: name+date were
+// overflowing into the kebab's reserved space before the flex/absolute rework
+// above). Author shortens to "Firstname L." (Person's existing short_name
+// accessor, same one already used for narrow table columns) — user's own
+// suggestion, avatar+full name+date together was still too much for 390px.
+@include media-breakpoint-down(md) {
+    .q-comment { grid-template-areas: "avatar head" "body body"; row-gap: .5rem; }
+    .q-comment__head { align-items: flex-start; }
+    .q-comment__meta { flex-direction: column; align-items: flex-start; gap: .1rem; }
+}
 
 // an attribute change inside an event bubble: field label over an old → new diff
 .q-change + .q-change { margin-top: .55rem; padding-top: .55rem; border-top: 1px solid var(--q-border-2); }

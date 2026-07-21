@@ -1,11 +1,82 @@
 @extends('layouts.app')
 
+{{-- Mobile app bar: back chevron + task name + kebab, same pattern as
+     company/project's own show.blade.php (2026-07-21). Erledigen/Bearbeiten
+     (separate buttons on desktop, there's room) fold into the sheet as its
+     first two items instead, same reasoning as Bearbeiten did elsewhere. --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('tasks.index') }}" class="q-appbar__btn" aria-label="Zurück zu Aufgaben">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $task->name }}</span>
+    <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#taskShowActionsSheet" aria-controls="taskShowActionsSheet" aria-label="Aktionen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+    </button>
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="taskShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @unless($task->status === 'finished')
+                @can('update', $task)
+                    <a class="q-row" href="{{ route('tasks.finish', ['task' => $task, 'redirect' => 'show']) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                        <span class="q-row__title">Erledigen</span>
+                    </a>
+                @endcan
+            @endunless
+            @can('update', $task)
+                <a class="q-row" href="{{ route('tasks.edit', $task) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('create', \App\Models\Task::class)
+                <a class="q-row" href="{{ route('tasks.create', ['template' => $task]) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg></span>
+                    <span class="q-row__title">Kopieren</span>
+                </a>
+            @endcan
+            @can('email', $task)
+                <a class="q-row" href="{{ route('tasks.email', ['task' => $task, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $task)
+                <a class="q-row" href="{{ route('tasks.download', $task) }}" target="_blank">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @can('delete', $task)
+                <form action="{{ route('tasks.destroy', $task) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('task.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('task.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
@@ -89,7 +160,7 @@
             </div>
         </div>
 
-        <div class="q-statbar mb-4">
+        <div class="q-statbar mb-4 mt-2 pt-1 mt-md-0 pt-md-0">
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Projekt</span>
                 <span class="q-statbar__value text-truncate">
@@ -126,22 +197,25 @@
                 @include('task.show_overview')
 
                 <div class="q-card">
-                    <div class="q-card__head d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-baseline gap-2">
-                            <span>Aktivitäten und Diskussion</span>
+                    <div class="q-card__head">
+                        <div class="d-flex align-items-start align-items-md-center flex-nowrap gap-2">
+                            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-baseline gap-md-2" style="row-gap:.1rem">
+                                <span class="d-none d-md-inline">Aktivitäten und Diskussion</span>
+                                <span class="d-inline d-md-none">Aktivitäten</span>
+                                @unless($activities->isEmpty())
+                                    <span class="q-subtitle mt-0">{{ trans_choice('messages.entries', $activities->total()) }}</span>
+                                @endunless
+                            </div>
+
                             @unless($activities->isEmpty())
-                                <span class="q-subtitle">{{ trans_choice('messages.entries', $activities->total()) }}</span>
+                                @can('create', [\App\Models\TaskComment::class, $task])
+                                    <a class="btn q-btn d-inline-flex align-items-center gap-2 ms-auto" href="{{ route('comments.create', ['task' => $task->id]) }}">
+                                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                                        Kommentar
+                                    </a>
+                                @endcan
                             @endunless
                         </div>
-
-                        @unless($activities->isEmpty())
-                            @can('create', [\App\Models\TaskComment::class, $task])
-                                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('comments.create', ['task' => $task->id]) }}">
-                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                                    Kommentar
-                                </a>
-                            @endcan
-                        @endunless
                     </div>
 
                     <div class="q-card__body">

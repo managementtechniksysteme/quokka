@@ -1,8 +1,8 @@
 <div class="q-comment">
     @include('partials.employee_avatar', ['employee' => $comment->employee])
 
-    <div class="q-comment__main">
-        <div class="q-comment__head">
+    <div class="q-comment__head">
+        <div class="q-comment__meta">
             <span class="q-comment__author">{{ $comment->employee->person->name }}</span>
             <span class="q-comment__date q-mono">
                 {{ $comment->created_at->format('d.m.Y · H:i') }}
@@ -11,34 +11,39 @@
                     {{ $comment->updated_at->format('d.m.Y · H:i') }}
                 @endif
             </span>
-
-            @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
-                <div class="dropdown ms-auto">
-                    <button class="q-kebab" type="button" id="commentOverviewDropdown-{{ $comment->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOverviewDropdown-{{ $comment->id }}">
-                        @can('update', $comment)
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
-                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
-                                Bearbeiten
-                            </a>
-                        @endcan
-                        @can('delete', $comment)
-                            <form action="{{ route('comments.destroy', $comment) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
-                                    Entfernen
-                                </button>
-                            </form>
-                        @endcan
-                    </div>
-                </div>
-            @endif
         </div>
 
+        @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
+            <div class="dropdown ms-auto d-none d-md-block">
+                <button class="q-kebab" type="button" id="commentOverviewDropdown-{{ $comment->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOverviewDropdown-{{ $comment->id }}">
+                    @can('update', $comment)
+                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('comments.edit', $comment) }}">
+                            <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                            Bearbeiten
+                        </a>
+                    @endcan
+                    @can('delete', $comment)
+                        <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+                                Entfernen
+                            </button>
+                        </form>
+                    @endcan
+                </div>
+            </div>
+            <button class="q-kebab ms-auto d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#commentActionsSheet-{{ $comment->id }}" aria-controls="commentActionsSheet-{{ $comment->id }}" aria-label="Aktionen">
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+            </button>
+        @endif
+    </div>
+
+    <div class="q-comment__body">
         <div class="q-comment__bubble">
             <div class="markdown">
                 {!! Html::fromMarkdown($comment->comment) !!}
@@ -67,4 +72,29 @@
             @endif
         </div>
     </div>
+
+    @if(auth()->user()->can('update', $comment) || auth()->user()->can('delete', $comment))
+        <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="commentActionsSheet-{{ $comment->id }}" aria-label="Aktionen">
+            <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+            <div class="offcanvas-body">
+                <div class="q-sheet__label">Aktionen</div>
+                @can('update', $comment)
+                    <a class="q-row" href="{{ route('comments.edit', $comment) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                        <span class="q-row__title">Bearbeiten</span>
+                    </a>
+                @endcan
+                @can('delete', $comment)
+                    <form action="{{ route('comments.destroy', $comment) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="q-row q-row--danger">
+                            <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                            <span class="q-row__title">Entfernen</span>
+                        </button>
+                    </form>
+                @endcan
+            </div>
+        </div>
+    @endif
 </div>

@@ -1610,6 +1610,23 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     // across the rest of Phase 2's list modules, so fixed at the component
     // level, not just for this one page).
     .q-btn-icon { width: 44px; height: 44px; }
+    // Same gap on the text/icon+text variant (.btn/.q-btn) — its height
+    // comes purely from padding+line-height (~37px), landing under 44px and
+    // visibly mismatched whenever it sits next to a .q-btn-icon sibling,
+    // e.g. a tab header's "+ Aufgabe" create button beside its icon-only PDF
+    // button (2026-07-21, user: "create and print buttons are different
+    // sizes"). min-height, not height — these buttons' content still sets
+    // the width/shape, only the vertical dimension needed the floor.
+    .btn, .q-btn { min-height: 44px; }
+    // .q-kebab is a THIRD button variant (its own class, not .btn/.q-btn) —
+    // was sized to "naturally land on the same height as a .btn" via
+    // matching padding, which the two rules above just broke (bumping .btn
+    // to 44px while .q-kebab stayed ~37px). Same fixed-size treatment as
+    // .q-btn-icon rather than another padding-matching guess, since it's the
+    // same square-icon-button shape (2026-07-21, user: "kebab is smaller
+    // than the create button — side effect of the just-changed text button
+    // size").
+    .q-kebab { width: 44px; height: 44px; }
 
     // List-toolbar search fields: leading icon sits OUTSIDE .input-group,
     // overlaid via position:absolute — Bootstrap gives a focused

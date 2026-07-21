@@ -6,9 +6,21 @@
     </span>
 
     <div class="q-row__main">
-        <div class="q-row__title text-truncate">{{ $memo->title }}</div>
+        {{-- Title truncates, #number never does — same
+             .q-row__title--numbered split as the numbered reports
+             (service/additions/construction), applied here too since a long
+             title could otherwise squeeze the number out entirely
+             (2026-07-21, user). Shared at every breakpoint, not duplicated —
+             the number no longer needs to live in the project/number chip
+             below, so that chip drops it (and disappears entirely in the
+             "no project" case, since the number was all it ever showed). --}}
+        <div class="q-row__title q-row__title--numbered">
+            <span class="q-row__title-main text-truncate">{{ $memo->title }}</span>
+            <span class="q-row__sub q-mono flex-shrink-0">#{{ $memo->number }}</span>
+        </div>
 
-        {{-- Desktop: status + project/number + date + composer→recipient, unchanged. --}}
+        {{-- Desktop: status + project + date + composer→recipient, unchanged
+             apart from the number moving into the title above. --}}
         <div class="q-meta d-none d-md-flex">
             @if($memo->draft)
                 <span class="q-status q-status--in-progress">Entwurf</span>
@@ -18,12 +30,6 @@
                 <span class="q-chip">
                     <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
                     <span class="text-truncate">{{ optional($memo->project)->name ?? 'kein Projekt' }}</span>
-                    <span class="q-mono">#{{ $memo->number }}</span>
-                </span>
-            @else
-                <span class="q-chip">
-                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hash"></use></svg>
-                    <span class="q-mono">{{ $memo->number }}</span>
                 </span>
             @endif
 
@@ -38,25 +44,19 @@
             </span>
         </div>
 
-        {{-- Mobile: pared down (same principle as task/person) — project or
-             number alone on its own truncated line, then draft status + date
-             on a second line. Composer/recipient drops entirely; still on
-             the detail page. --}}
+        {{-- Mobile: pared down (same principle as task/person) — project
+             alone on its own truncated line (only when there is one to
+             show), then draft status + date on a second line.
+             Composer/recipient drops entirely; still on the detail page. --}}
         <div class="d-md-none">
-            <div class="q-meta mb-1">
-                @if(($secondaryInformation ?? '') !== 'withoutProject')
+            @if(($secondaryInformation ?? '') !== 'withoutProject')
+                <div class="q-meta mb-1">
                     <span class="q-chip">
                         <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
                         <span class="text-truncate">{{ optional($memo->project)->name ?? 'kein Projekt' }}</span>
-                        <span class="q-mono">#{{ $memo->number }}</span>
                     </span>
-                @else
-                    <span class="q-chip">
-                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hash"></use></svg>
-                        <span class="q-mono">{{ $memo->number }}</span>
-                    </span>
-                @endif
-            </div>
+                </div>
+            @endif
             <div class="q-meta">
                 @if($memo->draft)
                     <span class="q-status q-status--in-progress">Entwurf</span>

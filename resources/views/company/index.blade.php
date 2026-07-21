@@ -27,8 +27,15 @@
                  (partials/navbar.blade.php) — collapses to just the count,
                  inline with the create button on one row (2026-07-21 —
                  previously its own row below, matching Quokka Mobile.dc.html
-                 frame 3's compact header). --}}
-            <div class="d-flex d-md-none align-items-center justify-content-between gap-2">
+                 frame 3's compact header). Label shortened to just "Firma"
+                 (2026-07-21, user: the icon already reads as "create," a bit
+                 airier). ms-auto on the button, not justify-content-between
+                 on the parent — the count is conditional (@unless empty),
+                 and space-between with only ONE remaining flex child
+                 collapses it to the start instead of the end (caught on
+                 task's identical pattern — button shifted left on an empty
+                 list; same fix applied here for consistency). --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
                 @unless($companies->isEmpty())
                     <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $companies->total()) }}</div>
                 @endunless
@@ -40,11 +47,10 @@
                          .q-page-head .btn{flex:1}. That fill-the-row rule is
                          right for the dashboard's 2 CTAs / a detail page's
                          lone edit button, but this button sits next to text,
-                         not alone, so it should stay natural width, right-
-                         aligned by the container's justify-content instead. --}}
-                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" style="flex: none;" href="{{ route('companies.create') }}">
+                         not alone, so it should stay natural width. --}}
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('companies.create') }}">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                        Firma anlegen
+                        Firma
                     </a>
                 @endcan
             </div>

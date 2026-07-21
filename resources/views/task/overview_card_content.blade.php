@@ -7,7 +7,10 @@
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">{{ $task->name }}</div>
-        <div class="q-meta">
+
+        {{-- Desktop: status + private + project + responsible + due-date,
+             unchanged, all on one wrapping row. --}}
+        <div class="q-meta d-none d-md-flex">
             <span class="q-status q-status--{{ Str::slug($task->status) }}">{{ $task->status_label }}</span>
 
             @if($task->private)
@@ -35,6 +38,44 @@
                     {{ $task->due_on }}
                 </span>
             @endif
+        </div>
+
+        {{-- Mobile: pared down (2026-07-21, user: "what's really relevant?
+             ...anything more is visually too cluttered") — project alone on
+             its own truncated line, then status + private + due-date on a
+             second line. Responsible drops entirely here; still on the
+             detail page one tap away, this is a list-scan density call, not
+             a data removal. --}}
+        <div class="d-md-none">
+            @unless(isset($secondaryInformation) && $secondaryInformation === 'withoutProject')
+                <div class="q-meta mb-1">
+                    <span class="q-chip">
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                        <span class="text-truncate">{{ $task->project->name }}</span>
+                    </span>
+                </div>
+            @endunless
+            <div class="q-meta">
+                <span class="q-status q-status--{{ Str::slug($task->status) }}">{{ $task->status_label }}</span>
+                @if($task->private)
+                    {{-- Icon-only on mobile (2026-07-21, user: dropping the
+                         text keeps row two reliably one line — with it,
+                         status+"privat"+due-date could occasionally wrap to
+                         a 3rd line on a narrow phone + long status label;
+                         the lock glyph alone is already unambiguous).
+                         aria-label carries the meaning for screen readers
+                         since there's no visible text now. --}}
+                    <span class="q-chip" aria-label="privat">
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
+                    </span>
+                @endif
+                @if($task->due_on)
+                    <span class="q-chip @if($task->isOverdue()) q-chip--danger @elseif($task->isDueSoon()) q-chip--warning @endif">
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                        {{ $task->due_on }}
+                    </span>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -94,4 +135,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

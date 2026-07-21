@@ -592,49 +592,71 @@
          parent's flex layout entirely, so its collapsed 0-ish width never
          reserves a phantom flex `gap`. --}}
     <header class="q-appbar d-md-none" id="mobileAppbar">
-        <div class="q-appbar__row">
-            <span class="q-appbar__badge @if($mobilePageIcon) q-appbar__badge--tint @endif">
-                @if($mobilePageIcon)
-                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $mobilePageIcon }}"></use></svg>
-                @else
-                    {{-- Dashboard, or any unmapped route — same brand-letter
-                         fallback as $mobilePageTitle falling back to the app
-                         name, so the badge is never left empty. --}}
-                    {{ Str::substr(config('app.name'), 0, 1) }}
-                @endif
-            </span>
-            <span class="q-appbar__title">{{ $mobilePageTitle }}</span>
+        {{-- Detail pages (show.blade.php) push their own back+name+kebab
+             here instead of the standard badge/title/search/bell — per the
+             Claude Design mobile mockup's "Detail" frame (2026-07-21): a
+             record's own page replaces search/bell with navigation back to
+             its list and its own actions, same as every other mobile app
+             uses a back button + record name + kebab for a detail screen. --}}
+        @hasSection('mobile-detail-bar')
+            <div class="q-appbar__row">
+                @yield('mobile-detail-bar')
+            </div>
+        @else
+            <div class="q-appbar__row">
+                <span class="q-appbar__badge @if($mobilePageIcon) q-appbar__badge--tint @endif">
+                    @if($mobilePageIcon)
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $mobilePageIcon }}"></use></svg>
+                    @else
+                        {{-- Dashboard, or any unmapped route — same brand-letter
+                             fallback as $mobilePageTitle falling back to the app
+                             name, so the badge is never left empty. --}}
+                        {{ Str::substr(config('app.name'), 0, 1) }}
+                    @endif
+                </span>
+                <span class="q-appbar__title">{{ $mobilePageTitle }}</span>
+
+                @can('search')
+                    <button type="button" class="q-appbar__btn" aria-label="Suche"
+                            onclick="document.getElementById('mobileAppbar').classList.add('is-searching'); document.getElementById('mobileAppbarSearchInput').focus();">
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
+                    </button>
+                @endcan
+            </div>
 
             @can('search')
-                <button type="button" class="q-appbar__btn" aria-label="Suche"
-                        onclick="document.getElementById('mobileAppbar').classList.add('is-searching'); document.getElementById('mobileAppbarSearchInput').focus();">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
-                </button>
+                {{-- type="text", not "search" — a native type="search" input adds its
+                     own browser clear-icon, which doubled up with our cancel button. --}}
+                <form class="q-appbar__search" action="{{ route('search.index') }}" method="get">
+                    <svg class="icon-bs icon-16 text-muted flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
+                    <input type="text" name="query" id="mobileAppbarSearchInput" class="q-appbar__search-input"
+                           placeholder="Suche" autocomplete="off">
+                    <button type="button" class="q-appbar__search-clear" aria-label="Abbrechen"
+                            onclick="document.getElementById('mobileAppbar').classList.remove('is-searching'); document.getElementById('mobileAppbarSearchInput').value = '';">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
+                    </button>
+                </form>
             @endcan
-        </div>
 
-        @can('search')
-            {{-- type="text", not "search" — a native type="search" input adds its
-                 own browser clear-icon, which doubled up with our cancel button. --}}
-            <form class="q-appbar__search" action="{{ route('search.index') }}" method="get">
-                <svg class="icon-bs icon-16 text-muted flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
-                <input type="text" name="query" id="mobileAppbarSearchInput" class="q-appbar__search-input"
-                       placeholder="Suche" autocomplete="off">
-                <button type="button" class="q-appbar__search-clear" aria-label="Abbrechen"
-                        onclick="document.getElementById('mobileAppbar').classList.remove('is-searching'); document.getElementById('mobileAppbarSearchInput').value = '';">
-                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
-                </button>
-            </form>
-        @endcan
-
-        {{-- No separate unread dot — the bell colour alone signals unread,
-             same principle as the Mehr sheet's Benachrichtigungen row below. --}}
-        <a href="{{ route('notifications.index') }}" class="q-appbar__btn" aria-label="Benachrichtigungen">
-            <svg class="icon-bs icon-20 @if(Auth::user()->unreadNotifications()->count()) q-appbar__btn--unread @endif">
-                <use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
-            </svg>
-        </a>
+            {{-- No separate unread dot — the bell colour alone signals unread,
+                 same principle as the Mehr sheet's Benachrichtigungen row below. --}}
+            <a href="{{ route('notifications.index') }}" class="q-appbar__btn" aria-label="Benachrichtigungen">
+                <svg class="icon-bs icon-20 @if(Auth::user()->unreadNotifications()->count()) q-appbar__btn--unread @endif">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
+                </svg>
+            </a>
+        @endif
     </header>
+
+    {{-- Detail pages' own action sheets (see mobile-detail-bar above) render
+         here, NOT inside .q-appbar — .q-appbar is `position:fixed` with its
+         own z-index (1020), which caps any descendant's stacking context
+         below it, so a sheet nested inside it renders BEHIND .q-tabbar
+         (z-index 1030) and its lowest rows end up hidden under the tab bar
+         (2026-07-21, user: "the remove button hidden by the nav bar"). Same
+         fix as the Mehr sheet below already has by virtue of sitting at this
+         same top level, not nested in the header. --}}
+    @yield('mobile-detail-sheets')
 
     @php
         $isStartTabActive    = request()->routeIs('home');

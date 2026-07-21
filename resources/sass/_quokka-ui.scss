@@ -335,6 +335,9 @@ $q-pad:            1.25rem;
     background: var(--q-accent-tint); color: var(--q-accent);
     &--round { border-radius: 50%; }
     &--muted { background: var(--q-surface-3); color: var(--q-muted); }
+    // destructive row icon (e.g. "Entfernen" in a detail page's mobile
+    // actions sheet) — same red cue as .dropdown-item-danger/.q-kebab--danger.
+    &--danger { background: var(--q-red-bg); color: var(--q-red); }
     // compact avatar for inline use (e.g. a person inside a detail field row)
     &--sm { width: 28px; height: 28px; font-size: .58rem; border-radius: 8px; }
     // a round avatar must stay circular even when shrunk — --sm's radius would
@@ -1580,6 +1583,10 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 
 // --- Sort/filter sheets: checkmark on the row matching the current selection
 .q-row__check { color: var(--q-accent); margin-left: auto; flex-shrink: 0; }
+
+// --- Destructive row in an actions sheet (e.g. a detail page's "Entfernen")
+.q-row--danger .q-row__title { color: var(--q-red); }
+.q-row--danger:hover { background: var(--q-red-bg); }
 
 // --- Per-archetype md-down overrides -----------------------------------------
 @include media-breakpoint-down(md) {

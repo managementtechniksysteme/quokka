@@ -6,7 +6,14 @@
     </span>
 
     <div class="q-row__main">
-        <div class="q-row__title text-truncate">@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} <span class="q-row__sub q-mono">#{{ $serviceReport->number }}</span>@else<span class="q-mono">#{{ $serviceReport->number }}</span>@endunless</div>
+        <div class="q-row__title q-row__title--numbered">
+            @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                <span class="q-row__title-main text-truncate">{{ $serviceReport->project->name }}</span>
+                <span class="q-row__sub q-mono flex-shrink-0">#{{ $serviceReport->number }}</span>
+            @else
+                <span class="q-mono">#{{ $serviceReport->number }}</span>
+            @endunless
+        </div>
 
         {{-- Desktop: status + date(-range) + technician + hours + km, unchanged. --}}
         <div class="q-meta d-none d-md-flex">
@@ -38,17 +45,19 @@
         </div>
 
         {{-- Mobile: technician/"who" chip drops (same pattern as task/
-             person/memo) — project is already in the title here, so no
-             chip needs isolating onto its own line, just status + date +
-             hours + km wrapping naturally. --}}
+             person/memo). Date also drops the "→ end date" range extension
+             here specifically (2026-07-21, user: "three chip rows is a bit
+             much" on a real device) — the two-date-plus-arrow chip was wide
+             enough to push status+date+hours+km past one line unpredictably
+             (flex-wrap fills greedily, so it can strand a single chip on
+             its own line rather than balancing); a single start date is
+             enough to orient at a glance, full range is one tap away. --}}
         <div class="q-meta d-md-none">
             <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
 
             <span class="q-chip">
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
-                {{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on)->format('d.m.Y') }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
-                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
-                    {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on)->format('d.m.Y') }}@endif
+                {{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on)->format('d.m.Y') }}
             </span>
 
             <span class="q-chip">

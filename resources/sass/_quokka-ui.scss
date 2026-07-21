@@ -310,6 +310,15 @@ $q-pad:            1.25rem;
 }
 .q-row__main  { flex: 1; min-width: 0; }
 .q-row__title { font-size: .95rem; font-weight: 700; color: var(--q-text); }
+// Numbered-report titles (service/additions/construction reports): project
+// name truncates, #number never does — a shared .text-truncate across the
+// whole line would clip the number away entirely once the project name
+// alone fills the row (2026-07-21, user caught this live: "we don't have
+// the number in the truncated main row text"). min-width:0 needed on both
+// the new flex row and the specifically-truncating span — same
+// flex-truncation gotcha as everywhere else in this file.
+.q-row__title--numbered { display: flex; align-items: baseline; gap: .3rem; min-width: 0;
+    .q-row__title-main { min-width: 0; } }
 .q-row__sub   { font-weight: 500; color: var(--q-faint); }   // faint secondary in the title line
 .q-row__desc  { font-size: .82rem; color: var(--q-muted); }  // muted description line (e.g. notification body)
 // lift a non-dropdown row action (e.g. a mark-read form button) above the

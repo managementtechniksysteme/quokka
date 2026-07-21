@@ -6,8 +6,17 @@
     </span>
 
     <div class="q-row__main">
-        <div class="q-row__title text-truncate">@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $additionsReport->project->name }} <span class="q-row__sub q-mono">#{{ $additionsReport->number }}</span>@else<span class="q-mono">#{{ $additionsReport->number }}</span>@endunless</div>
-        <div class="q-meta">
+        <div class="q-row__title q-row__title--numbered">
+            @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                <span class="q-row__title-main text-truncate">{{ $additionsReport->project->name }}</span>
+                <span class="q-row__sub q-mono flex-shrink-0">#{{ $additionsReport->number }}</span>
+            @else
+                <span class="q-mono">#{{ $additionsReport->number }}</span>
+            @endunless
+        </div>
+
+        {{-- Desktop: status + date + technician + hours, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             <span class="q-status q-status--{{ $additionsReport->status }}">{{ $additionsReport->status_label }}</span>
 
             <span class="q-chip">
@@ -24,7 +33,21 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
                 {{ Number::toLocal($additionsReport->hours) }}
             </span>
+        </div>
 
+        {{-- Mobile: technician/"who" chip drops (same pattern as service_report). --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $additionsReport->status }}">{{ $additionsReport->status_label }}</span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ $additionsReport->services_provided_on }}
+            </span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
+                {{ Number::toLocal($additionsReport->hours) }}
+            </span>
         </div>
     </div>
 
@@ -102,4 +125,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

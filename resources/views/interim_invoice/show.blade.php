@@ -1,10 +1,51 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('projects.show', $interimInvoice->project) }}" class="q-appbar__btn" aria-label="Zurück zum Projekt">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $interimInvoice->title }}</span>
+    @canany(['update', 'delete'], $interimInvoice)
+        <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#interimInvoiceShowActionsSheet" aria-controls="interimInvoiceShowActionsSheet" aria-label="Aktionen">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+    @endcanany
+@endsection
+
+@section('mobile-detail-sheets')
+    @canany(['update', 'delete'], $interimInvoice)
+        <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="interimInvoiceShowActionsSheet" aria-label="Aktionen">
+            <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+            <div class="offcanvas-body">
+                <div class="q-sheet__label">Aktionen</div>
+                @can('update', $interimInvoice)
+                    <a class="q-row" href="{{ route('interim-invoices.edit', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                        <span class="q-row__title">Bearbeiten</span>
+                    </a>
+                @endcan
+                @can('delete', $interimInvoice)
+                    <form action="{{ route('interim-invoices.destroy', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="q-row q-row--danger">
+                            <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                            <span class="q-row__title">Entfernen</span>
+                        </button>
+                    </form>
+                @endcan
+            </div>
+        </div>
+    @endcanany
+@endsection
+
 @section('content')
     <div class="q-container">
-        @include('interim_invoice.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('interim_invoice.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
@@ -36,7 +77,7 @@
             </div>
         </div>
 
-        <div class="q-card mb-3">
+        <div class="q-card mb-3 mt-2 mt-md-0">
             <div class="q-card__body">
                 <div class="q-inforow">
                     <span class="q-inforow__icon">

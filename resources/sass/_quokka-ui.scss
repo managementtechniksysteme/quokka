@@ -1328,15 +1328,27 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     &::before {
         content: ""; position: absolute; inset: 0 0 auto 0; height: 110px;
         pointer-events: none; z-index: -1;
+        // --q-appbar-tint indirection (defaults to --q-surface) lets a sheet
+        // being open re-tint this scrim toward the sheet's own gray without
+        // duplicating the whole gradient — see body.q-sheet-open below.
         background: linear-gradient(to bottom,
-            color-mix(in srgb, var(--q-surface) 55%, transparent) 0%,
-            color-mix(in srgb, var(--q-surface) 28%, transparent) 55%,
+            color-mix(in srgb, var(--q-appbar-tint, var(--q-surface)) 55%, transparent) 0%,
+            color-mix(in srgb, var(--q-appbar-tint, var(--q-surface)) 28%, transparent) 55%,
             transparent 100%);
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
         -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+        transition: background .2s;
     }
 }
+// iOS's black-translucent status bar has no colour of its own — it's
+// transparent, showing through to whatever's actually rendered at the top
+// of the page (the app bar's scrim above). Tinting that scrim toward the
+// sheet's own gray while any sheet is open reads as "the status bar picked
+// up the sheet's colour," which is the closest achievable effect since iOS
+// exposes no direct status-bar-colour API (2026-07-21, user; class toggled
+// by app.js on every shown.bs.offcanvas/hidden.bs.offcanvas).
+body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 // Only TWO real flex children of .q-appbar now: .q-appbar__row and the bell
 // button — .q-appbar__search is position:absolute (see below), out of flow
 // entirely, so the `gap` above is never reserved for it while collapsed.

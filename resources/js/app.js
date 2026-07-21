@@ -281,3 +281,41 @@ app.mount('#app');
         });
     }, false);
 })();
+
+// Status-bar colour follows sheets, sitewide, one listener for every
+// .q-sheet (2026-07-21, user). Two different platform mechanisms for the
+// same visual result:
+//  - iOS (apple-mobile-web-app-status-bar-style: black-translucent) has no
+//    colour of its own — it's transparent and shows through to whatever's
+//    actually rendered at the top of the page. Toggling a body class flips
+//    the app bar scrim's --q-appbar-tint custom property (see
+//    _quokka-ui.scss) toward the sheet's own gray, achieved in pure CSS.
+//  - Android standalone PWAs read <meta name="theme-color"> directly as a
+//    literal status-bar fill colour, live — updating its `content`
+//    attribute is the actual mechanism there, no CSS equivalent exists.
+// Delegated at the document level (Bootstrap's offcanvas events bubble) so
+// this covers every sheet without per-sheet wiring, present or future.
+(function () {
+    'use strict';
+    var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    var defaultThemeColor = themeColorMeta ? themeColorMeta.getAttribute('content') : null;
+
+    // Same --q-surface-2 values as _quokka-ui.scss's light/dark token
+    // definitions — meta theme-color needs a literal colour, custom
+    // properties aren't readable from here without a getComputedStyle
+    // round-trip, and these two values change rarely enough to just mirror.
+    function grayForCurrentTheme() {
+        return document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#1b2027' : '#f7f8fa';
+    }
+
+    function refresh() {
+        var open = document.querySelector('.offcanvas.show');
+        document.body.classList.toggle('q-sheet-open', !!open);
+        if (themeColorMeta && defaultThemeColor) {
+            themeColorMeta.setAttribute('content', open ? grayForCurrentTheme() : defaultThemeColor);
+        }
+    }
+
+    document.addEventListener('shown.bs.offcanvas', refresh);
+    document.addEventListener('hidden.bs.offcanvas', refresh);
+})();

@@ -7,7 +7,9 @@
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} <span class="q-row__sub q-mono">#{{ $serviceReport->number }}</span>@else<span class="q-mono">#{{ $serviceReport->number }}</span>@endunless</div>
-        <div class="q-meta">
+
+        {{-- Desktop: status + date(-range) + technician + hours + km, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
 
             <span class="q-chip">
@@ -33,7 +35,33 @@
                     {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
                 </span>
             @endif
+        </div>
 
+        {{-- Mobile: technician/"who" chip drops (same pattern as task/
+             person/memo) — project is already in the title here, so no
+             chip needs isolating onto its own line, just status + date +
+             hours + km wrapping naturally. --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on)->format('d.m.Y') }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
+                    {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on)->format('d.m.Y') }}@endif
+            </span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
+                {{ Number::toLocal($serviceReport->services_sum_hours) }}
+            </span>
+
+            @if($serviceReport->services_sum_kilometres > 0)
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg>
+                    {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
+                </span>
+            @endif
         </div>
     </div>
 
@@ -111,4 +139,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

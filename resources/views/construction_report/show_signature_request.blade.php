@@ -1,11 +1,20 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('construction-reports.show', $constructionReport) }}" class="q-appbar__btn" aria-label="Zurück">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Bautagesbericht #{{ $constructionReport->number }}</span>
+@endsection
+
 @section('content')
     <div class="q-container">
         @if($constructionReport)
-            @include('construction_report.breadcrumb')
+            <div class="d-none d-md-block">
+                @include('construction_report.breadcrumb')
+            </div>
 
-            <div class="q-page-head">
+            <div class="q-page-head d-none d-md-flex">
                 <div class="d-flex align-items-center gap-3">
                     <span class="q-avatar">
                         <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
@@ -17,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="q-card">
+            <div class="q-card mt-2 mt-md-4">
                 <div class="q-card__head">Unterschrift erfassen</div>
                 <div class="q-card__body">
                     <p class="text-muted">

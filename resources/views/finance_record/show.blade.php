@@ -1,11 +1,52 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('finance-groups.show', $financeRecord->financeGroup) }}" class="q-appbar__btn" aria-label="Zurück zur Finanzgruppe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $financeRecord->title }}</span>
+    @canany(['update', 'delete'], $financeRecord)
+        <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#financeRecordShowActionsSheet" aria-controls="financeRecordShowActionsSheet" aria-label="Aktionen">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+    @endcanany
+@endsection
+
+@section('mobile-detail-sheets')
+    @canany(['update', 'delete'], $financeRecord)
+        <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="financeRecordShowActionsSheet" aria-label="Aktionen">
+            <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+            <div class="offcanvas-body">
+                <div class="q-sheet__label">Aktionen</div>
+                @can('update', $financeRecord)
+                    <a class="q-row" href="{{ route('finance-records.edit', ['finance_group' => $financeRecord->financeGroup, 'finance_record' => $financeRecord]) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                        <span class="q-row__title">Bearbeiten</span>
+                    </a>
+                @endcan
+                @can('delete', $financeRecord)
+                    <form action="{{ route('finance-records.destroy', ['finance_group' => $financeRecord->financeGroup, 'finance_record' => $financeRecord]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="q-row q-row--danger">
+                            <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                            <span class="q-row__title">Entfernen</span>
+                        </button>
+                    </form>
+                @endcan
+            </div>
+        </div>
+    @endcanany
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('finance_record.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('finance_record.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <div class="q-avatar q-avatar--icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
@@ -44,7 +85,7 @@
             </div>
         </div>
 
-        <div class="q-card mt-4">
+        <div class="q-card mt-2 mt-md-4">
             <div class="q-card__head">Details</div>
             <div class="q-card__body">
 

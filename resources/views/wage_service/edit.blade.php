@@ -1,10 +1,19 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('wage-services.show', $wageService) }}" class="q-appbar__btn" aria-label="Abbrechen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $wageService->name }}</span>
+@endsection
+
 @section('content')
     <div class="q-container">
-        @include('wage_service.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('wage_service.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use></svg>
@@ -20,8 +29,8 @@
             @method('PATCH')
             @include('wage_service.fields', ['wageService' => $wageService, 'units' => $units, 'currentUnit' => $currentUnit])
 
-            <div class="q-form-actions">
-                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('wage-services.show', $wageService) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+            <div class="q-form-actions q-form-actions--solo-mobile">
+                <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('wage-services.show', $wageService) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                     <span class="d-none d-md-inline">Lohndienstleistung speichern</span>

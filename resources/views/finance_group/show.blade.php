@@ -1,11 +1,59 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('finance-groups.index') }}" class="q-appbar__btn" aria-label="Zurück zu Finanzgruppen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $financeGroup->title }}</span>
+    @canany(['update', 'delete'], $financeGroup)
+        <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#financeGroupShowActionsSheet" aria-controls="financeGroupShowActionsSheet" aria-label="Aktionen">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+    @endcanany
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="financeGroupShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @can('update', $financeGroup)
+                <a class="q-row" href="{{ route('finance-groups.edit', $financeGroup) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('delete', $financeGroup)
+                <form action="{{ route('finance-groups.destroy', $financeGroup) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('finance_group.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('finance_group.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        @unless($financeRecords->isEmpty())
+            <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+                <span class="q-chip @if($financeGroup->finance_records_sum_amount < 0) q-chip--danger @endif">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
+                    {{ Number::toLocal($financeGroup->finance_records_sum_amount, 2) }}
+                </span>
+            </div>
+        @endunless
+
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <div class="q-avatar q-avatar--icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#layers"></use></svg>
@@ -53,7 +101,7 @@
         </div>
 
         @if ($financeGroup->comment)
-            <div class="q-card mt-4">
+            <div class="q-card mt-2 mt-md-4">
                 <div class="q-card__head">Bemerkungen</div>
                 <div class="q-card__body">
                     <div class="markdown">
@@ -64,11 +112,13 @@
         @endif
 
         <div class="mt-4">
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <h2 class="q-subhead">Finanzeinträge</h2>
-                @unless($financeRecords->isEmpty())
-                    <span class="q-subtitle">{{ trans_choice('messages.entries', $financeRecords->total()) }}</span>
-                @endunless
+            <div class="d-flex align-items-start align-items-md-center flex-nowrap gap-2 mb-3">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-baseline gap-md-2" style="row-gap:.1rem">
+                    <h2 class="q-subhead">Finanzeinträge</h2>
+                    @unless($financeRecords->isEmpty())
+                        <span class="q-subtitle mt-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</span>
+                    @endunless
+                </div>
                 @can('create', \App\Models\FinanceRecord::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2 ms-auto" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>

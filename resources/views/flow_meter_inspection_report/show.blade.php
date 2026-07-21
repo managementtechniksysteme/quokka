@@ -1,11 +1,90 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('flow-meter-inspection-reports.index') }}" class="q-appbar__btn" aria-label="Zurück zu Durchfluss-Prüfberichten">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Anlage {{ $flowMeterInspectionReport->equipment_identifier }}</span>
+    <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#flowMeterInspectionReportShowActionsSheet" aria-controls="flowMeterInspectionReportShowActionsSheet" aria-label="Aktionen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+    </button>
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="flowMeterInspectionReportShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @unless($flowMeterInspectionReport->isFinished())
+                @can('approve', $flowMeterInspectionReport)
+                    <a class="q-row" href="{{ route('flow-meter-inspection-reports.finish', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                        <span class="q-row__title">Erledigen</span>
+                    </a>
+                @endcan
+            @endunless
+            @can('update', $flowMeterInspectionReport)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.edit', $flowMeterInspectionReport) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('create', \App\Models\FlowMeterInspectionReport::class)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.create', ['template' => $flowMeterInspectionReport]) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#files"></use></svg></span>
+                    <span class="q-row__title">Kopieren</span>
+                </a>
+            @endcan
+            @can('email', $flowMeterInspectionReport)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.email', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $flowMeterInspectionReport)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.download', $flowMeterInspectionReport) }}" target="_blank">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            @can('emailSignatureRequest', $flowMeterInspectionReport)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.email-signature-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Unterschrift Anfrage senden</span>
+                </a>
+            @endcan
+            @can('emailDownloadRequest', $flowMeterInspectionReport)
+                <a class="q-row" href="{{ route('flow-meter-inspection-reports.email-download-request', ['flow_meter_inspection_report' => $flowMeterInspectionReport, 'redirect' => 'show']) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg></span>
+                    <span class="q-row__title">Download Link senden</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @can('delete', $flowMeterInspectionReport)
+                <form action="{{ route('flow-meter-inspection-reports.destroy', $flowMeterInspectionReport) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('flow_meter_inspection_report.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('flow_meter_inspection_report.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg>
@@ -108,6 +187,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        {{-- Mobile-only: .q-page-head's own .q-meta (status + timestamp chip)
+             is hidden along with the rest of the desktop head above
+             (2026-07-21, same fix as the other modules'). --}}
+        <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+            <span class="q-status q-status--{{ $flowMeterInspectionReport->status }}">{{ $flowMeterInspectionReport->status_label }}</span>
+
+            <span class="q-chip">
+                @switch($flowMeterInspectionReport->status)
+                    @case('signed')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                        {{ optional($signature)->created_at }}
+                        @break
+                    @case('finished')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        {{ $flowMeterInspectionReport->updated_at }}@if($flowMeterInspectionReport->activities->last()?->causer) · {{ Str::upper($flowMeterInspectionReport->activities->last()->causer->username) }}@endif
+                        @break
+                    @default
+                        @if($flowMeterInspectionReport->signatureRequest)
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use></svg>
+                            {{ $flowMeterInspectionReport->signatureRequest->created_at }}
+                        @else
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            {{ $flowMeterInspectionReport->created_at }}
+                        @endif
+                @endswitch
+            </span>
         </div>
 
         <div class="q-statbar mb-4">

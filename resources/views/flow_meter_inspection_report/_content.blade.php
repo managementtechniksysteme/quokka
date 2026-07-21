@@ -4,7 +4,7 @@
 <div class="q-card">
     <div class="q-card__head">Abweichungen</div>
     <div class="q-card__body">
-        <div class="q-spec">
+        <div class="q-spec q-spec--single">
             <div class="q-spec__row">
                 <span class="q-spec__label">Abweichung Messwerte</span>
                 <span class="q-spec__value">von 0,1 Q<sub>max</sub> bis 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->measurement_difference_up_to_30_q_max }}, über 0,3 Q<sub>max</sub>: {{ $flowMeterInspectionReport->measurement_difference_above_30_q_max }}</span>

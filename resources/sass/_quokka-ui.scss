@@ -603,14 +603,59 @@ $q-pad:            1.25rem;
 .q-spec { display: flex; flex-direction: column; }
 .q-spec__row {
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: .15rem .9rem; padding: .6rem 0; align-items: baseline;
+    // center, not baseline (2026-07-21, user: when the label wraps to 2 lines
+    // but the value stays on one, baseline aligns the value to the label's
+    // FIRST line only, reading as floating near the top instead of centered
+    // against the row's full (wrapped) height) — center reads correctly
+    // whichever side wraps, and looks identical to baseline in the common
+    // single-line/single-line case, so this is a strict improvement.
+    gap: .15rem .9rem; padding: .6rem 0; align-items: center;
 }
 .q-spec__row + .q-spec__row { border-top: 1px solid var(--q-border-2); }
 .q-spec__row:first-child { padding-top: 0; }
 .q-spec__row:last-child  { padding-bottom: 0; }
 .q-spec__label { font-size: .78rem; color: var(--q-faint); }
 .q-spec__value { font-size: .85rem; font-weight: 600; color: var(--q-text); }
-@media (max-width: 575.98px) { .q-spec__row { grid-template-columns: 1fr; } }
+// Mobile default: "metric band" cells (label above, value below — same
+// pattern as .q-statbar__cell), 2-up, NOT the desktop's inline label|value
+// split (2026-07-21, user, after seeing both live: inspection_report's own
+// measurement cards should read like the metric band, "not key column,
+// value column... like on desktop"). .q-spec itself becomes the 2-col grid;
+// each row is a cell within it, its own internal grid collapsing to 1 column
+// so label stacks above value. No horizontal divider between rows — the old
+// hairline-per-row (desktop's convention, kept below 575.98px until now) has
+// nothing left to separate once each row is its own bounded cell rather than
+// a line in a single stacked list ("get rid of all the horizontal dividers
+// that are useless now").
+@media (max-width: 575.98px) {
+    .q-spec { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .9rem; }
+    // Two cells sharing a grid row-track are stretched to the SAME height by
+    // the outer grid (e.g. a 1-line "Impulse" cell next to a 2-line "UV
+    // Intensität..." cell) — user caught this via a screenshot: "488...
+    // aligned with 170 W/m³...? one label single line, neighbor double".
+    // space-between (not start, not center — both tried first and wrong):
+    // label pins to the cell's own top edge (unchanged, still aligned across
+    // every cell regardless of row height) while VALUE pins to the cell's
+    // bottom edge — since paired cells share the same stretched row height,
+    // both values land on the exact same shared bottom edge too. Only works
+    // because each cell has exactly 2 auto-rows (label, value); don't reuse
+    // this for a .q-spec cell with 3+ stacked lines.
+    .q-spec__row { grid-template-columns: 1fr; align-content: space-between; padding: 0; }
+    // matches the "+" adjacent-sibling shape of the desktop divider rule
+    // above (line ~614) so it actually wins — a plain .q-spec__row selector
+    // has LOWER specificity than .q-spec__row + .q-spec__row and silently
+    // lost this fight the first time (real bug, not just a missed rule).
+    .q-spec__row + .q-spec__row { border-top: none; }
+}
+// Opt-out: single stacked column of label-above-value rows instead of the
+// 2-up grid — still no horizontal dividers (2026-07-21, user: flow_meter's
+// Abweichungen card wanted back exactly as it read originally, "just two
+// rows, label on top, value below" — its values are full sentences, not
+// short numbers, so the 2-up grid cramped them; a prior --nostack attempt at
+// this card, kept as 2-up-but-side-by-side, missed what was actually asked).
+@media (max-width: 575.98px) {
+    .q-spec--single { display: flex; flex-direction: column; gap: .6rem; }
+}
 
 // Address side card — a hatched "map" banner + address lines + a maps button.
 .q-address__map {
@@ -1491,7 +1536,17 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 // a flex-shrink:0 span for "#number" so the number can never be squeezed out.
 .q-appbar__title--numbered { display: flex; align-items: baseline; gap: .35rem; }
 .q-appbar__title-main { min-width: 0; @extend .text-truncate; }
-.q-appbar__title-num { flex-shrink: 0; font-size: .85rem; font-weight: 700; color: var(--q-muted); }
+// max-width cap + its own ellipsis (2026-07-21, real bug on
+// flow_meter_inspection_report: an `equipment_identifier` can be a long
+// descriptive string, not just a short code/report-number — flex-shrink:0
+// alone let it hog the WHOLE bar, truncating -main down to nothing) — caps
+// this span at under half the row so -main is always guaranteed real room,
+// with no visible change for the short "#123"-style suffixes this was built
+// for (they never get close to the cap).
+.q-appbar__title-num {
+    flex-shrink: 0; max-width: 42%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: .85rem; font-weight: 700; color: var(--q-muted);
+}
 // Each button is its own small floating glass pill now (2026-07-21, same
 // "doesn't look like a real bar" round) — was flat/transparent, relying on
 // the (now removed) shared bar background to read as a control at all; on

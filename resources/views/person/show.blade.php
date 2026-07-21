@@ -1,11 +1,66 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('people.index') }}" class="q-appbar__btn" aria-label="Zurück zu Personen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $person->title_prefix }} {{ $person->name }} {{ $person->title_suffix }}</span>
+    @canany(['update', 'delete'], $person)
+        <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#personShowActionsSheet" aria-controls="personShowActionsSheet" aria-label="Aktionen">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+    @endcanany
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="personShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @can('update', $person)
+                <a class="q-row" href="{{ route('people.edit', $person) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('email', $person)
+                <a class="q-row" href="#">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $person)
+                <a class="q-row" href="#">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @can('delete', $person)
+                <form action="{{ route('people.destroy', ['person' => $person, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('person.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('person.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
                 <div>
@@ -58,7 +113,7 @@
             </div>
         </div>
 
-        <div class="q-fieldcols mt-4">
+        <div class="q-fieldcols mt-2 mt-md-4">
 
             {{-- Left: Allgemeines + Kontakt stacked --}}
             <div class="d-flex flex-column gap-3">

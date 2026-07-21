@@ -24,7 +24,9 @@
             </div>
         </div>
 
-        <div class="q-form__row q-form__row--2">
+        {{-- Narrow enough to stay side-by-side even on a phone, unlike most
+             --2 rows (2026-07-21, user). --}}
+        <div class="q-form__row q-form__row--2 q-form__row--nostack">
             <div>
                 <label for="starts_on">Startdatum</label>
                 <input type="date" class="form-control @error('starts_on') is-invalid @enderror" id="starts_on" name="starts_on" value="{{ old('starts_on', optional(optional($project)->starts_on)->format('Y-m-d')) }}" />

@@ -226,6 +226,11 @@ $q-pad:            1.25rem;
     &__row--2 { grid-template-columns: 1fr 1fr; }
     &__row--3 { grid-template-columns: 1fr 1fr 1fr; }
     @media (max-width: 575.98px) { &__row { grid-template-columns: 1fr; } }
+    // Opt-out for a row narrow enough to stay 2-up even on a phone (e.g. a
+    // date range — most --2/--3 rows hold full-width text inputs that
+    // genuinely need the stack, so this is opt-in per row, not a change to
+    // the default) (2026-07-21, user: project's Start-/Enddatum).
+    @media (max-width: 575.98px) { &__row--nostack { grid-template-columns: 1fr 1fr; } }
 
     // q-btn inside a section body (e.g. the ServicesSelector add button) must
     // match form-control sizing so it aligns in row/col layouts beside inputs.

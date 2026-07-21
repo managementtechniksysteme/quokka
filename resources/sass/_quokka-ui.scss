@@ -1670,6 +1670,17 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
         box-shadow: none;
     }
     .q-form-actions .btn-primary { flex: 1; justify-content: center; }
+    // Pages that drop Abbrechen on mobile (the app bar's own "X" replaces
+    // it — see company/create|edit.blade.php) mark the container explicitly
+    // rather than relying on :only-child, which doesn't work here: Abbrechen
+    // is still a real DOM sibling, just display:none, and CSS structural
+    // pseudo-classes see the DOM tree, not visual visibility. A lone
+    // Speichern stretched edge-to-edge read as an oddly wide button with a
+    // lot of empty purple either side of its icon+label — centered at its
+    // own natural width instead (2026-07-21, user: "makes the save action
+    // bar look a bit weird").
+    .q-form-actions--solo-mobile { justify-content: center; }
+    .q-form-actions--solo-mobile .btn-primary { flex: 0 1 auto; min-width: 65%; }
 
     // MarkdownEditor toolbar (easymde) wraps to 2 rows at 390px (12 buttons ×
     // 30px > the ~320px available) — drop the least useful for a short

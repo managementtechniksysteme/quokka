@@ -33,7 +33,7 @@
                  scrolling on a long form (2026-07-21, user: "double info
                  with the abort button at the bottom"). Desktop keeps it —
                  there's no X there. --}}
-            <div class="q-form-actions">
+            <div class="q-form-actions q-form-actions--solo-mobile">
                 <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('companies.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>

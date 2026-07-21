@@ -28,8 +28,13 @@
         <form class="q-form needs-validation" action="{{ route('companies.store') }}" method="post" novalidate>
             @include('company.fields', ['company' => $company, 'currentAddress' => $currentAddress, 'currentOperatorAddress' => $currentOperatorAddress, 'addresses' => $addresses, 'currentContactPerson' => $currentContactPerson, 'people' => $people])
 
+            {{-- Abbrechen dropped on mobile: the app bar's "X" already covers
+                 it, and unlike a bottom button it's reachable without
+                 scrolling on a long form (2026-07-21, user: "double info
+                 with the abort button at the bottom"). Desktop keeps it —
+                 there's no X there. --}}
             <div class="q-form-actions">
-                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('companies.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('companies.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                     <span class="d-none d-md-inline">Firma speichern</span>

@@ -7,7 +7,9 @@
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">{{ $memo->title }}</div>
-        <div class="q-meta">
+
+        {{-- Desktop: status + project/number + date + composer→recipient, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             @if($memo->draft)
                 <span class="q-status q-status--in-progress">Entwurf</span>
             @endif
@@ -34,6 +36,36 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg>
                 <span class="text-truncate">{{ $memo->employeeComposer->person->name }}@if($memo->personRecipient) → {{ $memo->personRecipient->name }}@endif</span>
             </span>
+        </div>
+
+        {{-- Mobile: pared down (same principle as task/person) — project or
+             number alone on its own truncated line, then draft status + date
+             on a second line. Composer/recipient drops entirely; still on
+             the detail page. --}}
+        <div class="d-md-none">
+            <div class="q-meta mb-1">
+                @if(($secondaryInformation ?? '') !== 'withoutProject')
+                    <span class="q-chip">
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                        <span class="text-truncate">{{ optional($memo->project)->name ?? 'kein Projekt' }}</span>
+                        <span class="q-mono">#{{ $memo->number }}</span>
+                    </span>
+                @else
+                    <span class="q-chip">
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hash"></use></svg>
+                        <span class="q-mono">{{ $memo->number }}</span>
+                    </span>
+                @endif
+            </div>
+            <div class="q-meta">
+                @if($memo->draft)
+                    <span class="q-status q-status--in-progress">Entwurf</span>
+                @endif
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                    {{ $memo->meeting_held_on }}
+                </span>
+            </div>
         </div>
     </div>
 
@@ -93,4 +125,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

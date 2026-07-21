@@ -5,7 +5,9 @@
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">{{ $person->name }}</div>
-        <div class="q-meta">
+
+        {{-- Desktop: company/address + role + department, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             @if(($secondaryInformation ?? '') === 'address')
                 <span class="q-chip">
                     <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
@@ -29,6 +31,25 @@
                 <span class="q-chip">
                     <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#grid"></use></svg>
                     <span class="text-truncate">{{ $person->department }}</span>
+                </span>
+            @endif
+        </div>
+
+        {{-- Mobile: company/address only (2026-07-21, user: "is a single
+             company chip enough?... leave position and department to the
+             detail page") — same reasoning as task's chip pass: one
+             orienting piece of context per row, secondary detail one tap
+             away. --}}
+        <div class="q-meta d-md-none">
+            @if(($secondaryInformation ?? '') === 'address')
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
+                    <span class="text-truncate">{{ optional($person->address->first())->address_line ?? 'keine Adresse' }}</span>
+                </span>
+            @else
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#briefcase"></use></svg>
+                    <span class="text-truncate">{{ optional($person->company)->name ?? 'keine Firma' }}</span>
                 </span>
             @endif
         </div>
@@ -76,4 +97,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

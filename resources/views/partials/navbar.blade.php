@@ -525,7 +525,15 @@
         // tab bar / Mehr sheet below — one icon per section, never redefined.
         $mobilePageLabels = [
             'home' => ['Übersicht', null],
-            'companies.*|people.*|addresses.*' => ['Firmen', 'briefcase'],
+            // Split out from a single 'companies.*|people.*|addresses.*' =>
+            // Firmen entry (2026-07-21, user: "the section headers are
+            // wrong on both" — people/addresses inherited the Firmen tab's
+            // own coarse label, never caught before since only company
+            // itself got tested during Phase 1). Icons reused verbatim
+            // from the Mehr sheet's own Personen/Adressen rows.
+            'companies.*' => ['Firmen', 'briefcase'],
+            'people.*' => ['Personen', 'people'],
+            'addresses.*' => ['Adressen', 'geo-alt'],
             'projects.*|project-controlling.*' => ['Projekte', 'clipboard'],
             'tasks.*' => ['Aufgaben', 'check2-square'],
             'memos.*' => ['Aktenvermerke', 'voicemail'],

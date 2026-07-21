@@ -1,11 +1,94 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('employees.index') }}" class="q-appbar__btn" aria-label="Zurück zu Mitarbeitern">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">{{ $employee->person->name }}</span>
+    @canany(['update', 'delete'], $employee)
+        <button class="q-appbar__btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#employeeShowActionsSheet" aria-controls="employeeShowActionsSheet" aria-label="Aktionen">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+    @endcanany
+@endsection
+
+@section('mobile-detail-sheets')
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="employeeShowActionsSheet" aria-label="Aktionen">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+            <div class="q-sheet__label">Aktionen</div>
+            @can('update', $employee)
+                <a class="q-row" href="{{ route('employees.edit', $employee) }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg></span>
+                    <span class="q-row__title">Bearbeiten</span>
+                </a>
+            @endcan
+            @can('email', $employee)
+                <a class="q-row" href="#">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                    <span class="q-row__title">Email versenden</span>
+                </a>
+            @endcan
+            @can('createPdf', $employee)
+                <a class="q-row" href="#">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg></span>
+                    <span class="q-row__title">PDF erstellen</span>
+                </a>
+            @endcan
+            <a class="q-row" href="#">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg></span>
+                <span class="q-row__title">Favorisieren</span>
+            </a>
+            @if($employee->user && $employee->user->trashed())
+                @can('update', $employee)
+                    <a class="q-row" href="{{ route('employees.access-grant', $employee) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#unlock"></use></svg></span>
+                        <span class="q-row__title">Quokka Zugang entsperren</span>
+                    </a>
+                @endcan
+            @elseif($employee->user)
+                @can('update', $employee)
+                    <a class="q-row" href="{{ route('employees.access-deny', $employee) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg></span>
+                        <span class="q-row__title">Quokka Zugang sperren</span>
+                    </a>
+                @endcan
+                @can('impersonate', $employee)
+                    @if(Session::has('impersonatorId') && Auth::id() === $employee->person_id)
+                        <a class="q-row" href="{{ route('employees.impersonate', $employee) }}">
+                            <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person-dash"></use></svg></span>
+                            <span class="q-row__title">Zurück zum eigenen Benutzer</span>
+                        </a>
+                    @elseif(Auth::id() !== $employee->person_id)
+                        <a class="q-row" href="{{ route('employees.impersonate', $employee) }}">
+                            <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person-plus"></use></svg></span>
+                            <span class="q-row__title">Als Quokka Benutzer anmelden</span>
+                        </a>
+                    @endif
+                @endcan
+            @endif
+            @can('delete', $employee)
+                <form action="{{ route('employees.destroy', $employee) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="q-row q-row--danger">
+                        <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg></span>
+                        <span class="q-row__title">Entfernen</span>
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <div class="q-container">
 
-        @include('employee.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('employee.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 @include('partials.employee_avatar', ['employee' => $employee])
                 <div>
@@ -86,7 +169,7 @@
             </div>
         </div>
 
-        <div class="q-card mt-4">
+        <div class="q-card mt-2 mt-md-4">
             <div class="q-card__head">Stammdaten</div>
             <div class="q-card__body">
 
@@ -163,9 +246,11 @@
 
         @if($employee->user && count($employee->user->permissions))
             <div class="mt-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <h2 class="q-subhead">Berechtigungen</h2>
-                    <span class="q-subtitle">{{ trans_choice('messages.permissions', $employee->user->permissions) }}</span>
+                <div class="d-flex align-items-start align-items-md-center flex-nowrap gap-2 mb-3">
+                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-baseline gap-md-2" style="row-gap:.1rem">
+                        <h2 class="q-subhead">Berechtigungen</h2>
+                        <span class="q-subtitle mt-0">{{ trans_choice('messages.permissions', $employee->user->permissions) }}</span>
+                    </div>
                     <button class="btn q-btn d-inline-flex align-items-center gap-2 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#employeePermissions">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-down"></use></svg>
                         Anzeigen

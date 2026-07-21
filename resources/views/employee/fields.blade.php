@@ -30,9 +30,9 @@
                         @enderror
                     </div>
                 </div>
-                <a class="btn q-btn d-flex align-items-center gap-2 flex-shrink-0" href="{{ route('people.create') }}">
+                <a class="btn q-btn d-flex align-items-center gap-2 flex-shrink-0" href="{{ route('people.create') }}" aria-label="Person anlegen">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                    Person anlegen
+                    <span class="d-none d-md-inline">Person anlegen</span>
                 </a>
             </div>
         </div>

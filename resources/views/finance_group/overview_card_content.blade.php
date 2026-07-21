@@ -16,6 +16,8 @@
     </div>
 
     @if($financeGroup->finance_records_count)
+        {{-- Hidden on mobile sitewide already (.q-row .q-metric under
+             md-down, from Phase 1) — no extra markup needed here. --}}
         <div class="q-metric @if($financeGroup->finance_records_sum_amount < 0) q-metric--danger @endif">
             <div class="q-metric__value q-mono">{{ Number::toLocal($financeGroup->finance_records_sum_amount, 2) }}</div>
             <div class="q-metric__label">Betrag</div>
@@ -48,4 +50,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

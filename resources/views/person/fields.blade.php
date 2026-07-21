@@ -93,13 +93,26 @@
                         @enderror
                     </div>
                 </div>
-                <button class="btn q-btn d-flex align-items-center gap-2 flex-shrink-0" type="button" data-bs-toggle="collapse" data-bs-target="#newAddressFields">
+                <button class="btn q-btn d-none d-md-inline-flex align-items-center gap-2 flex-shrink-0" type="button" data-bs-toggle="collapse" data-bs-target="#newAddressFields">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Neue Adresse
                 </button>
+                <button class="btn q-btn q-btn-icon d-md-none flex-shrink-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#newAddressSheet" aria-controls="newAddressSheet" aria-label="Neue Adresse">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                </button>
             </div>
 
-            <div class="collapse mt-2 @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+            <div class="q-quick-create-summary mt-2 d-none d-md-none" data-quick-create-summary-for="newAddressSheet">
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
+                    <span class="q-quick-create-summary__text"></span>
+                </span>
+                <button type="button" class="q-quick-create-summary__clear" aria-label="Neue Adresse entfernen">
+                    <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>
+                </button>
+            </div>
+
+            <div class="collapse mt-2 d-none d-md-block @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
                 <div class="d-flex flex-column gap-3 p-3 bg-body-secondary rounded">
                     <div>
                         <label for="address_name">Name</label>
@@ -140,6 +153,61 @@
                                 {{ $message }}
                             @enderror
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offcanvas offcanvas-bottom q-sheet d-md-none" tabindex="-1" id="newAddressSheet" aria-label="Neue Adresse"
+                 data-quick-create-fields="address_name,street_number,postcode,city"
+                 @if (old('address_name') || old('street_number') || old('postcode') || old('city') || $errors->hasAny(['address_name', 'street_number', 'postcode', 'city'])) data-quick-create-open="1" @endif>
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Neue Adresse</div>
+                    <div class="d-flex flex-column gap-3 px-3 pb-3">
+                        <div>
+                            <label for="address_name_mobile">Name</label>
+                            <input type="text" class="form-control @error('address_name') is-invalid @enderror" id="address_name_mobile" data-mirrors="address_name" placeholder="Max Mustermann" />
+                            <div class="invalid-feedback">
+                                @error('address_name')
+                                    {{ $message }}
+                                @else
+                                    Gib bitte den Namen der Adresse ein.
+                                @enderror
+                            </div>
+                        </div>
+                        <div>
+                            <label for="street_number_mobile">Straße und Hausnummer</label>
+                            <input type="text" class="form-control @error('street_number') is-invalid @enderror" id="street_number_mobile" data-mirrors="street_number" placeholder="Musterstraße 99" />
+                            <div class="invalid-feedback">
+                                @error('street_number')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                        <div>
+                            <label for="postcode_mobile">Postleitzahl</label>
+                            <input type="text" pattern="\d*" maxlength="5" class="form-control @error('postcode') is-invalid @enderror" id="postcode_mobile" data-mirrors="postcode" placeholder="1234" />
+                            <div class="invalid-feedback">
+                                @error('postcode')
+                                    {{ $message }}
+                                @else
+                                    Gib bitte eine gültige Postleitzahl (bestehend aus Ziffern) ein.
+                                @enderror
+                            </div>
+                        </div>
+                        <div>
+                            <label for="city_mobile">Stadt</label>
+                            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city_mobile" data-mirrors="city" placeholder="Musterstadt" />
+                            <div class="invalid-feedback">
+                                @error('city')
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" data-bs-dismiss="offcanvas">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            Übernehmen
+                        </button>
                     </div>
                 </div>
             </div>

@@ -15,10 +15,11 @@
         </div>
     </div>
 
+    {{-- Desktop only: exceptions.show already has its own delete button, same
+         as every other model's detail page — mobile defers to it via the
+         chevron rather than duplicating the action here (2026-07-21). --}}
     @can('tools-deleteexceptions')
-        {{-- single delete action: a direct icon button (no dropdown for one item),
-             lifted above the row's stretched-link --}}
-        <form class="q-row__action" action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
+        <form class="q-row__action d-none d-md-block" action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
             @csrf
             @method('DELETE')
             <button type="submit" class="q-kebab q-kebab--danger" title="Entfernen">
@@ -26,4 +27,6 @@
             </button>
         </form>
     @endcan
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

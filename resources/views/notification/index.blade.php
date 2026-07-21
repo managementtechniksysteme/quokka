@@ -4,7 +4,8 @@
     <div class="q-container">
 
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + title + count + action, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use></svg>
                 </span>
@@ -15,9 +16,8 @@
                     @endunless
                 </div>
             </div>
-
             @if(Auth::user()->unreadNotifications()->count())
-                <form action="{{ route('notifications.clear') }}" method="post">
+                <form class="d-none d-md-block" action="{{ route('notifications.clear') }}" method="post">
                     @csrf
                     <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
@@ -25,6 +25,27 @@
                     </button>
                 </form>
             @endif
+
+            {{-- Mobile: the app bar already carries "Benachrichtigungen" +
+                 its own icon — collapses to just the count, inline with a
+                 shortened action label (2026-07-21, user: "double headers").
+                 ms-auto on the button, not justify-content-between, since
+                 the count is conditional (see the same fix elsewhere in
+                 Phase 2). --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                @unless($notifications->isEmpty())
+                    <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $notifications->total()) }}</div>
+                @endunless
+                @if(Auth::user()->unreadNotifications()->count())
+                    <form class="ms-auto" action="{{ route('notifications.clear') }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                            Alle gelesen
+                        </button>
+                    </form>
+                @endif
+            </div>
         </div>
 
         @if(\App\Models\ApplicationSettings::get()->prune_read_notifications)

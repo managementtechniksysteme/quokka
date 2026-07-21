@@ -16,6 +16,10 @@
         </div>
     </div>
 
+    {{-- No details page to defer to (the row itself deep-links to whatever
+         triggered the notification), and marking-as-read is frequent and
+         non-destructive — a sheet would just add friction, so this stays a
+         plain one-tap action on every breakpoint (2026-07-21). --}}
     @unless($notification->read_at)
         <form class="q-row__action" action="{{ route('notifications.destroy', $notification) }}" method="post">
             @csrf

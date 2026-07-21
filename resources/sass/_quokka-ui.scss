@@ -1664,6 +1664,16 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     }
     .q-form-actions .btn-primary { flex: 1; justify-content: center; }
 
+    // MarkdownEditor toolbar (easymde) wraps to 2 rows at 390px (12 buttons ×
+    // 30px > the ~320px available) — drop the least useful for a short
+    // "Bemerkungen"-style field (image/table insertion, the line-break debug
+    // toggle) so the rest fits on one row; CSS-only, the JS toolbar config
+    // and keyboard shortcuts are untouched either way (2026-07-21, user).
+    .editor-toolbar {
+        .image, .table, .linebreaks { display: none; }
+        i.separator:last-of-type { display: none; }
+    }
+
     // KPI counter rows never cram: 2-up max.
     .q-kpis { grid-template-columns: 1fr 1fr !important; }
 }

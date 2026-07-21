@@ -6,10 +6,30 @@
     </span>
 
     <div class="q-row__main">
-        <div class="q-row__title text-truncate">
+        {{-- Desktop: title · project subheading, unchanged. --}}
+        <div class="q-row__title text-truncate d-none d-md-block">
             {{ $deliveryNote->title }}@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject') <span class="q-row__sub">· {{ $deliveryNote->project->name }}</span>@endunless
         </div>
-        <div class="q-meta">
+        {{-- Mobile: title alone — project moves to its own chip below
+             instead of being squeezed into the truncated title line
+             (2026-07-21, user: same "truncated chip" treatment as other
+             modules — avoids the project name getting silently clipped if
+             the delivery note's own title is already long enough to fill
+             the line by itself, same risk class as the numbered-report
+             title bug fixed earlier this session). --}}
+        <div class="q-row__title text-truncate d-md-none">{{ $deliveryNote->title }}</div>
+
+        @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+            <div class="q-meta mb-1 d-md-none">
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                    <span class="text-truncate">{{ $deliveryNote->project->name }}</span>
+                </span>
+            </div>
+        @endunless
+
+        {{-- Desktop: status + contextual status-date + technician, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
             <span class="q-status q-status--{{ $deliveryNote->status }}">{{ $deliveryNote->status_label }}</span>
 
             <span class="q-chip">
@@ -37,6 +57,34 @@
             <span class="q-chip">
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
                 <span class="text-truncate">{{ $deliveryNote->employee->person->name }}</span>
+            </span>
+        </div>
+
+        {{-- Mobile: technician/"who" chip drops; status + status-date are
+             their own line below the project chip above. --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $deliveryNote->status }}">{{ $deliveryNote->status_label }}</span>
+
+            <span class="q-chip">
+                @switch($deliveryNote->status)
+                    @case('new')
+                        @if($deliveryNote->signatureRequest)
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                            {{ $deliveryNote->signatureRequest->created_at }}
+                        @else
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            {{ $deliveryNote->created_at }}
+                        @endif
+                        @break
+                    @case('signed')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                        {{ $deliveryNote->signature()->created_at }}
+                        @break
+                    @case('finished')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        {{ $deliveryNote->updated_at }}@if($deliveryNote->activities->last()) ({{ Str::upper($deliveryNote->activities->last()->causer->username) }})@endif
+                        @break
+                @endswitch
             </span>
         </div>
     </div>
@@ -115,4 +163,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

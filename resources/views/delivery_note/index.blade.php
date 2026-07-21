@@ -4,7 +4,8 @@
     <div class="q-container">
 
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + title + count, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg>
                 </span>
@@ -17,15 +18,30 @@
             </div>
 
             @can('create', \App\Models\DeliveryNote::class)
-                <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.create') }}">
+                <a class="btn btn-primary text-white d-none d-md-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.create') }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Lieferschein anlegen
                 </a>
             @endcan
+
+            {{-- Mobile: count inline with the actions, create label
+                 shortened to just the entity name. --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                @unless($deliveryNotes->isEmpty())
+                    <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $deliveryNotes->total()) }}</div>
+                @endunless
+                @can('create', \App\Models\DeliveryNote::class)
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('delivery-notes.create') }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        Lieferschein
+                    </a>
+                @endcan
+            </div>
         </div>
 
         @unless ($deliveryNotes->isEmpty() && !Request::get('search'))
-            <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+            {{-- Desktop: search field + sort dropdown — unchanged. --}}
+            <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
                 <form class="flex-grow-1" action="{{ route('delivery-notes.index') }}" method="get">
                     @if(request()->sort)
                         <input type="hidden" name="sort" value="{{ request()->sort }}">
@@ -74,6 +90,67 @@
                             </button>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            {{-- Mobile: leading search icon inline in the field, no separate
+                 submit button, sort as an icon-only button opening a bottom
+                 sheet. No quick-filter here — desktop has none either. --}}
+            <div class="d-flex d-md-none align-items-center gap-2 mb-3">
+                <form class="flex-grow-1" action="{{ route('delivery-notes.index') }}" method="get">
+                    @if(request()->sort)
+                        <input type="hidden" name="sort" value="{{ request()->sort }}">
+                    @endif
+                    <div class="position-relative flex-grow-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Lieferscheine suchen" autocomplete="off" />
+                            @if (Request::get('search'))
+                                <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                                </a>
+                            @endif
+                        </div>
+                        <svg class="icon-bs icon-16 text-muted position-absolute top-50 start-0 translate-middle-y ms-3 pe-none q-search-icon">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use>
+                        </svg>
+                    </div>
+                </form>
+
+                <button class="btn q-btn q-btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#deliveryNoteSortSheet" aria-controls="deliveryNoteSortSheet" aria-label="Sortierung">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
+                </button>
+            </div>
+
+            @php
+                $deliveryNoteSortOptions = [
+                    'written_on-asc' => ['Datum', 'arrow-up'],
+                    'written_on-desc' => ['Datum', 'arrow-down'],
+                    'title-asc' => ['Nummer (Titel)', 'arrow-up'],
+                    'title-desc' => ['Nummer (Titel)', 'arrow-down'],
+                    'status-asc' => ['Status', 'arrow-up'],
+                    'status-desc' => ['Status', 'arrow-down'],
+                ];
+            @endphp
+            <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="deliveryNoteSortSheet" aria-label="Sortierung">
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Sortierung</div>
+                    <form action="{{ route('delivery-notes.index') }}" method="get">
+                        @if(request()->has('search'))
+                            <input type="hidden" name="search" value="{{ request()->search ?? '' }}">
+                        @endif
+                        @foreach($deliveryNoteSortOptions as $sortValue => $sortMeta)
+                            <button type="submit" name="sort" value="{{ $sortValue }}" class="q-row">
+                                <span class="q-avatar q-avatar--muted">
+                                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $sortMeta[1] }}"></use></svg>
+                                </span>
+                                <span class="q-row__title">{{ $sortMeta[0] }}</span>
+                                @if(request('sort') === $sortValue)
+                                    <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                                @endif
+                            </button>
+                        @endforeach
+                    </form>
                 </div>
             </div>
         @endunless

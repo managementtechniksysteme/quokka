@@ -11,11 +11,20 @@
     @php $currentServices = Service::find(old('service_ids')); @endphp
 @endif
 
+@section('mobile-detail-bar')
+    <a href="{{ route('projects.show', $project) }}" class="q-appbar__btn" aria-label="Zurück zum Projekt">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Projektauswertung als PDF</span>
+@endsection
+
 @section('content')
     <div class="q-container q-container--narrow">
-        @include('project.breadcrumb')
+        <div class="d-none d-md-block">
+            @include('project.breadcrumb')
+        </div>
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-avatar">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
@@ -27,7 +36,7 @@
             </div>
         </div>
 
-        <form class="q-form needs-validation" action="{{ route('projects.download', $project) }}" method="post" novalidate>
+        <form class="q-form needs-validation mt-2 mt-md-0" action="{{ route('projects.download', $project) }}" method="post" novalidate>
             @csrf
 
             <div class="q-form-section">
@@ -91,7 +100,7 @@
                 </div>
             </div>
 
-            <div class="q-form-actions">
+            <div class="q-form-actions q-form-actions--solo-mobile">
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                     <span class="d-none d-md-inline">PDF erstellen</span>

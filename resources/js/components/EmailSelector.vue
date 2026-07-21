@@ -1,16 +1,16 @@
 <template>
     <div>
-        <div class="row align-items-center">
-            <div class="col pe-0">
+        <div class="d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center">
+            <div class="flex-grow-1">
                 <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :modelValue="selected_input" :selectOnTab="true" @update:modelValue="setSelected" taggable>
                     <template v-slot:no-options>Keine passenden Einträge.</template>
                 </v-select>
             </div>
 
-            <div class="col-auto ps-0 ms-1">
-                <button type="button" class="btn btn-primary ms-1" @click="addSelected(selected_input, selected_to)">AN</button>
-                <button type="button" class="btn btn-outline-secondary ms-1" @click="addSelected(selected_input, selected_cc)">CC</button>
-                <button type="button" class="btn btn-outline-secondary ms-1" @click="addSelected(selected_input, selected_bcc)">BCC</button>
+            <div class="d-flex gap-1">
+                <button type="button" class="btn btn-primary text-white flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_to)">AN</button>
+                <button type="button" class="btn q-btn flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_cc)">CC</button>
+                <button type="button" class="btn q-btn flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_bcc)">BCC</button>
             </div>
 
         </div>
@@ -29,7 +29,10 @@
 
                     </div>
                     <div class="col-auto ms-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedTo(mailable, selected_to)">Entfernen</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedTo(mailable, selected_to)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -46,7 +49,10 @@
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
                     <div class="col-auto ms-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedCC(mailable, selected_cc)">Entfernen</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedCC(mailable, selected_cc)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -63,7 +69,10 @@
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
                     <div class="col-auto ms-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedBCC(mailable, selected_bcc)">Entfernen</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedBCC(mailable, selected_bcc)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>

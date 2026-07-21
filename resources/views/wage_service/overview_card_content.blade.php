@@ -12,8 +12,10 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#circle"></use></svg>
                 {{ $wageService->unit }}
             </span>
+            {{-- Comment chip: desktop only, unit alone is enough context on
+                 mobile (2026-07-21, user). --}}
             @if($wageService->description)
-                <span class="q-chip">
+                <span class="q-chip d-none d-md-inline-flex">
                     <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chat-dots"></use></svg>
                     <span class="text-truncate">{{ $wageService->description }}</span>
                 </span>

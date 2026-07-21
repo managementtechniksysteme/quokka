@@ -974,8 +974,13 @@ html[data-theme-pref="dark"]   .q-theme-opt--dark   .q-theme-check { visibility:
 .q-tiles { display: grid; gap: .8rem; margin-bottom: 1.6rem; }
 .q-tiles--5 { grid-template-columns: repeat(5, 1fr); }
 .q-tiles--4 { grid-template-columns: repeat(4, 1fr); }
+// 2-up down to the phone breakpoint (2026-07-21, user: dashboard "looks
+// quite good... maybe the tiles would fit in two columns to save some
+// vertical space") — this predates the mobile redesign work; the old
+// sm-down single-column collapse was too aggressive for an actual phone
+// width (390px comfortably fits two ~185px tiles, same density every other
+// mobile surface this session settled on), it was just never revisited.
 @include media-breakpoint-down(xl) { .q-tiles--5, .q-tiles--4 { grid-template-columns: repeat(2, 1fr); } }
-@include media-breakpoint-down(sm) { .q-tiles--5, .q-tiles--4 { grid-template-columns: 1fr; } }
 
 .q-tile { display: block; padding: .95rem 1rem; color: inherit; text-decoration: none; }
 a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }

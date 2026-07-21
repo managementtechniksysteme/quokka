@@ -4,7 +4,9 @@
      never drift apart. --}}
 @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
     @if($projects->count() > 0 && ($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
-        <p class="q-legend mt-3">
+        {{-- Desktop only: the cost-indicator chip it explains is already
+             hidden on mobile (2026-07-21, user). --}}
+        <p class="q-legend mt-3 d-none d-md-block">
             Die Pfeile für die
             <b><u>G</u></b>esamt, <b><u>V</u></b>errechneten, <b><u>L</u></b>ohn und <b><u>M</u></b>aterialkosten zeigen:
             <svg class="icon-bs icon-baseline text-success"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg> unter der Warnschwelle ·

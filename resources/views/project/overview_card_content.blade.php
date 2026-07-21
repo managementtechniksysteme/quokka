@@ -26,14 +26,19 @@
         <div class="q-meta">
             <span class="q-status q-status--{{ $project->state }}">{{ $project->state_label }}</span>
 
-            <span class="q-chip">
-                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
-                {{ optional($project->starts_on)->format('d.m.Y') ?? 'kein Start' }}
-                @if($project->state === 'finished' && $project->ends_on)
-                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
-                    {{ $project->ends_on->format('d.m.Y') }}
-                @endif
-            </span>
+            {{-- Omitted entirely (not a "kein Start" placeholder) when unset —
+                 same "no chip for missing data" convention used elsewhere
+                 (2026-07-21, user). --}}
+            @if($project->starts_on)
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                    {{ $project->starts_on->format('d.m.Y') }}
+                    @if($project->state === 'finished' && $project->ends_on)
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
+                        {{ $project->ends_on->format('d.m.Y') }}
+                    @endif
+                </span>
+            @endif
 
             {{-- Cost indicator chip: desktop only. It's dense shorthand
                  (G/V/L/M + trend arrows) that needs explaining once you

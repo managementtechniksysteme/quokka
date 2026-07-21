@@ -21,13 +21,17 @@
                 @can('create', \App\Models\Task::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.create', ['project' => $project->id]) }}">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                        Aufgabe anlegen
+                        <span class="d-none d-md-inline">Aufgabe anlegen</span>
+                        <span class="d-inline d-md-none">Aufgabe</span>
                     </a>
                 @endcan
                 @can('downloadList', \App\Models\Task::class)
-                    <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('tasks.download-list', ['project_id' => $project->id]) }}" target="_blank">
+                    <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('tasks.download-list', ['project_id' => $project->id]) }}" target="_blank">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                         PDF Liste
+                    </a>
+                    <a class="btn q-btn q-btn-icon d-md-none" href="{{ route('tasks.download-list', ['project_id' => $project->id]) }}" target="_blank" aria-label="PDF Liste">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
                     </a>
                 @endcan
             </div>

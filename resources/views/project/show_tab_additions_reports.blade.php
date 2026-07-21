@@ -20,7 +20,8 @@
             @can('create', \App\Models\AdditionsReport::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('additions-reports.create', ['project' => $project->id]) }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                    Regiebericht anlegen
+                    <span class="d-none d-md-inline">Regiebericht anlegen</span>
+                    <span class="d-inline d-md-none">Regiebericht</span>
                 </a>
             @endcan
         </div>

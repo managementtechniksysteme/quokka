@@ -18,7 +18,8 @@
             @can('create', \App\Models\DeliveryNote::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('delivery-notes.create', ['project' => $project->id]) }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                    Lieferschein anlegen
+                    <span class="d-none d-md-inline">Lieferschein anlegen</span>
+                    <span class="d-inline d-md-none">Lieferschein</span>
                 </a>
             @endcan
         </div>

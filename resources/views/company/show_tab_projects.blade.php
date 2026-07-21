@@ -20,12 +20,14 @@
                 @can('create', \App\Models\Project::class)
                     <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                        Projekt anlegen
+                        <span class="d-none d-md-inline">Projekt anlegen</span>
+                        <span class="d-inline d-md-none">Projekt</span>
                     </a>
                 @endcan
 
                 @if(Auth::user()->can('downloadList', \App\Models\Project::class) || Auth::user()->can('downloadList', \App\Models\Task::class) || Auth::user()->can('downloadList', \App\Models\ServiceReport::class))
-                    <div class="dropdown">
+                    {{-- Desktop: unchanged dropdown. --}}
+                    <div class="dropdown d-none d-md-block">
                         <button class="q-kebab" type="button" id="projectsListDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Listen erstellen">
                             <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                         </button>
@@ -38,6 +40,37 @@
                             @endcan
                             @can('downloadList', \App\Models\ServiceReport::class)
                                 <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>Serviceberichtliste</a>
+                            @endcan
+                        </div>
+                    </div>
+
+                    {{-- Mobile: a sheet, same as every other page-level kebab
+                         menu (2026-07-21, user: "The kebab next to that
+                         button should also use a sheet"). --}}
+                    <button class="q-kebab d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectsListSheet" aria-controls="projectsListSheet" aria-label="Listen erstellen">
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+                    </button>
+                    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="projectsListSheet" aria-label="Listen erstellen">
+                        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                        <div class="offcanvas-body">
+                            <div class="q-sheet__label">Listen erstellen</div>
+                            @can('downloadList', \App\Models\Project::class)
+                                <a class="q-row" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg></span>
+                                    <span class="q-row__title">Projektliste</span>
+                                </a>
+                            @endcan
+                            @can('downloadList', \App\Models\Task::class)
+                                <a class="q-row" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                                    <span class="q-row__title">Aufgabenliste</span>
+                                </a>
+                            @endcan
+                            @can('downloadList', \App\Models\ServiceReport::class)
+                                <a class="q-row" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg></span>
+                                    <span class="q-row__title">Serviceberichtliste</span>
+                                </a>
                             @endcan
                         </div>
                     </div>

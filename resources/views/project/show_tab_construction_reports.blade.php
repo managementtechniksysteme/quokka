@@ -20,7 +20,8 @@
             @can('create', \App\Models\ConstructionReport::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create', ['project' => $project->id]) }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                    Bautagesbericht anlegen
+                    <span class="d-none d-md-inline">Bautagesbericht anlegen</span>
+                    <span class="d-inline d-md-none">Bautagesbericht</span>
                 </a>
             @endcan
         </div>

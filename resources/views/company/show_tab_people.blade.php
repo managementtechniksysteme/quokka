@@ -18,7 +18,8 @@
             @can('create', \App\Models\Person::class)
                 <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('people.create', ['company' => $company->id]) }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                    Person anlegen
+                    <span class="d-none d-md-inline">Person anlegen</span>
+                    <span class="d-inline d-md-none">Person</span>
                 </a>
             @endcan
         </div>

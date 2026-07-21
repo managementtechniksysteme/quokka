@@ -4,7 +4,8 @@
     <div class="q-container">
 
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + title + count, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg>
                 </span>
@@ -17,11 +18,25 @@
             </div>
 
             @can('create', \Spatie\Permission\Models\Role::class)
-                <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
+                <a class="btn btn-primary text-white d-none d-md-inline-flex align-items-center gap-2" href="{{ route('roles.create') }}">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
                     Rolle anlegen
                 </a>
             @endcan
+
+            {{-- Mobile: count inline with the actions, create label
+                 shortened to just the entity name. --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                @unless($roles->isEmpty())
+                    <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $roles->total()) }}</div>
+                @endunless
+                @can('create', \Spatie\Permission\Models\Role::class)
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('roles.create') }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        Rolle
+                    </a>
+                @endcan
+            </div>
         </div>
 
         @unless ($roles->isEmpty() && !Request::get('search'))
@@ -34,7 +49,8 @@
                 </span>
             </div>
 
-            <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+            {{-- Desktop: search field — unchanged. --}}
+            <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
                 <form class="flex-grow-1" action="{{ route('roles.index') }}" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Rollen suchen" autocomplete="off" />
@@ -46,6 +62,26 @@
                                 <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
+                    </div>
+                </form>
+            </div>
+
+            {{-- Mobile: leading search icon inline in the field, no separate
+                 submit button. No sort here at all. --}}
+            <div class="d-flex d-md-none align-items-center gap-2 mb-3">
+                <form class="flex-grow-1" action="{{ route('roles.index') }}" method="get">
+                    <div class="position-relative flex-grow-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Rollen suchen" autocomplete="off" />
+                            @if (Request::get('search'))
+                                <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" href="{{ Request::url() }}">
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                                </a>
+                            @endif
+                        </div>
+                        <svg class="icon-bs icon-16 text-muted position-absolute top-50 start-0 translate-middle-y ms-3 pe-none q-search-icon">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use>
+                        </svg>
                     </div>
                 </form>
             </div>

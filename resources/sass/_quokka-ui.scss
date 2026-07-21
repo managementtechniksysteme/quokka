@@ -1909,4 +1909,13 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 
     // KPI counter rows never cram: 2-up max.
     .q-kpis { grid-template-columns: 1fr 1fr !important; }
+
+    // Exception log dump: long unbroken lines (stack trace paths, URLs) blew
+    // past the viewport — the surrounding .q-card__body's overflow-x:auto
+    // never actually engaged as a scroll region (nested inside .q-card's own
+    // overflow:hidden, used everywhere else purely for corner-radius
+    // clipping), so content past ~320px was simply unreachable. Wrapping is
+    // also just better for reading a stack trace on a phone than horizontal
+    // scrolling would have been anyway.
+    .q-exception-content { white-space: pre-wrap; word-break: break-word; }
 }

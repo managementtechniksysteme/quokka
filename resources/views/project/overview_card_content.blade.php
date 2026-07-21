@@ -7,8 +7,22 @@
 
     <div class="q-row__main">
         <div class="q-row__title text-truncate">
-            {{ $project->name }}@if(($secondaryInformation ?? '') !== 'dates') <span class="q-row__sub">· {{ $project->company->name }}</span>@endif
+            {{ $project->name }}@if(($secondaryInformation ?? '') !== 'dates') <span class="q-row__sub d-none d-md-inline">· {{ $project->company->name }}</span>@endif
         </div>
+
+        {{-- Mobile: company doesn't fit the title's text-truncate as a
+             trailing "· Name" suffix (2026-07-21, user: "cut off most of the
+             time") — isolate it as its own truncated chip line, same
+             pattern as the project chip on inspection/flow-meter reports. --}}
+        @if(($secondaryInformation ?? '') !== 'dates')
+            <div class="q-meta mb-1 d-md-none">
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#briefcase"></use></svg>
+                    <span class="text-truncate">{{ $project->company->name }}</span>
+                </span>
+            </div>
+        @endif
+
         <div class="q-meta">
             <span class="q-status q-status--{{ $project->state }}">{{ $project->state_label }}</span>
 
@@ -21,9 +35,12 @@
                 @endif
             </span>
 
+            {{-- Cost indicator chip: desktop only. It's dense shorthand
+                 (G/V/L/M + trend arrows) that needs explaining once you
+                 already know the app — not worth the space on mobile. --}}
             @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
                 @if($project->current_wage_costs_status || $project->current_material_costs_status || $project->current_costs_status || $project->current_billed_costs_status)
-                    <span class="q-chip">
+                    <span class="q-chip d-none d-md-inline-flex">
                         <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg>
                         @if($project->current_costs_status)
                             <span>G</span>
@@ -118,4 +135,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

@@ -31,7 +31,7 @@
 
             <div class="q-form-actions">
                 <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('employees.show', $employee) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
-                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('employees.edit-permissions', $employee) }}" aria-label="Berechtigungen bearbeiten"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg><span class="d-none d-md-inline">Berechtigungen bearbeiten</span></a>
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('employees.edit-permissions', $employee) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg><span class="d-inline d-md-none">Berechtigungen</span><span class="d-none d-md-inline">Berechtigungen bearbeiten</span></a>
                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                     <span class="d-none d-md-inline">Mitarbeiter speichern</span>

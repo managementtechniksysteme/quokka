@@ -179,6 +179,82 @@ app.mount('#app');
     }, false);
 })();
 
+// Quick-create sheets, MOBILE ONLY: a picker field's inline "add new" button
+// (e.g. company's "Neue Adresse") opens a .q-sheet on small screens instead
+// of the desktop inline-collapse, which stays completely untouched (2026-07-21,
+// user idea — the collapse's text-labelled button squeezed the picker
+// dropdown too narrow next to it on mobile; desktop keeps its own behaviour
+// exactly as before). The sheet's own <input>s are NOT the real, submitted
+// form fields — they have no `name`, only a `data-mirrors="<real id>"` — so
+// there's never a duplicate-name risk between the (hidden-on-mobile) desktop
+// inputs and these. Values are synced both ways: real→mirror when the sheet
+// opens (so old()/previously-typed data shows up), mirror→real when it
+// closes (so that's what actually gets submitted). A summary chip next to
+// the trigger shows what's pending, since a closed sheet — unlike a collapse
+// that just stays expanded on the page — hides its own content from view.
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        document.querySelectorAll('.q-sheet[data-quick-create-fields]').forEach(function (sheet) {
+            var fieldNames = sheet.dataset.quickCreateFields.split(',');
+            var summary = document.querySelector('[data-quick-create-summary-for="' + sheet.id + '"]');
+            var text = summary && summary.querySelector('.q-quick-create-summary__text');
+            var clearBtn = summary && summary.querySelector('.q-quick-create-summary__clear');
+
+            function pairs() {
+                return fieldNames.map(function (name) {
+                    return {
+                        real: document.getElementById(name),
+                        mirror: sheet.querySelector('[data-mirrors="' + name + '"]'),
+                    };
+                }).filter(function (p) { return p.real && p.mirror; });
+            }
+
+            function refreshSummary() {
+                if (!summary) return;
+                var values = pairs().map(function (p) { return p.real.value.trim(); }).filter(Boolean);
+                if (values.length) {
+                    text.textContent = values.join(', ');
+                    summary.classList.remove('d-none');
+                } else {
+                    summary.classList.add('d-none');
+                }
+            }
+
+            // opening: pull the real inputs' current values (old() on
+            // redisplay, or whatever was entered last time) into the sheet
+            sheet.addEventListener('show.bs.offcanvas', function () {
+                pairs().forEach(function (p) { p.mirror.value = p.real.value; });
+            });
+
+            // closing: push what's in the sheet back into the real inputs
+            sheet.addEventListener('hidden.bs.offcanvas', function () {
+                pairs().forEach(function (p) { p.real.value = p.mirror.value; });
+                refreshSummary();
+            });
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    pairs().forEach(function (p) { p.real.value = ''; p.mirror.value = ''; });
+                    refreshSummary();
+                });
+            }
+
+            // Validation redisplay: the same condition that used to
+            // auto-expand the desktop collapse auto-opens the mobile sheet
+            // instead — guarded to actual mobile rendering (the sheet itself
+            // carries d-md-none) so this never fires on a desktop viewport,
+            // where the untouched collapse already handles it on its own.
+            if (sheet.dataset.quickCreateOpen === '1' && window.bootstrap
+                && window.getComputedStyle(sheet).display !== 'none') {
+                window.bootstrap.Offcanvas.getOrCreateInstance(sheet).show();
+            }
+
+            refreshSummary();
+        });
+    }, false);
+})();
+
 // Mehr sheet: blur its trigger once the sheet finishes closing. Bootstrap's
 // offcanvas restores keyboard focus to the element that opened it when it
 // hides (a real accessibility behaviour, not a bug) — but .q-tabbar__item's

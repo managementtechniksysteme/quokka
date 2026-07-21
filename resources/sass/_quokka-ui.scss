@@ -411,6 +411,19 @@ $q-pad:            1.25rem;
     .icon { color: var(--q-green); }
 }
 
+// Quick-create summary chip — shown next to a picker's inline "add new" button
+// once its sheet (see .q-sheet[data-quick-create-fields] in app.js) has been
+// filled in and closed, since a bottom sheet (unlike the inline-collapse it
+// replaces) hides the entered data from view once dismissed (2026-07-21).
+// A plain .q-chip plus a small "x" to clear the pending values and edit again.
+.q-quick-create-summary { display: inline-flex; align-items: center; gap: .4rem; }
+.q-quick-create-summary__clear {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; padding: 0; border: 0; border-radius: 50%;
+    background: transparent; color: var(--q-faint); cursor: pointer;
+    &:hover { background: var(--q-surface-2); color: var(--q-muted); }
+}
+
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.
 //   new / in-progress / finished / signed  → tasks, reports, delivery notes
@@ -1635,14 +1648,19 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     .q-subnav__item { flex: 0 0 auto; border-radius: $q-radius-pill; padding: .5rem .9rem; }
 
     // FORM: segmented picker goes full-width; the floating save-card becomes a
-    // flush, solid, edge-to-edge bottom bar (primary action fills the width).
+    // plain, non-floating footer sitting inline at the end of the form instead
+    // — its old sticky positioning collided with the floating bottom tab bar,
+    // which didn't exist yet when this rule was first written (2026-07-21,
+    // user: "make it the same width as the cards and leave it non-floating at
+    // the bottom of the form on mobile" — a real functional bug, not just a
+    // tuning issue, since it could obscure form fields/buttons underneath).
     .q-form .btn-group { display: flex; width: 100%; }
     .q-form .btn-group > .btn { flex: 1; text-align: center; }
     .q-form-actions {
-        bottom: 0; margin: 1.5rem -.85rem 0;
-        border-radius: 0; border-left: 0; border-right: 0;
-        padding: .7rem .85rem calc(.7rem + env(safe-area-inset-bottom));
+        position: static; margin: 1.5rem 0 0;
+        padding: .85rem;
         background: var(--q-surface); backdrop-filter: none;
+        box-shadow: none;
     }
     .q-form-actions .btn-primary { flex: 1; justify-content: center; }
 

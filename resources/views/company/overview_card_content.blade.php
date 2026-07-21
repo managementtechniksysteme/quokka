@@ -8,7 +8,7 @@
         <div class="q-meta">
             <span class="q-chip">
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
-                {{ optional($company->address->first())->address_line ?? 'keine Adresse' }}
+                <span class="text-truncate">{{ optional($company->address->first())->address_line ?? 'keine Adresse' }}</span>
             </span>
             @can('viewAny', \App\Models\People::class)
                 <span class="q-chip">
@@ -68,4 +68,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

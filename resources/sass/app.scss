@@ -63,6 +63,19 @@ main {
   top: 3.8rem;
   overflow-y: auto;
   scrollbar-gutter: stable;
+
+  // Below md, authenticated pages swap the 3.8rem desktop navbar for the
+  // 54px .q-appbar (see partials/navbar.blade.php + _quokka-ui.scss §S) —
+  // #app only gets .is-authed when @auth, so guest pages (still on the full
+  // desktop navbar at every width) are untouched.
+  #app.is-authed & {
+    @include media-breakpoint-down(md) {
+      top: 54px;
+      height: calc(100vh - 54px);
+      max-height: calc(100vh - 54px);
+      min-height: calc(100vh - 54px);
+    }
+  }
 }
 
 // General body background color for other elements

@@ -72,6 +72,24 @@ $q-pad:            1.25rem;
 .q-container--narrow { max-width: 760px; }
 
 .q-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+// Below md: stack to a column (title block on top, actions row below) rather
+// than side-by-side — a long/dynamic title (the dashboard greeting, or a
+// long record name on a detail page) squeezed beside action buttons wraps to
+// 2-3 lines with the buttons cramped against it (2026-07-20, reported on the
+// dashboard; company/project/task detail headers hit the identical wrap with
+// a long name). Applied to the base class, not a dashboard-only modifier —
+// detail pages' mobile app bar treatment is still an open, bigger question
+// (Design's mockup swaps it for a back-button + record name + kebab, no
+// mockup exists yet for the rest of the detail page), but this specific
+// header-wrap fix is uncontroversial regardless of how that's eventually
+// decided, so no reason to gate it behind a modifier in the meantime.
+@include media-breakpoint-down(md) {
+    .q-page-head {
+        flex-direction: column; align-items: stretch;
+        > div:last-child { display: flex; gap: .5rem; }
+        .btn { flex: 1; justify-content: center; }
+    }
+}
 .q-eyebrow   { font-size: .66rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--q-faint); margin-bottom: .4rem; }
 .q-title     { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; margin: 0; color: var(--q-text); }
 .q-subtitle  { font-size: .8rem; color: var(--q-muted); margin-top: .15rem; }
@@ -344,7 +362,18 @@ $q-pad:            1.25rem;
     font-size: .72rem; font-weight: 500; padding: .18rem .55rem;
     border-radius: $q-radius-pill; color: var(--q-muted);
     background: var(--q-surface-2); border: 1px solid var(--q-border-2);
+    // min-width:0 is load-bearing, same gotcha as .q-subnav (§S): a flex item
+    // defaults to min-width:auto, which lets long free-text content (e.g. an
+    // address) force the chip to grow instead of the chip's own
+    // `.text-truncate` inner span actually engaging its ellipsis. max-width
+    // caps it to whatever room .q-meta's flex-wrap leaves it. No effect on
+    // short chips (dates/counts/status) — they never hit either constraint.
+    min-width: 0; max-width: 100%;
     .icon { color: var(--q-faint); }
+    // the inner span some chips use for long free-text content (see
+    // company/person/address's address_line chip) needs the same shrink
+    // permission — it's a flex item of .q-chip itself.
+    .text-truncate { min-width: 0; }
 }
 // the shared partials/model_icon (icon-baseline + a me-1 margin) reused inside a
 // chip: strip the margin + baseline shift so it aligns like a normal chip icon
@@ -419,7 +448,18 @@ $q-pad:            1.25rem;
     background: var(--q-surface-2); border: 1px solid var(--q-border-2);
     border-radius: $q-radius; padding: 1rem 1.05rem;
 }
-@include media-breakpoint-down(md) { .q-detail, .q-detail--aside-start { grid-template-columns: 1fr; } }
+// min-width:0 on the grid items themselves, not just .q-subnav — the pill
+// strip actually sits inside a bare <aside> (every *.show.blade.php's
+// .q-detail--aside-start markup), which is the REAL grid item here; .q-subnav
+// is only a grandchild. .q-subnav's own min-width:0 (§S) stops IT from
+// forcing ITS parent to grow, but the unstyled <aside> between it and
+// .q-detail still defaults to min-width:auto and was sizing to the pill
+// strip's un-wrapped content width regardless — company's short 2-3 tab
+// subnav never grew wide enough to expose it, project's 9-tab one does
+// (2026-07-21, user report: "content exceeding width... pills push the
+// container"). Fixed at the actual grid-item level so it can't recur for any
+// future wrapper element, not just <aside>.
+@include media-breakpoint-down(md) { .q-detail, .q-detail--aside-start { grid-template-columns: 1fr; > * { min-width: 0; } } }
 
 .q-subnav { display: flex; flex-direction: column; gap: .3rem; position: sticky; top: .9rem; }
 .q-subnav__item {
@@ -1211,4 +1251,265 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 }
 [data-bs-theme="dark"] .q-signpad {
     background: #e9edf2; border-color: color-mix(in srgb, #000 45%, var(--q-border));
+}
+
+// =============================================================================
+//  S. MOBILE — chrome + reflow rules below `md` (768px), except the grid
+//     exception which keys off `lg` (992px, §S-grid at the end). Visual
+//     reference: "Quokka Mobile.dc.html" in the Claude Design project.
+//     Desktop stays dense; mobile keeps >=44px tap targets (md-down block).
+// =============================================================================
+
+// --- App bar (mobile top chrome; the desktop .q-topbar gets d-none d-md-flex
+//     directly on the <nav> in navbar.blade.php, so only one shows at a time) --
+// Sizing matches the Quokka Mobile.dc.html mockup's app-bar frame closely
+// (14px side padding, 12px gaps, 30px badge) — the first pass was tighter
+// (8px/8px/28px) and read cramped next to the Mehr sheet's bigger rows.
+.q-appbar {
+    position: sticky; top: 0; z-index: 1020;
+    display: flex; align-items: center; gap: .75rem;
+    height: 54px; padding: 0 .9rem;
+    background: var(--q-surface); border-bottom: 1px solid var(--q-border);
+}
+// Only TWO real flex children of .q-appbar now: .q-appbar__row and the bell
+// button — .q-appbar__search is position:absolute (see below), out of flow
+// entirely, so the `gap` above is never reserved for it while collapsed.
+.q-appbar__row { display: flex; align-items: center; gap: .75rem; flex: 1; min-width: 0; }
+.q-appbar__badge {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    background: var(--q-accent); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: .95rem;
+    // Section icons (every non-dashboard page) use the same soft
+    // accent-tint treatment as every other content icon in the app
+    // (.q-avatar list rows, .q-head-icon page heads) — solid fill stays
+    // reserved for the actual "Q" brand mark, the one true logo on screen,
+    // not a per-section content icon (2026-07-20).
+    &--tint { background: var(--q-accent-tint); color: var(--q-accent); }
+}
+.q-appbar__title { flex: 1; min-width: 0; font-weight: 800; font-size: 1.08rem; color: var(--q-text); @extend .text-truncate; }
+.q-appbar__btn {
+    flex-shrink: 0; width: 40px; height: 40px; border: 0; background: transparent; color: var(--q-muted);
+    display: flex; align-items: center; justify-content: center; border-radius: $q-radius-sm;
+    transition: background .12s, color .12s;
+    &:hover, &:focus { background: var(--q-surface-2); color: var(--q-text); }
+}
+// The bell is a direct child of .q-appbar (not nested in .q-appbar__row) so
+// it CAN stay fixed independent of the row — but it also hides while
+// searching (below), matching the row, so the field can go truly full-width
+// rather than stopping short to leave the bell room. Without .q-appbar__row's
+// flex:1 pushing it rightward, it'd be the only remaining flex child while
+// visible — flex-start would otherwise collapse it to the left edge.
+.q-appbar > .q-appbar__btn { margin-left: auto; }
+.q-appbar__btn--unread { color: var(--q-red); }
+
+// Search field: replaces the ENTIRE app bar row while active (badge/title/
+// search-icon AND the bell all hide together — 2026-07-20, user tried
+// keeping the bell fixed and full-width-minus-bell, both read lopsided;
+// true full width reads best) — toggled by a couple of inline onclicks in
+// navbar.blade.php (no Vue needed, it's static chrome). Direct search, not
+// the spotlight command palette (spotlight stays a desktop-only ⌘K
+// affordance). Styled as an actual field (surface-2 fill + border,
+// $q-radius-sm — same radius as every other input in the app, not a pill).
+//
+// position:absolute (anchored off .q-appbar's own `position:sticky`, which
+// establishes a containing block same as `relative` would), taken completely
+// out of .q-appbar's flex flow so its collapsed size never reserves a
+// phantom flex `gap`. Both `right` AND `width` animate together: collapsed,
+// `right` sits at the search icon's own slot (so the field visibly grows
+// FROM the icon, not from the true edge) with a 40px icon-sized width;
+// expanded, `right` slides out to the bar's true right padding edge (now
+// that the bell's freed its space) while `width` grows to fill the bar —
+// both are explicit px values the whole way (never `auto`), so both tween
+// smoothly and reliably, unlike animating a `flex`/`width:auto` shorthand.
+.q-appbar__search {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    // `right` resolves against .q-appbar's BORDER edge (not its padding
+    // edge), so the collapsed offset needs the appbar's own right-padding
+    // (.9rem) added on top of the bell width + inter-item gap — verified
+    // empirically via getBoundingClientRect, don't "simplify" this back down.
+    right: calc(40px + .75rem + .9rem);
+    width: 40px;
+    display: flex; align-items: center; gap: .5rem; min-width: 0;
+    opacity: 0; overflow: hidden; pointer-events: none;
+    background: var(--q-surface-2); border: 1px solid var(--q-border);
+    border-radius: $q-radius-sm; padding: 0 .4rem 0 .8rem; height: 40px;
+    transition: right .32s cubic-bezier(.4,0,.2,1), width .32s cubic-bezier(.4,0,.2,1), opacity .22s ease;
+    &:focus-within { border-color: var(--q-accent); box-shadow: 0 0 0 3px var(--q-accent-tint); }
+}
+.q-appbar.is-searching {
+    .q-appbar__row, > .q-appbar__btn { display: none; }
+    .q-appbar__search {
+        right: .9rem;                    // true right padding edge — bell's slot is now free
+        width: calc(100vw - 1.8rem);     // full bar width minus left+right padding
+        opacity: 1; pointer-events: auto;
+    }
+}
+.q-appbar__search-input {
+    flex: 1; min-width: 0; border: 0; background: transparent; outline: none;
+    color: var(--q-text); font-size: .95rem;
+    &::placeholder { color: var(--q-faint); }
+    // input type is "text" (not "search") specifically to avoid the native
+    // browser clear-icon doubling up with our own cancel button below.
+}
+
+// --- Bottom tab bar (replaces the top navbar under md) -----------------------
+// Auto-hides on scroll-down, reappears on scroll-up (2026-07-20 decision —
+// the app bar and Bootstrap's own .q-sheet stay put; only this bar slides,
+// toggled by a small vanilla-JS scroll listener in navbar.blade.php via
+// .q-tabbar--hidden). Deliberately overrides the design doc's "keep the
+// bottom nav" note for the accounting/logbook .q-addbar case — that bar
+// still never hides, only this tab bar does.
+.q-tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1030;
+    display: flex; background: var(--q-surface); border-top: 1px solid var(--q-border);
+    padding: .55rem .25rem calc(.5rem + env(safe-area-inset-bottom));
+    transition: transform .25s ease;
+    &--hidden { transform: translateY(100%); }
+}
+.q-tabbar__item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: .25rem;
+    padding: .2rem 0; border: 0; background: transparent; text-decoration: none;
+    font-size: .7rem; font-weight: 600; line-height: 1.3; color: var(--q-muted);
+    // min/max, not width/height — app.scss's base svg.icon-bs rule sets
+    // max-width/max-height:1em, a different property that silently clamps
+    // any plain width/height override down to the 1em (.7rem) font-size
+    // context regardless of specificity; every other icon-NN size in this
+    // codebase already uses the min/max pattern for exactly this reason.
+    .icon-bs { min-width: 22px; min-height: 22px; max-width: 22px; max-height: 22px; }
+    &:hover, &:focus { color: var(--q-text); text-decoration: none; }
+    &.active { color: var(--q-accent); font-weight: 700; }
+}
+// Keep the tab bar (and app bar) from covering page content.
+@include media-breakpoint-down(md) {
+    .q-page { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+}
+
+// --- "Mehr" sheet: a Bootstrap offcanvas (bottom), re-skinned with the
+//     redesign's radius/shadow/tokens on top — backdrop/ESC/focus-trap/ARIA
+//     all come from Bootstrap's own JS, nothing hand-rolled. Rows reuse the
+//     existing .q-row + .q-avatar list-row pattern (2026-07-20 rework — the
+//     first pass reused the dense desktop .dropdown-item styling, which read
+//     flat and sat under the 44px touch-target minimum; .q-row already
+//     solves both). Icon tile colour follows the Quokka Mobile.dc.html
+//     mockup's own convention: accent = content/navigation, muted = settings
+//     & system actions — a deliberate per-component exception to the general
+//     "muted only means de-emphasised" avatar rule elsewhere in the app.
+.q-sheet.offcanvas-bottom {
+    // Bootstrap's own .offcanvas-bottom sets an explicit height (default
+    // --bs-offcanvas-height: 30vh, not just a cap) — that was the real
+    // constraint, not max-height; overriding max-height alone (first attempt)
+    // did nothing since the explicit height already won. height:auto lets
+    // short sheets (the sort picker) size to content instead of leaving dead
+    // space, while max-height still caps tall ones (Mehr, "many items in
+    // it") and lets them scroll internally. Bumped from 80vh (2026-07-21).
+    height: auto;
+    max-height: 92vh;
+    border: 1px solid var(--q-border); border-bottom: 0;
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
+    background: var(--q-surface); color: var(--q-text);
+    box-shadow: var(--q-shadow-lg);
+    // No header row (2026-07-20: dropped the title/close button — backdrop
+    // tap / Escape dismiss it, matching the mockup, which only ever showed a
+    // drag-handle bar here). Handle is a real element now, not a ::before
+    // (2026-07-21) — swipe-to-dismiss (below) needs something it can attach
+    // pointer listeners to; a pseudo-element can't receive events. The
+    // touchable area is generously padded well beyond the visible bar itself
+    // (a 38×5 target is too small to reliably grab with a thumb) — the bar
+    // is a nested span so the padding doesn't visually inflate it.
+    .q-sheet__handle {
+        display: flex; justify-content: center;
+        // Top padding is real visible space above the bar (2026-07-21 —
+        // pulling it up flush with the sheet's top edge via a negative
+        // margin, the first pass, looked worse); only the bottom margin
+        // claws back some of the padding, so the enlarged touch target
+        // mostly eats into the space below the bar instead.
+        padding: .55rem 0 .75rem; margin: 0 0 -.45rem;
+        touch-action: none; cursor: grab;
+        &:active { cursor: grabbing; }
+    }
+    .q-sheet__handle-bar {
+        width: 38px; height: 5px; border-radius: 999px;
+        background: var(--q-border);
+    }
+    .offcanvas-body { padding: .3rem .4rem calc(1rem + env(safe-area-inset-bottom)); overflow-y: auto; }
+    // .q-row assumes a stretched-link for the hover surface; the sheet rows
+    // are plain anchors/buttons, so give them the same rounded hover directly.
+    .q-row { border-radius: $q-radius-sm; padding: .65rem .7rem; }
+    .q-row__title { font-size: .92rem; }
+    button.q-row { width: 100%; border: 0; background: transparent; text-align: left; cursor: pointer; }
+}
+.q-sheet__label {
+    font-size: .66rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--q-faint); padding: .8rem .7rem .3rem;
+}
+.q-sheet__divider { height: 1px; background: var(--q-border-2); margin: .4rem .7rem; }
+
+// --- Archetype A (list rows): chevron affordance replaces the dropped kebab --
+.q-row__chevron { color: var(--q-border); margin-left: auto; flex-shrink: 0; }
+
+// --- Sort/filter sheets: checkmark on the row matching the current selection
+.q-row__check { color: var(--q-accent); margin-left: auto; flex-shrink: 0; }
+
+// --- Per-archetype md-down overrides -----------------------------------------
+@include media-breakpoint-down(md) {
+
+    // Full-width content column, no side gutters fighting the small screen.
+    .q-container, .q-container--narrow { padding: .9rem .85rem 1.25rem; max-width: 100%; }
+
+    // Inputs stay comfortable on touch (the .q-form control-padding trim above
+    // is scoped media-breakpoint-up(md), so it never reaches this block).
+    .form-control, .form-select { min-height: 44px; font-size: 1rem; }
+    // Fixed 38px icon buttons (search-adjacent sort toggle, clear button)
+    // sit right next to a 44px-tall input in list toolbars — bump them to
+    // match. Also just correct on its own: 38px sits under the 44px
+    // touch-target minimum every other mobile control here follows
+    // (2026-07-21, found via company's list-header rework — will recur
+    // across the rest of Phase 2's list modules, so fixed at the component
+    // level, not just for this one page).
+    .q-btn-icon { width: 44px; height: 44px; }
+
+    // List-toolbar search fields: leading icon sits OUTSIDE .input-group,
+    // overlaid via position:absolute — Bootstrap gives a focused
+    // .input-group > .form-control z-index:5 (forms/_input-group.scss) so
+    // the input's own opaque background paints over the icon once focused
+    // (reported on real iOS Safari — reproducible on every browser once you
+    // look; the icon has no z-index of its own so it just loses the paint
+    // order fight). Give it a higher z-index so it always stays on top.
+    .q-search-icon { z-index: 6; }
+
+    // LIST rows: drop the kebab + hero metric; the whole row is the tap target.
+    .q-row .q-metric,
+    .q-row .dropdown { display: none !important; }
+
+    // DETAIL: metastrip → 2-col label/value grid; left subnav → sticky
+    // horizontal pill strip (both selectors are unchanged from desktop markup).
+    .q-metastrip { display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+        background: var(--q-border-2); padding: 0; border-radius: $q-radius; overflow: hidden; }
+    .q-metastrip__item { background: var(--q-surface); padding: .55rem .75rem;
+        & + & { border-left: 0; } }
+    // min-width: 0 is load-bearing — .q-subnav sits in a CSS grid track
+    // (.q-detail), and grid items default to min-width:auto, so without this
+    // the pill strip's un-wrapped content grows the grid column (and the
+    // whole page) instead of scrolling internally within its own overflow-x.
+    .q-subnav { flex-direction: row; overflow-x: auto; gap: .45rem; min-width: 0;
+        position: sticky; top: 54px; z-index: 10; background: var(--q-bg);
+        padding: .7rem .1rem; margin: 0 -.1rem; -webkit-overflow-scrolling: touch;
+        &::-webkit-scrollbar { display: none; } }
+    .q-subnav__item { flex: 0 0 auto; border-radius: $q-radius-pill; padding: .5rem .9rem; }
+
+    // FORM: segmented picker goes full-width; the floating save-card becomes a
+    // flush, solid, edge-to-edge bottom bar (primary action fills the width).
+    .q-form .btn-group { display: flex; width: 100%; }
+    .q-form .btn-group > .btn { flex: 1; text-align: center; }
+    .q-form-actions {
+        bottom: 0; margin: 1.5rem -.85rem 0;
+        border-radius: 0; border-left: 0; border-right: 0;
+        padding: .7rem .85rem calc(.7rem + env(safe-area-inset-bottom));
+        background: var(--q-surface); backdrop-filter: none;
+    }
+    .q-form-actions .btn-primary { flex: 1; justify-content: center; }
+
+    // KPI counter rows never cram: 2-up max.
+    .q-kpis { grid-template-columns: 1fr 1fr !important; }
 }

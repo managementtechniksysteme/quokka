@@ -6,8 +6,16 @@
         {{-- Greeting --}}
         <div class="q-page-head">
             <div>
-                <div class="q-eyebrow">Übersicht</div>
-                <h1 class="q-title">{{ DateTimeHelpers::greetingForTimeOfDay(\Carbon\Carbon::now()) }}, {{ Auth::user()->employee->person->first_name }} 👋</h1>
+                {{-- Desktop: the app bar doesn't exist there, so "Übersicht" only
+                     appears here — full greeting sentence as the title. --}}
+                <div class="q-eyebrow d-none d-md-block">Übersicht</div>
+                <h1 class="q-title d-none d-md-block">{{ DateTimeHelpers::greetingForTimeOfDay(\Carbon\Carbon::now()) }}, {{ Auth::user()->employee->person->first_name }} 👋</h1>
+                {{-- Mobile: the app bar's section label already says "Übersicht"
+                     (partials/navbar.blade.php), so repurpose this eyebrow as the
+                     time-of-day greeting instead of repeating it, and shorten the
+                     bold title to just the name — also helps it stay on one line. --}}
+                <div class="q-eyebrow d-md-none">{{ DateTimeHelpers::greetingForTimeOfDay(\Carbon\Carbon::now()) }}</div>
+                <h1 class="q-title d-md-none">{{ Auth::user()->employee->person->first_name }} 👋</h1>
             </div>
             <div class="d-flex gap-2">
                 @can('accounting.view.own')

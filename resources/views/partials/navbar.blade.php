@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-xl fixed-top q-topbar">
+<nav class="navbar navbar-expand-xl fixed-top q-topbar @auth d-none d-md-flex @endauth">
     <div class="container-fluid">
         <a class="navbar-brand me-0 me-xl-2" href="{{ route('home') }}">
             <span class="q-brand-badge">{{ Str::substr(config('app.name'), 0, 1) }}</span>
@@ -32,16 +32,22 @@
 
         @endauth
 
-        <button class="p-2 bg-transparent border rounded-1 outline-none d-inline-flex d-xl-none position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <svg class="icon-bs icon-24 align-self-center">
-                <use href="{{ asset('svg/bootstrap-icons.svg') }}#list"></use>
-            </svg>
-            @auth
+        {{-- Guests only ever have "Anmelden" behind this toggle (register is
+             disabled — routes/web.php `Auth::routes(['register' => false])`),
+             and it's always a self-referential dead end on the auth pages
+             themselves (login/otp/password-reset) — gate the toggle to
+             @auth entirely rather than reveal an empty/pointless menu
+             (2026-07-21 user report: "empty kebab" on the login page). --}}
+        @auth
+            <button class="p-2 bg-transparent border rounded-1 outline-none d-inline-flex d-xl-none position-relative" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <svg class="icon-bs icon-24 align-self-center">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#list"></use>
+                </svg>
                 @if(Auth::user()->unreadNotifications()->count())
                     <span class="notification-badge"></span>
                 @endif
-            @endauth
-        </button>
+            </button>
+        @endauth
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
@@ -389,28 +395,11 @@
 
             @endauth
 
+        {{-- Guest branch removed (2026-07-21) — was just a redundant "Anmelden"
+             link, only ever reachable via the toggle above, which is now
+             @auth-only too. See that comment for the full reasoning. --}}
+        @auth
             <ul class="navbar-nav ms-auto">
-                <!-- Authentication Links -->
-                @guest
-                    <li class="nav-item">
-                        <a class="nav-link d-inline-flex align-items-center" href="{{ route('login') }}">
-                            <svg class="icon-bs icon-20 me-1">
-                                <use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-in-right"></use>
-                            </svg>
-                            {{ __('Login') }}
-                        </a>
-                    </li>
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link d-inline-flex align-items-center" href="{{ route('register') }}">
-                                <svg class="icon-bs icon-20 me-1">
-                                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#send"></use>
-                                </svg>
-                                {{ __('Register') }}
-                            </a>
-                        </li>
-                    @endif
-                @else
                     <li class="nav-item dropdown">
                         @php $avatarHex = \App\Models\UserSettings::avatarColourFromName(Auth::user()->settings->avatar_colour ?? 'gray')['color']; @endphp
                         <a class="nav-link d-inline-flex align-items-center gap-2 outline-none" id="navbarUserDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -504,9 +493,426 @@
                             @endif
                         </div>
                     </li>
-                @endguest
             </ul>
+        @endauth
 
         </div>
     </div>
 </nav>
+
+@auth
+    {{-- ========================================================================
+         Mobile chrome (< md): app bar + bottom tab bar + "Mehr" sheet, replacing
+         the desktop navbar above. See Quokka Mobile.dc.html / QUOKKA-MOBILE-VUE.md
+         in the Claude Design project for the reference. Search is a direct inline
+         input here (2026-07-20 decision), not the spotlight command palette —
+         spotlight stays desktop-only (⌘K).
+    ======================================================================== --}}
+    {{-- Coarse section label for the app bar title (2026-07-20) — NOT a
+         per-page exact title (a company's own name, a task's own name, etc.):
+         that needs a convention threaded through every view/controller and
+         is real detail work, deferred until the detail-page app bar itself
+         is redesigned (Design's mockup shows detail pages replacing this
+         whole bar with a back-button + record name + kebab, which would make
+         the persistent search/bell inaccessible there — a decision for when
+         we get to detail pages, not now). This is shell-only: route-name
+         pattern matching, same technique as the tab-bar active states below,
+         covering the same groups the Mehr sheet already labels. Falls back
+         to the brand name for anything unmapped (today's behaviour, so this
+         is a strict improvement with no regression). --}}
+    @php
+        // Icons reuse the exact glyphs already used for this section in the
+        // tab bar / Mehr sheet below — one icon per section, never redefined.
+        $mobilePageLabels = [
+            'home' => ['Übersicht', null],
+            'companies.*|people.*|addresses.*' => ['Firmen', 'briefcase'],
+            'projects.*|project-controlling.*' => ['Projekte', 'clipboard'],
+            'tasks.*' => ['Aufgaben', 'check2-square'],
+            'memos.*' => ['Aktenvermerke', 'voicemail'],
+            'service-reports.*' => ['Serviceberichte', 'gear'],
+            'additions-reports.*' => ['Regieberichte', 'tools'],
+            'inspection-reports.*' => ['Prüfberichte', 'patch-check'],
+            'flow-meter-inspection-reports.*' => ['Prüfberichte für DM', 'patch-check'],
+            'construction-reports.*' => ['Bautagesberichte', 'hammer'],
+            'delivery-notes.*' => ['Lieferscheine', 'box-seam'],
+            'accounting.*' => ['Abrechnung', 'clock'],
+            'logbook.*' => ['Fahrtenbuch', 'journal'],
+            'finances.*|project-finances.*|finance-groups.*' => ['Finanzen', 'currency-euro'],
+            'notifications.*' => ['Benachrichtigungen', 'bell'],
+            'notes.*' => ['Notizbuch', 'book'],
+            'user-settings.*|application-settings.*' => ['Einstellungen', 'gear'],
+            'employees.*' => ['Mitarbeiter', 'people'],
+            'roles.*' => ['Rollen', 'key'],
+            'material-services.*|wage-services.*' => ['Leistungen', 'cpu'],
+            'vehicles.*' => ['Fuhrpark', 'truck'],
+            'latest-changes.*' => ['Letzte Änderungen', 'activity'],
+            'sent-emails.*' => ['Gesendete Emails', 'envelope'],
+            'qr-scan.*' => ['QR-Code scannen', 'camera'],
+            'exceptions.*' => ['Fehlerdateien', 'exclamation-triangle'],
+            'help.*|changelog.*' => ['Hilfe', 'question-circle'],
+            'search.*' => ['Suche', 'search'],
+        ];
+        $mobilePageTitle = config('app.name');
+        $mobilePageIcon = null;
+        foreach ($mobilePageLabels as $patterns => $entry) {
+            if (request()->routeIs(...explode('|', $patterns))) {
+                [$mobilePageTitle, $mobilePageIcon] = $entry;
+                break;
+            }
+        }
+        // Badge always shows now (accent square before the title) — the
+        // section's own icon (reusing the tab bar/Mehr sheet's own glyph),
+        // or the "Q" brand letter as the fallback for the dashboard and any
+        // unmapped route. Reintroduced 2026-07-20 after first dropping it
+        // everywhere but the dashboard: once the redundant page-content icon
+        // was ALSO removed (see company/index.blade.php), the content header
+        // read too bare without an icon anywhere near the top — this fills
+        // that gap without recreating the earlier 3-copies-of-one-icon
+        // redundancy (tab bar + app bar now, content header no longer shows it).
+    @endphp
+
+    {{-- Bell lives OUTSIDE .q-appbar__row (stays put, always visible) so
+         .q-appbar__search can be absolutely positioned anchored exactly at
+         the search icon's own slot (immediately left of the bell) and grow
+         leftward from there — see the SCSS: this also keeps it out of the
+         parent's flex layout entirely, so its collapsed 0-ish width never
+         reserves a phantom flex `gap`. --}}
+    <header class="q-appbar d-md-none" id="mobileAppbar">
+        <div class="q-appbar__row">
+            <span class="q-appbar__badge @if($mobilePageIcon) q-appbar__badge--tint @endif">
+                @if($mobilePageIcon)
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $mobilePageIcon }}"></use></svg>
+                @else
+                    {{-- Dashboard, or any unmapped route — same brand-letter
+                         fallback as $mobilePageTitle falling back to the app
+                         name, so the badge is never left empty. --}}
+                    {{ Str::substr(config('app.name'), 0, 1) }}
+                @endif
+            </span>
+            <span class="q-appbar__title">{{ $mobilePageTitle }}</span>
+
+            @can('search')
+                <button type="button" class="q-appbar__btn" aria-label="Suche"
+                        onclick="document.getElementById('mobileAppbar').classList.add('is-searching'); document.getElementById('mobileAppbarSearchInput').focus();">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
+                </button>
+            @endcan
+        </div>
+
+        @can('search')
+            {{-- type="text", not "search" — a native type="search" input adds its
+                 own browser clear-icon, which doubled up with our cancel button. --}}
+            <form class="q-appbar__search" action="{{ route('search.index') }}" method="get">
+                <svg class="icon-bs icon-16 text-muted flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
+                <input type="text" name="query" id="mobileAppbarSearchInput" class="q-appbar__search-input"
+                       placeholder="Suche" autocomplete="off">
+                <button type="button" class="q-appbar__btn" aria-label="Abbrechen"
+                        onclick="document.getElementById('mobileAppbar').classList.remove('is-searching'); document.getElementById('mobileAppbarSearchInput').value = '';">
+                    <svg class="icon-bs icon-18"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
+                </button>
+            </form>
+        @endcan
+
+        {{-- No separate unread dot — the bell colour alone signals unread,
+             same principle as the Mehr sheet's Benachrichtigungen row below. --}}
+        <a href="{{ route('notifications.index') }}" class="q-appbar__btn" aria-label="Benachrichtigungen">
+            <svg class="icon-bs icon-20 @if(Auth::user()->unreadNotifications()->count()) q-appbar__btn--unread @endif">
+                <use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
+            </svg>
+        </a>
+    </header>
+
+    @php
+        $isStartTabActive    = request()->routeIs('home');
+        $isFirmenTabActive   = request()->routeIs('companies.*', 'people.*', 'addresses.*');
+        $isProjekteTabActive = request()->routeIs('projects.*', 'project-controlling.*');
+        $isAufgabenTabActive = request()->routeIs('tasks.*', 'memos.*', 'service-reports.*', 'additions-reports.*', 'inspection-reports.*', 'flow-meter-inspection-reports.*', 'construction-reports.*', 'delivery-notes.*');
+        $isMehrTabActive     = !$isStartTabActive && !$isFirmenTabActive && !$isProjekteTabActive && !$isAufgabenTabActive;
+    @endphp
+
+    <nav class="q-tabbar d-md-none" id="mobileTabbar">
+        <a href="{{ route('home') }}" class="q-tabbar__item @if($isStartTabActive) active @endif">
+            <svg class="icon-bs"><use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use></svg>
+            Übersicht
+        </a>
+
+        @if(auth()->user()->can('viewAny', \App\Models\Company::class) || auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
+            <a href="{{ route('companies.index') }}" class="q-tabbar__item @if($isFirmenTabActive) active @endif">
+                <svg class="icon-bs"><use href="{{ asset('svg/bootstrap-icons.svg') }}#briefcase"></use></svg>
+                Firmen
+            </a>
+        @endif
+
+        @if(auth()->user()->can('viewAny', \App\Models\Project::class) || auth()->user()->can('finances-view'))
+            <a href="{{ route('projects.index') }}" class="q-tabbar__item @if($isProjekteTabActive) active @endif">
+                <svg class="icon-bs"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                Projekte
+            </a>
+        @endif
+
+        @if(auth()->user()->can('viewAny', \App\Models\Task::class) || auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class) || auth()->user()->can('viewAny', \App\Models\AdditionsReport::class) || auth()->user()->can('viewAny', \App\Models\InspectionReport::class) || auth()->user()->can('viewAny', \App\Models\FlowMeterInspectionReport::class) || auth()->user()->can('viewAny', \App\Models\ConstructionReport::class) || auth()->user()->can('viewAny', \App\Models\DeliveryNote::class))
+            <a href="{{ route('tasks.index') }}" class="q-tabbar__item @if($isAufgabenTabActive) active @endif">
+                <svg class="icon-bs"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                Aufgaben
+            </a>
+        @endif
+
+        <button type="button" class="q-tabbar__item @if($isMehrTabActive) active @endif"
+                data-bs-toggle="offcanvas" data-bs-target="#mehrSheet" aria-controls="mehrSheet">
+            <svg class="icon-bs"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots"></use></svg>
+            Mehr
+        </button>
+    </nav>
+
+    {{-- "Mehr" sheet — a Bootstrap offcanvas (backdrop/ESC/focus-trap all its
+         own JS; tapping the backdrop or Escape dismisses it — no header row
+         with a title/close button, matching Quokka Mobile.dc.html's own
+         frame 9, which is just a drag-handle bar (.q-sheet::before) straight
+         into the rows). aria-label replaces the header's aria-labelledby
+         since there's no visible title element to point at. Rows reuse the
+         .q-row + .q-avatar list-row pattern (icon tile + bold label), grouped
+         under the same labels as their desktop parent nav items. Icon tile
+         colour: accent = content/navigation, muted = settings & system
+         actions — matches the mockup. --}}
+    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="mehrSheet" aria-label="Mehr">
+        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+        <div class="offcanvas-body">
+
+            @if(auth()->user()->can('viewAny', \App\Models\Person::class) || auth()->user()->can('viewAny', \App\Models\Address::class))
+                <div class="q-sheet__label">Firmen</div>
+                @can('viewAny', \App\Models\Person::class)
+                    <a class="q-row" href="{{ route('people.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg></span>
+                        <span class="q-row__title">Personen</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\Address::class)
+                    <a class="q-row" href="{{ route('addresses.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg></span>
+                        <span class="q-row__title">Adressen</span>
+                    </a>
+                @endcan
+            @endif
+
+            @can('finances-view')
+                <div class="q-sheet__label">Projekte</div>
+                <a class="q-row" href="{{ route('project-controlling.index') }}">
+                    <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg></span>
+                    <span class="q-row__title">Controlling</span>
+                </a>
+            @endcan
+
+            @if(auth()->user()->can('viewAny', \App\Models\Memo::class) || auth()->user()->can('viewAny', \App\Models\ServiceReport::class) || auth()->user()->can('viewAny', \App\Models\AdditionsReport::class) || auth()->user()->can('viewAny', \App\Models\InspectionReport::class) || auth()->user()->can('viewAny', \App\Models\FlowMeterInspectionReport::class) || auth()->user()->can('viewAny', \App\Models\ConstructionReport::class) || auth()->user()->can('viewAny', \App\Models\DeliveryNote::class))
+                <div class="q-sheet__label">Berichte</div>
+                @can('viewAny', \App\Models\Memo::class)
+                    <a class="q-row" href="{{ route('memos.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#voicemail"></use></svg></span>
+                        <span class="q-row__title">Aktenvermerke</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\ServiceReport::class)
+                    <a class="q-row" href="{{ route('service-reports.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg></span>
+                        <span class="q-row__title">Serviceberichte</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\AdditionsReport::class)
+                    <a class="q-row" href="{{ route('additions-reports.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use></svg></span>
+                        <span class="q-row__title">Regieberichte</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\InspectionReport::class)
+                    <a class="q-row" href="{{ route('inspection-reports.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg></span>
+                        <span class="q-row__title">Prüfberichte</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
+                    <a class="q-row" href="{{ route('flow-meter-inspection-reports.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use></svg></span>
+                        <span class="q-row__title">Prüfberichte für DM</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\ConstructionReport::class)
+                    <a class="q-row" href="{{ route('construction-reports.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg></span>
+                        <span class="q-row__title">Bautagesberichte</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\DeliveryNote::class)
+                    <a class="q-row" href="{{ route('delivery-notes.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg></span>
+                        <span class="q-row__title">Lieferscheine</span>
+                    </a>
+                @endcan
+            @endif
+
+            @if(auth()->user()->can('viewAny', \App\Models\Accounting::class) || auth()->user()->can('viewAny', \App\Models\Logbook::class))
+                <div class="q-sheet__label">Abrechnung</div>
+                @can('viewAny', \App\Models\Accounting::class)
+                    <a class="q-row" href="{{ route('accounting.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg></span>
+                        <span class="q-row__title">Leistungsabrechnung</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\Logbook::class)
+                    <a class="q-row" href="{{ route('logbook.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#journal"></use></svg></span>
+                        <span class="q-row__title">Fahrtenbuch</span>
+                    </a>
+                @endcan
+            @endif
+
+            @if(auth()->user()->can('finances-view') || auth()->user()->can('viewAny', \App\Models\FinanceGroup::class))
+                <div class="q-sheet__label">Finanzen</div>
+                @can('finances-view')
+                    <a class="q-row" href="{{ route('finances.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use></svg></span>
+                        <span class="q-row__title">Finanzen</span>
+                    </a>
+                    <a class="q-row" href="{{ route('project-finances.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg></span>
+                        <span class="q-row__title">Projektübersicht</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\FinanceGroup::class)
+                    <a class="q-row" href="{{ route('finance-groups.index') }}">
+                        <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#list"></use></svg></span>
+                        <span class="q-row__title">Manuelle Einträge</span>
+                    </a>
+                @endcan
+            @endif
+
+            @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
+                <div class="q-sheet__label">Werkzeuge</div>
+                @can('tools-viewlatestchanges')
+                    <a class="q-row" href="{{ route('latest-changes.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#activity"></use></svg></span>
+                        <span class="q-row__title">Letzte Änderungen</span>
+                    </a>
+                @endcan
+                @can('tools-viewsentemails')
+                    <a class="q-row" href="{{ route('sent-emails.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
+                        <span class="q-row__title">Gesendete Emails</span>
+                    </a>
+                @endcan
+                @can('tools-scanqr')
+                    <a class="q-row" href="{{ route('qr-scan.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#camera"></use></svg></span>
+                        <span class="q-row__title">QR-Code scannen</span>
+                    </a>
+                @endcan
+                @can('tools-viewexceptions')
+                    <a class="q-row" href="{{ route('exceptions.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg></span>
+                        <span class="q-row__title">Fehlerdateien</span>
+                    </a>
+                @endcan
+            @endif
+
+            @if(auth()->user()->can('application-settings-update') || auth()->user()->can('viewAny', \App\Models\Employee::class) || auth()->user()->can('viewAny', \Spatie\Permission\Models\Role::class) || auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class) || auth()->user()->can('viewAny', \App\Models\Vehicle::class))
+                <div class="q-sheet__label">Einstellungen</div>
+                @can('application-settings-update')
+                    <a class="q-row" href="{{ route('application-settings.edit') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg></span>
+                        <span class="q-row__title">Einstellungen</span>
+                    </a>
+                @endcan
+                @can('viewAny', \App\Models\Employee::class)
+                    <a class="q-row" href="{{ route('employees.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg></span>
+                        <span class="q-row__title">Mitarbeiter</span>
+                    </a>
+                @endcan
+                @can('viewAny', \Spatie\Permission\Models\Role::class)
+                    <a class="q-row" href="{{ route('roles.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#key"></use></svg></span>
+                        <span class="q-row__title">Rollen</span>
+                    </a>
+                @endcan
+                @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
+                    <a class="q-row" href="{{ route(auth()->user()->can('viewAny', \App\Models\WageService::class) ? 'wage-services.index' : 'material-services.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#cpu"></use></svg></span>
+                        <span class="q-row__title">Leistungen</span>
+                    </a>
+                @endif
+                @can('viewAny', \App\Models\Vehicle::class)
+                    <a class="q-row" href="{{ route('vehicles.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span>
+                        <span class="q-row__title">Fuhrpark</span>
+                    </a>
+                @endcan
+            @endif
+
+            @can('help-view')
+                <div class="q-sheet__label">Hilfe</div>
+                <a class="q-row" href="{{ route('help.index') }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg></span>
+                    <span class="q-row__title">Hilfe</span>
+                </a>
+                <a class="q-row" href="{{ route('changelog.show') }}">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg></span>
+                    <span class="q-row__title">{{ config('app.name') }} @version('compact')</span>
+                </a>
+            @endcan
+
+            <div class="q-sheet__label">Konto</div>
+            {{-- Unread state shown by tinting the icon tile red — no separate
+                 dot, same principle as the app bar bell above. --}}
+            <a class="q-row" href="{{ route('notifications.index') }}">
+                <span class="q-avatar @if(Auth::user()->unreadNotifications()->count()) q-avatar--red @endif">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use></svg>
+                </span>
+                <span class="q-row__title">Benachrichtigungen</span>
+            </a>
+            @can('viewAny', \App\Models\Note::class)
+                <a class="q-row" href="{{ route('notes.index') }}">
+                    <span class="q-avatar"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#book"></use></svg></span>
+                    <span class="q-row__title">Notizbuch</span>
+                </a>
+            @endcan
+            <a class="q-row" href="{{ route('user-settings.edit') }}">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg></span>
+                <span class="q-row__title">Einstellungen</span>
+            </a>
+
+            <div class="q-sheet__divider"></div>
+            <button type="button" class="q-row q-theme-opt q-theme-opt--system" onclick="setQuokkaTheme('system')">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#display"></use></svg></span>
+                <span class="q-row__title">System</span>
+                <svg class="icon-bs icon-18 q-theme-check ms-auto"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+            </button>
+            <button type="button" class="q-row q-theme-opt q-theme-opt--light" onclick="setQuokkaTheme('light')">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use></svg></span>
+                <span class="q-row__title">Hell</span>
+                <svg class="icon-bs icon-18 q-theme-check ms-auto"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+            </button>
+            <button type="button" class="q-row q-theme-opt q-theme-opt--dark" onclick="setQuokkaTheme('dark')">
+                <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#moon"></use></svg></span>
+                <span class="q-row__title">Dunkel</span>
+                <svg class="icon-bs icon-18 q-theme-check ms-auto"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+            </button>
+            <div class="q-sheet__divider"></div>
+
+            @if(Session::has('impersonatorId'))
+                @can('impersonate', Auth::user()->employee)
+                    <a class="q-row" href="{{ route('employees.impersonate', Auth::user()->employee) }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person-dash"></use></svg></span>
+                        <span class="q-row__title">Zurück zum eigenen Benutzer</span>
+                    </a>
+                @endcan
+            @else
+                <a class="q-row" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-arrow-right"></use></svg></span>
+                    <span class="q-row__title">{{ __('Logout') }}</span>
+                </a>
+                <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            @endif
+        </div>
+    </div>
+@endauth

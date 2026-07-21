@@ -71,7 +71,7 @@
 
 <body>
 
-<div id="app">
+<div id="app" @auth class="is-authed" @endauth>
     @include('partials.notifications')
     @include('partials.navbar')
 

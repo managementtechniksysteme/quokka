@@ -322,7 +322,7 @@
               </div>
 
               <div v-if="accounting.length" class="mt-3">
-                  <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
+                  <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" :resetTrigger="resetTrigger" @changePage="onChangePage"></jw-pagination>
               </div>
 
               <p v-if="accounting.length" class="q-legend d-none d-md-block">
@@ -642,6 +642,7 @@
                 pageOfItems: [],
 
                 initialPage: 1,
+                resetTrigger: 0,
                 scrollToNewEntry: false,
 
                 selectAllHover: false,
@@ -732,6 +733,7 @@
                 this.$refs.top_progress.start();
 
                 this.initialPage = 1;
+                this.resetTrigger++;
 
                 if(this.filter_only_unsaved) {
                     this.accounting = this.getUnsavedAccounting();
@@ -1164,6 +1166,7 @@
                 this.amount_invalid = false;
 
                 this.initialPage = this.getLastPage();
+                this.resetTrigger++;
 
                 this.scrollToNewEntry = true;
             },
@@ -1328,6 +1331,7 @@
                     this.accounting.push(row);
                     this.accounting = [...this.accounting];
                     this.initialPage = this.getLastPage();
+                    this.resetTrigger++;
                 }
                 else {
                     let accounting = this.sheet.target;

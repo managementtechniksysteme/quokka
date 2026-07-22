@@ -64,7 +64,7 @@
         },
 
         created() {
-            if ('showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window) {
+            if ('serviceWorker' in navigator && 'ServiceWorkerRegistration' in window && 'showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window) {
                 navigator.serviceWorker.ready.then(registration => {
                     registration.pushManager.getSubscription()
                         .then(subscription => {

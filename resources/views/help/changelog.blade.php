@@ -19,7 +19,7 @@
         <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
-                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock-history"></use></svg>
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
                 </span>
                 <div>
                     <div class="q-eyebrow">{{ config('app.name') }}</div>

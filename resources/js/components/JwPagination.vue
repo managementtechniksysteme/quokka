@@ -26,6 +26,19 @@ export default {
         items: { type: Array, required: true },
         pageSize: { type: Number, default: 10 },
         initialPage: { type: Number, default: 1 },
+        // Bump this (to any new value) whenever the caller wants to force
+        // currentPage back to `initialPage`, even if `initialPage` itself
+        // hasn't actually changed value since last time. setPage() below
+        // only ever updates this component's OWN internal currentPage —
+        // it never writes back to the caller's initialPage — so e.g.
+        // "jump back to page 1 after a filter change" via a plain
+        // `this.initialPage = 1` reassignment was a silent no-op whenever
+        // a caller's initialPage was already 1, which is the common case
+        // (nothing had ever moved it off 1 to begin with, despite the user
+        // having since paged forward via clicks) (2026-07-22, user report:
+        // filtering while on page 2+ kept showing page 2 of the new
+        // results instead of resetting to page 1).
+        resetTrigger: { type: [Number, String], default: 0 },
         labels: {
             type: Object,
             default: () => ({ first: '<<', last: '>>', previous: '<', next: '>' }),
@@ -78,6 +91,11 @@ export default {
                 this.currentPage = val;
                 this.emitPage();
             }
+        },
+
+        resetTrigger() {
+            this.currentPage = this.initialPage;
+            this.emitPage();
         },
     },
 

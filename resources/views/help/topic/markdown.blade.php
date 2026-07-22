@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
+{{-- Mobile: help topics are reached from help/index's own list (q-row items),
+     same list→detail relationship as any other module — promote the topic's
+     own title into the app bar (back chevron to help.index) instead of the
+     generic "Hilfe" section label, no kebab since there are no actions
+     (2026-07-22, user request). --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Markdown</span>
+@endsection
+
 @section('content')
     <div class="q-container q-container--narrow">
         @include('help.breadcrumb')
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#body-text"></use></svg>
@@ -16,7 +28,7 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-2 mt-md-4">
         <a id="top"></a>
 
         @markdown

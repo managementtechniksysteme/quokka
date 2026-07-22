@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
+{{-- Mobile: help topics are reached from help/index's own list (q-row items),
+     same list→detail relationship as any other module — promote the topic's
+     own title into the app bar (back chevron to help.index) instead of the
+     generic "Hilfe" section label, no kebab since there are no actions
+     (2026-07-22, user request). --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Filter</span>
+@endsection
+
 @section('content')
     <div class="q-container q-container--narrow">
         @include('help.breadcrumb')
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
@@ -16,11 +28,14 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-2 mt-md-4">
         <a id="top"></a>
 
-        <div class="q-card p-3 mb-4">
-            <div class="d-flex flex-wrap gap-2">
+        {{-- q-card__body's own $q-pad token, not an ad-hoc p-3 utility — the
+             mismatched padding read as extra bottom space on mobile
+             (2026-07-22, user). --}}
+        <div class="q-card mb-4">
+            <div class="q-card__body d-flex flex-wrap gap-2">
             <a class="btn btn-sm q-btn" href="#allgemeines">Allgemeines</a>
         @can('viewAny', \App\Models\Address::class)
             <a class="btn btn-sm q-btn" href="#adressen">Adressen</a>

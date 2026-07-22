@@ -237,7 +237,7 @@
               </div>
 
               <div v-if="logbook.length" class="mt-3">
-                  <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
+                  <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" :resetTrigger="resetTrigger" @changePage="onChangePage"></jw-pagination>
               </div>
 
               <p v-if="logbook.length" class="q-legend">
@@ -432,6 +432,7 @@
                 placesList: this.places,
 
                 initialPage: 1,
+                resetTrigger: 0,
                 scrollToNewEntry: false,
 
                 selectAllHover: false,
@@ -505,6 +506,7 @@
                 this.$refs.top_progress.start();
 
                 this.initialPage = 1;
+                this.resetTrigger++;
 
                 if(this.filter_only_unsaved) {
                     this.logbook = this.getUnsavedLogbook();
@@ -1038,6 +1040,7 @@
                 this.autofillStartKilometresFromBooked(null, this.vehicle);
 
                 this.initialPage = this.getLastPage();
+                this.resetTrigger++;
 
                 this.scrollToNewEntry = true;
             },

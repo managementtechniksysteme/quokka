@@ -48,7 +48,7 @@
                               </div>
                               <div class="mb-3 col-md-6 col-lg-3 col-xl-12">
                                   <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
+                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">

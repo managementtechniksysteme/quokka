@@ -1382,6 +1382,28 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 .q-attach__size { font-size: .7rem; color: var(--q-faint); }
 
 // =============================================================================
+//  Q. Finance report stat row (project_controlling / finances / project_overview)
+// =============================================================================
+// A row of 2-3 headline values (revenue/expense/diff, volume/billed/open)
+// that used to divide evenly via flex-fill + a manual border-left per cell.
+// The values are long formatted currency strings (unlike the dashboard's
+// short .q-tile numbers), so 3-across routinely overflowed its card at
+// mobile widths — stack to one column below md instead, swapping the
+// divider from a left border to a top border to match (2026-07-22, user:
+// "value tiles push out of cards").
+.q-stat-row { display: flex; }
+.q-stat { flex: 1 1 0; padding: 1.5rem 1rem; text-align: center; }
+.q-stat + .q-stat { border-left: 1px solid var(--q-border-2); }
+.q-stat-row--compact .q-stat { padding: 1rem; }
+.q-stat__value--success { color: var(--q-green); }
+.q-stat__value--danger { color: var(--q-red); }
+
+@include media-breakpoint-down(md) {
+    .q-stat-row { flex-direction: column; }
+    .q-stat + .q-stat { border-left: none; border-top: 1px solid var(--q-border-2); }
+}
+
+// =============================================================================
 //  R. Report detail (Servicebericht et al.) — line-item table + signature panel
 // =============================================================================
 // a compact line-item table rendered inside a .q-card (service lines): mono
@@ -1961,6 +1983,15 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // bar look a bit weird").
     .q-form-actions--solo-mobile { justify-content: center; }
     .q-form-actions--solo-mobile .btn-primary { flex: 0 1 auto; min-width: 65%; }
+
+    // Full-width submit button on mobile for filter forms outside
+    // .q-form-actions (project_controlling's Projekt/Start/End filter) —
+    // NOT Bootstrap's `w-100 w-md-auto`: this build's width utility isn't
+    // configured with responsive variants (no .w-md-auto class exists at
+    // all), so that combination silently stayed 100% wide at every
+    // breakpoint, including desktop (2026-07-22, user caught the desktop
+    // regression).
+    .q-btn-full-mobile { width: 100%; }
 
     // MarkdownEditor toolbar (easymde) wraps to 2 rows at 390px (12 buttons ×
     // 30px > the ~320px available) — drop the least useful for a short

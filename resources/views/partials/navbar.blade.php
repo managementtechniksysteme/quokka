@@ -534,7 +534,11 @@
             'companies.*' => ['Firmen', 'briefcase'],
             'people.*' => ['Personen', 'people'],
             'addresses.*' => ['Adressen', 'geo-alt'],
-            'projects.*|project-controlling.*' => ['Projekte', 'clipboard'],
+            'projects.*' => ['Projekte', 'clipboard'],
+            // Own entry, not lumped into 'projects.*' above (2026-07-22,
+            // user: page still showed "Projekte" in the app bar) — icon
+            // matches the page's own desktop header (bar-chart).
+            'project-controlling.*' => ['Projektcontrolling', 'bar-chart'],
             'tasks.*' => ['Aufgaben', 'check2-square'],
             'memos.*' => ['Aktenvermerke', 'voicemail'],
             'service-reports.*' => ['Serviceberichte', 'gear'],
@@ -549,7 +553,7 @@
             // (2026-07-21, user: "Finanzgruppen should get its own title as
             // well, not Finanzen") — labels/icons reused verbatim from the
             // Mehr sheet's own rows for this section.
-            'finances.*' => ['Finanzen', 'currency-euro'],
+            'finances.*' => ['Finanzübersicht', 'currency-euro'],
             'project-finances.*' => ['Projektübersicht', 'clipboard'],
             'finance-groups.*' => ['Manuelle Einträge', 'list'],
             'notifications.*' => ['Benachrichtigungen', 'bell'],

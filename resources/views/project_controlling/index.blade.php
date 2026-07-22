@@ -9,7 +9,7 @@
 @section('content')
     <div class="q-container">
 
-        <div class="q-page-head">
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg>
@@ -56,7 +56,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2 q-btn-full-mobile">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#eye"></use></svg>
                         Anzeigen
                     </button>
@@ -70,19 +70,12 @@
                 <div class="col-lg-6">
                     <div class="q-card h-100">
                         <div class="q-card__head">Projektcontrolling</div>
-                        <div class="d-flex" style="border-bottom: 1px solid var(--q-border-2)">
-                            <div class="flex-fill p-3 text-center">
-                                <div class="q-eyebrow">Einnahmen</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-green)">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
-                            <div class="flex-fill p-3 text-center" style="border-left: 1px solid var(--q-border-2)">
-                                <div class="q-eyebrow">Ausgaben</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-red)">{{ Number::toLocal($accountingFinanceData['expense'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
-                            <div class="flex-fill p-3 text-center" style="border-left: 1px solid var(--q-border-2)">
-                                <div class="q-eyebrow">Differenz</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--{{ $accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0 ? 'q-green' : 'q-red' }})">{{ Number::toLocal($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
+                        <div style="border-bottom: 1px solid var(--q-border-2)">
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'compact' => true, 'stats' => [
+                                ['label' => 'Einnahmen', 'value' => $accountingFinanceData['revenue'], 'variant' => 'success'],
+                                ['label' => 'Ausgaben', 'value' => $accountingFinanceData['expense'], 'variant' => 'danger'],
+                                ['label' => 'Differenz', 'value' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 'variant' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0 ? 'success' : 'danger'],
+                            ]])
                         </div>
                         <finance-revenue-expense-chart :revenue="{{ $accountingFinanceData['revenue'] }}" :expense="{{ $accountingFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
                     </div>
@@ -91,19 +84,12 @@
                 <div class="col-lg-6">
                     <div class="q-card h-100">
                         <div class="q-card__head">Finanzcontrolling</div>
-                        <div class="d-flex" style="border-bottom: 1px solid var(--q-border-2)">
-                            <div class="flex-fill p-3 text-center">
-                                <div class="q-eyebrow">Auftragsvolumen</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-green)">{{ Number::toLocal($manuelFinanceData['total_volume'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
-                            <div class="flex-fill p-3 text-center" style="border-left: 1px solid var(--q-border-2)">
-                                <div class="q-eyebrow">verrechnet</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--q-red)">{{ Number::toLocal($manuelFinanceData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
-                            <div class="flex-fill p-3 text-center" style="border-left: 1px solid var(--q-border-2)">
-                                <div class="q-eyebrow">offen</div>
-                                <div class="q-mono fw-bold" style="font-size: .95rem; color: var(--{{ $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0 ? 'q-green' : 'q-red' }})">{{ Number::toLocal($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }} {{ $currencyUnit }}</div>
-                            </div>
+                        <div style="border-bottom: 1px solid var(--q-border-2)">
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'compact' => true, 'stats' => [
+                                ['label' => 'Auftragsvolumen', 'value' => $manuelFinanceData['total_volume'], 'variant' => 'success'],
+                                ['label' => 'verrechnet', 'value' => $manuelFinanceData['billed_volume'], 'variant' => 'danger'],
+                                ['label' => 'offen', 'value' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 'variant' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0 ? 'success' : 'danger'],
+                            ]])
                         </div>
                         <finance-volume-chart :total_volume="{{ $manuelFinanceData['total_volume'] }}" :billed_volume="{{ $manuelFinanceData['billed_volume'] }}" v-cloak></finance-volume-chart>
                     </div>

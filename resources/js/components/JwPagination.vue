@@ -4,8 +4,14 @@
              own bootstrap-5 paginator view (d-sm-none there), matching this
              app's own lg=992px grid cutoff (isDesktopGrid) rather than
              Bootstrap's default sm, since the full numbered list pushed
-             content off-screen at 390px (2026-07-22, user report). -->
-        <ul class="pagination d-flex d-lg-none justify-content-between">
+             content off-screen at 390px (2026-07-22, user report). No
+             justify-content-between — Laravel's own view puts that on a
+             wrapper AROUND the single <ul>, which has no effect with only
+             one flex child; the two buttons render as one connected pill,
+             adjacent with no gap, same as every other paginated list in the
+             app already does (2026-07-22 round 2, user: "spread across the
+             content... they're next to each other" elsewhere). -->
+        <ul class="pagination d-lg-none">
             <li class="page-item" :class="{ disabled: currentPage === 1 }">
                 <a class="page-link" href="#" @click.prevent="setPage(currentPage - 1)">Zurück</a>
             </li>

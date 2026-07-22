@@ -1838,15 +1838,21 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // completely separate root cause from .form-control's specificity issue
     // above. Overriding the token inside this media query bumps every
     // <v-select>'s search/selected text to the same 16px, mobile-only.
-    // vs__dropdown-toggle's min-height is driven by that same token via a
-    // calc() (line-height × font-size + padding + border) rather than a
-    // fixed value, so bumping the font-size alone would leave it ~1px off
-    // the flat 44px every native control above and every icon button below
-    // lands on — set it explicitly so every control sitting in the same row
-    // (e.g. a "+" quick-create icon button beside a project/service picker)
-    // stays pixel-aligned, not just individually touch-sized.
+    // vs__dropdown-toggle's own height is driven by that same token via a
+    // calc() (line-height × font-size + padding + border), so bumping the
+    // font-size alone grows it past 44px instead of landing exactly on it —
+    // set it explicitly so every control sitting in the same row (e.g. a
+    // "+" quick-create icon button beside a project/address picker) stays
+    // pixel-aligned, not just individually touch-sized (2026-07-22 round 2,
+    // user: "the + icon button next to the address dropdown is smaller in
+    // height than the dropdown now"). .vs--single .vs__dropdown-toggle
+    // (_select.scss) pins a fixed `height` (not min-height) at TWO-class
+    // specificity for the single-select case — same trap .dropdown-sm's own
+    // block already documents fixing — so the override needs to match that
+    // selector, not just the base one-class rule, or it silently loses.
     :root { --vs-font-size: 1rem; }
     .vs__dropdown-toggle { min-height: 44px; }
+    .vs--single .vs__dropdown-toggle { height: 44px; }
     // Fixed 38px icon buttons (search-adjacent sort toggle, clear button)
     // sit right next to a 44px-tall input in list toolbars — bump them to
     // match. Also just correct on its own: 38px sits under the 44px

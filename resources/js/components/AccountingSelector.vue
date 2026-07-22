@@ -704,7 +704,19 @@
                 this.pageOfItems = pageOfItems;
 
                 this.$nextTick(() => {
-                    if(this.scrollToNewEntry) {
+                    if(!this.isDesktopGrid) {
+                        // scrollIntoView aligns the target flush with <main>'s
+                        // own scroll-port edge — main's padding-top:54px only
+                        // reserves clearance below the fixed app bar on the
+                        // very first unscrolled render, a later programmatic
+                        // scroll ignores it entirely, landing the first card
+                        // right under (and partly hidden by) the app bar and
+                        // its taller frosted scrim (2026-07-22, user report).
+                        // Scroll the real page top instead of the card list's
+                        // own top, matching what the user asked for exactly.
+                        document.querySelector('main')?.scrollTo({top: 0, behavior: 'smooth'});
+                    }
+                    else if(this.scrollToNewEntry) {
                         this.$refs.save_button.scrollIntoView({behavior: 'smooth'});
                     }
                     else {

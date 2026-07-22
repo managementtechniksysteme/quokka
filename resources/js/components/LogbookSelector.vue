@@ -739,7 +739,14 @@
                 this.pageOfItems = pageOfItems;
 
                 this.$nextTick(() => {
-                    if(this.scrollToNewEntry) {
+                    if(!this.isDesktopGrid) {
+                        // Same fix as AccountingSelector's identical method —
+                        // scrollIntoView ignores main's padding-top on a
+                        // programmatic scroll, landing the first card under
+                        // the fixed app bar (2026-07-22, user report).
+                        document.querySelector('main')?.scrollTo({top: 0, behavior: 'smooth'});
+                    }
+                    else if(this.scrollToNewEntry) {
                         this.$refs.save_button.scrollIntoView({behavior: 'smooth'});
                     }
                     else {

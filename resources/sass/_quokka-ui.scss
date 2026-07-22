@@ -2021,9 +2021,14 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
         b { font-weight: 700; color: var(--q-text); }
     }
     .q-trow--card__label { display: block; font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--q-faint); }
+    // Truncated to 2 lines, not hidden entirely — comments stay visible per
+    // the earlier discussion, but a long one could otherwise push a card
+    // arbitrarily tall (2026-07-22, user: "sometimes there is quite a bit in
+    // there"). Full text is still one tap away via Bearbeiten.
     .q-trow--card__comment {
         margin: .55rem 0 0; padding-top: .55rem; border-top: 1px solid var(--q-border-2);
-        font-size: .82rem; color: var(--q-muted); white-space: pre-wrap;
+        font-size: .82rem; color: var(--q-muted);
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .q-trow--card__error {
         display: flex; align-items: flex-start; gap: .4rem;

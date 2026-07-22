@@ -81,7 +81,7 @@
                       </div>
                       <div class="q-filterbar__field q-filterbar__field--grow">
                           <label>Projekt</label>
-                          <v-select class="dropdown-sm" :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true" @input="setFilterProject">
+                          <v-select class="dropdown-sm" :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
                               <template v-slot:no-options>Keine passenden Einträge.</template>
                           </v-select>
                           <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>

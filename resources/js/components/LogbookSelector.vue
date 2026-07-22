@@ -142,7 +142,7 @@
                               </div>
                               <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Start</label>
-                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin">
+                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" :taggable="true" @update:modelValue="setOrigin">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
@@ -151,7 +151,7 @@
                               </div>
                               <div class="mb-3 col-md-4 col-lg-2 col-xl-12">
                                   <label>Ziel</label>
-                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination">
+                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :modelValue="destination" :selectOnTab="true" :taggable="true" @update:modelValue="setDestination">
                                       <template v-slot:no-options>Keine passenden Einträge.</template>
                                   </v-select>
                                   <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">

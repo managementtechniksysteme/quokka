@@ -427,7 +427,7 @@
                       <span class="q-row__title">Bearbeiten</span>
                   </button>
                   <button v-if="mobileRowActions.target.action !== 'destroy' && canRemoveAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row q-row--danger" @click="mobileRemoveFromRowActions">
-                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
+                      <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
                       <span class="q-row__title">Entfernen</span>
                   </button>
                   <button v-if="mobileRowActions.target.action === 'destroy' && canRemoveAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileRestoreFromRowActions">

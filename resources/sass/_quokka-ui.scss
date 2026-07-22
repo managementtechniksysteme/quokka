@@ -1819,9 +1819,34 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // Full-width content column, no side gutters fighting the small screen.
     .q-container, .q-container--narrow { padding: .9rem .85rem 1.25rem; max-width: 100%; }
 
-    // Inputs stay comfortable on touch (the .q-form control-padding trim above
-    // is scoped media-breakpoint-up(md), so it never reaches this block).
-    .form-control, .form-select { min-height: 44px; font-size: 1rem; }
+    // Inputs stay comfortable on touch AND at/above the 16px iOS Safari
+    // auto-zoom-on-focus threshold (2026-07-22, user: "browser zooms into
+    // the page... quite confusing"). .q-form .form-control/.form-select
+    // (§H above) sets font-size:.85rem (13.6px) at EVERY breakpoint with
+    // higher specificity (.q-form .form-control, two classes) than a bare
+    // .form-control override could ever beat via source order alone — most
+    // forms in the app carry .q-form, so that 13.6px was winning here too
+    // despite this block's original intent. Repeating the .q-form-qualified
+    // selector inside this same media query matches its specificity so this
+    // (later, mobile-only) rule wins instead — .q-form's own rule is NOT
+    // touched, so desktop's compact 13.6px is untouched.
+    .form-control, .form-select,
+    .q-form .form-control, .q-form .form-select { min-height: 44px; font-size: 1rem; }
+    // vue-select's own font-size is a single global custom property (see
+    // _select.scss, --vs-font-size: .85rem, no breakpoint distinction at
+    // all) driving its whole height formula — same 13.6px/zoom problem, a
+    // completely separate root cause from .form-control's specificity issue
+    // above. Overriding the token inside this media query bumps every
+    // <v-select>'s search/selected text to the same 16px, mobile-only.
+    // vs__dropdown-toggle's min-height is driven by that same token via a
+    // calc() (line-height × font-size + padding + border) rather than a
+    // fixed value, so bumping the font-size alone would leave it ~1px off
+    // the flat 44px every native control above and every icon button below
+    // lands on — set it explicitly so every control sitting in the same row
+    // (e.g. a "+" quick-create icon button beside a project/service picker)
+    // stays pixel-aligned, not just individually touch-sized.
+    :root { --vs-font-size: 1rem; }
+    .vs__dropdown-toggle { min-height: 44px; }
     // Fixed 38px icon buttons (search-adjacent sort toggle, clear button)
     // sit right next to a 44px-tall input in list toolbars — bump them to
     // match. Also just correct on its own: 38px sits under the 44px
@@ -1959,6 +1984,12 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
         background: var(--q-surface); border: 1px solid var(--q-border);
         border-radius: $q-radius; box-shadow: var(--q-shadow);
         padding: .8rem .95rem; cursor: pointer;
+        // Explicit, not inherited — an unstyled <button> has no guaranteed
+        // cross-browser default text colour (reads accent-blue on iOS
+        // Safari specifically, 2026-07-22 user report); every other
+        // clickable surface in the app sets this explicitly too, this one
+        // just relied on inheritance by omission.
+        color: var(--q-text);
     }
     .q-trow--card__top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .4rem; }
     .q-trow--card__date { font-weight: 800; font-size: .88rem; }
@@ -1967,16 +1998,20 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // overflow/ellipsis/nowrap trio, written out instead.
     .q-trow--card__title { font-weight: 700; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .q-trow--card__sub { font-size: .8rem; color: var(--q-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    // 2026-07-22, user: "space out the row metrics... move MA all the way to
-    // the right, only make the hour bold, time and employee a bit more
-    // subtle" — justify-content:space-between (not a fixed gap) spreads Zeit/
-    // Menge/MA to the card's full width and pins MA to the right edge for
-    // free, no markup reorder needed; the amount's own <b> is the only bold
-    // text, everything else in the row is muted.
+    // 2026-07-22, user round 1: "space out the row metrics... move MA all the
+    // way to the right, only make the hour bold, time and employee a bit
+    // more subtle" — round 2, after seeing it: space-between spread all
+    // three EQUALLY, but the first two (Zeit+Menge / km+Getankt) read better
+    // clustered together with only the last (MA) pushed off to the edge —
+    // a fixed gap between every sibling plus margin-left:auto on just the
+    // last one keeps items 1+2 close while still pinning item 3 to the right
+    // edge, no markup/grouping wrapper needed. Amount/km's own <b> is the
+    // only bold text, everything else in the row is muted.
     .q-trow--card__facts {
-        display: flex; justify-content: space-between; margin-top: .6rem;
+        display: flex; gap: 1.1rem; margin-top: .6rem;
         font-size: .82rem; font-weight: 500; color: var(--q-muted);
         > div { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        > div:last-child { margin-left: auto; }
         b { font-weight: 700; color: var(--q-text); }
     }
     .q-trow--card__label { display: block; font-size: .64rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--q-faint); }

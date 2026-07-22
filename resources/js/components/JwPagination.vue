@@ -1,21 +1,38 @@
 <template>
-    <ul v-if="totalPages > 1" class="pagination">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a class="page-link" href="#" @click.prevent="setPage(1)">{{ labels.first }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a class="page-link" href="#" @click.prevent="setPage(currentPage - 1)">{{ labels.previous }}</a>
-        </li>
-        <li v-for="page in visiblePages" :key="page" class="page-item" :class="{ active: currentPage === page }">
-            <a class="page-link" href="#" @click.prevent="setPage(page)">{{ page }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a class="page-link" href="#" @click.prevent="setPage(currentPage + 1)">{{ labels.next }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a class="page-link" href="#" @click.prevent="setPage(totalPages)">{{ labels.last }}</a>
-        </li>
-    </ul>
+    <nav v-if="totalPages > 1">
+        <!-- Mobile: simplified Zurück/Weiter only — same shape as Laravel's
+             own bootstrap-5 paginator view (d-sm-none there), matching this
+             app's own lg=992px grid cutoff (isDesktopGrid) rather than
+             Bootstrap's default sm, since the full numbered list pushed
+             content off-screen at 390px (2026-07-22, user report). -->
+        <ul class="pagination d-flex d-lg-none justify-content-between">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" @click.prevent="setPage(currentPage - 1)">Zurück</a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                <a class="page-link" href="#" @click.prevent="setPage(currentPage + 1)">Weiter</a>
+            </li>
+        </ul>
+
+        <!-- Desktop: unchanged full numbered pagination. -->
+        <ul class="pagination d-none d-lg-flex">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" @click.prevent="setPage(1)">{{ labels.first }}</a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" @click.prevent="setPage(currentPage - 1)">{{ labels.previous }}</a>
+            </li>
+            <li v-for="page in visiblePages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+                <a class="page-link" href="#" @click.prevent="setPage(page)">{{ page }}</a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                <a class="page-link" href="#" @click.prevent="setPage(currentPage + 1)">{{ labels.next }}</a>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                <a class="page-link" href="#" @click.prevent="setPage(totalPages)">{{ labels.last }}</a>
+            </li>
+        </ul>
+    </nav>
 </template>
 
 <script>

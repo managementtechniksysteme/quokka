@@ -2,11 +2,22 @@
 
 @php use Illuminate\Support\Str; @endphp
 
+{{-- Mobile: reached from help/index's own list, same list→detail
+     relationship as the help/topic pages — promote the page's own title
+     into the app bar (back chevron to help.index) instead of the generic
+     "Hilfe" section label, matching the same fix already applied there
+     (2026-07-22, user request). --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Versionshinweise</span>
+@endsection
+
 @section('content')
     <div class="q-container q-container--narrow">
-        <div class="q-page-head">
-            {{-- Desktop: icon + eyebrow + title, as before. --}}
-            <div class="d-none d-md-flex align-items-center gap-3">
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock-history"></use></svg>
                 </span>
@@ -15,18 +26,9 @@
                     <h1 class="q-title">Versionshinweise</h1>
                 </div>
             </div>
-
-            {{-- Mobile: the app bar carries "Hilfe" (this page's section),
-                 not the page's own title — unlike search/notification/etc
-                 the two don't match, so "Versionshinweise" still needs to
-                 show, just collapsed to a compact line instead of the full
-                 icon+eyebrow+h1 stack (2026-07-22). --}}
-            <div class="d-flex d-md-none align-items-center gap-2">
-                <div class="q-subtitle mb-0">Versionshinweise</div>
-            </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-2 mt-md-4">
     @markdown
     ### v0.1.34-b5f0ed1 (21.05.2023)
     * Lieferscheine könnnen vor dem Unterschreiben zur Überprüfung heruntergeladen werden.

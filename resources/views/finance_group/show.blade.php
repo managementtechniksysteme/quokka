@@ -112,21 +112,15 @@
         @endif
 
         <div class="mt-4">
-            <div class="d-flex align-items-start align-items-md-center flex-nowrap gap-2 mb-3">
-                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-baseline gap-md-2" style="row-gap:.1rem">
-                    <h2 class="q-subhead">Finanzeinträge</h2>
-                    @unless($financeRecords->isEmpty())
-                        <span class="q-subtitle mt-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</span>
-                    @endunless
-                </div>
-                @can('create', \App\Models\FinanceRecord::class)
-                    <a class="btn q-btn d-inline-flex align-items-center gap-2 ms-auto" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
-                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
-                        Finanzeintrag anlegen
-                    </a>
-                @endcan
-            </div>
-
+            {{-- Same shape as every other tab-embedded list (company's
+                 Personen/Projekte tabs, project's Aufgaben/Teilrechnungen/
+                 Aktenvermerke tabs): a single @if/@else so exactly one CTA
+                 renders at a time — never a header button stacked on top of
+                 the empty-state's own button — and both use the same
+                 secondary .q-btn style those siblings use throughout
+                 (2026-07-22, user report: two CTAs on the empty state read
+                 as redundant, and asked why this button was secondary
+                 elsewhere — it already was, everywhere but here). --}}
             @if($financeRecords->isEmpty())
                 <div class="q-empty-state">
                     <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#layers"></use></svg>
@@ -139,6 +133,21 @@
                     @endcan
                 </div>
             @else
+                <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                    <div class="d-none d-md-flex align-items-baseline gap-2">
+                        <h2 class="q-subhead">Finanzeinträge</h2>
+                        <span class="q-subtitle mt-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</span>
+                    </div>
+                    <h2 class="q-subhead d-md-none mb-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</h2>
+                    @can('create', \App\Models\FinanceRecord::class)
+                        <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            <span class="d-none d-md-inline">Finanzeintrag anlegen</span>
+                            <span class="d-inline d-md-none">Finanzeintrag</span>
+                        </a>
+                    @endcan
+                </div>
+
                 <div class="q-card q-list">
                     @foreach ($financeRecords as $financeRecord)
                         @include('finance_record.overview_card_content', ['financeRecord' => $financeRecord])

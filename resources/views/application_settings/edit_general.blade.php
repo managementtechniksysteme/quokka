@@ -318,7 +318,7 @@
             </div>
         </div>
 
-        <div class="q-form-actions">
+        <div class="q-form-actions q-form-actions--solo-mobile">
             <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                 <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
                 <span class="d-none d-md-inline">Einstellungen speichern</span>

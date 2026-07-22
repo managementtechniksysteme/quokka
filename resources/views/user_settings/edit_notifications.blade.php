@@ -25,7 +25,8 @@
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
-                        Einstellungen speichern
+                        <span class="d-none d-md-inline">Einstellungen speichern</span>
+                        <span class="d-inline d-md-none">Speichern</span>
                     </button>
                 </div>
             </div>
@@ -109,7 +110,8 @@
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                         <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
-                        Einstellungen speichern
+                        <span class="d-none d-md-inline">Einstellungen speichern</span>
+                        <span class="d-inline d-md-none">Speichern</span>
                     </button>
                 </div>
             </div>

@@ -1934,7 +1934,14 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // user: "make it the same width as the cards and leave it non-floating at
     // the bottom of the form on mobile" — a real functional bug, not just a
     // tuning issue, since it could obscure form fields/buttons underneath).
-    .q-form .btn-group { display: flex; width: 100%; }
+    // flex-wrap:wrap is a no-op for any group that already fits on one row
+    // (a 2-3 option toggle stays exactly as before) — only a group with
+    // enough options to overflow (e.g. the 8-option "letzte Änderungen"
+    // quantity picker) actually wraps, rather than spilling past the card's
+    // right edge on a real device (2026-07-22, user report — didn't
+    // reproduce in a 390px headless screenshot, a real phone's usable width
+    // after system chrome is apparently narrower).
+    .q-form .btn-group { display: flex; flex-wrap: wrap; width: 100%; }
     .q-form .btn-group > .btn { flex: 1; text-align: center; }
     .q-form-actions {
         position: static; margin: 1.5rem 0 0;

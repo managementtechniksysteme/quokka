@@ -12,6 +12,13 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $financeRecord->billed_on->format('d.m.Y') }}
             </span>
+            {{-- Mobile: .q-metric (desktop's hero amount) is dropped entirely
+                 by the shared list-row mobile rule — too important to lose,
+                 so it's repeated here as a chip instead (2026-07-22, user
+                 report). --}}
+            <span class="q-chip d-md-none q-mono @if($financeRecord->amount < 0) q-chip--danger @endif">
+                {{ Number::toLocal($financeRecord->amount, 2) }}
+            </span>
         </div>
     </div>
 
@@ -43,4 +50,6 @@
             @endcan
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

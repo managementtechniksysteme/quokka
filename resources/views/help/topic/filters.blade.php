@@ -36,60 +36,60 @@
              (2026-07-22, user). --}}
         <div class="q-card mb-4">
             <div class="q-card__body d-flex flex-wrap gap-2">
-            <a class="btn btn-sm q-btn" href="#allgemeines">Allgemeines</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#allgemeines">Allgemeines</a>
         @can('viewAny', \App\Models\Address::class)
-            <a class="btn btn-sm q-btn" href="#adressen">Adressen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#adressen">Adressen</a>
         @endcan
         @can('viewAny', \App\Models\Memo::class)
-            <a class="btn btn-sm q-btn" href="#aktenvermerke">Aktenvermerke</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#aktenvermerke">Aktenvermerke</a>
         @endcan
         @can('viewAny', \App\Models\Task::class)
-            <a class="btn btn-sm q-btn" href="#aufgaben">Aufgaben</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#aufgaben">Aufgaben</a>
         @endcan
         @can('viewAny', \App\Models\ConstructionReport::class)
-            <a class="btn btn-sm q-btn" href="#bautagesberichte">Bautagesberichte</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#bautagesberichte">Bautagesberichte</a>
         @endcan
         @can('viewAny', \App\Models\Vehicle::class)
-            <a class="btn btn-sm q-btn" href="#fahrzeuge">Fahrzeuge</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#fahrzeuge">Fahrzeuge</a>
         @endcan
         @can('viewAny', \App\Models\FinanceGroups::class)
-            <a class="btn btn-sm q-btn" href="#finanzen">Finanzen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#finanzen">Finanzen</a>
         @endcan
         @can('viewAny', \App\Models\Company::class)
-            <a class="btn btn-sm q-btn" href="#firmen">Firmen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#firmen">Firmen</a>
         @endcan
         @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
-            <a class="btn btn-sm q-btn" href="#leistungen">Leistungen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#leistungen">Leistungen</a>
         @endif
         @can('viewAny', \App\Models\DeliveryNote::class)
-            <a class="btn btn-sm q-btn" href="#lieferscheine">Lieferscheine</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#lieferscheine">Lieferscheine</a>
         @endcan
         @can('viewAny', \App\Models\Employee::class)
-            <a class="btn btn-sm q-btn" href="#mitarbeiter">Mitarbeiter</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#mitarbeiter">Mitarbeiter</a>
         @endcan
         @can('viewAny', \App\Models\Note::class)
-            <a class="btn btn-sm q-btn" href="#notizen">Notizen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#notizen">Notizen</a>
         @endcan
         @can('viewAny', \App\Models\Person::class)
-            <a class="btn btn-sm q-btn" href="#personen">Personen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#personen">Personen</a>
         @endcan
         @can('viewAny', \App\Models\Project::class)
-            <a class="btn btn-sm q-btn" href="#projekte">Projekte</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#projekte">Projekte</a>
         @endcan
         @can('viewAny', \App\Models\InspectionReport::class)
-            <a class="btn btn-sm q-btn" href="#pruefberichte">Prüfberichte</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#pruefberichte">Prüfberichte</a>
         @endcan
         @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
-            <a class="btn btn-sm q-btn" href="#pruefberichte_fuer_durchflussmesseinrichtungen">Prüfberichte Durchfluss</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#pruefberichte_fuer_durchflussmesseinrichtungen">Prüfberichte Durchfluss</a>
         @endcan
         @can('viewAny', \App\Models\AdditionsReport::class)
-            <a class="btn btn-sm q-btn" href="#regieberichte">Regieberichte</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#regieberichte">Regieberichte</a>
         @endcan
         @can('viewAny', \Spatie\Permission\Models\Role::class)
-            <a class="btn btn-sm q-btn" href="#rollen">Rollen</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#rollen">Rollen</a>
         @endcan
         @can('viewAny', \App\Models\ServiceReport::class)
-            <a class="btn btn-sm q-btn" href="#serviceberichte">Serviceberichte</a>
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#serviceberichte">Serviceberichte</a>
         @endcan
             </div>
         </div>

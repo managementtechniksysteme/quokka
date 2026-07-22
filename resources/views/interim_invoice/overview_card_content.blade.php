@@ -12,6 +12,13 @@
                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $interimInvoice->billed_on }}
             </span>
+            {{-- Mobile: .q-metric (desktop's hero amount) is dropped entirely
+                 by the shared list-row mobile rule — repeated here as a chip
+                 instead, same fix as finance_record's identical pattern
+                 (2026-07-22, user report). --}}
+            <span class="q-chip d-md-none q-mono">
+                {{ Number::toLocal($interimInvoice->amount, 2) }}
+            </span>
         </div>
     </div>
 

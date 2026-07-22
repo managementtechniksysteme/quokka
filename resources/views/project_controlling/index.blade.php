@@ -71,7 +71,7 @@
                     <div class="q-card h-100">
                         <div class="q-card__head">Projektcontrolling</div>
                         <div style="border-bottom: 1px solid var(--q-border-2)">
-                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'compact' => true, 'stats' => [
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'stats' => [
                                 ['label' => 'Einnahmen', 'value' => $accountingFinanceData['revenue'], 'variant' => 'success'],
                                 ['label' => 'Ausgaben', 'value' => $accountingFinanceData['expense'], 'variant' => 'danger'],
                                 ['label' => 'Differenz', 'value' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 'variant' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0 ? 'success' : 'danger'],
@@ -85,7 +85,7 @@
                     <div class="q-card h-100">
                         <div class="q-card__head">Finanzcontrolling</div>
                         <div style="border-bottom: 1px solid var(--q-border-2)">
-                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'compact' => true, 'stats' => [
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'stats' => [
                                 ['label' => 'Auftragsvolumen', 'value' => $manuelFinanceData['total_volume'], 'variant' => 'success'],
                                 ['label' => 'verrechnet', 'value' => $manuelFinanceData['billed_volume'], 'variant' => 'danger'],
                                 ['label' => 'offen', 'value' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 'variant' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0 ? 'success' : 'danger'],

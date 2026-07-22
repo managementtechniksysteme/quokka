@@ -1394,7 +1394,6 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 .q-stat-row { display: flex; }
 .q-stat { flex: 1 1 0; padding: 1.5rem 1rem; text-align: center; }
 .q-stat + .q-stat { border-left: 1px solid var(--q-border-2); }
-.q-stat-row--compact .q-stat { padding: 1rem; }
 .q-stat__value--success { color: var(--q-green); }
 .q-stat__value--danger { color: var(--q-red); }
 

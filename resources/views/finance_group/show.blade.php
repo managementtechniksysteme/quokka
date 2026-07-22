@@ -138,7 +138,14 @@
                         <h2 class="q-subhead">Finanzeinträge</h2>
                         <span class="q-subtitle mt-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</span>
                     </div>
-                    <h2 class="q-subhead d-md-none mb-0">{{ trans_choice('messages.entries', $financeRecords->total()) }}</h2>
+                    {{-- Mobile: same weight as task/index's own compact-row
+                         count (.q-subtitle, small + muted) — this page has
+                         no left sub-nav pill to carry the count elsewhere
+                         like company/project's tabs do, so it's worth
+                         keeping here, but as a big bold heading it read
+                         heavier than every other count-in-a-row in the app
+                         (2026-07-22, user report). --}}
+                    <div class="q-subtitle mb-0 d-md-none">{{ trans_choice('messages.entries', $financeRecords->total()) }}</div>
                     @can('create', \App\Models\FinanceRecord::class)
                         <a class="btn q-btn ms-auto d-inline-flex align-items-center gap-2" href="{{ route('finance-records.create', ['finance_group' => $financeGroup]) }}">
                             <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>

@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="q-container" style="max-width: 540px;">
-        <div class="q-page-head">
+        {{-- Mobile: the app bar now carries "Sicherheitsprüfung" + its own
+             key icon (partials/navbar.blade.php's $mobilePageLabels) — same
+             "double headers" fix as search/notification/help/latest-changes,
+             desktop-only here (2026-07-22). --}}
+        <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
                 <div class="q-head-icon">
                     <svg class="icon-bs icon-20">
@@ -13,7 +17,7 @@
             </div>
         </div>
 
-        <form class="q-form needs-validation" action="{{ route('reauthenticate') }}" method="POST" novalidate>
+        <form class="q-form needs-validation mt-2 mt-md-0" action="{{ route('reauthenticate') }}" method="POST" novalidate>
             @csrf
 
             <div class="q-form-section">

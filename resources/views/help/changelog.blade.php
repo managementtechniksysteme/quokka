@@ -5,7 +5,8 @@
 @section('content')
     <div class="q-container q-container--narrow">
         <div class="q-page-head">
-            <div class="d-flex align-items-center gap-3">
+            {{-- Desktop: icon + eyebrow + title, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
                 <span class="q-head-icon">
                     <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock-history"></use></svg>
                 </span>
@@ -13,6 +14,15 @@
                     <div class="q-eyebrow">{{ config('app.name') }}</div>
                     <h1 class="q-title">Versionshinweise</h1>
                 </div>
+            </div>
+
+            {{-- Mobile: the app bar carries "Hilfe" (this page's section),
+                 not the page's own title — unlike search/notification/etc
+                 the two don't match, so "Versionshinweise" still needs to
+                 show, just collapsed to a compact line instead of the full
+                 icon+eyebrow+h1 stack (2026-07-22). --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                <div class="q-subtitle mb-0">Versionshinweise</div>
             </div>
         </div>
 

@@ -563,6 +563,7 @@
             'sent-emails.*' => ['Gesendete Emails', 'envelope'],
             'qr-scan.*' => ['QR-Code scannen', 'camera'],
             'exceptions.*' => ['Fehlerdateien', 'exclamation-triangle'],
+            'reauthenticate' => ['Sicherheitsprüfung', 'key'],
             'help.*|changelog.*' => ['Hilfe', 'question-circle'],
             'search.*' => ['Suche', 'search'],
         ];

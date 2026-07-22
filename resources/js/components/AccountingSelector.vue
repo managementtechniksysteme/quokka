@@ -20,7 +20,28 @@
           </div>
       </notification>
 
-      <div class="q-page-head">
+      <!-- Mobile: the app bar carries the title + Filter/Create/Auswertung
+           (and, only while something's unsaved, Save) instead — teleported
+           into partials/navbar.blade.php's mobile-detail-bar slot from
+           accounting/index.blade.php so it shares Vue's reactive state
+           (unsaved count, sheets) without a global event bus. -->
+      <teleport to="#accountingMobileActions">
+          <button v-if="permissions.includes('accounting.create')" type="button" class="q-appbar__btn" aria-label="Leistung erfassen" @click="openCreateSheet">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#plus-lg"></use></svg>
+          </button>
+          <button type="button" class="q-appbar__btn" aria-label="Filter" @click="openMobileFilter">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+          </button>
+          <button v-if="permissions.includes('accounting.createpdf')" type="button" class="q-appbar__btn" aria-label="Auswertung" @click="openMobileReport">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+          </button>
+          <button v-if="getUnsavedAccounting().length" type="button" class="q-appbar__btn q-appbar__btn--save" aria-label="Änderungen speichern" @click="saveData">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
+              <span class="q-appbar__btn-badge">{{ getUnsavedAccounting().length }}</span>
+          </button>
+      </teleport>
+
+      <div class="q-page-head d-none d-md-flex">
           <div class="d-flex align-items-center gap-3">
               <span class="q-head-icon">
                   <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#clock"></use></svg>
@@ -81,7 +102,20 @@
           </div>
       </div>
 
-      <div class="q-filterbar q-form">
+      <!-- Mobile: applied filters as removable pill chips, same pattern as a
+           detail page's own pill row before its stat bar — tap the Filter
+           app-bar icon to reopen the full sheet, tap a chip's × to clear
+           just that one filter (2026-07-22). -->
+      <div v-if="activeFilterChips().length" class="q-meta d-md-none mb-3">
+          <span v-for="chip in activeFilterChips()" :key="chip.key" class="q-chip">
+              {{ chip.label }}
+              <button type="button" class="q-quick-create-summary__clear" :aria-label="'Filter entfernen: ' + chip.label" @click="clearFilterChip(chip.key)">
+                  <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#x"></use></svg>
+              </button>
+          </span>
+      </div>
+
+      <div class="q-filterbar q-form d-none d-md-block">
           <div class="q-card">
               <div class="q-card__body">
                   <div class="q-filterbar__fields">
@@ -135,7 +169,7 @@
 
       <div class="q-grid">
           <div ref="accounting_overview">
-              <div v-if="accounting.length" class="q-card q-dtable">
+              <div v-if="isDesktopGrid && accounting.length" class="q-card q-dtable">
                   <div class="q-dtable__head q-accounting-grid">
                       <span>
                           <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorAccounting().length, 'text-danger': getErrorAccounting().length && !getShowNoDetailsErrorAccounting().length, 'text-muted': getErrorAccounting().length && getShowNoDetailsErrorAccounting().length}" :disabled="!getErrorAccounting().length" @click="toggleShowDetailsError()">
@@ -243,11 +277,55 @@
                   </template>
               </div>
 
+              <!-- Mobile: read-first card list — tap anywhere on a card to open
+                   its action sheet (Bearbeiten/Entfernen/Wiederherstellen, same
+                   three actions desktop offers), no per-cell inline editing and
+                   no chevron/reveal (comment + row errors just show inline on
+                   the card when present, 2026-07-22). Status shows as a
+                   top-right chip instead of the desktop left border — see
+                   .q-status--created/--edited/--removed in _quokka-ui.scss §S. -->
+              <div v-else-if="!isDesktopGrid && accounting.length" class="q-cardlist">
+                  <button
+                      v-for="(acc, index) in pageOfItems"
+                      :key="'acc-card-' + (acc.id ?? ('new' + index))"
+                      type="button"
+                      class="q-trow--card"
+                      @click="openMobileRowActions(acc)"
+                  >
+                      <div class="q-trow--card__top">
+                          <span class="q-trow--card__date">{{ acc.service_provided_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span>
+                          <span v-if="acc.action === 'store'" class="q-status q-status--created">Neu</span>
+                          <span v-else-if="acc.action === 'update'" class="q-status q-status--edited">Bearb.</span>
+                          <span v-else-if="acc.action === 'destroy'" class="q-status q-status--removed">Entfernt</span>
+                      </div>
+
+                      <div class="q-trow--card__title">{{ getProjectName(acc.project_id) }}</div>
+                      <div class="q-trow--card__sub">{{ getServiceName(acc.service_id) }}</div>
+
+                      <div class="q-trow--card__facts">
+                          <div>
+                              <span class="q-trow--card__label">Zeit</span>
+                              <span v-if="acc.service_provided_started_at">{{ acc.service_provided_started_at }}–{{ acc.service_provided_ended_at }}</span>
+                              <span v-else class="q-dtable__muted">–</span>
+                          </div>
+                          <div><span class="q-trow--card__label">Menge</span><b>{{ acc.amount.toLocaleString() }}</b></div>
+                          <div><span class="q-trow--card__label">MA</span>{{ getEmployeeInitials(acc.employee_id) }}</div>
+                      </div>
+
+                      <p v-if="acc.comment" class="q-trow--card__comment">{{ acc.comment }}</p>
+
+                      <p v-if="acc.errors" class="q-trow--card__error">
+                          <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                          {{ acc.errors[0] }}
+                      </p>
+                  </button>
+              </div>
+
               <div v-if="accounting.length" class="mt-3">
                   <jw-pagination :labels="pagination_labels" :items="accounting" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
               </div>
 
-              <p v-if="accounting.length" class="q-legend">
+              <p v-if="accounting.length" class="q-legend d-none d-md-block">
                   Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
                   <b style="color: var(--q-green)">●</b> wird angelegt ·
                   <b style="color: var(--q-amber)">●</b> wird bearbeitet ·
@@ -261,7 +339,7 @@
               </div>
           </div>
 
-          <div v-if="permissions.includes('accounting.create')" class="q-grid__form q-form">
+          <div v-if="isDesktopGrid && permissions.includes('accounting.create')" class="q-grid__form q-form">
               <div class="q-card__head d-flex align-items-center gap-2">
                   <span class="q-section-icon q-section-icon--accent">
                       <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
@@ -320,7 +398,7 @@
           </div>
       </div>
 
-      <div v-if="accounting.length" class="q-savebar">
+      <div v-if="isDesktopGrid && accounting.length" class="q-savebar">
           <div class="q-savebar__inner">
               <button ref="save_button" type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" :disabled="!getUnsavedAccounting().length" @click="saveData()">
                   <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
@@ -329,10 +407,180 @@
           </div>
       </div>
 
+      <!-- Mobile: sheets, teleported to <body> to escape .q-appbar's own
+           stacking context (nesting a sheet inside the fixed-position app bar
+           caps it below .q-tabbar's z-index — same fix already used for every
+           detail page's own action sheet, see partials/navbar.blade.php's
+           @yield('mobile-detail-sheets') comment). -->
+      <teleport to="body">
+          <!-- Row action sheet: same three actions the desktop table offers
+               per row (Bearbeiten/Entfernen/Wiederherstellen) — no new
+               functionality, just relocated behind a tap-the-row sheet
+               instead of always-visible icon buttons (2026-07-22). -->
+          <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileRowActionsSheet" aria-label="Aktionen" @hidden.bs.offcanvas="onMobileRowActionsHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body" v-if="mobileRowActions.target">
+                  <div class="q-sheet__label">{{ mobileRowActions.target.service_provided_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</div>
+
+                  <button v-if="canEditAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileEditFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg></span>
+                      <span class="q-row__title">Bearbeiten</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action !== 'destroy' && canRemoveAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row q-row--danger" @click="mobileRemoveFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
+                      <span class="q-row__title">Entfernen</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action === 'destroy' && canRemoveAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileRestoreFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg></span>
+                      <span class="q-row__title">Wiederherstellen</span>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Create/edit sheet: one sheet bound to a working-copy draft for
+               both modes, same fields as the desktop .q-grid__form pane,
+               reusing its exact validation (isAmountInvalid/autofill/
+               isTwentyFourHourTimeFormat) rather than duplicating it. -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="accountingSheet" aria-label="Leistung erfassen" @hidden.bs.offcanvas="onAccountingSheetHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">{{ sheet.mode === 'create' ? 'Leistung erfassen' : 'Eintrag bearbeiten' }}</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div>
+                          <label for="sheet_service_provided_on">Datum</label>
+                          <input type="date" class="form-control" v-bind:class="{'is-invalid': sheet.errors.service_provided_on}" id="sheet_service_provided_on" v-model="sheet.draft.service_provided_on" required />
+                          <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
+                      </div>
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="sheet_service_provided_started_at">Start</label>
+                              <input type="time" :max="sheet.draft.service_provided_ended_at" class="form-control" v-bind:class="{'is-invalid': sheet.errors.service_provided_started_at}" id="sheet_service_provided_started_at" placeholder="08:00" :disabled="getService(sheet.draft.service_id) !== undefined && getService(sheet.draft.service_id).unit !== services_hour_unit" v-model="sheet.draft.service_provided_started_at" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Start muss eine gültige Uhrzeit sein.</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="sheet_service_provided_ended_at">Ende</label>
+                              <input type="time" :min="sheet.draft.service_provided_started_at" class="form-control" v-bind:class="{'is-invalid': sheet.errors.service_provided_ended_at}" id="sheet_service_provided_ended_at" placeholder="13:00" :disabled="getService(sheet.draft.service_id) !== undefined && getService(sheet.draft.service_id).unit !== services_hour_unit" v-model="sheet.draft.service_provided_ended_at" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Ende muss eine gültige Uhrzeit sein.</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="getProject(sheet.draft.project_id)" :selectOnTab="true" @update:modelValue="setSheetProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.project_id}">Projekt muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label>Leistung</label>
+                          <v-select :options="services" label="name_with_unit" placeholder="Leistung auswählen" :modelValue="getService(sheet.draft.service_id)" :selectOnTab="true" @update:modelValue="setSheetService">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.service_id}">Leistung muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label for="sheet_amount">Menge</label>
+                          <input type="number" class="form-control" v-bind:class="{'is-invalid': sheet.errors.amount}" :min="getService(sheet.draft.service_id) && getService(sheet.draft.service_id).type === 'wage' ? min_amount : 0.01" :step="getService(sheet.draft.service_id) && getService(sheet.draft.service_id).type === 'wage' ? min_amount : 0.01" id="sheet_amount" placeholder="5" v-model="sheet.draft.amount" @blur="autofillSheet" />
+                          <div class="invalid-feedback">
+                              <span v-if="getService(sheet.draft.service_id) && getService(sheet.draft.service_id).type === 'wage'">Menge muss ein Vielfaches von {{ min_amount }} sein.</span>
+                              <span v-else>Menge muss mindestens 0.01 sein.</span>
+                          </div>
+                      </div>
+                      <div>
+                          <label for="sheet_comment">Bemerkungen</label>
+                          <textarea class="form-control" id="sheet_comment" placeholder="Bemerkungen" v-model="sheet.draft.comment" />
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applySheet">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#check"></use></svg>
+                          {{ sheet.mode === 'create' ? 'Hinzufügen' : 'Übernehmen' }}
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Filter sheet: the exact desktop filter fields, reused verbatim. -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="mobileFilterSheet" aria-label="Filter" @hidden.bs.offcanvas="onMobileFilterHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">Filter</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_start">Start</label>
+                              <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="mobile_filter_start" :disabled="filter_only_unsaved" v-model="filter_start" />
+                              <div v-if="filter_start_errors" class="invalid-feedback d-block">{{ filter_start_errors[0] }}</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_end">Ende</label>
+                              <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="mobile_filter_end" :disabled="filter_only_unsaved" v-model="filter_end" />
+                              <div v-if="filter_end_errors" class="invalid-feedback d-block">{{ filter_end_errors[0] }}</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>
+                      </div>
+                      <div>
+                          <label>Leistung</label>
+                          <v-select :options="services" label="name_with_unit" placeholder="Alle Leistungen" :disabled="filter_only_unsaved" :modelValue="filter_service" :selectOnTab="true" @update:modelValue="setFilterService">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_service_errors" class="invalid-feedback d-block">{{ filter_service_errors[0] }}</div>
+                      </div>
+                      <div v-if="permissions.includes('accounting.view.own') && permissions.includes('accounting.view.other')" class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" id="mobile_filter_only_own" :disabled="filter_only_unsaved" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                          <label class="form-check-label" for="mobile_filter_only_own">Nur eigene</label>
+                          <div v-if="filter_only_own_errors" class="invalid-feedback d-block">{{ filter_only_own_errors[0] }}</div>
+                      </div>
+                      <div class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" id="mobile_filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                          <label class="form-check-label" for="mobile_filter_only_unsaved">Nur ungespeicherte</label>
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applyMobileFilter">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                          Filtern
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Report (Auswertung) employee picker — only shown when there's
+               actually a choice to make (accounting.view.other); the common
+               single-employee case skips this sheet entirely, see
+               openMobileReport(). Same checklist the desktop dropdown uses. -->
+          <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileReportSheet" aria-label="Auswertung" @hidden.bs.offcanvas="onMobileReportHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body" v-if="mobileReportPicker.selectedIds">
+                  <div class="q-sheet__label">Auswertung</div>
+
+                  <div class="d-flex flex-column px-2 pb-2">
+                      <div v-for="employeeId in getShownEmployeeIds()" :key="'mobile-emp-'+employeeId" class="form-check py-1">
+                          <input type="checkbox" class="form-check-input" :id="'mobile-employee-'+employeeId" :checked="mobileReportPicker.selectedIds.includes(employeeId)" @change="toggleMobileReportEmployee(employeeId)">
+                          <label class="form-check-label d-inline-flex align-items-center gap-1" v-bind:class="{'text-primary': employeeId === current_employee.id}" :for="'mobile-employee-'+employeeId">
+                              <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#person"></use></svg>
+                              {{ getEmployeeName(employeeId) }}
+                          </label>
+                      </div>
+
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2 mt-3" :disabled="!mobileReportPicker.selectedIds.length" @click="submitMobileReport">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+                          Erstellen
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </teleport>
+
   </div>
 </template>
 
 <script>
+    import breakpoint from '../mixins/breakpoint';
+
     const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
@@ -350,6 +598,8 @@
 
     export default {
         name: "AccountingSelector",
+
+        mixins: [breakpoint],
 
         data() {
             let today = new Date();
@@ -397,6 +647,12 @@
                 selectAllHover: false,
 
                 dataResult: null,
+
+                // --- Mobile (see resources/js/mixins/breakpoint.js for isDesktopGrid) ---
+                mobileFilterOpen: false,
+                mobileRowActions: { open: false, target: null },
+                mobileReportPicker: { open: false },
+                sheet: { open: false, mode: 'create', target: null, draft: {}, errors: {} },
             }
         },
 
@@ -407,7 +663,7 @@
                 this.current_accounting.forEach(acc => {
                     let date = Date.parse(acc.service_provided_on);
 
-                    this.accounting.push({
+                    let row = {
                         action: null,
                         action_old: null,
                         errors: null,
@@ -424,7 +680,9 @@
                         employee_id: acc.employee_id,
                         amount: acc.amount,
                         comment: acc.comment,
-                    });
+                    };
+
+                    this.accounting.push(row);
                 });
             }
 
@@ -553,7 +811,7 @@
                 newAccounting.forEach(acc => {
                     let date = Date.parse(acc.service_provided_on);
 
-                    this.accounting.push({
+                    let row = {
                         action: null,
                         action_old: null,
                         errors: null,
@@ -570,7 +828,9 @@
                         employee_id: acc.employee_id,
                         amount: acc.amount,
                         comment: acc.comment,
-                    });
+                    };
+
+                    this.accounting.push(row);
                 });
 
                 removedUnchangedAccounting.forEach(acc => {
@@ -914,6 +1174,268 @@
                 }
 
                 accounting.action = accounting.action_old ? accounting.action_old : null;
+            },
+
+            // --- Mobile: sheets (Bootstrap's own offcanvas JS owns the actual
+            // show/hide + backdrop/ESC/focus-trap; these just drive it from Vue
+            // state and stay in sync when the user dismisses via backdrop/swipe
+            // instead of one of our own buttons, via @hidden.bs.offcanvas in the
+            // template). ---
+            showSheet(ref) {
+                this.$nextTick(() => {
+                    window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).show();
+                });
+            },
+
+            hideSheet(ref) {
+                window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).hide();
+            },
+
+            openMobileRowActions(accounting) {
+                this.mobileRowActions = { open: true, target: accounting };
+                this.showSheet('mobileRowActionsSheet');
+            },
+
+            onMobileRowActionsHidden() {
+                this.mobileRowActions.open = false;
+            },
+
+            mobileEditFromRowActions() {
+                let accounting = this.mobileRowActions.target;
+                this.hideSheet('mobileRowActionsSheet');
+                // opened once the row-actions sheet has finished hiding, so the
+                // two offcanvases never overlap/fight over the same backdrop.
+                this.$refs.mobileRowActionsSheet.addEventListener('hidden.bs.offcanvas', () => {
+                    this.openEditSheet(accounting);
+                }, { once: true });
+            },
+
+            mobileRemoveFromRowActions() {
+                this.removeAccounting(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            mobileRestoreFromRowActions() {
+                this.restoreAccounting(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            _blankSheetDraft() {
+                let today = new Date();
+
+                return {
+                    service_provided_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                    service_provided_started_at: null,
+                    service_provided_ended_at: null,
+                    project_id: null,
+                    service_id: null,
+                    amount: null,
+                    comment: null,
+                };
+            },
+
+            openCreateSheet() {
+                this.sheet = { open: true, mode: 'create', target: null, draft: this._blankSheetDraft(), errors: {} };
+                this.showSheet('accountingSheet');
+            },
+
+            openEditSheet(accounting) {
+                if(!this.canEditAccounting(this.current_employee, accounting)) {
+                    return;
+                }
+
+                this.sheet = {
+                    open: true,
+                    mode: 'edit',
+                    target: accounting,
+                    errors: {},
+                    draft: {
+                        service_provided_on: this.getDateStringForInputField(accounting.service_provided_on),
+                        service_provided_started_at: accounting.service_provided_started_at,
+                        service_provided_ended_at: accounting.service_provided_ended_at,
+                        project_id: accounting.project_id,
+                        service_id: accounting.service_id,
+                        amount: accounting.amount,
+                        comment: accounting.comment,
+                    },
+                };
+                this.showSheet('accountingSheet');
+            },
+
+            onAccountingSheetHidden() {
+                this.sheet.open = false;
+            },
+
+            setSheetProject(value) {
+                this.sheet.draft.project_id = value ? value.id : null;
+            },
+
+            setSheetService(value) {
+                this.sheet.draft.service_id = value ? value.id : null;
+                this.autofill(this.sheet.draft);
+            },
+
+            autofillSheet() {
+                this.autofill(this.sheet.draft);
+            },
+
+            applySheet() {
+                let draft = this.sheet.draft;
+                let service = this.getService(draft.service_id);
+                let hourBased = service && service.type === 'wage' && service.unit === this.services_hour_unit;
+                let date = new Date(draft.service_provided_on);
+                let amount = draft.amount === null ? NaN : Number(draft.amount);
+
+                this.sheet.errors = {
+                    service_provided_on: isNaN(date.getTime()),
+                    service_provided_started_at: hourBased && !this.isTwentyFourHourTimeFormat(draft.service_provided_started_at),
+                    service_provided_ended_at: hourBased && !this.isTwentyFourHourTimeFormat(draft.service_provided_ended_at),
+                    project_id: !draft.project_id,
+                    service_id: !draft.service_id,
+                    amount: this.isAmountInvalid(amount, service),
+                };
+
+                if(Object.values(this.sheet.errors).some(invalid => invalid)) {
+                    return;
+                }
+
+                if(this.sheet.mode === 'create') {
+                    let row = {
+                        action: 'store', action_old: 'store', errors: null,
+                        selected: false, show_details: false, hover: false, edit: null, id: null,
+                        service_provided_on: date,
+                        service_provided_started_at: draft.service_provided_started_at,
+                        service_provided_ended_at: draft.service_provided_ended_at,
+                        project_id: draft.project_id,
+                        service_id: draft.service_id,
+                        employee_id: null,
+                        amount: amount,
+                        comment: draft.comment,
+                    };
+
+                    this.accounting.push(row);
+                    this.accounting = [...this.accounting];
+                    this.initialPage = this.getLastPage();
+                }
+                else {
+                    let accounting = this.sheet.target;
+
+                    accounting.service_provided_on = date;
+                    accounting.service_provided_started_at = draft.service_provided_started_at;
+                    accounting.service_provided_ended_at = draft.service_provided_ended_at;
+                    accounting.project_id = draft.project_id;
+                    accounting.service_id = draft.service_id;
+                    accounting.amount = amount;
+                    accounting.comment = draft.comment;
+
+                    this.setChangedAccountingStatus(accounting);
+                }
+
+                this.hideSheet('accountingSheet');
+            },
+
+            // --- Mobile: filter sheet + active-filter chip row ---
+            openMobileFilter() {
+                this.mobileFilterOpen = true;
+                this.showSheet('mobileFilterSheet');
+            },
+
+            onMobileFilterHidden() {
+                this.mobileFilterOpen = false;
+            },
+
+            applyMobileFilter() {
+                this.filterData();
+                this.hideSheet('mobileFilterSheet');
+            },
+
+            activeFilterChips() {
+                if(this.filter_only_unsaved) {
+                    return [{ key: 'only_unsaved', label: 'Nur ungespeicherte' }];
+                }
+
+                let chips = [];
+
+                if(this.filter_start || this.filter_end) {
+                    let format = value => new Date(value).toLocaleDateString('de', { day: '2-digit', month: '2-digit' });
+                    let label = this.filter_start && this.filter_end ? format(this.filter_start) + ' – ' + format(this.filter_end)
+                        : this.filter_start ? 'ab ' + format(this.filter_start)
+                        : 'bis ' + format(this.filter_end);
+
+                    chips.push({ key: 'dates', label: label });
+                }
+                if(this.filter_project) {
+                    chips.push({ key: 'project', label: this.filter_project.name });
+                }
+                if(this.filter_service) {
+                    chips.push({ key: 'service', label: this.filter_service.name_with_unit });
+                }
+                if(this.filter_only_own) {
+                    chips.push({ key: 'only_own', label: 'Nur eigene' });
+                }
+
+                return chips;
+            },
+
+            clearFilterChip(key) {
+                switch(key) {
+                    case 'dates':
+                        this.filter_start = null;
+                        this.filter_end = null;
+                        break;
+                    case 'project':
+                        this.filter_project = null;
+                        break;
+                    case 'service':
+                        this.filter_service = null;
+                        break;
+                    case 'only_own':
+                        this.filter_only_own = false;
+                        break;
+                    case 'only_unsaved':
+                        this.filter_only_unsaved = false;
+                        break;
+                }
+
+                this.filterData();
+            },
+
+            // --- Mobile: report (Auswertung) — single tap for the common case
+            // (only your own entries shown); a small sheet with the same
+            // employee checklist the desktop dropdown uses when you can also
+            // see other employees' entries. ---
+            openMobileReport() {
+                if(this.getShownEmployeeIds().length <= 1) {
+                    this.createPdf(this.current_employee.id);
+                    return;
+                }
+
+                this.mobileReportPicker = { open: true, selectedIds: [this.current_employee.id] };
+                this.showSheet('mobileReportSheet');
+            },
+
+            onMobileReportHidden() {
+                this.mobileReportPicker.open = false;
+            },
+
+            toggleMobileReportEmployee(employeeId) {
+                let index = this.mobileReportPicker.selectedIds.indexOf(employeeId);
+
+                if(index === -1) {
+                    this.mobileReportPicker.selectedIds.push(employeeId);
+                }
+                else {
+                    this.mobileReportPicker.selectedIds.splice(index, 1);
+                }
+            },
+
+            submitMobileReport() {
+                if(!this.mobileReportPicker.selectedIds.length) {
+                    return;
+                }
+
+                this.createPdf(this.mobileReportPicker.selectedIds);
+                this.hideSheet('mobileReportSheet');
             },
 
             canRemoveAccounting(employee, accounting) {
@@ -1305,6 +1827,17 @@
             getEmployeeShortName(employeeId) {
                 let employee = this.employees.find(employee => employee.id === employeeId);
                 return employee ? employee.short_name : this.current_employee.short_name;
+            },
+
+            // Mobile card list only — the facts row is tighter than the desktop
+            // table column, and a 2-letter abbreviation is more useful there
+            // than short_name's "Vorname N." when scanning several employees'
+            // entries. Reuses the same avatar.initials every avatar circle in
+            // the app already shows (prefers the linked user's own initials),
+            // no new backend field needed.
+            getEmployeeInitials(employeeId) {
+                let employee = this.employees.find(employee => employee.id === employeeId);
+                return employee ? employee.avatar.initials : this.current_employee.avatar.initials;
             },
 
             getShownEmployeeIds() {

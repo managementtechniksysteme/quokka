@@ -20,7 +20,31 @@
           </div>
       </notification>
 
-      <div class="q-page-head">
+      <!-- Mobile: the app bar carries the title + Create/Filter/Auswertung
+           (and, only while something's unsaved, Save) instead — teleported
+           into partials/navbar.blade.php's mobile-detail-bar slot from
+           logbook/index.blade.php so it shares Vue's reactive state (unsaved
+           count, sheets) without a global event bus. Auswertung here is a
+           single direct tap (unlike accounting's) — logbook's createPdf()
+           takes no employee selection, it's scoped by the current filter
+           only. -->
+      <teleport to="#logbookMobileActions">
+          <button v-if="permissions.includes('logbook.create')" type="button" class="q-appbar__btn" aria-label="Fahrt eintragen" @click="openCreateSheet">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#plus-lg"></use></svg>
+          </button>
+          <button type="button" class="q-appbar__btn" aria-label="Filter" @click="openMobileFilter">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+          </button>
+          <button v-if="permissions.includes('logbook.createpdf') && logbook.length" type="button" class="q-appbar__btn" aria-label="Auswertung" @click="createPdf">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+          </button>
+          <button v-if="getUnsavedLogbook().length" type="button" class="q-appbar__btn q-appbar__btn--save" aria-label="Änderungen speichern" @click="saveData">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
+              <span class="q-appbar__btn-badge">{{ getUnsavedLogbook().length }}</span>
+          </button>
+      </teleport>
+
+      <div class="q-page-head d-none d-md-flex">
           <div class="d-flex align-items-center gap-3">
               <span class="q-head-icon">
                   <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#journal"></use></svg>
@@ -58,7 +82,18 @@
           </div>
       </div>
 
-      <div class="q-filterbar q-form">
+      <!-- Mobile: applied filters as removable pill chips, same pattern as
+           AccountingSelector's (2026-07-22). -->
+      <div v-if="activeFilterChips().length" class="q-meta d-md-none mb-3">
+          <span v-for="chip in activeFilterChips()" :key="chip.key" class="q-chip">
+              {{ chip.label }}
+              <button type="button" class="q-quick-create-summary__clear" :aria-label="'Filter entfernen: ' + chip.label" @click="clearFilterChip(chip.key)">
+                  <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#x"></use></svg>
+              </button>
+          </span>
+      </div>
+
+      <div class="q-filterbar q-form d-none d-md-block">
           <div class="q-card">
               <div class="q-card__body">
                   <div class="q-filterbar__fields">
@@ -112,7 +147,7 @@
 
       <div class="q-grid">
           <div ref="logbook_overview">
-              <div v-if="logbook.length" class="q-card q-dtable">
+              <div v-if="isDesktopGrid && logbook.length" class="q-card q-dtable">
                   <div class="q-dtable__head q-logbook-grid">
                       <span>
                           <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorLogbook().length, 'text-danger': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length, 'text-muted': getErrorLogbook().length && getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
@@ -236,11 +271,52 @@
                   </template>
               </div>
 
+              <!-- Mobile: read-first card list, same recipe as
+                   AccountingSelector's (2026-07-22) — tap a card for its
+                   action sheet, no chevron/reveal, comment + row errors
+                   print inline when present. -->
+              <div v-else-if="!isDesktopGrid && logbook.length" class="q-cardlist">
+                  <button
+                      v-for="(book, index) in pageOfItems"
+                      :key="'book-card-' + (book.id ?? ('new' + index))"
+                      type="button"
+                      class="q-trow--card"
+                      @click="openMobileRowActions(book)"
+                  >
+                      <div class="q-trow--card__top">
+                          <span class="q-trow--card__date">{{ book.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span>
+                          <span v-if="book.action === 'store'" class="q-status q-status--created">Neu</span>
+                          <span v-else-if="book.action === 'update'" class="q-status q-status--edited">Bearb.</span>
+                          <span v-else-if="book.action === 'destroy'" class="q-status q-status--removed">Entfernt</span>
+                      </div>
+
+                      <div class="q-trow--card__title">{{ book.origin }} → {{ book.destination }}</div>
+                      <div class="q-trow--card__sub">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</div>
+
+                      <div class="q-trow--card__facts">
+                          <div><span class="q-trow--card__label">km</span><b>{{ book.driven_kilometres.toLocaleString() }}</b></div>
+                          <div>
+                              <span class="q-trow--card__label">Getankt</span>
+                              <span v-if="book.litres_refuelled">{{ book.litres_refuelled.toLocaleString() }} l</span>
+                              <span v-else class="q-dtable__muted">–</span>
+                          </div>
+                          <div><span class="q-trow--card__label">MA</span>{{ getEmployeeInitials(book.employee_id) }}</div>
+                      </div>
+
+                      <p v-if="book.comment" class="q-trow--card__comment">{{ book.comment }}</p>
+
+                      <p v-if="book.errors" class="q-trow--card__error">
+                          <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                          {{ book.errors[0] }}
+                      </p>
+                  </button>
+              </div>
+
               <div v-if="logbook.length" class="mt-3">
                   <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
               </div>
 
-              <p v-if="logbook.length" class="q-legend">
+              <p v-if="logbook.length" class="q-legend d-none d-md-block">
                   Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
                   <b style="color: var(--q-green)">●</b> wird angelegt ·
                   <b style="color: var(--q-amber)">●</b> wird bearbeitet ·
@@ -254,7 +330,7 @@
               </div>
           </div>
 
-          <div v-if="permissions.includes('logbook.create')" class="q-grid__form q-form">
+          <div v-if="isDesktopGrid && permissions.includes('logbook.create')" class="q-grid__form q-form">
               <div class="q-card__head d-flex align-items-center gap-2">
                   <span class="q-section-icon q-section-icon--accent">
                       <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
@@ -300,14 +376,14 @@
                   </div>
                   <div>
                       <label>Start</label>
-                      <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin">
+                      <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" :taggable="true" @update:modelValue="setOrigin">
                           <template v-slot:no-options>Keine passenden Einträge.</template>
                       </v-select>
                       <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">Start muss ausgefüllt sein.</div>
                   </div>
                   <div>
                       <label>Ziel</label>
-                      <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination">
+                      <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :modelValue="destination" :selectOnTab="true" :taggable="true" @update:modelValue="setDestination">
                           <template v-slot:no-options>Keine passenden Einträge.</template>
                       </v-select>
                       <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">Ziel muss ausgefüllt sein.</div>
@@ -348,7 +424,7 @@
           </div>
       </div>
 
-      <div v-if="logbook.length" class="q-savebar">
+      <div v-if="isDesktopGrid && logbook.length" class="q-savebar">
           <div class="q-savebar__inner">
               <button ref="save_button" type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" :disabled="!getUnsavedLogbook().length" @click="saveData()">
                   <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
@@ -357,10 +433,177 @@
           </div>
       </div>
 
+      <!-- Mobile: sheets, teleported to <body> — see AccountingSelector's
+           identical comment on why (escaping .q-appbar's stacking context). -->
+      <teleport to="body">
+          <!-- Row action sheet: same three actions the desktop table offers
+               per row (Bearbeiten/Entfernen/Wiederherstellen). -->
+          <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileRowActionsSheet" aria-label="Aktionen" @hidden.bs.offcanvas="onMobileRowActionsHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body" v-if="mobileRowActions.target">
+                  <div class="q-sheet__label">{{ mobileRowActions.target.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</div>
+
+                  <button v-if="canEditLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileEditFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg></span>
+                      <span class="q-row__title">Bearbeiten</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action !== 'destroy' && canRemoveLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row q-row--danger" @click="mobileRemoveFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
+                      <span class="q-row__title">Entfernen</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action === 'destroy' && canRemoveLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileRestoreFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg></span>
+                      <span class="q-row__title">Wiederherstellen</span>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Create/edit sheet: same fields as the desktop .q-grid__form
+               pane, reusing its exact validation/autofill logic against a
+               working-copy draft. Hin- und Rückfahrt only applies to create
+               (mirrors desktop — editing a single existing row never offers
+               a return-trip split). -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="logbookSheet" aria-label="Fahrt eintragen" @hidden.bs.offcanvas="onLogbookSheetHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">{{ sheet.mode === 'create' ? 'Fahrt eintragen' : 'Eintrag bearbeiten' }}</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div>
+                          <label>Fahrzeug</label>
+                          <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="getVehicle(sheet.draft.vehicle_id)" :selectOnTab="true" @update:modelValue="setSheetVehicle">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.vehicle_id}">Fahrzeug muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label for="sheet_driven_on">Datum</label>
+                          <input type="date" class="form-control" v-bind:class="{'is-invalid': sheet.errors.driven_on}" id="sheet_driven_on" v-model="sheet.draft.driven_on" required />
+                          <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
+                      </div>
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="sheet_start_kilometres">Start km</label>
+                              <input type="number" min="0" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.start_kilometres}" id="sheet_start_kilometres" placeholder="131337" v-model="sheet.draft.start_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Start Kilometer müssen mindestens 0 sein.</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="sheet_end_kilometres">Ende km</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.end_kilometres}" id="sheet_end_kilometres" placeholder="131415" v-model="sheet.draft.end_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Ende Kilometer müssen mindestens 1 sein.</div>
+                          </div>
+                      </div>
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="sheet_driven_kilometres">gefahrene KM</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.driven_kilometres}" id="sheet_driven_kilometres" placeholder="78" v-model="sheet.draft.driven_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">gefahrene Kilometer müssen mindestens 1 sein.</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="sheet_litres_refuelled">getankte Liter</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.litres_refuelled}" id="sheet_litres_refuelled" placeholder="54" v-model="sheet.draft.litres_refuelled" />
+                              <div class="invalid-feedback">getankte Liter müssen mindestens 1 sein.</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Start</label>
+                          <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :modelValue="sheet.draft.origin" :selectOnTab="true" :taggable="true" @update:modelValue="setSheetOrigin">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.origin}">Start muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label>Ziel</label>
+                          <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :modelValue="sheet.draft.destination" :selectOnTab="true" :taggable="true" @update:modelValue="setSheetDestination">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.destination}">Ziel muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="getProject(sheet.draft.project_id)" :selectOnTab="true" @update:modelValue="setSheetProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                      </div>
+                      <div>
+                          <label for="sheet_comment">Bemerkungen</label>
+                          <textarea class="form-control" id="sheet_comment" placeholder="Bemerkungen" v-model="sheet.draft.comment" />
+                      </div>
+                      <div v-if="sheet.mode === 'create'">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" id="sheet_return_trip" :checked="sheet.returnTrip" @click="toggleSheetReturnTrip">
+                              <label class="form-check-label" for="sheet_return_trip">Hin- und Rückfahrt</label>
+                          </div>
+                          <p v-if="sheet.returnTrip" class="q-subtitle mt-2 mb-0">
+                              Es werden zwei Fahrten mit halbierter Kilometeranzahl und vertauschtem Start sowie
+                              Ziel angelegt. Getankte Liter werden beim ersten Eintrag hinzugefügt.
+                          </p>
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applySheet">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#check"></use></svg>
+                          {{ sheet.mode === 'create' ? 'Hinzufügen' : 'Übernehmen' }}
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Filter sheet: the exact desktop filter fields, reused verbatim. -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="mobileFilterSheet" aria-label="Filter" @hidden.bs.offcanvas="onMobileFilterHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">Filter</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_start">Start</label>
+                              <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="mobile_filter_start" :disabled="filter_only_unsaved" v-model="filter_start" />
+                              <div v-if="filter_start_errors" class="invalid-feedback d-block">{{ filter_start_errors[0] }}</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_end">Ende</label>
+                              <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="mobile_filter_end" :disabled="filter_only_unsaved" v-model="filter_end" />
+                              <div v-if="filter_end_errors" class="invalid-feedback d-block">{{ filter_end_errors[0] }}</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Fahrzeug</label>
+                          <v-select :options="vehicles" label="registration_identifier" placeholder="Alle Fahrzeuge" :disabled="filter_only_unsaved" :modelValue="filter_vehicle" :selectOnTab="true" @update:modelValue="setFilterVehicle">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_vehicle_errors" class="invalid-feedback d-block">{{ filter_vehicle_errors[0] }}</div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>
+                      </div>
+                      <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" id="mobile_filter_only_own" :disabled="filter_only_unsaved" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                          <label class="form-check-label" for="mobile_filter_only_own">Nur eigene</label>
+                          <div v-if="filter_only_own_errors" class="invalid-feedback d-block">{{ filter_only_own_errors[0] }}</div>
+                      </div>
+                      <div class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" id="mobile_filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                          <label class="form-check-label" for="mobile_filter_only_unsaved">Nur ungespeicherte</label>
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applyMobileFilter">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                          Filtern
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </teleport>
+
   </div>
 </template>
 
 <script>
+    import breakpoint from '../mixins/breakpoint';
+
     const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
@@ -378,6 +621,8 @@
 
     export default {
         name: "LogbookSelector",
+
+        mixins: [breakpoint],
 
         data() {
             let today = new Date();
@@ -437,6 +682,11 @@
                 selectAllHover: false,
 
                 dataResult: null,
+
+                // --- Mobile (see resources/js/mixins/breakpoint.js for isDesktopGrid) ---
+                mobileFilterOpen: false,
+                mobileRowActions: { open: false, target: null },
+                sheet: { open: false, mode: 'create', target: null, draft: {}, errors: {} },
             }
         },
 
@@ -1071,6 +1321,319 @@
                     (logbook.employee_id !== employee.id && this.permissions.includes('logbook.delete.other'));
             },
 
+            // --- Mobile: sheets (Bootstrap's own offcanvas JS owns show/hide +
+            // backdrop/ESC/focus-trap; these just drive it from Vue state, see
+            // AccountingSelector's identical comment). ---
+            showSheet(ref) {
+                this.$nextTick(() => {
+                    window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).show();
+                });
+            },
+
+            hideSheet(ref) {
+                window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).hide();
+            },
+
+            openMobileRowActions(logbook) {
+                this.mobileRowActions = { open: true, target: logbook };
+                this.showSheet('mobileRowActionsSheet');
+            },
+
+            onMobileRowActionsHidden() {
+                this.mobileRowActions.open = false;
+            },
+
+            mobileEditFromRowActions() {
+                let logbook = this.mobileRowActions.target;
+                this.hideSheet('mobileRowActionsSheet');
+                this.$refs.mobileRowActionsSheet.addEventListener('hidden.bs.offcanvas', () => {
+                    this.openEditSheet(logbook);
+                }, { once: true });
+            },
+
+            mobileRemoveFromRowActions() {
+                this.removeLogbook(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            mobileRestoreFromRowActions() {
+                this.restoreLogbook(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            _blankSheetDraft() {
+                let today = new Date();
+
+                return {
+                    driven_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                    start_kilometres: null,
+                    end_kilometres: null,
+                    driven_kilometres: null,
+                    litres_refuelled: null,
+                    origin: null,
+                    destination: null,
+                    vehicle_id: null,
+                    project_id: null,
+                    comment: null,
+                };
+            },
+
+            openCreateSheet() {
+                this.sheet = { open: true, mode: 'create', target: null, draft: this._blankSheetDraft(), errors: {}, returnTrip: false };
+                this.showSheet('logbookSheet');
+            },
+
+            openEditSheet(logbook) {
+                if(!this.canEditLogbook(this.current_employee, logbook)) {
+                    return;
+                }
+
+                this.sheet = {
+                    open: true,
+                    mode: 'edit',
+                    target: logbook,
+                    errors: {},
+                    returnTrip: false,
+                    draft: {
+                        driven_on: this.getDateStringForInputField(logbook.driven_on),
+                        start_kilometres: logbook.start_kilometres,
+                        end_kilometres: logbook.end_kilometres,
+                        driven_kilometres: logbook.driven_kilometres,
+                        litres_refuelled: logbook.litres_refuelled,
+                        origin: logbook.origin,
+                        destination: logbook.destination,
+                        vehicle_id: logbook.vehicle_id,
+                        project_id: logbook.project_id,
+                        comment: logbook.comment,
+                    },
+                };
+                this.showSheet('logbookSheet');
+            },
+
+            onLogbookSheetHidden() {
+                this.sheet.open = false;
+            },
+
+            setSheetVehicle(value) {
+                this.sheet.draft.vehicle_id = value ? value.id : null;
+                this.autofillSheet();
+            },
+
+            setSheetProject(value) {
+                this.sheet.draft.project_id = value ? value.id : null;
+            },
+
+            setSheetOrigin(value) {
+                this.sheet.draft.origin = value;
+            },
+
+            setSheetDestination(value) {
+                this.sheet.draft.destination = value;
+            },
+
+            toggleSheetReturnTrip() {
+                this.sheet.returnTrip = !this.sheet.returnTrip;
+            },
+
+            // Same three sub-cases as autofill() below, just against the sheet's
+            // draft instead of either the flat create-form fields or a live
+            // table row.
+            autofillSheet() {
+                let draft = this.sheet.draft;
+                let startKilometres = Number(draft.start_kilometres);
+                let endKilometres = Number(draft.end_kilometres);
+                let drivenKilometres = Number(draft.driven_kilometres);
+                let vehicle = this.getVehicle(draft.vehicle_id);
+
+                if(vehicle && !startKilometres && !endKilometres && !drivenKilometres) {
+                    let bookedStart = vehicle.current_kilometres ? vehicle.current_kilometres : null;
+                    let highestEnd = this.getHighestVehicleEndKilometres(vehicle);
+                    draft.start_kilometres = (highestEnd && highestEnd > bookedStart) ? highestEnd : bookedStart;
+                }
+                else if(startKilometres && endKilometres && !drivenKilometres) {
+                    draft.driven_kilometres = endKilometres - startKilometres;
+                }
+                else if(startKilometres && drivenKilometres && !endKilometres) {
+                    draft.end_kilometres = startKilometres + drivenKilometres;
+                }
+                else if(endKilometres && drivenKilometres && !startKilometres) {
+                    draft.start_kilometres = endKilometres - drivenKilometres;
+                }
+            },
+
+            applySheet() {
+                let draft = this.sheet.draft;
+                let date = new Date(draft.driven_on);
+                let startKilometres = draft.start_kilometres === null || draft.start_kilometres === '' ? null : Number(draft.start_kilometres);
+                let endKilometres = draft.end_kilometres === null || draft.end_kilometres === '' ? null : Number(draft.end_kilometres);
+                let drivenKilometres = draft.driven_kilometres === null || draft.driven_kilometres === '' ? null : Number(draft.driven_kilometres);
+                let litresRefuelled = draft.litres_refuelled === null || draft.litres_refuelled === '' ? null : Number(draft.litres_refuelled);
+
+                this.sheet.errors = {
+                    driven_on: isNaN(date.getTime()),
+                    start_kilometres: !Number.isInteger(startKilometres) || startKilometres < 0,
+                    end_kilometres: !Number.isInteger(endKilometres) || endKilometres < 1,
+                    driven_kilometres: !Number.isInteger(drivenKilometres) || drivenKilometres < 1,
+                    litres_refuelled: litresRefuelled !== null && (!Number.isInteger(litresRefuelled) || litresRefuelled < 1),
+                    origin: !draft.origin,
+                    destination: !draft.destination,
+                    vehicle_id: !draft.vehicle_id,
+                };
+
+                if(Object.values(this.sheet.errors).some(invalid => invalid)) {
+                    return;
+                }
+
+                if(this.sheet.mode === 'create') {
+                    let legs = [];
+
+                    if(this.sheet.returnTrip) {
+                        // Same split desktop's addLogbook() does: halve the
+                        // distance across two legs, swap origin/destination
+                        // for the return leg, fuel only counted on the first.
+                        let legKilometres = Math.floor(drivenKilometres / 2);
+                        let evenDrivenKilometres = drivenKilometres % 2 === 0;
+
+                        let firstLegEndKilometres = evenDrivenKilometres
+                            ? startKilometres + legKilometres
+                            : startKilometres + legKilometres + 1;
+
+                        legs.push({
+                            start_kilometres: startKilometres,
+                            end_kilometres: firstLegEndKilometres,
+                            driven_kilometres: firstLegEndKilometres - startKilometres,
+                            litres_refuelled: litresRefuelled,
+                            origin: draft.origin,
+                            destination: draft.destination,
+                        });
+                        legs.push({
+                            start_kilometres: firstLegEndKilometres,
+                            end_kilometres: endKilometres,
+                            driven_kilometres: legKilometres,
+                            litres_refuelled: null,
+                            origin: draft.destination,
+                            destination: draft.origin,
+                        });
+                    }
+                    else {
+                        legs.push({
+                            start_kilometres: startKilometres,
+                            end_kilometres: endKilometres,
+                            driven_kilometres: drivenKilometres,
+                            litres_refuelled: litresRefuelled,
+                            origin: draft.origin,
+                            destination: draft.destination,
+                        });
+                    }
+
+                    legs.forEach(leg => {
+                        this.logbook.push({
+                            action: 'store', action_old: 'store', errors: null,
+                            selected: false, show_details: false, hover: false, edit: null, id: null,
+                            driven_on: date,
+                            start_kilometres: leg.start_kilometres,
+                            end_kilometres: leg.end_kilometres,
+                            driven_kilometres: leg.driven_kilometres,
+                            litres_refuelled: leg.litres_refuelled,
+                            origin: leg.origin,
+                            destination: leg.destination,
+                            vehicle_id: draft.vehicle_id,
+                            project_id: draft.project_id,
+                            employee_id: null,
+                            comment: draft.comment,
+                        });
+                    });
+
+                    this.addPlaces([draft.origin, draft.destination]);
+                    this.logbook = [...this.logbook];
+                    this.initialPage = this.getLastPage();
+                }
+                else {
+                    let logbook = this.sheet.target;
+
+                    logbook.driven_on = date;
+                    logbook.start_kilometres = startKilometres;
+                    logbook.end_kilometres = endKilometres;
+                    logbook.driven_kilometres = drivenKilometres;
+                    logbook.litres_refuelled = litresRefuelled;
+                    logbook.origin = draft.origin;
+                    logbook.destination = draft.destination;
+                    logbook.vehicle_id = draft.vehicle_id;
+                    logbook.project_id = draft.project_id;
+                    logbook.comment = draft.comment;
+
+                    this.setChangedLogbookStatus(logbook);
+                }
+
+                this.hideSheet('logbookSheet');
+            },
+
+            // --- Mobile: filter sheet + active-filter chip row ---
+            openMobileFilter() {
+                this.mobileFilterOpen = true;
+                this.showSheet('mobileFilterSheet');
+            },
+
+            onMobileFilterHidden() {
+                this.mobileFilterOpen = false;
+            },
+
+            applyMobileFilter() {
+                this.filterData();
+                this.hideSheet('mobileFilterSheet');
+            },
+
+            activeFilterChips() {
+                if(this.filter_only_unsaved) {
+                    return [{ key: 'only_unsaved', label: 'Nur ungespeicherte' }];
+                }
+
+                let chips = [];
+
+                if(this.filter_start || this.filter_end) {
+                    let format = value => new Date(value).toLocaleDateString('de', { day: '2-digit', month: '2-digit' });
+                    let label = this.filter_start && this.filter_end ? format(this.filter_start) + ' – ' + format(this.filter_end)
+                        : this.filter_start ? 'ab ' + format(this.filter_start)
+                        : 'bis ' + format(this.filter_end);
+
+                    chips.push({ key: 'dates', label: label });
+                }
+                if(this.filter_vehicle) {
+                    chips.push({ key: 'vehicle', label: this.filter_vehicle.registration_identifier });
+                }
+                if(this.filter_project) {
+                    chips.push({ key: 'project', label: this.filter_project.name });
+                }
+                if(this.filter_only_own) {
+                    chips.push({ key: 'only_own', label: 'Nur eigene' });
+                }
+
+                return chips;
+            },
+
+            clearFilterChip(key) {
+                switch(key) {
+                    case 'dates':
+                        this.filter_start = null;
+                        this.filter_end = null;
+                        break;
+                    case 'vehicle':
+                        this.filter_vehicle = null;
+                        break;
+                    case 'project':
+                        this.filter_project = null;
+                        break;
+                    case 'only_own':
+                        this.filter_only_own = false;
+                        break;
+                    case 'only_unsaved':
+                        this.filter_only_unsaved = false;
+                        break;
+                }
+
+                this.filterData();
+            },
+
             removeSelectedLogbook() {
                 let selectedLogbook = this.getSelectedLogbook();
 
@@ -1495,6 +2058,12 @@
             getEmployeeName(employeeId) {
                 let employee = this.employees.find(employee => employee.id === employeeId);
                 return employee ? employee.name : this.current_employee.name;
+            },
+
+            // Mobile card list only — see AccountingSelector's identical method.
+            getEmployeeInitials(employeeId) {
+                let employee = this.employees.find(employee => employee.id === employeeId);
+                return employee ? employee.avatar.initials : this.current_employee.avatar.initials;
             },
 
             getDateStringForInputField(date) {

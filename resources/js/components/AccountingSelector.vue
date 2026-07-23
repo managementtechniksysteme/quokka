@@ -109,7 +109,7 @@
       <div v-if="activeFilterChips().length" class="q-meta d-md-none mb-3">
           <span v-for="chip in activeFilterChips()" :key="chip.key" class="q-chip">
               {{ chip.label }}
-              <button type="button" class="q-quick-create-summary__clear" :aria-label="'Filter entfernen: ' + chip.label" @click="clearFilterChip(chip.key)">
+              <button v-if="chip.removable !== false" type="button" class="q-quick-create-summary__clear" :aria-label="'Filter entfernen: ' + chip.label" @click="clearFilterChip(chip.key)">
                   <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#x"></use></svg>
               </button>
           </span>
@@ -1387,7 +1387,11 @@
                     chips.push({ key: 'service', label: this.filter_service.name_with_unit });
                 }
                 if(this.filter_only_own) {
-                    chips.push({ key: 'only_own', label: 'Nur eigene' });
+                    chips.push({
+                        key: 'only_own',
+                        label: 'Nur eigene',
+                        removable: this.permissions.includes('accounting.view.other')
+                    });
                 }
 
                 return chips;
@@ -1406,7 +1410,9 @@
                         this.filter_service = null;
                         break;
                     case 'only_own':
-                        this.filter_only_own = false;
+                        if(this.permissions.includes('accounting.view.other')) {
+                            this.filter_only_own = false;
+                        }
                         break;
                     case 'only_unsaved':
                         this.filter_only_unsaved = false;

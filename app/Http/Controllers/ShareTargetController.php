@@ -38,6 +38,6 @@ class ShareTargetController extends Controller
         $note->save();
         $note->addAttachments($photos);
 
-        return redirect()->route('notes.show', $note);
+        return redirect()->route('notes.show', $note)->with('success', 'Die Notiz wurde mit den geteilten Fotos angelegt.');
     }
 }

@@ -585,14 +585,13 @@
             'reauthenticate' => ['Sicherheitsprüfung', 'key'],
             'help.*|changelog.*' => ['Hilfe', 'question-circle'],
             'search.*' => ['Suche', 'search'],
-            // Guest-only routes (2026-07-24) — this bar used to be entirely
-            // @auth-gated, so a logged-out visitor never got it at all, just
-            // the plain desktop navbar with no d-none/d-md-flex to hide it
-            // on mobile. Same coarse-label convention as everywhere else.
-            'login' => ['Anmelden', 'box-arrow-in-right'],
-            'otp' => ['Sicherheitscode', 'shield-lock'],
-            'password.request|password.email' => ['Passwort vergessen', 'key'],
-            'password.reset' => ['Passwort zurücksetzen', 'key'],
+            // No entries for login/otp/password.* (2026-07-24) — a guest
+            // hasn't navigated anywhere yet, so there's no "section" to
+            // label the way there is for an authenticated route; falls
+            // through to the brand badge/name below, same as the dashboard's
+            // own fallback for any unmapped route (2026-07-24, user: "more
+            // prominent" than a contextual icon+label restating the button
+            // right below it).
         ];
         $mobilePageTitle = config('app.name');
         $mobilePageIcon = null;

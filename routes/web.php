@@ -41,7 +41,6 @@ use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
@@ -61,8 +60,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes([
     'register' => false,
 ]);
-
-Route::get('/offline', [OfflineController::class, 'index'])->name('offline.index');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', fn () => redirect()->route('login'))->name('welcome');

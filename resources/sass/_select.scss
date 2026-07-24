@@ -47,7 +47,10 @@
 // isn't enough because a block-level .vs__selected can exceed the content area and
 // make the toggle taller when closed than when open.
 .vs--single .vs__dropdown-toggle { height: calc(var(--vs-line-height) * var(--vs-font-size) + 1.2rem + 2px); }
+// matches .form-control:focus (_quokka-ui.scss) — background lifts from
+// surface-2 to surface on focus, same as every other field
 .vs--open .vs__dropdown-toggle {
+    background-color: var(--q-surface);
     border-color: var(--q-accent);
     box-shadow: 0 0 0 3px var(--q-accent-tint);
 }

@@ -40,4 +40,18 @@ export default defineConfig({
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // Bootstrap 5.3's own SCSS still uses Sass constructs deprecated
+                // in favor of the module system (legacy @import chains, global
+                // color functions like red()/green()/mix()) -- not our code to
+                // fix, and they drown out anything relevant in build output.
+                // quietDeps silences warnings whose origin is a dependency
+                // (node_modules) while still surfacing warnings from our own
+                // .scss files.
+                quietDeps: true,
+            },
+        },
+    },
 });

@@ -31,6 +31,13 @@ RUN printf "\n" | pecl install redis && \
 
 RUN rm -rf /tmp/pear
 
+# PHP's factory defaults (upload_max_filesize=2M, post_max_size=8M) reject a
+# real phone photo -- matches the client_max_body_size bump in
+# docker/nginx/config/nginx.conf. post_max_size stays a bit above
+# upload_max_filesize since a single request can carry more than one file
+# (multi-attachment forms, multi-photo shares).
+RUN echo "upload_max_filesize=20M\npost_max_size=25M" > /usr/local/etc/php/conf.d/uploads.ini
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

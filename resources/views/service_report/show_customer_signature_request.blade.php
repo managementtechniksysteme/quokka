@@ -74,7 +74,8 @@
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
                                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
-                                    Servicebericht unterschreiben
+                                    <span class="d-none d-md-inline">Servicebericht unterschreiben</span>
+                                    <span class="d-inline d-md-none">Unterschreiben</span>
                                 </button>
                                 <a class="btn q-btn d-inline-flex align-items-center gap-2" href="">
                                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>

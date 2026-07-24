@@ -1469,6 +1469,9 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 [data-bs-theme="dark"] .q-signpad {
     background: #e9edf2; border-color: color-mix(in srgb, #000 45%, var(--q-border));
 }
+// A finger needs more room to sign than a mouse — taller pad on touch-sized
+// viewports than the 20em default the component ships with.
+@include media-breakpoint-down(md) { .q-signpad { min-height: 16rem; } }
 
 // =============================================================================
 //  S. MOBILE — chrome + reflow rules below `md` (768px), except the grid

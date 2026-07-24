@@ -48,6 +48,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SentEmailController;
 use App\Http\Controllers\ServiceReportController;
+use App\Http\Controllers\ShareTargetController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserSettingsController;
@@ -208,6 +209,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::get('/notes/list', [NoteController::class, 'downloadList'])->name('notes.download-list');
     Route::resource('notes', NoteController::class);
+    Route::post('/share-target', [ShareTargetController::class, 'receive'])->name('share-target');
     Route::get('/notes/{note}/download', [NoteController::class, 'download'])->name('notes.download');
     Route::get('/notes/{note}/email', [NoteController::class, 'showEmail'])->name('notes.email');
     Route::post('/notes/{note}/email', [NoteController::class, 'email']);

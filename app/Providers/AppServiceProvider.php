@@ -97,6 +97,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('finances-view', fn ($user) => $user->can('finances.view'));
         Gate::define('finances-createpdf', fn ($user) => $user->can('finances.createpdf'));
         Gate::define('help-view', fn ($user) => $user->can('help.view'));
+        Gate::define('share-target', fn ($user) => $user->can('notes.create'));
         Gate::define('tools-scanqr', fn ($user) => $user->can('tools.scanqr'));
         Gate::define('tools-viewlatestchanges', fn ($user) => $user->can('tools.viewlatestchanges'));
         Gate::define('tools-viewsentemails', fn ($user) => $user->can('tools.viewsentemails'));

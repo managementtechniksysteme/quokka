@@ -25,6 +25,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
             'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         ]);
+        // The Web Share Target API's POST is constructed by the OS/browser
+        // directly from the manifest's share_target declaration -- there's
+        // no page, no JS, so no way for it to carry our CSRF token. This is
+        // inherent to the feature (every PWA share target needs the same
+        // exemption), not an oversight; the route itself still requires an
+        // authenticated session.
+        $middleware->validateCsrfTokens(except: ['share-target']);
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR

@@ -81,6 +81,7 @@ class HomeController extends Controller
 
         $reportRows = array_values(array_filter($reportRows, fn ($r) => $r['show']));
         $totalErledigbar = collect($reportRows)->sum(fn ($r) => $r['erledigbar'] ?? 0);
+        $showErledigbarColumn = collect($reportRows)->contains(fn ($r) => ! is_null($r['erledigbar']));
 
         return view('home')
             ->with('employeeMtdHourlyBasedServices', Auth::user()->employee->mtd_hourly_based_services)
@@ -108,6 +109,7 @@ class HomeController extends Controller
             ->with('employeeDueSoonTasksInvolvedIn', Auth::user()->employee->due_soon_tasks_involved_in)
             ->with('reportRows', $reportRows)
             ->with('totalErledigbar', $totalErledigbar)
+            ->with('showErledigbarColumn', $showErledigbarColumn)
             ->with('latestChanges', Auth::user()->can('tools-viewlatestchanges') ? GlobalSearch::getLatestChanges(5) : collect());
     }
 }

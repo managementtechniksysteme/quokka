@@ -150,18 +150,25 @@
                     </div>
                 @endif
                 <div class="q-card">
-                    <div class="q-matrix__grid q-matrix__head">
+                    <div @class(['q-matrix__grid', 'q-matrix__grid--3col' => !$showErledigbarColumn, 'q-matrix__head'])>
                         <span class="q-matrix__h">Typ</span>
                         <span class="q-matrix__h num">Offen</span>
                         <span class="q-matrix__h num">Offen gesamt</span>
-                        <span class="q-matrix__h num">Erledigbar</span>
+                        @if($showErledigbarColumn)
+                            <span class="q-matrix__h num">Erledigbar</span>
+                        @endif
                     </div>
 
                     @foreach($reportRows as $r)
-                        <a href="{{ $r['route'] }}" class="q-matrix__grid q-matrix__row">
+                        <a href="{{ $r['route'] }}" @class(['q-matrix__grid', 'q-matrix__grid--3col' => !$showErledigbarColumn, 'q-matrix__row'])>
                             <span class="q-matrix__name">
                                 <span @class(['q-ab', 'q-ab--accent' => ($r['accent'] ?? false)])>{{ $r['ab'] }}</span>
-                                <span>{{ $r['name'] }}</span>
+                                {{-- Chip-only on mobile: full names (e.g. "Prüfberichte
+                                     Durchflussmesseinrichtungen") truncate hard against the
+                                     three fixed-width number columns on a narrow screen —
+                                     the 2-letter chip already identifies the row, desktop
+                                     keeps both since it has the room (2026-07-24). --}}
+                                <span class="d-none d-md-inline">{{ $r['name'] }}</span>
                             </span>
                             @if(!is_null($r['offen']))
                                 <span class="num num--offen">{{ Number::toLocal($r['offen']) }}</span>
@@ -173,10 +180,12 @@
                             @else
                                 <span class="num num--none">–</span>
                             @endif
-                            @if(!is_null($r['erledigbar']))
-                                <span @class(['num', 'num--action', 'is-zero' => !$r['erledigbar']])>{{ Number::toLocal($r['erledigbar']) }}</span>
-                            @else
-                                <span class="num num--none">–</span>
+                            @if($showErledigbarColumn)
+                                @if(!is_null($r['erledigbar']))
+                                    <span @class(['num', 'num--action', 'is-zero' => !$r['erledigbar']])>{{ Number::toLocal($r['erledigbar']) }}</span>
+                                @else
+                                    <span class="num num--none">–</span>
+                                @endif
                             @endif
                         </a>
                     @endforeach

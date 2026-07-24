@@ -107,6 +107,18 @@ services:
     networks:
       - quokka
 
+  mailpit:
+    image: axllent/mailpit:v1.30.5
+    container_name: quokka-mailpit
+    hostname: mailpit
+    restart: unless-stopped
+    profiles:
+      - mail
+    ports:
+      - 8002:8025
+    networks:
+      - quokka
+
 networks:
   quokka:
     driver: bridge

@@ -19,7 +19,7 @@
             <div v-if="selected_to.length">
                 <div class="text-muted">Empfänger (An):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_to">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_to">
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][id]'" :name="'email_to['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][name]'" :name="'email_to['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][email]'" :name="'email_to['+index+'][email]'" :value="mailable.email" />
@@ -40,7 +40,7 @@
             <div v-if="selected_cc.length">
                 <div class="text-muted">Carbon Copy (CC):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_cc">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_cc">
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][id]'" :name="'email_cc['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][name]'" :name="'email_cc['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][email]'" :name="'email_cc['+index+'][email]'" :value="mailable.email" />
@@ -60,7 +60,7 @@
             <div v-if="selected_bcc.length">
                 <div class="text-muted">Blind Carbon Copy (BCC):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_bcc">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_bcc">
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][id]'" :name="'email_bcc['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][name]'" :name="'email_bcc['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][email]'" :name="'email_bcc['+index+'][email]'" :value="mailable.email" />

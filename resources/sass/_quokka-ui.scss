@@ -272,7 +272,11 @@ $q-pad:            1.25rem;
 
 // selected-items output rendered by the vue selectors (PeopleSelector /
 // AttachmentsSelector: a .container-fluid of .row.hover-highlight items). Themed
-// as a clean bordered list with a quiet remove control, matching the field look.
+// as a clean bordered list; the remove control uses the same always-visible
+// .btn-outline-danger look as everywhere else (see section J) — it used to go
+// quiet/borderless here on the assumption that row-hover + the "Entfernen"
+// label carried the affordance, which broke down on mobile once the label
+// hides (icon floating with no border/bg at all, easy to miss as a button).
 .q-form {
     .container-fluid {
         padding-left: 0; padding-right: 0;
@@ -292,19 +296,6 @@ $q-pad:            1.25rem;
     .container-fluid .hover-highlight + .hover-highlight { border-top: 1px solid var(--q-border-2); }
 
     .attachment-img-preview { border-radius: 8px; border: 1px solid var(--q-border-2); }
-
-    // quiet "Entfernen" control instead of the heavy outline-danger button
-    .hover-highlight .btn-outline-danger {
-        --bs-btn-color: var(--q-muted);
-        --bs-btn-border-color: transparent;
-        --bs-btn-bg: transparent;
-        --bs-btn-hover-color: var(--q-red);
-        --bs-btn-hover-bg: var(--q-red-bg);
-        --bs-btn-hover-border-color: transparent;
-        --bs-btn-active-color: var(--q-red);
-        --bs-btn-active-bg: var(--q-red-bg);
-        font-size: .78rem;
-    }
 }
 
 // =============================================================================
@@ -839,30 +830,29 @@ $q-pad:            1.25rem;
     &:disabled { opacity: .35; }
 }
 // remap the delete/restore .btn-outline-* variants to the theme-aware --q-*
-// tokens — plain Bootstrap --bs-danger/--bs-success aren't dark-mode-tuned
-// and read too bright/harsh against the dark surface. Unlike the borderless
-// .q-lines--editable override, these keep an always-visible outline (that's
-// the deliberate look here), just sourced from the right token.
-.q-dtable {
-    // muted at rest, full colour + tint bg on hover/active — same "brightens
-    // on hover" cue as .q-kebab--danger, just kept as an always-visible
-    // outline button rather than a borderless kebab.
-    .btn-outline-danger {
-        --bs-btn-color: color-mix(in srgb, var(--q-red) 70%, var(--q-muted));
-        --bs-btn-border-color: color-mix(in srgb, var(--q-red) 45%, var(--q-border));
-        --bs-btn-hover-color: var(--q-red); --bs-btn-hover-bg: var(--q-red-bg); --bs-btn-hover-border-color: var(--q-red);
-        --bs-btn-active-color: var(--q-red); --bs-btn-active-bg: var(--q-red-bg); --bs-btn-active-border-color: var(--q-red);
-        --bs-btn-disabled-color: color-mix(in srgb, var(--q-red) 40%, var(--q-faint));
-        --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-red) 25%, var(--q-border));
-    }
-    .btn-outline-success {
-        --bs-btn-color: color-mix(in srgb, var(--q-green) 70%, var(--q-muted));
-        --bs-btn-border-color: color-mix(in srgb, var(--q-green) 45%, var(--q-border));
-        --bs-btn-hover-color: var(--q-green); --bs-btn-hover-bg: var(--q-green-bg); --bs-btn-hover-border-color: var(--q-green);
-        --bs-btn-active-color: var(--q-green); --bs-btn-active-bg: var(--q-green-bg); --bs-btn-active-border-color: var(--q-green);
-        --bs-btn-disabled-color: color-mix(in srgb, var(--q-green) 40%, var(--q-faint));
-        --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-green) 25%, var(--q-border));
-    }
+// tokens, app-wide — plain Bootstrap --bs-danger/--bs-success aren't
+// dark-mode-tuned and read too bright/harsh against the dark surface. Used to
+// be scoped to .q-dtable only, with PeopleSelector/AttachmentsSelector/
+// ServicesSelector going quiet/borderless instead on the assumption that row-
+// hover + a text label carried the affordance — broke down on mobile once the
+// label hides (icon floating with no border/bg at all). One always-visible
+// outline look everywhere now, muted at rest, full colour + tint bg on hover/
+// active (2026-07-24).
+.btn-outline-danger {
+    --bs-btn-color: color-mix(in srgb, var(--q-red) 70%, var(--q-muted));
+    --bs-btn-border-color: color-mix(in srgb, var(--q-red) 45%, var(--q-border));
+    --bs-btn-hover-color: var(--q-red); --bs-btn-hover-bg: var(--q-red-bg); --bs-btn-hover-border-color: var(--q-red);
+    --bs-btn-active-color: var(--q-red); --bs-btn-active-bg: var(--q-red-bg); --bs-btn-active-border-color: var(--q-red);
+    --bs-btn-disabled-color: color-mix(in srgb, var(--q-red) 40%, var(--q-faint));
+    --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-red) 25%, var(--q-border));
+}
+.btn-outline-success {
+    --bs-btn-color: color-mix(in srgb, var(--q-green) 70%, var(--q-muted));
+    --bs-btn-border-color: color-mix(in srgb, var(--q-green) 45%, var(--q-border));
+    --bs-btn-hover-color: var(--q-green); --bs-btn-hover-bg: var(--q-green-bg); --bs-btn-hover-border-color: var(--q-green);
+    --bs-btn-active-color: var(--q-green); --bs-btn-active-bg: var(--q-green-bg); --bs-btn-active-border-color: var(--q-green);
+    --bs-btn-disabled-color: color-mix(in srgb, var(--q-green) 40%, var(--q-faint));
+    --bs-btn-disabled-border-color: color-mix(in srgb, var(--q-green) 25%, var(--q-border));
 }
 
 // =============================================================================
@@ -1422,7 +1412,10 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 .q-lines__sumval { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
 .q-lines__empty { padding: 1rem 1.25rem; color: var(--q-faint); font-size: .85rem; }
 // editable variant (ServicesSelector form table): adds a 4th column for the
-// action button and gives clickable cells a pointer cursor + quiet remove button.
+// action button and gives clickable cells a pointer cursor. Remove button uses
+// the standard always-visible .btn-outline-danger (section J) — it used to go
+// quiet/borderless here, which left icon-only mobile rows with no visible
+// button shape at all once the "Entfernen" label hid.
 .q-lines--editable {
     // 52px/1.75rem was sized for the OLD text-only "Entfernen" button; adding
     // its trash icon (2026-07-21, see below) made that button wider than its
@@ -1430,11 +1423,6 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
     // desktop — widened both to fit icon+gap+label comfortably.
     .q-lines__head, .q-lines__row, .q-lines__sum { grid-template-columns: 1fr 90px 110px 76px; column-gap: .75rem; padding-right: 2rem; }
     .q-lines__cell { cursor: pointer; }
-    .btn-outline-danger {
-        --bs-btn-color: var(--q-muted); --bs-btn-border-color: transparent; --bs-btn-bg: transparent;
-        --bs-btn-hover-color: var(--q-red); --bs-btn-hover-bg: var(--q-red-bg); --bs-btn-hover-border-color: transparent;
-        --bs-btn-active-color: var(--q-red); --bs-btn-active-bg: var(--q-red-bg);
-    }
 }
 // Mobile: the desktop column widths (120px/150px, or 90px/110px/52px for the
 // editable variant) were sized for a wide card and badly overflowed a 390px
@@ -1908,6 +1896,30 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     // than the create button — side effect of the just-changed text button
     // size").
     .q-kebab { width: 44px; height: 44px; }
+    // FOURTH button variant hitting the same trap: the row-remove
+    // .btn-outline-danger in PeopleSelector/AttachmentsSelector/
+    // AccountingServicesSelector/EmailSelector (.hover-highlight) and
+    // ServicesSelector (.q-lines--editable) hides its "Entfernen" label on
+    // mobile (d-none d-md-inline), leaving just a 16px icon — the min-height
+    // rule above stretches it to 44px tall while width stays content-sized
+    // (~26px), a tall sliver instead of a button (2026-07-24, user: "width on
+    // mobile is still not square"). Unlike .q-btn-icon/.q-kebab (standalone
+    // toolbar actions, sized to the full 44px touch-target minimum), these
+    // are secondary inline actions on an already-selected list row — 44px
+    // read oversized next to the row's own content and, in ServicesSelector's
+    // compact table, taller than the row itself (2026-07-24, user: "buttons
+    // look a bit big for what they're trying to do"). 32px instead, which
+    // also needs its own min-height: the .btn, .q-btn rule above sets
+    // min-height:44px and min-height always wins over a smaller `height`.
+    // justify-content:center added too — these buttons only ever set
+    // align-items-center (cross-axis), relying on width matching content for
+    // horizontal centering, which broke down the moment width stopped being
+    // content-driven (2026-07-24, user: "icon is left aligned, not
+    // centered").
+    .hover-highlight .btn-outline-danger, .hover-highlight .btn-outline-success,
+    .q-lines--editable .btn-outline-danger, .q-lines--editable .btn-outline-success {
+        width: 32px; height: 32px; min-height: 32px; justify-content: center;
+    }
 
     // List-toolbar search fields: leading icon sits OUTSIDE .input-group,
     // overlaid via position:absolute — Bootstrap gives a focused

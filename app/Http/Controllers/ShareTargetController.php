@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShareTargetRequest;
 use App\Models\Note;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShareTargetController extends Controller
@@ -20,13 +20,8 @@ class ShareTargetController extends Controller
      * capture path for a field photo, with converting to a task already
      * available from the note itself if that's what it turns out to be.
      */
-    public function receive(Request $request): RedirectResponse
+    public function receive(ShareTargetRequest $request): RedirectResponse
     {
-        $request->validate([
-            'photos' => 'required|array|min:1',
-            'photos.*' => 'image',
-        ]);
-
         $photos = $request->file('photos');
         $count = count($photos);
 

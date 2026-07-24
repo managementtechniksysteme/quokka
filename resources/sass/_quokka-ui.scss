@@ -1597,6 +1597,15 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     transition: background .12s, color .12s;
     &:hover, &:focus { background: var(--q-surface-2); color: var(--q-text); }
 }
+// Dark mode needed more than the shared token swap (border melts into the
+// blurred bar — same near-black-on-near-black issue as .q-tabbar's dark
+// override above it): a step-lighter surface at a higher fill % plus a more
+// opaque border. Excludes --save, which keeps its own accent fill/border in
+// every theme.
+[data-bs-theme="dark"] .q-appbar__btn:not(.q-appbar__btn--save) {
+    background: color-mix(in srgb, var(--q-surface-2) 82%, transparent);
+    border-color: color-mix(in srgb, var(--q-border) 85%, transparent);
+}
 // accounting/logbook's mobile Save icon: only rendered while there's
 // something unsaved (v-if in the component), so unlike the other app-bar
 // icons it never needs a muted/idle state — accent-tinted the moment it

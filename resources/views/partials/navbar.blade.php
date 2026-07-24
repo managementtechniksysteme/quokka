@@ -1,4 +1,14 @@
-<nav class="navbar navbar-expand-xl fixed-top q-topbar @auth d-none d-md-flex @endauth">
+{{-- d-none d-md-flex unconditional, not @auth-gated (2026-07-24 fix) — this
+     desktop bar and the mobile .q-appbar/.q-tabbar chrome below are meant to
+     be mutually exclusive at every breakpoint ("only one shows at a time",
+     see the .q-appbar SCSS comment), but the toggle used to live inside
+     @auth while the mobile chrome's own header was ALSO entirely @auth-gated
+     — so a guest on a narrow viewport (login, OTP, password reset) got
+     neither: no d-none/d-md-flex to hide this bar, and no mobile app bar to
+     replace it with, just the plain desktop navbar at full width acting as
+     a mobile top bar (2026-07-24, user: "auth sites... normal bootstrap bar
+     design is used"). --}}
+<nav class="navbar navbar-expand-xl fixed-top q-topbar d-none d-md-flex">
     <div class="container-fluid">
         <a class="navbar-brand me-0 me-xl-2" href="{{ route('home') }}">
             <span class="q-brand-badge">{{ Str::substr(config('app.name'), 0, 1) }}</span>
@@ -500,14 +510,19 @@
     </div>
 </nav>
 
-@auth
-    {{-- ========================================================================
-         Mobile chrome (< md): app bar + bottom tab bar + "Mehr" sheet, replacing
-         the desktop navbar above. See Quokka Mobile.dc.html / QUOKKA-MOBILE-VUE.md
-         in the Claude Design project for the reference. Search is a direct inline
-         input here (2026-07-20 decision), not the spotlight command palette —
-         spotlight stays desktop-only (⌘K).
-    ======================================================================== --}}
+{{-- ========================================================================
+     Mobile chrome (< md): app bar + bottom tab bar + "Mehr" sheet, replacing
+     the desktop navbar above. See Quokka Mobile.dc.html / QUOKKA-MOBILE-VUE.md
+     in the Claude Design project for the reference. Search is a direct inline
+     input here (2026-07-20 decision), not the spotlight command palette —
+     spotlight stays desktop-only (⌘K).
+
+     The app bar itself (badge + title) is NOT @auth-gated (2026-07-24 fix) —
+     guests (login/OTP/password-reset) get the same translucent bar, just
+     without the search/bell controls, which need an authenticated user and
+     stay wrapped in their own @auth below. The tab bar + Mehr sheet further
+     down stay fully @auth-only: a guest has nothing to navigate to.
+======================================================================== --}}
     {{-- Coarse section label for the app bar title (2026-07-20) — NOT a
          per-page exact title (a company's own name, a task's own name, etc.):
          that needs a convention threaded through every view/controller and
@@ -570,6 +585,14 @@
             'reauthenticate' => ['Sicherheitsprüfung', 'key'],
             'help.*|changelog.*' => ['Hilfe', 'question-circle'],
             'search.*' => ['Suche', 'search'],
+            // Guest-only routes (2026-07-24) — this bar used to be entirely
+            // @auth-gated, so a logged-out visitor never got it at all, just
+            // the plain desktop navbar with no d-none/d-md-flex to hide it
+            // on mobile. Same coarse-label convention as everywhere else.
+            'login' => ['Anmelden', 'box-arrow-in-right'],
+            'otp' => ['Sicherheitscode', 'shield-lock'],
+            'password.request|password.email' => ['Passwort vergessen', 'key'],
+            'password.reset' => ['Passwort zurücksetzen', 'key'],
         ];
         $mobilePageTitle = config('app.name');
         $mobilePageIcon = null;
@@ -644,15 +667,22 @@
             @endcan
 
             {{-- No separate unread dot — the bell colour alone signals unread,
-                 same principle as the Mehr sheet's Benachrichtigungen row below. --}}
-            <a href="{{ route('notifications.index') }}" class="q-appbar__btn" aria-label="Benachrichtigungen">
-                <svg class="icon-bs icon-20 @if(Auth::user()->unreadNotifications()->count()) q-appbar__btn--unread @endif">
-                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
-                </svg>
-            </a>
+                 same principle as the Mehr sheet's Benachrichtigungen row below.
+                 @auth-guarded (not just @can('search') above): Auth::user() is
+                 null for a guest and unreadNotifications() would throw, whereas
+                 the two @can('search') blocks already resolve to false safely
+                 with no authenticated user. --}}
+            @auth
+                <a href="{{ route('notifications.index') }}" class="q-appbar__btn" aria-label="Benachrichtigungen">
+                    <svg class="icon-bs icon-20 @if(Auth::user()->unreadNotifications()->count()) q-appbar__btn--unread @endif">
+                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#bell"></use>
+                    </svg>
+                </a>
+            @endauth
         @endif
     </header>
 
+    @auth
     {{-- Detail pages' own action sheets (see mobile-detail-bar above) render
          here, NOT inside .q-appbar — .q-appbar is `position:fixed` with its
          own z-index (1020), which caps any descendant's stacking context

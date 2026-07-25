@@ -35,6 +35,9 @@
     * Aufgrund von Änderungen an der progressiven Web Applikation wird diese eventuell nicht automatisch
       aktualisiert. Sollte die als App installierte Version auf Android nicht auf dem neuesten Stand sein, hilft ein
       einmaliges Entfernen und erneutes Installieren der App.
+    * Zeigt die Seite im normalen Browser (nicht als installierte App) nach dem Update Auffälligkeiten, zum Beispiel
+      eine fälschliche "Offline"-Meldung, hilft einmalig das Löschen der Website-Daten für quokka.linkto.ms im
+      Browser mit anschließendem Neuladen der Seite.
     @endmarkdown
 
     @markdown

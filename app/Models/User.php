@@ -9,13 +9,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use NotificationChannels\WebPush\HasPushSubscriptions;
-use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Models\Concerns\CausesActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
+    use CausesActivity;
     use HasApiTokens;
     use HasFactory;
     use HasPushSubscriptions;
@@ -24,9 +25,12 @@ class User extends Authenticatable implements HasMedia
     use Notifiable;
     use SoftDeletes;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'employee_id' => 'int',
     ];
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -93,6 +97,15 @@ class User extends Authenticatable implements HasMedia
     public function getUsernameAvatarStringAttribute()
     {
         return strtoupper($this->username);
+    }
+
+    // Hex for the user's chosen avatar colour, or null when none is set so the
+    // view can fall back to the theme accent (--q-accent) like every other row.
+    public function getAvatarColourHexAttribute()
+    {
+        $name = $this->settings?->avatar_colour;
+
+        return $name ? (UserSettings::avatarColourFromName($name)['color'] ?? null) : null;
     }
 
     public function registerMediaCollections(): void

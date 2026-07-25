@@ -1,18 +1,34 @@
 @extends('layouts.app')
 
+{{-- Mobile: help topics are reached from help/index's own list (q-row items),
+     same list→detail relationship as any other module — promote the topic's
+     own title into the app bar (back chevron to help.index) instead of the
+     generic "Hilfe" section label, no kebab since there are no actions
+     (2026-07-22, user request). --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Markdown</span>
+@endsection
+
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('help.breadcrumb')
+    <div class="q-container q-container--narrow">
+        @include('help.breadcrumb')
 
-            <h3>
-                Hilfe
-                <small class="text-muted">Markdown</small>
-            </h3>
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#body-text"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Hilfe</div>
+                    <h1 class="q-title">Markdown</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
+        <div class="mt-2 mt-md-4">
         <a id="top"></a>
 
         @markdown
@@ -34,20 +50,9 @@
         die Aktionsleiste des Editors aufrufbar.
         @endmarkdown
 
-        <div class="alert alert-info">
-            <div class="d-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                <b>Hinweis</b>
-            </div>
-
-            <p class="m-0">
-                Die Darstellung von Elemementen in der Anwendung kann sich von jener in generierten PDF Dokumenten
-                teilweise unterscheiden. Manche Elemente werden in PDF Dokumenten gänzlich ignoriert. Hierzu werden
-                in den einzelnen Abschnitten Hinweise angegeben.
-            </p>
-
+        <div class="q-banner q-banner--info mb-3">
+            <svg class="icon-bs icon-16 flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <div>Die Darstellung von Elementen in der Anwendung kann sich von jener in generierten PDF Dokumenten teilweise unterscheiden. Manche Elemente werden in PDF Dokumenten gänzlich ignoriert. Hierzu werden in den einzelnen Abschnitten Hinweise angegeben.</div>
         </div>
 
         <a id="ueberschriften"></a>
@@ -59,7 +64,7 @@
         mehr Rautensymbole, desto kleiner die Überschrift).
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             # Überschrift 1
@@ -72,7 +77,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             # Überschrift 1
             ## Überschrift 2
@@ -89,7 +94,7 @@
         durch Gleichheitszeichen (`=`) beziehungsweise Bindestriche (`-`) in der nächsten Zeile erzeugt werden.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Überschrift 1
@@ -100,7 +105,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Überschrift 1
             ==============
@@ -117,7 +122,7 @@
         oder mehr Leerzeichen oder ein Backslash (`\`) an das Ende der Zeile vor dem Umbruch angehängt werden.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Dieser Text befindet sich im ersten Paragraph.
@@ -131,7 +136,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Dieser Text befindet sich im ersten Paragraph.
             Auch dieser Text ist Teil des ersten Paragraphes. Er wird direkt an den vorherigen Text angehängt.
@@ -152,7 +157,7 @@
         werden. Die Manipulationsmöglichkeiten können beliebig kombiniert werden.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             **fett**, __ebenfalls fett__
@@ -163,7 +168,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             **fett**, __ebenfalls fett__\
             *kursiv*, _ebenfalls kursiv_\
@@ -181,7 +186,7 @@
         zu verschachteln, werden mehrere Größer Symbole (`>>`) hintereinander gereiht.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             > Ein Zitat
@@ -192,7 +197,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             > Ein Zitat
             >
@@ -213,7 +218,7 @@
         Leerzeichen oder einem Tabulator einzurücken sind.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Beispiel 1
@@ -240,7 +245,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Beispiel 1
 
@@ -271,7 +276,7 @@
         sequentieller Reihung erfolgen.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Beispiel 1
@@ -298,7 +303,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Beispiel 1
 
@@ -329,7 +334,7 @@
         Aufgabe beziehungsweise einem x (`- [x]`) oder X (`- [X]`) für eine erledigte Aufgabe angeführt.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Beispiel 1
@@ -346,7 +351,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Beispiel 1
 
@@ -372,7 +377,7 @@
         eingefügt werden, Es wird daraus automatisch ein Link erstellt.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Ein Link zu [Google](https://google.com) und eine Email zu [Max Mustermann](max.mustermann@example.com).
@@ -384,7 +389,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Ein Link zu [Google](https://google.com) und eine Email zu [Max Mustermann](max.mustermann@example.com).
 
@@ -402,7 +407,7 @@
         Klammern (`[Beschreibung]`) sowie der URL zum gewünschten Bild in runden Klammern (`(URL)`) einzugeben.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             ![Ein Bild einer Katze](https://placekitten.com/300/200)
@@ -410,7 +415,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             ![Ein Bild einer Katze](https://placekitten.com/300/200)
             @endmarkdown
@@ -428,7 +433,7 @@
         der Inhalt vertikal und horizontal ausgerichtet wird, ist optional.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             erste Spalte | zweite Spalte (mittig) | dritte Spalte (rechtsbündig)
@@ -445,7 +450,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             erste Spalte | zweite Spalte (mittig) | dritte Spalte (rechtsbündig)
             -------------|:----------------------:|-----------------------------:
@@ -468,7 +473,7 @@
         Unterstriche (`___`) auf einer eigenen Linie angeführt werden.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             ***
@@ -478,7 +483,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             ***
             ---
@@ -496,7 +501,7 @@
         Fließtextes hervorzuheben, wird dieser in einzelne Backticks (`` ` ``) eingeschlossen.
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             ```
@@ -514,7 +519,7 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             ```
             Mehrzeiliger
@@ -530,5 +535,6 @@
             @endmarkdown
         </div>
 
+        </div>
     </div>
 @endsection

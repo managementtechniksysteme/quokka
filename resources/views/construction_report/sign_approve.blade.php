@@ -1,58 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon-bs icon-baseline text-muted mr-1">
-                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
-                </svg>
-                Bautagesbericht unterschreiben und herunterladen
-                <small class="text-muted">{{ $constructionReport->project->name }} #{{ $constructionReport->number }}</small>
-            </h3>
-        </div>
-    </div>
-
-    <div class="container my-4">
-        <div class="text-center mt-4">
-            <img class="empty-state" src="{{ asset('svg/approve.svg') }}" alt="done" />
-            <p class="lead text-muted mt-1">Vielen Dank, dass Sie den Bautagesbericht unterschrieben haben.</p>
-        </div>
-
-        <h4 class="mt-4">Bautagesbericht herunterladen</h4>
-
-        <p>Klicken Sie auf folgenden Button, um den Bautagesbericht im PDF Format zur Archivierung herunterzuladen.</p>
-
-        <div class="text-center">
-            <a class="btn btn-primary d-inline-flex align-items-center" href="{{ route('construction-reports.customer-download', $constructionReport->downloadRequest->token) }}">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Bautagesbericht als PDF herunterladen
-            </a>
-        </div>
-
-        <p class="mt-4">Alternativ können Sie sich einen Link zum Herunterladen per Email schicken lassen, falls Sie den Bautagesbericht auf einem anderen Gerät herunterladen möchten. Geben Sie hierzu bitte die gewünschte Email Adresse in folgendes Feld ein und klicken anschließend auf den Button.</p>
-
-        <form class="needs-validation" action="{{ route('construction-reports.customer-email-download-request', $constructionReport->downloadRequest->token) }}" method="post" novalidate>
-            @csrf
-
-
-            <div class="form-group">
-                <div class="col col-md-6 offset-md-3">
-                    <input type="email" class="form-control" name="email" placeholder="Email Adresse" value="{{ optional($constructionReport->project->company->contactPerson)->email ?? $constructionReport->project->company->email }}" required />
+    <div class="q-container">
+        <div class="q-page-head">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-avatar">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Bautagesbericht · #{{ $constructionReport->number }}</div>
+                    <h1 class="q-title">{{ $constructionReport->project->name }}</h1>
                 </div>
             </div>
+        </div>
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-outline-secondary d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-2">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                    </svg>
-                    Link als Email senden
-                </button>
+        <div class="d-flex flex-column gap-3">
+            <div class="q-card text-center" style="padding: 2.5rem 1.5rem;">
+                <svg class="q-empty-icon q-empty-icon--success"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-circle"></use></svg>
+                <p class="lead text-muted mt-2 mb-0">Vielen Dank, dass Sie den Bautagesbericht unterschrieben haben.</p>
             </div>
 
-        </form>
+            <div class="q-card">
+                <div class="q-card__head">Bautagesbericht herunterladen</div>
+                <div class="q-card__body">
+                    <p class="text-muted">Klicken Sie auf folgenden Button, um den Bautagesbericht im PDF Format zur Archivierung herunterzuladen.</p>
+
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.customer-download', $constructionReport->downloadRequest->token) }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                        Bautagesbericht als PDF herunterladen
+                    </a>
+
+                    <hr class="my-4" />
+
+                    <p class="text-muted">Alternativ können Sie sich einen Link zum Herunterladen per Email schicken lassen, falls Sie den Bautagesbericht auf einem anderen Gerät herunterladen möchten. Geben Sie hierzu bitte die gewünschte Email Adresse in folgendes Feld ein und klicken anschließend auf den Button.</p>
+
+                    <form class="needs-validation" action="{{ route('construction-reports.customer-email-download-request', $constructionReport->downloadRequest->token) }}" method="post" novalidate>
+                        @csrf
+
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-6">
+                                <input type="email" class="form-control" name="email" placeholder="Email Adresse" value="{{ optional($constructionReport->project->company->contactPerson)->email ?? $constructionReport->project->company->email }}" required />
+                            </div>
+                            <div class="col-12 col-md-auto">
+                                <button type="submit" class="btn q-btn d-inline-flex align-items-center gap-2">
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                                    Link als Email senden
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

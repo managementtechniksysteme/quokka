@@ -1,152 +1,168 @@
-<div class="overview-card rounded border-status @if($deliveryNote->isNew()) border-primary @elseif($deliveryNote->isSigned()) border-warning @else border-success @endif">
-    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
+<div class="q-row">
+    <a class="stretched-link outline-none" href="{{ route('delivery-notes.show', $deliveryNote) }}"></a>
 
-        <div class="mw-100 flex-grow-1 h-100 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('delivery-notes.show', $deliveryNote) }}"></a>
-            <div class="mw-100 text-truncate">
-                {{ $deliveryNote->title }}
+    <span class="q-avatar">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box-seam"></use></svg>
+    </span>
+
+    <div class="q-row__main">
+        {{-- Desktop: title · project subheading, unchanged. --}}
+        <div class="q-row__title text-truncate d-none d-md-block">
+            {{ $deliveryNote->title }}@unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject') <span class="q-row__sub">· {{ $deliveryNote->project->name }}</span>@endunless
+        </div>
+        {{-- Mobile: title alone — project moves to its own chip below
+             instead of being squeezed into the truncated title line
+             (2026-07-21, user: same "truncated chip" treatment as other
+             modules — avoids the project name getting silently clipped if
+             the delivery note's own title is already long enough to fill
+             the line by itself, same risk class as the numbered-report
+             title bug fixed earlier this session). --}}
+        <div class="q-row__title text-truncate d-md-none">{{ $deliveryNote->title }}</div>
+
+        @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+            <div class="q-meta mb-1 d-md-none">
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+                    <span class="text-truncate">{{ $deliveryNote->project->name }}</span>
+                </span>
             </div>
-            <div class="mw-100 text-muted">
-                <div class="mw-100 d-inline-flex align-items-center">
-                    @switch($deliveryNote->status)
-                        @case('new')
-                            @if($deliveryNote->signatureRequest)
-                                <svg class="icon icon-16 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                                </svg>
-                                {{ $deliveryNote->signatureRequest->created_at }}
-                            @else
-                                <svg class="icon icon-16 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                                </svg>
-                                {{ $deliveryNote->created_at }}
-                            @endif
-                            @break
-                        @case('signed')
-                            <svg class="icon icon-16 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            {{ $deliveryNote->signature()->created_at }}
+        @endunless
+
+        {{-- Desktop: status + contextual status-date + technician, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
+            <span class="q-status q-status--{{ $deliveryNote->status }}">{{ $deliveryNote->status_label }}</span>
+
+            <span class="q-chip">
+                @switch($deliveryNote->status)
+                    @case('new')
+                        @if($deliveryNote->signatureRequest)
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                            {{ $deliveryNote->signatureRequest->created_at }}
+                        @else
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            {{ $deliveryNote->created_at }}
+                        @endif
                         @break
-                        @case('finished')
-                            <svg class="icon icon-16 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                            </svg>
-                            {{ $deliveryNote->updated_at }}
-                            @if($deliveryNote->activities->last())
-                                ({{ Str::upper($deliveryNote->activities->last()->causer->username) }})
-                            @endif
+                    @case('signed')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                        {{ $deliveryNote->signature()->created_at }}
                         @break
-                    @endswitch
-                    <svg class="icon icon-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                    </svg>
-                    <span class="mw-100 text-truncate">
-                        {{ $deliveryNote->employee->person->name }}
-                    </span>
-                    @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
-                        <div class="mw-100 text-truncate ml-2 d-inline-flex align-items-center">
-                            <svg class="icon icon-16 mx-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clipboard"></use>
-                            </svg>
-                            {{ $deliveryNote->project->name }}
-                        </div>
-                    @endunless
-                </div>
-            </div>
+                    @case('finished')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        {{ $deliveryNote->updated_at }}@if($deliveryNote->activities->last()) ({{ Str::upper($deliveryNote->activities->last()->causer->username) }})@endif
+                        @break
+                @endswitch
+            </span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
+                <span class="text-truncate">{{ $deliveryNote->employee->person->name }}</span>
+            </span>
         </div>
 
-        <div class="d-none d-md-block ml-2">
-            <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="deliveryNoteOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        {{-- Mobile: technician/"who" chip drops; status + status-date are
+             their own line below the project chip above. --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $deliveryNote->status }}">{{ $deliveryNote->status_label }}</span>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="deliveryNoteOverviewDropdown">
-                    @unless($deliveryNote->isFinished())
-                        @can('approve', $deliveryNote)
-                            <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('delivery-notes.finish', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                                </svg>
-                                Erledigen
-                            </a>
-                        @endcan
-                    @endunless
-                    @can('update', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.edit', $deliveryNote) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                            </svg>
-                            Bearbeiten
-                        </a>
-                    @endcan
-                    @can('email', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                            </svg>
-                            Email senden
-                        </a>
-                    @endcan
-                    @can('createPdf', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.download', $deliveryNote) }}" target="_blank">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                            </svg>
-                            PDF herunterladen
-                        </a>
-                    @endcan
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                        </svg>
-                        Favorisieren
-                    </a>
-                    @if(auth()->user()->can('sign', $deliveryNote) || auth()->user()->can('emailSignatureRequest', $deliveryNote) || auth()->user()->can('emailDownloadRequest', $deliveryNote))
-                        <div class="dropdown-divider"></div>
-                    @endif
-                    @can('sign', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.sign', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            Unterschreiben lassen
-                        </a>
-                    @endcan
-                    @can('emailSignatureRequest', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-signature-request', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                            </svg>
-                            Unterschrift Anfrage senden
-                        </a>
-                    @endcan
-                    @can('emailDownloadRequest', $deliveryNote)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-download-request', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
-                            </svg>
-                            Download Link senden
-                        </a>
-                    @endcan
-                    @if(auth()->user()->can('delete', $deliveryNote) && (auth()->user()->can('sign', $deliveryNote) || auth()->user()->can('emailSignatureRequest', $deliveryNote) || auth()->user()->can('emailDownloadRequest', $deliveryNote)))
-                        <div class="dropdown-divider"></div>
-                    @endif
-                    @can('delete', $deliveryNote)
-                        <form action="{{ route('delivery-notes.destroy', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                                </svg>
-                                Entfernen
-                            </button>
-                        </form>
-                    @endcan
-                </div>
-            </div>
+            <span class="q-chip">
+                @switch($deliveryNote->status)
+                    @case('new')
+                        @if($deliveryNote->signatureRequest)
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                            {{ $deliveryNote->signatureRequest->created_at }}
+                        @else
+                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            {{ $deliveryNote->created_at }}
+                        @endif
+                        @break
+                    @case('signed')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                        {{ $deliveryNote->signature()->created_at }}
+                        @break
+                    @case('finished')
+                        <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        {{ $deliveryNote->updated_at }}@if($deliveryNote->activities->last()) ({{ Str::upper($deliveryNote->activities->last()->causer->username) }})@endif
+                        @break
+                @endswitch
+            </span>
         </div>
-
     </div>
+
+    {{-- kebab: same actions as before, lifted above the row's stretched-link --}}
+    <div class="dropdown">
+        <button class="q-kebab" type="button" id="deliveryNoteOverviewDropdown-{{ $deliveryNote->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="deliveryNoteOverviewDropdown-{{ $deliveryNote->id }}">
+            @unless($deliveryNote->isFinished())
+                @can('approve', $deliveryNote)
+                    <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('delivery-notes.finish', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
+                        <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        Erledigen
+                    </a>
+                @endcan
+            @endunless
+            @can('update', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.edit', $deliveryNote) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                    Bearbeiten
+                </a>
+            @endcan
+            @can('email', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                    Email senden
+                </a>
+            @endcan
+            @can('createPdf', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.download', $deliveryNote) }}" target="_blank">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                    PDF herunterladen
+                </a>
+            @endcan
+            <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
+                Favorisieren
+            </a>
+            @if(auth()->user()->can('sign', $deliveryNote) || auth()->user()->can('emailSignatureRequest', $deliveryNote) || auth()->user()->can('emailDownloadRequest', $deliveryNote))
+                <div class="dropdown-divider"></div>
+            @endif
+            @can('sign', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.sign', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                    Unterschreiben lassen
+                </a>
+            @endcan
+            @can('emailSignatureRequest', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-signature-request', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                    Unterschrift Anfrage senden
+                </a>
+            @endcan
+            @can('emailDownloadRequest', $deliveryNote)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('delivery-notes.email-download-request', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg>
+                    Download Link senden
+                </a>
+            @endcan
+            @if(auth()->user()->can('delete', $deliveryNote) && (auth()->user()->can('sign', $deliveryNote) || auth()->user()->can('emailSignatureRequest', $deliveryNote) || auth()->user()->can('emailDownloadRequest', $deliveryNote)))
+                <div class="dropdown-divider"></div>
+            @endif
+            @can('delete', $deliveryNote)
+                <form action="{{ route('delivery-notes.destroy', ['delivery_note' => $deliveryNote, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                        <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+                        Entfernen
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

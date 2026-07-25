@@ -1,56 +1,57 @@
-<div class="overview-card rounded">
-    <div class="mw-100 d-flex p-3 align-items-center">
+<div class="q-row">
+    <a class="stretched-link outline-none" href="{{ route('interim-invoices.show', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}"></a>
 
-        <div class="mw-100 d-flex flex-grow-1 h-100 align-items-center">
-            <div class="mw-100 flex-grow-1 position-relative">
-                <a class="stretched-link outline-none" href="{{ route('interim-invoices.show', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}"></a>
-                <div class="mw-100 d-flex align-items-center">
-                    <span class="mw-100 text-truncate">
-                        {{ $interimInvoice->title }}
-                    </span>
-                </div>
-                <div class="text-muted d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                    </svg>
-                    {{ $interimInvoice->billed_on }}
-                    <svg class="icon icon-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
-                    </svg>
-                    {{ Number::toLocal($interimInvoice->amount, 2) }}
-                </div>
-            </div>
+    <span class="q-avatar">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#file-text"></use></svg>
+    </span>
 
-            <div class="d-none d-md-block ml-2">
-                <div class="dropdown d-inline">
-                    <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="interimResultOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="interimResultOverviewDropdown">
-                        @can('update', $interimInvoice)
-                            <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('interim-invoices.edit', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                                </svg>
-                                Bearbeiten
-                            </a>
-                        @endcan
-                        @can('delete', $interimInvoice)
-                            <form action="{{ route('interim-invoices.destroy', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                                    </svg>
-                                    Entfernen
-                                </button>
-                            </form>
-                        @endcan
-                    </div>
-                </div>
-            </div>
+    <div class="q-row__main">
+        <div class="q-row__title text-truncate">{{ $interimInvoice->title }}</div>
+        <div class="q-meta">
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ $interimInvoice->billed_on }}
+            </span>
+            {{-- Mobile: .q-metric (desktop's hero amount) is dropped entirely
+                 by the shared list-row mobile rule — repeated here as a chip
+                 instead, same fix as finance_record's identical pattern
+                 (2026-07-22, user report). --}}
+            <span class="q-chip d-md-none q-mono">
+                {{ Number::toLocal($interimInvoice->amount, 2) }}
+            </span>
         </div>
-
     </div>
+
+    <div class="q-metric">
+        <div class="q-metric__value">{{ Number::toLocal($interimInvoice->amount, 2) }}</div>
+        <div class="q-metric__label">Betrag</div>
+    </div>
+
+    <div class="dropdown">
+        <button class="q-kebab" type="button" id="interimInvoiceOverviewDropdown-{{ $interimInvoice->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="interimInvoiceOverviewDropdown-{{ $interimInvoice->id }}">
+            @can('update', $interimInvoice)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('interim-invoices.edit', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                    Bearbeiten
+                </a>
+            @endcan
+            @can('delete', $interimInvoice)
+                <form action="{{ route('interim-invoices.destroy', ['project' => $interimInvoice->project, 'interim_invoice' => $interimInvoice]) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                        <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+                        Entfernen
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

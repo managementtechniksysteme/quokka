@@ -41,7 +41,7 @@ class DeliveryNotePolicy
         }
 
         if($deliveryNote->status === 'signed') {
-            return $user->can('inspection-reports.approve');
+            return $user->can('delivery-notes.approve');
         }
 
         return $user->can('delivery-notes.delete');
@@ -68,7 +68,7 @@ class DeliveryNotePolicy
 
     public function emailDownloadRequest(User $user, DeliveryNote $deliveryNote): bool
     {
-        if($deliveryNote->status !== 'new') {
+        if($deliveryNote->status === 'new') {
             return false;
         }
 

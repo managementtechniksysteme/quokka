@@ -12,7 +12,10 @@ class WageServiceFactory extends Factory
     public function definition(): array
     {
         return [
-
+            'name' => $this->faker->unique()->words(3, true),
+            'description' => $this->faker->sentence,
+            'unit' => $this->faker->randomElement(['h', 'Stk', 'km']),
+            'costs' => $this->faker->randomFloat(1, 0, 200),
         ];
     }
 }

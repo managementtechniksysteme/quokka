@@ -7,11 +7,14 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Vehicle extends Model implements FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
@@ -20,9 +23,12 @@ class Vehicle extends Model implements FiltersGlobalSearch
         'make_model', 'current_kilometres'
     ];
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'private' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'make', 'model', 'registration_identifier', 'private', 'comment',
@@ -60,6 +66,29 @@ class Vehicle extends Model implements FiltersGlobalSearch
                     $vehicle->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Vehicle::class)) {
+            return null;
+        }
+
+        $vehicle = Vehicle::find($id);
+
+        if (!$vehicle) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Vehicle::class,
+            'Fahrzeug',
+            $vehicle->id,
+            "$vehicle->registration_identifier ($vehicle->make_model)",
+            route('vehicles.show', $vehicle),
+            $vehicle->created_at,
+            $vehicle->updated_at,
+        );
     }
 
     public function logbook()

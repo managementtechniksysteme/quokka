@@ -30,13 +30,17 @@ class ServiceReportShowCommand extends SpotlightCommand
 
     public function searchServiceReport(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return ServiceReport::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
             ->withMin('services', 'provided_on')
             ->withMax('services', 'provided_on')
-            ->get()
+            ->limit(15)->get()
             ->map(function (ServiceReport $serviceReport) {
                 $start = Carbon::parse($serviceReport->services_min_provided_on);
                 $end = Carbon::parse($serviceReport->services_max_provided_on);

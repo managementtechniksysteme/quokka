@@ -38,6 +38,7 @@ class DeliveryNoteController extends Controller
             'showSignatureRequest' => 'sign',
             'sign' => 'sign',
             'approve' => 'approve',
+            'finish' => 'approve',
         ]);
     }
 
@@ -72,11 +73,13 @@ class DeliveryNoteController extends Controller
         }
 
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('delivery_note.create')
             ->with('deliveryNote', null)
             ->with('currentProject', null)
-            ->with('projects', $projects->toJson());
+            ->with('projects', $projects->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     public function store(DeliveryNoteStoreRequest $request)
@@ -110,18 +113,21 @@ class DeliveryNoteController extends Controller
             ->load('activities.causer');
 
         return view('delivery_note.show')
-            ->with(compact('deliveryNote'));
+            ->with(compact('deliveryNote'))
+            ->with('signature', $deliveryNote->signature());
     }
 
     public function edit(DeliveryNote $deliveryNote)
     {
         $currentProject = $deliveryNote->project;
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('delivery_note.edit')
             ->with('deliveryNote', $deliveryNote)
             ->with('currentProject', $currentProject)
-            ->with('projects', $projects->toJson());
+            ->with('projects', $projects->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     public function update(DeliveryNoteUpdateRequest $request, DeliveryNote $deliveryNote)

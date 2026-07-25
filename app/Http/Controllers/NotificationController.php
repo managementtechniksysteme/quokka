@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('can:tools-scanqr');
-    }
-
     public function index(Request $request)
     {
         $notifications = null;
@@ -52,6 +47,8 @@ class NotificationController extends Controller
     }
 
     public function destroy(DatabaseNotification $notification) {
+        $this->authorize('delete', $notification);
+
         $notification->markAsRead();
 
         return redirect()

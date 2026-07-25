@@ -169,7 +169,7 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
             'appendix_description' => 'nullable',
             'appendix' => 'mimes:pdf',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+            'new_attachments.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
 
         if ($speed_measurement_type === 'other') {
@@ -211,7 +211,7 @@ class FlowMeterInspectionReportStoreRequest extends FormRequest
         }
 
         if ($comparison_measurements_process === 'mobile_measurement_equipment') {
-            $comparison_measurement_mobile_type = $this->input('speed_measurement_type');
+            $comparison_measurement_mobile_type = $this->input('comparison_measurement_mobile_type');
 
             $rules['comparison_measurement_mobile_type'] = 'required|in:doppler_ultrasonic,ultrasonic_signal_transmit_time,ultrasonic_cross_correlation,radar,other';
             if($comparison_measurement_mobile_type === 'other') {

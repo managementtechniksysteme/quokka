@@ -1,28 +1,37 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('material-services.index') }}" class="q-appbar__btn" aria-label="Abbrechen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>
+    </a>
+    <span class="q-appbar__title">Materialleistung anlegen</span>
+@endsection
+
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#box"></use>
-                </svg>
-                Materialleistung anlegen
-            </h3>
+    <div class="q-container">
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#box"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Materialleistung anlegen</div>
+                    <h1 class="q-title">Neue Materialleistung</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" action="{{ route('material-services.store') }}" method="post" novalidate>
-            @component('material_service.fields', [ 'materialService' => $materialService ])
-            @endcomponent
+        <form class="q-form needs-validation" action="{{ route('material-services.store') }}" method="post" novalidate>
+            @include('material_service.fields', ['materialService' => $materialService])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Materialleistung speichern
-            </button>
+            <div class="q-form-actions q-form-actions--solo-mobile">
+                <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('material-services.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
+                    <span class="d-none d-md-inline">Materialleistung speichern</span>
+                    <span class="d-inline d-md-none">Speichern</span>
+                </button>
+            </div>
         </form>
     </div>
 @endsection

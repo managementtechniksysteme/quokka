@@ -7,17 +7,22 @@
     url("../fonts/nunito-v12-latin-regular.woff2") format("woff2");
 }
 
-// Variables
+// Bootstrap functions (needed before variables)
+@import "bootstrap/scss/functions";
+
+// Our variable overrides (before BS5 defaults)
 @import "variables";
 
-// Bootstrap colors
+// BS5 variable defaults (provides all color-100 through color-900 variants)
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+// Extended theme-colors map (references BS5 color variables above)
 @import "bootstrap_colors";
 
-// Bootstrap fixed REM spacers
-@import "bootstrap_spacers";
 
-// Bootstrap
-@import "~bootstrap/scss/bootstrap";
+// Bootstrap (functions/variables reimported but !default prevents overrides)
+@import "bootstrap/scss/bootstrap";
 
 // Vue Easymde
 @import "easymde";
@@ -28,15 +33,23 @@
 // Vue Select
 @import "select";
 
-// Spotlight
-@import "spotlight";
-
 // Markdown
 @import "markdown";
+
+// Quokka redesign layer (must come after Bootstrap so it can build on its
+// tokens/mixins; see _quokka-ui.scss)
+@import "quokka-ui";
+
+// Spotlight — after the redesign layer so it can reuse its $q-radius tokens
+@import "spotlight";
 
 // Vue: wait for components to fully load before showing content
 [v-cloak] {
   display: none;
+}
+
+body {
+  background-color: var(--q-bg);
 }
 
 // Always show scroll bars to avoid content shifting
@@ -48,29 +61,37 @@ main {
   width: 100%;
   position: absolute;
   top: 3.8rem;
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  // Below md, authenticated pages swap the 3.8rem desktop navbar for the
+  // 54px .q-appbar (see partials/navbar.blade.php + _quokka-ui.scss §S) —
+  // #app only gets .is-authed when @auth, so guest pages (still on the full
+  // desktop navbar at every width) are untouched.
+  //
+  // main now spans the FULL viewport here (2026-07-21) instead of starting
+  // below the app bar — the app bar became a translucent/blurred fixed
+  // overlay (like the tab bar already was), so content needs to actually
+  // scroll underneath it for the blur to have anything real behind it.
+  // .q-page's own padding-top (§S, md-down block) reserves the visual space
+  // so content doesn't start out hidden under the bar before any scrolling.
+  #app.is-authed & {
+    @include media-breakpoint-down(md) {
+      top: 0;
+      height: 100vh;
+      max-height: 100vh;
+      min-height: 100vh;
+    }
+  }
 }
 
 // General body background color for other elements
 .bg-general {
-  background-color: $body-bg;
+  background-color: #fdfeff;
 }
 
 // Icons
-svg.icon {
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-  display: inline-flex;
-  align-self: center;
-  min-width: 1em;
-  min-height: 1em;
-  max-width: 1em;
-  max-height: 1em;
-}
-
+svg.icon,
 svg.icon-bs {
   fill: currentColor;
   display: inline-flex;
@@ -136,70 +157,54 @@ img.empty-state {
 }
 
 // Overview dropdown
+.dropdown-toggle-vertical-points {
+  text-decoration: none;
+}
+
 .dropdown-toggle-vertical-points:after {
   border: none;
   content: "\2807";
 }
 
-.dropdown-toggle-vertical-points:hover,
-.dropdown-toggle-vertical-points:focus {
-  text-decoration: none;
-}
-
-// Success dropdown button with blue text and white text with blue background on hover
+// coloured dropdown items
 .dropdown-item-primary {
-  color: $primary !important;
+  color: color-mix(in srgb, var(--q-accent) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-primary:hover {
-  color: $primary !important;
+.dropdown-item-primary:hover,
+.dropdown-item-primary:focus {
+  color: var(--q-accent) !important;
+  background-color: var(--q-accent-tint) !important;
 }
 
-.dropdown-item-primary:active {
-  color: #ffffff !important;
-  background-color: $primary !important;
-}
-
-// Success dropdown button with green text and white text with green background on hover
 .dropdown-item-success {
-  color: $success !important;
+  color: color-mix(in srgb, var(--q-green) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-success:hover {
-  color: $success !important;
+.dropdown-item-success:hover,
+.dropdown-item-success:focus {
+  color: var(--q-green) !important;
+  background-color: var(--q-green-bg) !important;
 }
 
-.dropdown-item-success:active {
-  color: #ffffff !important;
-  background-color: $success !important;
-}
-
-// Success dropdown button with yellow text and yellow background on hover
 .dropdown-item-warning {
-  color: $yellow !important;
+  color: color-mix(in srgb, var(--q-amber) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-warning:hover {
-  color: $yellow !important;
+.dropdown-item-warning:hover,
+.dropdown-item-warning:focus {
+  color: var(--q-amber) !important;
+  background-color: var(--q-amber-bg) !important;
 }
 
-.dropdown-item-warning:active {
-  color: $dark !important;
-  background-color: $yellow !important;
-}
-
-// Danger dropdown button with red text and white text with red background on hover
 .dropdown-item-danger {
-  color: $danger !important;
+  color: color-mix(in srgb, var(--q-red) 65%, var(--q-muted)) !important;
 }
 
-.dropdown-item-danger:hover {
-  color: $danger !important;
-}
-
-.dropdown-item-danger:active {
-  color: #ffffff !important;
-  background-color: $danger !important;
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus {
+  color: var(--q-red) !important;
+  background-color: var(--q-red-bg) !important;
 }
 
 // No outline
@@ -274,9 +279,16 @@ a.outline-none {
   max-width: 4em;
 }
 
-// Status border
+// Status border — only the left edge should be colored;
+// BS5 border-* utilities set border-color on all sides, so we reset them.
 .border-status {
   border-left: 3px solid;
+
+  &.border-primary { border-color: inherit !important; border-left-color: $primary !important; }
+  &.border-success { border-color: inherit !important; border-left-color: $success !important; }
+  &.border-warning { border-color: inherit !important; border-left-color: $warning !important; }
+  &.border-danger  { border-color: inherit !important; border-left-color: $danger !important; }
+  &.border-info    { border-color: inherit !important; border-left-color: $info !important; }
 }
 
 // Border for finished activity card
@@ -396,7 +408,7 @@ a.outline-none {
 .collapse-leave-active {
   transition: opacity 0.5s;
 }
-.collapse-enter,
+.collapse-enter-from,
 .collapse-leave-to {
   opacity: 0;
 }
@@ -416,7 +428,7 @@ a.outline-none {
 }
 
 .global-search:focus-within {
-  border: 1px solid $secondary !important;
+  border: 1px solid $primary !important;
 }
 
 .global-search-input {
@@ -430,7 +442,7 @@ a.outline-none {
 
 .global-search-append-button:hover {
   color: $white !important;
-  background-color: $secondary !important;
+  background-color: $primary !important;
 }
 
 // Notification badge

@@ -1,16 +1,16 @@
 <template>
     <div>
-        <div class="row align-items-center">
-            <div class="col pr-0">
-                <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :value="selected_input" :selectOnTab="true" @input="setSelected" taggable>
+        <div class="d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center">
+            <div class="flex-grow-1">
+                <v-select :options="unselected" label="name" placeholder="Person auswählen oder Email Adresse eingeben" :modelValue="selected_input" :selectOnTab="true" @update:modelValue="setSelected" taggable>
                     <template v-slot:no-options>Keine passenden Einträge.</template>
                 </v-select>
             </div>
 
-            <div class="col-auto pl-0 ml-1">
-                <button type="button" class="btn btn-primary ml-1" @click="addSelected(selected_input, selected_to)">AN</button>
-                <button type="button" class="btn btn-outline-secondary ml-1" @click="addSelected(selected_input, selected_cc)">CC</button>
-                <button type="button" class="btn btn-outline-secondary ml-1" @click="addSelected(selected_input, selected_bcc)">BCC</button>
+            <div class="d-flex gap-1">
+                <button type="button" class="btn btn-primary text-white flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_to)">AN</button>
+                <button type="button" class="btn q-btn flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_cc)">CC</button>
+                <button type="button" class="btn q-btn flex-fill flex-md-grow-0" @click="addSelected(selected_input, selected_bcc)">BCC</button>
             </div>
 
         </div>
@@ -19,7 +19,7 @@
             <div v-if="selected_to.length">
                 <div class="text-muted">Empfänger (An):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_to">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_to">
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][id]'" :name="'email_to['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][name]'" :name="'email_to['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_to['+index+'][email]'" :name="'email_to['+index+'][email]'" :value="mailable.email" />
@@ -28,8 +28,11 @@
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
 
                     </div>
-                    <div class="col-auto ml-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedTo(mailable, selected_to)">Entfernen</button>
+                    <div class="col-auto ms-auto">
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedTo(mailable, selected_to)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -37,7 +40,7 @@
             <div v-if="selected_cc.length">
                 <div class="text-muted">Carbon Copy (CC):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_cc">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_cc">
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][id]'" :name="'email_cc['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][name]'" :name="'email_cc['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_cc['+index+'][email]'" :name="'email_cc['+index+'][email]'" :value="mailable.email" />
@@ -45,8 +48,11 @@
                     <div class="col">
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
-                    <div class="col-auto ml-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedCC(mailable, selected_cc)">Entfernen</button>
+                    <div class="col-auto ms-auto">
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedCC(mailable, selected_cc)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -54,7 +60,7 @@
             <div v-if="selected_bcc.length">
                 <div class="text-muted">Blind Carbon Copy (BCC):</div>
 
-                <div class="row my-2 align-items-center" v-for="(mailable, index) in selected_bcc">
+                <div class="row my-2 align-items-center hover-highlight" v-for="(mailable, index) in selected_bcc">
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][id]'" :name="'email_bcc['+index+'][id]'" :value="mailable.id" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][name]'" :name="'email_bcc['+index+'][name]'" :value="mailable.name" />
                     <input v-if="selected_to.length" type="hidden" :id="'email_bcc['+index+'][email]'" :name="'email_bcc['+index+'][email]'" :value="mailable.email" />
@@ -62,8 +68,11 @@
                     <div class="col">
                         {{mailable.name}} <span class="text-muted">&lt;{{mailable.email}}&gt;</span>
                     </div>
-                    <div class="col-auto ml-auto">
-                        <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelectedBCC(mailable, selected_bcc)">Entfernen</button>
+                    <div class="col-auto ms-auto">
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelectedBCC(mailable, selected_bcc)">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                            <span class="d-none d-md-inline">Entfernen</span>
+                        </button>
                     </div>
                 </div>
             </div>

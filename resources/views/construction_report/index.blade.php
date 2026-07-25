@@ -1,183 +1,226 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container pt-4">
-            <h3>
-                <svg class="icon-bs icon-baseline text-muted mr-1">
-                    <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
-                </svg>
-                Bautagesberichte
-                @unless($constructionReports->isEmpty())
-                    <small class="text-muted">{{ trans_choice('messages.entries', $constructionReports->total()) }}</small>
-                @endunless
-            </h3>
+    <div class="q-container">
 
-            <div class="scroll-x d-flex">
+        <div class="q-page-head">
+            {{-- Desktop: icon + title + count, as before. --}}
+            <div class="d-none d-md-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                </span>
+                <div>
+                    <h1 class="q-title">Bautagesberichte</h1>
+                    @unless($constructionReports->isEmpty())
+                        <div class="q-subtitle">{{ trans_choice('messages.entries', $constructionReports->total()) }}</div>
+                    @endunless
+                </div>
+            </div>
+
+            @can('create', \App\Models\ConstructionReport::class)
+                <a class="btn btn-primary text-white d-none d-md-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create') }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                    Bautagesbericht anlegen
+                </a>
+            @endcan
+
+            {{-- Mobile: count inline with the actions, create label
+                 shortened to just the entity name. --}}
+            <div class="d-flex d-md-none align-items-center gap-2">
+                @unless($constructionReports->isEmpty())
+                    <div class="q-subtitle mb-0">{{ trans_choice('messages.entries', $constructionReports->total()) }}</div>
+                @endunless
                 @can('create', \App\Models\ConstructionReport::class)
-                    <a class="btn btn-outline-secondary border-0 d-inline-flex align-items-center" href="{{ route('construction-reports.create') }}">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                        </svg>
-                        Bautagesbericht anlegen
+                    <a class="btn btn-primary text-white d-inline-flex align-items-center gap-2 ms-auto" style="flex: none;" href="{{ route('construction-reports.create') }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        Bautagesbericht
                     </a>
                 @endcan
             </div>
         </div>
-    </div>
 
-    <div class="container mt-4">
         @unless ($constructionReports->isEmpty() && !Request::get('search'))
-            <div class="row">
-
-                <div class="col col-md-6">
-
-                    <form action="{{ route('construction-reports.index') }}" method="get">
-                        @if(request()->sort)
-                            <input type="hidden" id="sort" name="sort" value="{{ request()->sort }}">
-                        @endif
-
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Bautagesberichte suchen" autocomplete="off" />
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                    <svg class="icon icon-16">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                                    </svg>
-                                </button>
-                                @if (Request::get('search'))
-                                    <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
-                                        <svg class="icon icon-16">
-                                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
-                                        </svg>
-                                    </a>
-                                @endif
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item"
-                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
-                                       @else href="{{ Request::url() . '?search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}"
-                                        @endif>
-                                        Meine Bautagesberichte
-                                    </a>
-                                    <a class="dropdown-item"
-                                       @if(Request::get('sort')) href="{{ Request::url() . '?search=t:' . Auth::user()->username . ' ist:neu' . '&sort=' . Request::get('sort') }}"
-                                       @else href="{{ Request::url() . '?search=t:' . Auth::user()->username . ' ist:neu' }}"
-                                        @endif>
-                                        Meine nicht unterschriebenen Bautagesberichte
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-
-                </div>
-
-                <div class="col-auto ml-auto">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                            </svg>
-                            Sortierung
+            {{-- Desktop: search field + quick-filter split-dropdown + sort dropdown — unchanged. --}}
+            <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
+                <form class="flex-grow-1" action="{{ route('construction-reports.index') }}" method="get">
+                    @if(request()->sort)
+                        <input type="hidden" name="sort" value="{{ request()->sort }}">
+                    @endif
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Bautagesberichte suchen" autocomplete="off" />
+                        <button class="btn q-btn d-flex align-items-center" type="submit">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-right w-100">
-                            <form action="{{ route('construction-reports.index') }}" method="get">
-                                @if(request()->has('search'))
-                                    <input type="hidden" id="search" name="search" value="{{ request()->search ?? '' }}">
-                                @endif
-
-                                <button type="submit" name="sort" value="services_provided_on-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                    </svg>
-                                    Datum
-                                </button>
-                                <button type="submit" name="sort" value="services_provided_on-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                    </svg>
-                                    Datum
-                                </button>
-
-                                <button type="submit" name="sort" value="number-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                    </svg>
-                                    Nummer
-                                </button>
-                                <button type="submit" name="sort" value="number-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                    </svg>
-                                    Nummer
-                                </button>
-
-                                <button type="submit" name="sort" value="status-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                    </svg>
-                                    Status
-                                </button>
-                                <button type="submit" name="sort" value="status-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                    <svg class="icon icon-16 mr-2">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                    </svg>
-                                    Status
-                                </button>
-
-                            </form>
+                        @if (Request::get('search'))
+                            <a class="btn q-btn d-flex align-items-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                            </a>
+                        @endif
+                        <button type="button" class="btn q-btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                               @if(Request::get('sort')) href="{{ Request::url() . '?search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') . '&sort=' . Request::get('sort') }}"
+                               @else href="{{ Request::url() . '?search=t:' . Auth::user()->username . (Auth::user()->settings->show_finished_items ? '' : ' !ist:erledigt') }}" @endif>
+                                Meine Bautagesberichte
+                            </a>
+                            <a class="dropdown-item"
+                               @if(Request::get('sort')) href="{{ Request::url() . '?search=t:' . Auth::user()->username . ' ist:neu' . '&sort=' . Request::get('sort') }}"
+                               @else href="{{ Request::url() . '?search=t:' . Auth::user()->username . ' ist:neu' }}" @endif>
+                                Meine nicht unterschriebenen Bautagesberichte
+                            </a>
                         </div>
                     </div>
-                </div>
+                </form>
 
+                <div class="dropdown ms-auto">
+                    <button class="btn q-btn dropdown-toggle d-flex align-items-center gap-2" type="button" id="sortOrderDropdown" data-bs-toggle="dropdown">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
+                        Sortierung
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <form action="{{ route('construction-reports.index') }}" method="get">
+                            @if(request()->has('search'))
+                                <input type="hidden" name="search" value="{{ request()->search ?? '' }}">
+                            @endif
+
+                            <button type="submit" name="sort" value="number-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Nummer
+                            </button>
+                            <button type="submit" name="sort" value="number-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Nummer
+                            </button>
+                            <button type="submit" name="sort" value="services_provided_on-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Datum
+                            </button>
+                            <button type="submit" name="sort" value="services_provided_on-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Datum
+                            </button>
+                            <button type="submit" name="sort" value="status-asc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-up"></use></svg>Status
+                            </button>
+                            <button type="submit" name="sort" value="status-desc" class="dropdown-item d-inline-flex align-items-center gap-2">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-down"></use></svg>Status
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Mobile: leading search icon inline in the field, no separate
+                 submit button. Filter joins the input-group as a fused
+                 trailing segment; sort stays a standalone icon button. --}}
+            <div class="d-flex d-md-none align-items-center gap-2 mb-3">
+                <form class="flex-grow-1" action="{{ route('construction-reports.index') }}" method="get">
+                    @if(request()->sort)
+                        <input type="hidden" name="sort" value="{{ request()->sort }}">
+                    @endif
+                    <div class="position-relative flex-grow-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Bautagesberichte suchen" autocomplete="off" />
+                            @if (Request::get('search'))
+                                <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
+                                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
+                                </a>
+                            @endif
+                            <button type="button" class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" data-bs-toggle="offcanvas" data-bs-target="#constructionReportQuickFilterSheet" aria-controls="constructionReportQuickFilterSheet" aria-label="Schnellfilter">
+                                <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
+                            </button>
+                        </div>
+                        <svg class="icon-bs icon-16 text-muted position-absolute top-50 start-0 translate-middle-y ms-3 pe-none q-search-icon">
+                            <use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use>
+                        </svg>
+                    </div>
+                </form>
+
+                <button class="btn q-btn q-btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#constructionReportSortSheet" aria-controls="constructionReportSortSheet" aria-label="Sortierung">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#sort-down"></use></svg>
+                </button>
+            </div>
+
+            @php
+                $constructionReportFilterUsername = Auth::user()->username;
+                $constructionReportShowFinished = Auth::user()->settings->show_finished_items;
+                $constructionReportQuickFilters = [
+                    'Meine Bautagesberichte' => 't:' . $constructionReportFilterUsername . ($constructionReportShowFinished ? '' : ' !ist:erledigt'),
+                    'Meine nicht unterschriebenen Bautagesberichte' => 't:' . $constructionReportFilterUsername . ' ist:neu',
+                ];
+            @endphp
+            <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="constructionReportQuickFilterSheet" aria-label="Schnellfilter">
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Schnellfilter</div>
+                    @foreach($constructionReportQuickFilters as $quickFilterLabel => $quickFilterExpr)
+                        <a class="q-row" href="{{ Request::url() . '?search=' . urlencode($quickFilterExpr) . (Request::get('sort') ? '&sort=' . Request::get('sort') : '') }}">
+                            <span class="q-row__title">{{ $quickFilterLabel }}</span>
+                            @if(Request::get('search') === $quickFilterExpr)
+                                <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            @php
+                $constructionReportSortOptions = [
+                    'number-asc' => ['Nummer', 'arrow-up'],
+                    'number-desc' => ['Nummer', 'arrow-down'],
+                    'services_provided_on-asc' => ['Datum', 'arrow-up'],
+                    'services_provided_on-desc' => ['Datum', 'arrow-down'],
+                    'status-asc' => ['Status', 'arrow-up'],
+                    'status-desc' => ['Status', 'arrow-down'],
+                ];
+            @endphp
+            <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="constructionReportSortSheet" aria-label="Sortierung">
+                <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                <div class="offcanvas-body">
+                    <div class="q-sheet__label">Sortierung</div>
+                    <form action="{{ route('construction-reports.index') }}" method="get">
+                        @if(request()->has('search'))
+                            <input type="hidden" name="search" value="{{ request()->search ?? '' }}">
+                        @endif
+                        @foreach($constructionReportSortOptions as $sortValue => $sortMeta)
+                            <button type="submit" name="sort" value="{{ $sortValue }}" class="q-row">
+                                <span class="q-avatar q-avatar--muted">
+                                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#{{ $sortMeta[1] }}"></use></svg>
+                                </span>
+                                <span class="q-row__title">{{ $sortMeta[0] }}</span>
+                                @if(request('sort') === $sortValue)
+                                    <svg class="icon-bs icon-18 q-row__check"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check"></use></svg>
+                                @endif
+                            </button>
+                        @endforeach
+                    </form>
+                </div>
             </div>
         @endunless
 
-        <div class="mt-3">
-            @forelse ($constructionReports as $constructionReport)
-                @component('construction_report.overview_card', [ 'constructionReport' => $constructionReport, 'actionRedirect' => 'index' ])
-                @endcomponent
-
-                @if(!$loop->last)
-                    <hr class="m-0 mx-1" />
+        @if($constructionReports->isEmpty())
+            <div class="q-empty-state">
+                <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use></svg>
+                @if(Request::get('search'))
+                    <p>Keine Bautagesberichte für diese Suche gefunden.</p>
+                @else
+                    <p>Es sind noch keine Bautagesberichte vorhanden.</p>
+                    @can('create', \App\Models\ConstructionReport::class)
+                        <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('construction-reports.create') }}">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                            Bautagesbericht anlegen
+                        </a>
+                    @endcan
                 @endif
-            @empty
-                <div class="text-center mt-4">
-                    <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                    @if(Request::get('search'))
-                        <p class="lead text-muted">Es wurden keine Bautagesberichte passend zur Suche gefunden.</p>
-                    @else
-                        <p class="lead text-muted">Es sind keine Bautagesberichte im System vorhanden.</p>
-                        @can('create', \App\Models\ConstructionReport::class)
-                            <p class="lead">Lege einen neuen Bautagesbericht an.</p>
-                            <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('construction-reports.create') }}">
-                                <svg class="icon icon-20 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                                </svg>
-                                Bautagesbericht anlegen
-                            </a>
-                        @endcan
-                    @endif
-                </div>
-            @endforelse
-        </div>
+            </div>
+        @else
+            <div class="q-card q-list">
+                @foreach ($constructionReports as $constructionReport)
+                    @include('construction_report.overview_card_content', ['constructionReport' => $constructionReport, 'actionRedirect' => 'index'])
+                @endforeach
+            </div>
 
-        <div class="mt-2">
-            {{ $constructionReports->links() }}
-        </div>
-
-        @if($constructionReports->count() > 0)
-            <p class="mt-3 small">
-                Der linke farbliche Rand zeigt den Status des jeweiligen Bautagesberichtes:
-                <span class="badge badge-blue-100 text-blue-800">neu</span>
-                <span class="badge badge-yellow-100 text-yellow-800">unterschrieben</span>
-                <span class="badge badge-green-100 text-green-800">erledigt</span>
-            </p>
+            <div class="mt-3">
+                {{ $constructionReports->links() }}
+            </div>
         @endif
-
     </div>
 @endsection

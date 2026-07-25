@@ -3,19 +3,19 @@
 
         <div v-if="webpush_enabled !== null">
             <div v-if="webpush_enabled === false">
-                <p>Push Benachrictungen sind auf diesem Gerät deaktiviert. Aktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
-                <button class="btn btn-primary d-inlin-flex align-items-center" @click="subscribeUser">
-                    <svg class="icon icon-16 mr-2">
-                        <use xlink:href="svg/feather-sprite.svg#bell"></use>
+                <p class="mb-2">Push Benachrichtigungen sind auf diesem Gerät deaktiviert.</p>
+                <button class="btn q-btn d-inline-flex align-items-center gap-2" @click="subscribeUser">
+                    <svg class="icon-bs icon-16">
+                        <use href="/svg/bootstrap-icons.svg#bell"></use>
                     </svg>
                     Push Benachrichtigungen aktivieren
                 </button>
             </div>
             <div v-if="webpush_enabled === true">
-                <p>Push Benachrictungen sind auf diesem Gerät aktiviert. Deaktiviere Benachrichtigungen mit einem Klick auf den Button.</p>
-                <button class="btn btn-outline-danger d-inline-flex align-items-center" @click="unsubscribeUser">
-                    <svg class="icon icon-16 mr-2">
-                        <use xlink:href="svg/feather-sprite.svg#bell-off"></use>
+                <p class="mb-2">Push Benachrichtigungen sind auf diesem Gerät aktiviert.</p>
+                <button class="btn btn-outline-danger d-inline-flex align-items-center gap-2" @click="unsubscribeUser">
+                    <svg class="icon-bs icon-16">
+                        <use href="/svg/bootstrap-icons.svg#bell-off"></use>
                     </svg>
                     Push Benachrichtigungen deaktivieren
                 </button>
@@ -24,8 +24,8 @@
             <div v-if="success_notification !== null" :key="notification_key">
                 <notification type="success" v-cloak>
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
-                            <use xlink:href="svg/feather-sprite.svg#check"></use>
+                        <svg class="icon-bs icon-24 me-2">
+                            <use href="/svg/bootstrap-icons.svg#check"></use>
                         </svg>
                         {{success_notification}}
                     </div>
@@ -34,8 +34,8 @@
             <div v-if="error_notification !== null" :key="notification_key">
                 <notification type="danger" v-cloak>
                     <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
-                            <use xlink:href="svg/feather-sprite.svg#alert-octagon"></use>
+                        <svg class="icon-bs icon-24 me-2">
+                            <use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use>
                         </svg>
                         {{error_notification}}
                     </div>
@@ -44,7 +44,7 @@
         </div>
 
         <div v-if="webpush_enabled === null">
-            <p>Push Benachrictungen sind auf diesem Gerät nicht verfügbar.</p>
+            <p class="text-muted mb-0">Push Benachrichtigungen sind auf diesem Gerät nicht verfügbar.</p>
         </div>
 
     </div>
@@ -64,7 +64,7 @@
         },
 
         created() {
-            if ('showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window) {
+            if ('serviceWorker' in navigator && 'ServiceWorkerRegistration' in window && 'showNotification' in ServiceWorkerRegistration.prototype && 'PushManager' in window) {
                 navigator.serviceWorker.ready.then(registration => {
                     registration.pushManager.getSubscription()
                         .then(subscription => {

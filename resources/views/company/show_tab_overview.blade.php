@@ -1,122 +1,120 @@
 @extends('company.show')
 
 @section('tab')
+    <div class="q-fieldcols">
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="text-muted d-flex align-items-center">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#map-pin"></use>
-                </svg>
-                Addresse
-            </div>
-            <p class="m-0">
-                @if ($company->address->first())
-                    {{ $company->address->first()->street_number }} <br />
-                    {{ $company->address->first()->postcode }} {{ $company->address->first()->city }} <br />
-                    <a class="text-muted d-flex align-items-center mt-1" href="https://maps.google.com?q={{ $company->address->first()->address_line }}">
-                        <svg class="icon icon-16 mr-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                        </svg>
-                        Google Maps
-                    </a>
-                @else
-                    keine Adresse angegeben
-                @endif
-            </p>
-        </div>
+        {{-- Kontakt --}}
+        <div class="q-card">
+            <div class="q-card__head">Kontakt</div>
+            <div class="q-card__body">
 
-        <div class="col-md-8">
-            <div class="row mt-4 mt-md-0">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#phone"></use>
-                        </svg>
-                        Telefon
+                <div class="q-inforow">
+                    <span class="q-inforow__icon">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#telephone"></use></svg>
+                    </span>
+                    <div class="q-inforow__main">
+                        <div class="q-inforow__label">Telefon</div>
+                        <div class="q-inforow__value">
+                            @if ($company->phone){{ $company->phone }}@else<span class="q-inforow__value--empty">nicht angegeben</span>@endif
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    {{ $company->phone ?? 'nicht angegeben' }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                        </svg>
-                        Fax
+
+                <div class="q-inforow">
+                    <span class="q-inforow__icon">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                    </span>
+                    <div class="q-inforow__main">
+                        <div class="q-inforow__label">Fax</div>
+                        <div class="q-inforow__value">
+                            @if ($company->fax){{ $company->fax }}@else<span class="q-inforow__value--empty">nicht angegeben</span>@endif
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    {{ $company->fax ?? 'nicht angegeben' }}
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                        </svg>
-                        Email
+
+                <div class="q-inforow">
+                    <span class="q-inforow__icon">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                    </span>
+                    <div class="q-inforow__main">
+                        <div class="q-inforow__label">Email</div>
+                        <div class="q-inforow__value text-truncate">
+                            @if ($company->email)<a href="mailto:{{ $company->email }}">{{ $company->email }}</a>@else<span class="q-inforow__value--empty">nicht angegeben</span>@endif
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    @if ($company->email)
-                        <a href="mailto:{{ $company->email }}">{{ $company->email }}</a>
-                    @else
-                        nicht angegeben
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#link-2"></use>
-                        </svg>
-                        Webseite
+
+                <div class="q-inforow">
+                    <span class="q-inforow__icon">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#link-45deg"></use></svg>
+                    </span>
+                    <div class="q-inforow__main">
+                        <div class="q-inforow__label">Webseite</div>
+                        <div class="q-inforow__value text-truncate">
+                            @if ($company->website)<a href="{{ $company->website }}" target="_blank">{{ $company->website }}</a>@else<span class="q-inforow__value--empty">nicht angegeben</span>@endif
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    @if ($company->website)
-                        <a href="{{ $company->website }}">{{ $company->website }}</a>
-                    @else
-                        nicht angegeben
-                    @endif
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-3">
-                    <div class="text-muted d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                        </svg>
-                        Ansprechperson
-                    </div>
-                </div>
-                <div class="col">
+
+                <div class="q-inforow">
                     @if ($company->contactPerson)
-                        <a href="{{ route('people.show', $company->contactPerson) }}">{{ $company->contactPerson->name }}</a>
+                        <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $company->contactPerson->avatar_colour }}">{{ $company->contactPerson->initials }}</span>
+                        <div class="q-inforow__main">
+                            <div class="q-inforow__label">Ansprechperson</div>
+                            <div class="q-inforow__value text-truncate">
+                                <a href="{{ route('people.show', $company->contactPerson) }}">{{ $company->contactPerson->name }}</a>
+                            </div>
+                        </div>
                     @else
-                        nicht angegeben
+                        <span class="q-inforow__icon">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
+                        </span>
+                        <div class="q-inforow__main">
+                            <div class="q-inforow__label">Ansprechperson</div>
+                            <div class="q-inforow__value"><span class="q-inforow__value--empty">nicht angegeben</span></div>
+                        </div>
                     @endif
                 </div>
+
             </div>
         </div>
+
+        {{-- Adresse --}}
+        <div class="q-card">
+            @if ($company->address->first())
+                <div class="q-address__map">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
+                </div>
+                <div class="q-address__body">
+                    <div class="q-address__label">Adresse</div>
+                    <div class="q-address__lines">
+                        {{ $company->address->first()->street_number }}<br />
+                        {{ $company->address->first()->postcode }} {{ $company->address->first()->city }}
+                    </div>
+                    <a class="btn q-btn w-100 d-inline-flex align-items-center justify-content-center gap-2" href="https://maps.google.com?q={{ $company->address->first()->address_line }}" target="_blank">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#geo-alt"></use></svg>
+                        Google Maps öffnen
+                    </a>
+                </div>
+            @else
+                <div class="q-address__body">
+                    <div class="q-address__label">Adresse</div>
+                    <div class="q-inforow__value--empty">keine Adresse angegeben</div>
+                </div>
+            @endif
+        </div>
+
     </div>
 
+    {{-- Bemerkungen --}}
     @if ($company->comment)
-        <div class="text-muted d-flex align-items-center mt-4">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Bemerkungen
-        </div>
-        <div class="markdown">
-            {!! Html::fromMarkdown($company->comment) !!}
+        <div class="q-card mt-3">
+            <div class="q-card__head">Bemerkungen</div>
+            <div class="q-card__body">
+                <div class="markdown">
+                    {!! Html::fromMarkdown($company->comment) !!}
+                </div>
+            </div>
         </div>
     @endif
-
 @endsection

@@ -1,60 +1,94 @@
-@import "~vue-select/src/scss/vue-select.scss";
+@import "vue-select/dist/vue-select.css";
 
-// Fixes for Vue Select to display correctly with Bootstrap CSS
-.v-select.vs--disabled > .vs__dropdown-toggle {
-    @extend .form-control;
-    display: flex;
-    background-color: #e9ecef;
+// =============================================================================
+//  vue-select themed to the redesign --q-* tokens. These reference the runtime
+//  CSS custom properties, so every <v-select> (project/person/company/people/…
+//  dropdowns) adapts to light/dark via data-bs-theme and matches the .q-form
+//  surface-2 fields. Radius hard-coded (10px = $q-radius-sm) because this
+//  partial is imported before _quokka-ui.scss.
+// =============================================================================
+:root {
+    --vs-border-color: var(--q-border);
+    --vs-border-radius: 10px;
+    --vs-font-size: .85rem;
+    --vs-line-height: #{$line-height-base};
+    --vs-controls-color: var(--q-muted);
+
+    --vs-search-input-color: var(--q-text);
+    --vs-search-input-placeholder-color: var(--q-faint);
+
+    // selected pills (multi-select)
+    --vs-selected-bg: var(--q-surface-3);
+    --vs-selected-color: var(--q-text);
+    --vs-selected-border-color: var(--q-border);
+
+    // dropdown menu + options
+    --vs-dropdown-bg: var(--q-surface);
+    --vs-dropdown-color: var(--q-text);
+    --vs-dropdown-option-color: var(--q-text);
+    --vs-dropdown-option--active-bg: var(--q-accent-tint);
+    --vs-dropdown-option--active-color: var(--q-text);
+
+    --vs-state-disabled-bg: var(--q-surface-3);
+    --vs-state-disabled-color: var(--q-faint);
+    --vs-state-disabled-controls-color: var(--q-faint);
 }
 
-.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::placeholder {
-    color: #495057;
-    opacity: 1;
+// control surface — matches .q-form .form-control (surface-2, .6rem padding, .85rem font)
+// Height formula: line-height × font-size + 2×padding-y + 2×border = 1.5×.85rem + 1.2rem + 2px
+.vs__dropdown-toggle {
+    padding: .6rem .8rem;
+    min-height: calc(var(--vs-line-height) * var(--vs-font-size) + 1.2rem + 2px);
+    background-color: var(--q-surface-2);
+    border-color: var(--q-border);
+}
+// Single-select: pin to a fixed height so the toggle never shifts when vs--open
+// pulls .vs__selected out of the flex flow (position:absolute). min-height alone
+// isn't enough because a block-level .vs__selected can exceed the content area and
+// make the toggle taller when closed than when open.
+.vs--single .vs__dropdown-toggle { height: calc(var(--vs-line-height) * var(--vs-font-size) + 1.2rem + 2px); }
+// matches .form-control:focus (_quokka-ui.scss) — background lifts from
+// surface-2 to surface on focus, same as every other field
+.vs--open .vs__dropdown-toggle {
+    background-color: var(--q-surface);
+    border-color: var(--q-accent);
+    box-shadow: 0 0 0 3px var(--q-accent-tint);
 }
 
-.v-select > .vs__dropdown-toggle > .vs__selected-options > .vs__search::-ms-input-placeholder  {
-    color: #495057;
+.vs__dropdown-menu {
+    border-color: var(--q-border);
+    box-shadow: var(--q-shadow-lg);
 }
 
-.v-select.vs--disabled > .vs__dropdown-toggle > .vs__selected-options > .vs__search {
-    background-color: #e9ecef;
-}
+// Pin search input and selected item to the same explicit height. Using
+// var(--vs-font-size) rather than 1em so the value is always the vs token, not
+// whatever font-size is inherited from the surrounding context.
+.vs__search, .vs__search:focus { margin: 0; padding: 0; height: calc(var(--vs-line-height) * var(--vs-font-size)); }
+.vs__selected { margin: 0; padding: 0; height: calc(var(--vs-line-height) * var(--vs-font-size)); }
 
-.v-select > .vs__dropdown-toggle {
-    @extend .form-control;
-    display: flex;
-}
+// Avatars inside the control (selected-option slot) must fit the content area
+// (line-height × font-size ≈ 24 px). The dropdown option list has more space and
+// is unaffected because those avatars live in .vs__dropdown-menu, not here.
+.vs__dropdown-toggle .q-avatar { width: 20px; height: 20px; font-size: .5rem; }
 
-.vs__actions {
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
+.vs__clear, .vs__open-indicator { fill: var(--q-muted); }
 
-.vs__clear {
-    display: flex;
-    align-items: center;
-}
+// Small vue select — height formula matches .form-control-sm (2×.25rem
+// padding-y + line-height×font-size + 2px border), using the vs-* custom
+// properties directly rather than `em` so it doesn't depend on inherited
+// font-size at the call site.
+.dropdown-sm {
+    --vs-font-size: 0.875rem;
+    --vs-line-height: 1.5;
 
-.vs__dropdown-option {
-    padding: 0.375rem 0.75rem;
-}
-
-.vs__selected-options {
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.vs__search, .vs__search:focus, .vs__selected {
-    margin-top: 0;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-// Small vue select
-.dropdown-sm > .vs__dropdown-toggle {
-    height: calc(1.5em + 0.5rem + 2px) !important;
-    padding: 0.25rem 0.5rem  !important;
-    font-size: 0.7875rem  !important;
-    line-height: 1.5  !important;
+    .vs__dropdown-toggle {
+        min-height: calc(var(--vs-line-height) * var(--vs-font-size) + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+    }
+    // .vs--single .vs__dropdown-toggle (above) pins a fixed `height` using the
+    // *default* control's 1.2rem padding constant, which otherwise always wins
+    // over this block's `min-height` — override it here at matching specificity.
+    &.vs--single .vs__dropdown-toggle {
+        height: calc(var(--vs-line-height) * var(--vs-font-size) + 0.5rem + 2px);
+    }
 }

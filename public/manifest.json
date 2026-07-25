@@ -1,117 +1,87 @@
 {
+    "id": "/home",
     "name": "Quokka",
     "short_name": "Quokka",
     "description": "Die Quokka Projektmanagement Applikation.",
+    "lang": "de",
+    "dir": "ltr",
     "start_url": "/home",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#ffffff",
-    "icons": [{
-        "src": "icons/icon_48.png",
-        "sizes": "48x48",
-        "type": "image/png"
+    "background_color": "#eef0f4",
+    "theme_color": "#eef0f4",
+    "share_target": {
+        "action": "/share-target",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "files": [
+                { "name": "photos[]", "accept": ["image/*"] }
+            ]
+        }
     },
-    {
-        "src": "icons/icon_72.png",
-        "sizes": "72x72",
-        "type": "image/png"
-    },
-    {
-        "src": "icons/icon_96.png",
-        "sizes": "96x96",
-        "type": "image/png"
-    },
-    {
-        "src": "icons/icon_144.png",
-        "sizes": "144x144",
-        "type": "image/png"
-    },
-    {
-        "src": "icons/icon_192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
-    {
-        "src": "icons/icon_512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    }],
-    "shortcuts": [{
-        "name": "Leistungen abrechnen",
-        "short_name": "Abrechnung",
-        "description": "Getätigte Leistungen abrechnen.",
-        "url": "/accounting",
-        "icons": [{
-            "src": "/icons/icon_shortcut_clock_48.png",
-            "sizes": "48x48"
-        },
-            {
-                "src": "/icons/icon_shortcut_clock_72.png",
-                "sizes": "72x72"
-            },
-            {
-                "src": "/icons/icon_shortcut_clock_96.png",
-                "sizes": "96x96"
-            },
-            {
-                "src": "/icons/icon_shortcut_clock_144.png",
-                "sizes": "144x144"
-            },
-            {
-                "src": "/icons/icon_shortcut_clock_192.png",
-                "sizes": "192x192"
-            }]
-    },
-    {
-        "name": "Fahrten eintragen",
-        "short_name": "Fahrtenbuch",
-        "description": "Gefahrene Strecken in das Fahrtenbuch eintragen.",
-        "url": "/logbook",
-        "icons": [{
-            "src": "/icons/icon_shortcut_book_48.png",
-            "sizes": "48x48"
-        },
-            {
-                "src": "/icons/icon_shortcut_book_72.png",
-                "sizes": "72x72"
-            },
-            {
-                "src": "/icons/icon_shortcut_book_96.png",
-                "sizes": "96x96"
-            },
-            {
-                "src": "/icons/icon_shortcut_book_144.png",
-                "sizes": "144x144"
-            },
-            {
-                "src": "/icons/icon_shortcut_book_192.png",
-                "sizes": "192x192"
-            }]
-    },
-    {
-        "name": "QR-Code scannen",
-        "short_name": "QR-Code",
-        "description": "Einen QR-Code für Schnellzugriff scannen.",
-        "url": "/qr-scan",
-        "icons": [{
-            "src": "/icons/icon_shortcut_camera_48.png",
-            "sizes": "48x48"
+    "icons": [
+        { "src": "/icons/icon_48.png",  "sizes": "48x48",   "type": "image/png" },
+        { "src": "/icons/icon_72.png",  "sizes": "72x72",   "type": "image/png" },
+        { "src": "/icons/icon_96.png",  "sizes": "96x96",   "type": "image/png" },
+        { "src": "/icons/icon_144.png", "sizes": "144x144", "type": "image/png" },
+        { "src": "/icons/icon_192.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "/icons/icon_512.png", "sizes": "512x512", "type": "image/png" },
+        { "src": "/icons/icon_512_maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshots/mobile_dashboard.png",
+            "sizes": "1080x2400",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Übersicht"
         },
         {
-            "src": "/icons/icon_shortcut_camera_72.png",
-            "sizes": "72x72"
+            "src": "/screenshots/mobile_accounting.png",
+            "sizes": "1080x2400",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Leistungen abrechnen"
         },
         {
-            "src": "/icons/icon_shortcut_camera_96.png",
-            "sizes": "96x96"
+            "src": "/screenshots/desktop_dashboard.png",
+            "sizes": "1920x1080",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Übersicht am Desktop"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Leistungen abrechnen",
+            "short_name": "Abrechnung",
+            "description": "Getätigte Leistungen abrechnen.",
+            "url": "/accounting",
+            "icons": [
+                { "src": "/icons/icon_shortcut_clock_96.png",  "sizes": "96x96",   "type": "image/png" },
+                { "src": "/icons/icon_shortcut_clock_192.png", "sizes": "192x192", "type": "image/png" }
+            ]
         },
         {
-            "src": "/icons/icon_shortcut_camera_144.png",
-            "sizes": "144x144"
+            "name": "Fahrten eintragen",
+            "short_name": "Fahrtenbuch",
+            "description": "Gefahrene Strecken in das Fahrtenbuch eintragen.",
+            "url": "/logbook",
+            "icons": [
+                { "src": "/icons/icon_shortcut_book_96.png",  "sizes": "96x96",   "type": "image/png" },
+                { "src": "/icons/icon_shortcut_book_192.png", "sizes": "192x192", "type": "image/png" }
+            ]
         },
         {
-            "src": "/icons/icon_shortcut_camera_192.png",
-            "sizes": "192x192"
-        }]
-    }]
+            "name": "QR-Code scannen",
+            "short_name": "QR-Code",
+            "description": "Einen QR-Code für Schnellzugriff scannen.",
+            "url": "/qr-scan",
+            "icons": [
+                { "src": "/icons/icon_shortcut_camera_96.png",  "sizes": "96x96",   "type": "image/png" },
+                { "src": "/icons/icon_shortcut_camera_192.png", "sizes": "192x192", "type": "image/png" }
+            ]
+        }
+    ]
 }

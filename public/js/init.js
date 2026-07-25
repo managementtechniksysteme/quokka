@@ -1,1 +1,53 @@
-"serviceWorker"in navigator&&window.addEventListener("load",(function(){navigator.serviceWorker.register("/serviceworker.js").then((function(){"showNotification"in ServiceWorkerRegistration.prototype&&"granted"===Notification.permission&&"PushManager"in window&&navigator.serviceWorker.ready.then((function(n){n.pushManager.getSubscription().then((function(n){var e,t,o,i,r,a;n&&(e=n,t=document.querySelector("meta[name=csrf-token]").getAttribute("content"),o=e.getKey("p256dh"),i=e.getKey("auth"),r=(PushManager.supportedContentEncodings||["aesgcm"])[0],a={endpoint:e.endpoint,public_key:o?btoa(String.fromCharCode.apply(null,new Uint8Array(o))):null,auth_token:i?btoa(String.fromCharCode.apply(null,new Uint8Array(i))):null,content_encoding:r},fetch("/webpush",{method:"POST",body:JSON.stringify(a),headers:{Accept:"application/json","Content-Type":"application/json","X-CSRF-Token":t}}).then((function(n){return n.json()})).catch((function(n){console.log(n)})))})).catch((function(n){console.log(n)}))}))}))}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!******************************!*\
+  !*** ./resources/js/init.js ***!
+  \******************************/
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/serviceworker.js').then(function () {
+      initialisePushSubscription();
+    });
+  });
+}
+function initialisePushSubscription() {
+  if ('showNotification' in ServiceWorkerRegistration.prototype && Notification.permission === 'granted' && 'PushManager' in window) {
+    navigator.serviceWorker.ready.then(function (registration) {
+      registration.pushManager.getSubscription().then(function (subscription) {
+        if (!subscription) {
+          return;
+        }
+        updatePushSubscription(subscription);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  }
+}
+function updatePushSubscription(pushSubscription) {
+  var csrfToken = document.querySelector('meta[name=csrf-token]').getAttribute('content');
+  var key = pushSubscription.getKey('p256dh');
+  var token = pushSubscription.getKey('auth');
+  var contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+  var data = {
+    endpoint: pushSubscription.endpoint,
+    public_key: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
+    auth_token: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
+    content_encoding: contentEncoding
+  };
+  fetch('/webpush', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken
+    }
+  }).then(function (result) {
+    return result.json();
+  })["catch"](function (error) {
+    console.log(error);
+  });
+}
+/******/ })()
+;

@@ -1,5 +1,13 @@
-// Body
-$body-bg: #fdfeff;
+// Enable negative margins (e.g. ms-n1 for split dropdown toggles in navbar)
+$enable-negative-margins: true;
+
+// Accent (redesign): indigo primary — recolors .btn-primary, links and the
+// q-* components in one place. Keep $green semantic (status/success/money) only.
+$primary: #6366f1;
+
+// Links
+$link-decoration: none;
+$link-hover-decoration: underline;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;

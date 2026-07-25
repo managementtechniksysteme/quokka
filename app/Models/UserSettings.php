@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserSettings extends Model
 {
-    protected $casts = [
+    use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
         'user_id' => 'int',
         'list_pagination_size' => 'int',
         'show_finished_items' => 'bool',
@@ -19,6 +24,7 @@ class UserSettings extends Model
         'latest_changes_quantity' => 'int',
         'notify_self' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'user_id',

@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ class Note extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersLatestChanges;
     use HasAttachments;
     use FiltersSearch;
+    use HasFactory;
     use OrdersResults;
 
     protected $fillable = [
@@ -59,6 +61,27 @@ class Note extends Model implements FiltersGlobalSearch, HasMedia
                     $note->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $note = \Auth::user()->employee->notes()->find($id);
+
+        if (!$note) {
+            return null;
+        }
+
+        $name = $note->title_string ? "$note->title_string ($note->truncated_comment)" : "$note->truncated_comment";
+
+        return new GlobalSearchResult(
+            Note::class,
+            'Notiz',
+            $note->id,
+            $name,
+            route('notes.show', $note),
+            $note->created_at,
+            $note->updated_at,
+        );
     }
 
     public function employee()

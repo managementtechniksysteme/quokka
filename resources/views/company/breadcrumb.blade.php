@@ -1,8 +1,5 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 mr-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#briefcase"></use>
-    </svg>
+<nav class="q-breadcrumb d-none d-md-flex">
     <a href="{{ route('companies.index') }}">Firmen</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('companies.show', $company) }}">{{ $company->full_name }}</a>
-</div>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>{{ $company->full_name }}</span>
+</nav>

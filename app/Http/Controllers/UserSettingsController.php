@@ -50,10 +50,57 @@ class UserSettingsController extends Controller
                 $emailNotifications = Auth::user()->notificationsViaEmail->pluck('id')->toArray();
                 $webPushNotifications = Auth::user()->notificationsViaWebPush()->pluck('id')->toArray();
 
+                $notificationCategories = [
+                    ['label' => 'Aktenvermerke', 'icon' => 'voicemail', 'rows' => [
+                        ['label' => 'Bei einem Aktenvermerk beteiligt',  'class' => \App\Notifications\MemoInvolvedNotification::class],
+                        ['label' => 'In einem Aktenvermerk erwähnt',     'class' => \App\Notifications\MemoMentionNotification::class],
+                    ]],
+                    ['label' => 'Applikation', 'icon' => 'info-circle', 'rows' => [
+                        ['label' => 'Bei einer neuen Applikationsversion', 'class' => \App\Notifications\ApplicationVersionUpdateNotification::class],
+                    ]],
+                    ['label' => 'Aufgaben', 'icon' => 'check2-square', 'rows' => [
+                        ['label' => 'Bei einer Aufgabe beteiligt', 'class' => \App\Notifications\TaskInvolvedNotification::class],
+                        ['label' => 'In einer Aufgabe erwähnt',    'class' => \App\Notifications\TaskMentionNotification::class],
+                    ]],
+                    ['label' => 'Aufgaben Kommentare', 'icon' => 'chat', 'rows' => [
+                        ['label' => 'Bei einer Aufgabe beteiligt', 'class' => \App\Notifications\CommentInvolvedNotification::class],
+                        ['label' => 'In einem Kommentar erwähnt', 'class' => \App\Notifications\CommentMentionNotification::class],
+                    ]],
+                    ['label' => 'Bautagesberichte', 'icon' => 'hammer', 'rows' => [
+                        ['label' => 'Bei einem Bautagesbericht beteiligt',   'class' => \App\Notifications\ConstructionReportInvolvedNotification::class],
+                        ['label' => 'In einem Bautagesbericht erwähnt',      'class' => \App\Notifications\ConstructionReportMentionNotification::class],
+                        ['label' => 'Bei Unterschrift eines Bautagesberichtes', 'class' => \App\Notifications\ConstructionReportSignedNotification::class],
+                    ]],
+                    ['label' => 'Lieferscheine', 'icon' => 'box', 'rows' => [
+                        ['label' => 'Bei Unterschrift eines Lieferscheins', 'class' => \App\Notifications\DeliveryNoteSignedNotification::class],
+                    ]],
+                    ['label' => 'Prüfberichte', 'icon' => 'patch-check', 'rows' => [
+                        ['label' => 'In einem Prüfbericht erwähnt',         'class' => \App\Notifications\InspectionReportMentionNotification::class],
+                        ['label' => 'Bei Unterschrift eines Prüfberichtes', 'class' => \App\Notifications\InspectionReportSignedNotification::class],
+                    ]],
+                    ['label' => 'Prüfberichte für Durchflussmesseinrichtungen', 'icon' => 'patch-check', 'rows' => [
+                        ['label' => 'In einem Prüfbericht erwähnt',         'class' => \App\Notifications\FlowMeterInspectionReportMentionNotification::class],
+                        ['label' => 'Bei Unterschrift eines Prüfberichtes', 'class' => \App\Notifications\FlowMeterInspectionReportSignedNotification::class],
+                    ]],
+                    ['label' => 'Regieberichte', 'icon' => 'tools', 'rows' => [
+                        ['label' => 'Bei einem Regiebericht beteiligt',   'class' => \App\Notifications\AdditionsReportInvolvedNotification::class],
+                        ['label' => 'In einem Regiebericht erwähnt',      'class' => \App\Notifications\AdditionsReportMentionNotification::class],
+                        ['label' => 'Bei Unterschrift eines Regieberichtes', 'class' => \App\Notifications\AdditionsReportSignedNotification::class],
+                    ]],
+                    ['label' => 'Serviceberichte', 'icon' => 'gear', 'rows' => [
+                        ['label' => 'In einem Servicebericht erwähnt',         'class' => \App\Notifications\ServiceReportMentionNotification::class],
+                        ['label' => 'Bei Unterschrift eines Serviceberichtes', 'class' => \App\Notifications\ServiceReportSignedNotification::class],
+                    ]],
+                    ['label' => 'Urlaub', 'icon' => 'sun', 'rows' => [
+                        ['label' => 'Bei Anpassung des verfügbaren Urlaubes', 'class' => \App\Notifications\HolidayAllowanceAdjustmentNotification::class],
+                    ]],
+                ];
+
                 return view('user_settings.edit_notifications')
                     ->with(compact('notifications'))
                     ->with(compact('emailNotifications'))
-                    ->with(compact('webPushNotifications'));
+                    ->with(compact('webPushNotifications'))
+                    ->with(compact('notificationCategories'));
             case 'security':
                 if (Session::has('otpSecret')) {
                     Session::reflash();
@@ -156,7 +203,7 @@ class UserSettingsController extends Controller
 
         $google2fa = new Google2FA();
 
-        if ($google2fa->verifyKey($otpSecret, $request[config('auth2fa.otp_input')], config('auth2fa.window'))) {
+        if ($google2fa->verifyKey($otpSecret, $request[config('auth2fa.otp_input')], config('auth2fa.otp_window'))) {
             Auth::user()->update([
                 config('auth2fa.otp_secret_column') => encrypt($otpSecret),
             ]);

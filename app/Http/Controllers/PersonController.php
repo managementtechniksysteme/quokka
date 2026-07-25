@@ -62,13 +62,15 @@ class PersonController extends Controller
         }
 
         $companies = Company::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('person.create')
             ->with('person', null)
             ->with('currentAddress', null)
             ->with('addresses', $addresses->toJson())
             ->with('currentCompany', $currentCompany)
-            ->with('companies', $companies->toJson());
+            ->with('companies', $companies->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -126,13 +128,15 @@ class PersonController extends Controller
 
         $currentCompany = $person->company;
         $companies = Company::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('person.edit')
             ->with(compact('person'))
             ->with('currentAddress', $currentAddress)
             ->with('addresses', $addresses->toJson())
             ->with('currentCompany', $currentCompany)
-            ->with('companies', $companies->toJson());
+            ->with('companies', $companies->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**

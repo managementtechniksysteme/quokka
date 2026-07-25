@@ -28,6 +28,7 @@ class AccountingController extends Controller
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
+            'download' => 'createPdf',
         ]);
     }
 
@@ -54,7 +55,7 @@ class AccountingController extends Controller
 
         $projects = Project::order()->get();
         $services = Service::order()->get();
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
         $currentEmployee = Auth::user()->employee->person;
         $servicesHourUnit = ApplicationSettings::get()->services_hour_unit ?? null;
         $minAccountingAmount = ApplicationSettings::get()->accounting_min_amount;

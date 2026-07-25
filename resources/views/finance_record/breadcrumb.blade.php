@@ -1,8 +1,7 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 mr-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#menu"></use>
-    </svg>
+<nav class="q-breadcrumb">
     <a href="{{ route('finance-groups.index') }}">Finanzgruppen</a>
-    <span class="px-2">/</span>
+    <span class="q-breadcrumb__sep">/</span>
     <a href="{{ route('finance-groups.show', $financeRecord->financeGroup) }}">{{ $financeRecord->financeGroup->title }}</a>
-</div>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>{{ $financeRecord->title }}</span>
+</nav>

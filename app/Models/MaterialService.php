@@ -7,12 +7,15 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialService extends Model implements FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
@@ -57,6 +60,29 @@ class MaterialService extends Model implements FiltersGlobalSearch
                     $materialService->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', MaterialService::class)) {
+            return null;
+        }
+
+        $materialService = MaterialService::find($id);
+
+        if (!$materialService) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            MaterialService::class,
+            'Materialleistung',
+            $materialService->id,
+            $materialService->name,
+            route('material-services.show', $materialService),
+            $materialService->created_at,
+            $materialService->updated_at,
+        );
     }
 
     public function accounting()

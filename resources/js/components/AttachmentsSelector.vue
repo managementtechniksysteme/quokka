@@ -1,8 +1,8 @@
 <template>
 <div>
-        <div class="custom-file">
-            <input class="custom-file-input" type="file" :accept="accept" multiple="multiple" id="new_attachments" name="new_attachments[]" @change="addNewAttachments" />
-            <label class="custom-file-label" for="new_attachments">Anhänge auswählen</label>
+        <div class="mb-3">
+            <input class="form-control" type="file" :accept="accept" multiple="multiple" id="new_attachments" name="new_attachments[]" @change="addNewAttachments" />
+            <label class="form-label" for="new_attachments">Anhänge auswählen</label>
         </div>
 
         <div v-if="remove_attachments.length" v-for="attachment in remove_attachments">
@@ -13,25 +13,28 @@
 
             <div v-if="existing_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in existing_attachments">
                 <div class="col d-inline-flex align-items-center">
-                    <img v-if="attachment.url !== null" class="attachment-img-preview mr-2" :src="attachment.url" :alt="attachment.file_name" />
-                    <svg v-else class="icon attachment-img-preview mr-2">
-                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    <img v-if="attachment.url !== null" class="attachment-img-preview me-2" :src="attachment.url" :alt="attachment.file_name" />
+                    <svg v-else class="icon-bs attachment-img-preview me-2">
+                        <use href="/svg/bootstrap-icons.svg#file-text"></use>
                     </svg>
                     <div>
                         <div>{{attachment.file_name}}</div>
                         <div class="text-muted">{{humanFileSize(attachment.size)}}</div>
                     </div>
                 </div>
-                <div class="col-auto ml-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeExistingAttachment(attachment)">Entfernen</button>
+                <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeExistingAttachment(attachment)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
 
             <div v-if="new_attachments.length" class="row py-2 align-items-center hover-highlight" v-for="attachment in new_attachments">
                 <div class="col d-inline-flex align-items-center">
-                    <img v-if="attachment.preview !== null" class="attachment-img-preview mr-2" :src="attachment.preview" :alt="attachment.file_name" />
-                    <svg v-else class="icon attachment-img-preview mr-2">
-                        <use xlink:href="/svg/feather-sprite.svg#file-text"></use>
+                    <img v-if="attachment.preview !== null" class="attachment-img-preview me-2" :src="attachment.preview" :alt="attachment.file_name" />
+                    <svg v-else class="icon-bs attachment-img-preview me-2">
+                        <use href="/svg/bootstrap-icons.svg#file-text"></use>
                     </svg>
                     <div>
                         <div contenteditable="true" @keydown.enter.prevent @blur="changeNewAttachmentName($event, attachment)" v-html="attachment.file_name"></div>
@@ -39,8 +42,11 @@
                     </div>
 
                 </div>
-                <div class="col-auto ml-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeNewAttachment(attachment)">Entfernen</button>
+                <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeNewAttachment(attachment)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
 

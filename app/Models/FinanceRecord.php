@@ -7,19 +7,25 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class FinanceRecord extends Model implements FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'billed_on' => 'date',
         'amount' => 'double',
     ];
+    }
 
     protected $fillable = [
         'billed_on', 'title', 'comment', 'amount', 'finance_group_id',
@@ -55,6 +61,29 @@ class FinanceRecord extends Model implements FiltersGlobalSearch
                     $financeRecord->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', FinanceRecord::class)) {
+            return null;
+        }
+
+        $financeRecord = FinanceRecord::with('financeGroup')->find($id);
+
+        if (!$financeRecord) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            FinanceRecord::class,
+            'Finanzeintrag',
+            $financeRecord->id,
+            "$financeRecord->title (Gruppe {$financeRecord->financeGroup->title})",
+            route('finance-groups.show', $financeRecord->financeGroup),
+            $financeRecord->created_at,
+            $financeRecord->updated_at,
+        );
     }
 
     public function financeGroup()

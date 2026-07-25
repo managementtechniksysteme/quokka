@@ -29,11 +29,15 @@ class InspectionReportShowCommand extends SpotlightCommand
 
     public function searchInspectionReport(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return InspectionReport::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (InspectionReport $inspectionReport) {
                 return new SpotlightSearchResult(
                     $inspectionReport->id,

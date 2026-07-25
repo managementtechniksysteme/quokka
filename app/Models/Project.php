@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -16,11 +17,14 @@ use Illuminate\Support\Str;
 
 class Project extends Model implements FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'starts_on' => 'date',
         'ends_on' => 'date',
         'material_costs' => 'double',
@@ -29,6 +33,7 @@ class Project extends Model implements FiltersGlobalSearch
         'is_pre_execution' => 'bool',
         'include_in_finances' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'is_pre_execution', 'include_in_finances', 'material_costs', 'wage_costs', 'billed_financial_costs', 'comment', 'company_id',
@@ -39,11 +44,11 @@ class Project extends Model implements FiltersGlobalSearch
     ];
 
     protected $filterKeys = [
-        'ist:beendet' => ['raw' => ['ends_on < curdate()', 'ends_on >= curdate() or ends_on is null']],
+        'ist:beendet' => ['raw' => ['ends_on < CURRENT_DATE', 'ends_on >= CURRENT_DATE or ends_on is null']],
         'ist:vorphase' => ['is_pre_execution', true],
         'ist:vp' => ['is_pre_execution', true],
-        'ist:infinanzen' => ['included_in_finances', true],
-        'ist:if' => ['included_in_finances', true],
+        'ist:infinanzen' => ['include_in_finances', true],
+        'ist:if' => ['include_in_finances', true],
         'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
     ];
@@ -81,6 +86,29 @@ class Project extends Model implements FiltersGlobalSearch
                     $project->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Project::class)) {
+            return null;
+        }
+
+        $project = Project::find($id);
+
+        if (!$project) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Project::class,
+            'Projekt',
+            $project->id,
+            $project->name,
+            route('projects.show', $project),
+            $project->created_at,
+            $project->updated_at,
+        );
     }
 
     public function interimInvoices()
@@ -149,6 +177,26 @@ class Project extends Model implements FiltersGlobalSearch
 
     public function getIsPreExecutionStringAttribute() {
         return $this->is_pre_execution ? 'ja' : 'nein';
+    }
+
+    public function getStateAttribute() {
+        if ($this->is_pre_execution) {
+            return 'new';
+        }
+
+        if ($this->ends_on && $this->ends_on->isBefore(today())) {
+            return 'finished';
+        }
+
+        return 'in-progress';
+    }
+
+    public function getStateLabelAttribute() {
+        return match ($this->state) {
+            'new' => 'Vorphase',
+            'finished' => 'beendet',
+            default => 'aktiv',
+        };
     }
 
     public function getIncludedInFinancesStringAttribute() {
@@ -335,8 +383,15 @@ class Project extends Model implements FiltersGlobalSearch
     {
         $currencyUnit = ApplicationSettings::get()->currency_unit;
 
+        // MySQL supports DISTINCT together with a custom SEPARATOR in group_concat();
+        // sqlite's group_concat() can't combine the two ("DISTINCT aggregates must have
+        // exactly one argument"), so the comma-space separator can't be preserved there.
+        $commentAggregate = DB::connection()->getDriverName() === 'sqlite'
+            ? 'group_concat(distinct accounting.comment)'
+            : 'group_concat(distinct accounting.comment separator ", ")';
+
         $report = $this->accounting()
-            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, group_concat(distinct accounting.comment separator ", ") as comment')
+            ->selectRaw('accounting.service_provided_on as service_provided_on, accounting.service_id as service_id, concat(services.name, " (", ifnull(services.unit, "'.$currencyUnit.'"), ")")  as service, accounting.employee_id as employee_id, users.username as username, SUM(amount) as amount, '.$commentAggregate.' as comment')
             ->join('users', 'accounting.employee_id', '=', 'users.employee_id')
             ->join('projects', 'accounting.project_id', '=', 'projects.id')
             ->join('services', 'accounting.service_id', '=', 'services.id')

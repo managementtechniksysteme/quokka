@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-select :options="unselected" label="name_with_unit" placeholder="Leistung auswählen" value="" :selectOnTab="true" @input="addSelected">
+        <v-select :options="unselected" label="name_with_unit" placeholder="Leistung auswählen" :modelValue="null" :selectOnTab="true" @update:modelValue="addSelected">
             <template v-slot:no-options>Keine passenden Einträge.</template>
         </v-select>
         <div v-if="selected.length" class="container-fluid mt-2">
@@ -9,8 +9,11 @@
                 <div class="col">
                     {{service.name_with_unit}}
                 </div>
-                <div class="col-auto ml-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelected(service)">Entfernen</button>
+                <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelected(service)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,7 +53,7 @@
             },
 
             sortArrayByName(services) {
-                people.sort((a, b) => {
+                services.sort((a, b) => {
                     let a_lower = a.name_with_unit.toLowerCase();
                     let b_lower = b.name_with_unit.toLowerCase();
                     return a_lower > b_lower ? 1 : b_lower > a_lower ? -1 : 0;

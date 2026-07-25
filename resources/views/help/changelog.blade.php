@@ -3,18 +3,20 @@
 @php use Illuminate\Support\Str; @endphp
 
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                {{ config('app.name') }} Versionshinweise
-            </h3>
+    <div class="q-container q-container--narrow">
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">{{ config('app.name') }}</div>
+                    <h1 class="q-title">Versionshinweise</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
+        <div class="mt-2 mt-md-4">
     @markdown
     ### v0.1.34-b5f0ed1 (21.05.2023)
     * Lieferscheine könnnen vor dem Unterschreiben zur Überprüfung heruntergeladen werden.
@@ -32,8 +34,8 @@
     ### v0.1.32-bda69a8 (20.04.2023)
     *  Die Projektcontrolling Graphen in PDF Ausdrücken von Projektübersichten berücksichtigen nun den gefilterten
        Zeitraum.
-    * Quokka Mobile steht in einer ersten Version 0.0.1 zur Verfügung. Die infoseite dazu befindet sich hier:
-      [Quokka Mobile]({{route('quokka-mobile.index')}}). Eine Aufgabe zur Diskusion findet sich [hier]({{route('tasks.show', 464)}}).
+    * Quokka Mobile steht in einer ersten Version 0.0.1 zur Verfügung (die App wurde inzwischen wieder eingestellt).
+      Eine Aufgabe zur Diskusion findet sich [hier]({{route('tasks.show', 464)}}).
     @endmarkdown
 
     @markdown
@@ -441,6 +443,7 @@
       automatisch über eine Unterschrift benachrichtigt.
       * Diverse Verbesserungen an der Benutzeroberfläche wurden implementiert.
       @endmarkdown
+        </div>
     </div>
 
 @endsection

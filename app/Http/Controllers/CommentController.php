@@ -6,6 +6,7 @@ use App\Events\CommentCreatedEvent;
 use App\Events\CommentUpdatedEvent;
 use App\Http\Requests\CommentStoreRequest;
 use App\Http\Requests\CommentUpdateRequest;
+use App\Models\Person;
 use App\Models\Task;
 use App\Models\TaskComment;
 use Illuminate\Http\Request;
@@ -37,7 +38,13 @@ class CommentController extends Controller
 
         $this->authorize('create', [TaskComment::class, $task]);
 
-        return view('comment.create')->with('comment', null)->with('task', $task)->with('currentAttachments', null);
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
+        return view('comment.create')
+            ->with('comment', null)
+            ->with('task', $task)
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -81,10 +88,13 @@ class CommentController extends Controller
     {
         $currentAttachments = $comment->attachmentsWithUrl();
 
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
         return view('comment.edit')
             ->with('comment', $comment)
             ->with('task', $comment->task)
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**

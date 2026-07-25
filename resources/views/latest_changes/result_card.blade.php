@@ -1,22 +1,23 @@
-<div class="overview-card rounded position-relative">
+<div class="q-row">
     <a class="stretched-link outline-none" href="{{ $result->route }}"></a>
-    <div class="mw-100 d-flex w-100 p-3 align-items-center">
-        <div class="mw-100 flex-grow-1 h-100">
-            <div class="mw-100 text-muted text-truncate">
-                @component('partials.model_icon', ['model' => $result->model])
-                @endcomponent
-                {{ $result->type }}
-            </div>
-            <div class="mw-100 text-truncate">
-                {{ $result->name }}
-            </div>
-        </div>
 
-        <div class="d-none d-md-flex text-muted text-right">
-            <svg class="icon icon-16 mr-1">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-            </svg>
-            {{ $result->updated_at->format('d.m.Y H:i') }}
+    <span class="q-avatar q-avatar--icon">
+        @include('partials.model_icon', ['model' => $result->model])
+    </span>
+
+    <div class="q-row__main">
+        <div class="q-row__title text-truncate">{{ $result->name }}</div>
+        <div class="q-meta">
+            <span class="q-chip">
+                @include('partials.model_icon', ['model' => $result->model])
+                {{ $result->type }}
+            </span>
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ $result->updated_at->format('d.m.Y H:i') }}
+            </span>
         </div>
     </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

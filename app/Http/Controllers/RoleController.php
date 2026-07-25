@@ -83,6 +83,8 @@ class RoleController extends Controller
     {
         $validatedData = $request->validated();
 
+        $role->update(['name' => $validatedData['name']]);
+
         foreach (Permission::select('name')->pluck('name') as $permission) {
             $permissionField = str_replace('.', '_', $permission);
 

@@ -29,9 +29,13 @@ class MaterialServiceShowCommand extends SpotlightCommand
 
     public function searchMaterialService(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return MaterialService::filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (MaterialService $materialService) {
                 return new SpotlightSearchResult(
                     $materialService->id,

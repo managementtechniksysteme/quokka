@@ -13,20 +13,20 @@ class CreateFlowMeterInspectionReportMeasurementsTable extends Migration {
             // using an integer instead of enum for the fixed values from the report table allows for
             // arbitrary measurement points in the future
             $table->unsignedTinyInteger('q_percent');
-            $table->unsignedDouble('q_value')->nullable();
+            $table->double('q_value')->nullable();
             $table->datetime('started_at')->nullable();
             $table->datetime('ended_at')->nullable();
-            $table->unsignedDouble('measurement_transformer_reading_start')->nullable();
-            $table->unsignedDouble('measurement_transformer_reading_end')->nullable();
-            $table->unsignedDouble('measurement_transformer_reading_sum')->nullable();
-            $table->unsignedDouble('pcs_reading_start')->nullable();
-            $table->unsignedDouble('pcs_reading_end')->nullable();
-            $table->unsignedDouble('pcs_reading_sum')->nullable();
-            $table->unsignedDouble('comparison_measurement_start')->nullable();
-            $table->unsignedDouble('comparison_measurement_end')->nullable();
-            $table->unsignedDouble('comparison_measurement_sum')->nullable();
-            $table->unsignedDouble('measurement_difference')->nullable();
-            $table->unsignedDouble('q_value_average_mobile')->nullable();
+            $table->double('measurement_transformer_reading_start')->nullable();
+            $table->double('measurement_transformer_reading_end')->nullable();
+            $table->double('measurement_transformer_reading_sum')->nullable();
+            $table->double('pcs_reading_start')->nullable();
+            $table->double('pcs_reading_end')->nullable();
+            $table->double('pcs_reading_sum')->nullable();
+            $table->double('comparison_measurement_start')->nullable();
+            $table->double('comparison_measurement_end')->nullable();
+            $table->double('comparison_measurement_sum')->nullable();
+            $table->double('measurement_difference')->nullable();
+            $table->double('q_value_average_mobile')->nullable();
 
             $table->unsignedBigInteger('flow_meter_inspection_report_id');
 

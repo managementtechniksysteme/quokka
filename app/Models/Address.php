@@ -61,6 +61,29 @@ class Address extends Model implements FiltersGlobalSearch
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Address::class)) {
+            return null;
+        }
+
+        $address = Address::find($id);
+
+        if (!$address) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Address::class,
+            'Adresse',
+            $address->id,
+            "$address->name ($address->address_line)",
+            route('addresses.show', $address),
+            $address->created_at,
+            $address->updated_at,
+        );
+    }
+
     public function companies()
     {
         return $this->morphedByMany(Company::class, 'addressable');

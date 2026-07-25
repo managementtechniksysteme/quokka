@@ -1,184 +1,100 @@
 @extends('layouts.app')
 
-@php
-    use \App\Models\Project;
-@endphp
+@php use \App\Models\Project; @endphp
 
 @if (old('project'))
     @php $currentProject = Project::find(old('project')); @endphp
 @endif
 
-
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            <h3>
-                <svg class="icon icon-baseline text-muted mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
-                </svg>
-                Projektcontrolling
-            </h3>
-        </div>
-    </div>
+    <div class="q-container">
 
-    <div class="container my-4">
-
-        <div class="alert alert-info mt-1" role="alert">
-            <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                <p class="m-0">
-                    Die Eingaben für Start- und Enddatum haben nur Auswirkungen auf das
-                    <strong>Projektcontrolling</strong>.
-                    Wenn keine Filter angegeben sind, Start bzw. Ende des Projektes verwendet.
-                </p>
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Finanzen</div>
+                    <h1 class="q-title">Projektcontrolling</h1>
+                </div>
             </div>
         </div>
 
-        <form class="needs-validation mt-4" action="{{ route('project-controlling.index') }}" method="get" novalidate>
-            <div class="form-row">
-                <div class="col-lg-6 form-group">
-                    <label for="project">Projekt</label>
-                    <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" inputname="project" v-cloak></project-dropdown>
-                    <div class="invalid-feedback @error('project_id') d-block @enderror">
+        <div class="q-banner q-banner--info mt-4">
+            <svg class="icon-bs icon-16 flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <span>
+                Die Eingaben für Start- und Enddatum haben nur Auswirkungen auf das <strong>Projektcontrolling</strong>.
+                Wenn keine Filter angegeben sind, werden Start bzw. Ende des Projektes verwendet.
+            </span>
+        </div>
+
+        <div class="q-form-section mb-0 mt-3">
+            <div class="q-form-section__body">
+                <form class="needs-validation d-flex flex-wrap align-items-end gap-3" action="{{ route('project-controlling.index') }}" method="get" novalidate>
+                    <div class="flex-grow-1" style="min-width: 200px">
+                        <label class="form-label small fw-semibold text-muted">Projekt</label>
+                        <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}" inputname="project" v-cloak></project-dropdown>
                         @error('project_id')
-                        {{ $message }}
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
 
-                <div class="col-sm-6 col-lg-2 form-group">
-                    <label for="start">Startdatum</label>
-                    <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" placeholder="" value="{{ old('start', $start?->format('Y-m-d')) ?? '' }}" />
-                    <div class="invalid-feedback">
+                    <div>
+                        <label for="start" class="form-label small fw-semibold text-muted">Startdatum</label>
+                        <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start" value="{{ old('start', $start?->format('Y-m-d')) ?? '' }}" />
                         @error('start')
-                        {{ $message }}
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
 
-                <div class="col-sm-6 col-lg-2 form-group">
-                    <label for="end">Enddatum</label>
-                    <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" placeholder="" value="{{ old('end', $end?->format('Y-m-d')) ?? '' }}" />
-                    <div class="invalid-feedback">
+                    <div>
+                        <label for="end" class="form-label small fw-semibold text-muted">Enddatum</label>
+                        <input type="date" class="form-control @error('end') is-invalid @enderror" id="end" name="end" value="{{ old('end', $end?->format('Y-m-d')) ?? '' }}" />
                         @error('end')
-                        {{ $message }}
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
 
-                <div class="col-lg-2 form-group d-none d-lg-block">
-                    <label>&nbsp;</label>
-                    <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center w-100">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
-                        </svg>
+                    <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2 q-btn-full-mobile">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#eye"></use></svg>
                         Anzeigen
                     </button>
-                </div>
-
-                <div class="col form-group d-block d-lg-none">
-                    <button type="submit" class="btn btn-primary d-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#eye"></use>
-                        </svg>
-                        Anzeigen
-                    </button>
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
 
         @if($currentProject)
-            <div class="row mt-4">
+            <div class="row g-4 mt-1">
 
                 <div class="col-lg-6">
-                    <h4>
-                        <svg class="icon icon-baseline text-muted mr-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#bar-chart-2"></use>
-                        </svg>
-                        Projektcontrolling
-                    </h4>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">Einnahmen</h5>
-                                    <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($accountingFinanceData['revenue'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
+                    <div class="q-card h-100">
+                        <div class="q-card__head">Projektcontrolling</div>
+                        <div style="border-bottom: 1px solid var(--q-border-2)">
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'stats' => [
+                                ['label' => 'Einnahmen', 'value' => $accountingFinanceData['revenue'], 'variant' => 'success'],
+                                ['label' => 'Ausgaben', 'value' => $accountingFinanceData['expense'], 'variant' => 'danger'],
+                                ['label' => 'Differenz', 'value' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 'variant' => $accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0 ? 'success' : 'danger'],
+                            ]])
                         </div>
-
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">Ausgaben</h5>
-                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">Differnz</h5>
-                                    <span class="h2 font-weight-bold @if($accountingFinanceData['revenue'] + $accountingFinanceData['expense'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($accountingFinanceData['revenue'] + $accountingFinanceData['expense'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <finance-revenue-expense-chart :revenue="{{ $accountingFinanceData['revenue'] }}" :expense="{{ $accountingFinanceData['expense'] }}" v-cloak></finance-revenue-expense-chart>
                     </div>
                 </div>
 
                 <div class="col-lg-6">
-                    <h4>
-                        <svg class="icon icon-baseline text-muted mr-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
-                        </svg>
-                        Finanzcontrolling
-                    </h4>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">Auftragsvolumen</h5>
-                                    <span class="h2 font-weight-bold text-green m-0">{{ Number::toLocal($manuelFinanceData['total_volume'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
+                    <div class="q-card h-100">
+                        <div class="q-card__head">Finanzcontrolling</div>
+                        <div style="border-bottom: 1px solid var(--q-border-2)">
+                            @include('partials.finance_stat_row', ['currencyUnit' => $currencyUnit, 'stats' => [
+                                ['label' => 'Auftragsvolumen', 'value' => $manuelFinanceData['total_volume'], 'variant' => 'success'],
+                                ['label' => 'verrechnet', 'value' => $manuelFinanceData['billed_volume'], 'variant' => 'danger'],
+                                ['label' => 'offen', 'value' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 'variant' => $manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0 ? 'success' : 'danger'],
+                            ]])
                         </div>
-
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">verrechnet</h5>
-                                    <span class="h2 font-weight-bold text-red m-0">{{ Number::toLocal($manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-md-6 mb-4">
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-muted mb-2">offen</h5>
-                                    <span class="h2 font-weight-bold @if($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'] >= 0) text-green @else text-red @endif  m-0">{{ Number::toLocal($manuelFinanceData['total_volume'] + $manuelFinanceData['billed_volume'], 2) }}{{ $currencyUnit }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <finance-volume-chart :total_volume="{{ $manuelFinanceData['total_volume'] }}" :billed_volume="{{ $manuelFinanceData['billed_volume'] }}" v-cloak></finance-volume-chart>
                     </div>
                 </div>
+
             </div>
         @endif
 

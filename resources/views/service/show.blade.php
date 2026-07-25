@@ -1,13 +1,9 @@
-<div class="row">
-    <div class="col-sm-2">
-        <div class="text-muted d-flex align-items-center">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Beschreibung
-        </div>
-    </div>
-    <div class="col">
-        {{ $service->description }}
+<div class="q-inforow">
+    <span class="q-inforow__icon">
+        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chat-dots"></use></svg>
+    </span>
+    <div class="q-inforow__main">
+        <div class="q-inforow__label">Beschreibung</div>
+        <div class="q-inforow__value">{{ $service->description }}</div>
     </div>
 </div>

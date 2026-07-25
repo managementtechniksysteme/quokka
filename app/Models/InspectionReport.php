@@ -11,24 +11,28 @@ use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'inspected_on' => 'date',
         'uvc_lamp_quantity' => 'int',
         'uvc_lamp_operating_hours' => 'int',
@@ -46,6 +50,7 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         'water_minimum_uv_transmission' => 'double',
         'water_measured_uv_transmission' => 'double',
     ];
+    }
 
     protected $fillable = [
         'status',
@@ -105,8 +110,8 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
         'default' => ['inspected_on'],
         'inspected_on-asc' => ['inspected_on'],
         'inspected_on-desc' => [['inspected_on', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), inspected_on'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), inspected_on'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, inspected_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, inspected_on'],
     ];
 
     protected $permissionFilters = [
@@ -157,12 +162,33 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $inspectionReport = InspectionReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$inspectionReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            InspectionReport::class,
+            'Prüfbericht',
+            $inspectionReport->id,
+            "Anlage $inspectionReport->equipment_identifier (Projekt {$inspectionReport->project->name}) vom $inspectionReport->inspected_on",
+            route('inspection-reports.show', $inspectionReport),
+            $inspectionReport->created_at,
+            $inspectionReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly(['status'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function registerMediaCollections(): void
@@ -250,6 +276,15 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
     public function isFinished()
     {
         return $this->status === 'finished';
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
     }
 
     public static function newInspectionReports()

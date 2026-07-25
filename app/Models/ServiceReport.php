@@ -11,26 +11,31 @@ use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'number' => 'int',
     ];
+    }
 
     protected $fillable = [
         'number', 'status', 'comment', 'project_id', 'employee_id',
@@ -65,8 +70,8 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         'default' => ['number'],
         'number-asc' => ['number'],
         'number-desc' => [['number', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), number'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, number'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, number'],
     ];
 
     protected $permissionFilters = [
@@ -117,12 +122,33 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $serviceReport = ServiceReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$serviceReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            ServiceReport::class,
+            'Servicebericht',
+            $serviceReport->id,
+            "{$serviceReport->project->name} #$serviceReport->number",
+            route('service-reports.show', $serviceReport),
+            $serviceReport->created_at,
+            $serviceReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly(['status'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function registerMediaCollections(): void
@@ -159,6 +185,25 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
     public function isFinished()
     {
         return $this->status === 'finished';
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
+    }
+
+    public function getTotalHoursAttribute()
+    {
+        return $this->services->sum('hours');
+    }
+
+    public function getTotalKilometresAttribute()
+    {
+        return $this->services->sum('kilometres');
     }
 
     public static function newServiceReports()

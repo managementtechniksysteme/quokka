@@ -1,8 +1,7 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon-bs icon-16 mr-2">
-        <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#patch-check"></use>
-    </svg>
-    <a href="{{ route('inspection-reports.index') }}">Prüfberichte</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('inspection-reports.show', $inspectionReport) }}">Anlage {{ $inspectionReport->equipment_identifier }} (Projekt {{ $inspectionReport->project->name }}) vom {{ $inspectionReport->inspected_on }}</a>
-</div>
+<nav class="q-breadcrumb">
+    <a href="{{ route('companies.show', $inspectionReport->project->company) }}">{{ $inspectionReport->project->company->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <a href="{{ route('projects.show', $inspectionReport->project) }}">{{ $inspectionReport->project->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>Prüfbericht · Anlage {{ $inspectionReport->equipment_identifier }}</span>
+</nav>

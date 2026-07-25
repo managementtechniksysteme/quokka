@@ -1,8 +1,7 @@
-<div class="lead text-muted d-flex align-items-center">
-    <svg class="icon icon-16 mr-2">
-        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-    </svg>
-    <a href="{{ route('tasks.index') }}">Aufgaben</a>
-    <span class="px-2">/</span>
-    <a href="{{ route('tasks.show', $task) }}">{{ $task->name }}</a>
-</div>
+<nav class="q-breadcrumb">
+    <a href="{{ route('companies.show', $task->project->company) }}">{{ $task->project->company->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <a href="{{ route('projects.show', $task->project) }}">{{ $task->project->name }}</a>
+    <span class="q-breadcrumb__sep">/</span>
+    <span>{{ $task->name }}</span>
+</nav>

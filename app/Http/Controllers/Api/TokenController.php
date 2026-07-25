@@ -21,6 +21,11 @@ class TokenController extends Controller
 {
     use ThrottlesLogins;
 
+    public function __construct()
+    {
+        $this->middleware('signed')->only('tokenSecondFactorOneTimePassword');
+    }
+
     public function token(Request $request) : JsonResponse
     {
         $validatedData = $request->validate([
@@ -62,7 +67,7 @@ class TokenController extends Controller
         $tokens = $this->createTokens(
             $user,
             $validatedData[config('authapi.token_name_input')],
-            $validatedData['remember_me']
+            $validatedData['remember_me'] ?? false
         );
 
         // Return response with tokens
@@ -71,8 +76,6 @@ class TokenController extends Controller
 
     public function tokenSecondFactorOneTimePassword(Request $request) : JsonResponse
     {
-        $this->middleware('signed');
-
         $validatedData = $request->validate([
             $this->username() => 'required',
             'password' => 'required',
@@ -101,7 +104,7 @@ class TokenController extends Controller
         if ($google2fa->verifyKey(
             decrypt($user[config('auth2fa.otp_secret_column')]),
             $validatedData[config('auth2fa.otp_input')],
-            config('auth2fa.window')
+            config('auth2fa.otp_window')
         )) {
             // Delete old valid tokens if there are any
             $this->deleteValidTokens($user, $validatedData[config('authapi.token_name_input')]);
@@ -110,7 +113,7 @@ class TokenController extends Controller
             $tokens = $this->createTokens(
                 $user,
                 $validatedData[config('authapi.token_name_input')],
-                $validatedData['remember_me']
+                $validatedData['remember_me'] ?? false
             );
 
             // Return response with tokens

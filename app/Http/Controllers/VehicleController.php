@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\VehicleStoreRequest;
 use App\Http\Requests\VehicleUpdateRequest;
+use App\Models\Person;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,11 @@ class VehicleController extends Controller
 
     public function create()
     {
-        return view('vehicle.create')->with('vehicle', null);
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
+        return view('vehicle.create')
+            ->with('vehicle', null)
+            ->with('employees', $employees->toJson());
     }
 
     public function store(VehicleStoreRequest $request)
@@ -57,7 +62,11 @@ class VehicleController extends Controller
 
     public function edit(Vehicle $vehicle)
     {
-        return view('vehicle.edit')->with('vehicle', $vehicle);
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
+        return view('vehicle.edit')
+            ->with('vehicle', $vehicle)
+            ->with('employees', $employees->toJson());
     }
 
     public function update(VehicleUpdateRequest $request, Vehicle $vehicle)

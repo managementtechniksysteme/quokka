@@ -24,7 +24,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Activitylog\Facades\LogBatch;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\Models\Activity;
 use ZsgsDesign\PDFConverter\Latex;
 
 class TaskController extends Controller
@@ -35,6 +36,8 @@ class TaskController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'finish' => 'update',
+            'downloadList' => 'downloadList',
         ]);
     }
 
@@ -70,6 +73,7 @@ class TaskController extends Controller
         $currentProject = null;
         $currentResponsibleEmployee = null;
         $currentInvolvedEmployees = null;
+        $currentAttachments = null;
 
         $validatedData = $request->validated();
 
@@ -115,6 +119,8 @@ class TaskController extends Controller
                'name' => $templateNote->title_string,
                'comment' => $templateNote->comment,
             ]);
+
+            $currentAttachments = $templateNote->attachmentsWithUrl();
         }
         elseif (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);
@@ -123,16 +129,22 @@ class TaskController extends Controller
         $projects = Project::order()->get();
 
         $currentResponsibleEmployee = $currentResponsibleEmployee ?? Auth::user()->employee->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
+        // load employee.user so the pre-selected people serialize with employee
+        // (username) avatar initials, matching the dropdown options
+        $currentResponsibleEmployee?->load('employee.user');
+        $currentInvolvedEmployees?->load('employee.user');
 
         return view('task.create')
             ->with('task', $templateTask)
+            ->with('note', $templateNote)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentResponsibleEmployee', optional($currentResponsibleEmployee)->toJson())
             ->with('currentInvolvedEmployees', optional($currentInvolvedEmployees)->toJson())
             ->with('employees', $employees->toJson())
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', optional($currentAttachments)->toJson());
     }
 
     public function store(TaskStoreRequest $request): RedirectResponse
@@ -160,6 +172,16 @@ class TaskController extends Controller
             }
 
             $task->involvedEmployees()->attach($employees, ['employee_type' => 'involved']);
+        }
+
+        if ($request->filled('note_id')) {
+            $templateNote = Note::find($request->note_id);
+
+            if ($templateNote && Auth::user()->can('view', $templateNote)) {
+                $templateNote->attachments()
+                    ->reject(fn ($attachment) => in_array($attachment->id, $request->remove_attachments ?? []))
+                    ->each(fn ($attachment) => $attachment->copy($task, 'attachments'));
+            }
         }
 
         if ($request->new_attachments) {
@@ -202,21 +224,21 @@ class TaskController extends Controller
             if($batchId && $batch->count() > 1) {
                 $activity = $batch->pop();
 
-                $attributes = $activity->properties['attributes'];
-                $old = $activity->properties['old'];
+                $attributes = $activity->attribute_changes['attributes'];
+                $old = $activity->attribute_changes['old'];
 
                 foreach ($batch as $batchActivity) {
                     $attributes = array_merge(
-                        $attributes, $batchActivity->properties['attributes']
+                        $attributes, $batchActivity->attribute_changes['attributes']
                     );
-                    $old = array_merge($old, $batchActivity->properties['old']);
+                    $old = array_merge($old, $batchActivity->attribute_changes['old']);
                 }
 
-                $properties = [];
-                $properties['attributes'] = $attributes;
-                $properties['old'] = $old;
+                $changes = [];
+                $changes['attributes'] = $attributes;
+                $changes['old'] = $old;
 
-                $activity->properties = $properties;
+                $activity->attribute_changes = $changes;
 
                 $combinedActivities = $combinedActivities->push($activity);
             }
@@ -245,9 +267,14 @@ class TaskController extends Controller
         $projects = Project::order()->get();
 
         $currentResponsibleEmployee = $task->responsibleEmployee->person;
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentInvolvedEmployees = Person::order()->find($task->involvedEmployees->pluck('person_id')) ?? null;
+
+        // load employee.user so the pre-selected people serialize with employee
+        // (username) avatar initials, matching the dropdown options
+        $currentResponsibleEmployee?->load('employee.user');
+        $currentInvolvedEmployees?->load('employee.user');
 
         $currentAttachments = $task->attachmentsWithUrl();
 
@@ -265,7 +292,12 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
-        LogBatch::startBatch();
+        // spatie/laravel-activitylog v5 removed LogBatch entirely - replicate the same
+        // "one save = one merged activity feed entry" behaviour by watermarking the
+        // highest existing activity id and stamping everything created after it below
+        // with a shared batch_uuid, regardless of how many separate save()/log() calls
+        // produced them.
+        $activityIdBeforeUpdate = Activity::max('id') ?? 0;
 
         $task->update($validatedData);
 
@@ -301,7 +333,7 @@ class TaskController extends Controller
                 activity()
                     ->by(Auth::user())
                     ->on($task)
-                    ->withProperties([
+                    ->withChanges([
                         'attributes' => $attributes,
                         'old' => $old,
                     ])
@@ -323,7 +355,7 @@ class TaskController extends Controller
                 activity()
                     ->by(Auth::user())
                     ->on($task)
-                    ->withProperties([
+                    ->withChanges([
                         'attributes' => $attributes,
                         'old' => $old,
                     ])
@@ -346,7 +378,10 @@ class TaskController extends Controller
             $task->touch();
         }
 
-        LogBatch::endBatch();
+        Activity::where('subject_type', Task::class)
+            ->where('subject_id', $task->id)
+            ->where('id', '>', $activityIdBeforeUpdate)
+            ->update(['batch_uuid' => (string) Str::uuid()]);
 
         if($task->wasChanged()) {
             event(new TaskUpdatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));
@@ -461,8 +496,8 @@ class TaskController extends Controller
                         $query
                             ->filterPermissions()
                             ->with('responsibleEmployee.user')
-                            ->orderByRaw('field(status, "new", "in progress", "finished")')
-                            ->orderByRaw('field(priority, "high", "medium", "low")')
+                            ->orderByRaw('case status when "new" then 1 when "in progress" then 2 when "finished" then 3 end')
+                            ->orderByRaw('case priority when "high" then 1 when "medium" then 2 when "low" then 3 end')
                             ->orderBy('due_on', 'desc');
                     }])
                     ->withCount('tasks');

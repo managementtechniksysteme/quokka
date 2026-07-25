@@ -1,440 +1,609 @@
 <template>
-  <div v-bind:class="{'h-100': $screen.xl}">
+  <div>
 
-      <vue-topprogress ref="top_progress" color="#007BFF" errorColor="#DC3545"></vue-topprogress>
+      <top-progress ref="top_progress" color="#007BFF" errorColor="#DC3545"></top-progress>
 
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('success')" type="success" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
-                  <use xlink:href="/svg/feather-sprite.svg#check"></use>
+              <svg class="icon-bs icon-24 me-2">
+                  <use href="/svg/bootstrap-icons.svg#check"></use>
               </svg>
               {{ this.dataResult.success }}
           </div>
       </notification>
       <notification v-if="dataResult !== null && dataResult.hasOwnProperty('danger')" type="danger" v-cloak>
           <div class="d-inline-flex align-items-center">
-              <svg class="icon icon-24 mr-2">
-                  <use xlink:href="/svg/feather-sprite.svg#alert-octagon"></use>
+              <svg class="icon-bs icon-24 me-2">
+                  <use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use>
               </svg>
               {{ this.dataResult.danger }}
           </div>
       </notification>
 
+      <!-- Mobile: the app bar carries the title + Create/Filter/Auswertung
+           (and, only while something's unsaved, Save) instead — teleported
+           into partials/navbar.blade.php's mobile-detail-bar slot from
+           logbook/index.blade.php so it shares Vue's reactive state (unsaved
+           count, sheets) without a global event bus. Auswertung here is a
+           single direct tap (unlike accounting's) — logbook's createPdf()
+           takes no employee selection, it's scoped by the current filter
+           only. -->
+      <teleport to="#logbookMobileActions">
+          <button v-if="permissions.includes('logbook.create')" type="button" class="q-appbar__btn" aria-label="Fahrt eintragen" @click="openCreateSheet">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#plus-lg"></use></svg>
+          </button>
+          <button type="button" class="q-appbar__btn" aria-label="Filter" @click="openMobileFilter">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+          </button>
+          <button v-if="permissions.includes('logbook.createpdf') && logbook.length" type="button" class="q-appbar__btn" aria-label="Auswertung" @click="createPdf">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+          </button>
+          <button v-if="getUnsavedLogbook().length" type="button" class="q-appbar__btn q-appbar__btn--save" aria-label="Änderungen speichern" @click="saveData">
+              <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
+              <span class="q-appbar__btn-badge">{{ getUnsavedLogbook().length }}</span>
+          </button>
+      </teleport>
 
-
-      <div v-bind:class="{'container': !$screen.xl, 'container-fluid h-100': $screen.xl}">
-          <div class="row" v-bind:class="{'h-100': $screen.xl}">
-
-              <div class="order-1" v-bind:class="{'col-12': !$screen.xl, 'col-xl-2 bg-gray-100': $screen.xl}">
-                  <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
-                      <h3>Anzeigefilter</h3>
-
-                      <form class="needs-validation mt-4" action="" method="post" novalidate>
-
-                          <div class="form-row">
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
-                                  <label for="filter_start">Start</label>
-                                  <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
-                                  <div v-if="filter_start_errors" class="invalid-feedback">
-                                      {{ filter_start_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="form-group col-6 col-lg-3 col-xl-12">
-                                  <label for="filter_end">Ende</label>
-                                  <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
-                                  <div v-if="filter_end_errors" class="invalid-feedback">
-                                      {{ filter_end_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
-                                  <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :disabled="filter_only_unsaved" :value="filter_vehicle" :selectOnTab="true" @input="setFilterVehicle">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div v-if="filter_vehicle_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_vehicle_errors}">
-                                      {{ filter_vehicle_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-6 col-lg-3 col-xl-12">
-                                  <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :disabled="filter_only_unsaved" :value="filter_project" :selectOnTab="true"  @input="setFilterProject">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div v-if="filter_project_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_project_errors}">
-                                      {{ filter_project_errors[0] }}
-                                  </div>
-                              </div>
-                              <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
-                                      <label class="custom-control-label" for="filter_only_own">Nur eigene Einträge anzeigen</label>
-                                  </div>
-                                  <div v-if="filter_only_own_errors" class="invalid-feedback" v-bind:class="{'d-block': filter_only_own_errors}">
-                                      {{ filter_only_own_errors[0] }}
-                                  </div>
-                              </div>
-                              <div class="form-group col-12">
-                                  <div class="custom-control custom-switch">
-                                      <input type="checkbox" class="custom-control-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
-                                      <label class="custom-control-label" for="filter_only_unsaved">Nur geänderte Einträge anzeigen</label>
-                                  </div>
-                              </div>
-                          </div>
-                          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center mt-4" @click="filterData()">
-                              <svg class="icon icon-16 mr-2">
-                                  <use xlink:href="/svg/feather-sprite.svg#filter"></use>
-                              </svg>
-                              Einträge filtern
-                          </button>
-                      </form>
+      <div class="q-page-head d-none d-md-flex">
+          <div class="d-flex align-items-center gap-3">
+              <span class="q-head-icon">
+                  <svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#journal"></use></svg>
+              </span>
+              <div>
+                  <div class="q-eyebrow">Fahrtenbuch</div>
+                  <h1 class="q-title">Fahrtenbuch</h1>
+                  <div v-if="logbook.length" class="q-subtitle">
+                      {{ logbook.length }} {{ logbook.length === 1 ? 'Eintrag' : 'Einträge' }}
+                      <span v-if="getNewLogbook().length" style="color:var(--q-green)">+{{ getNewLogbook().length }}</span>
+                      <span v-if="getChangedLogbook().length" style="color:var(--q-amber)">±{{ getChangedLogbook().length }}</span>
+                      <span v-if="getDestroyedLogbook().length" style="color:var(--q-red)">-{{ getDestroyedLogbook().length }}</span>
                   </div>
               </div>
+          </div>
 
-              <div v-if="permissions.includes('logbook.create')"  v-bind:class="{'col-12 order-2 mt-4': !$screen.xl, 'col-xl-2 order-3 bg-gray-100': $screen.xl}">
-                  <div v-bind:class="{'sticky-top pt-xl-4': $screen.xl}">
-                      <h3>Fahrt eintragen</h3>
+          <div class="d-flex align-items-center gap-2">
+              <button v-if="permissions.includes('logbook.createpdf') && logbook.length" type="button" class="btn q-btn d-inline-flex align-items-center gap-2" @click="createPdf()" @keydown.enter.prevent="createPdf()">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#printer"></use></svg>
+                  Auswertung
+              </button>
 
-                      <form class="needs-validation mt-4" action="" method="post" novalidate>
-                          <div class="form-row">
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
-                                  <label>Fahrzeug</label>
-                                  <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :value="vehicle" :selectOnTab="true" @input="setVehicle">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">
-                                      Fahrzeug muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-12">
-                                  <label for="driven_on">Datum</label>
-                                  <input type="date" class="form-control" v-bind:class="{'is-invalid': driven_on_invalid}" id="driven_on" name="driven_on" placeholder="" required v-model="driven_on" />
-                                  <div class="invalid-feedback">
-                                      Datum muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
-                                  <label for="start_kilometres">Start Kilometer</label>
-                                  <input type="number" :min="0" step="1" class="form-control" v-bind:class="{'is-invalid': start_kilometres_invalid}" id="start_kilometres" name="start_kilometres" placeholder="131337" required v-model="start_kilometres" @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      Start Kilometer müssen mindestens 0 sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-4 col-md-4 col-lg-2 col-xl-6">
-                                  <label for="end_kilometres">Ende Kilometer</label>
-                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      Ende Kilometer müssen mindestens 1 sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
-                                  <label for="driven_kilometres">gefahrene KM</label>
-                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
-                                  <div class="invalid-feedback">
-                                      gefahrene Kilometer müssen mindestens 1 sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-6 col-md-4 col-lg-2 col-xl-6">
-                                  <label for="litres_refuelled">getankte Liter</label>
-                                  <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" required v-model="litres_refuelled" />
-                                  <div class="invalid-feedback">
-                                      getankte Liter müssen mindestens 1 sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
-                                  <label>Start</label>
-                                  <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" :taggable="true" @input="setOrigin">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
-                                      Start muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-4 col-lg-2 col-xl-12">
-                                  <label>Ziel</label>
-                                  <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" :taggable="true" @input="setDestination">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">
-                                      Ziel muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-md-4 col-lg-3 col-xl-12">
-                                  <label>Projekt</label>
-                                  <v-select :options="projects" label="name" placeholder="Projekt auswählen" :value="project" :selectOnTab="true" @input="setProject">
-                                      <template v-slot:no-options>Keine passenden Einträge.</template>
-                                  </v-select>
-                                  <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">
-                                      Projekt muss ausgefüllt sein.
-                                  </div>
-                              </div>
-                              <div class="form-group col-lg-3 col-xl-12">
-                                  <label for="comment">Bemerkungen</label>
-                                  <textarea class="form-control" v-bind:class="{'textarea-h1': $screen.lg && !$screen.xl}" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
-                              </div>
-                              <div class="form-group col-12">
-                                  <div class="custom-control custom-switch d-flex align-items-center">
-                                      <input type="checkbox" class="custom-control-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
-                                      <label class="custom-control-label" for="return_trip">Hin- und Rückfahrt</label>
-                                      <a data-toggle="collapse" href="#returnTripHelpCollapse">
-                                          <svg class="icon icon-16 ml-2 text-muted">
-                                              <use xlink:href="/svg/feather-sprite.svg#help-circle"></use>
-                                          </svg>
-                                      </a>
-                                  </div>
-                              </div>
-                              <div class="col collapse" id="returnTripHelpCollapse">
-                                  <p>Es werden zwei Fahrten mit halbierter Kilometeranzahl und vertauschtem Start sowie
-                                      Ziel angelegt. Getankte Liter werden beim ersten Eintrag hinzugefügt.</p>
-                              </div>
-                          </div>
-                          <div class="mt-4">
-                              <button id="addlogbook" type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="addLogbook()">
-                                  <svg class="icon icon-16 mr-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#plus"></use>
-                                  </svg>
-                                  Hinzufügen
-                              </button>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-
-              <div v-bind:class="{'col-12 order-3': !$screen.xl, 'col-xl-8 order-2 pb-xl-4': $screen.xl && permissions.includes('logbook.create'), 'col-xl-10 order-2 pb-xl-4': $screen.xl && !permissions.includes('logbook.create')}"  ref="logbook_overview">
-                  <div class="sticky-top bg-general">
-                      <div class="sticky-top d-none d-xl-block pt-xl-4 pb-2">
-                          <h3 class="d-inline-block">
-                              <svg class="icon icon-baseline text-muted mr-1">
-                                  <use xlink:href="/svg/feather-sprite.svg#book"></use>
-                              </svg>
-                              Fahrtenbuch
-                              <small v-if="logbook.length" class="text-muted">
-                                  {{ logbook.length }} {{ logbook.length === 1 ? 'Eintrag' : 'Einträge' }}
-                                  <span v-if="getNewLogbook().length" class="text-success">+{{ getNewLogbook().length }}</span>
-                                  <span v-if="getChangedLogbook().length" class="text-warning">±{{ getChangedLogbook().length }}</span>
-                                  <span v-if="getDestroyedLogbook().length" class="text-danger">-{{ getDestroyedLogbook().length }}</span>
-                              </small>
-                          </h3>
-
-                          <div class="float-right">
-                              <button v-if="permissions.includes('logbook.createpdf') && this.logbook.length" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createPdf()" @keydown.enter.prevent="createPdf()">
-                                  <svg class="icon icon-16 mr-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#printer"></use>
-                                  </svg>
-                                  Auswertung
-                              </button>
-
-                              <button v-if="permissions.includes('service-reports.create') && this.getSelectedLogbook().length && !this.selectedLogbookContainsUnsaved() && this.selectedLogbookIsOwn() && this.selectedLogbookIsSingleProject()" class="btn btn-outline-secondary d-inline-flex align-items-center" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
-                                  <svg class="icon icon-16 mr-2">
-                                      <use xlink:href="/svg/feather-sprite.svg#settings"></use>
-                                  </svg>
-                                  Servicebericht erstellen
-                              </button>
-                          </div>
-                      </div>
-
-                      <div v-if="getUnsavedLogbook().length" class="alert alert-warning" role="alert">
-                          <div class="d-inline-flex align-items-center">
-                              <svg class="icon icon-24 mr-2">
-                                  <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                              </svg>
-                              <p class="m-0">
-                                  Du hast ungespeicherte Änderungen. Geänderte Zeilen bleiben auch dann sichtbar, wenn der
-                                  Filterbereich nachträglich geändert wird.
-                              </p>
-                          </div>
-                      </div>
-                  </div>
-
-                  <div v-if="logbook.length" class="mt-4 p-1">
-                      <table class="table table-sm">
-                          <thead>
-                              <tr>
-                                  <th scope="col" class="col-auto">
-                                      <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'text-gray-500': !getErrorLogbook().length, 'errorstoggle text-red-100': getErrorLogbook().length, 'text-red-500': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                                          </svg>
-                                      </button>
-                                  </th>
-                                  <th scope="col" class="col-1-5">Fahrzeug</th>
-                                  <th scope="col" class="col-1-5">Datum</th>
-                                  <th scope="col" class="col-1">Start KM</th>
-                                  <th scope="col" class="col-1">Ende KM</th>
-                                  <th scope="col" class="col-1">gef. KM</th>
-                                  <th scope="col" class="col-1">get. L</th>
-                                  <th scope="col" class="col-1-5">Start</th>
-                                  <th scope="col" class="col-1-5">Ziel</th>
-                                  <th scope="col" class="col-auto text-right">
-                                      <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="removeSelectedLogbook()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
-                                          </svg>
-                                      </button>
-                                      <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="restoreSelectedLogbook()">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
-                                          </svg>
-                                      </button>
-                                      <button v-if="(getSelectedLogbook().length !== pageOfItems.length)" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon icon-16">
-                                              <use v-if="!selectAllHover" xlink:href="/svg/feather-sprite.svg#circle"></use>
-                                              <use v-if="selectAllHover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
-                                          </svg>
-                                      </button>
-                                      <button v-if="getSelectedLogbook().length === pageOfItems.length"  type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelectAll()"  @mouseenter="selectAllHover = true"  @mouseleave="selectAllHover = false">
-                                          <svg class="icon icon-16">
-                                              <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
-                                          </svg>
-                                      </button>
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <template v-for="book in pageOfItems">
-                                  <tr class="hover-highlight" v-bind:class="{'border-status border-success': book.action === 'store' && !book.selected, 'border-status border-warning': book.action === 'update' && !book.selected, 'text-muted ': book.action === 'destroy', 'border-status border-danger': book.action === 'destroy' && !book.selected, 'border-status border-primary': book.selected}">
-                                      <td class="col-auto">
-                                          <button type="button" class="btn btn-sm outline-none p-1 d-inline-flex align-items-center" v-bind:class="{'detailstoggle text-gray-500': !book.errors && !book.show_details, 'errorstoggle text-red-100': book.errors && !book.show_details, 'text-dark': !book.errors && book.show_details, 'text-red-500': book.errors && book.show_details}" @click="toggleShowDetails(book)">
-                                              <svg class="icon icon-16">
-                                                  <use v-if="!book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-right"></use>
-                                                  <use v-if="book.errors && !book.show_details" xlink:href="/svg/feather-sprite.svg#alert-triangle"></use>
-                                                  <use v-if="book.show_details" xlink:href="/svg/feather-sprite.svg#chevron-down"></use>
-                                              </svg>
-                                          </button>
-                                      </td>
-
-                                      <td class="col-1-5" @click="setEdit(book, 'vehicle')">
-                                          <span v-if="book.edit !== 'vehicle'">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</span>
-                                          <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input"  label="registration_identifier" placeholder="Fahrzeug auswählen" :value="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @input="changeLogbookVehicle($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)">
-                                              <template v-slot:no-options>Keine passenden Einträge.</template>
-                                          </v-select>
-                                      </td>
-                                      <td class="col-1-5" @click="setEdit(book, 'driven_on')">
-                                          <span v-if="book.edit !== 'driven_on'">{{ book.driven_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                                          <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="getDateStringForInputField(book.driven_on)" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(book, 'start_kilometres')">
-                                          <span v-if="book.edit !== 'start_kilometres'">{{ book.start_kilometres.toLocaleString() }}</span>
-                                          <input v-if="book.edit === 'start_kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_start_kilometres_invalid}" ref="table_input" id="table_start_kilometres" name="table_start_kilometres" placeholder="131337" :value="book.start_kilometres" @blur="changeLogbookStartKilometres($event, book)" @keydown.enter.prevent="changeLogbookStartKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'start_kilometres')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(book, 'end_kilometres')">
-                                          <span v-if="book.edit !== 'end_kilometres'">{{ book.end_kilometres.toLocaleString() }}</span>
-                                          <input v-if="book.edit === 'end_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_end_kilometres_invalid}" ref="table_input" id="table_end_kilometres" name="table_end_kilometres" placeholder="131415" :value="book.end_kilometres" @blur="changeLogbookEndKilometres($event, book)" @keydown.enter.prevent="changeLogbookEndKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'end_kilometres')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(book, 'driven_kilometres')">
-                                          <span v-if="book.edit !== 'driven_kilometres'">{{ book.driven_kilometres.toLocaleString() }}</span>
-                                          <input v-if="book.edit === 'driven_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_kilometres_invalid}" ref="table_input" id="table_driven_kilometres" name="table_driven_kilometres" placeholder="78" :value="book.driven_kilometres" @blur="changeLogbookDrivenKilometres($event, book)" @keydown.enter.prevent="changeLogbookDrivenKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_kilometres')" />
-                                      </td>
-                                      <td class="col-1" @click="setEdit(book, 'litres_refuelled')">
-                                          <span v-if="book.edit !== 'litres_refuelled'">{{ book.litres_refuelled ? book.litres_refuelled.toLocaleString() : '' }}</span>
-                                          <input v-if="book.edit === 'litres_refuelled'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_litres_refuelled_invalid}" ref="table_input" id="table_litres_refuelled" name="table_litres_refuelled" placeholder="54" :value="book.litres_refuelled" @blur="changeLogbookLitresRefuelled($event, book)" @keydown.enter.prevent="changeLogbookLitresRefuelled($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'litres_refuelled')" />
-                                      </td>
-                                      <td class="col-1-5" @click="setEdit(book, 'origin')">
-                                          <span v-if="book.edit !== 'origin'">{{ book.origin }}</span>
-                                          <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :value="origin" :selectOnTab="true" @input="changeLogbookOrigin($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
-                                              <template v-slot:no-options>Keine passenden Einträge.</template>
-                                          </v-select>
-                                      </td>
-                                      <td class="col-1-5" @click="setEdit(book, 'destination')">
-                                          <span v-if="book.edit !== 'destination'">{{ book.destination }}</span>
-                                          <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :value="destination" :selectOnTab="true" @input="changeLogbookDestination($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)">
-                                              <template v-slot:no-options>Keine passenden Einträge.</template>
-                                          </v-select>
-                                      </td>
-
-                                      <td class="col-auto text-right">
-                                          <button v-if="book.action !== 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#trash-2"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="book.action === 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#rotate-ccw"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="!book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-100 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)" @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
-                                              <svg class="icon icon-16">
-                                                  <use v-if="!book.hover" xlink:href="/svg/feather-sprite.svg#circle"></use>
-                                                  <use v-if="book.hover" xlink:href="/svg/feather-sprite.svg#check-circle"></use>
-                                              </svg>
-                                          </button>
-                                          <button v-if="book.selected" type="button" class="btn btn-sm outline-none checkboxtoggle text-blue-500 p-1 d-inline-flex align-items-center" @click="toggleSelected(book)"  @mouseenter="book.hover = true"  @mouseleave="book.hover = false">
-                                              <svg class="icon icon-16">
-                                                  <use xlink:href="/svg/feather-sprite.svg#check-circle"></use>
-                                              </svg>
-                                          </button>
-                                      </td>
-                                  </tr>
-
-                                  <transition name="collapse">
-                                      <tr v-if="book.show_details"  v-bind:class="{'border-status border-success': book.action === 'store' && !book.selected, 'border-status border-warning': book.action === 'update' && !book.selected, 'text-muted ': book.action === 'destroy', 'border-status border-danger': book.action === 'destroy' && !book.selected, 'border-status border-primary': book.selected}">
-                                          <td class="border-0" ></td>
-                                          <td colspan="7" class="border-0">
-                                              <div class="row">
-                                                  <div class="col-2 font-weight-bold">Projekt:</div>
-                                                  <div class="col-4">
-                                                      <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
-                                                      <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input"  label="name" placeholder="Projekt auswählen" :value="getProject(book.project_id)" :selectOnTab="true" @input="changeLogbookProject($event, book)"  @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
-                                                          <template v-slot:no-options>Keine passenden Einträge.</template>
-                                                      </v-select>
-                                                  </div>
-                                              </div>
-                                              <div class="row mt-2">
-                                                  <div class="col-2 font-weight-bold">Mitarbeiter:</div>
-                                                  <div class="col-4">{{ getEmployeeName(book.employee_id) }}</div>
-                                              </div>
-                                              <div class="form-group mt-2">
-                                                  <label for="table_comment"><span class="font-weight-bold">Bemerkungen:</span></label>
-                                                  <p v-if="book.edit !== 'comment'" class="whitespace-preline" @click="setEdit(book, 'comment')">{{ book.comment ? book.comment : 'nicht angegeben' }}</p>
-                                                  <textarea v-if="book.edit === 'comment'" class="form-control form-control-sm" ref="table_input"  id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="book.comment" @blur="changeLogbookComment($event, book)" />
-                                              </div>
-
-                                              <div v-if="book.errors" class="alert alert-danger" role="alert">
-                                                  <p class="mb-0">Probleme in dieser Zeile</p>
-                                                  <ul class="mb-0">
-                                                      <li v-for="error in book.errors">{{ error }}</li>
-                                                  </ul>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                  </transition>
-
-                              </template>
-                          </tbody>
-                      </table>
-
-                      <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" @changePage="onChangePage"></jw-pagination>
-
-                      <p v-if="logbook.length" class="mt-3">
-                          Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
-                          <span class="badge badge-green-100 text-green-800">wird angelegt</span>
-                          <span class="badge badge-yellow-100 text-yellow-800">wird bearbeitet</span>
-                          <span class="badge badge-red-100 text-red-800">wird entfernt</span>
-                      </p>
-                  </div>
-
-                  <div v-if="!logbook.length" class="text-center mt-4">
-                      <img class="empty-state" src="/svg/no-data.svg" alt="no data" />
-                      <p class="lead text-muted">Es sind keine Fahrtenbuch Einträge passend zum Anzeigefilter vorhanden.</p>
-                      <p class="lead">Trage neue Fahrten mithilfe des Formulars ein.</p>
-                  </div>
-
-                  <button v-if="logbook.length" ref="save_button" type="button" class="btn btn-primary d-inline-flex align-items-center mt-4" :disabled="!getUnsavedLogbook().length" @click="saveData()">
-                      <svg class="icon icon-16 mr-2">
-                          <use xlink:href="/svg/feather-sprite.svg#save"></use>
-                      </svg>
-                      Änderungen speichern
-                  </button>
-
-              </div>
-
+              <button v-if="permissions.includes('service-reports.create') && getSelectedLogbook().length && !selectedLogbookContainsUnsaved() && selectedLogbookIsOwn() && selectedLogbookIsSingleProject()" type="button" class="btn q-btn d-inline-flex align-items-center gap-2" @click="createServiceReportFromSelectedAccounting()" @keydown.enter.prevent="createServiceReportFromSelectedAccounting()">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#gear"></use></svg>
+                  Servicebericht erstellen
+              </button>
           </div>
       </div>
+
+      <div v-if="getUnsavedLogbook().length" class="q-banner" role="alert">
+          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+          <div>
+              Du hast ungespeicherte Änderungen. Geänderte Zeilen bleiben auch dann sichtbar, wenn der
+              Filterbereich nachträglich geändert wird.
+          </div>
+      </div>
+
+      <!-- Mobile: applied filters as removable pill chips, same pattern as
+           AccountingSelector's (2026-07-22). -->
+      <div v-if="activeFilterChips().length" class="q-meta d-md-none mb-3">
+          <span v-for="chip in activeFilterChips()" :key="chip.key" class="q-chip">
+              {{ chip.label }}
+              <button v-if="chip.removable !== false" type="button" class="q-quick-create-summary__clear" :aria-label="'Filter entfernen: ' + chip.label" @click="clearFilterChip(chip.key)">
+                  <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#x"></use></svg>
+              </button>
+          </span>
+      </div>
+
+      <div class="q-filterbar q-form d-none d-md-block">
+          <div class="q-card">
+              <div class="q-card__body">
+                  <div class="q-filterbar__fields">
+                      <div class="q-filterbar__field">
+                          <label for="filter_start">Start</label>
+                          <input type="date" :max="filter_end" class="form-control form-control-sm" v-bind:class="{'is-invalid': filter_start_errors}" id="filter_start" name="filter_start" placeholder="" :disabled="filter_only_unsaved" v-model="filter_start" />
+                          <div v-if="filter_start_errors" class="invalid-feedback d-block">{{ filter_start_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field">
+                          <label for="filter_end">Ende</label>
+                          <input type="date" :min="filter_start" class="form-control form-control-sm" v-bind:class="{'is-invalid': filter_end_errors}" id="filter_end" name="filter_end" placeholder="" :disabled="filter_only_unsaved" v-model="filter_end" />
+                          <div v-if="filter_end_errors" class="invalid-feedback d-block">{{ filter_end_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field q-filterbar__field--grow">
+                          <label>Fahrzeug</label>
+                          <v-select class="dropdown-sm" :options="vehicles" label="registration_identifier" placeholder="Alle Fahrzeuge" :disabled="filter_only_unsaved" :modelValue="filter_vehicle" :selectOnTab="true" @update:modelValue="setFilterVehicle">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_vehicle_errors" class="invalid-feedback d-block">{{ filter_vehicle_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__field q-filterbar__field--grow">
+                          <label>Projekt</label>
+                          <v-select class="dropdown-sm" :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>
+                      </div>
+                  </div>
+                  <div class="q-filterbar__actions">
+                      <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="q-filterbar__switch">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" name="filter_only_own" id="filter_only_own" :disabled="filter_only_unsaved" :value="filter_only_own" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                              <label class="form-check-label" for="filter_only_own">Nur eigene</label>
+                          </div>
+                          <div v-if="filter_only_own_errors" class="invalid-feedback d-block">{{ filter_only_own_errors[0] }}</div>
+                      </div>
+                      <div class="q-filterbar__switch">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" name="filter_only_unsaved" id="filter_only_unsaved" :value="filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                              <label class="form-check-label" for="filter_only_unsaved">Nur ungespeicherte</label>
+                          </div>
+                      </div>
+                      <button type="button" class="btn q-btn q-filterbar__submit d-inline-flex align-items-center gap-2" @click="filterData()">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                          Filtern
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="q-grid">
+          <div ref="logbook_overview">
+              <div v-if="isDesktopGrid && logbook.length" class="q-card q-dtable">
+                  <div class="q-dtable__head q-logbook-grid">
+                      <span>
+                          <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="{'invisible': !getErrorLogbook().length, 'text-danger': getErrorLogbook().length && !getShowNoDetailsErrorLogbook().length, 'text-muted': getErrorLogbook().length && getShowNoDetailsErrorLogbook().length}" :disabled="!getErrorLogbook().length" @click="toggleShowDetailsError()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                          </button>
+                      </span>
+                      <span>Fahrzeug</span>
+                      <span>Datum</span>
+                      <span>KM</span>
+                      <span class="q-dtable__num">Gef.</span>
+                      <span class="q-dtable__num">L</span>
+                      <span>Strecke</span>
+                      <span class="q-dtable__actions">
+                          <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="removeSelectedLogbook()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                          </button>
+                          <button type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" :disabled="!getSelectedLogbook().length" @click="restoreSelectedLogbook()">
+                              <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg>
+                          </button>
+                          <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="getSelectedLogbook().length === pageOfItems.length ? 'text-primary' : 'text-muted'" @click="toggleSelectAll()" @mouseenter="selectAllHover = true" @mouseleave="selectAllHover = false">
+                              <svg class="icon-bs icon-16">
+                                  <use v-if="getSelectedLogbook().length !== pageOfItems.length && !selectAllHover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                  <use v-else href="/svg/bootstrap-icons.svg#check-circle"></use>
+                              </svg>
+                          </button>
+                      </span>
+                  </div>
+
+                  <template v-for="(book, index) in pageOfItems" :key="'book-' + (book.id ?? ('new' + index))">
+                      <div class="q-dtable__row q-trow q-logbook-grid" v-bind:class="{'is-created': book.action === 'store', 'is-edited': book.action === 'update', 'is-removed': book.action === 'destroy', 'is-selected': book.selected}">
+                          <span>
+                              <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="book.errors ? 'text-danger' : 'text-muted'" @click="toggleShowDetails(book)">
+                                  <svg class="icon-bs icon-16">
+                                      <use v-if="!book.errors && !book.show_details" href="/svg/bootstrap-icons.svg#chevron-right"></use>
+                                      <use v-if="book.errors && !book.show_details" href="/svg/bootstrap-icons.svg#exclamation-triangle"></use>
+                                      <use v-if="book.show_details" href="/svg/bootstrap-icons.svg#chevron-down"></use>
+                                  </svg>
+                              </button>
+                          </span>
+                          <div class="q-dtable__cell" @click="setEdit(book, 'vehicle')">
+                              <span v-if="book.edit !== 'vehicle'" class="q-ab q-mono">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</span>
+                              <v-select v-if="book.edit === 'vehicle'" class="dropdown-sm" :options="vehicles" ref="table_input" label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="getVehicleRegistrationIdentifier(book.vehicle_id)" :selectOnTab="true" @update:modelValue="changeLogbookVehicle($event, book)" @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookVehicle($event, book)">
+                                  <template v-slot:no-options>Keine passenden Einträge.</template>
+                              </v-select>
+                          </div>
+                          <div class="q-dtable__cell" @click="setEdit(book, 'driven_on')">
+                              <span v-if="book.edit !== 'driven_on'">{{ book.driven_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
+                              <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="getDateStringForInputField(book.driven_on)" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
+                          </div>
+                          <div class="q-dtable__cell d-flex align-items-center gap-1">
+                              <span v-if="book.edit !== 'start_kilometres'" @click="setEdit(book, 'start_kilometres')">{{ book.start_kilometres.toLocaleString() }}</span>
+                              <input v-if="book.edit === 'start_kilometres'" type="number" min="0" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_start_kilometres_invalid}" ref="table_input" id="table_start_kilometres" name="table_start_kilometres" placeholder="131337" :value="book.start_kilometres" @blur="changeLogbookStartKilometres($event, book)" @keydown.enter.prevent="changeLogbookStartKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'start_kilometres')" />
+                              <span class="q-dtable__muted" v-if="book.edit !== 'start_kilometres' && book.edit !== 'end_kilometres'">→</span>
+                              <span v-if="book.edit !== 'end_kilometres'" @click="setEdit(book, 'end_kilometres')">{{ book.end_kilometres.toLocaleString() }}</span>
+                              <input v-if="book.edit === 'end_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_end_kilometres_invalid}" ref="table_input" id="table_end_kilometres" name="table_end_kilometres" placeholder="131415" :value="book.end_kilometres" @blur="changeLogbookEndKilometres($event, book)" @keydown.enter.prevent="changeLogbookEndKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'end_kilometres')" />
+                          </div>
+                          <div class="q-dtable__cell q-dtable__num" @click="setEdit(book, 'driven_kilometres')">
+                              <span v-if="book.edit !== 'driven_kilometres'">{{ book.driven_kilometres.toLocaleString() }}</span>
+                              <input v-if="book.edit === 'driven_kilometres'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_kilometres_invalid}" ref="table_input" id="table_driven_kilometres" name="table_driven_kilometres" placeholder="78" :value="book.driven_kilometres" @blur="changeLogbookDrivenKilometres($event, book)" @keydown.enter.prevent="changeLogbookDrivenKilometres($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_kilometres')" />
+                          </div>
+                          <div class="q-dtable__cell q-dtable__num" @click="setEdit(book, 'litres_refuelled')">
+                              <span v-if="book.edit !== 'litres_refuelled'" v-bind:class="{'q-dtable__muted': !book.litres_refuelled}">{{ book.litres_refuelled ? book.litres_refuelled.toLocaleString() : '–' }}</span>
+                              <input v-if="book.edit === 'litres_refuelled'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_litres_refuelled_invalid}" ref="table_input" id="table_litres_refuelled" name="table_litres_refuelled" placeholder="54" :value="book.litres_refuelled" @blur="changeLogbookLitresRefuelled($event, book)" @keydown.enter.prevent="changeLogbookLitresRefuelled($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'litres_refuelled')" />
+                          </div>
+                          <div class="q-dtable__cell d-flex align-items-center gap-1 q-dtable__truncate">
+                              <span v-if="book.edit !== 'origin'" class="q-dtable__truncate" @click="setEdit(book, 'origin')">{{ book.origin }}</span>
+                              <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" @update:modelValue="changeLogbookOrigin($event, book)" @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
+                                  <template v-slot:no-options>Keine passenden Einträge.</template>
+                              </v-select>
+                              <span class="q-dtable__muted" v-if="book.edit !== 'origin' && book.edit !== 'destination'">→</span>
+                              <span v-if="book.edit !== 'destination'" class="q-dtable__truncate" @click="setEdit(book, 'destination')">{{ book.destination }}</span>
+                              <v-select v-if="book.edit === 'destination'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Ziel auswählen oder eingeben" :modelValue="destination" :selectOnTab="true" @update:modelValue="changeLogbookDestination($event, book)" @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookDestination($event, book)">
+                                  <template v-slot:no-options>Keine passenden Einträge.</template>
+                              </v-select>
+                          </div>
+                          <div class="q-dtable__actions">
+                              <button v-if="book.action !== 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center" @click="removeLogbook(book)">
+                                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                              </button>
+                              <button v-if="book.action === 'destroy' && canRemoveLogbook(current_employee, book)" type="button" class="btn btn-sm btn-outline-success p-1 d-inline-flex align-items-center" @click="restoreLogbook(book)">
+                                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg>
+                              </button>
+                              <button type="button" class="btn btn-sm q-dtable__icon-btn p-1 d-inline-flex align-items-center" v-bind:class="book.selected ? 'text-primary' : 'text-muted'" @click="toggleSelected(book)" @mouseenter="book.hover = true" @mouseleave="book.hover = false">
+                                  <svg class="icon-bs icon-16">
+                                      <use v-if="!book.selected && !book.hover" href="/svg/bootstrap-icons.svg#circle"></use>
+                                      <use v-else href="/svg/bootstrap-icons.svg#check-circle"></use>
+                                  </svg>
+                              </button>
+                          </div>
+                      </div>
+
+                      <transition name="collapse">
+                          <div v-if="book.show_details" class="q-dtable__detail q-trow" v-bind:class="{'is-created': book.action === 'store', 'is-edited': book.action === 'update', 'is-removed': book.action === 'destroy', 'is-selected': book.selected}">
+                              <div class="mb-2">
+                                  <label class="fw-bold">Projekt</label>
+                                  <div v-if="book.edit !== 'project'" @click="setEdit(book, 'project')">{{ book.project_id ? getProjectName(book.project_id) : 'nicht angegeben' }}</div>
+                                  <v-select v-if="book.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input" label="name" placeholder="Projekt auswählen" :modelValue="getProject(book.project_id)" :selectOnTab="true" @update:modelValue="changeLogbookProject($event, book)" @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookProject($event, book)">
+                                      <template v-slot:no-options>Keine passenden Einträge.</template>
+                                  </v-select>
+                              </div>
+                              <div class="mb-2">
+                                  <label class="fw-bold">Mitarbeiter</label>
+                                  <div>{{ getEmployeeName(book.employee_id) }}</div>
+                              </div>
+                              <div class="mb-2">
+                                  <label for="table_comment" class="fw-bold">Bemerkungen</label>
+                                  <p v-if="book.edit !== 'comment'" class="whitespace-preline mb-0" @click="setEdit(book, 'comment')">{{ book.comment ? book.comment : 'nicht angegeben' }}</p>
+                                  <textarea v-if="book.edit === 'comment'" class="form-control form-control-sm" ref="table_input" id="table_comment" name="table_comment" placeholder="Bemerkungen" :value="book.comment" @blur="changeLogbookComment($event, book)" />
+                              </div>
+                              <div v-if="book.errors" class="q-banner" style="background: color-mix(in srgb, var(--q-red) 9%, transparent); border-color: color-mix(in srgb, var(--q-red) 24%, transparent);" role="alert">
+                                  <svg class="icon-bs icon-16" style="color: var(--q-red)"><use href="/svg/bootstrap-icons.svg#exclamation-octagon"></use></svg>
+                                  <div>
+                                      <p class="mb-0 fw-bold">Probleme in dieser Zeile</p>
+                                      <ul class="mb-0">
+                                          <li v-for="error in book.errors">{{ error }}</li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </div>
+                      </transition>
+                  </template>
+              </div>
+
+              <!-- Mobile: read-first card list, same recipe as
+                   AccountingSelector's (2026-07-22) — tap a card for its
+                   action sheet, no chevron/reveal, comment + row errors
+                   print inline when present. -->
+              <div v-else-if="!isDesktopGrid && logbook.length" class="q-cardlist">
+                  <button
+                      v-for="(book, index) in pageOfItems"
+                      :key="'book-card-' + (book.id ?? ('new' + index))"
+                      type="button"
+                      class="q-trow--card"
+                      @click="openMobileRowActions(book)"
+                  >
+                      <div class="q-trow--card__top">
+                          <span class="q-trow--card__date">{{ book.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span>
+                          <span v-if="book.action === 'store'" class="q-status q-status--created">Neu</span>
+                          <span v-else-if="book.action === 'update'" class="q-status q-status--edited">Bearb.</span>
+                          <span v-else-if="book.action === 'destroy'" class="q-status q-status--removed">Entfernt</span>
+                      </div>
+
+                      <div class="q-trow--card__title">{{ book.origin }} → {{ book.destination }}</div>
+                      <div class="q-trow--card__sub">{{ getVehicleRegistrationIdentifier(book.vehicle_id) }}</div>
+
+                      <div class="q-trow--card__facts">
+                          <div><span class="q-trow--card__label">km</span><b>{{ book.driven_kilometres.toLocaleString() }}</b></div>
+                          <div>
+                              <span class="q-trow--card__label">Getankt</span>
+                              <span v-if="book.litres_refuelled">{{ book.litres_refuelled.toLocaleString() }} l</span>
+                              <span v-else class="q-dtable__muted">–</span>
+                          </div>
+                          <div><span class="q-trow--card__label">MA</span>{{ getEmployeeInitials(book.employee_id) }}</div>
+                      </div>
+
+                      <p v-if="book.comment" class="q-trow--card__comment">{{ book.comment }}</p>
+
+                      <p v-if="book.errors" class="q-trow--card__error">
+                          <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#exclamation-triangle"></use></svg>
+                          {{ book.errors[0] }}
+                      </p>
+                  </button>
+              </div>
+
+              <div v-if="logbook.length" class="mt-3">
+                  <jw-pagination :labels="pagination_labels" :items="logbook" :pageSize="page_size" :initialPage="initialPage" :resetTrigger="resetTrigger" @changePage="onChangePage"></jw-pagination>
+              </div>
+
+              <p v-if="logbook.length" class="q-legend d-none d-md-block">
+                  Der linke farbliche Rand zeigt den Speicherzustand der jeweiligen Zeile:
+                  <b style="color: var(--q-green)">●</b> wird angelegt ·
+                  <b style="color: var(--q-amber)">●</b> wird bearbeitet ·
+                  <b style="color: var(--q-red)">●</b> wird entfernt
+              </p>
+
+              <div v-if="!logbook.length" class="q-empty-state">
+                  <svg class="q-empty-icon"><use href="/svg/bootstrap-icons.svg#journal"></use></svg>
+                  <p>Es sind keine Fahrtenbuch-Einträge passend zum Anzeigefilter vorhanden.</p>
+                  <p>Trage neue Fahrten mithilfe des Formulars ein.</p>
+              </div>
+          </div>
+
+          <div v-if="isDesktopGrid && permissions.includes('logbook.create')" class="q-grid__form q-form">
+              <div class="q-card__head d-flex align-items-center gap-2">
+                  <span class="q-section-icon q-section-icon--accent">
+                      <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
+                  </span>
+                  Fahrt eintragen
+              </div>
+              <div class="q-card__body d-flex flex-column gap-3">
+                  <div>
+                      <label>Fahrzeug</label>
+                      <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="vehicle" :selectOnTab="true" @update:modelValue="setVehicle">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': vehicle_invalid}">Fahrzeug muss ausgefüllt sein.</div>
+                  </div>
+                  <div>
+                      <label for="driven_on">Datum</label>
+                      <input type="date" class="form-control" v-bind:class="{'is-invalid': driven_on_invalid}" id="driven_on" name="driven_on" placeholder="" required v-model="driven_on" />
+                      <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
+                  </div>
+                  <div class="d-flex gap-2">
+                      <div class="flex-grow-1">
+                          <label for="start_kilometres">Start km</label>
+                          <input type="number" :min="0" step="1" class="form-control" v-bind:class="{'is-invalid': start_kilometres_invalid}" id="start_kilometres" name="start_kilometres" placeholder="131337" required v-model="start_kilometres" @blur="autofill()" />
+                          <div class="invalid-feedback">Start Kilometer müssen mindestens 0 sein.</div>
+                      </div>
+                      <div class="flex-grow-1">
+                          <label for="end_kilometres">Ende km</label>
+                          <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': end_kilometres_invalid}" id="end_kilometres" name="end_kilometres" placeholder="131415" required v-model="end_kilometres" @blur="autofill()" />
+                          <div class="invalid-feedback">Ende Kilometer müssen mindestens 1 sein.</div>
+                      </div>
+                  </div>
+                  <div class="d-flex gap-2">
+                      <div class="flex-grow-1">
+                          <label for="driven_kilometres">gefahrene KM</label>
+                          <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': driven_kilometres_invalid}" id="driven_kilometres" name="driven_kilometres" placeholder="78" required v-model="driven_kilometres" @blur="autofill()" />
+                          <div class="invalid-feedback">gefahrene Kilometer müssen mindestens 1 sein.</div>
+                      </div>
+                      <div class="flex-grow-1">
+                          <label for="litres_refuelled">getankte Liter</label>
+                          <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': litres_refuelled_invalid}" id="litres_refuelled" name="litres_refuelled" placeholder="54" v-model="litres_refuelled" />
+                          <div class="invalid-feedback">getankte Liter müssen mindestens 1 sein.</div>
+                      </div>
+                  </div>
+                  <div>
+                      <label>Start</label>
+                      <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" :taggable="true" @update:modelValue="setOrigin">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">Start muss ausgefüllt sein.</div>
+                  </div>
+                  <div>
+                      <label>Ziel</label>
+                      <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :modelValue="destination" :selectOnTab="true" :taggable="true" @update:modelValue="setDestination">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': origin_invalid}">Ziel muss ausgefüllt sein.</div>
+                  </div>
+                  <div>
+                      <label>Projekt</label>
+                      <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="project" :selectOnTab="true" @update:modelValue="setProject">
+                          <template v-slot:no-options>Keine passenden Einträge.</template>
+                      </v-select>
+                      <div class="invalid-feedback" v-bind:class="{'d-block': project_invalid}">Projekt muss ausgefüllt sein.</div>
+                  </div>
+                  <div>
+                      <label for="comment">Bemerkungen</label>
+                      <textarea class="form-control" id="comment" name="comment" placeholder="Bemerkungen" v-model="comment" />
+                  </div>
+                  <div>
+                      <div class="d-flex align-items-center gap-2">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" name="return_trip" id="return_trip" :value="return_trip" v-model="return_trip" @click="toggleReturnTrip()">
+                              <label class="form-check-label" for="return_trip">Hin- und Rückfahrt</label>
+                          </div>
+                          <a data-bs-toggle="collapse" href="#returnTripHelpCollapse">
+                              <svg class="icon-bs icon-16 text-muted"><use href="/svg/bootstrap-icons.svg#question-circle"></use></svg>
+                          </a>
+                      </div>
+                      <div class="collapse" id="returnTripHelpCollapse">
+                          <p class="q-subtitle mt-2 mb-0">
+                              Es werden zwei Fahrten mit halbierter Kilometeranzahl und vertauschtem Start sowie
+                              Ziel angelegt. Getankte Liter werden beim ersten Eintrag hinzugefügt.
+                          </p>
+                      </div>
+                  </div>
+                  <button id="addlogbook" type="button" class="btn q-btn d-inline-flex align-items-center justify-content-center gap-2" @click="addLogbook()">
+                      <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#plus"></use></svg>
+                      Hinzufügen
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <div v-if="isDesktopGrid && logbook.length" class="q-savebar">
+          <div class="q-savebar__inner">
+              <button ref="save_button" type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" :disabled="!getUnsavedLogbook().length" @click="saveData()">
+                  <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#floppy"></use></svg>
+                  Änderungen speichern
+              </button>
+          </div>
+      </div>
+
+      <!-- Mobile: sheets, teleported to <body> — see AccountingSelector's
+           identical comment on why (escaping .q-appbar's stacking context). -->
+      <teleport to="body">
+          <!-- Row action sheet: same three actions the desktop table offers
+               per row (Bearbeiten/Entfernen/Wiederherstellen). -->
+          <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileRowActionsSheet" aria-label="Aktionen" @hidden.bs.offcanvas="onMobileRowActionsHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body" v-if="mobileRowActions.target">
+                  <div class="q-sheet__label">{{ mobileRowActions.target.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</div>
+
+                  <button v-if="canEditLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileEditFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg></span>
+                      <span class="q-row__title">Bearbeiten</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action !== 'destroy' && canRemoveLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row q-row--danger" @click="mobileRemoveFromRowActions">
+                      <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
+                      <span class="q-row__title">Entfernen</span>
+                  </button>
+                  <button v-if="mobileRowActions.target.action === 'destroy' && canRemoveLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileRestoreFromRowActions">
+                      <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#arrow-counterclockwise"></use></svg></span>
+                      <span class="q-row__title">Wiederherstellen</span>
+                  </button>
+              </div>
+          </div>
+
+          <!-- Create/edit sheet: same fields as the desktop .q-grid__form
+               pane, reusing its exact validation/autofill logic against a
+               working-copy draft. Hin- und Rückfahrt only applies to create
+               (mirrors desktop — editing a single existing row never offers
+               a return-trip split). -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="logbookSheet" aria-label="Fahrt eintragen" @hidden.bs.offcanvas="onLogbookSheetHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">{{ sheet.mode === 'create' ? 'Fahrt eintragen' : 'Eintrag bearbeiten' }}</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div>
+                          <label>Fahrzeug</label>
+                          <v-select :options="vehicles" label="registration_identifier" placeholder="Fahrzeug auswählen" :modelValue="getVehicle(sheet.draft.vehicle_id)" :selectOnTab="true" @update:modelValue="setSheetVehicle">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.vehicle_id}">Fahrzeug muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label for="sheet_driven_on">Datum</label>
+                          <input type="date" class="form-control" v-bind:class="{'is-invalid': sheet.errors.driven_on}" id="sheet_driven_on" v-model="sheet.draft.driven_on" required />
+                          <div class="invalid-feedback">Datum muss ausgefüllt sein.</div>
+                      </div>
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="sheet_start_kilometres">Start km</label>
+                              <input type="number" min="0" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.start_kilometres}" id="sheet_start_kilometres" placeholder="131337" v-model="sheet.draft.start_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Start Kilometer müssen mindestens 0 sein.</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="sheet_end_kilometres">Ende km</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.end_kilometres}" id="sheet_end_kilometres" placeholder="131415" v-model="sheet.draft.end_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">Ende Kilometer müssen mindestens 1 sein.</div>
+                          </div>
+                      </div>
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="sheet_driven_kilometres">gefahrene KM</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.driven_kilometres}" id="sheet_driven_kilometres" placeholder="78" v-model="sheet.draft.driven_kilometres" @blur="autofillSheet" />
+                              <div class="invalid-feedback">gefahrene Kilometer müssen mindestens 1 sein.</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="sheet_litres_refuelled">getankte Liter</label>
+                              <input type="number" min="1" step="1" class="form-control" v-bind:class="{'is-invalid': sheet.errors.litres_refuelled}" id="sheet_litres_refuelled" placeholder="54" v-model="sheet.draft.litres_refuelled" />
+                              <div class="invalid-feedback">getankte Liter müssen mindestens 1 sein.</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Start</label>
+                          <v-select :options="placesList" placeholder="Start auswählen oder eingeben" :modelValue="sheet.draft.origin" :selectOnTab="true" :taggable="true" @update:modelValue="setSheetOrigin">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.origin}">Start muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label>Ziel</label>
+                          <v-select :options="placesList" placeholder="Ziel auswählen oder eingeben" :modelValue="sheet.draft.destination" :selectOnTab="true" :taggable="true" @update:modelValue="setSheetDestination">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div class="invalid-feedback" v-bind:class="{'d-block': sheet.errors.destination}">Ziel muss ausgefüllt sein.</div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Projekt auswählen" :modelValue="getProject(sheet.draft.project_id)" :selectOnTab="true" @update:modelValue="setSheetProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                      </div>
+                      <div>
+                          <label for="sheet_comment">Bemerkungen</label>
+                          <textarea class="form-control" id="sheet_comment" placeholder="Bemerkungen" v-model="sheet.draft.comment" />
+                      </div>
+                      <div v-if="sheet.mode === 'create'">
+                          <div class="form-check form-switch m-0">
+                              <input type="checkbox" class="form-check-input" id="sheet_return_trip" :checked="sheet.returnTrip" @click="toggleSheetReturnTrip">
+                              <label class="form-check-label" for="sheet_return_trip">Hin- und Rückfahrt</label>
+                          </div>
+                          <p v-if="sheet.returnTrip" class="q-subtitle mt-2 mb-0">
+                              Es werden zwei Fahrten mit halbierter Kilometeranzahl und vertauschtem Start sowie
+                              Ziel angelegt. Getankte Liter werden beim ersten Eintrag hinzugefügt.
+                          </p>
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applySheet">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#check"></use></svg>
+                          {{ sheet.mode === 'create' ? 'Hinzufügen' : 'Übernehmen' }}
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Filter sheet: the exact desktop filter fields, reused verbatim. -->
+          <div class="offcanvas offcanvas-bottom q-sheet q-form" tabindex="-1" ref="mobileFilterSheet" aria-label="Filter" @hidden.bs.offcanvas="onMobileFilterHidden">
+              <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+              <div class="offcanvas-body">
+                  <div class="q-sheet__label">Filter</div>
+
+                  <div class="d-flex flex-column gap-3 px-2 pb-2">
+                      <div class="d-flex gap-2">
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_start">Start</label>
+                              <input type="date" :max="filter_end" class="form-control" v-bind:class="{'is-invalid': filter_start_errors}" id="mobile_filter_start" :disabled="filter_only_unsaved" v-model="filter_start" />
+                              <div v-if="filter_start_errors" class="invalid-feedback d-block">{{ filter_start_errors[0] }}</div>
+                          </div>
+                          <div class="flex-grow-1">
+                              <label for="mobile_filter_end">Ende</label>
+                              <input type="date" :min="filter_start" class="form-control" v-bind:class="{'is-invalid': filter_end_errors}" id="mobile_filter_end" :disabled="filter_only_unsaved" v-model="filter_end" />
+                              <div v-if="filter_end_errors" class="invalid-feedback d-block">{{ filter_end_errors[0] }}</div>
+                          </div>
+                      </div>
+                      <div>
+                          <label>Fahrzeug</label>
+                          <v-select :options="vehicles" label="registration_identifier" placeholder="Alle Fahrzeuge" :disabled="filter_only_unsaved" :modelValue="filter_vehicle" :selectOnTab="true" @update:modelValue="setFilterVehicle">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_vehicle_errors" class="invalid-feedback d-block">{{ filter_vehicle_errors[0] }}</div>
+                      </div>
+                      <div>
+                          <label>Projekt</label>
+                          <v-select :options="projects" label="name" placeholder="Alle Projekte" :disabled="filter_only_unsaved" :modelValue="filter_project" :selectOnTab="true" @update:modelValue="setFilterProject">
+                              <template v-slot:no-options>Keine passenden Einträge.</template>
+                          </v-select>
+                          <div v-if="filter_project_errors" class="invalid-feedback d-block">{{ filter_project_errors[0] }}</div>
+                      </div>
+                      <div v-if="permissions.includes('logbook.view.own') && permissions.includes('logbook.view.other')" class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" v-bind:class="{'is-invalid': filter_only_own_errors}" id="mobile_filter_only_own" :disabled="filter_only_unsaved" v-model="filter_only_own" @click="toggleFilterOnlyOwn()">
+                          <label class="form-check-label" for="mobile_filter_only_own">Nur eigene</label>
+                          <div v-if="filter_only_own_errors" class="invalid-feedback d-block">{{ filter_only_own_errors[0] }}</div>
+                      </div>
+                      <div class="form-check form-switch m-0">
+                          <input type="checkbox" class="form-check-input" id="mobile_filter_only_unsaved" v-model="filter_only_unsaved" @click="toggleFilterOnlyUnsaved()">
+                          <label class="form-check-label" for="mobile_filter_only_unsaved">Nur ungespeicherte</label>
+                      </div>
+                      <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center justify-content-center gap-2" @click="applyMobileFilter">
+                          <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                          Filtern
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </teleport>
 
   </div>
 </template>
 
 <script>
+    import breakpoint from '../mixins/breakpoint';
+
     const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
     const SAVE_ERROR_MESSAGE = "Beim Speichern der Änderungen traten Probleme auf.";
@@ -452,6 +621,8 @@
 
     export default {
         name: "LogbookSelector",
+
+        mixins: [breakpoint],
 
         data() {
             let today = new Date();
@@ -506,11 +677,17 @@
                 placesList: this.places,
 
                 initialPage: 1,
+                resetTrigger: 0,
                 scrollToNewEntry: false,
 
                 selectAllHover: false,
 
                 dataResult: null,
+
+                // --- Mobile (see resources/js/mixins/breakpoint.js for isDesktopGrid) ---
+                mobileFilterOpen: false,
+                mobileRowActions: { open: false, target: null },
+                sheet: { open: false, mode: 'create', target: null, draft: {}, errors: {} },
             }
         },
 
@@ -563,7 +740,14 @@
                 this.pageOfItems = pageOfItems;
 
                 this.$nextTick(() => {
-                    if(this.scrollToNewEntry) {
+                    if(!this.isDesktopGrid) {
+                        // Same fix as AccountingSelector's identical method —
+                        // scrollIntoView ignores main's padding-top on a
+                        // programmatic scroll, landing the first card under
+                        // the fixed app bar (2026-07-22, user report).
+                        document.querySelector('main')?.scrollTo({top: 0, behavior: 'smooth'});
+                    }
+                    else if(this.scrollToNewEntry) {
                         this.$refs.save_button.scrollIntoView({behavior: 'smooth'});
                     }
                     else {
@@ -579,6 +763,7 @@
                 this.$refs.top_progress.start();
 
                 this.initialPage = 1;
+                this.resetTrigger++;
 
                 if(this.filter_only_unsaved) {
                     this.logbook = this.getUnsavedLogbook();
@@ -698,6 +883,11 @@
                 });
 
                 this.sortArrayByDateVehicleStartKilometres(this.logbook);
+
+                // always reassign to a new array reference (push/sort above
+                // mutate in place) so JwPagination's shallow `items` watcher
+                // reliably notices this filter/fetch completed.
+                this.logbook = [...this.logbook];
             },
 
             saveData() {
@@ -1107,6 +1297,7 @@
                 this.autofillStartKilometresFromBooked(null, this.vehicle);
 
                 this.initialPage = this.getLastPage();
+                this.resetTrigger++;
 
                 this.scrollToNewEntry = true;
             },
@@ -1138,6 +1329,326 @@
 
                 return (logbook.employee_id === employee.id && this.permissions.includes('logbook.delete.own')) ||
                     (logbook.employee_id !== employee.id && this.permissions.includes('logbook.delete.other'));
+            },
+
+            // --- Mobile: sheets (Bootstrap's own offcanvas JS owns show/hide +
+            // backdrop/ESC/focus-trap; these just drive it from Vue state, see
+            // AccountingSelector's identical comment). ---
+            showSheet(ref) {
+                this.$nextTick(() => {
+                    window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).show();
+                });
+            },
+
+            hideSheet(ref) {
+                window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs[ref]).hide();
+            },
+
+            openMobileRowActions(logbook) {
+                this.mobileRowActions = { open: true, target: logbook };
+                this.showSheet('mobileRowActionsSheet');
+            },
+
+            onMobileRowActionsHidden() {
+                this.mobileRowActions.open = false;
+            },
+
+            mobileEditFromRowActions() {
+                let logbook = this.mobileRowActions.target;
+                this.hideSheet('mobileRowActionsSheet');
+                this.$refs.mobileRowActionsSheet.addEventListener('hidden.bs.offcanvas', () => {
+                    this.openEditSheet(logbook);
+                }, { once: true });
+            },
+
+            mobileRemoveFromRowActions() {
+                this.removeLogbook(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            mobileRestoreFromRowActions() {
+                this.restoreLogbook(this.mobileRowActions.target);
+                this.hideSheet('mobileRowActionsSheet');
+            },
+
+            _blankSheetDraft() {
+                let today = new Date();
+
+                return {
+                    driven_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                    start_kilometres: null,
+                    end_kilometres: null,
+                    driven_kilometres: null,
+                    litres_refuelled: null,
+                    origin: null,
+                    destination: null,
+                    vehicle_id: null,
+                    project_id: null,
+                    comment: null,
+                };
+            },
+
+            openCreateSheet() {
+                this.sheet = { open: true, mode: 'create', target: null, draft: this._blankSheetDraft(), errors: {}, returnTrip: false };
+                this.showSheet('logbookSheet');
+            },
+
+            openEditSheet(logbook) {
+                if(!this.canEditLogbook(this.current_employee, logbook)) {
+                    return;
+                }
+
+                this.sheet = {
+                    open: true,
+                    mode: 'edit',
+                    target: logbook,
+                    errors: {},
+                    returnTrip: false,
+                    draft: {
+                        driven_on: this.getDateStringForInputField(logbook.driven_on),
+                        start_kilometres: logbook.start_kilometres,
+                        end_kilometres: logbook.end_kilometres,
+                        driven_kilometres: logbook.driven_kilometres,
+                        litres_refuelled: logbook.litres_refuelled,
+                        origin: logbook.origin,
+                        destination: logbook.destination,
+                        vehicle_id: logbook.vehicle_id,
+                        project_id: logbook.project_id,
+                        comment: logbook.comment,
+                    },
+                };
+                this.showSheet('logbookSheet');
+            },
+
+            onLogbookSheetHidden() {
+                this.sheet.open = false;
+            },
+
+            setSheetVehicle(value) {
+                this.sheet.draft.vehicle_id = value ? value.id : null;
+                this.autofillSheet();
+            },
+
+            setSheetProject(value) {
+                this.sheet.draft.project_id = value ? value.id : null;
+            },
+
+            setSheetOrigin(value) {
+                this.sheet.draft.origin = value;
+            },
+
+            setSheetDestination(value) {
+                this.sheet.draft.destination = value;
+            },
+
+            toggleSheetReturnTrip() {
+                this.sheet.returnTrip = !this.sheet.returnTrip;
+            },
+
+            // Same three sub-cases as autofill() below, just against the sheet's
+            // draft instead of either the flat create-form fields or a live
+            // table row.
+            autofillSheet() {
+                let draft = this.sheet.draft;
+                let startKilometres = Number(draft.start_kilometres);
+                let endKilometres = Number(draft.end_kilometres);
+                let drivenKilometres = Number(draft.driven_kilometres);
+                let vehicle = this.getVehicle(draft.vehicle_id);
+
+                if(vehicle && !startKilometres && !endKilometres && !drivenKilometres) {
+                    let bookedStart = vehicle.current_kilometres ? vehicle.current_kilometres : null;
+                    let highestEnd = this.getHighestVehicleEndKilometres(vehicle);
+                    draft.start_kilometres = (highestEnd && highestEnd > bookedStart) ? highestEnd : bookedStart;
+                }
+                else if(startKilometres && endKilometres && !drivenKilometres) {
+                    draft.driven_kilometres = endKilometres - startKilometres;
+                }
+                else if(startKilometres && drivenKilometres && !endKilometres) {
+                    draft.end_kilometres = startKilometres + drivenKilometres;
+                }
+                else if(endKilometres && drivenKilometres && !startKilometres) {
+                    draft.start_kilometres = endKilometres - drivenKilometres;
+                }
+            },
+
+            applySheet() {
+                let draft = this.sheet.draft;
+                let date = new Date(draft.driven_on);
+                let startKilometres = draft.start_kilometres === null || draft.start_kilometres === '' ? null : Number(draft.start_kilometres);
+                let endKilometres = draft.end_kilometres === null || draft.end_kilometres === '' ? null : Number(draft.end_kilometres);
+                let drivenKilometres = draft.driven_kilometres === null || draft.driven_kilometres === '' ? null : Number(draft.driven_kilometres);
+                let litresRefuelled = draft.litres_refuelled === null || draft.litres_refuelled === '' ? null : Number(draft.litres_refuelled);
+
+                this.sheet.errors = {
+                    driven_on: isNaN(date.getTime()),
+                    start_kilometres: !Number.isInteger(startKilometres) || startKilometres < 0,
+                    end_kilometres: !Number.isInteger(endKilometres) || endKilometres < 1,
+                    driven_kilometres: !Number.isInteger(drivenKilometres) || drivenKilometres < 1,
+                    litres_refuelled: litresRefuelled !== null && (!Number.isInteger(litresRefuelled) || litresRefuelled < 1),
+                    origin: !draft.origin,
+                    destination: !draft.destination,
+                    vehicle_id: !draft.vehicle_id,
+                };
+
+                if(Object.values(this.sheet.errors).some(invalid => invalid)) {
+                    return;
+                }
+
+                if(this.sheet.mode === 'create') {
+                    let legs = [];
+
+                    if(this.sheet.returnTrip) {
+                        // Same split desktop's addLogbook() does: halve the
+                        // distance across two legs, swap origin/destination
+                        // for the return leg, fuel only counted on the first.
+                        let legKilometres = Math.floor(drivenKilometres / 2);
+                        let evenDrivenKilometres = drivenKilometres % 2 === 0;
+
+                        let firstLegEndKilometres = evenDrivenKilometres
+                            ? startKilometres + legKilometres
+                            : startKilometres + legKilometres + 1;
+
+                        legs.push({
+                            start_kilometres: startKilometres,
+                            end_kilometres: firstLegEndKilometres,
+                            driven_kilometres: firstLegEndKilometres - startKilometres,
+                            litres_refuelled: litresRefuelled,
+                            origin: draft.origin,
+                            destination: draft.destination,
+                        });
+                        legs.push({
+                            start_kilometres: firstLegEndKilometres,
+                            end_kilometres: endKilometres,
+                            driven_kilometres: legKilometres,
+                            litres_refuelled: null,
+                            origin: draft.destination,
+                            destination: draft.origin,
+                        });
+                    }
+                    else {
+                        legs.push({
+                            start_kilometres: startKilometres,
+                            end_kilometres: endKilometres,
+                            driven_kilometres: drivenKilometres,
+                            litres_refuelled: litresRefuelled,
+                            origin: draft.origin,
+                            destination: draft.destination,
+                        });
+                    }
+
+                    legs.forEach(leg => {
+                        this.logbook.push({
+                            action: 'store', action_old: 'store', errors: null,
+                            selected: false, show_details: false, hover: false, edit: null, id: null,
+                            driven_on: date,
+                            start_kilometres: leg.start_kilometres,
+                            end_kilometres: leg.end_kilometres,
+                            driven_kilometres: leg.driven_kilometres,
+                            litres_refuelled: leg.litres_refuelled,
+                            origin: leg.origin,
+                            destination: leg.destination,
+                            vehicle_id: draft.vehicle_id,
+                            project_id: draft.project_id,
+                            employee_id: null,
+                            comment: draft.comment,
+                        });
+                    });
+
+                    this.addPlaces([draft.origin, draft.destination]);
+                    this.logbook = [...this.logbook];
+                    this.initialPage = this.getLastPage();
+                    this.resetTrigger++;
+                }
+                else {
+                    let logbook = this.sheet.target;
+
+                    logbook.driven_on = date;
+                    logbook.start_kilometres = startKilometres;
+                    logbook.end_kilometres = endKilometres;
+                    logbook.driven_kilometres = drivenKilometres;
+                    logbook.litres_refuelled = litresRefuelled;
+                    logbook.origin = draft.origin;
+                    logbook.destination = draft.destination;
+                    logbook.vehicle_id = draft.vehicle_id;
+                    logbook.project_id = draft.project_id;
+                    logbook.comment = draft.comment;
+
+                    this.setChangedLogbookStatus(logbook);
+                }
+
+                this.hideSheet('logbookSheet');
+            },
+
+            // --- Mobile: filter sheet + active-filter chip row ---
+            openMobileFilter() {
+                this.mobileFilterOpen = true;
+                this.showSheet('mobileFilterSheet');
+            },
+
+            onMobileFilterHidden() {
+                this.mobileFilterOpen = false;
+            },
+
+            applyMobileFilter() {
+                this.filterData();
+                this.hideSheet('mobileFilterSheet');
+            },
+
+            activeFilterChips() {
+                if(this.filter_only_unsaved) {
+                    return [{ key: 'only_unsaved', label: 'Nur ungespeicherte' }];
+                }
+
+                let chips = [];
+
+                if(this.filter_start || this.filter_end) {
+                    let format = value => new Date(value).toLocaleDateString('de', { day: '2-digit', month: '2-digit' });
+                    let label = this.filter_start && this.filter_end ? format(this.filter_start) + ' – ' + format(this.filter_end)
+                        : this.filter_start ? 'ab ' + format(this.filter_start)
+                        : 'bis ' + format(this.filter_end);
+
+                    chips.push({ key: 'dates', label: label });
+                }
+                if(this.filter_vehicle) {
+                    chips.push({ key: 'vehicle', label: this.filter_vehicle.registration_identifier });
+                }
+                if(this.filter_project) {
+                    chips.push({ key: 'project', label: this.filter_project.name });
+                }
+                if(this.filter_only_own) {
+                    chips.push({
+                        key: 'only_own',
+                        label: 'Nur eigene',
+                        removable: this.permissions.includes('logbook.view.other')
+                    });
+                }
+
+                return chips;
+            },
+
+            clearFilterChip(key) {
+                switch(key) {
+                    case 'dates':
+                        this.filter_start = null;
+                        this.filter_end = null;
+                        break;
+                    case 'vehicle':
+                        this.filter_vehicle = null;
+                        break;
+                    case 'project':
+                        this.filter_project = null;
+                        break;
+                    case 'only_own':
+                        if(this.permissions.includes('logbook.view.other')) {
+                            this.filter_only_own = false;
+                        }
+                        break;
+                    case 'only_unsaved':
+                        this.filter_only_unsaved = false;
+                        break;
+                }
+
+                this.filterData();
             },
 
             removeSelectedLogbook() {
@@ -1564,6 +2075,12 @@
             getEmployeeName(employeeId) {
                 let employee = this.employees.find(employee => employee.id === employeeId);
                 return employee ? employee.name : this.current_employee.name;
+            },
+
+            // Mobile card list only — see AccountingSelector's identical method.
+            getEmployeeInitials(employeeId) {
+                let employee = this.employees.find(employee => employee.id === employeeId);
+                return employee ? employee.avatar.initials : this.current_employee.avatar.initials;
             },
 
             getDateStringForInputField(date) {

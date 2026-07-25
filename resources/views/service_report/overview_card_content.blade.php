@@ -1,157 +1,153 @@
-<div class="overview-card rounded border-status @if($serviceReport->isNew()) border-primary @elseif($serviceReport->isSigned()) border-warning @else border-success @endif">
-    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
+<div class="q-row">
+    <a class="stretched-link outline-none" href="{{ route('service-reports.show', $serviceReport) }}"></a>
 
-        <div class="mw-100 flex-grow-1 h-100 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('service-reports.show', $serviceReport) }}"></a>
-            <div class="mw-100 text-truncate">
-                @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject'){{ $serviceReport->project->name }} @endunless#{{ $serviceReport->number }}
-                    ({{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on) }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
-                        <svg class="icon icon-16 mx-1">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-right"></use>
-                        </svg>
-                        {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on) }}@endif)
-            </div>
-            <div class="mw-100 text-muted">
-                <div class="mw-100 d-inline-flex align-items-center">
-                    <svg class="icon icon-16 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#clock"></use>
-                    </svg>
-                    {{ Number::toLocal($serviceReport->services_sum_hours) }}
-                    <svg class="icon icon-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#truck"></use>
-                    </svg>
+    <span class="q-avatar">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>
+    </span>
+
+    <div class="q-row__main">
+        <div class="q-row__title q-row__title--numbered">
+            @unless(isset($secondaryInformation) && $secondaryInformation == 'withoutProject')
+                <span class="q-row__title-main text-truncate">{{ $serviceReport->project->name }}</span>
+                <span class="q-row__sub q-mono flex-shrink-0">#{{ $serviceReport->number }}</span>
+            @else
+                <span class="q-mono">#{{ $serviceReport->number }}</span>
+            @endunless
+        </div>
+
+        {{-- Desktop: status + date(-range) + technician + hours + km, unchanged. --}}
+        <div class="q-meta d-none d-md-flex">
+            <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on)->format('d.m.Y') }}@if(\Carbon\Carbon::parse($serviceReport->services_min_provided_on)->ne(\Carbon\Carbon::parse($serviceReport->services_max_provided_on)))
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#arrow-right"></use></svg>
+                    {{ \Carbon\Carbon::parse($serviceReport->services_max_provided_on)->format('d.m.Y') }}@endif
+            </span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#person"></use></svg>
+                <span class="text-truncate">{{ $serviceReport->employee->person->name }}</span>
+            </span>
+
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
+                {{ Number::toLocal($serviceReport->services_sum_hours) }}
+            </span>
+
+            @if($serviceReport->services_sum_kilometres > 0)
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg>
                     {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
-                    @switch($serviceReport->status)
-                        @case('new')
-                            @if($serviceReport->signatureRequest)
-                                <svg class="icon icon-16 ml-2 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                                </svg>
-                                {{ $serviceReport->signatureRequest->created_at }}
-                            @else
-                                <svg class="icon icon-16 ml-2 mr-1">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                                </svg>
-                                {{ $serviceReport->created_at }}
-                            @endif
-                            @break
-                        @case('signed')
-                            <svg class="icon icon-16 ml-2 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            {{ $serviceReport->signature()->created_at }}
-                        @break
-                        @case('finished')
-                            <svg class="icon icon-16 ml-2 mr-1">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                            </svg>
-                            {{ $serviceReport->updated_at }}
-                            @if($serviceReport->activities->last())
-                                ({{ Str::upper($serviceReport->activities->last()->causer->username) }})
-                            @endif
-                        @break
-                    @endswitch
-                    <svg class="icon icon-16 ml-2 mr-1">
-                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#user"></use>
-                    </svg>
-                    <span class="mw-100 text-truncate">
-                        {{ $serviceReport->employee->person->name }}
-                    </span>
-                </div>
-            </div>
+                </span>
+            @endif
         </div>
 
-        <div class="d-none d-md-block ml-2">
-            <div class="dropdown d-inline">
-                <button class="btn btn-lg btn-link dropdown-toggle-vertical-points text-muted" type="button" id="serviceReportOverviewDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        {{-- Mobile: technician/"who" chip drops (same pattern as task/
+             person/memo). Date also drops the "→ end date" range extension
+             here specifically (2026-07-21, user: "three chip rows is a bit
+             much" on a real device) — the two-date-plus-arrow chip was wide
+             enough to push status+date+hours+km past one line unpredictably
+             (flex-wrap fills greedily, so it can strand a single chip on
+             its own line rather than balancing); a single start date is
+             enough to orient at a glance, full range is one tap away. --}}
+        <div class="q-meta d-md-none">
+            <span class="q-status q-status--{{ $serviceReport->status }}">{{ $serviceReport->status_label }}</span>
 
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="serviceReportOverviewDropdown">
-                    @unless($serviceReport->isFinished())
-                        @can('approve', $serviceReport)
-                            <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#check-square"></use>
-                                </svg>
-                                Erledigen
-                            </a>
-                        @endcan
-                    @endunless
-                    @can('update', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#edit"></use>
-                            </svg>
-                            Bearbeiten
-                        </a>
-                    @endcan
-                    @can('email', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                            </svg>
-                            Email senden
-                        </a>
-                    @endcan
-                    @can('createPdf', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                            </svg>
-                            PDF erstellen
-                        </a>
-                    @endcan
-                    <a class="dropdown-item d-inline-flex align-items-center" href="#">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#star"></use>
-                        </svg>
-                        Favorisieren
-                    </a>
-                    @if(auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport))
-                        <div class="dropdown-divider"></div>
-                    @endif
-                    @can('sign', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#pen-tool"></use>
-                            </svg>
-                            Unterschreiben lassen
-                        </a>
-                    @endcan
-                    @can('emailSignatureRequest', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#mail"></use>
-                            </svg>
-                            Unterschrift Anfrage senden
-                        </a>
-                    @endcan
-                    @can('emailDownloadRequest', $serviceReport)
-                        <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
-                            <svg class="icon icon-16 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#download"></use>
-                            </svg>
-                            Download Link senden
-                        </a>
-                    @endcan
-                    @if(auth()->user()->can('delete', $serviceReport) && (auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport)))
-                        <div class="dropdown-divider"></div>
-                    @endif
-                    @can('delete', $serviceReport)
-                        <form action="{{ route('service-reports.destroy', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
-                            @csrf
-                            @method('DELETE')
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
+                {{ \Carbon\Carbon::parse($serviceReport->services_min_provided_on)->format('d.m.Y') }}
+            </span>
 
-                            <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                                </svg>
-                                Entfernen
-                            </button>
-                        </form>
-                    @endcan
-                </div>
-            </div>
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg>
+                {{ Number::toLocal($serviceReport->services_sum_hours) }}
+            </span>
+
+            @if($serviceReport->services_sum_kilometres > 0)
+                <span class="q-chip">
+                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg>
+                    {{ Number::toLocal($serviceReport->services_sum_kilometres) }}
+                </span>
+            @endif
         </div>
-
     </div>
+
+    {{-- kebab: same actions as before, lifted above the row's stretched-link --}}
+    <div class="dropdown">
+        <button class="q-kebab" type="button" id="serviceReportOverviewDropdown-{{ $serviceReport->id }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="serviceReportOverviewDropdown-{{ $serviceReport->id }}">
+            @unless($serviceReport->isFinished())
+                @can('approve', $serviceReport)
+                    <a class="dropdown-item dropdown-item-success d-inline-flex align-items-center" href="{{ route('service-reports.finish', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                        <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>
+                        Erledigen
+                    </a>
+                @endcan
+            @endunless
+            @can('update', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.edit', $serviceReport) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                    Bearbeiten
+                </a>
+            @endcan
+            @can('email', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                    Email senden
+                </a>
+            @endcan
+            @can('createPdf', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.download', $serviceReport) }}" target="_blank">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#printer"></use></svg>
+                    PDF erstellen
+                </a>
+            @endcan
+            <a class="dropdown-item d-inline-flex align-items-center" href="#">
+                <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#star"></use></svg>
+                Favorisieren
+            </a>
+            @if(auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport))
+                <div class="dropdown-divider"></div>
+            @endif
+            @can('sign', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.sign', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg>
+                    Unterschreiben lassen
+                </a>
+            @endcan
+            @can('emailSignatureRequest', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-signature-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg>
+                    Unterschrift Anfrage senden
+                </a>
+            @endcan
+            @can('emailDownloadRequest', $serviceReport)
+                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('service-reports.email-download-request', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}">
+                    <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#download"></use></svg>
+                    Download Link senden
+                </a>
+            @endcan
+            @if(auth()->user()->can('delete', $serviceReport) && (auth()->user()->can('sign', $serviceReport) || auth()->user()->can('emailSignatureRequest', $serviceReport) || auth()->user()->can('emailDownloadRequest', $serviceReport)))
+                <div class="dropdown-divider"></div>
+            @endif
+            @can('delete', $serviceReport)
+                <form action="{{ route('service-reports.destroy', ['service_report' => $serviceReport, 'redirect' => $actionRedirect ?? 'index']) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="dropdown-item dropdown-item-danger d-inline-flex align-items-center">
+                        <svg class="icon-bs icon-16 me-2"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+                        Entfernen
+                    </button>
+                </form>
+            @endcan
+        </div>
+    </div>
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

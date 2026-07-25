@@ -15,7 +15,7 @@ class AccountingIndexRequest extends FormRequest
             'end' => 'sometimes|date',
             'project_id' => 'sometimes|exists:projects,id',
             'service_id' => 'sometimes|exists:services,id',
-            'employee_id' => 'sometimes|exists:employees,id',
+            'employee_id' => 'sometimes|exists:employees,person_id',
             'only_own' => 'sometimes|accepted',
         ];
 

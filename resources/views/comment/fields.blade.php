@@ -2,76 +2,45 @@
 
 <input type="hidden" id="task_id" name="task_id" value="{{ $task->id }}">
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Kommentar
-        </p>
-        <p class="text-muted">
-            Kommentar zur Aufgabe.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Kommentar
+        <div class="q-form-section__desc">Kommentar zur Aufgabe.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <label for="comment">
-                Bemerkungen
-            </label>
-            <markdown-editor name="comment" placeholder="Kommentar"  value="{{ old('comment', optional($comment)->comment) }}" v-cloak></markdown-editor>
-            <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
-                </svg>
-                Hilfe zu Markdown
-            </a>
-            <div class="invalid-feedback @error('comment') d-block @enderror">
-                @error('comment')
+    <div class="q-form-section__body">
+        <markdown-editor name="comment" placeholder="Kommentar" value="{{ old('comment', optional($comment)->comment) }}" :employees="{{ $employees }}" v-cloak></markdown-editor>
+        <a class="q-link--quiet d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
+            <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
+            Hilfe zu Markdown
+        </a>
+        <div class="invalid-feedback @error('comment') d-block @enderror">
+            @error('comment')
                 {{ $message }}
-                @enderror
-            </div>
+            @enderror
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-            </svg>
-            Anhänge
-        </p>
-        <p class="text-muted">
-            Dem Kommentar zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
-        </p>
-        <p class="text-muted">
-            Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anhänge
+        <div class="q-form-section__desc">Dem Kommentar zugeordnete Anhänge (Bildformate oder PDF). Der Dateiname neu hinzugefügter Anhänge kann durch Markieren und Überschreiben geändert werden.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <label>
-                Anhänge
-            </label>
-            <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
-            <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
-                @error('remove_attachments')
-                    {{ $message }}
-                @enderror
-                @error('remove_attachments.*')
-                    {{ $message }}
-                @enderror
-                @error('new_attachments')
-                    {{ $message }}
-                @enderror
-                @error('new_attachments.*')
-                    {{ $message }}
-                @enderror
-            </div>
+    <div class="q-form-section__body">
+        <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+        <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
+            @error('remove_attachments')
+                {{ $message }}
+            @enderror
+            @error('remove_attachments.*')
+                {{ $message }}
+            @enderror
+            @error('new_attachments')
+                {{ $message }}
+            @enderror
+            @error('new_attachments.*')
+                {{ $message }}
+            @enderror
         </div>
     </div>
 </div>

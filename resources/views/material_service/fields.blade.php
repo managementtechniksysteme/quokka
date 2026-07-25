@@ -1,2 +1,1 @@
-@component('service.fields', [ 'service' => $materialService ])
-@endcomponent
+@include('service.fields', ['service' => $materialService])

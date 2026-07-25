@@ -1,75 +1,98 @@
 @extends('layouts.app')
 
+{{-- Mobile: help topics are reached from help/index's own list (q-row items),
+     same list→detail relationship as any other module — promote the topic's
+     own title into the app bar (back chevron to help.index) instead of the
+     generic "Hilfe" section label, no kebab since there are no actions
+     (2026-07-22, user request). --}}
+@section('mobile-detail-bar')
+    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+    </a>
+    <span class="q-appbar__title">Filter</span>
+@endsection
+
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
-            @include('help.breadcrumb')
+    <div class="q-container q-container--narrow">
+        @include('help.breadcrumb')
 
-            <h3>
-                Hilfe
-                <small class="text-muted">Filter</small>
-            </h3>
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Hilfe</div>
+                    <h1 class="q-title">Filter</h1>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="container my-4">
+        <div class="mt-2 mt-md-4">
         <a id="top"></a>
 
-        <a href="#allgemeines"># Allgemeines</a><br />
+        {{-- q-card__body's own $q-pad token, not an ad-hoc p-3 utility — the
+             mismatched padding read as extra bottom space on mobile
+             (2026-07-22, user). --}}
+        <div class="q-card mb-4">
+            <div class="q-card__body d-flex flex-wrap gap-2">
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#allgemeines">Allgemeines</a>
         @can('viewAny', \App\Models\Address::class)
-        <a href="#adressen"># Adressen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#adressen">Adressen</a>
         @endcan
         @can('viewAny', \App\Models\Memo::class)
-        <a href="#aktenvermerke"># Aktenvermerke</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#aktenvermerke">Aktenvermerke</a>
         @endcan
         @can('viewAny', \App\Models\Task::class)
-        <a href="#aufgaben"># Aufgaben</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#aufgaben">Aufgaben</a>
         @endcan
         @can('viewAny', \App\Models\ConstructionReport::class)
-        <a href="#bautagesberichte"># Bautagesberichte</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#bautagesberichte">Bautagesberichte</a>
         @endcan
         @can('viewAny', \App\Models\Vehicle::class)
-        <a href="#fahrzeuge"># Fahrzeuge</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#fahrzeuge">Fahrzeuge</a>
         @endcan
         @can('viewAny', \App\Models\FinanceGroups::class)
-        <a href="#finanzen"># Finanzen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#finanzen">Finanzen</a>
         @endcan
         @can('viewAny', \App\Models\Company::class)
-        <a href="#firmen"># Firmen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#firmen">Firmen</a>
         @endcan
         @if(auth()->user()->can('viewAny', \App\Models\MaterialService::class) || auth()->user()->can('viewAny', \App\Models\WageService::class))
-        <a href="#leistungen"># Leistungen</a><br />
-        @endcan
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#leistungen">Leistungen</a>
+        @endif
         @can('viewAny', \App\Models\DeliveryNote::class)
-        <a href="#lieferscheine"># Lieferscheine</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#lieferscheine">Lieferscheine</a>
         @endcan
         @can('viewAny', \App\Models\Employee::class)
-        <a href="#mitarbeiter"># Mitarbeiter</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#mitarbeiter">Mitarbeiter</a>
         @endcan
         @can('viewAny', \App\Models\Note::class)
-        <a href="#notizen"># Notizen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#notizen">Notizen</a>
         @endcan
         @can('viewAny', \App\Models\Person::class)
-        <a href="#personen"># Personen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#personen">Personen</a>
         @endcan
         @can('viewAny', \App\Models\Project::class)
-        <a href="#projekte"># Projekte</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#projekte">Projekte</a>
         @endcan
         @can('viewAny', \App\Models\InspectionReport::class)
-        <a href="#pruefberichte"># Prüfberichte</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#pruefberichte">Prüfberichte</a>
         @endcan
         @can('viewAny', \App\Models\FlowMeterInspectionReport::class)
-            <a href="#pruefberichte_fuer_durchflussmesseinrichtungen"># Prüfberichte für Durchflussmesseinrichtungen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#pruefberichte_fuer_durchflussmesseinrichtungen">Prüfberichte Durchfluss</a>
         @endcan
         @can('viewAny', \App\Models\AdditionsReport::class)
-        <a href="#regieberichte"># Regieberichte</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#regieberichte">Regieberichte</a>
         @endcan
         @can('viewAny', \Spatie\Permission\Models\Role::class)
-        <a href="#rollen"># Rollen</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#rollen">Rollen</a>
         @endcan
         @can('viewAny', \App\Models\ServiceReport::class)
-        <a href="#serviceberichte"># Serviceberichte</a><br />
+            <a class="btn btn-sm q-btn d-inline-flex align-items-center justify-content-center" href="#serviceberichte">Serviceberichte</a>
         @endcan
+            </div>
+        </div>
 
         <a id="allgemeines"></a>
         <h4 class="mt-4">Allgemeines</h4>
@@ -82,41 +105,14 @@
         Die verwendbaren Begriffe werden im Folgenden beschrieben.
         @endmarkdown
 
-        <div class="alert alert-info">
-            <div class="d-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                <b>Hinweis</b>
-            </div>
-
-            <p class="m-0">
-                Alle Suchbegriffe, einem speziellen Begriff entsprechen, werden durch eine logische <em>UND</em> Verknüpfung
-                ausgewertet. Sind alle Schlagwörter in einem Attribut vorhanden, wird das jeweilige Objekt in die
-                Ergebnisliste aufgenommen. Durch Anführen eines speziellen Suchbegriffs mit einem Rufzeichen (!) wird
-                der Suchbegriff negiert.
-            </p>
-            <p  class="m-0">
-                Die Suche in Standardattributen (siehe folgender Hinweis) wird ebenfalls durch
-                eine logische <em>UND</em> Verknüpfung angehängt.
-            </p>
+        <div class="q-banner q-banner--info mb-3">
+            <svg class="icon-bs icon-16 flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <div>Alle Suchbegriffe, die einem speziellen Begriff entsprechen, werden durch eine logische <em>UND</em> Verknüpfung ausgewertet. Durch Anführen eines speziellen Suchbegriffs mit einem Rufzeichen (!) wird der Suchbegriff negiert. Die Suche in Standardattributen wird ebenfalls durch eine logische <em>UND</em> Verknüpfung angehängt.</div>
         </div>
 
-        <div class="alert alert-info">
-            <div class="d-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                <b>Hinweis</b>
-            </div>
-
-            <p class="m-0">
-                Alle Suchbegriffe, die nicht einem speziellen Begriff entsprechen, werden in den kontextabhängigen
-                Standardattributen gesucht. Hierbei wird eine logische <em>ODER</em> Verknüpfung verwendet. Sind alle
-                Schlagwörter in einem Attribut vorhanden, wird das jeweilige Objekt in die Ergebnisliste aufgenommen.
-                Groß- und Kleinschreibung wird bei der Suche ignoriert.
-            </p>
-
+        <div class="q-banner q-banner--info mb-3">
+            <svg class="icon-bs icon-16 flex-shrink-0"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <div>Alle Suchbegriffe, die nicht einem speziellen Begriff entsprechen, werden in den kontextabhängigen Standardattributen gesucht. Hierbei wird eine logische <em>ODER</em> Verknüpfung verwendet. Groß- und Kleinschreibung wird bei der Suche ignoriert.</div>
         </div>
 
         @can('viewAny', \App\Models\Address::class)
@@ -137,14 +133,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             MTS
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Adressen, in denen sich der Begriff `MTS` in Name, Straße und Nummer, Postleizahl oder Ort befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -208,14 +204,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Besprechung zur Inbetriebnahme
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dierser
             Reihenfolge im Titel befinden.
@@ -227,14 +223,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Besprechung zur Inbetriebnahme von:mst "an:Angelika Steiner"
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aktenvermerke, in denen sich die Begriffe `Besprechung`, `zur` und `Inbetriebnahme` in dieser
             Reiehnfolge im Titel befinden, der Verfasser den {{ config('app.name') }} Benutzernamen `mst` hat und der Empfänger den Namen
@@ -242,14 +238,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" !hat:folgetermin
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aktenvermerke, die dem Projekt mit dem Namen `MTS000000 [Intern]` zugeordnet sind und keine
             Folgetermine in der Zukunft aufweisen.
@@ -321,14 +317,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Material Einkauf
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aufgaben, in denen sich die Begriffe `Material` und `Einkauf` in dieser Reihenfolge im Namen befinden.
             Hierbei können andere Begriffe vor, zwischen oder nach den Suchbegriffen vorhanden sein.
@@ -339,14 +335,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Material Einkauf v:mst b:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aufgaben, in denen sich die Begriffe Material und Einkauf in dieser Reihenfolge im Namen befinden,
             der verantwortliche Mitarbeiter den {{ config('app.name') }} Benutzernamen `mst` hat und der Mitarbeiter mit dem {{ config('app.name') }}
@@ -354,14 +350,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             ist:überfällig !ist:privat
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Aufgaben, die ein Fälligkeitsdatum in der Vergangenheit haben und nicht als `privat` markiert sind.
             @endmarkdown
@@ -416,14 +412,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Bautagesberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -434,14 +430,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" t:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Bautagesberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
@@ -466,14 +462,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             MTS1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Fahrzeuge, die in Hersteller, Modell,  Kennzeichen oder Kommentar den Begriff `MTS1` aufweisen.
 
@@ -499,14 +495,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             ENZ100101
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Finanzgruppen und Einträge, in denen sich die Begriff `ENZ100101` im Namen befindet.
             Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
@@ -534,14 +530,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Management Technik Systeme
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Firmen, in denen sich die Begriff `Management`, `Technik` und `Systeme` in dieser Reihenfolge in
             Name oder Name 2 befinden.
@@ -568,14 +564,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Techniker
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Leistungen, die im Namen den Begriff `Techniker` aufweisen.
 
@@ -621,14 +617,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             101595
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Lieferscheine, welche in der Numbmer (Titel) die Zeichenfolge `101595` aufweisen oder sich der Begriff `101595` in den Bemerkungen befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -638,14 +634,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" m:sst
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Lieferscheine, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `sst` verfasst wurden.
@@ -671,14 +667,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             name:Steiner
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Mitarbeiter, die im Namen den Begriff `Steiner` aufweisen.
             Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
@@ -689,14 +685,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             benutzer: mst
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Mitarbeiter, die den {{ config('app.name') }} Benutzernamen `mst` besitzen.
 
@@ -721,14 +717,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Telefonnotiz
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Notizen, die im Titel oder Kommentar den Begriff `Telefonnotiz` aufweisen.
             Hierbei können andere Begriffe vor oder nach den Suchbegriffen vorhanden sein.
@@ -759,14 +755,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Martin Steiner
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Personen, in denen sich die Begriffe `Martin` und `Steiner` in dieser Reihenfolge im Namen befinden.
             Hierbei können andere Begriffe vor, zwischen oder nach den Suchbegriffen vorhanden sein.
@@ -777,14 +773,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "f:MTS Management Technik Systeme GmbH & CO KG"
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Personen, die der Firma mit dem Namen `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
             @endmarkdown
@@ -816,14 +812,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             MTS000000
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Projekte, in denen sich der Begriff `MTS000000` im Namen befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -834,14 +830,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Service "firma:MTS Management Technik Systeme GmbH & CO KG"
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Projekte, in denen sich der Begriff `Service` im Namen befindet und die der Firma mit dem Namen
             `MTS Management Technik Systeme GmbH & CO KG` zugeordnet sind.
@@ -883,14 +879,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Prüfberichte, bei welchen sich der Begriff `1` in der Anlagennummer oder im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -901,14 +897,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" t:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
@@ -951,14 +947,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Prüfberichte, bei welchen sich der Begriff `1` in der Anlage, Messstelle oder Kommentaren befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -969,14 +965,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" t:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Prüfberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
@@ -1031,14 +1027,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Regieberichte, welche die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -1049,14 +1045,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" t:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Regieberichte, die dem Projekt `MTS000000 [Intern]` zugeordnet sind und vom Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` verfasst wurden.
@@ -1078,14 +1074,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             Administrator
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Rollen, die im Namen den Begriff `Administrator` aufweisen.
 
@@ -1132,14 +1128,14 @@
         **Beispiele**
         @endmarkdown
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             1
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Serviceberichte, die die Nummer `1` besitzen oder sich der Begriff `1` im Kurzbericht befindet.
             Hierbei können andere Begriffe vor oder nach dem Suchbegriff vorhanden sein.
@@ -1150,14 +1146,14 @@
             @endmarkdown
         </div>
 
-        <div class="markdown-example-input bg-light border border-bottom-0 p-2">
+        <div class="q-example-input">
             @markdown
             ```
             "p:MTS000000 [Intern]" t:aw
             ```
             @endmarkdown
         </div>
-        <div class="markdown-example-output border mb-2 p-2">
+        <div class="q-example-output">
             @markdown
             Filtert Serviceberichte, die dem Projekt `MTS000000 [Intern]` und dem Mitarbeiter mit dem {{ config('app.name') }}
             Benutzernamen `aw` zugeordnet sind.
@@ -1165,5 +1161,6 @@
         </div>
         @endcan
 
+        </div>
     </div>
 @endsection

@@ -42,6 +42,7 @@ class AdditionsReportController extends Controller
             'showSignatureRequest' => 'sign',
             'sign' => 'sign',
             'approve' => 'approve',
+            'finish' => 'approve',
         ]);
     }
 
@@ -78,8 +79,8 @@ class AdditionsReportController extends Controller
 
         $projects = Project::order()->get();
 
-        $currentInvolvedEmployees = collect([Auth::user()->employee->person]);
-        $employees = Person::has('employee')->order()->get();
+        $currentInvolvedEmployees = collect([Auth::user()->employee->person->load('employee.user')]);
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $people = Person::order()->get();
 
@@ -151,7 +152,8 @@ class AdditionsReportController extends Controller
             ->load('activities.causer');
 
         return view('additions_report.show')
-            ->with(compact('additionsReport'));
+            ->with(compact('additionsReport'))
+            ->with('signature', $additionsReport->signature());
     }
 
     public function edit(AdditionsReport $additionsReport)
@@ -159,8 +161,8 @@ class AdditionsReportController extends Controller
         $currentProject = $additionsReport->project;
         $projects = Project::order()->get();
 
-        $currentInvolvedEmployees = Person::order()->find($additionsReport->involvedEmployees->pluck('person_id'));
-        $employees = Person::has('employee')->order()->get();
+        $currentInvolvedEmployees = Person::order()->with('employee.user')->find($additionsReport->involvedEmployees->pluck('person_id'));
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentPresentPeople = $additionsReport->presentPeople ?? null;
         $people = Person::order()->get();

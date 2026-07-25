@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         if (!Schema::hasColumn('application_settings', 'kilometre_costs')) {
             Schema::table('application_settings', function (Blueprint $table) {
-                $table->unsignedDouble('kilometre_costs')->nullable()->default(null);
+                $table->double('kilometre_costs')->nullable()->default(null);
             });
         }
     }

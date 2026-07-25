@@ -1,194 +1,100 @@
 @extends('company.show')
 
 @section('tab')
-    @unless ($company->projects->isEmpty() && !Request::get('search'))
-        @can('create', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                </svg>
-                Projekt anlegen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\Project::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Projektliste erstellen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\Task::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank"s>
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Aufgabenliste erstellen
-            </a>
-        @endcan
-        @can('downloadList', \App\Models\ServiceReport::class)
-            <a class="btn btn-outline-secondary d-inline-flex align-items-center" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"s>
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#printer"></use>
-                </svg>
-                Serviceberichtliste erstellen
-            </a>
-        @endcan
+    @if ($company->projects->isEmpty())
+        <div class="q-empty-state">
+            <svg class="q-empty-icon"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>
+            <p>Dieser Firma sind noch keine Projekte zugeordnet.</p>
+            @can('create', \App\Models\Project::class)
+                <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                    Projekt anlegen
+                </a>
+            @endcan
+        </div>
+    @else
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <h2 class="q-subhead">Projekte</h2>
 
-        <div class="row mt-4">
+            <div class="ms-auto d-flex align-items-center gap-2">
+                @can('create', \App\Models\Project::class)
+                    <a class="btn q-btn d-inline-flex align-items-center gap-2" href="{{ route('projects.create', ['company' => $company->id]) }}">
+                        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#plus"></use></svg>
+                        <span class="d-none d-md-inline">Projekt anlegen</span>
+                        <span class="d-inline d-md-none">Projekt</span>
+                    </a>
+                @endcan
 
-            <div class="col col-lg-6">
-
-                <form action="{{ route('companies.show', $company) }}" method="get">
-                    @if(request()->tab)
-                        <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                    @endif
-                    @if(request()->sort)
-                        <input type="hidden" id="sort" name="sort" value="{{ request()->sort }}">
-                    @endif
-
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="search" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Projekte suchen" autocomplete="off" />
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" type="submit">
-                                <svg class="icon icon-16">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#search"></use>
-                                </svg>
-                            </button>
-                            @if (Request::get('search'))
-                                <a class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?tab=' . Request::get('tab') . '&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?tab=' . Request::get('tab') }}" @endif>
-                                    <svg class="icon icon-16">
-                                        <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#x-circle"></use>
-                                    </svg>
-                                </a>
-                            @endif
+                @if(Auth::user()->can('downloadList', \App\Models\Project::class) || Auth::user()->can('downloadList', \App\Models\Task::class) || Auth::user()->can('downloadList', \App\Models\ServiceReport::class))
+                    {{-- Desktop: unchanged dropdown. --}}
+                    <div class="dropdown d-none d-md-block">
+                        <button class="q-kebab" type="button" id="projectsListDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Listen erstellen">
+                            <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            @can('downloadList', \App\Models\Project::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg>Projektliste</a>
+                            @endcan
+                            @can('downloadList', \App\Models\Task::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg>Aufgabenliste</a>
+                            @endcan
+                            @can('downloadList', \App\Models\ServiceReport::class)
+                                <a class="dropdown-item d-inline-flex align-items-center gap-2" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg>Serviceberichtliste</a>
+                            @endcan
                         </div>
                     </div>
 
-                </form>
-
-            </div>
-
-            <div class="col-auto ml-auto">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary btn-block dropdown-toggle d-flex align-items-center justify-content-center" type="button" id="sortOrderDropdown" data-toggle="dropdown">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                        </svg>
-                        Sortierung
+                    {{-- Mobile: a sheet, same as every other page-level kebab
+                         menu (2026-07-21, user: "The kebab next to that
+                         button should also use a sheet"). --}}
+                    <button class="q-kebab d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#projectsListSheet" aria-controls="projectsListSheet" aria-label="Listen erstellen">
+                        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#three-dots-vertical"></use></svg>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right w-100">
-                        <form action="{{ route('companies.show', $company) }}" method="get">
-                            @if(request()->tab)
-                                <input type="hidden" id="tab" name="tab" value="{{ request()->tab }}">
-                            @endif
-                            @if(request()->search)
-                                <input type="hidden" id="search" name="search" value="{{ request()->search }}">
-                            @endif
-
-                            <button type="submit" name="sort" value="name-asc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Name
-                            </button>
-                            <button type="submit" name="sort" value="name-desc" class="dropdown-item btn-block d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Name
-                            </button>
-
-                            <button type="submit" name="sort" value="wage-costs-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Lohnkosten
-                            </button>
-                            <button type="submit" name="sort" value="wage-costs-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Lohnkosten
-                            </button>
-
-                            <button type="submit" name="sort" value="material-costs-asc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                                </svg>
-                                Materialkosten
-                            </button>
-                            <button type="submit" name="sort" value="material-desc" class="dropdown-item btn-block  d-inline-flex align-items-center">
-                                <svg class="icon icon-16 mr-2">
-                                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                                </svg>
-                                Materialkosten
-                            </button>
-                        </form>
+                    <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" id="projectsListSheet" aria-label="Listen erstellen">
+                        <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+                        <div class="offcanvas-body">
+                            <div class="q-sheet__label">Listen erstellen</div>
+                            @can('downloadList', \App\Models\Project::class)
+                                <a class="q-row" href="{{ route('projects.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg></span>
+                                    <span class="q-row__title">Projektliste</span>
+                                </a>
+                            @endcan
+                            @can('downloadList', \App\Models\Task::class)
+                                <a class="q-row" href="{{ route('tasks.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span>
+                                    <span class="q-row__title">Aufgabenliste</span>
+                                </a>
+                            @endcan
+                            @can('downloadList', \App\Models\ServiceReport::class)
+                                <a class="q-row" href="{{ route('service-reports.download-list', ['company_id' => $company->id]) }}" target="_blank">
+                                    <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#gear"></use></svg></span>
+                                    <span class="q-row__title">Serviceberichtliste</span>
+                                </a>
+                            @endcan
+                        </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
-    @endunless
-
-    <div class="mt-3">
-        @forelse ($projects as $project)
-            @component('project.overview_card', [ 'project' => $project, 'secondaryInformation' => 'dates', 'actionRedirect' => 'company' ])
-            @endcomponent
-
-            @if(!$loop->last)
-                <hr class="m-0 mx-1" />
-            @endif
-        @empty
-            <div class="text-center">
-                <img class="empty-state" src="{{ asset('svg/no-data.svg') }}" alt="no data" />
-                @if(Request::get('search'))
-                    <p class="lead text-muted">Es wurden keine Projekte passend zur Suche gefunden.</p>
-                @else
-                    <p class="lead text-muted">Der Firma {{ $company->full_name }} sind keine Projekte zugeordnet.</p>
-                    @can('create', \App\Models\Project::class)
-                        <p class="lead">Lege ein neues Projekt an.</p>
-                        <a class="btn btn-primary btn-lg d-inline-flex align-items-center" href="{{ route('projects.create', ['company' => $company->id]) }}">
-                            <svg class="icon icon-20 mr-2">
-                                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#plus"></use>
-                            </svg>
-                            Projekt anlegen
-                        </a>
-                    @endcan
                 @endif
             </div>
-        @endforelse
-    </div>
+        </div>
 
-    <div class="mt-2">
-        {{ $projects->links() }}
-    </div>
+        @include('partials.list_filter', [
+            'action' => route('companies.show', $company),
+            'placeholder' => 'Projekte suchen',
+            'sorts' => ['name-asc' => 'Name', 'name-desc' => 'Name', 'wage-costs-asc' => 'Lohnkosten', 'wage-costs-desc' => 'Lohnkosten', 'material-costs-asc' => 'Materialkosten', 'material-desc' => 'Materialkosten'],
+        ])
 
-    @if(Auth::user()->can('projects.view.estimates') && Auth::user()->settings->show_cost_estimates)
-        @if($projects->count() > 0 && ($projectOverallCostsWarningPercentage || $projectBilledCostsWarningPercentage || $projectMaterialCostsWarningPercentage || $projectWageCostsWarningPercentage))
-            <p class="mt-3 small">
-                Die Pfeile für die
-                <span class="font-weight-bolder"><u>G</u></span>esamt, <span class="font-weight-bold"><u>v</u></span>errechnet, <span class="font-weight-bold"><u>L</u></span>ohn und <span class="font-weight-bold"><u>M</u></span>aterialosten
-                zeigen folgende Information:<br />
-                <svg class="icon icon-baseline text-success">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down"></use>
-                </svg>
-                Die aktuellen Kosten liegen unter der Warnschwelle.<br />
-                <svg class="icon icon-baseline text-warning">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-down-right"></use>
-                </svg>
-                Die aktuellen Kosten liegen zwischen der Warnschwelle und den geschätzten Kosten.<br />
-                <svg class="icon icon-baseline text-danger">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#arrow-up"></use>
-                </svg>
-                Die aktuellen Kosten liegen über den geschätzten Kosten.<br />
-                Warnschwellen:
-                @if($projectOverallCostsWarningPercentage)Gesamtkosten: {{ $projectOverallCostsWarningPercentage }}% @endif
-                @if($projectBilledCostsWarningPercentage)verrechnete Kosten: {{ $projectBilledCostsWarningPercentage }}% @endif
-                @if($projectWageCostsWarningPercentage)Lohnkosten: {{ $projectWageCostsWarningPercentage }}% @endif
-                @if($projectMaterialCostsWarningPercentage)Materialkosten: {{ $projectMaterialCostsWarningPercentage }}% @endif
-            </p>
+        @if ($projects->isEmpty())
+            <div class="q-card"><div class="q-card__body text-center text-muted py-4">Keine Projekte passend zur Suche gefunden.</div></div>
+        @else
+            <div class="q-card q-list">
+                @foreach ($projects as $project)
+                    @include('project.overview_card_content', ['project' => $project, 'secondaryInformation' => 'dates', 'actionRedirect' => 'company'])
+                @endforeach
+            </div>
+            <div class="mt-3">{{ $projects->links() }}</div>
+
+            @include('project.cost_legend')
         @endif
     @endif
 @endsection

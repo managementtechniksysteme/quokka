@@ -1,29 +1,45 @@
 @extends('layouts.app')
 
+@section('mobile-detail-bar')
+    <a href="{{ route('additions-reports.show', $additionsReport) }}" class="q-appbar__btn" aria-label="Abbrechen">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>
+    </a>
+    <span class="q-appbar__title q-appbar__title--numbered">
+        <span class="q-appbar__title-main">{{ $currentProject->name }}</span>
+        <span class="q-appbar__title-num q-mono">#{{ $additionsReport->number }}</span>
+    </span>
+@endsection
+
 @section('content')
-    <div class="bg-gray-100 mt-0">
-        <div class="container py-4">
+    <div class="q-container">
+        <div class="d-none d-md-block">
             @include('additions_report.breadcrumb')
-
-            <h3>
-                Regiebericht bearbeiten
-                <small class="text-muted">{{ $currentProject->name }} #{{ $additionsReport->number }}</small>
-            </h3>
         </div>
-    </div>
 
-    <div class="container my-4">
-        <form class="needs-validation mt-4" enctype="multipart/form-data" action="{{ route('additions-reports.update', $additionsReport) }}" method="post" novalidate>
+        <div class="q-page-head d-none d-md-flex">
+            <div class="d-flex align-items-center gap-3">
+                <span class="q-head-icon">
+                    <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use></svg>
+                </span>
+                <div>
+                    <div class="q-eyebrow">Regiebericht bearbeiten</div>
+                    <h1 class="q-title">{{ $currentProject->name }} #{{ $additionsReport->number }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('additions-reports.update', $additionsReport) }}" method="post" novalidate>
             @method('PATCH')
-            @component('additions_report.fields', [ 'additionsReport' => $additionsReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentPresentPeople' => $currentPresentPeople, 'people' => $people, 'currentAttachments' => $currentAttachments, 'minAccountingAmount' => $minAccountingAmount ])
-            @endcomponent
+            @include('additions_report.fields', ['additionsReport' => $additionsReport, 'currentProject' => $currentProject, 'projects' => $projects, 'currentInvolvedEmployees' => $currentInvolvedEmployees, 'employees' => $employees, 'currentPresentPeople' => $currentPresentPeople, 'people' => $people, 'currentAttachments' => $currentAttachments, 'minAccountingAmount' => $minAccountingAmount])
 
-            <button type="submit" class="btn btn-primary d-inline-flex align-items-center mt-4">
-                <svg class="icon icon-16 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#save"></use>
-                </svg>
-                Regiebericht speichern
-            </button>
+            <div class="q-form-actions q-form-actions--solo-mobile">
+                <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('additions-reports.show', $additionsReport) }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>
+                <button type="submit" class="btn btn-primary text-white d-inline-flex align-items-center gap-2">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#floppy"></use></svg>
+                    <span class="d-none d-md-inline">Regiebericht speichern</span>
+                    <span class="d-inline d-md-none">Speichern</span>
+                </button>
+            </div>
         </form>
     </div>
 @endsection

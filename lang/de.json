@@ -1,4 +1,8 @@
 {
+  "Showing": "Zeige",
+  "to": "bis",
+  "of": "von",
+  "results": "Ergebnissen",
   "A fresh verification link has been sent to your email address.": "Ein neuer Verifikationslink wurde verschickt.",
   "All rights reserved.": "Alle Rechte vorbehalten.",
   "Before proceeding, please check your email for a verification link.": "Überprüfe deine E-Mails auf einen Bestatigungslink, bevor du weitermachst.",
@@ -64,7 +68,7 @@
   "medium": "mittel",
   "high": "hoch",
   "new": "neu",
-  "in progress": "in Bearbeitung",
+  "in progress": "in Arbeit",
   "finished": "erledigt",
   "billed": "verrechnet",
   "not billed": "nicht verrechnet",

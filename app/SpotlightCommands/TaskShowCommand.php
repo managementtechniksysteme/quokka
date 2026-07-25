@@ -29,10 +29,15 @@ class TaskShowCommand extends SpotlightCommand
 
     public function searchTask(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Task::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
+            ->limit(15)
             ->get()
             ->map(function (Task $task) {
                 return new SpotlightSearchResult(

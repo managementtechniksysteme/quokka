@@ -40,6 +40,7 @@ class InspectionReportController extends Controller
             'showSignatureRequest' => 'sign',
             'sign' => 'sign',
             'approve' => 'approve',
+            'finish' => 'approve',
         ]);
     }
 
@@ -95,12 +96,14 @@ class InspectionReportController extends Controller
         }
 
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('inspection_report.create')
             ->with('inspectionReport', $templateInspectionReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     public function store(InspectionReportStoreRequest $request)
@@ -139,7 +142,8 @@ class InspectionReportController extends Controller
             ->load('activities.causer');
 
         return view('inspection_report.show')
-            ->with(compact('inspectionReport'));
+            ->with(compact('inspectionReport'))
+            ->with('signature', $inspectionReport->signature());
     }
 
     public function edit(InspectionReport $inspectionReport)
@@ -148,12 +152,14 @@ class InspectionReportController extends Controller
         $projects = Project::order()->get();
 
         $currentAttachments = $inspectionReport->attachmentsWithUrl();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('inspection_report.edit')
             ->with('inspectionReport', $inspectionReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     public function update(InspectionReportUpdateRequest $request, InspectionReport $inspectionReport)

@@ -11,8 +11,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
-use PragmaRX\Version\Package\Version;
-
 class ApplicationVersionUpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -21,14 +19,9 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
     private string $version;
     private array $vibrationDuration = ['100'];
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->version = (new Version ())->compact();
+        $this->version = sprintf('v%s.%s.%s-%s', config('version.major'), config('version.minor'), config('version.patch'), config('version.commit'));
     }
 
     /**

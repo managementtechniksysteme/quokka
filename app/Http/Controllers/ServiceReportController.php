@@ -48,12 +48,15 @@ class ServiceReportController extends Controller
             'showSignatureRequest' => 'sign',
             'sign' => 'sign',
             'approve' => 'approve',
+            'finish' => 'approve',
+            'downloadList' => 'downloadList',
+            'checkOverlap' => 'viewAny',
         ]);
     }
 
     public function resourceMethodsWithoutModels()
     {
-        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList']);
+        return array_merge(parent::resourceMethodsWithoutModels(), ['downloadList', 'checkOverlap']);
     }
 
     public function __construct()
@@ -129,13 +132,15 @@ class ServiceReportController extends Controller
         }
 
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('service_report.create')
             ->with('serviceReport', $serviceReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentServices', $currentServices)
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -200,7 +205,8 @@ class ServiceReportController extends Controller
             ->load('activities.causer');
 
         return view('service_report.show')
-            ->with(compact('serviceReport'));
+            ->with(compact('serviceReport'))
+            ->with('signature', $serviceReport->signature());
     }
 
     /**
@@ -216,13 +222,15 @@ class ServiceReportController extends Controller
         $projects = Project::order()->get();
         $currentServices = $serviceReport->services;
         $currentAttachments = $serviceReport->attachmentsWithUrl();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('service_report.edit')
             ->with('serviceReport', $serviceReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentServices', $currentServices->toJson())
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -572,7 +580,7 @@ class ServiceReportController extends Controller
                             ->withMax('services', 'provided_on')
                             ->withSum('services', 'hours')
                             ->withSum('services', 'kilometres')
-                            ->orderByRaw('field(status, "new", "signed", "finished")')
+                            ->orderByRaw('case status when "new" then 1 when "signed" then 2 when "finished" then 3 end')
                             ->orderBy('number');
                     }])
                     ->withCount('serviceReports');
@@ -627,7 +635,7 @@ class ServiceReportController extends Controller
 
         $reports = Auth::user()->employee->serviceReports()
             ->whereHas('services', function ($query) use ($validatedData) {
-                $query->whereIn('provided_on', $validatedData['dates']);
+                $query->whereIn(DB::raw('date(provided_on)'), $validatedData['dates']);
             })
             ->whereProjectId($validatedData['project_id'])
             ->when(isset($validatedData['report_id']), function ($query) use ($validatedData) {

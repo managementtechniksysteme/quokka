@@ -1,19 +1,156 @@
-@import "~easymde/dist/easymde.min.css";
+@import "easymde/dist/easymde.min.css";
+@import "codemirror/addon/hint/show-hint.css";
 
-// Fixes for EasyMDE (hide editor preview in edit mode, smaller toolbar, don't hide behind fixed menu bar)
-.vue-easymde > .EasyMDEContainer > .editor-toolbar.fullscreen {
+// Fullscreen + side-by-side panels must sit ABOVE the fixed navbar (z-index
+// 1030), or their toolbar (with the exit buttons) hides behind it and the mode
+// can't be left. Scoped on .EasyMDEContainer (a descendant selector that always
+// matches) — the old `.vue-easymde > …` chain didn't match the wrapper, so
+// EasyMDE's tiny default z-index was losing to the navbar.
+.EasyMDEContainer .editor-toolbar.fullscreen,
+.EasyMDEContainer .CodeMirror.fullscreen,
+.EasyMDEContainer .CodeMirror-fullscreen,
+.EasyMDEContainer .editor-preview-side {
     z-index: 2000;
 }
 
-.vue-easymde > .EasyMDEContainer > .CodeMirror.fullscreen {
-    z-index: 2000;
-}
-
-.vue-easymde > .EasyMDEContainer > .CodeMirror > :not(.editor-preview-active).editor-preview {
+// hide the inline preview pane while editing (only show when active)
+.EasyMDEContainer .CodeMirror > :not(.editor-preview-active).editor-preview {
     display: none;
 }
 
-.vue-easymde > .EasyMDEContainer > :not(.fullscreen).editor-toolbar > button {
+// smaller toolbar buttons (non-fullscreen)
+.EasyMDEContainer :not(.fullscreen).editor-toolbar > button {
     width: 24px;
     height: 24px;
 }
+
+// Prevent BS5 .table class from making the table toolbar button full-width
+.editor-toolbar button.table {
+    width: auto;
+    margin-bottom: 0;
+}
+
+// =============================================================================
+//  EasyMDE / CodeMirror themed to the redesign --q-* tokens. Ships light-only
+//  by default; these overrides give it a proper light + dark treatment (via the
+//  runtime tokens under data-bs-theme) that matches the .q-form surface-2 fields.
+//  Radius hard-coded (10px = $q-radius-sm) — imported before _quokka-ui.scss.
+// =============================================================================
+.EasyMDEContainer {
+    // toolbar
+    .editor-toolbar {
+        background: var(--q-surface-2);
+        border-color: var(--q-border);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+
+        button {
+            color: var(--q-muted);
+            border-color: transparent;
+            &:hover { background: var(--q-surface-3); border-color: var(--q-border); color: var(--q-text); }
+            &.active { background: var(--q-accent-tint); border-color: var(--q-accent); color: var(--q-accent); }
+        }
+        i.separator { border-left-color: var(--q-border); border-right-color: transparent; }
+    }
+
+    // editor surface
+    .CodeMirror {
+        background: var(--q-surface);
+        color: var(--q-text);
+        border-color: var(--q-border);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .CodeMirror-cursor { border-left-color: var(--q-text); }
+    .CodeMirror-selected { background: var(--q-accent-tint) !important; }
+    .CodeMirror-focused .CodeMirror-selected { background: var(--q-accent-tint) !important; }
+
+    // markdown syntax tokens
+    .cm-header { color: var(--q-text); }
+    .cm-strong { color: var(--q-text); }
+    .cm-em { color: var(--q-text); }
+    .cm-link, .cm-url { color: var(--q-accent); }
+    .cm-quote { color: var(--q-muted); }
+    .cm-comment {
+        color: var(--q-muted);
+        background: var(--q-surface-2);
+        border-radius: 4px;
+    }
+
+    // preview pane + status bar
+    .editor-preview, .editor-preview-side {
+        background: var(--q-surface);
+        color: var(--q-text);
+    }
+    .editor-statusbar { color: var(--q-faint); }
+}
+
+// @mention autocomplete dropdown (CodeMirror's show-hint addon widget is
+// appended to <body>, not inside .EasyMDEContainer, so it's themed unscoped)
+.CodeMirror-hints {
+    background: var(--q-surface);
+    color: var(--q-text);
+    border: 1px solid var(--q-border);
+    border-radius: 10px;
+    box-shadow: var(--q-shadow-lg);
+    padding: 4px;
+    font-family: $font-family-base;
+
+    .CodeMirror-hint {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .35rem .5rem;
+        border-radius: 8px;
+    }
+
+    // CodeMirror only moves "active" (the accent highlight) via keyboard/click,
+    // not on hover — add that separately so mousing over a row highlights it too.
+    li.CodeMirror-hint-active,
+    .CodeMirror-hint:hover {
+        background: var(--q-accent-tint);
+        color: var(--q-accent);
+    }
+}
+
+// inline @mention chip (markText/replacedWith widget) rendered in place of the
+// raw "@username" text once it resolves to a known employee
+.q-mention-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .05rem .5rem .05rem .1rem;
+    border-radius: 999px;
+    background: var(--q-accent-tint);
+    color: var(--q-accent);
+    font-weight: 500;
+    line-height: 1.4;
+    vertical-align: middle;
+
+    .q-avatar {
+        width: 18px;
+        height: 18px;
+        font-size: .5rem;
+    }
+}
+
+// inline #cross-reference chip — neutral (not accent-coloured) so it reads
+// distinctly from the purple @mention chip at a glance
+.q-crossref-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .05rem .5rem;
+    border-radius: 999px;
+    background: var(--q-surface-3);
+    color: var(--q-text);
+    font-weight: 500;
+    line-height: 1.4;
+    vertical-align: middle;
+
+    .icon-bs { color: var(--q-muted); }
+}
+
+// hover matches .q-link--quiet (the "Hilfe zu Markdown" link) for consistency
+.q-crossref-chip:hover { color: var(--q-accent); text-decoration: underline; }
+.q-crossref-chip:hover .icon-bs { color: var(--q-accent); }

@@ -10,26 +10,31 @@ use App\Traits\HasDownloadRequest;
 use App\Traits\HasSignatureRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use HasSignatureRequest;
     use HasDownloadRequest;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'written_on' => 'date',
     ];
+    }
 
     protected $fillable = [
         'status',
@@ -70,8 +75,8 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
         'written_on-desc' => [['written_on', 'desc']],
         'titel-asc' => ['title'],
         'titel-desc' => [['title', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), number'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, written_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, written_on'],
     ];
 
     protected static $recordEvents = ['updated'];
@@ -113,12 +118,35 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', DeliveryNote::class)) {
+            return null;
+        }
+
+        $deliveryNote = DeliveryNote::with('project')->find($id);
+
+        if (!$deliveryNote) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            DeliveryNote::class,
+            'Lieferschein',
+            $deliveryNote->id,
+            "$deliveryNote->title ({$deliveryNote->project->name})",
+            route('delivery-notes.show', $deliveryNote),
+            $deliveryNote->created_at,
+            $deliveryNote->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logOnly(['status'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function registerMediaCollections(): void
@@ -155,6 +183,15 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
     public function isFinished()
     {
         return $this->status === 'finished';
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'signed' => 'unterschrieben',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
     }
 
     public static function mtdNewDeliveryNotes()

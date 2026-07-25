@@ -28,6 +28,7 @@ class MemoController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'publish' => 'update',
         ]);
     }
 
@@ -62,11 +63,13 @@ class MemoController extends Controller
     public function create(MemoCreateRequest $request)
     {
         $templateMemo = null;
+        $templateNote = null;
         $currentProject = null;
         $currentEmployeeComposer = null;
         $currentPersonRecipient = null;
         $currentPresentPeople = null;
         $currentNotifiedPeople = null;
+        $currentAttachments = null;
 
         $validatedData = $request->validated();
 
@@ -116,6 +119,8 @@ class MemoController extends Controller
                 'title' => $templateNote->title_string,
                 'comment' => $templateNote->comment,
             ]);
+
+            $currentAttachments = $templateNote->attachmentsWithUrl();
         }
         elseif (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);
@@ -124,12 +129,14 @@ class MemoController extends Controller
         $projects = Project::order()->get();
 
         $currentEmployeeComposer = $currentEmployeeComposer ?? Auth::user()->employee->person;
-        $employees = Person::has('employee')->order()->get();
+        $currentEmployeeComposer?->load('employee.user');
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $people = Person::order()->get();
 
         return view('memo.create')
             ->with('memo', $templateMemo)
+            ->with('note', $templateNote)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentEmployeeComposer', optional($currentEmployeeComposer)->toJson())
@@ -138,7 +145,7 @@ class MemoController extends Controller
             ->with('currentPresentPeople', optional($currentPresentPeople)->toJson())
             ->with('currentNotifiedPeople', optional($currentNotifiedPeople)->toJson())
             ->with('people', $people->toJson())
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', optional($currentAttachments)->toJson());
     }
 
     /**
@@ -174,6 +181,16 @@ class MemoController extends Controller
             }
 
             $memo->notifiedPeople()->attach($notifiedPeople, ['person_type' => 'notified']);
+        }
+
+        if ($request->filled('note_id')) {
+            $templateNote = Note::find($request->note_id);
+
+            if ($templateNote && Auth::user()->can('view', $templateNote)) {
+                $templateNote->attachments()
+                    ->reject(fn ($attachment) => in_array($attachment->id, $request->remove_attachments ?? []))
+                    ->each(fn ($attachment) => $attachment->copy($memo, 'attachments'));
+            }
         }
 
         if ($request->new_attachments) {
@@ -221,7 +238,8 @@ class MemoController extends Controller
         $projects = Project::order()->get();
 
         $currentEmployeeComposer = $memo->employeeComposer->person;
-        $employees = Person::has('employee')->order()->get();
+        $currentEmployeeComposer?->load('employee.user');
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         $currentPersonRecipient = $memo->personRecipient ?? null;
         $currentPresentPeople = $memo->presentPeople ?? null;

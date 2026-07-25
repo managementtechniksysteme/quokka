@@ -13,7 +13,7 @@ class CreateAccountingTable extends Migration
             $table->date('service_provided_on');
             $table->time('service_provided_started_at')->nullable();
             $table->time('service_provided_ended_at')->nullable();
-            $table->unsignedDouble('amount');
+            $table->double('amount');
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('project_id');

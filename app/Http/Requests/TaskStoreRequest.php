@@ -28,8 +28,11 @@ class TaskStoreRequest extends FormRequest
             'involved_ids' => 'array|nullable',
             'involved_ids.*' => 'exists:employees,person_id',
             'comment' => 'nullable',
+            'note_id' => 'sometimes|exists:notes,id',
+            'remove_attachments' => 'array|nullable',
+            'remove_attachments.*' => 'exists:media,id',
             'new_attachments' => 'array|nullable',
-            'new_attachments.*.file' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
+            'new_attachments.*' => 'mimes:jpeg,bmp,png,gif,svg,pdf',
         ];
 
         if(Auth::user()->can('tasks.create') && Auth::user()->cannot('tasks.create.private')) {

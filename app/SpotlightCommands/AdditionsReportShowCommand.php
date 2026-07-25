@@ -29,11 +29,15 @@ class AdditionsReportShowCommand extends SpotlightCommand
 
     public function searchAdditionsReport(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return AdditionsReport::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (AdditionsReport $additionsReport) {
                 return new SpotlightSearchResult(
                     $additionsReport->id,

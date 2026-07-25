@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class ApplicationSettings extends Model
 {
+    use HasFactory;
+
     const CACHE_NAME = 'application-settings';
     const CACHE_TTL = 24 * 60 * 60; // 1 day
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'holiday_yearly_allowance' => 'int',
         'accounting_min_amount' => 'double',
         'kilometre_costs' => 'double',
@@ -21,6 +26,7 @@ class ApplicationSettings extends Model
         'task_due_soon_days' => 'int',
         'prune_sent_emails' => 'bool',
     ];
+    }
 
     protected $fillable = [
         'company_id',

@@ -10,28 +10,33 @@ use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\HasActivity;
 use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
     use HasAttachments;
-    use LogsActivity;
+    use HasActivity;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'starts_on' => 'date',
         'ends_on' => 'date',
         'due_on' => 'date',
         'private' => 'boolean',
     ];
+    }
 
     protected $fillable = [
         'name', 'starts_on', 'ends_on', 'due_on', 'private', 'priority', 'status', 'billed', 'comment', 'project_id',
@@ -63,7 +68,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         'ist:nicht_verrechnet' => ['billed', 'no'],
         'ist:nv' => ['billed', 'no'],
         'ist:garantie' => ['billed', 'warranty'],
-        'ist:überfällig' => ['raw' => ['due_on < curdate() and status != "finished"', 'due_on <= curdate() or (due_on > curdate() and status = "finished")']],
+        'ist:überfällig' => ['raw' => ['due_on < CURRENT_DATE and status != "finished"', 'due_on <= CURRENT_DATE or (due_on > CURRENT_DATE and status = "finished")']],
         'projekt:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'p:(.*)' => ['project.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'firma:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
@@ -75,15 +80,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $orderKeys = [
-        'default' => ['raw' =>'ISNULL(due_on), due_on'],
-        'due_on-asc' => ['raw' =>'ISNULL(due_on), due_on'],
+        'default' => ['raw' =>'due_on is null, due_on'],
+        'due_on-asc' => ['raw' =>'due_on is null, due_on'],
         'due_on-desc' => [['due_on', 'desc']],
         'name-asc' => ['name'],
         'name-desc' => [['name', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "in progress", "finished"), ISNULL(due_on), due_on'],
-        'status-desc' => ['raw' => 'field(status, "finished", "in progress", "new"), ISNULL(due_on), due_on'],
-        'priority-asc' => ['raw' => 'field(priority, "low", "medium", "high")'],
-        'priority-desc' => ['raw' => 'field(priority, "high", "medium", "low")'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "in progress" then 2 when "finished" then 3 end, due_on is null, due_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "in progress" then 2 when "new" then 3 end, due_on is null, due_on'],
+        'priority-asc' => ['raw' => 'case priority when "low" then 1 when "medium" then 2 when "high" then 3 end'],
+        'priority-desc' => ['raw' => 'case priority when "high" then 1 when "medium" then 2 when "low" then 3 end'],
     ];
 
     protected $permissionFilters = [
@@ -109,12 +114,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     {
         parent::__construct($attributes);
 
+        // The day count is a plain PHP value already known before the query runs, so the
+        // boundary date is computed here rather than via MySQL-only SQL date arithmetic
+        // (date_add(curdate(), interval ... day)), which has no portable equivalent.
+        $dueSoonOn = Carbon::today()->addDays(ApplicationSettings::get()->task_due_soon_days)->toDateString();
+
         $this->filterKeys['ist:bald_fällig'] = [
             'raw' => [
-                'due_on between curdate() and date_add(curdate(), interval '.
-                ApplicationSettings::get()->task_due_soon_days.' day)',
-                'due_on not between curdate() and date_add(curdate(), interval '.
-                ApplicationSettings::get()->task_due_soon_days.' day)',
+                "due_on between CURRENT_DATE and '$dueSoonOn'",
+                "due_on not between CURRENT_DATE and '$dueSoonOn'",
             ],
         ];
     }
@@ -146,13 +154,34 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $task = Task::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$task) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Task::class,
+            'Aufgabe',
+            $task->id,
+            "$task->name (Projekt {$task->project->name})",
+            route('tasks.show', $task),
+            $task->created_at,
+            $task->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll()
             ->dontLogIfAttributesChangedOnly(['created_at', 'updated_at'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function project()
@@ -229,5 +258,14 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     public function isFinished()
     {
         return $this->status === 'finished';
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'in progress' => 'in Arbeit',
+            'finished' => 'erledigt',
+            default => 'neu',
+        };
     }
 }

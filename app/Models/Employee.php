@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
@@ -10,9 +11,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
-class Employee extends Model
+class Employee extends Model implements FiltersGlobalSearch
 {
     use FiltersLatestChanges;
     use FiltersSearch;
@@ -24,12 +26,15 @@ class Employee extends Model
     protected $primaryKey = 'person_id';
     public $incrementing = false;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'person_id' => 'int',
         'entered_on' => 'date',
         'left_on' => 'date',
         'holidays' => 'double',
     ];
+    }
 
     protected $fillable = [
         'person_id', 'entered_on', 'left_on', 'holidays',
@@ -58,13 +63,36 @@ class Employee extends Model
                 return new GlobalSearchResult(
                     Employee::class,
                     'Mitarbeiter',
-                    $employee->id,
+                    $employee->person_id,
                     $employee->person->name,
                     route('employees.show', $employee),
                     $employee->created_at,
                     $employee->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Employee::class)) {
+            return null;
+        }
+
+        $employee = Employee::with('person')->find($id);
+
+        if (!$employee) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Employee::class,
+            'Mitarbeiter',
+            $employee->id,
+            $employee->person->name,
+            route('employees.show', $employee),
+            $employee->created_at,
+            $employee->updated_at,
+        );
     }
 
     public function person()

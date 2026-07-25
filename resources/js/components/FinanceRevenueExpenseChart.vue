@@ -5,122 +5,106 @@
 </template>
 
 <script>
-    export default {
-        name: "FinanceRevenueExpenseChart",
+export default {
+    name: 'FinanceRevenueExpenseChart',
 
-        data() {
+    props: {
+        id:            { type: String },
+        revenue:       { type: Number, required: true },
+        expense:       { type: Number, required: true },
+        currency_unit: { type: String, default: () => '€' },
+    },
+
+    data() {
+        return {
+            isDark: document.documentElement.getAttribute('data-bs-theme') === 'dark',
+        };
+    },
+
+    computed: {
+        chartOptions() {
+            void this.isDark; // reactive dependency — recomputes on theme switch
+            const s      = getComputedStyle(document.documentElement);
+            const green  = s.getPropertyValue('--q-green').trim();
+            const red    = s.getPropertyValue('--q-red').trim();
+            const faint  = s.getPropertyValue('--q-faint').trim();
+            const border = s.getPropertyValue('--q-border').trim();
+            const diff   = this.revenue + this.expense;
+
             return {
-                chartOptions: {
-                    chart: {
-                        defaultLocale: 'de',
-                        locales: [{
-                            name: 'de',
-                            options: {
-                                months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-                                shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dea'],
-                                days: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-                                shortDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                                toolbar: {
-                                    exportToSVG: 'SVG Download',
-                                    exportToPNG: 'PNG Download',
-                                    exportToCSV: 'CSV Download',
-                                    menu: "Menü",
-                                    selection: 'Auswahl',
-                                    selectionZoom: 'Auswahl vergrößern',
-                                    zoomIn: 'Vergrößern',
-                                    zoomOut: 'Verkleinern',
-                                    pan: 'Verschieben',
-                                    reset: 'Zoom zurücksetzten',
-                                }
-                            }
-                        }],
-                        fontFamily: 'Roboto',
-                        id: this.id,
-                        type: 'bar',
-                        width: '100%'
-                    },
-                    colors: ['#5CB85C', '#D9534F', this.revenue + this.expense >=0 ? '#5CB85C' : '#D9534F'],
-                    xaxis: {
-                        categories: ['Einnahmen', 'Ausgaben', 'Differenz'],
-                        labels: {
-                            style: {
-                                fontFamily: 'Roboto',
-                            }
+                chart: {
+                    type: 'bar',
+                    width: '100%',
+                    background: 'transparent',
+                    fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif',
+                    toolbar: { show: false },
+                    defaultLocale: 'de',
+                    locales: [{
+                        name: 'de',
+                        options: {
+                            months: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+                            shortMonths: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+                            days: ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],
+                            shortDays: ['So','Mo','Di','Mi','Do','Fr','Sa'],
                         },
-                        title: {
-                            style: {
-                                fontFamily: 'Roboto',
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                fontFamily: 'Roboto',
-                            },
-                            formatter: (value) => value + this.currency_unit
-                        },
-                        title: {
-                            style: {
-                                fontFamily: 'Roboto',
-                            }
-                        }
-                    },
-                    dataLabels: {
-                        style: {
-                            fontFamily: 'Roboto',
-                        },
-                        formatter: (value) => value.toFixed(2) + this.currency_unit
-                    },
-                    legend: {
-                        fontFamily: 'Roboto',
-                    },
-                    tooltip: {
-                        enabled: true,
-                        y: {
-                            formatter: (value, { series, seriesIndex, dataPointIndex, w }) => value.toFixed(2) + this.currency_unit,
-                            title: {
-                                formatter: () => ''
-                            }
-                        }
-                    },
-                    plotOptions: {
-                        bar: {
-                            distributed: true,
-                            borderRadius: 0,
-                        }
-                    }
+                    }],
                 },
-                series: [{
-                    name: 'series',
-                    data: [this.revenue, this.expense, this.revenue + this.expense]
-                }]
-            }
+                theme: { mode: this.isDark ? 'dark' : 'light' },
+                colors: [green, red, diff >= 0 ? green : red],
+                xaxis: {
+                    categories: [''],
+                    labels: { show: false },
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                },
+                yaxis: {
+                    labels: {
+                        style: { colors: faint },
+                        formatter: (v) => v.toFixed(0) + ' ' + this.currency_unit,
+                    },
+                },
+                grid: { borderColor: border },
+                dataLabels: {
+                    enabled: true,
+                    formatter: (v) => v.toFixed(2) + ' ' + this.currency_unit,
+                },
+                legend: { position: 'top' },
+                tooltip: {
+                    y: {
+                        formatter: (v) => v.toFixed(2) + ' ' + this.currency_unit,
+                        title: { formatter: () => '' },
+                    },
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 6,
+                        borderRadiusApplication: 'end',
+                    },
+                },
+            };
         },
 
-        methods: {
+        series() {
+            return [
+                { name: 'Einnahmen', data: [this.revenue] },
+                { name: 'Ausgaben',  data: [this.expense] },
+                { name: 'Differenz', data: [this.revenue + this.expense] },
+            ];
         },
+    },
 
-        props: {
-            id: {
-              type: String,
-            },
+    mounted() {
+        this._observer = new MutationObserver(() => {
+            this.isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        });
+        this._observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-bs-theme'],
+        });
+    },
 
-            revenue: {
-                type: Number,
-            },
-
-            expense: {
-                type: Number,
-            },
-
-            currency_unit: {
-                type: String,
-                default() {
-                    return '€';
-                }
-            }
-        }
-
-    }
+    beforeUnmount() {
+        this._observer?.disconnect();
+    },
+};
 </script>

@@ -4,10 +4,10 @@
             <strong>Summe</strong>
         </div>
 
-        <div class="d-none d-sm-block ml-2">
+        <div class="d-none d-sm-block ms-2">
             <span class="@if($sum >= 0) text-green-700 @else text-red-700 @endif d-inline-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#dollar-sign"></use>
+                <svg class="icon-bs icon-16 me-1">
+                    <use href="{{ asset('svg/bootstrap-icons.svg') }}#currency-euro"></use>
                 </svg>
                 <strong>{{ Number::toLocal($sum, 2) }}</strong>
             </span>

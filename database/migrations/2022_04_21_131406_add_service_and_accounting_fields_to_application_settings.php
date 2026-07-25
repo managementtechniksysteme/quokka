@@ -20,7 +20,7 @@ class AddServiceAndAccountingFieldsToApplicationSettings extends Migration
         }
         if (!Schema::hasColumn('application_settings', 'accounting_min_amount')) {
             Schema::table('application_settings', function (Blueprint $table) {
-                $table->unsignedDouble('accounting_min_amount')->default(0.5);
+                $table->double('accounting_min_amount')->default(0.5);
             });
         }
     }

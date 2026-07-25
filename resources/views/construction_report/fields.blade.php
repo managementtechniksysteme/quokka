@@ -18,74 +18,44 @@
 @csrf
 
 @unless(Auth::user()->signature())
-    <div class="alert alert-warning mt-1" role="alert">
-        <div class="d-inline-flex align-items-center">
-            <svg class="icon icon-24 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-            </svg>
-            <p class="m-0">
-                Du hast noch keine Unterschrift im System hinterlegt. Es kann nicht automatisch
-                eine Unterschrift in PDF Ausdrucke von Berichten eingefügt werden. Füge bitte eine Unterschrift in den
-                <a href="{{ route('user-settings.edit', ['tab' => 'general']) }}">allgemeinen Einstellungen</a>
-                hinzu.
-            </p>
-        </div>
+    <div class="q-banner">
+        <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+        <span>Du hast noch keine Unterschrift im System hinterlegt. Es kann nicht automatisch eine Unterschrift in PDF Ausdrucke von Berichten eingefügt werden. Füge bitte eine Unterschrift in den <a href="{{ route('user-settings.edit', ['tab' => 'general']) }}">allgemeinen Einstellungen</a> hinzu.</span>
     </div>
 @endunless
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon-bs icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/bootstrap-icons.svg') }}#hammer"></use>
-            </svg>
-            Stammdaten
-        </p>
-        <p class="text-muted">
-            Die Stammdaten des Bautagesberichtes.
-        </p>
-        <p class="text-muted">
-            Auf PDF Ausdrucken wird die Unterschrift dessen Mitarbeiters eingefügt, welcher den Bautagesbericht erstellt.
-            Bei der Bearbeitung eines bereits unterschriebenen Bautagesberichtes wird die vorhandene Unterschrift entferent.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Stammdaten
+        <div class="q-form-section__desc">Die Stammdaten des Bautagesberichtes. Bei der Bearbeitung eines bereits unterschriebenen Bautagesberichtes wird die vorhandene Unterschrift entfernt.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
             <label for="employee">Ersteller</label>
             <input type="text" class="form-control" name="employee" id="employee" placeholder="{{ optional($constructionReport)->employee->person->name ?? Auth::user()->person->name }}" disabled />
         </div>
 
-        <div class="form-group">
-            <div>
-                <label for="status">Status</label>
-            </div>
+        <div>
+            <label>Status</label>
             @if(optional($constructionReport)->status === 'signed')
-                <div class="alert alert-warning mt-1" role="alert">
-                    <div class="d-inline-flex align-items-center">
-                        <svg class="icon icon-24 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-                        </svg>
-                        Der Bautagesbericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.
-                    </div>
+                <div class="q-banner">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+                    <span>Der Bautagesbericht wurde bereits unterschrieben. Beim Speichern wird die aktuelle Unterschrift entfernt! Eine erneute Anfrage zum Unterschreiben kann gesendet werden.</span>
                 </div>
             @endif
-            <div class="btn-group btn-group-toggle">
-                <label class="btn btn-outline-secondary @if(optional($constructionReport)->status == 'new' || !$constructionReport) active @else disabled @endif">
-                    <input type="radio" name="status" id="new" @if(optional($constructionReport)->status == 'new' || !$constructionReport) checked @endif disabled> neu
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($constructionReport)->status == 'signed') active @else disabled  @endif">
-                    <input type="radio" name="status" id="signed" @if(optional($constructionReport)->status == 'signed') checked @endif disabled> unterschrieben
-                </label>
-                <label class="btn btn-outline-secondary @if(optional($constructionReport)->status == 'finished') active @else disabled  @endif">
-                    <input type="radio" name="status" id="finished" @if(optional($constructionReport)->status == 'finished') checked @endif disabled> erledigt
-                </label>
+            <div class="btn-group">
+                <input type="radio" class="btn-check" name="status" id="status-new" autocomplete="off" @if(optional($constructionReport)->status == 'new' || !$constructionReport) checked @endif disabled>
+                <label class="btn btn-outline-secondary q-seg--sky" for="status-new">neu</label>
+                <input type="radio" class="btn-check" name="status" id="status-signed" autocomplete="off" @if(optional($constructionReport)->status == 'signed') checked @endif disabled>
+                <label class="btn btn-outline-secondary q-seg--amber" for="status-signed">unterschrieben</label>
+                <input type="radio" class="btn-check" name="status" id="status-finished" autocomplete="off" @if(optional($constructionReport)->status == 'finished') checked @endif disabled>
+                <label class="btn btn-outline-secondary q-seg--green" for="status-finished">erledigt</label>
             </div>
         </div>
 
-        <div class="form-group">
+        <div>
             <label for="services_provided_on">Datum</label>
-            <input type="date" class="form-control @error('services_provided_on') is-invalid @enderror" id="services_provided_on" name="services_provided_on" placeholder="" value="{{ old('services_provided_on', optional(optional($constructionReport)->services_provided_on)->format('Y-m-d')) }}" required />
+            <input type="date" class="form-control @error('services_provided_on') is-invalid @enderror" id="services_provided_on" name="services_provided_on" value="{{ old('services_provided_on', optional(optional($constructionReport)->services_provided_on)->format('Y-m-d')) }}" required />
             <div class="invalid-feedback">
                 @error('services_provided_on')
                     {{ $message }}
@@ -95,56 +65,48 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div>
             <label for="project_id">Projekt (Bauvorhaben)</label>
             <project-dropdown :projects="{{ $projects }}" :current_project="{{ $currentProject ?? 'null' }}"></project-dropdown>
             <div class="invalid-feedback @error('project_id') d-block @enderror">
                 @error('project_id')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#users"></use>
-            </svg>
-            Anwesende Personen
-        </p>
-        <p class="text-muted">
-            Anwensendes Personal sowie weitere Personen.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anwesende Personen
+        <div class="q-form-section__desc">Anwesendes Personal sowie weitere Personen.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <label for="involved_ids">Personalstand</label>
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
+            <label>Personalstand</label>
             <people-selector inputname="involved_ids[]" :people="{{ $employees }}" :current_people="{{ $currentInvolvedEmployees ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('involved_ids') d-block @enderror">
                 @error('involved_ids')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="present_ids">Anwesende Personen</label>
+        <div>
+            <label>Anwesende Personen</label>
             <people-selector inputname="present_ids[]" :people="{{ $people }}" :current_people="{{ $currentPresentPeople ?? 'null' }}" v-cloak></people-selector>
             <div class="invalid-feedback @error('present_ids') d-block @enderror">
                 @error('present_ids')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
 
-        <div class="form-group">
+        <div>
             <label for="other_visitors">Sonstige Besucher</label>
             <input type="text" class="form-control @error('other_visitors') is-invalid @enderror" id="other_visitors" name="other_visitors" placeholder="Max Mustermann" value="{{ old('other_visitors', optional($constructionReport)->other_visitors) }}" />
-            <div class="invalid-feedback @error('other_visitors') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('other_visitors')
                     {{ $message }}
                 @enderror
@@ -153,245 +115,179 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#alert-triangle"></use>
-            </svg>
-            Beeinflussende Faktoren
-        </p>
-        <p class="text-muted">
-            Faktoren sowie Umstände, welche den Leistungsfortschritt beeinflussten.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Beeinflussende Faktoren
+        <div class="q-form-section__desc">Faktoren sowie Umstände, welche den Leistungsfortschritt beeinflussten.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
             <label for="inspection_comment">Güte- und Funktionsprüfung</label>
             <textarea class="form-control @error('inspection_comment') is-invalid @enderror" id="inspection_comment" name="inspection_comment" placeholder="Angaben zur Prüfung">{{ old('inspection_comment', optional($constructionReport)->inspection_comment) }}</textarea>
-            <div class="invalid-feedback @error('inspection_comment') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('inspection_comment')
                     {{ $message }}
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div>
             <label for="missing_documents">Fehlende Ausführungsunterlagen</label>
             <textarea class="form-control @error('missing_documents') is-invalid @enderror" id="missing_documents" name="missing_documents" placeholder="Angaben zu den fehlenden Unterlagen">{{ old('missing_documents', optional($constructionReport)->missing_documents) }}</textarea>
-            <div class="invalid-feedback @error('missing_documents') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('missing_documents')
                     {{ $message }}
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div>
             <label for="special_occurrences">Besondere Vorkommnisse</label>
             <textarea class="form-control @error('special_occurrences') is-invalid @enderror" id="special_occurrences" name="special_occurrences" placeholder="Angaben zu den Vorkommnissen">{{ old('special_occurrences', optional($constructionReport)->special_occurrences) }}</textarea>
-            <div class="invalid-feedback @error('special_occurrences') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('special_occurrences')
                     {{ $message }}
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div>
             <label for="imminent_danger">Gefahr in Verzug</label>
             <textarea class="form-control @error('imminent_danger') is-invalid @enderror" id="imminent_danger" name="imminent_danger" placeholder="Angaben zur Gefahr">{{ old('imminent_danger', optional($constructionReport)->imminent_danger) }}</textarea>
-            <div class="invalid-feedback @error('imminent_danger') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('imminent_danger')
                     {{ $message }}
                 @enderror
             </div>
         </div>
-        <div class="form-group">
+        <div>
             <label for="concerns">Bedenken</label>
             <textarea class="form-control @error('concerns') is-invalid @enderror" id="concerns" name="concerns" placeholder="Angaben zu den Bedenken">{{ old('concerns', optional($constructionReport)->concerns) }}</textarea>
-            <div class="invalid-feedback @error('concerns') d-block @enderror">
+            <div class="invalid-feedback">
                 @error('concerns')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cloud"></use>
-            </svg>
-            Wetter
-        </p>
-        <p class="text-muted">
-            Angaben zum Wetter sowie Temperaturen vor Ort.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Wetter
+        <div class="q-form-section__desc">Angaben zum Wetter sowie Temperaturen vor Ort.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <div>
-                <label for="priority">Wetter</label>
-            </div>
-            <div class="btn-group btn-group-toggle @error('weather') is-invalid @enderror" data-toggle="buttons">
-                <label class="btn btn-outline-secondary @if(old('weather', optional($constructionReport)->weather) == 'sunny') active @endif">
-                    <input type="radio" name="weather" id="sunny" value="sunny" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'sunny') checked @endif> sonnig
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($constructionReport)->weather) == 'cloudy') active @endif">
-                    <input type="radio" name="weather" id="cloudy" value="cloudy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'cloudy') checked @endif> bewölkt
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($constructionReport)->weather) == 'rainy') active @endif">
-                    <input type="radio" name="weather" id="rainy" value="rainy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'rainy') checked @endif> regnerisch
-                </label>
-                <label class="btn btn-outline-secondary @if(old('weather', optional($constructionReport)->weather) == 'snowy') active @endif">
-                    <input type="radio" name="weather" id="snowy" value="snowy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'snowy') checked @endif> Schnee
-                </label>
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
+            <label>Wetter</label>
+            <div class="btn-group @error('weather') is-invalid @enderror">
+                <input type="radio" class="btn-check" name="weather" id="weather-sunny" value="sunny" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'sunny') checked @endif>
+                <label class="btn btn-outline-secondary q-seg--amber" for="weather-sunny">sonnig</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-cloudy" value="cloudy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'cloudy') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-cloudy">bewölkt</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-rainy" value="rainy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'rainy') checked @endif>
+                <label class="btn btn-outline-secondary q-seg--sky" for="weather-rainy">regnerisch</label>
+                <input type="radio" class="btn-check" name="weather" id="weather-snowy" value="snowy" autocomplete="off" @if(old('weather', optional($constructionReport)->weather) == 'snowy') checked @endif>
+                <label class="btn btn-outline-secondary" for="weather-snowy">Schnee</label>
             </div>
             <div class="invalid-feedback @error('weather') d-block @enderror">
                 @error('weather')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>
-        <div class="form-group">
-            <label for="minimum_temperature">Minimale Temperatur</label>
-            <div class="input-group">
-                <input type="number" step="1" class="form-control @error('minimum_temperature') is-invalid @enderror" id="minimum_temperature" name="minimum_temperature" placeholder="18" value="{{ old('minimum_temperature', optional($constructionReport)->minimum_temperature) }}" required />
-                <div class="input-group-append">
+
+        <div class="q-form__row q-form__row--2 q-form__row--nostack">
+            <div>
+                <label for="minimum_temperature">Minimale Temperatur</label>
+                <div class="input-group has-validation">
+                    <input type="number" step="1" class="form-control @error('minimum_temperature') is-invalid @enderror" id="minimum_temperature" name="minimum_temperature" placeholder="18" value="{{ old('minimum_temperature', optional($constructionReport)->minimum_temperature) }}" required />
                     <span class="input-group-text">°C</span>
-                </div>
-                <div class="invalid-feedback">
-                    @error('minimum_temperature')
-                    {{ $message }}
-                    @else
-                        Gib bitte die minimale Temperatur an.
+                    <div class="invalid-feedback">
+                        @error('minimum_temperature')
+                            {{ $message }}
+                        @else
+                            Gib bitte die minimale Temperatur an.
                         @enderror
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="maximum_temperature">Maximale Temperatur</label>
-            <div class="input-group">
-                <input type="number" step="1" class="form-control @error('maximum_temperature') is-invalid @enderror" id="maximum_temperature" name="maximum_temperature" placeholder="22" value="{{ old('maximum_temperature', optional($constructionReport)->maximum_temperature) }}" required />
-                <div class="input-group-append">
+            <div>
+                <label for="maximum_temperature">Maximale Temperatur</label>
+                <div class="input-group has-validation">
+                    <input type="number" step="1" class="form-control @error('maximum_temperature') is-invalid @enderror" id="maximum_temperature" name="maximum_temperature" placeholder="22" value="{{ old('maximum_temperature', optional($constructionReport)->maximum_temperature) }}" required />
                     <span class="input-group-text">°C</span>
+                    <div class="invalid-feedback">
+                        @error('maximum_temperature')
+                            {{ $message }}
+                        @else
+                            Gib bitte die maximale Temperatur an.
+                        @enderror
+                    </div>
                 </div>
-                <div class="invalid-feedback">
-                    @error('maximum_temperature')
-                    {{ $message }}
-                    @else
-                        Gib bitte die maximale Temperatur an.
-                    @enderror
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#message-circle"></use>
-            </svg>
-            Leistungsfortschritt
-        </p>
-        <p class="text-muted">
-            Leistungsfortschritt der Arbeiten.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Leistungsfortschritt
+        <div class="q-form-section__desc">Leistungsfortschritt der Arbeiten.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <label for="comment">
-                Leistungsfortschritt
-            </label>
-            <markdown-editor name="comment" placeholder="Leistungsfortschritt"  value="{{ old('comment', optional($constructionReport)->comment) }}" v-cloak></markdown-editor>
-            <a class="text-muted d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#help-circle"></use>
-                </svg>
-                Hilfe zu Markdown
-            </a>
-            <div class="invalid-feedback @error('comment') d-block @enderror">
-                @error('comment')
+    <div class="q-form-section__body">
+        <markdown-editor name="comment" placeholder="Leistungsfortschritt" value="{{ old('comment', optional($constructionReport)->comment) }}" :employees="{{ $employees }}" v-cloak></markdown-editor>
+        <a class="q-link--quiet d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
+            <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
+            Hilfe zu Markdown
+        </a>
+        <div class="invalid-feedback @error('comment') d-block @enderror">
+            @error('comment')
                 {{ $message }}
-                @enderror
-            </div>
+            @enderror
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#paperclip"></use>
-            </svg>
-            Anhänge
-        </p>
-        <p class="text-muted">
-            Dem Bautagesbericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.
-        </p>
-        <p class="text-muted">
-            Der Dateiname von neu hinzugefügten Anhängen kann geändert werden, indem der Text markiert und ein neuer Name eingegeben wird.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anhänge
+        <div class="q-form-section__desc">Dem Bautagesbericht zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="form-group">
-            <label>
-                Anhänge
-            </label>
-            <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
-            <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
-                @error('remove_attachments')
+    <div class="q-form-section__body">
+        <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
+        <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
+            @error('remove_attachments')
                 {{ $message }}
-                @enderror
-                @error('remove_attachments.*')
+            @enderror
+            @error('remove_attachments.*')
                 {{ $message }}
-                @enderror
-                @error('new_attachments')
+            @enderror
+            @error('new_attachments')
                 {{ $message }}
-                @enderror
-                @error('new_attachments.*')
+            @enderror
+            @error('new_attachments.*')
                 {{ $message }}
-                @enderror
-            </div>
+            @enderror
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#send"></use>
-            </svg>
-            Anfrage zur Unterschrift senden
-        </p>
-        <p class="text-muted">
-            Bei Aktivierung der Schaltfläche kann nach dem Speichern direkt eine Anfrage zur Unterschrift per Email versendet werden.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Anfrage zur Unterschrift senden
+        <div class="q-form-section__desc">Bei Aktivierung kann nach dem Speichern direkt eine Anfrage zur Unterschrift per Email versendet werden.</div>
     </div>
-
-    <div class="col-md-8">
-        <div class="alert alert-info" role="alert">
-            <div class="d-inline-flex align-items-center">
-                <svg class="icon icon-24 mr-2">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#info"></use>
-                </svg>
-                Die Email Adresse kann im nächsten Schritt angegeben werden.
-            </div>
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div class="q-banner q-banner--info">
+            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
+            <span>Die Email Adresse kann im nächsten Schritt angegeben werden.</span>
         </div>
-        <div class="form-group">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
-                <label class="custom-control-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
+        <div>
+            <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input @error('send_signature_request') is-invalid @enderror" name="send_signature_request" id="send_signature_request" value="true">
+                <label class="form-check-label" for="send_signature_request">Anfrage zur Unterschrift nach dem Speichern senden.</label>
             </div>
             <div class="invalid-feedback @error('send_signature_request') d-block @enderror">
                 @error('send_signature_request')
-                {{ $message }}
+                    {{ $message }}
                 @enderror
             </div>
         </div>

@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 
-class TaskComment extends Model implements HasMedia
+class TaskComment extends Model implements HasMedia, FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use HasAttachments;
@@ -24,6 +27,8 @@ class TaskComment extends Model implements HasMedia
     ];
 
     protected $filterFields = [];
+
+    protected $filterKeys = [];
 
     protected $orderKeys = [
         'default' => ['created_at'],
@@ -54,6 +59,27 @@ class TaskComment extends Model implements HasMedia
                     $taskComment->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $taskComment = TaskComment::with('task.project')
+            ->with('employee.person')
+            ->find($id);
+
+        if (!$taskComment || Auth::user()->cannot('view', $taskComment)) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            TaskComment::class,
+            'Kommentar',
+            $taskComment->id,
+            "{$taskComment->employee->person->name} in Aufgabe {$taskComment->task->name} (Projekt {$taskComment->task->project->name})",
+            route('tasks.show', $taskComment->task),
+            $taskComment->created_at,
+            $taskComment->updated_at,
+        );
     }
 
     public function task()

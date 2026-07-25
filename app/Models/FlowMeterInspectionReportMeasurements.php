@@ -2,27 +2,14 @@
 
 namespace App\Models;
 
-use App\Support\GlobalSearch\FiltersGlobalSearch;
-use App\Support\GlobalSearch\GlobalSearchResult;
-use App\Traits\FiltersLatestChanges;
-use App\Traits\FiltersPermissions;
-use App\Traits\FiltersSearch;
-use App\Traits\HasAttachmentsAndSignatureRequests;
-use App\Traits\HasDownloadRequest;
-use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\MediaLibrary\HasMedia;
 
 class FlowMeterInspectionReportMeasurements extends Model
 {
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'q_percent' => 'int',
         'q_value' => 'double',
         'started_at' => 'datetime',
@@ -39,6 +26,7 @@ class FlowMeterInspectionReportMeasurements extends Model
         'measurement_difference' => 'double',
         'q_value_average_mobile' => 'double'
     ];
+    }
 
     protected $fillable = [
         'q_percent',

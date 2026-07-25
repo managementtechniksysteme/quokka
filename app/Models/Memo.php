@@ -9,24 +9,29 @@ use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 
 class Memo extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use HasAttachments;
     use FiltersPermissions;
     use FiltersSearch;
     use OrdersResults;
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'number' => 'int',
         'draft' => 'bool',
         'meeting_held_on' => 'date',
         'next_meeting_on' => 'date',
     ];
+    }
 
     protected $fillable = [
         'number', 'draft', 'title', 'meeting_held_on', 'next_meeting_on', 'comment', 'project_id',
@@ -52,7 +57,7 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
     ];
 
     protected $filterKeys = [
-        'hat:folgetermin' => ['raw' => ['next_meeting_on >= curdate()', 'next_meeting_on < curdate() or next_meeting_on is null']],
+        'hat:folgetermin' => ['raw' => ['next_meeting_on >= CURRENT_DATE', 'next_meeting_on < CURRENT_DATE or next_meeting_on is null']],
         'nummer:(\d)' => ['number', '{value}'],
         'n:(\d)' => ['number', '{value}'],
         'ist:entwurf' => ['draft', true],
@@ -118,6 +123,27 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
                     $memo->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $memo = Memo::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$memo) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Memo::class,
+            'Aktenvermerk',
+            $memo->id,
+            "$memo->title (Projekt {$memo->project->name})",
+            route('memos.show', $memo),
+            $memo->created_at,
+            $memo->updated_at,
+        );
     }
 
     public function project()

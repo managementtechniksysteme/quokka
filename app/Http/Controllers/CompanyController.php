@@ -57,6 +57,7 @@ class CompanyController extends Controller
     {
         $addresses = Address::order()->get();
         $people = Person::whereNull('company_id')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('company.create')
             ->with('company', null)
@@ -64,7 +65,8 @@ class CompanyController extends Controller
             ->with('currentOperatorAddress', null)
             ->with('addresses', $addresses->toJson())
             ->with('currentContactPerson', null)
-            ->with('people', $people->toJson());
+            ->with('people', $people->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -149,7 +151,7 @@ class CompanyController extends Controller
 
             case 'projects':
                 if(Auth::user()->cannot('viewAny', Project::class)) {
-                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                    return redirect()->route('companies.show', [$company, 'tab' => 'overview']);
                 }
 
                 $projects = Project::where('company_id', $company->id)
@@ -176,7 +178,7 @@ class CompanyController extends Controller
 
             case 'people':
                 if(Auth::user()->cannot('viewAny', Person::class)) {
-                    return redirect()->route('company.show', [$company, 'tab' => 'overview']);
+                    return redirect()->route('companies.show', [$company, 'tab' => 'overview']);
                 }
 
                 $people = Person::where('company_id', $company->id)
@@ -205,6 +207,7 @@ class CompanyController extends Controller
 
         $currentContactPerson = $company->contactPerson;
         $people = Person::where('company_id', $company->id)->orWhereNull('company_id')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('company.edit')
             ->with(compact('company'))
@@ -212,7 +215,8 @@ class CompanyController extends Controller
             ->with('currentOperatorAddress', $currentOperatorAddress)
             ->with('addresses', $addresses->toJson())
             ->with('currentContactPerson', $currentContactPerson)
-            ->with('people', $people->toJson());
+            ->with('people', $people->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**

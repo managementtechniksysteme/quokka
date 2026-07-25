@@ -1,21 +1,12 @@
 @csrf
 
-<div class="row">
-    <div class="col-md-4">
-        <p class="d-inline-flex align-items-center mb-1">
-            <svg class="icon icon-16 mr-2">
-                <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#cpu"></use>
-            </svg>
-            Leistungsdetails
-        </p>
-        <p class="text-muted">
-            Die Details der Leistung.
-        </p>
+<div class="q-form-section">
+    <div class="q-form-section__head">
+        Leistungsdetails
+        <div class="q-form-section__desc">Die Details der Leistung.</div>
     </div>
-
-    <div class="col-md-8">
-
-        <div class="form-group">
+    <div class="q-form-section__body d-flex flex-column gap-3">
+        <div>
             <label for="name">Name</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Techniker" value="{{ old('name', optional($service)->name) }}" required />
             <div class="invalid-feedback">
@@ -27,18 +18,16 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div>
             <label for="description">Beschreibung</label>
             <input type="text" class="form-control @error('description') is-invalid @enderror" id="description" name="description" placeholder="Techniker Leistung" value="{{ old('description', optional($service)->description) }}" required />
             <div class="invalid-feedback">
-                @error('name')
+                @error('description')
                     {{ $message }}
                 @else
                     Gib bitte die Beschreibung der Leistung ein.
                 @enderror
             </div>
         </div>
-
     </div>
-
 </div>

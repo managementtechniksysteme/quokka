@@ -5,24 +5,29 @@ namespace App\Models;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Logbook extends Model
 {
+    use HasFactory;
     use FiltersPermissions;
     use FiltersSearch;
     use OrdersResults;
 
     protected $table = 'logbook';
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'driven_on' => 'date',
         'start_kilometres' => 'int',
         'end_kilometres' => 'int',
         'driven_kilometres' => 'int',
         'litres_refuelled' => 'int',
     ];
+    }
 
     protected $fillable = [
         'driven_on',

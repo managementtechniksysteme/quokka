@@ -15,7 +15,7 @@ class ProjectControllingIndexRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'project' => 'sometimes|required_with:start,end|exists:projects,id',
+            'project' => 'required_with:start,end|exists:projects,id',
             'start' => 'date|nullable',
             'end' => 'date|nullable',
         ];

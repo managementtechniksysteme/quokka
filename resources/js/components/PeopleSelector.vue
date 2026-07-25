@@ -1,16 +1,26 @@
 <template>
     <div>
-        <v-select :options="unselected" label="name" placeholder="Person auswählen" value="" :selectOnTab="true" @input="addSelected">
+        <v-select :options="unselected" label="name" placeholder="Person auswählen" :modelValue="null" :selectOnTab="true" @update:modelValue="addSelected">
             <template v-slot:no-options>Keine passenden Einträge.</template>
+            <template v-slot:option="person">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)" v-if="person.avatar">{{ person.avatar.initials }}</span>
+                    <span>{{ person.name }}</span>
+                </div>
+            </template>
         </v-select>
         <div v-if="selected.length" class="container-fluid mt-2">
             <div class="row py-2 align-items-center hover-highlight" v-for="person in selected">
                 <input v-if="selected.length" type="hidden" :id="person.id" :name="inputname" :value="person.id" />
-                <div class="col">
-                    {{person.name}}
+                <div class="col d-flex align-items-center gap-2">
+                    <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)" v-if="person.avatar">{{ person.avatar.initials }}</span>
+                    <span>{{ person.name }}</span>
                 </div>
-                <div class="col-auto ml-auto">
-                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeSelected(person)">Entfernen</button>
+                <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-sm btn-outline-danger p-1 d-inline-flex align-items-center gap-2" @click="removeSelected(person)">
+                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#trash"></use></svg>
+                        <span class="d-none d-md-inline">Entfernen</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -47,6 +57,17 @@
                 return people.filter(person => {
                     return person.id !== value.id;
                 });
+            },
+
+            avatarClass(person) {
+                return person.avatar && !person.avatar.hex ? 'q-avatar--' + person.avatar.colour : '';
+            },
+
+            avatarStyle(person) {
+                if (person.avatar && person.avatar.hex) {
+                    return { background: 'color-mix(in srgb, ' + person.avatar.hex + ' 20%, transparent)', color: person.avatar.hex };
+                }
+                return {};
             },
 
             sortArrayByName(people) {

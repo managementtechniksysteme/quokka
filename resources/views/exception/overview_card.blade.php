@@ -1,33 +1,32 @@
-<div class="overview-card rounded">
-    <div class="mw-100 d-flex flex-grow-1 p-3 align-items-center">
-        <div class="mw-100 flex-grow-1 h-100 position-relative">
-            <a class="stretched-link outline-none" href="{{ route('exceptions.show', $exception['uuid']) }}"></a>
-            <div class="mw-100 text-truncate">
-                {{ $exception['uuid'] }}
-            </div>
-            <div class="text-muted d-inline-flex align-items-center">
-                <svg class="icon icon-16 mr-1">
-                    <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#calendar"></use>
-                </svg>
+<div class="q-row">
+    <a class="stretched-link outline-none" href="{{ route('exceptions.show', $exception['uuid']) }}"></a>
+
+    <span class="q-avatar">
+        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#exclamation-triangle"></use></svg>
+    </span>
+
+    <div class="q-row__main">
+        <div class="q-row__title text-truncate q-mono">{{ $exception['uuid'] }}</div>
+        <div class="q-meta">
+            <span class="q-chip">
+                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar"></use></svg>
                 {{ $exception['created_at']->format('d.m.Y H:i:s') }}
-            </div>
+            </span>
         </div>
-
-        <div class="d-none d-md-block ml-2">
-            @can('tools-deleteexceptions')
-                <form action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center">
-                        <svg class="icon icon-16 mr-2">
-                            <use xlink:href="{{ asset('svg/feather-sprite.svg') }}#trash-2"></use>
-                        </svg>
-                        Entfernen
-                    </button>
-                </form>
-            @endcan
-        </div>
-
     </div>
+
+    {{-- Desktop only: exceptions.show already has its own delete button, same
+         as every other model's detail page — mobile defers to it via the
+         chevron rather than duplicating the action here (2026-07-21). --}}
+    @can('tools-deleteexceptions')
+        <form class="q-row__action d-none d-md-block" action="{{ route('exceptions.destroy', $exception['uuid']) }}" method="post">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="q-kebab q-kebab--danger" title="Entfernen">
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#trash"></use></svg>
+            </button>
+        </form>
+    @endcan
+
+    <svg class="icon-bs icon-16 q-row__chevron d-md-none"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
 </div>

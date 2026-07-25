@@ -35,7 +35,9 @@ class ProjectController extends Controller
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
+            'showDownload' => 'createPdf',
             'download' => 'createPdf',
+            'downloadList' => 'downloadList',
         ]);
     }
 
@@ -100,13 +102,15 @@ class ProjectController extends Controller
         $companies = Company::order()->get();
 
         $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('project.create')
             ->with('project', null)
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson())
-            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -123,7 +127,7 @@ class ProjectController extends Controller
 
         if(isset($validatedData['ends_on'])) {
             $project->is_pre_execution = false;
-            $project->financial_costs = null;
+            $project->billed_financial_costs = null;
         }
 
         $project->save();
@@ -365,13 +369,15 @@ class ProjectController extends Controller
         $companies = Company::order()->get();
 
         $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('project.edit')
             ->with(compact('project'))
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson())
-            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -393,7 +399,8 @@ class ProjectController extends Controller
         }
 
         if($validatedData['include_in_finances'] || $project->ends_on !== null) {
-            $project->financial_costs = null;
+            $project->billed_financial_costs = null;
+            $project->save();
         }
 
         return redirect()->route('projects.show', $project)->with('success', 'Das Projekt wurde erfolgreich bearbeitet.');
@@ -417,7 +424,7 @@ class ProjectController extends Controller
 
     public function showDownload(Project $project)
     {
-        $employees = Person::has('employee')->order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
         $services = Service::order()->get();
 
         return view('project.download')->with(compact('project'))->with(compact('employees'))->with(compact('services'));

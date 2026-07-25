@@ -1,19 +1,22 @@
 <template>
     <div>
-        <VueSignaturePad class="bg-white border" :width="width" :height="height" ref="signaturePad" :options="{ onBegin, onEnd }" />
+        <vue-signature-pad class="q-signpad" :custom-style="customStyle" ref="signaturePad" :options="{ onBegin, onEnd }" />
         <input v-if="signature" type="hidden" name="signature" id="signature" :value="signature" />
     </div>
 </template>
 
 <script>
+    import VueSignaturePad from 'vue3-signature-pad';
+
     export default {
-        name: 'SignaturePad',
+        name: 'SignaturePadWrapper',
+
+        components: { VueSignaturePad },
 
         data() {
             return {
                 signature: null,
-                width: this.width ? this.width : "100%",
-                height: this.width ? this.width : "20em",
+                customStyle: { width: '100%', height: '20em' },
             }
         },
 

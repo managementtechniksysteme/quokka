@@ -26,6 +26,10 @@ class EmployeeController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
             'impersonate' => 'impersonate',
+            'grantAccess' => 'update',
+            'denyAccess' => 'update',
+            'editPermissions' => 'update',
+            'updatePermissions' => 'update',
         ]);
     }
 
@@ -159,7 +163,7 @@ class EmployeeController extends Controller
                 $request->password,
                 UserSettings::avatarColourFromHex($request->avatar_colour)['label']
             );
-        } else {
+        } elseif ($user) {
             if ($request->filled('username')) {
                 $user->update([
                     'username' => $request->username,
@@ -203,7 +207,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $user = $employee->user;
-        $settings = $employee->user->settings;
+        $settings = $user?->settings;
 
         if ($settings) {
             $settings->delete();

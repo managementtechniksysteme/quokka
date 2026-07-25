@@ -22,6 +22,7 @@ use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
+use App\Http\Controllers\CrossReferenceController;
 use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
@@ -41,22 +42,20 @@ use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QrScanController;
-use App\Http\Controllers\QuokkaMobileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SentEmailController;
 use App\Http\Controllers\ServiceReportController;
+use App\Http\Controllers\ShareTargetController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WageServiceController;
 use App\Http\Controllers\WebpushController;
-use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -64,10 +63,8 @@ Auth::routes([
     'register' => false,
 ]);
 
-Route::get('/offline', [OfflineController::class, 'index'])->name('offline.index');
-
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+    Route::get('/', fn () => redirect()->route('login'))->name('welcome');
 
     Route::get('/otp', [SecondFactorController::class, 'index'])->name('otp');
     Route::post('/otp', [LoginController::class, 'loginSecondFactorOneTimePassword']);
@@ -213,6 +210,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::get('/notes/list', [NoteController::class, 'downloadList'])->name('notes.download-list');
     Route::resource('notes', NoteController::class);
+    Route::post('/share-target', [ShareTargetController::class, 'receive'])->name('share-target');
     Route::get('/notes/{note}/download', [NoteController::class, 'download'])->name('notes.download');
     Route::get('/notes/{note}/email', [NoteController::class, 'showEmail'])->name('notes.email');
     Route::post('/notes/{note}/email', [NoteController::class, 'email']);
@@ -231,11 +229,12 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::resource('project-controlling', ProjectControllingController::class)->only(['index']);
 
-    Route::get('/quokka-mobile', [QuokkaMobileController::class, 'index'])->name('quokka-mobile.index');
-
     Route::resource('roles', RoleController::class);
 
     Route::resource('search', SearchController::class)->only(['index']);
+
+    Route::get('/cross-references', [CrossReferenceController::class, 'search'])->name('cross-references.search');
+    Route::post('/cross-references/resolve', [CrossReferenceController::class, 'resolve'])->name('cross-references.resolve');
 
     Route::get('/service-reports/list', [ServiceReportController::class, 'downloadList'])->name('service-reports.download-list');
     Route::get('/service-reports/check-overlap', [ServiceReportController::class, 'checkOverlap'])->name('service-reports.check-overlap');

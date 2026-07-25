@@ -29,11 +29,15 @@ class ConstructionReportShowCommand extends SpotlightCommand
 
     public function searchConstructionReport(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return ConstructionReport::filterPermissions()
             ->filterSearch($query)
             ->order()
             ->with('project')
-            ->get()
+            ->limit(15)->get()
             ->map(function (ConstructionReport $constructionReport) {
                 return new SpotlightSearchResult(
                     $constructionReport->id,

@@ -5,24 +5,29 @@ namespace App\Models;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Accounting extends Model
 {
+    use HasFactory;
     use FiltersPermissions;
     use FiltersSearch;
     use OrdersResults;
 
     protected $table = 'accounting';
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
         'service_provided_on' => 'date',
         'service_provided_started_at' => 'datetime:H:i',
         'service_provided_ended_at' => 'datetime:H:i',
         'amount' => 'double',
     ];
+    }
 
     protected $fillable = [
         'service_provided_on',

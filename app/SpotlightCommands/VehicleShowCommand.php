@@ -33,9 +33,13 @@ class VehicleShowCommand extends SpotlightCommand
 
     public function searchVehicle(string $query): Collection
     {
+        if (blank($query)) {
+            return collect();
+        }
+
         return Vehicle::filterSearch($query)
             ->order()
-            ->get()
+            ->limit(15)->get()
             ->map(function (Vehicle $vehicle) {
                 return new SpotlightSearchResult(
                     $vehicle->id,

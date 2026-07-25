@@ -6,6 +6,7 @@ use App\Http\Requests\InterimInvoiceStoreRequest;
 use App\Http\Requests\InterimInvoiceUpdateRequest;
 use App\Models\ApplicationSettings;
 use App\Models\InterimInvoice;
+use App\Models\Person;
 use App\Models\Project;
 
 class InterimInvoiceController extends Controller
@@ -23,11 +24,13 @@ class InterimInvoiceController extends Controller
     public function create(Project $project)
     {
         $currencyUnit = ApplicationSettings::get()->currency_unit;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('interim_invoice.create')
             ->with(compact('project'))
             ->with('interimInvoice', null)
-            ->with(compact('currencyUnit'));
+            ->with(compact('currencyUnit'))
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -71,11 +74,13 @@ class InterimInvoiceController extends Controller
         $interimInvoice->load('project');
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('interim_invoice.edit')
             ->with(compact('project'))
             ->with(compact('interimInvoice'))
-            ->with(compact('currencyUnit'));
+            ->with(compact('currencyUnit'))
+            ->with('employees', $employees->toJson());
     }
 
     /**

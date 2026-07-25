@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class TaskComment extends Model implements HasMedia, FiltersGlobalSearch
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use HasAttachments;

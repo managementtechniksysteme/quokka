@@ -11,6 +11,7 @@ use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -21,6 +22,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
@@ -248,8 +250,8 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
         'default' => ['inspected_on'],
         'inspected_on-asc' => ['inspected_on'],
         'inspected_on-desc' => [['inspected_on', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), inspected_on'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), inspected_on'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, inspected_on'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, inspected_on'],
     ];
 
     protected $permissionFilters = [

@@ -10,6 +10,7 @@ use App\Traits\HasDownloadRequest;
 use App\Traits\HasSignatureRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -20,6 +21,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use HasSignatureRequest;

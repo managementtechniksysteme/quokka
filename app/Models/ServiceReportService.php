@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class ServiceReportService extends Model
 {
+    use HasFactory;
     use OrdersResults;
 
 

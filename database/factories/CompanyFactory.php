@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,5 +21,12 @@ class CompanyFactory extends Factory
             'website' => $this->faker->optional()->url,
             'comment' => $this->faker->optional()->realText(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Company $company) {
+            $company->address()->attach(Address::factory()->create(), ['address_type' => 'company']);
+        });
     }
 }

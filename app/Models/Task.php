@@ -10,6 +10,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class Task extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;

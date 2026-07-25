@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -18,6 +19,7 @@ class Note extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersLatestChanges;
     use HasAttachments;
     use FiltersSearch;
+    use HasFactory;
     use OrdersResults;
 
     protected $fillable = [

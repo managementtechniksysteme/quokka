@@ -11,6 +11,7 @@ use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ use Spatie\MediaLibrary\HasMedia;
 
 class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
 {
+    use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
     use FiltersPermissions;
@@ -101,8 +103,8 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         'services_provided_on-desc' => [['services_provided_on', 'desc']],
         'number-asc' => ['number'],
         'number-desc' => [['number', 'desc']],
-        'status-asc' => ['raw' => 'field(status, "new", "signed", "finished"), number'],
-        'status-desc' => ['raw' => 'field(status, "finished", "signed", "new"), number'],
+        'status-asc' => ['raw' => 'case status when "new" then 1 when "signed" then 2 when "finished" then 3 end, number'],
+        'status-desc' => ['raw' => 'case status when "finished" then 1 when "signed" then 2 when "new" then 3 end, number'],
     ];
 
     protected $permissionFilters = [

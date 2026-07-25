@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Accounting extends Model
 {
+    use HasFactory;
     use FiltersPermissions;
     use FiltersSearch;
     use OrdersResults;

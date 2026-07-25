@@ -2,18 +2,6 @@
 
 @php use Illuminate\Support\Str; @endphp
 
-{{-- Mobile: reached from help/index's own list, same list→detail
-     relationship as the help/topic pages — promote the page's own title
-     into the app bar (back chevron to help.index) instead of the generic
-     "Hilfe" section label, matching the same fix already applied there
-     (2026-07-22, user request). --}}
-@section('mobile-detail-bar')
-    <a href="{{ route('help.index') }}" class="q-appbar__btn" aria-label="Zurück zu Hilfe">
-        <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
-    </a>
-    <span class="q-appbar__title">Versionshinweise</span>
-@endsection
-
 @section('content')
     <div class="q-container q-container--narrow">
         <div class="q-page-head d-none d-md-flex">

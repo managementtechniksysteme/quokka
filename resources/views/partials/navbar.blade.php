@@ -583,7 +583,8 @@
             'qr-scan.*' => ['QR-Code scannen', 'camera'],
             'exceptions.*' => ['Fehlerdateien', 'exclamation-triangle'],
             'reauthenticate' => ['Sicherheitsprüfung', 'key'],
-            'help.*|changelog.*' => ['Hilfe', 'question-circle'],
+            'help.*' => ['Hilfe', 'question-circle'],
+            'changelog.*' => ['Versionshinweise', 'info-circle'],
             'search.*' => ['Suche', 'search'],
             // No entries for login/otp/password.* (2026-07-24) — a guest
             // hasn't navigated anywhere yet, so there's no "section" to

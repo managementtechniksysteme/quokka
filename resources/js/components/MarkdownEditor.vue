@@ -79,6 +79,7 @@
                 mentionMarks: [],
                 crossReferenceMarks: [],
                 crossReferenceCache: {},
+                crossReferenceAbortController: null,
                 configuration: this.configs ?? {
                     placeholder: this.placeholder,
                     maxHeight: '300px',
@@ -391,7 +392,21 @@
                     return;
                 }
 
-                axios.get('/cross-references', { params: { query: word.slice(1) } })
+                // Without this, each debounced keystroke fires its own
+                // request without cancelling the last one -- typing a normal
+                // search term fires several overlapping searches (each
+                // running the full cross-model GlobalSearch query) that pile
+                // up competing for server workers, and can resolve out of
+                // order. Abort whatever's still in flight before starting
+                // the next one, so only the latest keystroke's request ever
+                // completes.
+                this.crossReferenceAbortController?.abort();
+                this.crossReferenceAbortController = new AbortController();
+
+                axios.get('/cross-references', {
+                    params: { query: word.slice(1) },
+                    signal: this.crossReferenceAbortController.signal,
+                })
                     .then((response) => {
                         const list = response.data.map((reference) => ({
                             text: `#${reference.token} `,
@@ -409,7 +424,15 @@
                             to: { line: cursor.line, ch: cursor.ch },
                         });
                     })
-                    .catch(() => callback(null));
+                    .catch((error) => {
+                        // A cancelled (superseded) request has nothing useful
+                        // to report -- the request that aborted it already
+                        // owns showing (or not showing) results, so leave the
+                        // dropdown alone rather than flashing it to empty.
+                        if (axios.isCancel(error)) return;
+
+                        callback(null);
+                    });
             },
 
             // Mirrors insertMention: inserts the token and marks it as a chip

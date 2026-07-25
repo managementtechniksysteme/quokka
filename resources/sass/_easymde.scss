@@ -150,3 +150,7 @@
 
     .icon-bs { color: var(--q-muted); }
 }
+
+// hover matches .q-link--quiet (the "Hilfe zu Markdown" link) for consistency
+.q-crossref-chip:hover { color: var(--q-accent); text-decoration: underline; }
+.q-crossref-chip:hover .icon-bs { color: var(--q-accent); }

@@ -1,4 +1,5 @@
 @php
+    use \App\Models\Note;
     use \App\Models\Person;
     use \App\Models\Project;
 @endphp
@@ -21,6 +22,10 @@
 
 @if (old('notified_ids'))
     @php $currentNotifiedPeople = Person::order()->find(old('notified_ids'))->toJson(); @endphp
+@endif
+
+@if (old('note_id') && ($templateNote = Note::find(old('note_id'))))
+    @php $currentAttachments = $templateNote->attachmentsWithUrl()->toJson(); @endphp
 @endif
 
 @csrf
@@ -183,6 +188,9 @@
         <div class="q-form-section__desc">Dem Aktenvermerk zugeordnete Anhänge. Erlaubt sind Dateien im Bildformat oder PDF Dokumente.</div>
     </div>
     <div class="q-form-section__body">
+        @if ($noteId = old('note_id', optional($note ?? null)->id))
+            <input type="hidden" name="note_id" value="{{ $noteId }}">
+        @endif
         <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
         <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
             @error('remove_attachments')

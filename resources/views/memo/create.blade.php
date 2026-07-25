@@ -22,7 +22,7 @@
         </div>
 
         <form class="q-form needs-validation" enctype="multipart/form-data" action="{{ route('memos.store') }}" method="post" novalidate>
-            @include('memo.fields', ['memo' => $memo, 'currentProject' => $currentProject, 'projects' => $projects, 'currentEmployeeComposer' => $currentEmployeeComposer, 'employees' => $employees, 'currentPersonRecipient' => $currentPersonRecipient, 'currentPresentPeople' => $currentPresentPeople, 'currentNotifiedPeople' => $currentNotifiedPeople, 'people' => $people, 'currentAttachments' => $currentAttachments])
+            @include('memo.fields', ['memo' => $memo, 'note' => $note, 'currentProject' => $currentProject, 'projects' => $projects, 'currentEmployeeComposer' => $currentEmployeeComposer, 'employees' => $employees, 'currentPersonRecipient' => $currentPersonRecipient, 'currentPresentPeople' => $currentPresentPeople, 'currentNotifiedPeople' => $currentNotifiedPeople, 'people' => $people, 'currentAttachments' => $currentAttachments])
 
             <div class="q-form-actions q-form-actions--solo-mobile">
                 <a class="btn q-btn d-none d-md-inline-flex align-items-center gap-2" href="{{ route('memos.index') }}"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x"></use></svg>Abbrechen</a>

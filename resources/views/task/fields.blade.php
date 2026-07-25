@@ -1,4 +1,5 @@
 @php
+    use \App\Models\Note;
     use \App\Models\Person;
     use \App\Models\Project;
 @endphp
@@ -13,6 +14,10 @@
 
 @if (old('involved_ids'))
     @php $currentInvolvedEmployees = Person::order()->with('employee.user')->find(old('involved_ids'))->toJson(); @endphp
+@endif
+
+@if (old('note_id') && ($templateNote = Note::find(old('note_id'))))
+    @php $currentAttachments = $templateNote->attachmentsWithUrl()->toJson(); @endphp
 @endif
 
 @csrf
@@ -221,6 +226,9 @@
         </div>
     </div>
     <div class="q-form-section__body">
+        @if ($noteId = old('note_id', optional($note ?? null)->id))
+            <input type="hidden" name="note_id" value="{{ $noteId }}">
+        @endif
         <attachments-selector accept="image/*, application/pdf" :current_attachments="{{ $currentAttachments ?? '[]' }}" v-cloak></attachments-selector>
         <div class="invalid-feedback @error('remove_attachments') d-block @enderror @error('remove_attachments.*') d-block @enderror @error('new_attachments') d-block @enderror @error('new_attachments.*') d-block @enderror">
             @error('remove_attachments')

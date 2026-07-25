@@ -73,6 +73,7 @@ class TaskController extends Controller
         $currentProject = null;
         $currentResponsibleEmployee = null;
         $currentInvolvedEmployees = null;
+        $currentAttachments = null;
 
         $validatedData = $request->validated();
 
@@ -118,6 +119,8 @@ class TaskController extends Controller
                'name' => $templateNote->title_string,
                'comment' => $templateNote->comment,
             ]);
+
+            $currentAttachments = $templateNote->attachmentsWithUrl();
         }
         elseif (isset($validatedData['project'])) {
             $currentProject = Project::find($validatedData['project']);
@@ -135,12 +138,13 @@ class TaskController extends Controller
 
         return view('task.create')
             ->with('task', $templateTask)
+            ->with('note', $templateNote)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentResponsibleEmployee', optional($currentResponsibleEmployee)->toJson())
             ->with('currentInvolvedEmployees', optional($currentInvolvedEmployees)->toJson())
             ->with('employees', $employees->toJson())
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', optional($currentAttachments)->toJson());
     }
 
     public function store(TaskStoreRequest $request): RedirectResponse
@@ -168,6 +172,16 @@ class TaskController extends Controller
             }
 
             $task->involvedEmployees()->attach($employees, ['employee_type' => 'involved']);
+        }
+
+        if ($request->filled('note_id')) {
+            $templateNote = Note::find($request->note_id);
+
+            if ($templateNote && Auth::user()->can('view', $templateNote)) {
+                $templateNote->attachments()
+                    ->reject(fn ($attachment) => in_array($attachment->id, $request->remove_attachments ?? []))
+                    ->each(fn ($attachment) => $attachment->copy($task, 'attachments'));
+            }
         }
 
         if ($request->new_attachments) {

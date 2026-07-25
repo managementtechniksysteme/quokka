@@ -18,6 +18,26 @@
 
         <div class="mt-2 mt-md-4">
     @markdown
+    ### v0.5.0-dcccaa2 (25.07.2026)
+    * Das größte Update seit Bestehen von Quokka: Die gesamte Anwendung wurde am Desktop grundlegend überarbeitet,
+      für ein moderneres und einheitlicheres Erscheinungsbild. Die Überarbeitung wurde durchgehend in allen
+      Bereichen umgesetzt, einschließlich Emails.
+    * Alle Funktionen stehen nun auch in einer eigens gestalteten, mobilfreundlichen Oberfläche zur Verfügung.
+    * Ein eigens gestalteter Dark Mode wurde für sämtliche Bereiche der Anwendung implementiert.
+    * Der Markdown-Editor wurde um visuelle @-Erwähnungen und #-Querverweise erweitert. Diese werden nun auch auf
+      den jeweiligen Detailseiten angezeigt.
+    * Fotos können nun über die "Teilen"-Funktion von Android aus einer beliebigen App direkt an Quokka gesendet
+      werden. Dabei wird automatisch eine neue, persönliche Notiz mit den geteilten Bildern als Anhang erstellt, die
+      anschließend in eine Aufgabe oder einen Aktenvermerk umgewandelt werden kann.
+    * Das zugrundeliegende Framework sowie sämtliche Bibliotheken wurden auf die jeweils neueste Version
+      aktualisiert.
+    * Diverse sicherheitsrelevante und funktionale Fehler wurden behoben.
+    * Aufgrund von Änderungen an der progressiven Web Applikation wird diese eventuell nicht automatisch
+      aktualisiert. Sollte die als App installierte Version auf Android nicht auf dem neuesten Stand sein, hilft ein
+      einmaliges Entfernen und erneutes Installieren der App.
+    @endmarkdown
+
+    @markdown
     ### v0.1.34-b5f0ed1 (21.05.2023)
     * Lieferscheine könnnen vor dem Unterschreiben zur Überprüfung heruntergeladen werden.
     @endmarkdown

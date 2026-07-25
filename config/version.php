@@ -2,8 +2,8 @@
 
 return [
     'major' => 0,
-    'minor' => 1,
-    'patch' => 34,
+    'minor' => 5,
+    'patch' => 0,
     'prerelease' => 'beta',
-    'commit' => 'b5f0ed1',
+    'commit' => 'dcccaa2',
 ];

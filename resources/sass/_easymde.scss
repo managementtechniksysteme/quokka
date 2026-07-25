@@ -102,6 +102,11 @@
         gap: .5rem;
         padding: .35rem .5rem;
         border-radius: 8px;
+        // The vendor show-hint.css hardcodes `color: black` directly on this
+        // element; a directly-matched rule beats an inherited value from the
+        // parent regardless of specificity, so without this, dark mode's
+        // background themes correctly but the text stays vendor-black.
+        color: var(--q-text);
     }
 
     // CodeMirror only moves "active" (the accent highlight) via keyboard/click,

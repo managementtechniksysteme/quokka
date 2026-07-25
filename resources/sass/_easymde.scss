@@ -99,12 +99,37 @@
     .CodeMirror-hint {
         display: flex;
         align-items: center;
+        gap: .5rem;
         padding: .35rem .5rem;
         border-radius: 8px;
     }
 
-    li.CodeMirror-hint-active {
+    // CodeMirror only moves "active" (the accent highlight) via keyboard/click,
+    // not on hover — add that separately so mousing over a row highlights it too.
+    li.CodeMirror-hint-active,
+    .CodeMirror-hint:hover {
         background: var(--q-accent-tint);
         color: var(--q-accent);
+    }
+}
+
+// inline @mention chip (markText/replacedWith widget) rendered in place of the
+// raw "@username" text once it resolves to a known employee
+.q-mention-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .05rem .5rem .05rem .1rem;
+    border-radius: 999px;
+    background: var(--q-accent-tint);
+    color: var(--q-accent);
+    font-weight: 500;
+    line-height: 1.4;
+    vertical-align: middle;
+
+    .q-avatar {
+        width: 18px;
+        height: 18px;
+        font-size: .5rem;
     }
 }

@@ -157,6 +157,27 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $constructionReport = ConstructionReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$constructionReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            ConstructionReport::class,
+            'Bautagesbericht',
+            $constructionReport->id,
+            "{$constructionReport->project->name} #$constructionReport->number",
+            route('construction-reports.show', $constructionReport),
+            $constructionReport->created_at,
+            $constructionReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

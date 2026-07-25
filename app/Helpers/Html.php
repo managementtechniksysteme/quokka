@@ -9,7 +9,7 @@ class Html
     public static function fromMarkdown(string $text)
     {
         return (new Pandoc())
-            ->input($text)
+            ->input(Mentions::renderInline($text))
             ->execute([
                 '-V', 'lang=de',
                 '--from', 'gfm',

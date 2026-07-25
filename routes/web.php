@@ -22,6 +22,7 @@ use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ConstructionReportController;
+use App\Http\Controllers\CrossReferenceController;
 use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
@@ -231,6 +232,9 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('roles', RoleController::class);
 
     Route::resource('search', SearchController::class)->only(['index']);
+
+    Route::get('/cross-references', [CrossReferenceController::class, 'search'])->name('cross-references.search');
+    Route::post('/cross-references/resolve', [CrossReferenceController::class, 'resolve'])->name('cross-references.resolve');
 
     Route::get('/service-reports/list', [ServiceReportController::class, 'downloadList'])->name('service-reports.download-list');
     Route::get('/service-reports/check-overlap', [ServiceReportController::class, 'checkOverlap'])->name('service-reports.check-overlap');

@@ -300,6 +300,27 @@ class FlowMeterInspectionReport extends Model implements FiltersGlobalSearch, Ha
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $flowMeterInspectionReport = FlowMeterInspectionReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$flowMeterInspectionReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            FlowMeterInspectionReport::class,
+            'Prüfbericht für Durchflussmesseinrichtungen',
+            $flowMeterInspectionReport->id,
+            "Anlage $flowMeterInspectionReport->equipment_identifier (Projekt {$flowMeterInspectionReport->project->name}) vom $flowMeterInspectionReport->inspected_on",
+            route('flow-meter-inspection-reports.show', $flowMeterInspectionReport),
+            $flowMeterInspectionReport->created_at,
+            $flowMeterInspectionReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

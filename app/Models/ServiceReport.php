@@ -120,6 +120,27 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $serviceReport = ServiceReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$serviceReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            ServiceReport::class,
+            'Servicebericht',
+            $serviceReport->id,
+            "{$serviceReport->project->name} #$serviceReport->number",
+            route('service-reports.show', $serviceReport),
+            $serviceReport->created_at,
+            $serviceReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

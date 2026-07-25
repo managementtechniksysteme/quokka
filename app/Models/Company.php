@@ -11,6 +11,7 @@ use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Company extends Model implements FiltersGlobalSearch
 {
@@ -71,6 +72,29 @@ class Company extends Model implements FiltersGlobalSearch
                     $company->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Company::class)) {
+            return null;
+        }
+
+        $company = Company::find($id);
+
+        if (!$company) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Company::class,
+            'Firma',
+            $company->id,
+            $company->name,
+            route('companies.show', $company),
+            $company->created_at,
+            $company->updated_at,
+        );
     }
 
     public function address()

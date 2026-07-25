@@ -123,6 +123,27 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $memo = Memo::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$memo) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Memo::class,
+            'Aktenvermerk',
+            $memo->id,
+            "$memo->title (Projekt {$memo->project->name})",
+            route('memos.show', $memo),
+            $memo->created_at,
+            $memo->updated_at,
+        );
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

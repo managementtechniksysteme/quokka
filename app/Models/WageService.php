@@ -10,6 +10,7 @@ use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class WageService extends Model implements FiltersGlobalSearch
 {
@@ -61,6 +62,29 @@ class WageService extends Model implements FiltersGlobalSearch
                     $wageService->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', WageService::class)) {
+            return null;
+        }
+
+        $wageService = WageService::find($id);
+
+        if (!$wageService) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            WageService::class,
+            'Lohndienstleistung',
+            $wageService->id,
+            $wageService->name_with_unit,
+            route('wage-services.show', $wageService),
+            $wageService->created_at,
+            $wageService->updated_at,
+        );
     }
 
     public function accounting()

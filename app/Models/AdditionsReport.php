@@ -157,6 +157,27 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $additionsReport = AdditionsReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$additionsReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            AdditionsReport::class,
+            'Regiebericht',
+            $additionsReport->id,
+            "{$additionsReport->project->name} #$additionsReport->number",
+            route('additions-reports.show', $additionsReport),
+            $additionsReport->created_at,
+            $additionsReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

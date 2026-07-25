@@ -152,6 +152,27 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $task = Task::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$task) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Task::class,
+            'Aufgabe',
+            $task->id,
+            "$task->name (Projekt {$task->project->name})",
+            route('tasks.show', $task),
+            $task->created_at,
+            $task->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

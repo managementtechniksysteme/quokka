@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Person extends Model implements FiltersGlobalSearch
 {
@@ -68,6 +69,29 @@ class Person extends Model implements FiltersGlobalSearch
                     $person->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Person::class)) {
+            return null;
+        }
+
+        $person = Person::find($id);
+
+        if (!$person) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Person::class,
+            'Person',
+            $person->id,
+            $person->name,
+            route('people.show', $person),
+            $person->created_at,
+            $person->updated_at,
+        );
     }
 
     public function address()

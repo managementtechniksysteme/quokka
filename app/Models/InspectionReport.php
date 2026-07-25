@@ -160,6 +160,27 @@ class InspectionReport extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $inspectionReport = InspectionReport::filterPermissions()
+            ->with('project')
+            ->find($id);
+
+        if (!$inspectionReport) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            InspectionReport::class,
+            'Prüfbericht',
+            $inspectionReport->id,
+            "Anlage $inspectionReport->equipment_identifier (Projekt {$inspectionReport->project->name}) vom $inspectionReport->inspected_on",
+            route('inspection-reports.show', $inspectionReport),
+            $inspectionReport->created_at,
+            $inspectionReport->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

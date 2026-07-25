@@ -116,6 +116,29 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', DeliveryNote::class)) {
+            return null;
+        }
+
+        $deliveryNote = DeliveryNote::with('project')->find($id);
+
+        if (!$deliveryNote) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            DeliveryNote::class,
+            'Lieferschein',
+            $deliveryNote->id,
+            "$deliveryNote->title ({$deliveryNote->project->name})",
+            route('delivery-notes.show', $deliveryNote),
+            $deliveryNote->created_at,
+            $deliveryNote->updated_at,
+        );
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

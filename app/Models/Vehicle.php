@@ -9,6 +9,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Vehicle extends Model implements FiltersGlobalSearch
 {
@@ -63,6 +64,29 @@ class Vehicle extends Model implements FiltersGlobalSearch
                     $vehicle->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Vehicle::class)) {
+            return null;
+        }
+
+        $vehicle = Vehicle::find($id);
+
+        if (!$vehicle) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Vehicle::class,
+            'Fahrzeug',
+            $vehicle->id,
+            "$vehicle->registration_identifier ($vehicle->make_model)",
+            route('vehicles.show', $vehicle),
+            $vehicle->created_at,
+            $vehicle->updated_at,
+        );
     }
 
     public function logbook()

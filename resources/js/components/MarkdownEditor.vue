@@ -46,6 +46,30 @@
         return element;
     }
 
+    // reference.icon is server-rendered markup from partials/model_icon.blade.php
+    // (the same per-model icon mapping the /search results list already uses),
+    // shipped as part of the cross-reference JSON rather than duplicated here.
+    function appendCrossReferenceContent(element, reference) {
+        element.title = reference.type;
+        element.insertAdjacentHTML('beforeend', reference.icon ?? '');
+
+        const label = document.createElement('span');
+        label.textContent = reference.name;
+        element.appendChild(label);
+    }
+
+    function renderCrossReferenceHint(element, data, completion) {
+        appendCrossReferenceContent(element, completion);
+    }
+
+    function createCrossReferenceWidget(reference) {
+        const element = document.createElement('span');
+        element.className = 'q-crossref-chip';
+        appendCrossReferenceContent(element, reference);
+
+        return element;
+    }
+
     export default {
         name: "MarkdownEditor",
 
@@ -53,6 +77,8 @@
             return {
                 content: this.value,
                 mentionMarks: [],
+                crossReferenceMarks: [],
+                crossReferenceCache: {},
                 configuration: this.configs ?? {
                     placeholder: this.placeholder,
                     maxHeight: '300px',
@@ -147,26 +173,37 @@
         mounted() {
             const codemirror = this.$refs.markdownEditor.getMDEInstance().codemirror;
             const mentionHint = this.mentionHint.bind(this);
+            const crossReferenceHint = debounce(this.crossReferenceHint.bind(this), 200);
+            crossReferenceHint.async = true;
 
             codemirror.on('inputRead', (instance, change) => {
                 if (change.text[0] === '@') {
                     instance.showHint({ hint: mentionHint, completeSingle: false });
+                } else if (change.text[0] === '#') {
+                    instance.showHint({ hint: crossReferenceHint, completeSingle: false });
                 }
             });
 
             // Re-decorates the document on every change (debounced), so
-            // mentions typed by hand or already present (editing an existing
-            // comment/report) turn into chips too, not just ones just picked
-            // from the hint dropdown. Skips the line the cursor is currently on:
-            // markText's replacedWith forces a re-render of that line, which
-            // can race with and swallow an in-flight keystroke on that same
-            // line. A final unrestricted pass on blur catches that last line.
+            // mentions/cross-references typed by hand or already present
+            // (editing an existing comment/report) turn into chips too, not
+            // just ones just picked from a hint dropdown. Skips the line the
+            // cursor is currently on: markText's replacedWith forces a
+            // re-render of that line, which can race with and swallow an
+            // in-flight keystroke on that same line. A final unrestricted pass
+            // on blur catches that last line.
             codemirror.on('changes', debounce(() => {
-                this.decorateMentions(codemirror, codemirror.getCursor().line);
+                const line = codemirror.getCursor().line;
+                this.decorateMentions(codemirror, line);
+                this.decorateCrossReferences(codemirror, line);
             }, 300));
-            codemirror.on('blur', () => this.decorateMentions(codemirror, null));
+            codemirror.on('blur', () => {
+                this.decorateMentions(codemirror, null);
+                this.decorateCrossReferences(codemirror, null);
+            });
 
             this.decorateMentions(codemirror, null);
+            this.decorateCrossReferences(codemirror, null);
         },
 
         computed: {
@@ -330,6 +367,166 @@
                         }),
                     });
                 }
+            },
+
+            // Async CodeMirror show-hint `hint` function (note the (cm,
+            // callback) signature + `.async = true` set by the caller):
+            // searches across every referenceable record via the same
+            // GlobalSearch-backed endpoint the app's global search itself
+            // uses. Unlike mentionHint, the candidate list can't be preloaded
+            // (open-ended, app-wide), so this hits the server on each lookup.
+            crossReferenceHint(cm, callback) {
+                const cursor = cm.getCursor();
+                const line = cm.getLine(cursor.line);
+
+                let start = cursor.ch;
+                while (start > 0 && !/\s/.test(line.charAt(start - 1))) {
+                    start--;
+                }
+
+                const word = line.slice(start, cursor.ch);
+
+                if (!word.startsWith('#') || word.length < 3) {
+                    callback(null);
+                    return;
+                }
+
+                axios.get('/cross-references', { params: { query: word.slice(1) } })
+                    .then((response) => {
+                        const list = response.data.map((reference) => ({
+                            text: `#${reference.token} `,
+                            type: reference.type,
+                            name: reference.name,
+                            token: reference.token,
+                            icon: reference.icon,
+                            render: renderCrossReferenceHint,
+                            hint: (cm2, data, completion) => this.insertCrossReference(cm2, data, completion),
+                        }));
+
+                        callback({
+                            list,
+                            from: { line: cursor.line, ch: start },
+                            to: { line: cursor.line, ch: cursor.ch },
+                        });
+                    })
+                    .catch(() => callback(null));
+            },
+
+            // Mirrors insertMention: inserts the token and marks it as a chip
+            // immediately, in the same operation, rather than waiting for the
+            // next debounced scan (which would also need a round trip to
+            // resolve it first).
+            insertCrossReference(cm, data, completion) {
+                const from = completion.from || data.from;
+                const to = completion.to || data.to;
+
+                cm.focus();
+                cm.replaceRange(completion.text, from, to, 'complete');
+
+                const chipTo = { line: from.line, ch: from.ch + 1 + completion.token.length };
+
+                this.crossReferenceCache[completion.token] = {
+                    type: completion.type,
+                    name: completion.name,
+                    icon: completion.icon,
+                };
+
+                this.crossReferenceMarks.push({
+                    token: completion.token,
+                    mark: cm.markText(from, chipTo, {
+                        replacedWith: createCrossReferenceWidget(completion),
+                        atomic: true,
+                        inclusiveLeft: false,
+                        inclusiveRight: false,
+                    }),
+                });
+            },
+
+            // Scans the document for "#type-id" tokens (mirroring
+            // CrossReferenceResolver's token format) and replaces resolvable
+            // ones with a chip, same diffing/atomic/excludeLine approach as
+            // decorateMentions. The one addition: resolving a token means
+            // asking the server, so unresolved candidates are looked up in one
+            // batched request and cached (including negative results) before
+            // marks are created.
+            decorateCrossReferences(cm, excludeLine) {
+                const samePos = (a, b) => a.line === b.line && a.ch === b.ch;
+
+                this.crossReferenceMarks = this.crossReferenceMarks.filter((entry) => {
+                    const range = entry.mark.find();
+
+                    if (!range || cm.getRange(range.from, range.to) !== `#${entry.token}`) {
+                        entry.mark.clear();
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                const text = cm.getValue();
+                const pattern = /(^|[^a-zA-Z0-9_#])#([a-z]+(?:-[a-z]+)*-\d+)(?=[^a-zA-Z0-9\-]|$)/g;
+
+                const candidates = [];
+                let match;
+                while ((match = pattern.exec(text)) !== null) {
+                    const token = match[2];
+                    const atStart = match.index + match[1].length;
+                    const from = cm.posFromIndex(atStart);
+                    const to = cm.posFromIndex(atStart + 1 + token.length);
+
+                    if (from.line === excludeLine) {
+                        continue;
+                    }
+
+                    const alreadyMarked = this.crossReferenceMarks.some((entry) => {
+                        const range = entry.mark.find();
+                        return range && samePos(range.from, from) && samePos(range.to, to);
+                    });
+
+                    if (alreadyMarked) {
+                        continue;
+                    }
+
+                    candidates.push({ token, from, to });
+                }
+
+                const applyCandidates = () => {
+                    candidates.forEach(({ token, from, to }) => {
+                        const reference = this.crossReferenceCache[token];
+
+                        if (!reference) {
+                            return;
+                        }
+
+                        this.crossReferenceMarks.push({
+                            token,
+                            mark: cm.markText(from, to, {
+                                replacedWith: createCrossReferenceWidget(reference),
+                                atomic: true,
+                                inclusiveLeft: false,
+                                inclusiveRight: false,
+                            }),
+                        });
+                    });
+                };
+
+                const unresolvedTokens = [...new Set(candidates
+                    .map((candidate) => candidate.token)
+                    .filter((token) => !(token in this.crossReferenceCache)))];
+
+                if (unresolvedTokens.length === 0) {
+                    applyCandidates();
+                    return;
+                }
+
+                axios.post('/cross-references/resolve', { tokens: unresolvedTokens })
+                    .then((response) => {
+                        unresolvedTokens.forEach((token) => {
+                            this.crossReferenceCache[token] = response.data[token] ?? null;
+                        });
+                        applyCandidates();
+                    })
+                    .catch(() => {});
             },
         },
 

@@ -61,6 +61,27 @@ class Note extends Model implements FiltersGlobalSearch, HasMedia
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        $note = \Auth::user()->employee->notes()->find($id);
+
+        if (!$note) {
+            return null;
+        }
+
+        $name = $note->title_string ? "$note->title_string ($note->truncated_comment)" : "$note->truncated_comment";
+
+        return new GlobalSearchResult(
+            Note::class,
+            'Notiz',
+            $note->id,
+            $name,
+            route('notes.show', $note),
+            $note->created_at,
+            $note->updated_at,
+        );
+    }
+
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'person_id');

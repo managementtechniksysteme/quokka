@@ -133,3 +133,20 @@
         font-size: .5rem;
     }
 }
+
+// inline #cross-reference chip — neutral (not accent-coloured) so it reads
+// distinctly from the purple @mention chip at a glance
+.q-crossref-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .05rem .5rem;
+    border-radius: 999px;
+    background: var(--q-surface-3);
+    color: var(--q-text);
+    font-weight: 500;
+    line-height: 1.4;
+    vertical-align: middle;
+
+    .icon-bs { color: var(--q-muted); }
+}

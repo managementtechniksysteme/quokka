@@ -86,6 +86,29 @@ class Project extends Model implements FiltersGlobalSearch
             });
     }
 
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', Project::class)) {
+            return null;
+        }
+
+        $project = Project::find($id);
+
+        if (!$project) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            Project::class,
+            'Projekt',
+            $project->id,
+            $project->name,
+            route('projects.show', $project),
+            $project->created_at,
+            $project->updated_at,
+        );
+    }
+
     public function interimInvoices()
     {
         return $this->hasMany(InterimInvoice::class);

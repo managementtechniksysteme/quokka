@@ -9,6 +9,7 @@ use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class FinanceRecord extends Model implements FiltersGlobalSearch
 {
@@ -58,6 +59,29 @@ class FinanceRecord extends Model implements FiltersGlobalSearch
                     $financeRecord->updated_at,
                 );
             });
+    }
+
+    public static function resolveGlobalSearchResult(int|string $id): ?GlobalSearchResult
+    {
+        if (Auth::user()->cannot('viewAny', FinanceRecord::class)) {
+            return null;
+        }
+
+        $financeRecord = FinanceRecord::with('financeGroup')->find($id);
+
+        if (!$financeRecord) {
+            return null;
+        }
+
+        return new GlobalSearchResult(
+            FinanceRecord::class,
+            'Finanzeintrag',
+            $financeRecord->id,
+            "$financeRecord->title (Gruppe {$financeRecord->financeGroup->title})",
+            route('finance-groups.show', $financeRecord->financeGroup),
+            $financeRecord->created_at,
+            $financeRecord->updated_at,
+        );
     }
 
     public function financeGroup()

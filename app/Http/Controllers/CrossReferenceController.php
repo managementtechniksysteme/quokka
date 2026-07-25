@@ -11,15 +11,6 @@ class CrossReferenceController extends Controller
     public function __construct()
     {
         $this->middleware('can:search');
-
-        // A short, broad query (as typed live while autocompleting) can make
-        // GlobalSearch::searchFuzzy fetch a very large uncapped result set
-        // across every searchable model before Fuse narrows it down; the
-        // debugbar's own profiling of that (queries, bindings, timeline) then
-        // pushes memory over the limit on top of it. Both actions here are
-        // called on every keystroke and return plain JSON that no toolbar
-        // ever attaches to, so there's nothing to profile in the first place.
-        app('debugbar')->disable();
     }
 
     public function search(Request $request)

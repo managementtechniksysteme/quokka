@@ -6,9 +6,11 @@ use App\Events\TaskCreatedEvent;
 use App\Events\TaskUpdatedEvent;
 use App\Mail\TaskMail;
 use App\Models\Employee;
+use App\Models\Note;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Activitylog\Models\Activity;
@@ -115,6 +117,60 @@ test('store creating a finished task sets ends_on automatically', function () {
     $task = Task::sole();
 
     expect($task->ends_on)->not->toBeNull();
+});
+
+test('store copies attachments from a viewable note', function () {
+    $user = taskUser(['tasks.create', 'notes.view']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create(['employee_id' => $user->employee_id]);
+    $note->addAttachments([UploadedFile::fake()->create('photo.jpg', 10, 'image/jpeg')]);
+
+    $this->actingAs($user)->post(route('tasks.store'), taskPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+    ]));
+
+    $task = Task::sole();
+    expect($task->attachments())->toHaveCount(1);
+});
+
+test('store excludes attachments listed in remove_attachments when copying from a note', function () {
+    $user = taskUser(['tasks.create', 'notes.view']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create(['employee_id' => $user->employee_id]);
+    $note->addAttachments([
+        UploadedFile::fake()->create('keep.jpg', 10, 'image/jpeg'),
+        UploadedFile::fake()->create('drop.jpg', 10, 'image/jpeg'),
+    ]);
+    $toRemove = $note->attachments()->firstWhere('file_name', 'drop.jpg');
+
+    $this->actingAs($user)->post(route('tasks.store'), taskPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+        'remove_attachments' => [$toRemove->id],
+    ]));
+
+    $task = Task::sole();
+    expect($task->attachments())->toHaveCount(1);
+    expect($task->attachments()->first()->file_name)->toBe('keep.jpg');
+});
+
+test('store does not copy attachments from a note the user cannot view', function () {
+    $user = taskUser(['tasks.create']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create();
+    $note->addAttachments([UploadedFile::fake()->create('photo.jpg', 10, 'image/jpeg')]);
+
+    $this->actingAs($user)->post(route('tasks.store'), taskPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+    ]));
+
+    $task = Task::sole();
+    expect($task->attachments())->toHaveCount(0);
 });
 
 // show

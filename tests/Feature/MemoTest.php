@@ -6,8 +6,10 @@ use App\Events\MemoCreatedEvent;
 use App\Events\MemoUpdatedEvent;
 use App\Mail\MemoMail;
 use App\Models\Memo;
+use App\Models\Note;
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
@@ -126,6 +128,60 @@ test('store numbers memos sequentially within a project', function () {
     $memo = Memo::where('project_id', $project->id)->latest('number')->first();
 
     expect($memo->number)->toBe(2);
+});
+
+test('store copies attachments from a viewable note', function () {
+    $user = memoUser(['memos.create', 'notes.view']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create(['employee_id' => $user->employee_id]);
+    $note->addAttachments([UploadedFile::fake()->create('photo.jpg', 10, 'image/jpeg')]);
+
+    $this->actingAs($user)->post(route('memos.store'), memoPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+    ]));
+
+    $memo = Memo::sole();
+    expect($memo->attachments())->toHaveCount(1);
+});
+
+test('store excludes attachments listed in remove_attachments when copying from a note', function () {
+    $user = memoUser(['memos.create', 'notes.view']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create(['employee_id' => $user->employee_id]);
+    $note->addAttachments([
+        UploadedFile::fake()->create('keep.jpg', 10, 'image/jpeg'),
+        UploadedFile::fake()->create('drop.jpg', 10, 'image/jpeg'),
+    ]);
+    $toRemove = $note->attachments()->firstWhere('file_name', 'drop.jpg');
+
+    $this->actingAs($user)->post(route('memos.store'), memoPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+        'remove_attachments' => [$toRemove->id],
+    ]));
+
+    $memo = Memo::sole();
+    expect($memo->attachments())->toHaveCount(1);
+    expect($memo->attachments()->first()->file_name)->toBe('keep.jpg');
+});
+
+test('store does not copy attachments from a note the user cannot view', function () {
+    $user = memoUser(['memos.create']);
+    $project = Project::factory()->create();
+    $note = Note::factory()->create();
+    $note->addAttachments([UploadedFile::fake()->create('photo.jpg', 10, 'image/jpeg')]);
+
+    $this->actingAs($user)->post(route('memos.store'), memoPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'note_id' => $note->id,
+    ]));
+
+    $memo = Memo::sole();
+    expect($memo->attachments())->toHaveCount(0);
 });
 
 // show

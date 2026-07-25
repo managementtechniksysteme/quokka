@@ -97,11 +97,17 @@ self.addEventListener("activate", function (event) {
 });
 
 self.addEventListener("fetch", function (event) {
-  // Only handle top-level page loads. Assets, XHR/fetch calls and POSTs go
-  // straight to the network with completely normal browser semantics --
-  // no interception, no surprise HTML responses to JSON endpoints (the old
-  // cache-first strategy intercepted every request indiscriminately).
-  if (event.request.mode !== "navigate") return;
+  // Only handle top-level GET page loads. Assets, XHR/fetch calls, and form
+  // POSTs go straight to the network with completely normal browser
+  // semantics -- no interception, no surprise HTML responses to JSON
+  // endpoints (the old cache-first strategy intercepted every request
+  // indiscriminately). A form submission's navigation is mode "navigate"
+  // too, so the method check matters: re-issuing a POST/PUT/DELETE
+  // Request (with a body, often multipart) through fetch() a second time
+  // is exactly the kind of thing that can throw in some browsers rather
+  // than reach the network, which then falls into the offline branch
+  // below even though the server was perfectly reachable.
+  if (event.request.mode !== "navigate" || event.request.method !== "GET") return;
 
   event.respondWith(
     fetch(event.request).catch(function () {

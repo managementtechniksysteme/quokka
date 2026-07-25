@@ -7,6 +7,7 @@ use App\Http\Requests\FinanceRecordUpdateRequest;
 use App\Models\ApplicationSettings;
 use App\Models\FinanceGroup;
 use App\Models\FinanceRecord;
+use App\Models\Person;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -25,11 +26,13 @@ class FinanceRecordController extends Controller
     public function create(FinanceGroup $financeGroup)
     {
         $currencyUnit = ApplicationSettings::get()->currency_unit;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('finance_record.create')
             ->with(compact('financeGroup'))
             ->with('financeRecord', null)
-            ->with(compact('currencyUnit'));
+            ->with(compact('currencyUnit'))
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -78,10 +81,12 @@ class FinanceRecordController extends Controller
         $financeRecord->load('financeGroup');
 
         $currencyUnit = ApplicationSettings::get()->currency_unit;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('finance_record.edit')
             ->with(compact('financeRecord'))
-            ->with(compact('currencyUnit'));
+            ->with(compact('currencyUnit'))
+            ->with('employees', $employees->toJson());
     }
 
     /**

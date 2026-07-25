@@ -65,7 +65,7 @@
         <div class="q-form-section__desc">Sonstige Bemerkungen zum Fahrzeug.</div>
     </div>
     <div class="q-form-section__body">
-        <markdown-editor name="comment" placeholder="Bemerkungen zum Fahrzeug" value="{{ old('comment', optional($vehicle)->comment) }}" v-cloak></markdown-editor>
+        <markdown-editor name="comment" placeholder="Bemerkungen zum Fahrzeug" value="{{ old('comment', optional($vehicle)->comment) }}" :employees="{{ $employees }}" v-cloak></markdown-editor>
         <a class="q-link--quiet d-inline-flex align-items-center mt-1" href="{{ route('help.show', 'markdown') }}">
             <svg class="icon-bs icon-16 me-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#question-circle"></use></svg>
             Hilfe zu Markdown

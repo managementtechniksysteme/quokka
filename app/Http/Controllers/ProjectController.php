@@ -102,13 +102,15 @@ class ProjectController extends Controller
         $companies = Company::order()->get();
 
         $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('project.create')
             ->with('project', null)
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson())
-            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -367,13 +369,15 @@ class ProjectController extends Controller
         $companies = Company::order()->get();
 
         $removeFinishedProjectFinanceGroup = ApplicationSettings::get()->remove_finished_project_finance_group;
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('project.edit')
             ->with(compact('project'))
             ->with(compact('currencyUnit'))
             ->with('currentCompany', $currentCompany)
             ->with('companies', $companies->toJson())
-            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup);
+            ->with('removeFinishedProjectFinanceGroup', $removeFinishedProjectFinanceGroup)
+            ->with('employees', $employees->toJson());
     }
 
     /**

@@ -54,6 +54,7 @@
 
         async created() {
             const CodeMirror = (await import('codemirror')).default;
+            await import('codemirror/addon/hint/show-hint.js');
 
             CodeMirror.defineOption("showMarkdownLineBreaks", false, function(codeMirror, newValue, oldValue) {
 
@@ -102,6 +103,90 @@
             });
         },
 
+        mounted() {
+            const codemirror = this.$refs.markdownEditor.getMDEInstance().codemirror;
+            const mentionHint = this.mentionHint.bind(this);
+
+            codemirror.on('inputRead', (instance, change) => {
+                if (change.text[0] === '@') {
+                    instance.showHint({ hint: mentionHint, completeSingle: false });
+                }
+            });
+        },
+
+        computed: {
+            mentionableEmployees() {
+                return this.employees
+                    .filter((person) => person.employee?.user?.username)
+                    .map((person) => ({
+                        username: person.employee.user.username,
+                        name: person.name,
+                        avatar: person.avatar,
+                    }));
+            },
+        },
+
+        methods: {
+            // CodeMirror show-hint `hint` function: looks back from the cursor to
+            // the start of the current "@word", then filters mentionableEmployees
+            // by username/name. Returning plain {line, ch} objects (rather than
+            // CodeMirror.Pos instances) works fine here — CodeMirror only reads
+            // those two properties off from/to.
+            mentionHint(cm) {
+                const cursor = cm.getCursor();
+                const line = cm.getLine(cursor.line);
+
+                let start = cursor.ch;
+                while (start > 0 && !/\s/.test(line.charAt(start - 1))) {
+                    start--;
+                }
+
+                const word = line.slice(start, cursor.ch);
+
+                if (!word.startsWith('@')) {
+                    return null;
+                }
+
+                const term = word.slice(1).toLowerCase();
+
+                const list = this.mentionableEmployees
+                    .filter((person) => person.username.toLowerCase().startsWith(term)
+                        || person.name.toLowerCase().includes(term))
+                    .slice(0, 8)
+                    .map((person) => ({
+                        text: `@${person.username} `,
+                        name: person.name,
+                        avatar: person.avatar,
+                        render: this.renderMentionHint,
+                    }));
+
+                return {
+                    list,
+                    from: { line: cursor.line, ch: start },
+                    to: { line: cursor.line, ch: cursor.ch },
+                };
+            },
+
+            renderMentionHint(element, data, completion) {
+                const avatar = document.createElement('span');
+                avatar.className = 'q-avatar q-avatar--round q-avatar--sm me-2';
+                avatar.textContent = completion.avatar?.initials ?? '';
+
+                if (completion.avatar?.hex) {
+                    avatar.style.background = `color-mix(in srgb, ${completion.avatar.hex} 20%, transparent)`;
+                    avatar.style.color = completion.avatar.hex;
+                } else if (completion.avatar?.colour) {
+                    avatar.classList.add(`q-avatar--${completion.avatar.colour}`);
+                }
+
+                const label = document.createElement('span');
+                label.textContent = completion.name;
+
+                element.appendChild(avatar);
+                element.appendChild(label);
+            },
+        },
+
         props: {
             name: {
                 type: String,
@@ -121,6 +206,13 @@
             configs: {
                 type: Object,
                 default: null,
+            },
+
+            employees: {
+                type: Array,
+                default() {
+                    return [];
+                },
             },
         },
     };

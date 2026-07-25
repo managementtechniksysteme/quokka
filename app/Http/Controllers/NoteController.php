@@ -81,9 +81,12 @@ class NoteController extends Controller
             }
         }
 
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
         return view('note.create')
             ->with('note', $templateNote)
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -127,10 +130,12 @@ class NoteController extends Controller
     public function edit(Note $note)
     {
         $currentAttachments = $note->attachmentsWithUrl();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('note.edit')
             ->with('note', $note)
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**

@@ -103,13 +103,15 @@ class FlowMeterInspectionReportController extends Controller
         }
 
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('flow_meter_inspection_report.create')
             ->with('flowMeterInspectionReport', $templateFlowMeterInspectionReport)
             ->with('comparison_measurement_q_percentages', $this->COMPARISON_MEASUREMENT_Q_PERCENTAGES)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     public function store(FlowMeterInspectionReportStoreRequest $request)
@@ -167,6 +169,7 @@ class FlowMeterInspectionReportController extends Controller
         $projects = Project::order()->get();
 
         $currentAttachments = $flowMeterInspectionReport->attachmentsWithUrl();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('flow_meter_inspection_report.edit')
             ->with('flowMeterInspectionReport', $flowMeterInspectionReport)
@@ -174,7 +177,8 @@ class FlowMeterInspectionReportController extends Controller
             ->with('measurements')
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     public function update(FlowMeterInspectionReportUpdateRequest $request, FlowMeterInspectionReport $flowMeterInspectionReport)

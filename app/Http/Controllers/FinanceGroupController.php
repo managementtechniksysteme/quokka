@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FinanceGroupStoreRequest;
 use App\Http\Requests\FinanceGroupUpdateRequest;
 use App\Models\FinanceGroup;
+use App\Models\Person;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +41,11 @@ class FinanceGroupController extends Controller
      */
     public function create(Request $request)
     {
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('finance_group.create')
-            ->with('financeGroup', null);
+            ->with('financeGroup', null)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -87,9 +90,11 @@ class FinanceGroupController extends Controller
      */
     public function edit(FinanceGroup $financeGroup)
     {
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('finance_group.edit')
-            ->with(compact('financeGroup'));
+            ->with(compact('financeGroup'))
+            ->with('employees', $employees->toJson());
     }
 
     /**

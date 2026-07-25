@@ -132,13 +132,15 @@ class ServiceReportController extends Controller
         }
 
         $projects = Project::order()->get();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('service_report.create')
             ->with('serviceReport', $serviceReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentServices', $currentServices)
-            ->with('currentAttachments', null);
+            ->with('currentAttachments', null)
+            ->with('employees', $employees->toJson());
     }
 
     /**
@@ -220,13 +222,15 @@ class ServiceReportController extends Controller
         $projects = Project::order()->get();
         $currentServices = $serviceReport->services;
         $currentAttachments = $serviceReport->attachmentsWithUrl();
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
 
         return view('service_report.edit')
             ->with('serviceReport', $serviceReport)
             ->with('currentProject', $currentProject)
             ->with('projects', $projects->toJson())
             ->with('currentServices', $currentServices->toJson())
-            ->with('currentAttachments', $currentAttachments->toJson());
+            ->with('currentAttachments', $currentAttachments->toJson())
+            ->with('employees', $employees->toJson());
     }
 
     /**

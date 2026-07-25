@@ -1,4 +1,5 @@
 @import "easymde/dist/easymde.min.css";
+@import "codemirror/addon/hint/show-hint.css";
 
 // Fullscreen + side-by-side panels must sit ABOVE the fixed navbar (z-index
 // 1030), or their toolbar (with the exit buttons) hides behind it and the mode
@@ -82,4 +83,28 @@
         color: var(--q-text);
     }
     .editor-statusbar { color: var(--q-faint); }
+}
+
+// @mention autocomplete dropdown (CodeMirror's show-hint addon widget is
+// appended to <body>, not inside .EasyMDEContainer, so it's themed unscoped)
+.CodeMirror-hints {
+    background: var(--q-surface);
+    color: var(--q-text);
+    border: 1px solid var(--q-border);
+    border-radius: 10px;
+    box-shadow: var(--q-shadow-lg);
+    padding: 4px;
+    font-family: $font-family-base;
+
+    .CodeMirror-hint {
+        display: flex;
+        align-items: center;
+        padding: .35rem .5rem;
+        border-radius: 8px;
+    }
+
+    li.CodeMirror-hint-active {
+        background: var(--q-accent-tint);
+        color: var(--q-accent);
+    }
 }

@@ -87,7 +87,7 @@
             </div>
 
             {{-- Desktop: unchanged, byte-for-byte. --}}
-            <div class="collapse mt-2 d-none d-md-block @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+            <div class="collapse mt-2 q-new-address-collapse @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
                 <div class="d-flex flex-column gap-3 p-3 bg-body-secondary rounded">
                     <div>
                         <label for="address_name">Name</label>
@@ -227,7 +227,7 @@
             </div>
 
             {{-- Desktop: unchanged, byte-for-byte. --}}
-            <div class="collapse mt-2 d-none d-md-block @if (old('operator_address_name') || old('operator_street_number') || old('operator_postcode') || old('operator_city')) show @endif" id="newOperatorAddressFields">
+            <div class="collapse mt-2 q-new-address-collapse @if (old('operator_address_name') || old('operator_street_number') || old('operator_postcode') || old('operator_city')) show @endif" id="newOperatorAddressFields">
                 <div class="d-flex flex-column gap-3 p-3 bg-body-secondary rounded">
                     <div>
                         <label for="operator_address_name">Name</label>

@@ -439,6 +439,17 @@ $q-pad:            1.25rem;
     &:hover { background: var(--q-surface-2); color: var(--q-muted); }
 }
 
+// Desktop-only "add new" collapse (its md-down twin is the .q-sheet
+// offcanvas above). Needs `d-none` below md, but pairing that with `d-md-block`
+// (both !important utilities) fights Bootstrap's own non-!important
+// `.collapse:not(.show){display:none}` rule, which always loses — the panel
+// then renders permanently open at md+ regardless of the `show` class. Hiding
+// it below md here instead leaves `.collapse`'s own show/hide rules in sole
+// control at md+, so the toggle button works and it starts closed.
+.q-new-address-collapse {
+    @include media-breakpoint-down(md) { display: none !important; }
+}
+
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.
 //   new / in-progress / finished / signed  → tasks, reports, delivery notes

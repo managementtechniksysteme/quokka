@@ -112,7 +112,7 @@
                 </button>
             </div>
 
-            <div class="collapse mt-2 d-none d-md-block @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
+            <div class="collapse mt-2 q-new-address-collapse @if (old('address_name') || old('street_number') || old('postcode') || old('city')) show @endif" id="newAddressFields">
                 <div class="d-flex flex-column gap-3 p-3 bg-body-secondary rounded">
                     <div>
                         <label for="address_name">Name</label>

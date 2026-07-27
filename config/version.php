@@ -3,7 +3,7 @@
 return [
     'major' => 0,
     'minor' => 5,
-    'patch' => 0,
+    'patch' => 1,
     'prerelease' => 'beta',
-    'commit' => 'dcccaa2',
+    'commit' => 'cdd0164',
 ];

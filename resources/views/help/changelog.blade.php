@@ -18,6 +18,14 @@
 
         <div class="mt-2 mt-md-4">
     @markdown
+    ### v0.5.1-cdd0164 (27.07.2026)
+    * Ein Fehler wurde behoben, bei dem die Schaltfläche zum Erstellen von Berichten aus der Abrechnung nicht
+      reagierte.
+    * Die Suche in Listen wurde um eine neue interaktive Vervollständigung für Filterbegriffe erweitert. Beim
+      Tippen werden passende Vorschläge angezeigt und erkannte Schlüssel bzw. Werte farblich hervorgehoben.
+    @endmarkdown
+
+    @markdown
     ### v0.5.0-dcccaa2 (25.07.2026)
     * Das größte Update seit Bestehen von Quokka: Die gesamte Anwendung wurde am Desktop grundlegend überarbeitet,
       für ein moderneres und einheitlicheres Erscheinungsbild. Die Überarbeitung wurde durchgehend in allen

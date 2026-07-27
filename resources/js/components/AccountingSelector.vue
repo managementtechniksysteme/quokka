@@ -1037,7 +1037,7 @@
             createPdf(employeeIds) {
                 let url = new URL(window.location.origin + '/accounting/download');
 
-                const params = new URLSearchParams(params);
+                const params = new URLSearchParams();
 
                 employeeIds = Array.isArray(employeeIds) ? employeeIds : [employeeIds];
 

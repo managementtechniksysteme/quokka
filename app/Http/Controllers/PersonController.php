@@ -41,7 +41,9 @@ class PersonController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('person.index')->with(compact('people'));
+        $filterFields = Person::filterKeyMetadata();
+
+        return view('person.index')->with(compact('people', 'filterFields'));
     }
 
     /**

@@ -73,13 +73,15 @@ class ProjectController extends Controller
         $projectBilledCostsWarningPercentage = ApplicationSettings::get()->project_billed_costs_warning_percentage;
         $projectMaterialCostsWarningPercentage = ApplicationSettings::get()->project_material_costs_warning_percentage;
         $projectWageCostsWarningPercentage = ApplicationSettings::get()->project_wage_costs_warning_percentage;
+        $filterFields = Project::filterKeyMetadata();
 
         return view('project.index')
             ->with(compact('projects'))
             ->with(compact('projectOverallCostsWarningPercentage'))
             ->with(compact('projectBilledCostsWarningPercentage'))
             ->with(compact('projectMaterialCostsWarningPercentage'))
-            ->with(compact('projectWageCostsWarningPercentage'));
+            ->with(compact('projectWageCostsWarningPercentage'))
+            ->with(compact('filterFields'));
     }
 
     /**

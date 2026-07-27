@@ -64,7 +64,9 @@ class ConstructionReportController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('construction_report.index')->with(compact('constructionReports'));
+        $filterFields = ConstructionReport::filterKeyMetadata();
+
+        return view('construction_report.index')->with(compact('constructionReports', 'filterFields'));
     }
 
     public function create(ConstructionReportCreateRequest $request)

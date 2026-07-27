@@ -45,7 +45,9 @@ class CompanyController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('company.index')->with(compact('companies'));
+        $filterFields = Company::filterKeyMetadata();
+
+        return view('company.index')->with(compact('companies', 'filterFields'));
     }
 
     /**

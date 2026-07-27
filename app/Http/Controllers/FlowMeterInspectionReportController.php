@@ -67,7 +67,9 @@ class FlowMeterInspectionReportController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('flow_meter_inspection_report.index')->with(compact('flowMeterInspectionReports'));
+        $filterFields = FlowMeterInspectionReport::filterKeyMetadata();
+
+        return view('flow_meter_inspection_report.index')->with(compact('flowMeterInspectionReports', 'filterFields'));
     }
 
     public function create(FlowMeterInspectionReportCreateRequest $request)

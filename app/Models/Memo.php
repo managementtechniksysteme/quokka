@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,7 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
     use HasAttachments;
     use FiltersPermissions;
     use FiltersSearch;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -76,6 +78,30 @@ class Memo extends Model implements FiltersGlobalSearch, HasMedia
         'v:(.*)' => ['hasraw' => ['notifiedPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'verständigt_mitarbeiter:(.*)' => ['notifiedPeople.employee.user.username', '{value}'],
         'vm:(.*)' => ['notifiedPeople.employee.user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'hat' => 'Hat',
+        'hat:folgetermin' => 'Folgetermin',
+        'nummer:(\d)' => 'Nummer',
+        'n:(\d)' => 'Nummer',
+        'ist' => 'Ist',
+        'ist:entwurf' => 'Entwurf',
+        'ist:e' => 'Entwurf',
+        'projekt:(.*)' => 'Projekt',
+        'p:(.*)' => 'Projekt',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
+        'von:(.*)' => 'Von',
+        'an:(.*)' => 'An',
+        'beteiligt:(.*)' => 'Beteiligt',
+        'b:(.*)' => 'Beteiligt',
+        'beteiligt_mitarbeiter:(.*)' => 'Beteiligter Mitarbeiter',
+        'bm:(.*)' => 'Beteiligter Mitarbeiter',
+        'verständigt:(.*)' => 'Verständigt',
+        'v:(.*)' => 'Verständigt',
+        'verständigt_mitarbeiter:(.*)' => 'Verständigter Mitarbeiter',
+        'vm:(.*)' => 'Verständigter Mitarbeiter',
     ];
 
     protected $orderKeys = [

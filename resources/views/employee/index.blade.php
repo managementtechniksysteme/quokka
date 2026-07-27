@@ -44,7 +44,7 @@
             <div class="d-none d-md-flex flex-wrap align-items-center gap-3 mb-3">
                 <form class="flex-grow-1" action="{{ route('employees.index') }}" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen" autocomplete="off" />
+                        <filter-search-input name="search" input_class="form-control" :fields="{{ json_encode($filterFields) }}" suggestions_url="{{ route('filter-suggestions.search') }}" model="employee" initial_value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen"></filter-search-input>
                         <button class="btn q-btn d-flex align-items-center" type="submit">
                             <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
@@ -63,7 +63,7 @@
                 <form class="flex-grow-1" action="{{ route('employees.index') }}" method="get">
                     <div class="position-relative flex-grow-1">
                         <div class="input-group">
-                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen" autocomplete="off" />
+                            <filter-search-input name="search" input_class="form-control ps-5" :fields="{{ json_encode($filterFields) }}" suggestions_url="{{ route('filter-suggestions.search') }}" model="employee" initial_value="{{ Request::get('search') ?? '' }}" placeholder="Mitarbeiter suchen"></filter-search-input>
                             @if (Request::get('search'))
                                 <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" href="{{ Request::url() }}">
                                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>

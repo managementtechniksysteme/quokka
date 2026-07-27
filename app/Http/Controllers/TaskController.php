@@ -63,7 +63,9 @@ class TaskController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('task.index')->with(compact('tasks'));
+        $filterFields = Task::filterKeyMetadata();
+
+        return view('task.index')->with(compact('tasks', 'filterFields'));
     }
 
     public function create(TaskCreateRequest $request): RedirectResponse|View

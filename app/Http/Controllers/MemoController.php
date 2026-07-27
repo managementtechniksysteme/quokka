@@ -52,7 +52,9 @@ class MemoController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('memo.index')->with(compact('memos'));
+        $filterFields = Memo::filterKeyMetadata();
+
+        return view('memo.index')->with(compact('memos', 'filterFields'));
     }
 
     /**

@@ -59,7 +59,9 @@ class DeliveryNoteController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('delivery_note.index')->with(compact('deliveryNotes'));
+        $filterFields = DeliveryNote::filterKeyMetadata();
+
+        return view('delivery_note.index')->with(compact('deliveryNotes', 'filterFields'));
     }
 
     public function create(DeliveryNoteCreateRequest $request)

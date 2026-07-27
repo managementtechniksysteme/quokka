@@ -72,7 +72,7 @@
                         <input type="hidden" name="sort" value="{{ request()->sort }}">
                     @endif
                     <div class="input-group">
-                        <input type="text" class="form-control" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Aufgaben suchen" autocomplete="off" />
+                        <filter-search-input name="search" input_class="form-control" :fields="{{ json_encode($filterFields) }}" suggestions_url="{{ route('filter-suggestions.search') }}" model="task" initial_value="{{ Request::get('search') ?? '' }}" placeholder="Aufgaben suchen"></filter-search-input>
                         <button class="btn q-btn d-flex align-items-center" type="submit">
                             <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#search"></use></svg>
                         </button>
@@ -163,7 +163,7 @@
                     @endif
                     <div class="position-relative flex-grow-1">
                         <div class="input-group">
-                            <input type="text" class="form-control ps-5" name="search" value="{{ Request::get('search') ?? '' }}" placeholder="Aufgaben suchen" autocomplete="off" />
+                            <filter-search-input name="search" input_class="form-control ps-5" :fields="{{ json_encode($filterFields) }}" suggestions_url="{{ route('filter-suggestions.search') }}" model="task" initial_value="{{ Request::get('search') ?? '' }}" placeholder="Aufgaben suchen"></filter-search-input>
                             @if (Request::get('search'))
                                 <a class="btn q-btn q-btn-icon d-flex align-items-center justify-content-center" @if(Request::get('sort')) href="{{ Request::url() . '?search=&sort=' . Request::get('sort') }}" @else href="{{ Request::url() . '?search=' }}" @endif>
                                     <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>

@@ -2113,3 +2113,66 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
         svg { flex-shrink: 0; margin-top: .1rem; }
     }
 }
+
+// =============================================================================
+//  Filter-query autocomplete overlay (FilterSearchInput.vue) -- a transparent
+//  real <input> sits over a mirrored backdrop that renders the same text as
+//  colored spans. Backdrop and input must share an identical box model
+//  (font/padding/border/line-height) for the overlay illusion to hold; both
+//  receive the exact same input_class (e.g. "form-control") for this reason.
+// =============================================================================
+.q-filter-search {
+    .q-filter-backdrop {
+        position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+        color: var(--q-text);
+    }
+    // Scrolling happens HERE, not on .q-filter-backdrop itself. CSS overflow
+    // clipping/scrolling operates on the padding BOX -- if the outer element
+    // (with e.g. ps-5's left padding reserved for the mobile search icon)
+    // were the one scrolled, text could slide back into that reserved
+    // padding zone as it overflows (padding is only empty at rest, nothing
+    // stops scrolled content from painting over it). This inner element's
+    // own box starts AFTER the outer's padding already, so its scrolled
+    // content can never render into that reserved zone in the first place --
+    // the same guarantee a native <input>'s internal text-scrolling gives
+    // for free, replicated here since a plain <div> doesn't get it
+    // automatically (2026-07-27, real-device report: typed text visibly
+    // slid under the mobile leading search icon once scrolling kicked in).
+    .q-filter-backdrop-scroll {
+        overflow: hidden; white-space: pre; height: 100%;
+    }
+    .q-filter-input {
+        position: relative; background: transparent !important; color: transparent !important;
+        caret-color: var(--q-text);
+        &::placeholder { color: var(--bs-secondary-color); }
+    }
+    // Only the value gets a highlight, not the key/prefix -- a plain
+    // background tint (no radius/padding, GitHub's own look) so it still
+    // reads as live text being typed, not a discrete resolved chip/token.
+    // Recognized-non-negated stays deliberately quiet/gray (2026-07-27, user:
+    // "normal filters shouldn't be too obvious"); red is reserved for negation.
+    .q-filter-value--recognized { background: var(--q-surface-3); color: var(--q-muted); }
+    .q-filter-value--negated { background: color-mix(in srgb, var(--q-red) 16%, transparent); color: var(--q-red); }
+    .q-filter-suggestions {
+        top: 100%; margin-top: 4px; max-height: 260px; overflow-y: auto; min-width: 12rem;
+    }
+    // Keyboard-highlighted row: a plain neutral highlight (same as this
+    // component's own :hover/:focus, not the accent-tint reserved for a
+    // genuinely clicked/:active state) -- these are just suggestions, not
+    // important enough for the full branded treatment.
+    .q-filter-suggestion--highlighted { background: var(--q-surface-2); color: var(--q-text); }
+}
+// Bootstrap's .input-group border-radius fusing (rounded outer corners, square
+// inner ones) targets direct-child .form-control/.btn elements -- our own
+// .form-control lives one level deeper (inside .q-filter-search), so that
+// selector never reaches it. Replicated here, mirroring Bootstrap's own
+// :not(:last-child) condition so a lone filter-search-input (e.g. mobile
+// search with no clear button present) keeps its rounded right corners.
+.input-group > .q-filter-search {
+    flex: 1 1 auto; width: 1%; min-width: 0;
+    &:not(:last-child) {
+        .q-filter-backdrop, .q-filter-input {
+            border-top-right-radius: 0; border-bottom-right-radius: 0;
+        }
+    }
+}

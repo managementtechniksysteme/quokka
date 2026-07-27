@@ -7,6 +7,7 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasDownloadRequest;
+use App\Traits\HasFilterMetadata;
 use App\Traits\HasSignatureRequest;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
@@ -27,6 +28,7 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
     use HasSignatureRequest;
     use HasDownloadRequest;
     use HasActivity;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -67,6 +69,24 @@ class DeliveryNote extends Model implements FiltersGlobalSearch, HasMedia
         'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'mitabeiter:(.*)' => ['employee.user.username', '{value}'],
         'm:(.*)' => ['employee.user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'ist' => 'Ist',
+        'ist:neu' => 'Status: neu',
+        'ist:unterschrieben' => 'Status: unterschrieben',
+        'ist:u' => 'Status: unterschrieben',
+        'ist:erledigt' => 'Status: erledigt',
+        'nummer:(.*)' => 'Titel',
+        'n:(.*)' => 'Titel',
+        'titel:(.*)' => 'Titel',
+        't:(.*)' => 'Titel',
+        'projekt:(.*)' => 'Projekt',
+        'p:(.*)' => 'Projekt',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
+        'mitabeiter:(.*)' => 'Mitarbeiter',
+        'm:(.*)' => 'Mitarbeiter',
     ];
 
     protected $orderKeys = [

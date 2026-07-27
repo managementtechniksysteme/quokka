@@ -7,6 +7,7 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAvatarColour;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ class Company extends Model implements FiltersGlobalSearch
     use FiltersSearch;
     use HasAvatarColour;
     use HasFactory;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected $appends = [
@@ -46,6 +48,11 @@ class Company extends Model implements FiltersGlobalSearch
     protected $filterKeys = [
         'person:(.*)' => ['hasraw' => ['people', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'p:(.*)' => ['hasraw' => ['people', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
+    ];
+
+    protected $filterKeyLabels = [
+        'person:(.*)' => 'Person',
+        'p:(.*)' => 'Person',
     ];
 
     protected $orderKeys = [

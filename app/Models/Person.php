@@ -7,6 +7,7 @@ use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAvatarColour;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Person extends Model implements FiltersGlobalSearch
     use FiltersSearch;
     use HasAvatarColour;
     use HasFactory;
+    use HasFilterMetadata;
     use Notifiable;
     use OrdersResults;
 
@@ -41,6 +43,11 @@ class Person extends Model implements FiltersGlobalSearch
     protected $filterKeys = [
         'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+    ];
+
+    protected $filterKeyLabels = [
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
     ];
 
     protected $orderKeys = [

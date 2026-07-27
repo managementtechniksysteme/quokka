@@ -64,7 +64,9 @@ class AdditionsReportController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('additions_report.index')->with(compact('additionsReports'));
+        $filterFields = AdditionsReport::filterKeyMetadata();
+
+        return view('additions_report.index')->with(compact('additionsReports', 'filterFields'));
     }
 
     public function create(AdditionsReportCreateRequest $request)

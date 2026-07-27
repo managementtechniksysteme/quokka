@@ -6,6 +6,7 @@ use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,7 @@ class Project extends Model implements FiltersGlobalSearch
     use HasFactory;
     use FiltersLatestChanges;
     use FiltersSearch;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -51,6 +53,17 @@ class Project extends Model implements FiltersGlobalSearch
         'ist:if' => ['include_in_finances', true],
         'firma:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'f:(.*)' => ['company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
+    ];
+
+    protected $filterKeyLabels = [
+        'ist' => 'Ist',
+        'ist:beendet' => 'Beendet',
+        'ist:vorphase' => 'Vorphase',
+        'ist:vp' => 'Vorphase',
+        'ist:infinanzen' => 'In Finanzen',
+        'ist:if' => 'In Finanzen',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
     ];
 
     protected $orderKeys = [

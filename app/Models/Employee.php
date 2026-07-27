@@ -6,6 +6,7 @@ use App\Support\GlobalSearch\FiltersGlobalSearch;
 use App\Support\GlobalSearch\GlobalSearchResult;
 use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersSearch;
+use App\Traits\HasFilterMetadata;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ class Employee extends Model implements FiltersGlobalSearch
     use FiltersLatestChanges;
     use FiltersSearch;
     use HasFactory;
+    use HasFilterMetadata;
 
     const DASHBOARD_CACHE_TAG_PREFIX = 'dashboard';
     const DASHBOARD_CACHE_TTL = 60;
@@ -49,6 +51,13 @@ class Employee extends Model implements FiltersGlobalSearch
         'n:(.*)' => ['hasraw' => ['person', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'benutzer:(.*)' => ['user.username', '{value}'],
         'b:(.*)' => ['user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'name:(.*)' => 'Name',
+        'n:(.*)' => 'Name',
+        'benutzer:(.*)' => 'Benutzer',
+        'b:(.*)' => 'Benutzer',
     ];
 
     public static function filterGlobalSearch(string $query, ?int $latestQuantity = null) : Collection

@@ -62,7 +62,9 @@ class InspectionReportController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('inspection_report.index')->with(compact('inspectionReports'));
+        $filterFields = InspectionReport::filterKeyMetadata();
+
+        return view('inspection_report.index')->with(compact('inspectionReports', 'filterFields'));
     }
 
     public function create(InspectionReportCreateRequest $request)

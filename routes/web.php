@@ -26,6 +26,7 @@ use App\Http\Controllers\CrossReferenceController;
 use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExceptionController;
+use App\Http\Controllers\FilterSuggestionController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProjectControllingController;
 use App\Http\Controllers\ProjectFinanceController;
@@ -235,6 +236,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::get('/cross-references', [CrossReferenceController::class, 'search'])->name('cross-references.search');
     Route::post('/cross-references/resolve', [CrossReferenceController::class, 'resolve'])->name('cross-references.resolve');
+
+    Route::get('/filter-suggestions', [FilterSuggestionController::class, 'search'])->name('filter-suggestions.search');
 
     Route::get('/service-reports/list', [ServiceReportController::class, 'downloadList'])->name('service-reports.download-list');
     Route::get('/service-reports/check-overlap', [ServiceReportController::class, 'checkOverlap'])->name('service-reports.check-overlap');

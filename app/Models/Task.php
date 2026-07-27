@@ -8,6 +8,7 @@ use App\Traits\FiltersLatestChanges;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachments;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
     use FiltersPermissions;
     use HasAttachments;
     use HasActivity;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -77,6 +79,32 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         'v:(.*)' => ['responsibleEmployee.user.username', '{value}'],
         'beteiligt:(.*)' => ['involvedEmployees.user.username', '{value}'],
         'b:(.*)' => ['involvedEmployees.user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'ist' => 'Ist',
+        'ist:privat' => 'Privat',
+        'ist:niedrig' => 'Priorität: niedrig',
+        'ist:mittel' => 'Priorität: mittel',
+        'ist:hoch' => 'Priorität: hoch',
+        'ist:neu' => 'Status: neu',
+        'ist:in_bearbeitung' => 'Status: in Bearbeitung',
+        'ist:ib' => 'Status: in Bearbeitung',
+        'ist:erledigt' => 'Status: erledigt',
+        'ist:verrechnet' => 'Verrechnet',
+        'ist:nicht_verrechnet' => 'Nicht verrechnet',
+        'ist:nv' => 'Nicht verrechnet',
+        'ist:garantie' => 'Garantie',
+        'ist:überfällig' => 'Überfällig',
+        'ist:bald_fällig' => 'Bald fällig',
+        'projekt:(.*)' => 'Projekt',
+        'p:(.*)' => 'Projekt',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
+        'verantwortlich:(.*)' => 'Verantwortlich',
+        'v:(.*)' => 'Verantwortlich',
+        'beteiligt:(.*)' => 'Beteiligt',
+        'b:(.*)' => 'Beteiligt',
     ];
 
     protected $orderKeys = [

@@ -50,7 +50,9 @@ class EmployeeController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('employee.index')->with(compact('employees'));
+        $filterFields = Employee::filterKeyMetadata();
+
+        return view('employee.index')->with(compact('employees', 'filterFields'));
     }
 
     /**

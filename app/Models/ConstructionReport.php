@@ -9,6 +9,7 @@ use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,7 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
     use HasActivity;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -95,6 +97,26 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
         'b:(.*)' => ['hasraw' => ['presentPeople', 'concat(first_name, " ", last_name) like "%{value}%"', 'concat(first_name, " ", last_name) not like "%{value}%"']],
         'beteiligt_mitarbeiter:(.*)' => ['involvedEmployees.user.username', '{value}'],
         'bm:(.*)' => ['involvedEmployees.user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'ist' => 'Ist',
+        'ist:neu' => 'Status: neu',
+        'ist:unterschrieben' => 'Status: unterschrieben',
+        'ist:u' => 'Status: unterschrieben',
+        'ist:erledigt' => 'Status: erledigt',
+        'nummer:(\d)' => 'Nummer',
+        'n:(\d)' => 'Nummer',
+        'projekt:(.*)' => 'Projekt',
+        'p:(.*)' => 'Projekt',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
+        'techniker:(.*)' => 'Techniker',
+        't:(.*)' => 'Techniker',
+        'beteiligt:(.*)' => 'Beteiligt',
+        'b:(.*)' => 'Beteiligt',
+        'beteiligt_mitarbeiter:(.*)' => 'Beteiligter Mitarbeiter',
+        'bm:(.*)' => 'Beteiligter Mitarbeiter',
     ];
 
     protected $orderKeys = [

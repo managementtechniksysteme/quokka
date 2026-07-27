@@ -86,7 +86,9 @@ class ServiceReportController extends Controller
             ->paginate(Auth::user()->settings->list_pagination_size)
             ->appends($request->except('page'));
 
-        return view('service_report.index')->with(compact('serviceReports'));
+        $filterFields = ServiceReport::filterKeyMetadata();
+
+        return view('service_report.index')->with(compact('serviceReports', 'filterFields'));
     }
 
     /**

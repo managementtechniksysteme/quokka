@@ -9,6 +9,7 @@ use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\HasAttachmentsAndSignatureRequests;
 use App\Traits\HasDownloadRequest;
+use App\Traits\HasFilterMetadata;
 use App\Traits\OrdersResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,7 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
     use HasAttachmentsAndSignatureRequests;
     use HasDownloadRequest;
     use HasActivity;
+    use HasFilterMetadata;
     use OrdersResults;
 
     protected function casts(): array
@@ -64,6 +66,22 @@ class ServiceReport extends Model implements FiltersGlobalSearch, HasMedia
         'f:(.*)' => ['project.company.name', '%{value}%', 'LIKE', 'NOT LIKE'],
         'techniker:(.*)' => ['employee.user.username', '{value}'],
         't:(.*)' => ['employee.user.username', '{value}'],
+    ];
+
+    protected $filterKeyLabels = [
+        'ist' => 'Ist',
+        'ist:neu' => 'Status: neu',
+        'ist:unterschrieben' => 'Status: unterschrieben',
+        'ist:u' => 'Status: unterschrieben',
+        'ist:erledigt' => 'Status: erledigt',
+        'nummer:(\d)' => 'Nummer',
+        'n:(\d)' => 'Nummer',
+        'projekt:(.*)' => 'Projekt',
+        'p:(.*)' => 'Projekt',
+        'firma:(.*)' => 'Firma',
+        'f:(.*)' => 'Firma',
+        'techniker:(.*)' => 'Techniker',
+        't:(.*)' => 'Techniker',
     ];
 
     protected $orderKeys = [

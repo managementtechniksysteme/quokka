@@ -356,6 +356,15 @@
                             closeAfter: true,
                         }));
                         this.highlightedIndex = 0;
+
+                        // This suggestion set lands well after onInput's own
+                        // nextTick(measureCaretLeft) already ran, so its DOM
+                        // width was never accounted for -- without remeasuring
+                        // here, the dropdown keeps whatever (often narrower)
+                        // clamp position was last computed and can render
+                        // past the right edge once the real, wider content
+                        // arrives.
+                        this.$nextTick(() => this.measureCaretLeft());
                     })
                     .catch(() => {
                         // a cancelled or failed suggestion fetch shouldn't disrupt typing

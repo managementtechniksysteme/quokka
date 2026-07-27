@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Company;
+use App\Models\Person;
 use App\Models\User;
 
 function companyUser(array $permissions = []): User
@@ -57,6 +58,44 @@ test('store creates a company', function () {
 
     $response->assertRedirect(route('companies.show', $company));
     expect($company->name)->toBe('Acme Corp');
+    expect($company->created_at->eq($company->updated_at))->toBeTrue();
+});
+
+test('store links an unassigned contact person to the company', function () {
+    $user = companyUser(['companies.create']);
+    $person = Person::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('companies.store'), [
+        'name' => 'Acme Corp',
+        'contact_person_id' => $person->id,
+    ]);
+
+    $company = Company::where('name', 'Acme Corp')->sole();
+
+    $response->assertRedirect(route('companies.show', $company));
+    $response->assertSessionHas('success');
+    expect($company->contact_person_id)->toBe($person->id);
+    expect($person->fresh()->company_id)->toBe($company->id);
+    expect($company->created_at->eq($company->updated_at))->toBeTrue();
+});
+
+test('store shows a warning when the contact person already belongs to another company', function () {
+    $user = companyUser(['companies.create']);
+    $existingCompany = Company::factory()->create();
+    $person = Person::factory()->create(['company_id' => $existingCompany->id]);
+
+    $response = $this->actingAs($user)->post(route('companies.store'), [
+        'name' => 'Acme Corp',
+        'contact_person_id' => $person->id,
+    ]);
+
+    $company = Company::where('name', 'Acme Corp')->sole();
+
+    $response->assertRedirect(route('companies.show', $company));
+    $response->assertSessionHas('warning');
+    expect($company->contact_person_id)->toBeNull();
+    expect($person->fresh()->company_id)->toBe($existingCompany->id);
+    expect($company->created_at->eq($company->updated_at))->toBeTrue();
 });
 
 test('store is forbidden without create permission', function () {

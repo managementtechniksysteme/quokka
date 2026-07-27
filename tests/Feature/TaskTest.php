@@ -117,6 +117,25 @@ test('store creating a finished task sets ends_on automatically', function () {
     $task = Task::sole();
 
     expect($task->ends_on)->not->toBeNull();
+    expect($task->created_at->eq($task->updated_at))->toBeTrue();
+});
+
+test('store on a non-finished task nulls out a submitted ends_on', function () {
+    $user = taskUser(['tasks.create']);
+    $project = Project::factory()->create();
+
+    $this->actingAs($user)->post(route('tasks.store'), taskPayload([
+        'project_id' => $project->id,
+        'employee_id' => $user->employee_id,
+        'status' => 'new',
+        'starts_on' => now()->toDateString(),
+        'ends_on' => now()->toDateString(),
+    ]));
+
+    $task = Task::sole();
+
+    expect($task->ends_on)->toBeNull();
+    expect($task->created_at->eq($task->updated_at))->toBeTrue();
 });
 
 test('store copies attachments from a viewable note', function () {

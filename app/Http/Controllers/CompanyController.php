@@ -79,6 +79,18 @@ class CompanyController extends Controller
     {
         $validatedData = $request->validated();
 
+        $contactPerson = null;
+        $contactPersonAlreadyAssigned = false;
+
+        if (isset($validatedData['contact_person_id'])) {
+            $contactPerson = Person::find($validatedData['contact_person_id'])->load('company');
+
+            if ($contactPerson !== null && $contactPerson->company !== null) {
+                $contactPersonAlreadyAssigned = true;
+                $validatedData['contact_person_id'] = null;
+            }
+        }
+
         $company = Company::create($validatedData);
 
         $pivotData = [['address_type' => 'company']];
@@ -113,21 +125,15 @@ class CompanyController extends Controller
             $company->operatorAddress()->sync(array_combine([$address->id], $pivotData));
         }
 
-        if (isset($validatedData['contact_person_id'])) {
-            $contactPerson = Person::find($validatedData['contact_person_id'])->load('company');
+        if ($contactPersonAlreadyAssigned) {
+            return redirect()
+                ->route('companies.show', $company)
+                ->with('warning', 'Die Firma wurde erfolgreich angelegt. Die Person ist bereits einer anderen Firma zugeordnet.');
+        }
 
-            if ($contactPerson !== null && $contactPerson->company !== null) {
-                return redirect()
-                    ->route('companies.show', $company)
-                    ->with('warning', 'Die Firma wurde erfolgreich angelegt. Die Person ist bereits einer anderen Firma zugeordnet.');
-            }
-
-            elseif ($contactPerson->company === null) {
-                $contactPerson->company()->associate($company);
-                $contactPerson->save();
-                $company->contactPerson()->associate($contactPerson);
-                $company->save();
-            }
+        if ($contactPerson !== null) {
+            $contactPerson->company()->associate($company);
+            $contactPerson->save();
         }
 
         return redirect()->route('companies.show', $company)->with('success', 'Die Firma wurde erfolgreich angelegt.');

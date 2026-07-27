@@ -151,18 +151,16 @@ class TaskController extends Controller
     {
         $validatedData = $request->validated();
 
+        if (($validatedData['status'] ?? null) !== 'finished' && ! empty($validatedData['ends_on'] ?? null)) {
+            $validatedData['ends_on'] = null;
+        }
+
+        if (($validatedData['status'] ?? null) === 'finished' && empty($validatedData['ends_on'] ?? null)) {
+            $validatedData['starts_on'] = $validatedData['starts_on'] ?? Carbon::now();
+            $validatedData['ends_on'] = Carbon::now();
+        }
+
         $task = Task::create($validatedData);
-
-        if ($task->status !== 'finished' && $task->ends_on) {
-            $task->ends_on = null;
-            $task->save();
-        }
-
-        if ($task->status == 'finished' && ! $task->ends_on) {
-            $task->starts_on = $task->starts_on ?? Carbon::now();
-            $task->ends_on = Carbon::now();
-            $task->save();
-        }
 
         if ($request->filled('involved_ids')) {
             if (($responsibleEmployee = array_search($task->employee_id, $request->involved_ids)) !== false) {

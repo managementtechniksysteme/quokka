@@ -2175,4 +2175,14 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
             border-top-right-radius: 0; border-bottom-right-radius: 0;
         }
     }
+
+    // Bootstrap raises a directly-focused .input-group child to z-index 5 so
+    // its focus ring isn't clipped by an adjacent button's shared-border edge
+    // (.input-group > .form-control:focus). The real input here is nested one
+    // level inside .q-filter-search rather than a direct child, so that
+    // selector never matches -- :focus-within on the wrapper replicates the
+    // same z-index bump.
+    &:focus-within {
+        z-index: 5;
+    }
 }

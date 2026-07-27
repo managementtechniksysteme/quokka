@@ -28,7 +28,11 @@
         />
 
         <ul class="dropdown-menu show q-filter-suggestions" ref="suggestionsList" v-if="suggestions.length" :style="{ left: caretLeft + 'px' }">
-            <li v-for="(suggestion, index) in suggestions" :key="suggestion.id">
+            <li
+                v-for="(suggestion, index) in suggestions"
+                :key="suggestion.id"
+                :ref="index === highlightedIndex ? 'highlightedSuggestion' : undefined"
+            >
                 <button
                     type="button"
                     class="dropdown-item"
@@ -172,9 +176,11 @@
                 if (event.key === 'ArrowDown') {
                     event.preventDefault();
                     this.highlightedIndex = Math.min(this.highlightedIndex + 1, this.suggestions.length - 1);
+                    this.$nextTick(() => this.scrollHighlightedIntoView());
                 } else if (event.key === 'ArrowUp') {
                     event.preventDefault();
                     this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
+                    this.$nextTick(() => this.scrollHighlightedIntoView());
                 } else if (event.key === 'Enter' || event.key === 'Tab') {
                     event.preventDefault();
                     this.applySuggestion(this.suggestions[this.highlightedIndex]);
@@ -454,6 +460,32 @@
                 }
 
                 this.syncScroll();
+            },
+
+            // Arrow-key navigation moves highlightedIndex without any native
+            // browser scroll-following (unlike mouse hover/scroll, which the
+            // .q-filter-suggestions overflow-y:auto container already handles
+            // on its own) -- keep the highlighted row inside the visible
+            // scrollable area the same way scrollCaretIntoView() does for the
+            // input's own horizontal scroll.
+            scrollHighlightedIntoView() {
+                const list = this.$refs.suggestionsList;
+                const item = (this.$refs.highlightedSuggestion || [])[0];
+
+                if (!list || !item) {
+                    return;
+                }
+
+                const itemTop = item.offsetTop;
+                const itemBottom = itemTop + item.offsetHeight;
+                const visibleTop = list.scrollTop;
+                const visibleBottom = visibleTop + list.clientHeight;
+
+                if (itemTop < visibleTop) {
+                    list.scrollTop = itemTop;
+                } else if (itemBottom > visibleBottom) {
+                    list.scrollTop = itemBottom - list.clientHeight;
+                }
             },
 
             // -- backdrop rendering / caret measurement ----------------------

@@ -61,11 +61,9 @@ class CommentController extends Controller
 
         $this->authorize('create', [TaskComment::class, $task]);
 
-        $comment = TaskComment::create($validatedData);
-
-        $comment->employee()->associate(auth()->user()->employee);
-
-        $task->comments()->save($comment);
+        $comment = TaskComment::create($validatedData + [
+            'employee_id' => auth()->user()->employee->person_id,
+        ]);
 
         if ($request->new_attachments) {
             $comment->addAttachments($request->new_attachments);

@@ -5,11 +5,22 @@
         <div class="q-comment__meta">
             <span class="q-comment__author">{{ $comment->employee->person->name }}</span>
             <span class="q-comment__date q-mono">
-                {{ $comment->created_at->format('d.m.Y · H:i') }}
-                @if($comment->created_at->lt($comment->updated_at))
-                    <svg class="icon-bs icon-12 ms-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
-                    {{ $comment->updated_at->format('d.m.Y · H:i') }}
-                @endif
+                <span class="d-none d-md-inline">
+                    {{ $comment->created_at->format('d.m.Y · H:i') }}
+                    @if($comment->created_at->lt($comment->updated_at))
+                        <svg class="icon-bs icon-12 ms-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                        {{ $comment->updated_at->format('d.m.Y · H:i') }}
+                    @endif
+                </span>
+                <span class="d-md-none">
+                    @if($comment->created_at->lt($comment->updated_at))
+                        {{ $comment->created_at->format('d.m·H:i') }}
+                        <svg class="icon-bs icon-12 ms-1"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pencil"></use></svg>
+                        {{ $comment->updated_at->format('d.m·H:i') }}
+                    @else
+                        {{ $comment->created_at->format('d.m.Y·H:i') }}
+                    @endif
+                </span>
             </span>
         </div>
 

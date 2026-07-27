@@ -64,6 +64,7 @@ test('store creates a comment on the task', function () {
     expect($comment->comment)->toBe('A test comment');
     expect($comment->task_id)->toBe($task->id);
     expect($comment->employee_id)->toBe($user->employee_id);
+    expect($comment->created_at->eq($comment->updated_at))->toBeTrue();
     Event::assertDispatched(CommentCreatedEvent::class);
 });
 

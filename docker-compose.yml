@@ -6,6 +6,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
+      target: base
     image: php-fpm-laravel-latex
     container_name : quokka-php-fpm
     hostname: php-fpm
@@ -23,6 +24,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
+      target: base
     image: php-fpm-laravel-latex
     container_name : quokka-queue-worker
     command: php artisan queue:work
@@ -41,11 +43,34 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker/php-fpm/Dockerfile
+      target: base
     image: php-fpm-laravel-latex
     container_name : quokka-schedule-worker
     command: php artisan schedule:work
     hostname: queue-worker
     restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www:z
+    networks:
+      - quokka
+
+  php-fpm-dev:
+    build:
+      args:
+        user: quokka
+        uid: 1000
+      context: ./
+      dockerfile: docker/php-fpm/Dockerfile
+      target: dev
+    image: php-fpm-laravel-latex-dev
+    container_name: quokka-php-fpm-dev
+    hostname: php-fpm-dev
+    restart: unless-stopped
+    init: true
+    profiles:
+      - dev
+    command: tail -f /dev/null
     working_dir: /var/www/
     volumes:
       - ./:/var/www:z

@@ -1,6 +1,7 @@
 /.npm
 /docker/mariadb/data
 /.phpunit.cache
+/tests/Browser/Screenshots
 /node_modules
 /public/build
 /public/hot

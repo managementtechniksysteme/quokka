@@ -33,6 +33,39 @@ test('accounting report generation opens a download URL without a JavaScript err
         ->assertScript("window.__reportUrl !== null && window.__reportUrl.includes('/accounting/download')", true);
 });
 
+test('the multi-employee report dropdown submits checked employees to a download URL', function () {
+    $user = User::factory()->create();
+    grantPermission($user, 'accounting.view.own');
+    grantPermission($user, 'accounting.view.other');
+    grantPermission($user, 'accounting.createpdf');
+
+    $otherUser = User::factory()->create();
+
+    Accounting::factory()->create(['employee_id' => $user->employee_id, 'service_provided_on' => now()->toDateString()]);
+    Accounting::factory()->create(['employee_id' => $otherUser->employee_id, 'service_provided_on' => now()->toDateString()]);
+
+    $this->actingAs($user);
+
+    $page = visit(route('accounting.index'))->on()->desktop();
+
+    $page->assertScript(
+        "(function () { window.__reportUrl = null; window.open = function (u) { window.__reportUrl = String(u); return { focus: function () {} }; }; return true; })()",
+        true
+    )
+        ->uncheck('#filter_only_own')
+        ->click('.q-filterbar__submit')
+        ->wait(0.5)
+        ->click('.q-page-head .dropdown-toggle:has-text("Auswertung")')
+        ->check("#employee-{$user->employee_id}")
+        ->check("#employee-{$otherUser->employee_id}")
+        ->click('.q-page-head .dropdown-menu button[type="submit"]')
+        ->assertNoJavascriptErrors()
+        ->assertScript(
+            "window.__reportUrl !== null && window.__reportUrl.includes('/accounting/download') && (window.__reportUrl.match(/employee_ids/g) || []).length === 2",
+            true
+        );
+});
+
 test('logbook report generation opens a download URL without a JavaScript error', function () {
     $user = User::factory()->create();
     grantPermission($user, 'logbook.view.own');

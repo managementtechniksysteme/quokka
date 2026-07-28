@@ -173,6 +173,15 @@ services:
     container_name: quokka-caddy
     hostname: caddy
     restart: unless-stopped
+    # Non-root, with just the one capability actually needed (binding to
+    # port 80, normally root-only) instead of the full default root
+    # capability set -- caddy has no other reason to run privileged. Matches
+    # the uid the other services already use.
+    user: "1000:1000"
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     depends_on:
       php-fpm:
         condition: service_healthy
@@ -183,7 +192,10 @@ services:
     ports:
       - 8001:80
     volumes:
-      - ./:/var/www
+      # :ro -- caddy only ever needs to read public/ to serve static files
+      # and proxy the rest to php-fpm; it has no legitimate reason to write
+      # into the app directory at all.
+      - ./:/var/www:ro
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:z
     networks:
       - quokka

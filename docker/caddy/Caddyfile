@@ -1,0 +1,20 @@
+# Local dev: plain HTTP on :80 (mapped to host 8001), no ACME/TLS needed at
+# all. Mirrors the old docker/nginx/config/nginx.conf: php_fastcgi already
+# implements the try_files-to-index.php fallback + fastcgi param wiring
+# nginx needed spelled out by hand.
+:80 {
+	root * /var/www/public
+
+	encode gzip
+
+	# nginx's own default (1M) rejects real phone photos before the request
+	# even reaches PHP -- matches the upload_max_filesize/post_max_size bump
+	# in docker/php-fpm/Dockerfile.
+	request_body {
+		max_size 20MB
+	}
+
+	php_fastcgi php-fpm:9000
+
+	file_server
+}

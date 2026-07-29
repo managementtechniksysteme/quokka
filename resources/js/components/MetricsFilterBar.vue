@@ -111,7 +111,7 @@
                             <label class="btn" for="period-custom-mobile">Benutzerdefiniert</label>
                         </div>
                     </div>
-                    <div class="q-form__row q-form__row--2">
+                    <div class="q-form__row q-form__row--2 q-form__row--nostack">
                         <div>
                             <label for="from-mobile">Von</label>
                             <input id="from-mobile" class="form-control" type="date" :disabled="state.period !== 'custom'" v-model="state.from">

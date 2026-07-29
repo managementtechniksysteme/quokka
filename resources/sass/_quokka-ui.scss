@@ -2228,6 +2228,27 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 // customers/projects exist (2026-07-29, user: "that employee list haha").
 .q-scroll-cap { max-height: 21rem; overflow-y: auto; padding-right: .3rem; }
 
+// Card-head grouping tabs (Kunde/Projekt/Mitarbeiter etc.) — Bootstrap's
+// default nav-pills active state is a solid, saturated fill (white text on
+// deep accent), which pulls the eye away from the actual chart/metric below
+// it. Muted/gray for unselected, tinted background + accent text for the
+// active one — the same light-fill treatment already used for icon
+// avatars/badges elsewhere (--q-accent-tint + --q-accent) rather than a
+// heavy solid block (2026-07-29, user: "so they don't take away attention
+// from the actual metrics/graphs too much... as in the nav").
+.q-card__head .nav-pills .nav-link {
+    color: var(--q-muted);
+    background: transparent;
+    font-weight: 600;
+    font-size: .78rem;
+    &:hover { color: var(--q-text); }
+}
+.q-card__head .nav-pills .nav-link.active {
+    background: var(--q-accent-tint);
+    color: var(--q-accent);
+    font-weight: 700;
+}
+
 // Card-head grouping tabs (Kunde/Projekt/Mitarbeiter etc.) — below md the
 // card is narrow enough that 4 pills can overflow the row, and Bootstrap's
 // default nav flex-wrap drops the last one onto its own line with dead

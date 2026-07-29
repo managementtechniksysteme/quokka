@@ -76,7 +76,7 @@
         <svg class="icon icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
         <span>
             Im gewählten Zeitraum berücksichtigt: <strong>Aufgaben</strong>, wenn Start- oder Enddatum im Zeitraum liegt ·
-            <strong>Berichte</strong> (Bau-/Prüf-/Zusatzbericht, Durchflussmessung), wenn das Berichtsdatum im Zeitraum liegt ·
+            <strong>Berichte</strong> (Bau-/Prüf-/Regiebericht, Durchflussmessung), wenn das Berichtsdatum im Zeitraum liegt ·
             <strong>Serviceberichte</strong>, wenn mindestens eine erbrachte Leistung im Zeitraum liegt.
         </span>
     </div>
@@ -301,7 +301,7 @@
             <div class="q-card__head">
                 <div>
                     <div class="q-card__title">Mitarbeiter-Auslastung</div>
-                    <div class="q-card__hint">Offene Aufgaben · aktive Projekte</div>
+                    <div class="q-card__hint">Offene Aufgaben je Mitarbeiter</div>
                 </div>
                 <ul class="nav nav-pills" id="util-tabs" role="tablist">
                     <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#util-relative" type="button" role="tab">Zur ausgelastetsten Person</button></li>

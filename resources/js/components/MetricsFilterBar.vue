@@ -36,7 +36,7 @@
                                 <input type="radio" class="btn-check" name="period" id="period-year" value="year" v-model="state.period">
                                 <label class="btn" for="period-year">Jahr</label>
                                 <input type="radio" class="btn-check" name="period" id="period-custom" value="custom" v-model="state.period">
-                                <label class="btn" for="period-custom">Benutzerdefiniert</label>
+                                <label class="btn" for="period-custom">Anderer</label>
                             </div>
                         </div>
                         <div class="q-filterbar__field">
@@ -108,7 +108,7 @@
                             <input type="radio" class="btn-check" name="period-mobile" id="period-year-mobile" value="year" v-model="state.period">
                             <label class="btn" for="period-year-mobile">Jahr</label>
                             <input type="radio" class="btn-check" name="period-mobile" id="period-custom-mobile" value="custom" v-model="state.period">
-                            <label class="btn" for="period-custom-mobile">Benutzerdefiniert</label>
+                            <label class="btn" for="period-custom-mobile">Anderer</label>
                         </div>
                     </div>
                     <div class="q-form__row q-form__row--2 q-form__row--nostack">

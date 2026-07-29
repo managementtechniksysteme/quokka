@@ -180,8 +180,8 @@
                     </div>
                     <div class="q-stackbar-legend">
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $taskStatus['new'] }}</b></span>
-                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>In Bearbeitung · <b>{{ $taskStatus['inProgress'] }}</b></span>
-                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $taskStatus['finished'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>In Arbeit · <b>{{ $taskStatus['inProgress'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Erledigt · <b>{{ $taskStatus['finished'] }}</b></span>
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-red)"></span>Überfällig · <b>{{ $taskStatus['overdue'] }}</b></span>
                     </div>
                 </div>
@@ -204,7 +204,7 @@
                     <div class="q-stackbar-legend">
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $reportStatus['new'] }}</b></span>
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>Unterschrieben · <b>{{ $reportStatus['signed'] }}</b></span>
-                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $reportStatus['finished'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Erledigt · <b>{{ $reportStatus['finished'] }}</b></span>
                     </div>
                 </div>
             </div>

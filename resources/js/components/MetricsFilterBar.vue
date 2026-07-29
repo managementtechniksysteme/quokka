@@ -97,63 +97,65 @@
             <div class="offcanvas-body">
                 <div class="q-sheet__label">Filter</div>
 
-                <div class="q-form__row mb-3">
-                    <label>Zeitraum</label>
-                    <div class="btn-group w-100">
-                        <input type="radio" class="btn-check" name="period-mobile" id="period-30d-mobile" value="30d" v-model="state.period">
-                        <label class="btn" for="period-30d-mobile">30 Tage</label>
-                        <input type="radio" class="btn-check" name="period-mobile" id="period-quarter-mobile" value="quarter" v-model="state.period">
-                        <label class="btn" for="period-quarter-mobile">Quartal</label>
-                        <input type="radio" class="btn-check" name="period-mobile" id="period-year-mobile" value="year" v-model="state.period">
-                        <label class="btn" for="period-year-mobile">Jahr</label>
-                        <input type="radio" class="btn-check" name="period-mobile" id="period-custom-mobile" value="custom" v-model="state.period">
-                        <label class="btn" for="period-custom-mobile">Benutzerdefiniert</label>
+                <div class="d-flex flex-column gap-3 px-2 pb-2">
+                    <div class="q-form__row">
+                        <label>Zeitraum</label>
+                        <div class="btn-group w-100">
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-30d-mobile" value="30d" v-model="state.period">
+                            <label class="btn" for="period-30d-mobile">30 Tage</label>
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-quarter-mobile" value="quarter" v-model="state.period">
+                            <label class="btn" for="period-quarter-mobile">Quartal</label>
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-year-mobile" value="year" v-model="state.period">
+                            <label class="btn" for="period-year-mobile">Jahr</label>
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-custom-mobile" value="custom" v-model="state.period">
+                            <label class="btn" for="period-custom-mobile">Benutzerdefiniert</label>
+                        </div>
                     </div>
-                </div>
-                <div class="q-form__row q-form__row--2 mb-3">
+                    <div class="q-form__row q-form__row--2">
+                        <div>
+                            <label for="from-mobile">Von</label>
+                            <input id="from-mobile" class="form-control" type="date" :disabled="state.period !== 'custom'" v-model="state.from">
+                        </div>
+                        <div>
+                            <label for="to-mobile">Bis</label>
+                            <input id="to-mobile" class="form-control" type="date" :disabled="state.period !== 'custom'" v-model="state.to">
+                        </div>
+                    </div>
                     <div>
-                        <label for="from-mobile">Von</label>
-                        <input id="from-mobile" class="form-control" type="date" :disabled="state.period !== 'custom'" v-model="state.from">
+                        <label>Kunde</label>
+                        <v-select :options="companies" label="full_name" placeholder="Alle Kunden" v-model="selectedCompany" :selectOnTab="true">
+                            <template v-slot:no-options>Keine passenden Einträge.</template>
+                        </v-select>
                     </div>
                     <div>
-                        <label for="to-mobile">Bis</label>
-                        <input id="to-mobile" class="form-control" type="date" :disabled="state.period !== 'custom'" v-model="state.to">
+                        <label>Mitarbeiter</label>
+                        <v-select :options="employeeOptions" label="name" placeholder="Alle Mitarbeiter" v-model="selectedEmployee" :selectOnTab="true">
+                            <template v-slot:no-options>Keine passenden Einträge.</template>
+                        </v-select>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Kunde</label>
-                    <v-select :options="companies" label="full_name" placeholder="Alle Kunden" v-model="selectedCompany" :selectOnTab="true">
-                        <template v-slot:no-options>Keine passenden Einträge.</template>
-                    </v-select>
-                </div>
-                <div class="mb-3">
-                    <label>Mitarbeiter</label>
-                    <v-select :options="employeeOptions" label="name" placeholder="Alle Mitarbeiter" v-model="selectedEmployee" :selectOnTab="true">
-                        <template v-slot:no-options>Keine passenden Einträge.</template>
-                    </v-select>
-                </div>
-                <div class="mb-3">
-                    <label>Projekt</label>
-                    <v-select :options="projects" label="name" placeholder="Alle Projekte" v-model="selectedProject" :selectOnTab="true">
-                        <template v-slot:no-options>Keine passenden Einträge.</template>
-                    </v-select>
-                </div>
-                <div class="mb-3">
-                    <label>Berichtstyp</label>
-                    <v-select :options="reportTypeOptions" label="label" placeholder="Alle Typen" v-model="selectedReportType" :selectOnTab="true">
-                        <template v-slot:no-options>Keine passenden Einträge.</template>
-                    </v-select>
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input type="checkbox" class="form-check-input" id="only-active-projects-mobile" v-model="state.only_active_projects">
-                    <label class="form-check-label" for="only-active-projects-mobile">Nur aktive Projekte</label>
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn q-btn flex-fill" @click="reset">Zurücksetzen</button>
-                    <button type="button" class="btn btn-primary text-white flex-fill d-inline-flex align-items-center justify-content-center gap-2" @click="apply">
-                        <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
-                        Filtern
-                    </button>
+                    <div>
+                        <label>Projekt</label>
+                        <v-select :options="projects" label="name" placeholder="Alle Projekte" v-model="selectedProject" :selectOnTab="true">
+                            <template v-slot:no-options>Keine passenden Einträge.</template>
+                        </v-select>
+                    </div>
+                    <div>
+                        <label>Berichtstyp</label>
+                        <v-select :options="reportTypeOptions" label="label" placeholder="Alle Typen" v-model="selectedReportType" :selectOnTab="true">
+                            <template v-slot:no-options>Keine passenden Einträge.</template>
+                        </v-select>
+                    </div>
+                    <div class="form-check form-switch m-0">
+                        <input type="checkbox" class="form-check-input" id="only-active-projects-mobile" v-model="state.only_active_projects">
+                        <label class="form-check-label" for="only-active-projects-mobile">Nur aktive Projekte</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn q-btn flex-fill" @click="reset">Zurücksetzen</button>
+                        <button type="button" class="btn btn-primary text-white flex-fill d-inline-flex align-items-center justify-content-center gap-2" @click="apply">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                            Filtern
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

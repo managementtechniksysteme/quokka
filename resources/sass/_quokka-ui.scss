@@ -203,6 +203,18 @@ $q-pad:            1.25rem;
         border: 0 !important; margin: 0 !important; border-radius: 8px !important;
         padding: .4rem .75rem; font-size: .8rem; font-weight: 600;
         color: var(--q-muted); background: transparent;
+        // Bootstrap's .btn sets white-space:nowrap, so a long label in a
+        // narrow segment would otherwise overflow/clip instead of wrapping —
+        // allow it to actually wrap. A sibling segment's label wrapping to 2
+        // lines then stretches every segment in the group to match
+        // (`.btn-group`'s flex default is align-items:stretch) — center each
+        // segment's own text within whatever height that ends up being,
+        // single- or multi-line, rather than leaving shorter segments' text
+        // pinned to the top (2026-07-29, user: mixed single/multi-line
+        // segments in one option set).
+        white-space: normal;
+        display: flex; align-items: center; justify-content: center; text-align: center;
+        min-width: 0;
         &:hover { color: var(--q-text); }
     }
     .btn-check:checked + .btn {

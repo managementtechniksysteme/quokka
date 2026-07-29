@@ -2216,6 +2216,23 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 // customers/projects exist (2026-07-29, user: "that employee list haha").
 .q-scroll-cap { max-height: 21rem; overflow-y: auto; padding-right: .3rem; }
 
+// Card-head grouping tabs (Kunde/Projekt/Mitarbeiter etc.) — below md the
+// card is narrow enough that 4 pills can overflow the row, and Bootstrap's
+// default nav flex-wrap drops the last one onto its own line with dead
+// space next to it. Scroll horizontally instead so all pills stay on one
+// line (2026-07-29, user: "Mitarbeiter... on its own row despite there
+// seemingly being enough space inline", reported on iPhone).
+@include media-breakpoint-down(md) {
+    .q-card__head .nav-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        &::-webkit-scrollbar { display: none; }
+    }
+    .q-card__head .nav-pills .nav-item { flex: 0 0 auto; }
+}
+
 .q-chartgrid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .8rem; }
 @include media-breakpoint-down(lg) { .q-chartgrid { grid-template-columns: 1fr; } }
 
@@ -2263,8 +2280,16 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 .q-people-row { display: flex; align-items: center; gap: .8rem; }
 .q-people-row__main { flex: 1 1 auto; min-width: 0; }
 .q-people-row__name { font-size: .84rem; font-weight: 600; color: var(--q-text); }
-.q-people-row__meta { display: flex; gap: .4rem; margin-top: .3rem; }
+.q-people-row__meta { display: flex; gap: .4rem; margin-top: .3rem; flex-wrap: wrap; }
 .q-people-row__load { flex: 0 0 9rem; }
+// Below md, avatar/name/chip and the load bar no longer fit on one line —
+// wrap the load bar onto its own full-width row instead of squeezing chip
+// text until it wraps mid-word (2026-07-29, user: "chips look fucked on
+// mobile", reported on iPhone).
+@include media-breakpoint-down(md) {
+    .q-people-row { flex-wrap: wrap; }
+    .q-people-row__load { flex: 1 1 100%; margin-top: .5rem; }
+}
 .q-people-row__load-top { display: flex; justify-content: space-between; font-size: .74rem; color: var(--q-muted); margin-bottom: .3rem; }
 
 .q-footnote { display: flex; align-items: center; gap: .4rem; font-size: .76rem; color: var(--q-faint); margin-top: .5rem; }

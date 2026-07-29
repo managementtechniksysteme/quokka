@@ -1,7 +1,7 @@
 {{--
     Employee workload row (utilisation card). Expects: $row (employee, open_tasks,
-    active_projects, relative_to_busiest, share_of_team) and $value (the percentage
-    for the currently active tab).
+    relative_to_busiest, share_of_team) and $value (the percentage for the
+    currently active tab).
 --}}
 @php
     $employee = $row->employee;
@@ -13,7 +13,6 @@
         <div class="q-people-row__name">{{ $employee->person->name }}</div>
         <div class="q-people-row__meta">
             <span class="q-chip">{{ $row->open_tasks }} offene Aufgaben</span>
-            <span class="q-chip">{{ $row->active_projects }} Projekte</span>
         </div>
     </div>
     <div class="q-people-row__load">

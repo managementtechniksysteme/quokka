@@ -209,21 +209,15 @@ class MetricsCalculator
             ->groupBy('employee_id')
             ->pluck('open_tasks', 'employee_id');
 
-        $activeProjectCounts = (clone $baseQuery())
-            ->selectRaw('employee_id, count(distinct project_id) as active_projects')
-            ->groupBy('employee_id')
-            ->pluck('active_projects', 'employee_id');
-
         $maxOpen = $openTaskCounts->max() ?: 0;
         $totalOpen = $openTaskCounts->sum();
 
-        return $employees->map(function ($employee) use ($openTaskCounts, $activeProjectCounts, $maxOpen, $totalOpen) {
+        return $employees->map(function ($employee) use ($openTaskCounts, $maxOpen, $totalOpen) {
             $open = $openTaskCounts[$employee->person_id] ?? 0;
 
             return (object) [
                 'employee' => $employee,
                 'open_tasks' => $open,
-                'active_projects' => $activeProjectCounts[$employee->person_id] ?? 0,
                 'relative_to_busiest' => $maxOpen > 0 ? (int) round($open / $maxOpen * 100) : 0,
                 'share_of_team' => $totalOpen > 0 ? (int) round($open / $totalOpen * 100) : 0,
             ];

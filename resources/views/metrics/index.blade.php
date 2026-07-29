@@ -71,7 +71,8 @@
         <span>
             Im gewählten Zeitraum berücksichtigt: <strong>Aufgaben</strong>, wenn Start- oder Enddatum im Zeitraum liegt ·
             <strong>Berichte</strong> (Bau-/Prüf-/Regiebericht, Durchflussmessung), wenn das Berichtsdatum im Zeitraum liegt ·
-            <strong>Serviceberichte</strong>, wenn mindestens eine erbrachte Leistung im Zeitraum liegt.
+            <strong>Serviceberichte</strong>, wenn mindestens eine erbrachte Leistung im Zeitraum liegt ·
+            <strong>Auslastung Team</strong> und <strong>Ø Std / Woche</strong> nur Mitarbeiter mit Aufgaben bzw. Stunden im Zeitraum.
         </span>
     </div>
 

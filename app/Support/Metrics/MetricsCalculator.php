@@ -113,9 +113,14 @@ class MetricsCalculator
 
     public function teamUtilisationPercentage(): ?int
     {
-        $workload = $this->employeeWorkload();
+        // Averaged only over employees with at least one open task in the
+        // period — employees who were never assigned a task at all aren't
+        // "0% utilised", they're outside what this task-based proxy can
+        // measure, and including them just drags the average down
+        // (2026-07-29, user).
+        $active = $this->employeeWorkload()->filter(fn ($row) => $row->open_tasks > 0);
 
-        return $workload->isEmpty() ? null : (int) round($workload->avg('relative_to_busiest'));
+        return $active->isEmpty() ? null : (int) round($active->avg('relative_to_busiest'));
     }
 
     public function averageHoursPerWeek(): ?float
@@ -126,12 +131,19 @@ class MetricsCalculator
             return null;
         }
 
-        $totalHours = $this->applyDimensionFilters(
+        // Same reasoning as teamUtilisationPercentage(): average only over
+        // employees who actually logged hour-based accounting entries in the
+        // period, not every employed person (2026-07-29, user).
+        $hoursByEmployee = $this->applyDimensionFilters(
             Accounting::query()
                 ->whereIn('service_id', $this->hourBasedServiceIds())
                 ->whereBetween('service_provided_on', [$this->filters->from, $this->filters->to])
                 ->whereIn('employee_id', $employees->pluck('person_id'))
-        )->sum('amount');
+        )->selectRaw('employee_id, sum(amount) as total')->groupBy('employee_id')->pluck('total');
+
+        if ($hoursByEmployee->isEmpty()) {
+            return null;
+        }
 
         $weeks = ($this->filters->from->diffInDays($this->filters->to->copy()->startOfDay()) + 1) / 7;
 
@@ -139,7 +151,7 @@ class MetricsCalculator
             return null;
         }
 
-        return round($totalHours / $weeks / $employees->count(), 1);
+        return round($hoursByEmployee->sum() / $weeks / $hoursByEmployee->count(), 1);
     }
 
     public function drivenDistanceSummary(): array

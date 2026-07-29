@@ -29,8 +29,8 @@
                         <div class="q-filterbar__field">
                             <label>Zeitraum</label>
                             <div class="btn-group">
-                                <input type="radio" class="btn-check" name="period" id="period-30d" value="30d" v-model="state.period">
-                                <label class="btn" for="period-30d">30 Tage</label>
+                                <input type="radio" class="btn-check" name="period" id="period-month" value="month" v-model="state.period">
+                                <label class="btn" for="period-month">Monat</label>
                                 <input type="radio" class="btn-check" name="period" id="period-quarter" value="quarter" v-model="state.period">
                                 <label class="btn" for="period-quarter">Quartal</label>
                                 <input type="radio" class="btn-check" name="period" id="period-year" value="year" v-model="state.period">
@@ -101,8 +101,8 @@
                     <div class="q-form__row">
                         <label>Zeitraum</label>
                         <div class="btn-group w-100">
-                            <input type="radio" class="btn-check" name="period-mobile" id="period-30d-mobile" value="30d" v-model="state.period">
-                            <label class="btn" for="period-30d-mobile">30 Tage</label>
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-month-mobile" value="month" v-model="state.period">
+                            <label class="btn" for="period-month-mobile">Monat</label>
                             <input type="radio" class="btn-check" name="period-mobile" id="period-quarter-mobile" value="quarter" v-model="state.period">
                             <label class="btn" for="period-quarter-mobile">Quartal</label>
                             <input type="radio" class="btn-check" name="period-mobile" id="period-year-mobile" value="year" v-model="state.period">
@@ -179,6 +179,7 @@
             return {
                 state: {
                     period: this.filters.period,
+                    anchor: this.filters.anchor,
                     from: this.filters.from,
                     to: this.filters.to,
                     only_active_projects: this.filters.only_active_projects,
@@ -207,7 +208,7 @@
 
             periodLabel() {
                 switch (this.state.period) {
-                    case '30d': return '30 Tage';
+                    case 'month': return 'Monat';
                     case 'year': return 'Jahr';
                     case 'custom': return this.formatDate(this.state.from) + ' – ' + this.formatDate(this.state.to);
                     default: return null;
@@ -282,6 +283,12 @@
                 if (this.state.period === 'custom') {
                     params.set('from', this.state.from);
                     params.set('to', this.state.to);
+                } else {
+                    // Preserve which month/quarter/year is being viewed when
+                    // only some other filter (e.g. Kunde) changes — otherwise
+                    // re-applying from a chevron-navigated period would snap
+                    // back to the current one.
+                    params.set('anchor', this.state.anchor);
                 }
                 if (this.selectedCompany) {
                     params.set('company_id', this.selectedCompany.id);

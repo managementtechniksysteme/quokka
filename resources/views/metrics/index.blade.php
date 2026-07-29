@@ -16,20 +16,14 @@
 <div class="q-container">
 
     @php
-        // Previous/next period keep the exact same length and turn the nav
-        // into a "custom" range from here on — lets you keep clicking to walk
-        // through history without recomputing calendar-aligned quarters/years
-        // (2026-07-29, user: "quickly make comparisons" between timeframes).
-        $previousPeriodUrl = route('metrics.index', array_merge($filtersArray, [
-            'period' => 'custom',
-            'from' => $filters->previousFrom->format('Y-m-d'),
-            'to' => $filters->previousTo->format('Y-m-d'),
-        ]));
-        $nextPeriodUrl = route('metrics.index', array_merge($filtersArray, [
-            'period' => 'custom',
-            'from' => $filters->nextFrom->format('Y-m-d'),
-            'to' => $filters->nextTo->format('Y-m-d'),
-        ]));
+        // Quarter/year stay calendar-aligned across repeated clicks (a past
+        // quarter/year always shows in full, not a same-length slice of it);
+        // 30d/custom shift by the exact current length instead, since there's
+        // no calendar unit for those to align to — see
+        // MetricsFilters::previous/nextPeriodParams() (2026-07-29, user:
+        // "the whole duration (max days) should slide").
+        $previousPeriodUrl = route('metrics.index', array_merge($filtersArray, $filters->previousPeriodParams()));
+        $nextPeriodUrl = route('metrics.index', array_merge($filtersArray, $filters->nextPeriodParams()));
     @endphp
 
     <div class="q-page-head d-none d-md-flex">
@@ -131,67 +125,12 @@
         </div>
     </div>
 
-    {{-- ============================= COLUMN LABELS ============================= --}}
-    <div class="q-colheads">
-        <div class="q-colhead"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#list-task"></use></svg>Aufgaben &amp; Team</div>
-        <div class="q-colhead"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#cash-stack"></use></svg>Abrechnung &amp; Berichte</div>
-    </div>
-
-    {{-- ============================= ROW 1: task status + report status ============================= --}}
     @php
         $taskStatus = $metrics->taskStatusBreakdown();
         $reportStatus = $metrics->reportStatusBreakdown();
         $taskStatusPct = fn ($n) => $taskStatus['total'] > 0 ? round($n / $taskStatus['total'] * 100, 1) : 0;
         $reportStatusPct = fn ($n) => $reportStatus['total'] > 0 ? round($n / $reportStatus['total'] * 100, 1) : 0;
-    @endphp
-    <div class="q-chartgrid">
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Aufgaben-Status</div>
-                    <div class="q-card__hint">{{ $taskStatus['total'] }} Aufgaben im Zeitraum (Start- oder Enddatum)</div>
-                </div>
-            </div>
-            <div class="q-card__body">
-                <div class="q-stackbar">
-                    <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['new']) }}%; background:var(--q-sky)"></div>
-                    <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['inProgress']) }}%; background:var(--q-amber)"></div>
-                    <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['finished']) }}%; background:var(--q-green)"></div>
-                    <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['overdue']) }}%; background:var(--q-red)"></div>
-                </div>
-                <div class="q-stackbar-legend">
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $taskStatus['new'] }}</b></span>
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>In Bearbeitung · <b>{{ $taskStatus['inProgress'] }}</b></span>
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $taskStatus['finished'] }}</b></span>
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-red)"></span>Überfällig · <b>{{ $taskStatus['overdue'] }}</b></span>
-                </div>
-            </div>
-        </div>
 
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Unterschrift-Status</div>
-                    <div class="q-card__hint">{{ $reportStatus['total'] }} Berichte im Zeitraum</div>
-                </div>
-            </div>
-            <div class="q-card__body">
-                <div class="q-stackbar">
-                    <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['new']) }}%; background:var(--q-sky)"></div>
-                    <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['signed']) }}%; background:var(--q-amber)"></div>
-                    <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['finished']) }}%; background:var(--q-green)"></div>
-                </div>
-                <div class="q-stackbar-legend">
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $reportStatus['new'] }}</b></span>
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>Unterschrieben · <b>{{ $reportStatus['signed'] }}</b></span>
-                    <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $reportStatus['finished'] }}</b></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ============================= ROW 2: on-time rate + time to signature ============================= --}}
-    @php
         $onTimeByCustomer = $metrics->onTimeRateByCustomer();
         $onTimeByProject = $metrics->onTimeRateByProject();
         $onTimeByEmployee = $metrics->onTimeRateByEmployee();
@@ -203,162 +142,11 @@
         $sigByCustomer = $metrics->timeToSignatureByCustomer();
         $sigByEmployee = $metrics->timeToSignatureByEmployee();
         $sigMaxMean = max($sigByCustomer->max('mean') ?? 0, $sigByEmployee->max('mean') ?? 0);
-    @endphp
-    <div class="q-chartgrid">
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Termintreue</div>
-                    <div class="q-card__hint">Anteil rechtzeitig abgeschlossen</div>
-                </div>
-                <ul class="nav nav-pills" id="ontime-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#ontime-customer" type="button" role="tab">Kunde</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ontime-project" type="button" role="tab">Projekt</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ontime-employee" type="button" role="tab">Mitarbeiter</button></li>
-                </ul>
-            </div>
-            <div class="q-card__body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="ontime-customer" role="tabpanel">
-                        <div class="q-hbars q-scroll-cap">
-                            @forelse($onTimeByCustomer as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
-                            @empty
-                                <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="ontime-project" role="tabpanel">
-                        <div class="q-hbars q-scroll-cap">
-                            @forelse($onTimeByProject as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
-                            @empty
-                                <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="ontime-employee" role="tabpanel">
-                        <div class="q-hbars q-scroll-cap">
-                            @forelse($onTimeByEmployee as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
-                            @empty
-                                <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Zeit bis Unterschrift</div>
-                    <div class="q-card__hint">Nach Kunde bzw. Mitarbeiter, absteigend sortiert</div>
-                </div>
-                <ul class="nav nav-pills" id="sig-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#sig-customer" type="button" role="tab">Kunde</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sig-employee" type="button" role="tab">Mitarbeiter</button></li>
-                </ul>
-            </div>
-            <div class="q-card__body">
-                <div class="q-dualbar__legend">
-                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-accent)"></span>Ø Mittelwert</span>
-                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-faint)"></span>Median</span>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="sig-customer" role="tabpanel">
-                        <div class="q-hbars q-scroll-cap">
-                            @forelse($sigByCustomer as $row)
-                                @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $sigMaxMean, 'unit' => 'Tage'])
-                            @empty
-                                <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="sig-employee" role="tabpanel">
-                        <div class="q-hbars q-scroll-cap">
-                            @forelse($sigByEmployee as $row)
-                                @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $sigMaxMean, 'unit' => 'Tage'])
-                            @empty
-                                <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ============================= ROW 3: employee workload + time to completion ============================= --}}
-    @php
         $workload = $metrics->employeeWorkload();
         $completionByCustomer = $metrics->timeToCompletionByCustomer();
         $completionMaxMean = $completionByCustomer->max('mean') ?? 0;
-    @endphp
-    <div class="q-chartgrid">
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Mitarbeiter-Auslastung</div>
-                    <div class="q-card__hint">Offene Aufgaben je Mitarbeiter</div>
-                </div>
-                <ul class="nav nav-pills" id="util-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#util-relative" type="button" role="tab">Zur ausgelastetsten Person</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#util-share" type="button" role="tab">Anteil am Team</button></li>
-                </ul>
-            </div>
-            <div class="q-card__body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="util-relative" role="tabpanel">
-                        <div class="q-card__hint mb-3">Auslastung relativ zur Person mit den meisten offenen Aufgaben (= 100%).</div>
-                        <div class="q-people-list q-scroll-cap">
-                            @forelse($workload as $row)
-                                @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->relative_to_busiest])
-                            @empty
-                                <p class="text-muted mb-0">Keine Mitarbeiter im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="util-share" role="tabpanel">
-                        <div class="q-card__hint mb-3">Anteil der offenen Aufgaben dieser Person am gesamten Team-Aufkommen.</div>
-                        <div class="q-people-list q-scroll-cap">
-                            @forelse($workload as $row)
-                                @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->share_of_team])
-                            @empty
-                                <p class="text-muted mb-0">Keine Mitarbeiter im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Zeit bis Erledigung</div>
-                    <div class="q-card__hint">Unterschrift → Bericht erledigt, nach Kunde</div>
-                </div>
-            </div>
-            <div class="q-card__body">
-                <div class="q-dualbar__legend">
-                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-accent)"></span>Ø Mittelwert</span>
-                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-faint)"></span>Median</span>
-                </div>
-                <div class="q-hbars q-scroll-cap">
-                    @forelse($completionByCustomer as $row)
-                        @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $completionMaxMean, 'unit' => 'Tage'])
-                    @empty
-                        <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ============================= ROW 4: accounting breakdown + logbook ============================= --}}
-    @php
         $accDimensions = ['total' => null, 'company' => 'company', 'project' => 'project', 'employee' => 'employee'];
         $accData = collect($accDimensions)->map(fn ($dimension) => $metrics->topNWithRest($metrics->accountingBreakdown($dimension), 6, 'value'));
 
@@ -367,75 +155,277 @@
         $logByEmployee = $metrics->topNWithRest($metrics->logbookDistanceByEmployee(), 6, 'kilometres');
         $logMax = collect([$logByVehicle, $logByCustomer, $logByEmployee])->map(fn ($c) => $c->max('kilometres') ?? 0)->max();
     @endphp
-    <div class="q-chartgrid">
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Abrechnungsarten</div>
-                    <div class="q-card__hint">Anteil am Gesamtumsatz</div>
-                </div>
-                <ul class="nav nav-pills" id="acc-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#acc-total" type="button" role="tab">Gesamt</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-company" type="button" role="tab">Kunde</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-project" type="button" role="tab">Projekt</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-employee" type="button" role="tab">Mitarbeiter</button></li>
-                </ul>
-            </div>
-            <div class="q-card__body">
-                <div class="tab-content">
-                    @foreach($accData as $key => $items)
-                        <div class="tab-pane fade {{ $key === 'total' ? 'show active' : '' }}" id="acc-{{ $key }}" role="tabpanel">
-                            @include('metrics.partials.donut', ['items' => $items])
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
 
-        <div class="q-card">
-            <div class="q-card__head">
-                <div>
-                    <div class="q-card__title">Fahrtenbuch – Strecken</div>
-                    <div class="q-card__hint">Firmenfahrzeuge, ohne Privatfahrten</div>
+    {{-- Single grid, cards in row-major (left, right, left, right...) order:
+         a CSS Grid row auto-sizes to its tallest cell, so paired cards land
+         on the same row and come out equal height on desktop; on mobile the
+         grid collapses to one column and the same DOM order reads top to
+         bottom exactly as the desktop rows do (2026-07-29, user: "left and
+         right on desktop, also on mobile for consistency"). --}}
+    <div class="q-metrics-grid">
+            {{-- Aufgaben-Status --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Aufgaben-Status</div>
+                        <div class="q-card__hint">{{ $taskStatus['total'] }} Aufgaben im Zeitraum (Start- oder Enddatum)</div>
+                    </div>
                 </div>
-                <ul class="nav nav-pills" id="log-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#log-vehicle" type="button" role="tab">Fahrzeug</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#log-customer" type="button" role="tab">Kunde</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#log-employee" type="button" role="tab">Mitarbeiter</button></li>
-                </ul>
-            </div>
-            <div class="q-card__body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="log-vehicle" role="tabpanel">
-                        <div class="q-hbars">
-                            @forelse($logByVehicle as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)', 'icon' => $row->label === 'Sonstige' ? null : 'truck'])
-                            @empty
-                                <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
-                            @endforelse
-                        </div>
+                <div class="q-card__body">
+                    <div class="q-stackbar">
+                        <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['new']) }}%; background:var(--q-sky)"></div>
+                        <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['inProgress']) }}%; background:var(--q-amber)"></div>
+                        <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['finished']) }}%; background:var(--q-green)"></div>
+                        <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['overdue']) }}%; background:var(--q-red)"></div>
                     </div>
-                    <div class="tab-pane fade" id="log-customer" role="tabpanel">
-                        <div class="q-hbars">
-                            @forelse($logByCustomer as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)'])
-                            @empty
-                                <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="log-employee" role="tabpanel">
-                        <div class="q-hbars">
-                            @forelse($logByEmployee as $row)
-                                @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)'])
-                            @empty
-                                <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
-                            @endforelse
-                        </div>
+                    <div class="q-stackbar-legend">
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $taskStatus['new'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>In Bearbeitung · <b>{{ $taskStatus['inProgress'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $taskStatus['finished'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-red)"></span>Überfällig · <b>{{ $taskStatus['overdue'] }}</b></span>
                     </div>
                 </div>
             </div>
-        </div>
+
+            {{-- Unterschrift-Status --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Unterschrift-Status</div>
+                        <div class="q-card__hint">{{ $reportStatus['total'] }} Berichte im Zeitraum</div>
+                    </div>
+                </div>
+                <div class="q-card__body">
+                    <div class="q-stackbar">
+                        <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['new']) }}%; background:var(--q-sky)"></div>
+                        <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['signed']) }}%; background:var(--q-amber)"></div>
+                        <div class="q-stackbar__seg" style="width:{{ $reportStatusPct($reportStatus['finished']) }}%; background:var(--q-green)"></div>
+                    </div>
+                    <div class="q-stackbar-legend">
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $reportStatus['new'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>Unterschrieben · <b>{{ $reportStatus['signed'] }}</b></span>
+                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Fertig · <b>{{ $reportStatus['finished'] }}</b></span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Termintreue --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Termintreue</div>
+                        <div class="q-card__hint">Anteil rechtzeitig abgeschlossen</div>
+                    </div>
+                    <ul class="nav nav-pills" id="ontime-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#ontime-customer" type="button" role="tab">Kunde</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ontime-project" type="button" role="tab">Projekt</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#ontime-employee" type="button" role="tab">Mitarbeiter</button></li>
+                    </ul>
+                </div>
+                <div class="q-card__body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="ontime-customer" role="tabpanel">
+                            <div class="q-hbars q-scroll-cap">
+                                @forelse($onTimeByCustomer as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ontime-project" role="tabpanel">
+                            <div class="q-hbars q-scroll-cap">
+                                @forelse($onTimeByProject as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="ontime-employee" role="tabpanel">
+                            <div class="q-hbars q-scroll-cap">
+                                @forelse($onTimeByEmployee as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => $row->rate.'%', 'percentage' => $row->rate, 'color' => $rateColor($row->rate)])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Zeit bis Unterschrift --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Zeit bis Unterschrift</div>
+                        <div class="q-card__hint">Nach Kunde bzw. Mitarbeiter, absteigend sortiert</div>
+                    </div>
+                    <ul class="nav nav-pills" id="sig-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#sig-customer" type="button" role="tab">Kunde</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#sig-employee" type="button" role="tab">Mitarbeiter</button></li>
+                    </ul>
+                </div>
+                <div class="q-card__body">
+                    <div class="q-dualbar__legend">
+                        <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-accent)"></span>Ø Mittelwert</span>
+                        <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-faint)"></span>Median</span>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="sig-customer" role="tabpanel">
+                            <div class="q-hbars q-scroll-cap">
+                                @forelse($sigByCustomer as $row)
+                                    @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $sigMaxMean, 'unit' => 'Tage'])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="sig-employee" role="tabpanel">
+                            <div class="q-hbars q-scroll-cap">
+                                @forelse($sigByEmployee as $row)
+                                    @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $sigMaxMean, 'unit' => 'Tage'])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Mitarbeiter-Auslastung --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Mitarbeiter-Auslastung</div>
+                        <div class="q-card__hint">Offene Aufgaben je Mitarbeiter</div>
+                    </div>
+                    <ul class="nav nav-pills" id="util-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#util-relative" type="button" role="tab">Zur ausgelastetsten Person</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#util-share" type="button" role="tab">Anteil am Team</button></li>
+                    </ul>
+                </div>
+                <div class="q-card__body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="util-relative" role="tabpanel">
+                            <div class="q-card__hint mb-3">Auslastung relativ zur Person mit den meisten offenen Aufgaben (= 100%).</div>
+                            <div class="q-people-list q-scroll-cap">
+                                @forelse($workload as $row)
+                                    @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->relative_to_busiest])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Mitarbeiter im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="util-share" role="tabpanel">
+                            <div class="q-card__hint mb-3">Anteil der offenen Aufgaben dieser Person am gesamten Team-Aufkommen.</div>
+                            <div class="q-people-list q-scroll-cap">
+                                @forelse($workload as $row)
+                                    @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->share_of_team])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Mitarbeiter im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Zeit bis Erledigung --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Zeit bis Erledigung</div>
+                        <div class="q-card__hint">Unterschrift → Bericht erledigt, nach Kunde</div>
+                    </div>
+                </div>
+                <div class="q-card__body">
+                    <div class="q-dualbar__legend">
+                        <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-accent)"></span>Ø Mittelwert</span>
+                        <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-faint)"></span>Median</span>
+                    </div>
+                    <div class="q-hbars q-scroll-cap">
+                        @forelse($completionByCustomer as $row)
+                            @include('metrics.partials.dualbar_row', ['label' => $row->label, 'mean' => $row->mean, 'median' => $row->median, 'maxMean' => $completionMaxMean, 'unit' => 'Tage'])
+                        @empty
+                            <p class="text-muted mb-0">Keine Daten im Zeitraum.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            {{-- Abrechnungsarten --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Abrechnungsarten</div>
+                        <div class="q-card__hint">Anteil am Gesamtumsatz</div>
+                    </div>
+                    <ul class="nav nav-pills" id="acc-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#acc-total" type="button" role="tab">Gesamt</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-company" type="button" role="tab">Kunde</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-project" type="button" role="tab">Projekt</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#acc-employee" type="button" role="tab">Mitarbeiter</button></li>
+                    </ul>
+                </div>
+                <div class="q-card__body">
+                    <div class="tab-content">
+                        @foreach($accData as $key => $items)
+                            <div class="tab-pane fade {{ $key === 'total' ? 'show active' : '' }}" id="acc-{{ $key }}" role="tabpanel">
+                                @include('metrics.partials.donut', ['items' => $items])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Fahrtenbuch – Strecken --}}
+            <div class="q-card">
+                <div class="q-card__head">
+                    <div>
+                        <div class="q-card__title">Fahrtenbuch – Strecken</div>
+                        <div class="q-card__hint">Firmenfahrzeuge, ohne Privatfahrten</div>
+                    </div>
+                    <ul class="nav nav-pills" id="log-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#log-vehicle" type="button" role="tab">Fahrzeug</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#log-customer" type="button" role="tab">Kunde</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#log-employee" type="button" role="tab">Mitarbeiter</button></li>
+                    </ul>
+                </div>
+                <div class="q-card__body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="log-vehicle" role="tabpanel">
+                            <div class="q-hbars">
+                                @forelse($logByVehicle as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)', 'icon' => $row->label === 'Sonstige' ? null : 'truck'])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="log-customer" role="tabpanel">
+                            <div class="q-hbars">
+                                @forelse($logByCustomer as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)'])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="log-employee" role="tabpanel">
+                            <div class="q-hbars">
+                                @forelse($logByEmployee as $row)
+                                    @include('metrics.partials.hbar_row', ['label' => $row->label, 'value' => number_format($row->kilometres, 0, ',', '.').' km', 'percentage' => $logMax > 0 ? round($row->kilometres / $logMax * 100, 1) : 0, 'color' => $row->label === 'Sonstige' ? null : 'var(--q-violet)'])
+                                @empty
+                                    <p class="text-muted mb-0">Keine Fahrten im Zeitraum.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 
 </div>

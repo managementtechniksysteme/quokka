@@ -2266,14 +2266,27 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     .q-card__head .nav-pills .nav-item { flex: 0 0 auto; }
 }
 
-.q-chartgrid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .8rem; }
-@include media-breakpoint-down(lg) { .q-chartgrid { grid-template-columns: 1fr; } }
-
-.q-colheads { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .4rem; }
-@include media-breakpoint-down(lg) { .q-colheads { display: none; } }
-.q-colhead {
-    display: flex; align-items: center; gap: .4rem;
-    font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint);
+// two persistent columns (not a per-row grid) so mobile stacking keeps every
+// left-column card together before any right-column card, instead of
+// interleaving left-right-left-right once collapsed to one column.
+// Cards sit directly in the grid in row-major (left, right, left, right...)
+// order, so each row auto-sizes to its tallest card and left/right come out
+// equal height on desktop. Below the breakpoint the grid collapses to one
+// column; `order` regroups the flow to read the left column top-to-bottom
+// then the right column, instead of interleaving left-right-left-right
+// (2026-07-29, user: "mobile should feel like reading the desktop grid col
+// left, then col right").
+.q-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .8rem; }
+@include media-breakpoint-down(lg) {
+    .q-metrics-grid { grid-template-columns: 1fr; }
+    .q-metrics-grid > :nth-child(1) { order: 1; }
+    .q-metrics-grid > :nth-child(3) { order: 2; }
+    .q-metrics-grid > :nth-child(5) { order: 3; }
+    .q-metrics-grid > :nth-child(7) { order: 4; }
+    .q-metrics-grid > :nth-child(2) { order: 5; }
+    .q-metrics-grid > :nth-child(4) { order: 6; }
+    .q-metrics-grid > :nth-child(6) { order: 7; }
+    .q-metrics-grid > :nth-child(8) { order: 8; }
 }
 
 // dot + label chip (Ø Mittelwert / Median legends, stackbar + donut legends)

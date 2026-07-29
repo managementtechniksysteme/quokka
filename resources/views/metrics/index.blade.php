@@ -99,7 +99,7 @@
         <div class="q-card q-tile q-tile--danger">
             <div class="q-tile__head"><span class="q-tile__label">Ø Verzug überfällig</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hourglass-split"></use></svg></span></div>
             <div class="q-tile__value">{{ $overdue['average_days'] !== null ? number_format($overdue['average_days'], 1, ',', '.') : '–' }}<span class="q-tile__unit">Tage</span></div>
-            <div class="q-tile__sub">{{ $overdue['count'] }} überfällige Aufgaben</div>
+            <div class="q-tile__sub">{{ $overdue['count'] }} {{ trans_choice('überfällige Aufgabe|überfällige Aufgaben', $overdue['count']) }}</div>
         </div>
         <div class="q-card q-tile q-tile--accent">
             <div class="q-tile__head"><span class="q-tile__label">Aktive Projekte</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clipboard"></use></svg></span></div>
@@ -121,7 +121,7 @@
         <div class="q-card q-tile q-tile--violet">
             <div class="q-tile__head"><span class="q-tile__label">Gefahrene Strecke</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span></div>
             <div class="q-tile__value">{{ number_format($distance['kilometres'], 0, ',', '.') }}<span class="q-tile__unit">km</span></div>
-            <div class="q-tile__sub">{{ $distance['trips'] }} Fahrten</div>
+            <div class="q-tile__sub">{{ $distance['trips'] }} {{ trans_choice('Fahrt|Fahrten', $distance['trips']) }}</div>
         </div>
     </div>
 

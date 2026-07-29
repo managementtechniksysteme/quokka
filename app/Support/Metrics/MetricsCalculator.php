@@ -31,6 +31,19 @@ class MetricsCalculator
         'flow_meter' => ['label' => 'Durchflussmessung', 'model' => FlowMeterInspectionReport::class, 'date_field' => 'inspected_on'],
     ];
 
+    // Several cards independently group/aggregate the same underlying report,
+    // accounting, task, and logbook rows (e.g. accountingBreakdown() is
+    // called once per tab, reportsInRange() from up to 6 call sites) — on a
+    // wide date range with real production data this re-ran the same heavy
+    // eager-loaded query 3-6x per request and exhausted PHP's memory limit
+    // (2026-07-29, found via a genuine 500 on a ~7-month custom range).
+    // Memoize the base collection per family so each is fetched once.
+    private ?Collection $cachedReports = null;
+    private ?Collection $cachedReportsWithTimestamps = null;
+    private ?Collection $cachedAccountingRows = null;
+    private ?Collection $cachedOnTimeTasks = null;
+    private ?Collection $cachedLogbookEntries = null;
+
     public function __construct(private readonly MetricsFilters $filters)
     {
     }
@@ -46,7 +59,9 @@ class MetricsCalculator
 
     public function averageTimeToSignature(): array
     {
-        $days = $this->signedReportDurations($this->reportsInRange($this->filters->from, $this->filters->to));
+        $days = $this->reportsWithTimestamps()
+            ->filter(fn ($report) => $report->date && $report->signed_at)
+            ->map(fn ($report) => $report->date->diffInHours($report->signed_at) / 24);
 
         return [
             'mean' => $days->isEmpty() ? null : round($days->avg(), 1),
@@ -153,7 +168,7 @@ class MetricsCalculator
 
     public function reportStatusBreakdown(): array
     {
-        $reports = $this->reportsInRange($this->filters->from, $this->filters->to);
+        $reports = $this->reportsInRange();
 
         return [
             'total' => $reports->count(),
@@ -226,7 +241,7 @@ class MetricsCalculator
 
     public function timeToCompletionByCustomer(): Collection
     {
-        $reports = $this->attachSignedAndFinishedTimestamps($this->reportsInRange($this->filters->from, $this->filters->to))
+        $reports = $this->reportsWithTimestamps()
             ->filter(fn ($report) => $report->signed_at && $report->finished_at);
 
         $projects = $this->projectsFor($reports->pluck('project_id'));
@@ -251,13 +266,7 @@ class MetricsCalculator
     public function accountingBreakdown(?string $dimension = null): Collection
     {
         $materialServiceIds = MaterialService::pluck('id');
-        $wageServiceIds = WageService::whereNotNull('costs')->pluck('id');
-
-        $accounting = $this->applyDimensionFilters(
-            Accounting::query()
-                ->whereBetween('service_provided_on', [$this->filters->from, $this->filters->to])
-                ->whereIn('service_id', $materialServiceIds->merge($wageServiceIds))
-        )->with(['service', 'project.company', 'employee.person'])->get();
+        $accounting = $this->accountingRows();
 
         return $accounting->groupBy(function ($row) use ($dimension) {
             return match ($dimension) {
@@ -363,6 +372,22 @@ class MetricsCalculator
             ->pluck('id');
     }
 
+    private function accountingRows(): Collection
+    {
+        if ($this->cachedAccountingRows !== null) {
+            return $this->cachedAccountingRows;
+        }
+
+        $materialServiceIds = MaterialService::pluck('id');
+        $wageServiceIds = WageService::whereNotNull('costs')->pluck('id');
+
+        return $this->cachedAccountingRows = $this->applyDimensionFilters(
+            Accounting::query()
+                ->whereBetween('service_provided_on', [$this->filters->from, $this->filters->to])
+                ->whereIn('service_id', $materialServiceIds->merge($wageServiceIds))
+        )->with(['service', 'project.company', 'employee.person'])->get();
+    }
+
     private function logbookEntries(): Builder
     {
         return $this->applyDimensionFilters(
@@ -372,9 +397,16 @@ class MetricsCalculator
         );
     }
 
+    private function logbookEntriesWithRelations(): Collection
+    {
+        return $this->cachedLogbookEntries ??= $this->logbookEntries()
+            ->with(['vehicle', 'project.company', 'employee.person'])
+            ->get();
+    }
+
     private function logbookDistanceGroupedBy(string $dimension): Collection
     {
-        $entries = $this->logbookEntries()->with(['vehicle', 'project.company', 'employee.person'])->get();
+        $entries = $this->logbookEntriesWithRelations();
 
         return $entries->groupBy(function ($entry) use ($dimension) {
             return match ($dimension) {
@@ -389,13 +421,18 @@ class MetricsCalculator
         ])->sortByDesc('kilometres')->values();
     }
 
-    private function onTimeRateGroupedBy(string $dimension): Collection
+    private function tasksForOnTimeRate(): Collection
     {
-        $tasks = $this->tasksInRange()
+        return $this->cachedOnTimeTasks ??= $this->tasksInRange()
             ->where('status', 'finished')
             ->whereNotNull('due_on')
             ->with(['project.company', 'responsibleEmployee.person'])
             ->get(['id', 'ends_on', 'due_on', 'project_id', 'employee_id']);
+    }
+
+    private function onTimeRateGroupedBy(string $dimension): Collection
+    {
+        $tasks = $this->tasksForOnTimeRate();
 
         return $tasks->groupBy(function ($task) use ($dimension) {
             return match ($dimension) {
@@ -417,7 +454,7 @@ class MetricsCalculator
 
     private function timeToSignatureGroupedBy(string $dimension): Collection
     {
-        $reports = $this->attachSignedAndFinishedTimestamps($this->reportsInRange($this->filters->from, $this->filters->to))
+        $reports = $this->reportsWithTimestamps()
             ->filter(fn ($report) => $report->date && $report->signed_at);
 
         $projects = $this->projectsFor($reports->pluck('project_id'));
@@ -440,13 +477,6 @@ class MetricsCalculator
         })->sortByDesc('mean')->values();
     }
 
-    private function signedReportDurations(Collection $reports): Collection
-    {
-        return $this->attachSignedAndFinishedTimestamps($reports)
-            ->filter(fn ($report) => $report->date && $report->signed_at)
-            ->map(fn ($report) => $report->date->diffInHours($report->signed_at) / 24);
-    }
-
     private function reportTypes(): array
     {
         if ($this->filters->reportType && isset(self::REPORT_TYPES[$this->filters->reportType])) {
@@ -456,8 +486,19 @@ class MetricsCalculator
         return self::REPORT_TYPES;
     }
 
-    private function reportsInRange(Carbon $from, Carbon $to): Collection
+    private function reportsWithTimestamps(): Collection
     {
+        return $this->cachedReportsWithTimestamps ??= $this->attachSignedAndFinishedTimestamps($this->reportsInRange());
+    }
+
+    private function reportsInRange(): Collection
+    {
+        if ($this->cachedReports !== null) {
+            return $this->cachedReports;
+        }
+
+        $from = $this->filters->from;
+        $to = $this->filters->to;
         $reports = collect();
 
         foreach ($this->reportTypes() as $key => $type) {
@@ -502,7 +543,7 @@ class MetricsCalculator
             }
         }
 
-        return $reports;
+        return $this->cachedReports = $reports;
     }
 
     private function attachSignedAndFinishedTimestamps(Collection $reports): Collection

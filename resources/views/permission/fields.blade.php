@@ -3389,6 +3389,17 @@
         </div>
         <div>
             <div class="form-check form-switch">
+                <input type="checkbox" class="form-check-input @error('tools_viewmetrics') is-invalid @enderror" name="tools_viewmetrics" id="tools_viewmetrics" value="true" @if(old('tools_viewmetrics', optional($permissions)->hasPermissionTo('tools.viewmetrics'))) checked @endif>
+                <label class="form-check-label" for="tools_viewmetrics">Kennzahlen anzeigen</label>
+            </div>
+            <div class="invalid-feedback @error('tools_viewmetrics') d-block @enderror">
+                @error('tools_viewmetrics')
+                {{ $message }}
+                @enderror
+            </div>
+        </div>
+        <div>
+            <div class="form-check form-switch">
                 <input type="checkbox" class="form-check-input @error('tools_scanqr') is-invalid @enderror" name="tools_scanqr" id="tools_scanqr" value="true" @if(old('tools_scanqr', optional($permissions)->hasPermissionTo('tools.scanqr'))) checked @endif>
                 <label class="form-check-label" for="tools_scanqr">QR-Code Scanner verwenden</label>
             </div>

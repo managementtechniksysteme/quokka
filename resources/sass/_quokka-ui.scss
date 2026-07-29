@@ -759,7 +759,7 @@ $q-pad:            1.25rem;
 .q-filterbar__field { flex: 0 0 auto; }
 // no max-width — let Projekt/Leistung fill all remaining row width, so the
 // row's right edge lines up with the Filtern button on the row below.
-.q-filterbar__field--grow { flex: 1 1 200px; }
+.q-filterbar__field--grow { flex: 1 1 150px; }
 .q-filterbar__field .form-control { width: 138px; }
 .q-filterbar__field .v-select { width: 100%; }
 // flex items default to min-width:auto, i.e. their content's min-content size —
@@ -1113,6 +1113,15 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
 .q-tile--success .q-tile__icon { background: var(--q-green-bg); color: var(--q-green); }
 .q-tile--warning .q-tile__icon { background: var(--q-amber-bg); color: var(--q-amber); }
 .q-tile--danger  .q-tile__icon { background: var(--q-red-bg);   color: var(--q-red); }
+.q-tile--accent  .q-tile__icon { background: var(--q-accent-tint); color: var(--q-accent); }
+.q-tile--violet  .q-tile__icon { background: color-mix(in srgb, var(--q-violet) 16%, transparent); color: var(--q-violet); }
+// icon-only tint — decorative variety (e.g. a metrics dashboard tile that
+// isn't reporting a problem) without implying urgency in the label text,
+// unlike --warning/--danger below which are reserved for tiles that
+// genuinely need attention (2026-07-29, user: "all others have gray labels").
+.q-tile--warning-icon .q-tile__icon { background: var(--q-amber-bg); color: var(--q-amber); }
+.q-tile__sub--up { color: var(--q-green); }
+.q-tile__sub--down { color: var(--q-red); }
 // urgent tiles also colour their label (header) — like the finishable report count
 .q-tile--warning .q-tile__label { color: var(--q-amber); }
 .q-tile--danger  .q-tile__label { color: var(--q-red); }
@@ -2186,3 +2195,76 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
         z-index: 5;
     }
 }
+
+// =============================================================================
+//  Metrics dashboard (Kennzahlen) — KPI tiles reuse .q-tile/.q-tiles as-is;
+//  everything below is new to this page: status stackbars, horizontal-bar
+//  comparison lists, the accounting donut, and the employee workload rows.
+// =============================================================================
+.q-tiles--6 { grid-template-columns: repeat(6, 1fr); }
+@include media-breakpoint-down(xl) { .q-tiles--6 { grid-template-columns: repeat(3, 1fr); } }
+@include media-breakpoint-down(sm) { .q-tiles--6 { grid-template-columns: repeat(2, 1fr); } }
+
+// muted one-line explanation under a card title — kept low-contrast on
+// purpose so the explanation doesn't compete with the title for attention
+// (2026-07-29, user: card subheaders over per-card info-icon tooltips).
+.q-card__hint { font-size: .74rem; color: var(--q-muted); margin-top: .15rem; }
+
+// Height cap for lists without a natural top-N+"Sonstige" bucket (employee
+// workload, on-time-rate / time-to-signature groupings) — scrolls internally
+// past ~6 rows instead of the card growing to match however many employees/
+// customers/projects exist (2026-07-29, user: "that employee list haha").
+.q-scroll-cap { max-height: 21rem; overflow-y: auto; padding-right: .3rem; }
+
+.q-chartgrid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .8rem; }
+@include media-breakpoint-down(lg) { .q-chartgrid { grid-template-columns: 1fr; } }
+
+.q-colheads { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: .4rem; }
+@include media-breakpoint-down(lg) { .q-colheads { display: none; } }
+.q-colhead {
+    display: flex; align-items: center; gap: .4rem;
+    font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint);
+}
+
+// dot + label chip (Ø Mittelwert / Median legends, stackbar + donut legends)
+.q-chart-legend { display: inline-flex; align-items: center; gap: .4rem; font-size: .74rem; color: var(--q-muted); }
+.q-chart-legend__dot { width: .55rem; height: .55rem; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.q-dualbar__legend { display: flex; gap: 1rem; margin-bottom: .7rem; }
+
+// segmented status bar (task status / signature status)
+.q-stackbar { display: flex; height: .55rem; border-radius: $q-radius-pill; overflow: hidden; background: var(--q-surface-3); }
+.q-stackbar__seg { height: 100%; }
+.q-stackbar-legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin-top: .8rem; }
+.q-stackbar-legend__item { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--q-muted); b { color: var(--q-text); font-weight: 700; } }
+
+// horizontal bar comparison lists (on-time rate, time-to-signature, logbook)
+.q-hbars { display: flex; flex-direction: column; gap: .85rem; }
+.q-hbar-row { display: flex; flex-direction: column; gap: .3rem; }
+.q-hbar-row__top { display: flex; align-items: center; justify-content: space-between; gap: .6rem; font-size: .82rem; }
+.q-hbar-row__label { color: var(--q-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; }
+.q-hbar-row__value { font-weight: 700; color: var(--q-text); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.q-hbar-track { height: .5rem; border-radius: $q-radius-pill; background: var(--q-surface-3); overflow: hidden; }
+.q-hbar-track--thin { height: .3rem; margin-top: .15rem; }
+.q-hbar-fill { height: 100%; border-radius: $q-radius-pill; background: var(--q-accent); }
+.q-hbar-fill--muted { background: var(--q-faint); }
+
+// donut chart (accounting breakdown)
+.q-donut-wrap { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }
+.q-donut-center-value { font-size: .95rem; font-weight: 800; fill: var(--q-text); }
+.q-donut-center-label { font-size: .5rem; font-weight: 600; letter-spacing: .08em; fill: var(--q-faint); }
+.q-donut-legend { display: flex; flex-direction: column; gap: .5rem; flex: 1 1 180px; min-width: 0; }
+.q-donut-legend__row { display: flex; align-items: center; gap: .5rem; font-size: .8rem; }
+.q-donut-legend__label { color: var(--q-text); flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.q-donut-legend__value { color: var(--q-muted); font-variant-numeric: tabular-nums; }
+.q-donut-legend__pct { color: var(--q-faint); font-weight: 700; min-width: 2.4rem; text-align: right; }
+
+// employee workload rows (utilisation card)
+.q-people-list { display: flex; flex-direction: column; gap: 1rem; }
+.q-people-row { display: flex; align-items: center; gap: .8rem; }
+.q-people-row__main { flex: 1 1 auto; min-width: 0; }
+.q-people-row__name { font-size: .84rem; font-weight: 600; color: var(--q-text); }
+.q-people-row__meta { display: flex; gap: .4rem; margin-top: .3rem; }
+.q-people-row__load { flex: 0 0 9rem; }
+.q-people-row__load-top { display: flex; justify-content: space-between; font-size: .74rem; color: var(--q-muted); margin-bottom: .3rem; }
+
+.q-footnote { display: flex; align-items: center; gap: .4rem; font-size: .76rem; color: var(--q-faint); margin-top: .5rem; }

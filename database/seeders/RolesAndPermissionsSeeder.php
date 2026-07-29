@@ -339,6 +339,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // tools
         Permission::firstOrCreate(['name' => 'tools.viewlatestchanges']);
         Permission::firstOrCreate(['name' => 'tools.viewsentemails']);
+        Permission::firstOrCreate(['name' => 'tools.viewmetrics']);
         Permission::firstOrCreate(['name' => 'tools.scanqr']);
 
         // user settings

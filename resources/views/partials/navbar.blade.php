@@ -256,7 +256,7 @@
                     @endif
 
 
-                    <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('latest-changes.*', 'sent-emails.*', 'qr-scan.*', 'exceptions.*')])>
+                    <li @class(['nav-item', 'dropdown', 'active' => request()->routeIs('latest-changes.*', 'sent-emails.*', 'metrics.*', 'qr-scan.*', 'exceptions.*')])>
                         <a id="navbarHelpDropdown" class="nav-link dropdown-toggle d-inline-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon-bs icon-20 me-1">
                                 <use href="{{ asset('svg/bootstrap-icons.svg') }}#tools"></use>
@@ -279,6 +279,14 @@
                                         <use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use>
                                     </svg>
                                     Gesendete Emails
+                                </a>
+                            @endcan
+                            @can('tools-viewmetrics')
+                                <a class="dropdown-item d-inline-flex align-items-center" href="{{ route('metrics.index') }}">
+                                    <svg class="icon-bs icon-16 me-1">
+                                        <use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use>
+                                    </svg>
+                                    Kennzahlen
                                 </a>
                             @endcan
                             @can('tools-scanqr')
@@ -578,6 +586,7 @@
             'roles.*' => ['Rollen', 'key'],
             'material-services.*|wage-services.*' => ['Leistungen', 'cpu'],
             'vehicles.*' => ['Fuhrpark', 'truck'],
+            'metrics.*' => ['Kennzahlen', 'bar-chart'],
             'latest-changes.*' => ['Letzte Änderungen', 'activity'],
             'sent-emails.*' => ['Gesendete Emails', 'envelope'],
             'qr-scan.*' => ['QR-Code scannen', 'camera'],
@@ -855,7 +864,7 @@
                 @endcan
             @endif
 
-            @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
+            @if(auth()->user()->can('tools-viewlatestchanges') || auth()->user()->can('tools-viewsentemails') || auth()->user()->can('tools-viewmetrics') || auth()->user()->can('tools-scanqr') || auth()->user()->can('tools-viewexceptions'))
                 <div class="q-sheet__label">Werkzeuge</div>
                 @can('tools-viewlatestchanges')
                     <a class="q-row" href="{{ route('latest-changes.index') }}">
@@ -867,6 +876,12 @@
                     <a class="q-row" href="{{ route('sent-emails.index') }}">
                         <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#envelope"></use></svg></span>
                         <span class="q-row__title">Gesendete Emails</span>
+                    </a>
+                @endcan
+                @can('tools-viewmetrics')
+                    <a class="q-row" href="{{ route('metrics.index') }}">
+                        <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg></span>
+                        <span class="q-row__title">Kennzahlen</span>
                     </a>
                 @endcan
                 @can('tools-scanqr')

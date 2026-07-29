@@ -101,6 +101,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('tools-scanqr', fn ($user) => $user->can('tools.scanqr'));
         Gate::define('tools-viewlatestchanges', fn ($user) => $user->can('tools.viewlatestchanges'));
         Gate::define('tools-viewsentemails', fn ($user) => $user->can('tools.viewsentemails'));
+        Gate::define('tools-viewmetrics', fn ($user) => $user->can('tools.viewmetrics'));
         Gate::define('tools-viewexceptions', fn ($user) => $user->can('exceptions.view'));
         Gate::define('tools-deleteexceptions', fn ($user) => $user->can('exceptions.delete'));
     }

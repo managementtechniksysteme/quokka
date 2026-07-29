@@ -41,6 +41,7 @@ use App\Http\Controllers\LatestChangesController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MaterialServiceController;
 use App\Http\Controllers\MemoController;
+use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PersonController;
@@ -200,6 +201,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::resource('logbook', LogbookController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/logbook/download', [LogbookController::class, 'download'])->name('logbook.download');
+
+    Route::resource('metrics', MetricsController::class)->only(['index']);
 
     Route::resource('material-services', MaterialServiceController::class);
 

@@ -86,15 +86,15 @@
         $distance = $metrics->drivenDistanceSummary();
     @endphp
     <div class="q-tiles q-tiles--6">
-        <div class="q-card q-tile q-tile--info">
-            <div class="q-tile__head"><span class="q-tile__label">Ø Zeit bis Unterschrift</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg></span></div>
-            <div class="q-tile__value">{{ $timeToSignature['mean'] !== null ? number_format($timeToSignature['mean'], 1, ',', '.') : '–' }}<span class="q-tile__unit">Tage</span></div>
-            <div class="q-tile__sub">{{ $timeToSignature['median'] !== null ? 'Median '.number_format($timeToSignature['median'], 1, ',', '.').' Tage' : 'Keine Daten' }}</div>
-        </div>
         <div class="q-card q-tile q-tile--success">
             <div class="q-tile__head"><span class="q-tile__label">Termintreue Aufgaben</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#check2-square"></use></svg></span></div>
             <div class="q-tile__value">{{ $onTimeRate['rate'] ?? '–' }}<span class="q-tile__unit">%</span></div>
             <div class="q-tile__sub">{{ $onTimeRate['on_time'] }} von {{ $onTimeRate['total'] }} pünktlich</div>
+        </div>
+        <div class="q-card q-tile q-tile--info">
+            <div class="q-tile__head"><span class="q-tile__label">Ø Zeit bis Unterschrift</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#pen"></use></svg></span></div>
+            <div class="q-tile__value">{{ $timeToSignature['mean'] !== null ? number_format($timeToSignature['mean'], 1, ',', '.') : '–' }}<span class="q-tile__unit">Tage</span></div>
+            <div class="q-tile__sub">{{ $timeToSignature['median'] !== null ? 'Median '.number_format($timeToSignature['median'], 1, ',', '.').' Tage' : 'Keine Daten' }}</div>
         </div>
         <div class="q-card q-tile q-tile--danger">
             <div class="q-tile__head"><span class="q-tile__label">Ø Verzug überfällig</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hourglass-split"></use></svg></span></div>

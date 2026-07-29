@@ -773,6 +773,14 @@ $q-pad:            1.25rem;
 // row's right edge lines up with the Filtern button on the row below.
 .q-filterbar__field--grow { flex: 1 1 150px; }
 .q-filterbar__field .form-control { width: 138px; }
+// The segmented period picker (.btn-group) is shorter than its sibling
+// .form-control fields by design (compact padding for the pill-track look
+// elsewhere in the app) — but sitting in the same field row as date inputs
+// makes the mismatch look like a bug rather than a style choice. Nudge its
+// padding up to match .form-control's rendered height exactly in this
+// context only (2026-07-29, user).
+.q-filterbar__field .btn-group { padding: 4px; }
+.q-filterbar__field .btn-group > .btn { padding: .45rem .75rem; }
 .q-filterbar__field .v-select { width: 100%; }
 // flex items default to min-width:auto, i.e. their content's min-content size —
 // for nowrap text that's the FULL unwrapped width, which silently overflows
@@ -2217,6 +2225,16 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 @include media-breakpoint-down(xl) { .q-tiles--6 { grid-template-columns: repeat(3, 1fr); } }
 @include media-breakpoint-down(sm) { .q-tiles--6 { grid-template-columns: repeat(2, 1fr); } }
 
+// Filter bar → info banner → KPI tiles → chart grid: the banner should read
+// as trailing content of the filter bar above it (tight gap), while the KPI
+// tile row gets equal, larger gaps on both sides so it's clearly boxed off
+// from both the filters and the chart grid below (previously the banner sat
+// closer to the tiles above it than the tiles were to the grid below,
+// 2026-07-29, user). Scoped to this exact combination so the shared
+// .q-filterbar/.q-banner--info components stay unaffected elsewhere.
+.q-filterbar:has(+ .q-banner--info + .q-tiles--6) { margin-bottom: .4rem; }
+.q-banner--info:has(+ .q-tiles--6) { margin-bottom: 1.6rem; }
+
 // muted one-line explanation under a card title — kept low-contrast on
 // purpose so the explanation doesn't compete with the title for attention
 // (2026-07-29, user: card subheaders over per-card info-icon tooltips).
@@ -2248,6 +2266,13 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
     color: var(--q-accent);
     font-weight: 700;
 }
+// The pills stack directly below the title/hint text with no gap (Bootstrap's
+// .nav has margin-bottom:0 and no margin-top) — looks glued on. Give them
+// breathing room above, taken from the head's bottom padding below them
+// rather than added on top of it, so the head doesn't grow taller overall
+// (2026-07-29, user).
+.q-card__head .nav-pills { margin-top: .6rem; }
+.q-card__head:has(.nav-pills) { padding-bottom: .6rem; }
 
 // Card-head grouping tabs (Kunde/Projekt/Mitarbeiter etc.) — below md the
 // card is narrow enough that 4 pills can overflow the row, and Bootstrap's

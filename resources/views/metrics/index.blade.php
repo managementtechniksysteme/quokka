@@ -27,19 +27,26 @@
     @endphp
 
     <div class="q-page-head d-none d-md-flex">
-        <div>
-            <div class="q-eyebrow">Auswertung</div>
-            <h1 class="q-title">Kennzahlen</h1>
-            <div class="q-subtitle d-inline-flex align-items-center gap-2">
-                <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
-                    <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
-                </a>
-                {{ $filters->from->format('d.m.Y') }} – {{ $filters->to->format('d.m.Y') }}
-                <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
-                    <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
-                </a>
+        <div class="d-flex align-items-center gap-3">
+            <span class="q-head-icon">
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#bar-chart"></use></svg>
+            </span>
+            <div>
+                <h1 class="q-title">Kennzahlen</h1>
             </div>
         </div>
+    </div>
+    {{-- Date range + period nav: its own row below the header on desktop
+         (not part of .q-page-head, 2026-07-29, user), mirroring the mobile
+         row below it. --}}
+    <div class="d-none d-md-flex align-items-center gap-2 mt-2 mb-3">
+        <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
+            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+        </a>
+        <div class="q-subtitle mb-0">{{ $filters->from->format('d.m.Y') }} – {{ $filters->to->format('d.m.Y') }}</div>
+        <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
+            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
+        </a>
     </div>
     {{-- Mobile: the app bar already carries "Kennzahlen" + its own icon
          + the filter trigger (mobile-detail-bar section above) — just the

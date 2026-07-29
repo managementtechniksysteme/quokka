@@ -79,13 +79,10 @@
                             <input type="checkbox" class="form-check-input" v-model="state.only_active_projects">
                             Nur aktive Projekte
                         </label>
-                        <div class="q-filterbar__submit">
-                            <button type="button" class="btn q-btn" @click="reset">Zurücksetzen</button>
-                            <button type="button" class="btn btn-primary text-white d-inline-flex align-items-center gap-2" @click="apply">
-                                <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#filter"></use></svg>
-                                Filtern
-                            </button>
-                        </div>
+                        <button type="button" class="btn q-btn q-filterbar__submit d-inline-flex align-items-center gap-2" @click="apply">
+                            <svg class="icon-bs icon-16"><use href="/svg/bootstrap-icons.svg#funnel"></use></svg>
+                            Filtern
+                        </button>
                     </div>
                 </div>
             </div>

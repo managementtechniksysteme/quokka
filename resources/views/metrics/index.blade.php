@@ -150,7 +150,7 @@
         <div class="q-card q-tile q-tile--warning-icon">
             <div class="q-tile__head"><span class="q-tile__label">@if($filters->isLive())<span class="q-live-dot"></span><span class="visually-hidden">Live</span>@endif Auslastung Team</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg></span></div>
             <div class="q-tile__value">{{ $utilisation ?? '–' }}<span class="q-tile__unit">%</span></div>
-            <div class="q-tile__sub">{{ $avgHours !== null ? 'Ø '.number_format($avgHours, 1, ',', '.').' Std / Woche' : 'Keine Daten' }}</div>
+            <div class="q-tile__sub">{{ $avgHours !== null ? 'Ø '.number_format($avgHours, 1, ',', '.').' Std / Woche' : 'Keine Stunden' }}</div>
         </div>
         <div class="q-card q-tile q-tile--violet">
             <div class="q-tile__head"><span class="q-tile__label">Gefahrene Strecke</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#truck"></use></svg></span></div>

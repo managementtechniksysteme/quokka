@@ -1151,6 +1151,13 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
 // line, worst on mobile where the head is already tight (2026-07-30, user).
 // A small pulsing dot has no wrap risk at any width; the label text moves to
 // a .visually-hidden span so screen readers still get "Live".
+//
+// Tile/card headers flex-center the dot against the header's own line box
+// instead of `vertical-align: middle` (which sits ~0.5ex above the
+// baseline, not the text's true visual center — noticeably off against
+// bold/uppercase header text, 2026-07-30, user).
+.q-tile__label { display: inline-flex; align-items: center; }
+.q-card__title { display: flex; align-items: center; }
 .q-live-dot {
     position: relative;
     display: inline-block;

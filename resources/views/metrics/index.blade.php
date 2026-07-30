@@ -95,7 +95,7 @@
         <svg class="icon icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
         <span>
             @if($filters->isLive())
-                <span class="q-chip q-chip--success">Live</span>-markierte Kennzahlen zeigen den aktuellen Stand ohne Zeitraumbezug (offene Aufgaben, egal wann angelegt) ·
+                <span class="q-live-dot"></span>Live-markierte Kennzahlen zeigen den aktuellen Stand ohne Zeitraumbezug (offene Aufgaben, egal wann angelegt) ·
                 alle anderen Kennzahlen beziehen sich auf den Monat bis heute:
             @else
                 Im gewählten Zeitraum berücksichtigt: <strong>Aufgaben</strong>, wenn Start- oder Enddatum im Zeitraum liegt ·

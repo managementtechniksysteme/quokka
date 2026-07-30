@@ -1146,27 +1146,39 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
 .q-tile--warning .q-tile__label { color: var(--q-amber); }
 .q-tile--danger  .q-tile__label { color: var(--q-red); }
 // "Live" marker on tiles/cards whose value bypasses the date-range filter
-// entirely in "Aktuell" mode. A text pill (e.g. .q-chip) wrapped instead of
-// truncated — its min-content width forced tile/card heads onto a second
-// line, worst on mobile where the head is already tight (2026-07-30, user).
-// A small pulsing dot has no wrap risk at any width; the label text moves to
-// a .visually-hidden span so screen readers still get "Live".
+// entirely in "Aktuell" mode, and on the live-mode info banner. A text pill
+// (e.g. .q-chip) wrapped instead of truncated — its min-content width forced
+// tile/card heads onto a second line, worst on mobile where the head is
+// already tight (2026-07-30, user). A small pulsing dot has no wrap risk at
+// any width; the label text moves to a .visually-hidden span so screen
+// readers still get "Live".
 //
-// Tile/card headers flex-center the dot against the header's own line box
-// instead of `vertical-align: middle` (which sits ~0.5ex above the
-// baseline, not the text's true visual center — noticeably off against
-// bold/uppercase header text, 2026-07-30, user).
-.q-tile__label { display: inline-flex; align-items: center; }
-.q-card__title { display: flex; align-items: center; }
+// Sized as a 1em inline-flex box (matches the surrounding text's font-box,
+// same idiom as svg.icon-bs in app.scss) rather than vertical-align: middle
+// directly on the 6px dot — that centers against the x-height midpoint,
+// which reads visibly low against bold/uppercase header text. The 1em box
+// stays inline (not flex on the containing paragraph/header), so on
+// multi-line text — the info banner — it centers against the first text
+// row only, not the whole wrapped block (2026-07-30, user).
 .q-live-dot {
     position: relative;
-    display: inline-block;
-    width: 6px; height: 6px; margin-right: .4rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1em; height: 1em; margin-right: .1rem;
+    // vertical-align: middle centers against the parent's x-height midpoint
+    // (baseline + ~0.5ex), which sits noticeably below true cap-height
+    // center for bold/uppercase text — reads as baseline-aligned rather
+    // than centered. Nudge up the remaining gap to cap-height center
+    // (2026-07-30, user).
+    vertical-align: middle;
+    transform: translateY(-0.12em);
+}
+.q-live-dot::before {
+    content: ''; width: 6px; height: 6px;
     border-radius: 50%; background: var(--q-green);
-    vertical-align: middle; flex-shrink: 0;
 }
 .q-live-dot::after {
-    content: ''; position: absolute; inset: 0;
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 6px; height: 6px; margin: -3px 0 0 -3px;
     border-radius: 50%; background: var(--q-green);
     animation: q-live-pulse 2s ease-out infinite;
 }

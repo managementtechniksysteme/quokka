@@ -36,30 +36,48 @@
             </div>
         </div>
     </div>
+    @php
+        // "Aktuell" isn't a navigable period (no "previous now"), and its
+        // task-based cards ignore from/to entirely — the subtitle shows the
+        // MTD window in parentheses only as context for the cards that do
+        // still use it (reports, hours, revenue, logbook), not as something
+        // you can page through (2026-07-30, user).
+        $periodSubtitle = $filters->isLive()
+            ? 'Aktuell (Monat bis heute: '.$filters->from->format('d.m.').' – '.$filters->to->format('d.m.Y').')'
+            : $filters->from->format('d.m.Y').' – '.$filters->to->format('d.m.Y');
+    @endphp
     {{-- Date range + period nav: its own row below the header on desktop
          (not part of .q-page-head, 2026-07-29, user), mirroring the mobile
          row below it. --}}
     <div class="d-none d-md-flex align-items-center gap-2 mt-2 mb-3">
-        <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
-            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
-        </a>
-        <div class="q-subtitle mb-0">{{ $filters->from->format('d.m.Y') }} – {{ $filters->to->format('d.m.Y') }}</div>
-        <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
-            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
-        </a>
+        @unless($filters->isLive())
+            <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
+                <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+            </a>
+        @endunless
+        <div class="q-subtitle mb-0">{{ $periodSubtitle }}</div>
+        @unless($filters->isLive())
+            <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
+                <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
+            </a>
+        @endunless
     </div>
     {{-- Mobile: the app bar already carries "Kennzahlen" + its own icon
          + the filter trigger (mobile-detail-bar section above) — just the
          date range + period nav here, same convention as
          latest_changes/index.blade.php. --}}
     <div class="d-flex d-md-none align-items-center gap-2 mb-3">
-        <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
-            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
-        </a>
-        <div class="q-subtitle mb-0">{{ $filters->from->format('d.m.Y') }} – {{ $filters->to->format('d.m.Y') }}</div>
-        <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
-            <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
-        </a>
+        @unless($filters->isLive())
+            <a href="{{ $previousPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Vorherige Periode" title="Vorherige Periode">
+                <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-left"></use></svg>
+            </a>
+        @endunless
+        <div class="q-subtitle mb-0">{{ $periodSubtitle }}</div>
+        @unless($filters->isLive())
+            <a href="{{ $nextPeriodUrl }}" class="btn q-btn q-btn-icon" aria-label="Nächste Periode" title="Nächste Periode">
+                <svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#chevron-right"></use></svg>
+            </a>
+        @endunless
     </div>
 
     <metrics-filter-bar
@@ -76,10 +94,18 @@
     <div class="q-banner q-banner--info">
         <svg class="icon icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#info-circle"></use></svg>
         <span>
-            Im gewählten Zeitraum berücksichtigt: <strong>Aufgaben</strong>, wenn Start- oder Enddatum im Zeitraum liegt ·
+            @if($filters->isLive())
+                <span class="q-chip q-chip--success">Live</span>-markierte Kennzahlen zeigen den aktuellen Stand ohne Zeitraumbezug (offene Aufgaben, egal wann angelegt) ·
+                alle anderen Kennzahlen beziehen sich auf den Monat bis heute:
+            @else
+                Im gewählten Zeitraum berücksichtigt: <strong>Aufgaben</strong>, wenn Start- oder Enddatum im Zeitraum liegt ·
+            @endif
             <strong>Berichte</strong> (Bau-/Prüf-/Regiebericht, Durchflussmessung), wenn das Berichtsdatum im Zeitraum liegt ·
             <strong>Serviceberichte</strong>, wenn mindestens eine erbrachte Leistung im Zeitraum liegt ·
-            <strong>Auslastung Team</strong> und <strong>Ø Std / Woche</strong> nur Mitarbeiter mit Aufgaben bzw. Stunden im Zeitraum.
+            <strong>Ø Std / Woche</strong> nur Mitarbeiter mit Stunden im Zeitraum{{ $filters->isLive() ? '.' : '' }}
+            @unless($filters->isLive())
+                · <strong>Auslastung Team</strong> nur Mitarbeiter mit Aufgaben im Zeitraum.
+            @endunless
         </span>
     </div>
 
@@ -105,7 +131,7 @@
             <div class="q-tile__sub">{{ $timeToSignature['median'] !== null ? 'Median '.number_format($timeToSignature['median'], 1, ',', '.').' Tage' : 'Keine Daten' }}</div>
         </div>
         <div class="q-card q-tile q-tile--danger">
-            <div class="q-tile__head"><span class="q-tile__label">Ø Verzug überfällig</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hourglass-split"></use></svg></span></div>
+            <div class="q-tile__head"><span class="q-tile__label">@if($filters->isLive())<span class="q-live-dot"></span><span class="visually-hidden">Live</span>@endif Ø Verzug überfällig</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#hourglass-split"></use></svg></span></div>
             <div class="q-tile__value">{{ $overdue['average_days'] !== null ? number_format($overdue['average_days'], 1, ',', '.') : '–' }}<span class="q-tile__unit">Tage</span></div>
             <div class="q-tile__sub">{{ $overdue['count'] }} {{ trans_choice('überfällige Aufgabe|überfällige Aufgaben', $overdue['count']) }}</div>
         </div>
@@ -122,7 +148,7 @@
             </div>
         </div>
         <div class="q-card q-tile q-tile--warning-icon">
-            <div class="q-tile__head"><span class="q-tile__label">Auslastung Team</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg></span></div>
+            <div class="q-tile__head"><span class="q-tile__label">@if($filters->isLive())<span class="q-live-dot"></span><span class="visually-hidden">Live</span>@endif Auslastung Team</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#people"></use></svg></span></div>
             <div class="q-tile__value">{{ $utilisation ?? '–' }}<span class="q-tile__unit">%</span></div>
             <div class="q-tile__sub">{{ $avgHours !== null ? 'Ø '.number_format($avgHours, 1, ',', '.').' Std / Woche' : 'Keine Daten' }}</div>
         </div>
@@ -175,21 +201,31 @@
             <div class="q-card">
                 <div class="q-card__head">
                     <div>
-                        <div class="q-card__title">Aufgaben-Status</div>
-                        <div class="q-card__hint">{{ $taskStatus['total'] }} Aufgaben im Zeitraum (Start- oder Enddatum)</div>
+                        <div class="q-card__title">@if($filters->isLive())<span class="q-live-dot"></span><span class="visually-hidden">Live</span>@endif Aufgaben-Status</div>
+                        <div class="q-card__hint">
+                            @if($filters->isLive())
+                                {{ $taskStatus['total'] }} offene Aufgaben, aktueller Stand
+                            @else
+                                {{ $taskStatus['total'] }} Aufgaben im Zeitraum (Start- oder Enddatum)
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <div class="q-card__body">
                     <div class="q-stackbar">
                         <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['new']) }}%; background:var(--q-sky)"></div>
                         <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['inProgress']) }}%; background:var(--q-amber)"></div>
-                        <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['finished']) }}%; background:var(--q-green)"></div>
+                        @unless($filters->isLive())
+                            <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['finished']) }}%; background:var(--q-green)"></div>
+                        @endunless
                         <div class="q-stackbar__seg" style="width:{{ $taskStatusPct($taskStatus['overdue']) }}%; background:var(--q-red)"></div>
                     </div>
                     <div class="q-stackbar-legend">
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-sky)"></span>Neu · <b>{{ $taskStatus['new'] }}</b></span>
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-amber)"></span>In Arbeit · <b>{{ $taskStatus['inProgress'] }}</b></span>
-                        <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Erledigt · <b>{{ $taskStatus['finished'] }}</b></span>
+                        @unless($filters->isLive())
+                            <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Erledigt · <b>{{ $taskStatus['finished'] }}</b></span>
+                        @endunless
                         <span class="q-stackbar-legend__item"><span class="q-chart-legend__dot" style="background:var(--q-red)"></span>Überfällig · <b>{{ $taskStatus['overdue'] }}</b></span>
                     </div>
                 </div>
@@ -268,7 +304,7 @@
                 <div class="q-card__head">
                     <div>
                         <div class="q-card__title">Zeit bis Unterschrift</div>
-                        <div class="q-card__hint">Nach Kunde bzw. Mitarbeiter, absteigend sortiert</div>
+                        <div class="q-card__hint">Berichtsdatum → Unterschrift, nach Kunde bzw. Mitarbeiter, absteigend sortiert</div>
                     </div>
                     <ul class="nav nav-pills" id="sig-tabs" role="tablist">
                         <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#sig-customer" type="button" role="tab">Kunde</button></li>
@@ -307,8 +343,8 @@
             <div class="q-card">
                 <div class="q-card__head">
                     <div>
-                        <div class="q-card__title">Mitarbeiter-Auslastung</div>
-                        <div class="q-card__hint">Offene Aufgaben je Mitarbeiter</div>
+                        <div class="q-card__title">@if($filters->isLive())<span class="q-live-dot"></span><span class="visually-hidden">Live</span>@endif Mitarbeiter-Auslastung</div>
+                        <div class="q-card__hint">{{ $filters->isLive() ? 'Offene Aufgaben je Mitarbeiter, aktueller Stand' : 'Aufgaben je Mitarbeiter im Zeitraum' }}</div>
                     </div>
                     <ul class="nav nav-pills" id="util-tabs" role="tablist">
                         <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#util-relative" type="button" role="tab">Zur ausgelastetsten Person</button></li>
@@ -318,7 +354,7 @@
                 <div class="q-card__body">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="util-relative" role="tabpanel">
-                            <div class="q-card__hint mb-3">Auslastung relativ zur Person mit den meisten offenen Aufgaben (= 100%).</div>
+                            <div class="q-card__hint mb-3">Auslastung relativ zur Person mit den meisten Aufgaben (= 100%).</div>
                             <div class="q-people-list q-scroll-cap">
                                 @forelse($workload as $row)
                                     @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->relative_to_busiest])
@@ -328,7 +364,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="util-share" role="tabpanel">
-                            <div class="q-card__hint mb-3">Anteil der offenen Aufgaben dieser Person am gesamten Team-Aufkommen.</div>
+                            <div class="q-card__hint mb-3">Anteil der Aufgaben dieser Person am gesamten Team-Aufkommen.</div>
                             <div class="q-people-list q-scroll-cap">
                                 @forelse($workload as $row)
                                     @include('metrics.partials.workload_row', ['row' => $row, 'value' => $row->share_of_team])

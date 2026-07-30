@@ -23,7 +23,7 @@ class MetricsFilters
 
     public static function fromRequest(Request $request): self
     {
-        $period = $request->input('period', 'quarter');
+        $period = $request->input('period', 'live');
         $anchor = $request->filled('anchor') ? Carbon::parse($request->input('anchor'))->startOfDay() : Carbon::today();
         $today = Carbon::today();
 
@@ -36,7 +36,20 @@ class MetricsFilters
         // rolling "30 Tage" with a calendar month for the same reason — a
         // rolling window makes back/forward shift by a day or two instead of
         // a clean, obvious unit).
+        //
+        // 'live' is always month-to-date anchored on today, regardless of
+        // any anchor param — it's not a navigable period, it's "right now"
+        // (2026-07-30, user). The calculator uses this window for the cards
+        // that are inherently date-bound (reports, hours, revenue); the
+        // cards that describe current state (open task status, workload,
+        // overdue) bypass this window entirely and query live state instead
+        // — see MetricsCalculator::liveOpenTasksQuery().
         [$from, $to, $previousTo] = match ($period) {
+            'live' => [
+                $today->copy()->startOfMonth(),
+                $today->copy(),
+                $today->copy()->subMonth()->endOfMonth(),
+            ],
             'month' => [
                 $anchor->copy()->startOfMonth(),
                 $anchor->copy()->endOfMonth()->min($today),
@@ -80,6 +93,11 @@ class MetricsFilters
         );
     }
 
+    public function isLive(): bool
+    {
+        return $this->period === 'live';
+    }
+
     /**
      * Query params for the "previous period" nav link. Month/quarter/year
      * stay as that period type with the anchor shifted a calendar unit back
@@ -91,6 +109,13 @@ class MetricsFilters
      */
     public function previousPeriodParams(): array
     {
+        // 'live' isn't a navigable period — there's no "previous now"; the
+        // nav chevrons are hidden for it in the view, this is just a safe
+        // fallback.
+        if ($this->period === 'live') {
+            return ['period' => 'live'];
+        }
+
         if ($this->period === 'month') {
             return ['period' => 'month', 'anchor' => $this->anchor->copy()->subMonth()->format('Y-m-d')];
         }
@@ -115,6 +140,10 @@ class MetricsFilters
      */
     public function nextPeriodParams(): array
     {
+        if ($this->period === 'live') {
+            return ['period' => 'live'];
+        }
+
         if ($this->period === 'month') {
             return ['period' => 'month', 'anchor' => $this->anchor->copy()->addMonth()->format('Y-m-d')];
         }

@@ -1145,6 +1145,31 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
 // urgent tiles also colour their label (header) — like the finishable report count
 .q-tile--warning .q-tile__label { color: var(--q-amber); }
 .q-tile--danger  .q-tile__label { color: var(--q-red); }
+// "Live" marker on tiles/cards whose value bypasses the date-range filter
+// entirely in "Aktuell" mode. A text pill (e.g. .q-chip) wrapped instead of
+// truncated — its min-content width forced tile/card heads onto a second
+// line, worst on mobile where the head is already tight (2026-07-30, user).
+// A small pulsing dot has no wrap risk at any width; the label text moves to
+// a .visually-hidden span so screen readers still get "Live".
+.q-live-dot {
+    position: relative;
+    display: inline-block;
+    width: 6px; height: 6px; margin-right: .4rem;
+    border-radius: 50%; background: var(--q-green);
+    vertical-align: middle; flex-shrink: 0;
+}
+.q-live-dot::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: 50%; background: var(--q-green);
+    animation: q-live-pulse 2s ease-out infinite;
+}
+@keyframes q-live-pulse {
+    0% { transform: scale(1); opacity: .6; }
+    100% { transform: scale(3); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .q-live-dot::after { animation: none; }
+}
 
 // "warten auf Erledigung" banner
 .q-banner {

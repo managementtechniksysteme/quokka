@@ -29,6 +29,8 @@
                         <div class="q-filterbar__field">
                             <label>Zeitraum</label>
                             <div class="btn-group">
+                                <input type="radio" class="btn-check" name="period" id="period-live" value="live" v-model="state.period">
+                                <label class="btn" for="period-live">Aktuell</label>
                                 <input type="radio" class="btn-check" name="period" id="period-month" value="month" v-model="state.period">
                                 <label class="btn" for="period-month">Monat</label>
                                 <input type="radio" class="btn-check" name="period" id="period-quarter" value="quarter" v-model="state.period">
@@ -98,6 +100,8 @@
                     <div class="q-form__row">
                         <label>Zeitraum</label>
                         <div class="btn-group w-100">
+                            <input type="radio" class="btn-check" name="period-mobile" id="period-live-mobile" value="live" v-model="state.period">
+                            <label class="btn" for="period-live-mobile">Aktuell</label>
                             <input type="radio" class="btn-check" name="period-mobile" id="period-month-mobile" value="month" v-model="state.period">
                             <label class="btn" for="period-month-mobile">Monat</label>
                             <input type="radio" class="btn-check" name="period-mobile" id="period-quarter-mobile" value="quarter" v-model="state.period">
@@ -245,7 +249,7 @@
             clearFilterChip(key) {
                 switch (key) {
                     case 'period':
-                        this.state.period = 'quarter';
+                        this.state.period = 'live';
                         break;
                     case 'only_active_projects':
                         this.state.only_active_projects = true;

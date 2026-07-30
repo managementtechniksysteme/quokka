@@ -89,15 +89,21 @@ class MetricsCalculator
 
     public function overdueTasksSummary(): array
     {
-        $tasks = $this->tasksInRange()
-            ->where('status', '!=', 'finished')
-            ->whereNotNull('due_on')
-            ->where('due_on', '<', Carbon::today())
-            ->get(['due_on']);
+        if ($this->filters->isLive()) {
+            $to = Carbon::now();
+            $tasks = $this->liveOpenTasksQuery()->whereNotNull('due_on')->where('due_on', '<', $to)->get(['due_on']);
+        } else {
+            $to = $this->filters->to;
+            $tasks = $this->withStatusAsOf(
+                Task::class,
+                $this->tasksInRange()->whereNotNull('due_on')->get(['id', 'status', 'due_on']),
+                $to,
+            )->filter(fn ($task) => $task->status !== 'finished' && $task->due_on->lt($to));
+        }
 
         $count = $tasks->count();
         $averageDays = $count
-            ? round($tasks->avg(fn ($task) => abs($task->due_on->diffInDays(Carbon::today()))), 1)
+            ? round($tasks->avg(fn ($task) => abs($task->due_on->diffInDays($to))), 1)
             : null;
 
         return ['average_days' => $averageDays, 'count' => $count];
@@ -113,12 +119,12 @@ class MetricsCalculator
 
     public function teamUtilisationPercentage(): ?int
     {
-        // Averaged only over employees with at least one open task in the
-        // period — employees who were never assigned a task at all aren't
-        // "0% utilised", they're outside what this task-based proxy can
+        // Averaged only over employees with at least one task in the period
+        // — employees who were never assigned a task at all aren't "0%
+        // utilised", they're outside what this task-based proxy can
         // measure, and including them just drags the average down
         // (2026-07-29, user).
-        $active = $this->employeeWorkload()->filter(fn ($row) => $row->open_tasks > 0);
+        $active = $this->employeeWorkload()->filter(fn ($row) => $row->task_count > 0);
 
         return $active->isEmpty() ? null : (int) round($active->avg('relative_to_busiest'));
     }
@@ -167,12 +173,22 @@ class MetricsCalculator
 
     public function taskStatusBreakdown(): array
     {
-        $tasks = $this->tasksInRange()->get(['status', 'due_on']);
-        $total = $tasks->count();
+        if ($this->filters->isLive()) {
+            // "Erledigt" doesn't apply to a live snapshot — a finished task
+            // isn't part of what's currently on anyone's plate, so it's
+            // simply not in this query at all (2026-07-30, user).
+            $to = Carbon::now();
+            $tasks = $this->liveOpenTasksQuery()->get(['status', 'due_on']);
+            $finished = 0;
+        } else {
+            $to = $this->filters->to;
+            $tasks = $this->withStatusAsOf(Task::class, $this->tasksInRange()->get(['id', 'status', 'due_on']), $to);
+            $finished = $tasks->where('status', 'finished')->count();
+        }
 
-        $overdue = $tasks->filter(fn ($task) => $task->status !== 'finished' && $task->due_on && $task->due_on->isPast())->count();
-        $finished = $tasks->where('status', 'finished')->count();
-        $new = $tasks->filter(fn ($task) => $task->status === 'new' && !($task->due_on && $task->due_on->isPast()))->count();
+        $total = $tasks->count();
+        $overdue = $tasks->filter(fn ($task) => $task->status !== 'finished' && $task->due_on && $task->due_on->lte($to))->count();
+        $new = $tasks->filter(fn ($task) => $task->status === 'new' && !($task->due_on && $task->due_on->lte($to)))->count();
         $inProgress = max($total - $overdue - $finished - $new, 0);
 
         return compact('total', 'new', 'inProgress', 'finished', 'overdue');
@@ -180,7 +196,10 @@ class MetricsCalculator
 
     public function reportStatusBreakdown(): array
     {
-        $reports = $this->reportsInRange();
+        $to = $this->filters->to;
+        $reports = $this->reportsInRange()
+            ->groupBy('model')
+            ->flatMap(fn ($group, $model) => $this->withStatusAsOf($model, $group, $to));
 
         return [
             'total' => $reports->count(),
@@ -227,28 +246,41 @@ class MetricsCalculator
     {
         $employees = $this->employeesInScope();
 
-        $baseQuery = fn () => $this->tasksInRange(includeEmployee: false)
-            ->where('status', '!=', 'finished')
-            ->whereIn('employee_id', $employees->pluck('person_id'));
+        if ($this->filters->isLive()) {
+            // A true live snapshot: every currently open task, no date
+            // window at all — a task opened weeks ago and still open counts
+            // just as much as one opened today (2026-07-30, user).
+            $taskCounts = $this->liveOpenTasksQuery(includeEmployee: false)
+                ->whereIn('employee_id', $employees->pluck('person_id'))
+                ->selectRaw('employee_id, count(*) as task_count')
+                ->groupBy('employee_id')
+                ->pluck('task_count', 'employee_id');
+        } else {
+            // Every task touching the period counts, finished or not — this
+            // measures what an employee was responsible for during the
+            // period, not just their backlog at the time (2026-07-30, user:
+            // a task-status filter here answered neither "workload during
+            // the period" nor "live utilisation" cleanly).
+            $taskCounts = $this->tasksInRange(includeEmployee: false)
+                ->whereIn('employee_id', $employees->pluck('person_id'))
+                ->selectRaw('employee_id, count(*) as task_count')
+                ->groupBy('employee_id')
+                ->pluck('task_count', 'employee_id');
+        }
 
-        $openTaskCounts = (clone $baseQuery())
-            ->selectRaw('employee_id, count(*) as open_tasks')
-            ->groupBy('employee_id')
-            ->pluck('open_tasks', 'employee_id');
+        $maxCount = $taskCounts->max() ?: 0;
+        $totalCount = $taskCounts->sum();
 
-        $maxOpen = $openTaskCounts->max() ?: 0;
-        $totalOpen = $openTaskCounts->sum();
-
-        return $employees->map(function ($employee) use ($openTaskCounts, $maxOpen, $totalOpen) {
-            $open = $openTaskCounts[$employee->person_id] ?? 0;
+        return $employees->map(function ($employee) use ($taskCounts, $maxCount, $totalCount) {
+            $count = $taskCounts[$employee->person_id] ?? 0;
 
             return (object) [
                 'employee' => $employee,
-                'open_tasks' => $open,
-                'relative_to_busiest' => $maxOpen > 0 ? (int) round($open / $maxOpen * 100) : 0,
-                'share_of_team' => $totalOpen > 0 ? (int) round($open / $totalOpen * 100) : 0,
+                'task_count' => $count,
+                'relative_to_busiest' => $maxCount > 0 ? (int) round($count / $maxCount * 100) : 0,
+                'share_of_team' => $totalCount > 0 ? (int) round($count / $totalCount * 100) : 0,
             ];
-        })->sortByDesc('open_tasks')->values();
+        })->sortByDesc('task_count')->values();
     }
 
     public function timeToCompletionByCustomer(): Collection
@@ -343,6 +375,22 @@ class MetricsCalculator
         );
     }
 
+    /**
+     * Every currently open task, completely unscoped by date — this is what
+     * "Aktuell" uses instead of {@see tasksInRange()} for the cards that
+     * describe current state (task status, workload, overdue). Deliberately
+     * not date-range-based: a task started weeks ago with no end date yet
+     * has no `starts_on`/`ends_on` boundary in "today", so scoping this to
+     * today wouldn't yield "currently open tasks" at all (2026-07-30, user).
+     */
+    private function liveOpenTasksQuery(bool $includeEmployee = true): Builder
+    {
+        return $this->applyDimensionFilters(
+            Task::query()->where('status', '!=', 'finished'),
+            includeEmployee: $includeEmployee,
+        );
+    }
+
     private function applyDimensionFilters(Builder $query, bool $includeEmployee = true): Builder
     {
         return $query
@@ -371,10 +419,13 @@ class MetricsCalculator
 
     private function hourBasedServiceIds(): Collection
     {
+        // Overtime is real hours worked (logged as its own line item
+        // alongside the base hours for the day, not a rate multiplier on
+        // top of them) so it counts here. Holiday/time-balance are time off
+        // rather than work, and allowances aren't hours at all — those stay
+        // excluded (2026-07-30, user).
         $specialServiceIds = array_filter([
             ApplicationSettings::get()->allowances_service_id,
-            ApplicationSettings::get()->overtime_50_service_id,
-            ApplicationSettings::get()->overtime_100_service_id,
             ApplicationSettings::get()->time_balance_service_id,
             ApplicationSettings::get()->holiday_service_id,
         ]);
@@ -556,6 +607,44 @@ class MetricsCalculator
         }
 
         return $this->cachedReports = $reports;
+    }
+
+    /**
+     * Rolls a row's live `status` back to what it was at `$cutoff`, so a
+     * report for a past period reflects the state as of that period rather
+     * than today's. There's no reliable "created" activity to anchor on (Task
+     * and the report models only log dirty/updated changes), so instead this
+     * walks backwards from the live value: find the earliest status change
+     * that happened *after* the cutoff and use its pre-change ("old") value —
+     * if nothing changed after the cutoff, the live value already equals the
+     * value as of the cutoff (2026-07-30, user: task/report status and
+     * workload should be reproducible for any historical period, not just
+     * "as of now").
+     *
+     * @param  class-string  $model
+     * @param  Collection<int, object{id: int, status: string}>  $rows
+     */
+    private function withStatusAsOf(string $model, Collection $rows, Carbon $cutoff): Collection
+    {
+        if ($rows->isEmpty()) {
+            return $rows;
+        }
+
+        $statusBeforeChange = Activity::where('subject_type', $model)
+            ->whereIn('subject_id', $rows->pluck('id')->all())
+            ->where('created_at', '>', $cutoff)
+            ->whereNotNull('attribute_changes->old->status')
+            ->orderBy('created_at')
+            ->get(['subject_id', 'attribute_changes'])
+            ->groupBy('subject_id')
+            ->map(fn ($activities) => $activities->first()->attribute_changes['old']['status']);
+
+        return $rows->map(function ($row) use ($statusBeforeChange) {
+            $row = clone $row;
+            $row->status = $statusBeforeChange[$row->id] ?? $row->status;
+
+            return $row;
+        });
     }
 
     private function attachSignedAndFinishedTimestamps(Collection $reports): Collection

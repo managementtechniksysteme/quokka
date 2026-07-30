@@ -223,13 +223,13 @@
                               <span v-if="acc.edit !== 'service_provided_ended_at'" @click="setEdit(acc, 'service_provided_ended_at')">{{ acc.service_provided_ended_at ?? '–' }}</span>
                               <input v-if="acc.edit === 'service_provided_ended_at'" :min="acc.service_provided_started_at" type="time" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_ended_at_invalid}" ref="table_input" id="table_service_provided_ended_at" name="table_service_provided_ended_at" :value="acc.service_provided_ended_at ? acc.service_provided_ended_at : ''" placeholder="13:00" required @blur="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedEndedAt($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_ended_at')" />
                           </div>
-                          <div class="q-dtable__cell q-dtable__truncate" @click="setEdit(acc, 'project')" :title="getProjectName(acc.project_id)">
+                          <div class="q-dtable__cell" v-bind:class="{'q-dtable__truncate': acc.edit !== 'project'}" @click="setEdit(acc, 'project')" :title="getProjectName(acc.project_id)">
                               <span v-if="acc.edit !== 'project'">{{ getProjectName(acc.project_id) }}</span>
                               <v-select v-if="acc.edit === 'project'" class="dropdown-sm" :options="projects" ref="table_input" label="name" placeholder="Projekt auswählen" :modelValue="getProject(acc.project_id)" :selectOnTab="true" @update:modelValue="changeAccountingProject($event, acc)" @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingProject($event, acc)">
                                   <template v-slot:no-options>Keine passenden Einträge.</template>
                               </v-select>
                           </div>
-                          <div class="q-dtable__cell q-dtable__truncate" @click="setEdit(acc, 'service')" :title="getServiceName(acc.service_id)">
+                          <div class="q-dtable__cell" v-bind:class="{'q-dtable__truncate': acc.edit !== 'service'}" @click="setEdit(acc, 'service')" :title="getServiceName(acc.service_id)">
                               <span v-if="acc.edit !== 'service'">{{ getServiceName(acc.service_id) }}</span>
                               <v-select v-if="acc.edit === 'service'" class="dropdown-sm" :options="services" ref="table_input" label="name_with_unit" placeholder="Service auswählen" :modelValue="getService(acc.service_id)" :selectOnTab="true" @update:modelValue="changeAccountingService($event, acc)" @close="changeAccountingDropdownValueToSame(acc)" @keydown.enter.prevent="changeAccountingService($event, acc)">
                                   <template v-slot:no-options>Keine passenden Einträge.</template>

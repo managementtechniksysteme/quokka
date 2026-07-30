@@ -212,7 +212,7 @@
                               <span v-if="book.edit !== 'litres_refuelled'" v-bind:class="{'q-dtable__muted': !book.litres_refuelled}">{{ book.litres_refuelled ? book.litres_refuelled.toLocaleString() : '–' }}</span>
                               <input v-if="book.edit === 'litres_refuelled'" type="number" min="1" step="1" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_litres_refuelled_invalid}" ref="table_input" id="table_litres_refuelled" name="table_litres_refuelled" placeholder="54" :value="book.litres_refuelled" @blur="changeLogbookLitresRefuelled($event, book)" @keydown.enter.prevent="changeLogbookLitresRefuelled($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'litres_refuelled')" />
                           </div>
-                          <div class="q-dtable__cell d-flex align-items-center gap-1 q-dtable__truncate">
+                          <div class="q-dtable__cell d-flex align-items-center gap-1" v-bind:class="{'q-dtable__truncate': book.edit !== 'origin' && book.edit !== 'destination'}">
                               <span v-if="book.edit !== 'origin'" class="q-dtable__truncate" @click="setEdit(book, 'origin')">{{ book.origin }}</span>
                               <v-select v-if="book.edit === 'origin'" class="dropdown-sm" :options="places" ref="table_input" placeholder="Start auswählen oder eingeben" :modelValue="origin" :selectOnTab="true" @update:modelValue="changeLogbookOrigin($event, book)" @close="changeLogbookDropdownValueToSame(book)" @keydown.enter.prevent="changeLogbookOrigin($event, book)">
                                   <template v-slot:no-options>Keine passenden Einträge.</template>

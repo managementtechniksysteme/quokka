@@ -54,6 +54,147 @@ class MetricsCalculator
     }
 
     // ---------------------------------------------------------------
+    // Finance (Aktuell only). Not "Auftragsvolumen vs. verrechnet" (the
+    // quoted order volume) like project-controlling's chart — this is the
+    // actual incurred cost-to-date (real Accounting/Logbook entries,
+    // material+wage+km — same figures as Project::current_costs) against
+    // what's already billed (current_billed_financial_costs), to see how
+    // much of the real work done could still be invoiced. Neither figure
+    // has a date range to scope by (current_costs always uses the
+    // project's own full starts_on/ends_on; current_billed_financial_costs
+    // is a plain field), so — like project-controlling's second chart —
+    // this only makes sense unscoped; callers gate it behind
+    // $filters->isLive() (2026-07-30, user).
+    // ---------------------------------------------------------------
+
+    public function financeTotals(): array
+    {
+        $projects = $this->financeProjects();
+
+        $costs = $projects->sum('current_costs_bulk');
+        $billed = $projects->sum('current_billed_financial_costs');
+
+        return [
+            'costs' => $costs,
+            'billed' => $billed,
+            'open' => $costs - $billed,
+        ];
+    }
+
+    public function financeByCustomer(): Collection
+    {
+        return $this->financeGroupedBy('company');
+    }
+
+    public function financeByProject(): Collection
+    {
+        return $this->financeGroupedBy('project');
+    }
+
+    private function financeGroupedBy(string $dimension): Collection
+    {
+        return $this->financeProjects()
+            ->groupBy(fn ($project) => $dimension === 'company' ? ($project->company?->full_name ?? 'Unbekannt') : $project->name)
+            ->map(function ($group, $label) {
+                $costs = $group->sum('current_costs_bulk');
+                $billed = $group->sum('current_billed_financial_costs');
+
+                return (object) [
+                    'label' => $label,
+                    'costs' => $costs,
+                    'billed' => $billed,
+                    'open' => $costs - $billed,
+                ];
+            })
+            ->sortByDesc('costs')
+            ->values();
+    }
+
+    /**
+     * Same "in scope for finances" rule as ProjectFinanceController: the
+     * flag alone isn't enough — a project with manually entered billed
+     * costs but the flag off still needs to show up (2026-07-30).
+     *
+     * Attaches costs in bulk under `current_costs_bulk` — deliberately not
+     * `current_costs`, which collides with Project's own accessor of that
+     * name; Eloquent's accessor resolution would win over a raw attribute
+     * set via setAttribute() and silently re-trigger the expensive
+     * per-project query path this method exists to avoid. That accessor
+     * runs 2-3 queries per project (real Accounting/Logbook sums), which is
+     * a genuine N+1 across the whole finance-relevant project list and
+     * exhausted PHP's memory limit against production-scale data
+     * (2026-07-30, found via a real 500 on ~60 projects).
+     */
+    private function financeProjects(): Collection
+    {
+        $projects = Project::query()
+            ->where(fn ($q) => $q->where('include_in_finances', true)->orWhereNotNull('billed_financial_costs'))
+            ->when($this->filters->companyId, fn ($q) => $q->where('company_id', $this->filters->companyId))
+            ->when($this->filters->projectId, fn ($q) => $q->where('id', $this->filters->projectId))
+            ->when($this->filters->onlyActiveProjects, fn ($q) => $q->where(fn ($q2) => $q2
+                ->whereNull('ends_on')->orWhere('ends_on', '>=', Carbon::today())))
+            ->with('company')
+            ->get();
+
+        $costsByProjectId = $this->currentCostsByProjectId($projects->pluck('id'));
+
+        return $projects->each(fn ($project) => $project->setAttribute('current_costs_bulk', $costsByProjectId[$project->id] ?? 0));
+    }
+
+    /**
+     * Bulk equivalent of Project::current_costs (material + wage + km*rate,
+     * each Accounting/Logbook row matched against its own project's
+     * starts_on/ends_on) for a whole list of projects in one pass — see
+     * Project::getCurrentMaterialCosts/getCurrentWageCosts/getCurrentKilometres
+     * for the per-project logic this mirrors.
+     *
+     * @param  Collection<int, int>  $projectIds
+     * @return Collection<int, float> keyed by project id
+     */
+    private function currentCostsByProjectId(Collection $projectIds): Collection
+    {
+        if ($projectIds->isEmpty()) {
+            return collect();
+        }
+
+        $materialIds = MaterialService::pluck('id');
+        $wageIds = WageService::pluck('id');
+
+        $dateWithinProjectBounds = fn ($query, string $dateColumn) => $query
+            ->where(fn ($q) => $q->whereNull('projects.starts_on')->orWhereColumn($dateColumn, '>=', 'projects.starts_on'))
+            ->where(fn ($q) => $q->whereNull('projects.ends_on')->orWhereColumn($dateColumn, '<=', 'projects.ends_on'));
+
+        $accountingCosts = $dateWithinProjectBounds(
+            Accounting::query()
+                ->join('projects', 'projects.id', '=', 'accounting.project_id')
+                ->leftJoin('services', 'services.id', '=', 'accounting.service_id')
+                ->whereIn('accounting.project_id', $projectIds)
+                ->where(fn ($q) => $q->whereIn('accounting.service_id', $materialIds)
+                    ->orWhere(fn ($q2) => $q2->whereIn('accounting.service_id', $wageIds)->whereNotNull('services.costs'))),
+            'accounting.service_provided_on',
+        )
+            ->selectRaw("accounting.project_id, SUM(CASE WHEN services.type = 'material' THEN accounting.amount ELSE accounting.amount * services.costs END) as total")
+            ->groupBy('accounting.project_id')
+            ->pluck('total', 'accounting.project_id');
+
+        $kilometreCosts = $dateWithinProjectBounds(
+            Logbook::query()
+                ->join('projects', 'projects.id', '=', 'logbook.project_id')
+                ->whereIn('logbook.project_id', $projectIds),
+            'logbook.driven_on',
+        )
+            ->selectRaw('logbook.project_id, SUM(driven_kilometres) as km')
+            ->groupBy('logbook.project_id')
+            ->pluck('km', 'logbook.project_id');
+
+        $kilometreRate = ApplicationSettings::get()->kilometre_costs ?? 0;
+
+        return $projectIds->mapWithKeys(fn ($id) => [
+            $id => ($accountingCosts[$id] ?? 0) + ($kilometreCosts[$id] ?? 0) * $kilometreRate,
+        ]);
+    }
+
+    // ---------------------------------------------------------------
     // KPI tiles
     // ---------------------------------------------------------------
 

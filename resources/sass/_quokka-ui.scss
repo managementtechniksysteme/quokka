@@ -2269,15 +2269,27 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 @include media-breakpoint-down(xl) { .q-tiles--6 { grid-template-columns: repeat(3, 1fr); } }
 @include media-breakpoint-down(sm) { .q-tiles--6 { grid-template-columns: repeat(2, 1fr); } }
 
-// Filter bar → info banner → KPI tiles → chart grid: the banner should read
-// as trailing content of the filter bar above it (tight gap), while the KPI
-// tile row gets equal, larger gaps on both sides so it's clearly boxed off
-// from both the filters and the chart grid below (previously the banner sat
-// closer to the tiles above it than the tiles were to the grid below,
-// 2026-07-29, user). Scoped to this exact combination so the shared
+// finance summary tiles (Ist-Kosten/Verrechnet/Offen totals) — 3-up, same
+// idiom as --6 above. Metrics-only, like --6, so its own rules below are
+// safe to declare unconditionally (no other page uses this modifier).
+.q-tiles--3 { grid-template-columns: repeat(3, 1fr); }
+@include media-breakpoint-down(sm) { .q-tiles--3 { grid-template-columns: 1fr; } }
+
+// Filter bar → info banner → [finance tiles → finance detail card →] KPI
+// tiles → chart grid. The banner reads as trailing content of the filter
+// bar above it (tight gap). Each "totals row" (finance tiles, KPI tiles)
+// reads as belonging to the detail card(s) below it, not centered between
+// neighbours — bigger gap above (separating it from whatever came before)
+// than below (grouping it with its own detail card(s) beneath), 2026-07-30,
+// user. Scoped to these exact combinations so the shared
 // .q-filterbar/.q-banner--info components stay unaffected elsewhere.
-.q-filterbar:has(+ .q-banner--info + .q-tiles--6) { margin-bottom: .4rem; }
-.q-banner--info:has(+ .q-tiles--6) { margin-bottom: 1.6rem; }
+.q-filterbar:has(+ .q-banner--info + .q-tiles--6),
+.q-filterbar:has(+ .q-banner--info + .q-tiles--3) { margin-bottom: .4rem; }
+.q-banner--info:has(+ .q-tiles--6),
+.q-banner--info:has(+ .q-tiles--3) { margin-bottom: 1.6rem; }
+.q-tiles--3 { margin-bottom: .4rem; }
+.q-tiles--3 + .q-card { margin-bottom: 1.6rem; }
+.q-tiles--6 { margin-bottom: .4rem; }
 
 // muted one-line explanation under a card title — kept low-contrast on
 // purpose so the explanation doesn't compete with the title for attention
@@ -2379,6 +2391,9 @@ body.q-sheet-open { --q-appbar-tint: var(--q-surface-2); }
 .q-hbar-track--thin { height: .3rem; margin-top: .15rem; }
 .q-hbar-fill { height: 100%; border-radius: $q-radius-pill; background: var(--q-accent); }
 .q-hbar-fill--muted { background: var(--q-faint); }
+// finance volume rows (Ist-Kosten/Verrechnet) — the "Offen" delta line under
+// the two bars, right-aligned like a row footnote.
+.q-finance-row__open { align-self: flex-end; font-size: .72rem; font-weight: 700; margin-top: .1rem; }
 
 // donut chart (accounting breakdown)
 .q-donut-wrap { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }

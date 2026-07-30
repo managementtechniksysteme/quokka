@@ -109,6 +109,75 @@
         </span>
     </div>
 
+    {{-- ============================= FINANZEN (Aktuell only — see
+         MetricsCalculator::financeTotals()) ============================= --}}
+    @if($filters->isLive())
+        @php
+            $financeTotals = $metrics->financeTotals();
+            $financeByCustomer = $metrics->financeByCustomer();
+            $financeByProject = $metrics->financeByProject();
+            $financeMax = collect([$financeByCustomer, $financeByProject])
+                ->map(fn ($c) => $c->map(fn ($row) => max($row->costs, $row->billed))->max() ?? 0)
+                ->max();
+        @endphp
+        <div class="q-tiles q-tiles--3">
+            <div class="q-card q-tile q-tile--danger">
+                <div class="q-tile__head"><span class="q-tile__label"><span class="q-live-dot"></span><span class="visually-hidden">Live</span> Ist-Kosten</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#cash-stack"></use></svg></span></div>
+                <div class="q-tile__value" style="color:var(--q-red)">{{ number_format($financeTotals['costs'], 0, ',', '.') }}<span class="q-tile__unit">€</span></div>
+                <div class="q-tile__sub">Tatsächlich erbrachte Leistung</div>
+            </div>
+            <div class="q-card q-tile q-tile--success">
+                <div class="q-tile__head"><span class="q-tile__label"><span class="q-live-dot"></span><span class="visually-hidden">Live</span> Verrechnet</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#receipt"></use></svg></span></div>
+                <div class="q-tile__value" style="color:var(--q-green)">{{ number_format($financeTotals['billed'], 0, ',', '.') }}<span class="q-tile__unit">€</span></div>
+                <div class="q-tile__sub">Bereits fakturiert</div>
+            </div>
+            <div class="q-card q-tile q-tile--warning-icon">
+                <div class="q-tile__head"><span class="q-tile__label"><span class="q-live-dot"></span><span class="visually-hidden">Live</span> Offen</span><span class="q-tile__icon"><svg class="icon-bs icon-14"><use href="{{ asset('svg/bootstrap-icons.svg') }}#graph-up"></use></svg></span></div>
+                <div class="q-tile__value" style="color:{{ $financeTotals['open'] >= 0 ? 'var(--q-green)' : 'var(--q-red)' }}">{{ number_format($financeTotals['open'], 0, ',', '.') }}<span class="q-tile__unit">€</span></div>
+                <div class="q-tile__sub">Noch verrechenbar</div>
+            </div>
+        </div>
+
+        <div class="q-card">
+            <div class="q-card__head">
+                <div>
+                    <div class="q-card__title"><span class="q-live-dot"></span><span class="visually-hidden">Live</span> Finanzen nach Kunde/Projekt</div>
+                    <div class="q-card__hint">Ist-Kosten vs. verrechnet, je Kunde bzw. Projekt, absteigend sortiert</div>
+                </div>
+                <ul class="nav nav-pills" id="finance-tabs" role="tablist">
+                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#finance-customer" type="button" role="tab">Kunde</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#finance-project" type="button" role="tab">Projekt</button></li>
+                </ul>
+            </div>
+            <div class="q-card__body">
+                <div class="q-dualbar__legend">
+                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-red)"></span>Ist-Kosten</span>
+                    <span class="q-chart-legend"><span class="q-chart-legend__dot" style="background:var(--q-green)"></span>Verrechnet</span>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="finance-customer" role="tabpanel">
+                        <div class="q-hbars q-scroll-cap">
+                            @forelse($financeByCustomer as $row)
+                                @include('metrics.partials.finance_bar_row', ['label' => $row->label, 'costs' => $row->costs, 'billed' => $row->billed, 'open' => $row->open, 'maxValue' => $financeMax])
+                            @empty
+                                <p class="text-muted mb-0">Keine finanzrelevanten Projekte.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="finance-project" role="tabpanel">
+                        <div class="q-hbars q-scroll-cap">
+                            @forelse($financeByProject as $row)
+                                @include('metrics.partials.finance_bar_row', ['label' => $row->label, 'costs' => $row->costs, 'billed' => $row->billed, 'open' => $row->open, 'maxValue' => $financeMax])
+                            @empty
+                                <p class="text-muted mb-0">Keine finanzrelevanten Projekte.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- ============================= KPI TILES ============================= --}}
     @php
         $timeToSignature = $metrics->averageTimeToSignature();

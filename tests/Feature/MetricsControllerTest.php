@@ -6,6 +6,7 @@ use App\Models\Accounting;
 use App\Models\ApplicationSettings;
 use App\Models\ConstructionReport;
 use App\Models\Employee;
+use App\Models\MaterialService;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
@@ -353,4 +354,61 @@ test('average time to signature diffs the report date against the signature medi
 
     $response->assertSuccessful();
     $response->assertSee('Median 4,0 Tage');
+});
+
+test('finance card sums actual incurred cost against billed, only in Aktuell', function () {
+    $user = User::factory()->create();
+    grantPermission($user, 'tools.viewmetrics');
+
+    $project = Project::factory()->create([
+        'include_in_finances' => true,
+        'starts_on' => null,
+        'ends_on' => null,
+        'billed_financial_costs' => 200,
+    ]);
+
+    $material = MaterialService::factory()->create();
+    Accounting::factory()->create([
+        'project_id' => $project->id,
+        'service_id' => $material->id,
+        'amount' => 500,
+        'service_provided_on' => '2026-01-01',
+    ]);
+
+    $wage = WageService::factory()->create(['costs' => 50]);
+    Accounting::factory()->create([
+        'project_id' => $project->id,
+        'service_id' => $wage->id,
+        'amount' => 3,
+        'service_provided_on' => '2026-01-01',
+    ]);
+
+    // A project excluded from finances entirely must not contribute.
+    Project::factory()->create(['include_in_finances' => false, 'billed_financial_costs' => null]);
+
+    $response = $this->actingAs($user)->get(route('metrics.index'));
+
+    $response->assertSuccessful();
+    $metrics = $response->viewData('metrics');
+
+    // costs = 500 (material) + 3*50 (wage) = 650; open = 650 - 200 = 450.
+    $totals = $metrics->financeTotals();
+    expect($totals['costs'])->toBe(650.0);
+    expect($totals['billed'])->toBe(200.0);
+    expect($totals['open'])->toBe(450.0);
+
+    $byProject = $metrics->financeByProject();
+    expect($byProject)->toHaveCount(1);
+    expect($byProject->first()->label)->toBe($project->name);
+});
+
+test('finance card is not shown outside Aktuell', function () {
+    $user = User::factory()->create();
+    grantPermission($user, 'tools.viewmetrics');
+    Project::factory()->create(['include_in_finances' => true, 'billed_financial_costs' => 100]);
+
+    $response = $this->actingAs($user)->get(route('metrics.index', ['period' => 'month']));
+
+    $response->assertSuccessful();
+    $response->assertDontSee('Ist-Kosten');
 });

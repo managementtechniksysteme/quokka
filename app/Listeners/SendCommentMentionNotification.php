@@ -42,17 +42,4 @@ class SendCommentMentionNotification implements ShouldQueue
             $mentionedUser->notify(new CommentMentionNotification($event->comment, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            CommentCreatedEvent::class,
-            [SendCommentMentionNotification::class, 'handleCommentCreated']
-        );
-
-        $events->listen(
-            CommentUpdatedEvent::class,
-            [SendCommentMentionNotification::class, 'handleCommentUpdated']
-        );
-    }
 }

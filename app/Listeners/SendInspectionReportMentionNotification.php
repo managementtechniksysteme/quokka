@@ -36,17 +36,4 @@ class SendInspectionReportMentionNotification implements ShouldQueue
             $mentionedUser->notify(new InspectionReportMentionNotification($event->inspectionReport, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            InspectionReportCreatedEvent::class,
-            [SendInspectionReportMentionNotification::class, 'handleInspectionReportCreated']
-        );
-
-        $events->listen(
-            InspectionReportUpdatedEvent::class,
-            [SendInspectionReportMentionNotification::class, 'handleInspectionReportUpdated']
-        );
-    }
 }

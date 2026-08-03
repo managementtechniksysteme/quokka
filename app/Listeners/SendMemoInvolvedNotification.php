@@ -46,19 +46,6 @@ class SendMemoInvolvedNotification implements ShouldQueue
         }
     }
 
-    public function subscribe($events)
-    {
-        $events->listen(
-            MemoCreatedEvent::class,
-            [SendMemoInvolvedNotification::class, 'handleMemoCreated']
-        );
-
-        $events->listen(
-            MemoUpdatedEvent::class,
-            [SendMemoInvolvedNotification::class, 'handleMemoUpdated']
-        );
-    }
-
     private function getInvolvedUsers(Memo $memo)
     {
         $composer = $memo->employeeComposer->person;

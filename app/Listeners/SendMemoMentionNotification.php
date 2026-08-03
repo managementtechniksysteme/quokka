@@ -44,17 +44,4 @@ class SendMemoMentionNotification implements ShouldQueue
             }
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            MemoCreatedEvent::class,
-            [SendMemoMentionNotification::class, 'handleMemoCreated']
-        );
-
-        $events->listen(
-            MemoUpdatedEvent::class,
-            [SendMemoMentionNotification::class, 'handleMemoUpdated']
-        );
-    }
 }

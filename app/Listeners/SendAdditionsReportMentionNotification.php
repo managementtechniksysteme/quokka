@@ -36,17 +36,4 @@ class SendAdditionsReportMentionNotification implements ShouldQueue
             $mentionedUser->notify(new AdditionsReportMentionNotification($event->additionsReport, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            AdditionsReportCreatedEvent::class,
-            [SendAdditionsReportMentionNotification::class, 'handleAdditionsReportCreated']
-        );
-
-        $events->listen(
-            AdditionsReportUpdatedEvent::class,
-            [SendAdditionsReportMentionNotification::class, 'handleAdditionsReportUpdated']
-        );
-    }
 }

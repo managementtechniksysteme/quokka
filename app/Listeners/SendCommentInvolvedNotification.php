@@ -46,19 +46,6 @@ class SendCommentInvolvedNotification implements ShouldQueue
         }
     }
 
-    public function subscribe($events)
-    {
-        $events->listen(
-            CommentCreatedEvent::class,
-            [SendCommentInvolvedNotification::class, 'handleCommentCreated']
-        );
-
-        $events->listen(
-            CommentUpdatedEvent::class,
-            [SendCommentInvolvedNotification::class, 'handleCommentUpdated']
-        );
-    }
-
     private function getInvolvedUsers(Task $task)
     {
         $responsibleEmployee = $task->responsibleEmployee;

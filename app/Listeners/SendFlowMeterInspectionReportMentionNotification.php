@@ -36,17 +36,4 @@ class SendFlowMeterInspectionReportMentionNotification implements ShouldQueue
             $mentionedUser->notify(new FlowMeterInspectionReportMentionNotification($event->flowMeterInspectionReport, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            FlowMeterInspectionReportCreatedEvent::class,
-            [SendFlowMeterInspectionReportMentionNotification::class, 'handleFlowMeterInspectionReportCreated']
-        );
-
-        $events->listen(
-            FlowMeterInspectionReportUpdatedEvent::class,
-            [SendFlowMeterInspectionReportMentionNotification::class, 'handleFlowMeterInspectionReportUpdated']
-        );
-    }
 }

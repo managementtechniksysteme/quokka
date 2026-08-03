@@ -37,12 +37,4 @@ class SendHolidayAllowanceAdjustmentNotification implements ShouldQueue
             )
         );
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            HolidayAllowanceAdjustedEvent::class,
-            [SendHolidayAllowanceAdjustmentNotification::class, 'handleHolidayAllowanceAdjusted']
-        );
-    }
 }

@@ -46,19 +46,6 @@ class SendConstructionReportInvolvedNotification implements ShouldQueue
         }
     }
 
-    public function subscribe($events)
-    {
-        $events->listen(
-            ConstructionReportCreatedEvent::class,
-            [SendConstructionReportInvolvedNotification::class, 'handleConstructionReportCreated']
-        );
-
-        $events->listen(
-            ConstructionReportUpdatedEvent::class,
-            [SendConstructionReportInvolvedNotification::class, 'handleConstructionReportUpdated']
-        );
-    }
-
     private function getInvolvedUsers(ConstructionReport $constructionReport)
     {
         $involvedEmployees = $constructionReport->involvedEmployees;

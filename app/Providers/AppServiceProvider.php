@@ -2,38 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\AdditionsReportSignedEvent;
-use App\Events\ConstructionReportSignedEvent;
-use App\Events\DeliveryNoteSignedEvent;
-use App\Events\FlowMeterInspectionReportSignedEvent;
-use App\Events\InspectionReportSignedEvent;
-use App\Events\ServiceReportSignedEvent;
 use App\Helpers\DateTime;
 use App\Helpers\NotificationHelper;
 use App\Http\ViewComposers\Error500ViewComposer;
 use App\Listeners\LogSentMessageListener;
-use App\Listeners\SendAdditionsReportInvolvedNotification;
-use App\Listeners\SendAdditionsReportMentionNotification;
-use App\Listeners\SendAdditionsReportSignedNotification;
-use App\Listeners\SendCommentInvolvedNotification;
-use App\Listeners\SendCommentMentionNotification;
-use App\Listeners\SendConstructionReportInvolvedNotification;
-use App\Listeners\SendConstructionReportMentionNotification;
-use App\Listeners\SendConstructionReportSignedNotification;
-use App\Listeners\SendDeliveryNoteSignedNotification;
-use App\Listeners\SendFlowMeterInspectionReportMentionNotification;
-use App\Listeners\SendHolidayAllowanceAdjustmentNotification;
-use App\Listeners\SendInspectionReportMentionNotification;
-use App\Listeners\SendInspectionReportSignedNotification;
-use App\Listeners\SendMemoInvolvedNotification;
-use App\Listeners\SendMemoMentionNotification;
-use App\Listeners\SendServiceReportMentionNotification;
-use App\Listeners\SendServiceReportSignedNotification;
-use App\Listeners\SendTaskInvolvedNotification;
-use App\Listeners\SendTaskMentionNotification;
 use App\Models\Accounting;
-use App\Notifications\DeliveryNoteSignedNotification;
-use App\Notifications\FlowMeterInspectionReportSignedNotification;
 use App\Observers\AccountingObserver;
 use App\Policies\NotificationPolicy;
 use App\Policies\RolePolicy;
@@ -110,28 +83,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Accounting::observe(AccountingObserver::class);
 
+        // LogSentMessageListener::handle() has no type-hinted parameter, so
+        // Laravel's event auto-discovery can't infer which event it maps to.
+        // Every other app/Listeners class is discovered automatically.
         Event::listen(MessageSent::class, LogSentMessageListener::class);
-        Event::listen(AdditionsReportSignedEvent::class, SendAdditionsReportSignedNotification::class);
-        Event::listen(DeliveryNoteSignedEvent::class, SendDeliveryNoteSignedNotification::class);
-        Event::listen(ConstructionReportSignedEvent::class, SendConstructionReportSignedNotification::class);
-        Event::listen(FlowMeterInspectionReportSignedEvent::class, FlowMeterInspectionReportSignedNotification::class);
-        Event::listen(InspectionReportSignedEvent::class, SendInspectionReportSignedNotification::class);
-        Event::listen(ServiceReportSignedEvent::class, SendServiceReportSignedNotification::class);
-
-        Event::subscribe(SendAdditionsReportInvolvedNotification::class);
-        Event::subscribe(SendAdditionsReportMentionNotification::class);
-        Event::subscribe(SendCommentInvolvedNotification::class);
-        Event::subscribe(SendCommentMentionNotification::class);
-        Event::subscribe(SendConstructionReportInvolvedNotification::class);
-        Event::subscribe(SendConstructionReportMentionNotification::class);
-        Event::subscribe(SendFlowMeterInspectionReportMentionNotification::class);
-        Event::subscribe(SendHolidayAllowanceAdjustmentNotification::class);
-        Event::subscribe(SendInspectionReportMentionNotification::class);
-        Event::subscribe(SendMemoInvolvedNotification::class);
-        Event::subscribe(SendMemoMentionNotification::class);
-        Event::subscribe(SendServiceReportMentionNotification::class);
-        Event::subscribe(SendTaskInvolvedNotification::class);
-        Event::subscribe(SendTaskMentionNotification::class);
     }
 
     private function configureRateLimiting(): void

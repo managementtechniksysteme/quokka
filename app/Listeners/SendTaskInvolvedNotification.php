@@ -46,19 +46,6 @@ class SendTaskInvolvedNotification implements ShouldQueue
         }
     }
 
-    public function subscribe($events)
-    {
-        $events->listen(
-            TaskCreatedEvent::class,
-            [SendTaskInvolvedNotification::class, 'handleTaskCreated']
-        );
-
-        $events->listen(
-            TaskUpdatedEvent::class,
-            [SendTaskInvolvedNotification::class, 'handleTaskUpdated']
-        );
-    }
-
     private function getInvolvedUsers(Task $task)
     {
         $responsibleEmployee = $task->responsibleEmployee;

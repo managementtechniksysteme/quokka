@@ -47,19 +47,6 @@ class SendAdditionsReportInvolvedNotification implements ShouldQueue
         }
     }
 
-    public function subscribe($events)
-    {
-        $events->listen(
-            AdditionsReportCreatedEvent::class,
-            [SendAdditionsReportInvolvedNotification::class, 'handleAdditionsReportCreated']
-        );
-
-        $events->listen(
-            AdditionsReportUpdatedEvent::class,
-            [SendAdditionsReportInvolvedNotification::class, 'handleAdditionsReportUpdated']
-        );
-    }
-
     private function getInvolvedUsers(AdditionsReport $additionsReport, User $user)
     {
         $involvedEmployees = $additionsReport->involvedEmployees;

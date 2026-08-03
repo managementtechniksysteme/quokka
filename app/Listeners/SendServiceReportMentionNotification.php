@@ -36,17 +36,4 @@ class SendServiceReportMentionNotification implements ShouldQueue
             $mentionedUser->notify(new ServiceReportMentionNotification($event->serviceReport, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            ServiceReportCreatedEvent::class,
-            [SendServiceReportMentionNotification::class, 'handleServiceReportCreated']
-        );
-
-        $events->listen(
-            ServiceReportUpdatedEvent::class,
-            [SendServiceReportMentionNotification::class, 'handleServiceReportUpdated']
-        );
-    }
 }

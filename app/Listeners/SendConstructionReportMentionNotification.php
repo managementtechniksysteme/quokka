@@ -36,17 +36,4 @@ class SendConstructionReportMentionNotification implements ShouldQueue
             $mentionedUser->notify(new ConstructionReportMentionNotification($event->constructionReport, $event->user, $event->notifySelf));
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            ConstructionReportCreatedEvent::class,
-            [SendConstructionReportMentionNotification::class, 'handleConstructionReportCreated']
-        );
-
-        $events->listen(
-            ConstructionReportUpdatedEvent::class,
-            [SendConstructionReportMentionNotification::class, 'handleConstructionReportUpdated']
-        );
-    }
 }

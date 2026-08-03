@@ -44,17 +44,4 @@ class SendTaskMentionNotification implements ShouldQueue
             }
         }
     }
-
-    public function subscribe($events)
-    {
-        $events->listen(
-            TaskCreatedEvent::class,
-            [SendTaskMentionNotification::class, 'handleTaskCreated']
-        );
-
-        $events->listen(
-            TaskUpdatedEvent::class,
-            [SendTaskMentionNotification::class, 'handleTaskUpdated']
-        );
-    }
 }

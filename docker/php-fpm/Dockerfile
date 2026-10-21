@@ -1,9 +1,9 @@
 ARG user
 ARG uid
 
-# Pinned by digest rather than a floating `8.4-fpm-alpine` tag -- resolves to
-# PHP 8.4.23 / Alpine 3.24.1 as of this pin. Re-pin deliberately when bumping.
-FROM php:8.4-fpm-alpine@sha256:913ddd6934a805429618a16aa36da47cd8a8aec8b2f111c294936ba4003fded6 AS base
+# Pinned by digest rather than a floating `8.5-fpm-alpine` tag.
+# Re-pin deliberately when bumping PHP or Alpine.
+FROM php:8.5-fpm-alpine@sha256:fa01fb1645cd0fc566a5f146b099adace33b906571f972f71f2182a7c12d1cd7 AS base
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -47,7 +47,7 @@ RUN apk add --no-cache \
     # a synthetic file with the same \usepackage list.
     texmf-dist-fontsrecommended
 
-# Unlike Debian's php:8.4-fpm, Alpine's official PHP image ships no compiler
+# Unlike Debian's php:8.5-fpm, Alpine's official PHP image ships no compiler
 # at all -- even docker-php-ext-install (not just pecl) needs $PHPIZE_DEPS
 # here. linux-headers is also required specifically for the sockets
 # extension (references linux/sock_diag.h, not part of musl's own headers).
@@ -97,6 +97,8 @@ USER $user
 # has a real node binary to run. Kept out of the production/base image since
 # nothing there needs Node at runtime.
 FROM base AS dev
+
+ARG user
 
 USER root
 

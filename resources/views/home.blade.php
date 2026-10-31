@@ -33,6 +33,23 @@
             </div>
         </div>
 
+        {{-- ===== Monatsende-Hinweis ===== --}}
+        {{-- Dismissal is wired in resources/js/app.js (delegated on [data-dismiss-banner-url]):
+             an inline <script> here would be stripped by Vue's template compiler. --}}
+        @if($showMonthEndReminder)
+            <div class="q-banner q-banner--info q-banner--prominent" id="month-end-reminder">
+                <svg class="icon-bs icon-20"><use href="{{ asset('svg/bootstrap-icons.svg') }}#calendar-check"></use></svg>
+                <div class="q-banner__message">
+                    <strong class="q-banner__title">Abrechnung abgeben</strong>
+                    <span>Das Monatsende ist bald erreicht. Stelle sicher, dass deine Stundenaufzeichnungen korrekt eingetragen und als PDF für die Buchhaltung abgelegt sind.
+                        <a href="{{ route('accounting.index') }}" class="q-link">Zur Abrechnung</a></span>
+                </div>
+                <button type="button" class="q-banner__dismiss" id="month-end-reminder-dismiss" data-dismiss-banner-url="{{ route('home.month-end-reminder.dismiss') }}" aria-label="Hinweis ausblenden">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-lg"></use></svg>
+                </button>
+            </div>
+        @endif
+
         {{-- ===== Leistungen diesen Monat ===== --}}
         @can('accounting.view.own')
             <div class="q-section-label">

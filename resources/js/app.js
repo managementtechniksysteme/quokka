@@ -323,3 +323,28 @@ app.mount('#app');
     document.addEventListener('shown.bs.offcanvas', refresh);
     document.addEventListener('hidden.bs.offcanvas', refresh);
 })();
+
+// Dismissible banners (currently the dashboard's month-end reminder): a button
+// carrying data-dismiss-banner-url removes its enclosing .q-banner right away
+// and tells the server to remember the dismissal. Delegated at the document
+// level because a listener bound straight to the button is lost when Vue
+// re-renders #app's contents on mount, and an inline <script> inside #app is
+// stripped by Vue's template compiler.
+(function () {
+    'use strict';
+    document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-dismiss-banner-url]');
+        if (!button) {
+            return;
+        }
+
+        var csrfToken = document.querySelector('meta[name=csrf-token]').getAttribute('content');
+
+        fetch(button.dataset.dismissBannerUrl, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': csrfToken },
+        });
+
+        button.closest('.q-banner').remove();
+    });
+})();

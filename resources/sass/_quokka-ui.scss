@@ -1199,6 +1199,18 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     .icon { color: var(--q-amber); flex-shrink: 0; }
     &__count { font-weight: 700; }
     &__label { color: var(--q-muted); }
+    &__message {
+        flex: 1; min-width: 0;
+        .q-link { font-size: inherit; white-space: nowrap; }
+    }
+    &__dismiss {
+        display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+        padding: .25rem; margin: -.25rem -.4rem -.25rem 0; border: 0; border-radius: 6px;
+        background: transparent; color: var(--q-muted); cursor: pointer;
+        &:hover { color: var(--q-text); }
+        &:focus-visible { outline: 2px solid var(--q-sky); outline-offset: 1px; }
+        .icon { color: inherit; }
+    }
 }
 // full-bleed strip inside a card (clipped to the card's rounded corners)
 .q-banner--inset { margin: 0; border-radius: 0; border-width: 0 0 1px 0; }
@@ -1207,6 +1219,17 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     background: color-mix(in srgb, var(--q-sky) 8%, transparent);
     border-color: color-mix(in srgb, var(--q-sky) 22%, transparent);
     .icon { color: var(--q-sky); }
+}
+// larger, more eye-catching notice: bolder tint, lead-in title, close button
+// pinned to the top-right corner (dashboard month-end reminder)
+.q-banner--prominent {
+    position: relative; align-items: flex-start; gap: .75rem; padding: .85rem 1rem; font-size: .88rem;
+    background: color-mix(in srgb, var(--q-sky) 13%, transparent);
+    border-color: color-mix(in srgb, var(--q-sky) 30%, transparent);
+    > .icon-bs { color: var(--q-sky); margin-top: .1rem; }
+    .q-banner__title { display: block; margin-bottom: .1rem; }
+    .q-banner__message { padding-right: 1.5rem; }
+    .q-banner__dismiss { position: absolute; top: .6rem; right: .6rem; margin: 0; }
 }
 // pass / fail verdicts (e.g. tolerance-range result)
 .q-banner--success {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DateTime;
 use App\Models\AdditionsReport;
 use App\Models\ConstructionReport;
 use App\Models\DeliveryNote;
@@ -10,10 +11,13 @@ use App\Models\InspectionReport;
 use App\Models\ServiceReport;
 use App\Support\GlobalSearch\GlobalSearch;
 use Illuminate\Http\Request;
-     use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    private const MONTH_END_REMINDER_DISMISSED_SESSION_KEY = 'month_end_reminder_dismissed_on';
+
     /**
      * Show the application dashboard.
      *
@@ -83,7 +87,12 @@ class HomeController extends Controller
         $totalErledigbar = collect($reportRows)->sum(fn ($r) => $r['erledigbar'] ?? 0);
         $showErledigbarColumn = collect($reportRows)->contains(fn ($r) => ! is_null($r['erledigbar']));
 
+        $showMonthEndReminder = $user->can('accounting.view.own')
+            && DateTime::isInMonthEndReminderPeriod(now())
+            && $request->session()->get(self::MONTH_END_REMINDER_DISMISSED_SESSION_KEY) !== now()->toDateString();
+
         return view('home')
+            ->with('showMonthEndReminder', $showMonthEndReminder)
             ->with('employeeMtdHourlyBasedServices', Auth::user()->employee->mtd_hourly_based_services)
             ->with('employeeMtdAllowances', Auth::user()->employee->mtd_allowances)
             ->with('employeeMtdAllowancesInCurrency', Auth::user()->employee->mtd_allowances_in_currency)
@@ -111,5 +120,16 @@ class HomeController extends Controller
             ->with('totalErledigbar', $totalErledigbar)
             ->with('showErledigbarColumn', $showErledigbarColumn)
             ->with('latestChanges', Auth::user()->can('tools-viewlatestchanges') ? GlobalSearch::getLatestChanges(5) : collect());
+    }
+
+    /**
+     * Hide the month-end reminder for the rest of today. Storing the date instead of a flag
+     * lets the reminder return on later days even within a long-running session.
+     */
+    public function dismissMonthEndReminder(Request $request): Response
+    {
+        $request->session()->put(self::MONTH_END_REMINDER_DISMISSED_SESSION_KEY, now()->toDateString());
+
+        return response()->noContent();
     }
 }

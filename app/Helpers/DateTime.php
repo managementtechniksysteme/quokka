@@ -32,4 +32,27 @@ class DateTime
         };
     }
 
+    /**
+     * Whether the given day lies in the month-end reminder window: from the
+     * fifth-last working day (Mon-Fri) of its month through the last calendar day.
+     * Public holidays are not taken into account.
+     */
+    public static function isInMonthEndReminderPeriod(Carbon $date): bool
+    {
+        $lastDayOfMonth = $date->copy()->endOfMonth()->startOfDay();
+
+        $firstDayOfPeriod = $lastDayOfMonth->copy();
+        $workingDaysCounted = $lastDayOfMonth->isWeekday() ? 1 : 0;
+
+        while ($workingDaysCounted < 5) {
+            $firstDayOfPeriod->subDay();
+
+            if ($firstDayOfPeriod->isWeekday()) {
+                $workingDaysCounted++;
+            }
+        }
+
+        return $date->copy()->startOfDay()->betweenIncluded($firstDayOfPeriod, $lastDayOfMonth);
+    }
+
 }

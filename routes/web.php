@@ -107,6 +107,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('/reauthenticate', [ReauthenticateController::class, 'reauthenticate']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/home/month-end-reminder/dismiss', [HomeController::class, 'dismissMonthEndReminder'])->name('home.month-end-reminder.dismiss');
 
     Route::resource('accounting', AccountingController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/accounting/download', [AccountingController::class, 'download'])->name('accounting.download');

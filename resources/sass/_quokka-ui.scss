@@ -1379,7 +1379,11 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 // grid slot.
 @include media-breakpoint-down(md) {
     .q-statbar { display: grid; grid-template-columns: 1fr 1fr; }
-    .q-statbar__cell { min-width: 0; border-left: none; }
+    // Reset via the same `+` selector as the desktop divider rule: a bare
+    // .q-statbar__cell selector is less specific and silently loses to it, which
+    // left a divider on every left-column cell too.
+    .q-statbar__cell { min-width: 0; }
+    .q-statbar__cell + .q-statbar__cell { border-left: none; }
     .q-statbar__cell:first-child { grid-column: 1 / -1; }
     .q-statbar__cell:nth-child(odd):not(:first-child) { border-left: 1px solid var(--q-border-2); }
 }

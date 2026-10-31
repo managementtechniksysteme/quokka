@@ -45,12 +45,19 @@
                 this.unselected = this.removeFromArray(this.unselected, value);
                 this.selected.push(value);
                 this.sortArrayByName(this.selected);
+                this.emitChanged();
             },
 
             removeSelected(value) {
                 this.selected = this.removeFromArray(this.selected, value);
                 this.unselected.push(value);
                 this.sortArrayByName(this.unselected);
+                this.emitChanged();
+            },
+
+            // lets a parent (e.g. a quick-edit wrapper) read the current selection as ids
+            emitChanged() {
+                this.$emit('changed', this.selected.map(person => person.id));
             },
 
             removeFromArray(people, value) {

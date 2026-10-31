@@ -263,6 +263,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/tasks/{task}/email', [TaskController::class, 'showEmail'])->name('tasks.email');
     Route::post('/tasks/{task}/email', [TaskController::class, 'email']);
     Route::get('/tasks/{task}/finish', [TaskController::class, 'finish'])->name('tasks.finish');
+    Route::patch('/tasks/{task}/quick-update', [TaskController::class, 'quickUpdate'])->name('tasks.quick-update');
     Route::resource('comments', CommentController::class)->except(['index', 'show']);
 
     Route::get('user-settings', [UserSettingsController::class, 'edit'])->name('user-settings.edit');

@@ -462,6 +462,66 @@ $q-pad:            1.25rem;
     @include media-breakpoint-down(md) { display: none !important; }
 }
 
+// Quick edit — chips and people on detail pages that change in place
+// (QuickEditChip.vue / QuickEditPeople.vue). The chip is a <button> wearing the
+// classes of the static chip it replaces (.q-chip / .q-status / plain statbar
+// value); :where() keeps the native-button reset at zero specificity so those
+// classes always win.
+.q-quick-edit { display: inline-flex; align-items: center; gap: .35rem; max-width: 100%; }
+:where(.q-quick-edit__chip) {
+    border: 0; background: transparent; color: inherit; font-family: inherit; line-height: inherit; text-align: left;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+}
+button.q-quick-edit__chip {
+    cursor: pointer; transition: box-shadow .12s, opacity .12s;
+    &:hover:not(:disabled) { box-shadow: 0 0 0 1px var(--q-border); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+    &:disabled { opacity: .6; cursor: progress; }
+}
+// the bare statbar value (billing state) reads as text with a caret, not as a pill
+.q-quick-edit__chip--plain { padding: 0; border-radius: 6px; font-size: .8rem; font-weight: 600; color: var(--q-text); gap: .3rem; display: inline-flex; align-items: center; }
+.q-quick-edit__caret { opacity: .55; }
+.q-quick-edit__saved { color: var(--q-green); }
+.q-quick-edit__error { font-size: .72rem; color: var(--q-red); }
+// desktop: the choices unfold beside the chip and fold back after a pick
+.q-quick-edit__options { display: inline-flex; align-items: center; gap: .3rem; overflow: hidden; white-space: nowrap; }
+.q-quick-edit__option {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-family: inherit; font-size: .72rem; font-weight: 500; padding: .18rem .55rem;
+    border-radius: $q-radius-pill; color: var(--q-muted); cursor: pointer;
+    background: var(--q-surface); border: 1px dashed var(--q-border);
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { color: var(--q-text); border-style: solid; background: var(--q-surface-2); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+    &.is-selected { color: var(--q-accent); border: 1px solid var(--q-accent); background: var(--q-accent-tint); }
+}
+.q-quick-edit-options-enter-active,
+.q-quick-edit-options-leave-active { transition: max-width .25s ease, opacity .2s ease; max-width: 40rem; }
+.q-quick-edit-options-enter-from,
+.q-quick-edit-options-leave-to { max-width: 0; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+    .q-quick-edit-options-enter-active,
+    .q-quick-edit-options-leave-active { transition: none; }
+}
+// mobile: a .q-row inside the bottom sheet, as a <button>
+.q-quick-edit__row {
+    width: 100%; border: 0; background: transparent; font-family: inherit; text-align: left;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    .q-row__check { margin-left: auto; color: var(--q-accent); }
+}
+.q-quick-edit-people__head { display: flex; align-items: center; justify-content: space-between; }
+.q-quick-edit-people__edit {
+    display: inline-flex; padding: .2rem; margin: -.2rem -.2rem -.2rem 0; border: 0; border-radius: 6px;
+    background: transparent; color: var(--q-faint); cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { color: var(--q-text); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-quick-edit-people__actions { display: flex; gap: .5rem; margin-top: .6rem; }
+
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.
 //   new / in-progress / finished / signed  → tasks, reports, delivery notes

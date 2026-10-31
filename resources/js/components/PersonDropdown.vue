@@ -27,6 +27,13 @@
             }
         },
 
+        watch: {
+            // lets a parent (e.g. a quick-edit wrapper) react to the user picking someone
+            selected(person) {
+                this.$emit('selected', person);
+            }
+        },
+
         methods: {
             setSelected(value) {
                 this.selected = value;

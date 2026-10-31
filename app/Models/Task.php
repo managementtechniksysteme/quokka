@@ -296,4 +296,64 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             default => 'neu',
         };
     }
+
+    /**
+     * Keep the end date in line with the status: finishing a task stamps its
+     * start (if still open) and end date, reopening it clears the end date.
+     */
+    public function syncStatusDates(): void
+    {
+        if ($this->status !== 'finished' && $this->ends_on) {
+            $this->ends_on = null;
+            $this->save();
+        }
+
+        if ($this->status === 'finished' && ! $this->ends_on) {
+            $this->starts_on = $this->starts_on ?? Carbon::now();
+            $this->ends_on = Carbon::now();
+            $this->save();
+        }
+    }
+
+    /**
+     * Replace the involved employees (the responsible employee is never listed as
+     * involved) and log the change. Returns whether anything changed.
+     *
+     * @param  array<int, int|string>|null  $employeeIds
+     */
+    public function syncInvolvedEmployees(?array $employeeIds): bool
+    {
+        $oldInvolvedEmployees = $this->involvedEmployees->pluck('person_id');
+
+        if (! empty($employeeIds)) {
+            $employees = Employee::find(array_values(array_filter(
+                $employeeIds,
+                fn ($employeeId) => (int) $employeeId !== (int) $this->employee_id
+            )));
+
+            $touched = $this->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
+            $changed = $touched['attached'] || $touched['detached'] || $touched['updated'];
+            $newInvolvedEmployees = $employees->pluck('person_id');
+        } else {
+            $changed = $this->involvedEmployees()->detach() > 0;
+            $newInvolvedEmployees = [];
+        }
+
+        if ($changed) {
+            activity()
+                ->by(Auth::user())
+                ->on($this)
+                ->withChanges([
+                    'attributes' => ['involved_ids' => $newInvolvedEmployees],
+                    'old' => ['involved_ids' => $oldInvolvedEmployees],
+                ])
+                ->event('updatedInvolvedEmployees')
+                ->log('updatedInvolvedEmployees');
+
+            $this->touch();
+            $this->unsetRelation('involvedEmployees');
+        }
+
+        return $changed;
+    }
 }

@@ -126,7 +126,7 @@ test('on a touch screen tapping an involved employee offers the removal in a bot
 
     $page->click(".q-aside .q-quick-edit-people__row:has-text(\"{$colleague->person->name}\")")
         ->assertVisible('.q-sheet.show')
-        ->click('.q-sheet.show .q-quick-edit-people__sheet-remove')
+        ->click('.q-sheet.show .q-row--danger')
         ->wait(1.0)
         ->assertSeeIn('.q-aside', 'keine Mitwirkenden');
 

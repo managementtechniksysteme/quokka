@@ -37,13 +37,14 @@
 
         <div v-if="error" class="q-quick-edit__error" role="alert">{{ error }}</div>
 
-        <!-- touch screens have no hover: tapping a row offers the removal in a bottom sheet -->
+        <!-- touch screens have no hover: tapping a row offers the removal in a bottom sheet, styled like the detail pages' action menus -->
         <div v-if="multiple && editable" class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="sheet" :aria-label="label">
             <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
             <div class="offcanvas-body">
                 <div class="q-sheet__label">{{ sheetPerson ? sheetPerson.name : label }}</div>
-                <button type="button" class="q-row q-quick-edit__row q-quick-edit-people__sheet-remove" @click="removeFromSheet">
-                    <span class="q-row__title">Aus „{{ label }}“ entfernen</span>
+                <button type="button" class="q-row q-row--danger q-quick-edit__row" @click="removeFromSheet">
+                    <span class="q-avatar q-avatar--danger"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#trash"></use></svg></span>
+                    <span class="q-row__title">Entfernen</span>
                 </button>
             </div>
         </div>

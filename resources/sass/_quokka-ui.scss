@@ -569,7 +569,6 @@ button.q-quick-edit__chip {
 .q-quick-edit-people__row:focus-within .q-quick-edit-people__remove { opacity: 1; }
 // on touch the x is replaced by a bottom sheet opened by tapping the row
 @media (hover: none) { .q-quick-edit-people__remove { display: none; } }
-.q-quick-edit-people__sheet-remove .q-row__title { color: var(--q-red); }
 
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.

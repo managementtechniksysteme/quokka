@@ -21,9 +21,7 @@
     ### v0.6.0-a945811 (31.10.2026)
     * Viele Angaben können nun direkt auf der Detailseite geändert werden, ohne das Bearbeitungsformular zu öffnen.
       Änderungen werden sofort gespeichert und lösen dieselben Benachrichtigungen aus wie beim regulären Bearbeiten.
-      Die Möglichkeit steht nur Personen zur Verfügung, die den jeweiligen Eintrag auch bearbeiten dürfen. Erkennbar
-      sind die Stellen an einem kleinen Pfeil, Stift oder Plus-Zeichen, am Desktop teils erst beim Darüberfahren mit
-      der Maus. Folgendes kann direkt geändert werden:
+      Folgendes kann direkt geändert werden:
       * Aufgaben: Status, Priorität, Sichtbarkeit (privat oder öffentlich), Verrechnung, Fälligkeit, Start und Ende,
         verantwortliche Person und Mitwirkende.
       * Regieberichte und Bautagesberichte: Datum, Wetter, Personalstand und anwesende Personen.
@@ -31,24 +29,10 @@
       * Aktenvermerke: Datum, nächster Termin, anwesende Personen und Verteiler.
       * Projekte: die Vorphase (auf der Übersichtsseite).
       * Fahrzeuge: privat oder öffentlich.
-    * Bedienung der direkten Änderungen: Auswahlwerte klappen am Desktop neben bzw. unter dem Wert auf und öffnen am
-      Smartphone als Auswahl am unteren Bildschirmrand. Datumsangaben werden in einem Kalender gewählt. Personen
-      werden über das Plus-Zeichen hinzugefügt und über das X (am Smartphone durch Antippen der Person) entfernt.
-      Eine einzelne Person, etwa die verantwortliche, wird durch Anklicken getauscht.
-    * Wird ein bereits unterschriebener Bericht auf diesem Weg geändert, wird er wie beim regulären Bearbeiten wieder
-      auf "neu" gesetzt und die Unterschrift sowie offene Anfragen werden verworfen.
     * Neu unter Werkzeuge: die Kennzahlen (für Personen mit entsprechender Berechtigung). Sie zeigen Kennzahlen zu
       Aufgaben, Berichten, Mitarbeitern, Abrechnung und Fahrtenbuch für einen wählbaren Zeitraum (Monat, Quartal, Jahr
       oder benutzerdefiniert) mit Vor- und Zurück-Navigation. Die Karten lassen sich nach Kunde, Projekt, Mitarbeiter
-      bzw. Berichtsart aufschlüsseln. Die Ansicht ist auch am Smartphone verfügbar.
-    * In den Kennzahlen zeigt die Ansicht "Aktuell" (die Voreinstellung) den heutigen Stand der Aufgaben, der
-      Auslastung und der überfälligen Aufgaben, alle übrigen Zahlen gelten seit Monatsbeginn. Ein pulsierender Punkt
-      kennzeichnet tagesaktuelle Karten. Bei vergangenen Zeiträumen wird der damalige Status der Aufgaben und Berichte
-      angezeigt. Die durchschnittliche Auslastung und die Wochenstunden berücksichtigen nur Mitarbeiter, die im Zeitraum
-      tatsächlich Aufgaben bzw. Stunden hatten.
-    * Neu in den Kennzahlen (Ansicht "Aktuell"): eine Finanzkarte stellt die bisher angefallenen Ist-Kosten (Stunden,
-      Material und Kilometer) den bereits verrechneten Beträgen gegenüber und zeigt, was noch offen ist. Die
-      Aufschlüsselung erfolgt nach Kunde und Projekt.
+      bzw. Berichtsart aufschlüsseln.
     * Auf der Startseite erinnert ein Hinweis in den letzten fünf Werktagen eines Monats daran, die
       Stundenaufzeichnungen zu prüfen und die Abrechnung als PDF für die Buchhaltung abzulegen. Er enthält einen Link
       zur Abrechnung und kann für den Rest des Tages ausgeblendet werden.

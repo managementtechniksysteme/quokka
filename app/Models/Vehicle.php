@@ -119,4 +119,17 @@ class Vehicle extends Model implements FiltersGlobalSearch
     public function getCurrentKilometresStringAttribute() {
         return $this->current_kilometres !== null ? "{$this->logbook()->max('end_kilometres')} km" : null;
     }
+
+    /**
+     * Choices for the detail page's in-place visibility switch.
+     *
+     * @return array<int, array{value: bool, label: string, icon: string}>
+     */
+    public function getVisibilityQuickEditOptionsAttribute(): array
+    {
+        return [
+            ['value' => false, 'label' => 'öffentlich', 'icon' => 'unlock'],
+            ['value' => true, 'label' => 'privat', 'icon' => 'lock'],
+        ];
+    }
 }

@@ -232,6 +232,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::get('/projects/list', [ProjectController::class, 'downloadList'])->name('projects.download-list');
     Route::resource('projects', ProjectController::class);
+    Route::patch('/projects/{project}/quick-update', [ProjectController::class, 'quickUpdate'])->name('projects.quick-update');
     Route::get('/projects/{project}/download', [ProjectController::class, 'showDownload'])->name('projects.download');
     Route::post('/projects/{project}/download', [ProjectController::class, 'download']);
 
@@ -288,6 +289,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/storage/{file_path}', [StorageController::class, 'getFile'])->where(['file_path' => '.*'])->name('storage.get-file');
 
     Route::resource('vehicles', VehicleController::class);
+    Route::patch('/vehicles/{vehicle}/quick-update', [VehicleController::class, 'quickUpdate'])->name('vehicles.quick-update');
 
     Route::resource('wage-services', WageServiceController::class);
 

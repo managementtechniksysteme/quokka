@@ -1206,8 +1206,13 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     &__dismiss {
         display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
         padding: .25rem; margin: -.25rem -.4rem -.25rem 0; border: 0; border-radius: 6px;
-        background: transparent; color: var(--q-muted); cursor: pointer;
+        background: transparent; color: var(--q-muted); cursor: pointer; line-height: 1;
+        // Bootstrap's reboot sets -webkit-appearance: button, which iOS Safari renders
+        // as native button chrome; also drop the grey tap flash and the focus ring a
+        // touch leaves behind (keyboard focus keeps its ring below).
+        -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
         &:hover { color: var(--q-text); }
+        &:focus { outline: none; }
         &:focus-visible { outline: 2px solid var(--q-sky); outline-offset: 1px; }
         .icon { color: inherit; }
     }
@@ -1227,9 +1232,9 @@ a.q-tile:hover { text-decoration: none; border-color: var(--q-accent); }
     background: color-mix(in srgb, var(--q-sky) 13%, transparent);
     border-color: color-mix(in srgb, var(--q-sky) 30%, transparent);
     > .icon-bs { color: var(--q-sky); margin-top: .1rem; }
-    .q-banner__title { display: block; margin-bottom: .1rem; }
+    .q-banner__title { display: block; margin-bottom: .3rem; }
     .q-banner__message { padding-right: 1.5rem; }
-    .q-banner__dismiss { position: absolute; top: .6rem; right: .6rem; margin: 0; }
+    .q-banner__dismiss { position: absolute; top: .5rem; right: .5rem; width: 1.75rem; height: 1.75rem; padding: 0; margin: 0; }
 }
 // pass / fail verdicts (e.g. tolerance-range result)
 .q-banner--success {

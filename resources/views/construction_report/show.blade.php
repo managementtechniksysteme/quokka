@@ -331,7 +331,7 @@
             <div class="q-card q-card--quiet q-detail__people">
                 <div class="q-card__body">
                     @if($quickEdit)
-                        <quick-edit-people url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="involved_ids" label="Personalstand" :multiple="true" empty_text="nicht angegeben" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
+                        <quick-edit-people url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="involved_ids" label="Personalstand" :multiple="true" :min="1" empty_text="nicht angegeben" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
 
                         <quick-edit-people url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="present_ids" label="Anwesende Personen" :multiple="true" empty_text="niemand" :people="{{ $quickEdit['people']->toJson() }}" :current="{{ $quickEdit['present']->toJson() }}"></quick-edit-people>
                     @else

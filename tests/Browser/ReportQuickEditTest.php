@@ -28,7 +28,7 @@ test('the weather of a report can be changed in the stat strip', function () {
     expect($report->fresh()->weather)->toBe('snowy');
 });
 
-test('the involved employees and present people of a report can be changed in place', function () {
+test('participants of a report are added with the plus and removed with the x', function () {
     $user = User::factory()->create();
     grantPermission($user, 'additions-reports.view.own');
     grantPermission($user, 'additions-reports.update.own');
@@ -40,21 +40,37 @@ test('the involved employees and present people of a report can be changed in pl
 
     $page = visit(route('additions-reports.show', $report))->on()->desktop();
 
-    $page->click('.q-detail__people button[aria-label="Personalstand ändern"]')
-        ->click('.q-detail__people .vs__dropdown-toggle')
+    $page->click('.q-detail__people button[aria-label="Personalstand: Person hinzufügen"]')
         ->click(".q-detail__people .vs__dropdown-option:has-text(\"{$newEmployee->person->name}\")")
-        ->click('.q-detail__people button:has-text("Speichern")')
         ->wait(0.8)
         ->assertSeeIn('.q-detail__people', $newEmployee->person->name);
 
     expect($report->fresh()->involvedEmployees->pluck('person_id')->all())->toContain($newEmployee->person_id);
 
-    $page->click('.q-detail__people button[aria-label="Anwesende Personen ändern"]')
-        ->click('.q-detail__people .vs__dropdown-toggle')
+    $page->click('.q-detail__people button[aria-label="Anwesende Personen: Person hinzufügen"]')
         ->click(".q-detail__people .vs__dropdown-option:has-text(\"{$visitor->name}\")")
-        ->click('.q-detail__people button:has-text("Speichern")')
         ->wait(0.8)
-        ->assertSeeIn('.q-detail__people', $visitor->name);
+        ->assertSeeIn('.q-detail__people', $visitor->name)
+        ->hover(".q-detail__people .q-quick-edit-people__row:has-text(\"{$visitor->name}\")")
+        ->click(".q-detail__people button[aria-label=\"{$visitor->name} entfernen\"]")
+        ->wait(0.8)
+        ->assertDontSeeIn('.q-detail__people', $visitor->name);
 
-    expect($report->fresh()->presentPeople->pluck('id')->all())->toBe([$visitor->id]);
+    expect($report->fresh()->presentPeople)->toHaveCount(0);
+});
+
+test('the last involved employee of a report cannot be removed', function () {
+    $user = User::factory()->create();
+    grantPermission($user, 'additions-reports.view.own');
+    grantPermission($user, 'additions-reports.update.own');
+    $report = AdditionsReport::factory()->withInvolvedEmployees(1)->create(['employee_id' => $user->employee_id, 'status' => 'new']);
+    $employee = $report->involvedEmployees->first();
+
+    $this->actingAs($user);
+
+    $page = visit(route('additions-reports.show', $report))->on()->desktop();
+
+    $page->assertPresent(".q-detail__people button[aria-label=\"{$employee->person->name} entfernen\"][disabled]");
+
+    expect($report->fresh()->involvedEmployees)->toHaveCount(1);
 });

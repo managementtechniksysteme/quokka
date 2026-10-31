@@ -524,23 +524,52 @@ button.q-quick-edit__chip {
     .q-row__check { margin-left: auto; color: var(--q-accent); }
 }
 .q-quick-edit-people__head { display: flex; align-items: center; justify-content: space-between; }
-.q-quick-edit-people__edit {
+// header "+" that adds a person to a list
+.q-quick-edit-people__add {
     display: inline-flex; padding: .2rem; margin: -.2rem -.2rem -.2rem 0; border: 0; border-radius: 6px;
     background: transparent; color: var(--q-faint); cursor: pointer;
     -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
-    &:hover { color: var(--q-text); }
+    &:hover:not(:disabled) { color: var(--q-accent); background: var(--q-accent-tint); }
+    &:disabled { opacity: .5; cursor: progress; }
     &:focus { outline: none; }
     &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
 }
-.q-quick-edit-people__actions { display: flex; gap: .5rem; margin-top: .6rem; }
-.q-quick-edit-people__remove {
-    display: inline-flex; margin-left: auto; padding: .25rem; border: 0; border-radius: 6px;
-    background: transparent; color: var(--q-faint); cursor: pointer;
+// a person row that can be edited: tinted on hover, with its action icon (pencil / x)
+// faint at rest and full strength on hover or focus. The row stretches a little past the
+// aside's padding so the tint doesn't hug the avatar.
+.q-quick-edit-people__row {
+    width: calc(100% + .8rem); margin-left: -.4rem; margin-right: -.4rem; padding: .3rem .4rem; border: 0; border-radius: 8px;
+    background: transparent; color: inherit; font: inherit; text-align: left;
     -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
-    &:hover { color: var(--q-red); background: var(--q-red-bg); }
+    transition: background .12s;
+}
+.q-aside__person + .q-quick-edit-people__row,
+.q-quick-edit-people__row + .q-quick-edit-people__row { margin-top: .35rem; }
+.q-quick-edit-people__row--editable {
+    cursor: pointer;
+    &:hover, &:focus-within { background: var(--q-surface-3); }
     &:focus { outline: none; }
     &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
 }
+.q-quick-edit-people__icon { margin-left: auto; flex-shrink: 0; color: var(--q-faint); opacity: .45; transition: opacity .12s; }
+.q-quick-edit-people__row:hover .q-quick-edit-people__icon,
+.q-quick-edit-people__row:focus-visible .q-quick-edit-people__icon { opacity: 1; }
+// touch screens have no hover: keep the pencil visible there
+@media (hover: none) { .q-quick-edit-people__icon { opacity: .7; } }
+.q-quick-edit-people__remove {
+    display: inline-flex; margin-left: auto; flex-shrink: 0; padding: .25rem; border: 0; border-radius: 6px;
+    background: transparent; color: var(--q-faint); cursor: pointer; opacity: 0; transition: opacity .12s;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { color: var(--q-red); background: var(--q-red-bg); }
+    &:disabled { cursor: not-allowed; }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-quick-edit-people__row:hover .q-quick-edit-people__remove,
+.q-quick-edit-people__row:focus-within .q-quick-edit-people__remove { opacity: 1; }
+// on touch the x is replaced by a bottom sheet opened by tapping the row
+@media (hover: none) { .q-quick-edit-people__remove { display: none; } }
+.q-quick-edit-people__sheet-remove .q-row__title { color: var(--q-red); }
 
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.

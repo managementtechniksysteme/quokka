@@ -1,7 +1,7 @@
 <template>
     <div>
         <input v-if="selected" type="hidden" :id="inputname" :name="inputname"  :value="selected.id" />
-        <v-select :options="people" label="name" placeholder="Person auswählen" v-model="selected" :selectOnTab="true">
+        <v-select ref="select" :options="people" label="name" placeholder="Person auswählen" v-model="selected" :selectOnTab="true" @option:selected="$emit('selected', $event)" @search:blur="$emit('blurred')">
             <template v-slot:no-options>Keine passenden Einträge.</template>
             <template v-slot:option="person">
                 <div class="d-flex align-items-center gap-2">
@@ -27,10 +27,10 @@
             }
         },
 
-        watch: {
-            // lets a parent (e.g. a quick-edit wrapper) react to the user picking someone
-            selected(person) {
-                this.$emit('selected', person);
+        mounted() {
+            // a parent that swaps this in for a static value wants it ready to pick from
+            if (this.autoopen) {
+                this.$nextTick(() => this.$refs.select.searchEl.focus());
             }
         },
 
@@ -69,6 +69,11 @@
                 default() {
                     return null;
                 }
+            },
+            // focus (and so open) the dropdown as soon as it is shown
+            autoopen: {
+                type: Boolean,
+                default: false
             }
         }
 

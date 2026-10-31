@@ -259,7 +259,7 @@
                 @if($quickEdit)
                     <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="employee_id" label="Verantwortlich" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['responsible']->toJson() }}"></quick-edit-people>
 
-                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="involved_ids" label="Mitwirkende" :multiple="true" :muted="true" empty_text="keine Mitwirkenden" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
+                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="involved_ids" label="Mitwirkende" :multiple="true" :muted="true" :exclude="[{{ $task->employee_id }}]" empty_text="keine Mitwirkenden" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
                 @else
                     <div class="q-aside__group">
                         <div class="q-aside__label">Verantwortlich</div>

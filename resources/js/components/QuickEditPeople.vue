@@ -2,32 +2,51 @@
     <div class="q-aside__group q-quick-edit-people">
         <div class="q-aside__label q-quick-edit-people__head">
             <span>{{ label }}<template v-if="multiple"> · {{ shown.length }}</template></span>
-            <button v-if="editable && !editing" type="button" class="q-quick-edit-people__edit" :aria-label="label + ' ändern'" @click="startEditing">
-                <svg class="icon-bs icon-12"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg>
+            <button v-if="multiple && editable && !adding" type="button" class="q-quick-edit-people__add" :aria-label="label + ': Person hinzufügen'" :disabled="saving" @click="startAdding">
+                <svg class="icon-bs icon-14"><use href="/svg/bootstrap-icons.svg#plus-lg"></use></svg>
             </button>
         </div>
 
-        <template v-if="!editing">
-            <div v-for="person in shown" :key="person.id" class="q-aside__person" :class="{ 'q-aside__person--muted': muted }">
-                <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)">{{ person.avatar ? person.avatar.initials : '' }}</span>
-                <span class="q-aside__name text-truncate">{{ person.name }}</span>
-            </div>
-            <div v-if="!shown.length" class="q-aside__person q-aside__person--muted">
+        <!-- one person: the whole row opens the picker -->
+        <template v-if="!multiple">
+            <person-dropdown v-if="editing" :people="people" :current_person="shown[0] || null" :autoopen="true" @selected="saveSingle" @blurred="editing = false"></person-dropdown>
+            <component :is="editable ? 'button' : 'div'" v-else-if="shown.length" :type="editable ? 'button' : null" :aria-label="editable ? label + ' ändern' : null" class="q-aside__person q-quick-edit-people__row" :class="{ 'q-quick-edit-people__row--editable': editable }" @click="startEditing">
+                <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(shown[0])" :style="avatarStyle(shown[0])">{{ shown[0].avatar ? shown[0].avatar.initials : '' }}</span>
+                <span class="q-aside__name text-truncate">{{ shown[0].name }}</span>
+                <svg v-if="editable" class="icon-bs icon-12 q-quick-edit-people__icon"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg>
+            </component>
+            <div v-else class="q-aside__person q-aside__person--muted">
                 <span class="q-aside__name">{{ empty_text }}</span>
             </div>
         </template>
 
+        <!-- several people: remove with the x on a row, add with the + in the header -->
         <template v-else>
-            <person-dropdown v-if="!multiple" :key="resetKey" :people="people" :current_person="shown[0] || null" @selected="saveSingle"></person-dropdown>
-            <people-selector v-else :key="resetKey" :people="people" :current_people="draftStart" :compact="true" @changed="draft = $event"></people-selector>
-
-            <div class="q-quick-edit-people__actions">
-                <button v-if="multiple" type="button" class="btn btn-primary btn-sm text-white" :disabled="saving" @click="saveMultiple">Speichern</button>
-                <button type="button" class="btn q-btn btn-sm" :disabled="saving" @click="cancel">{{ multiple ? 'Abbrechen' : 'Schließen' }}</button>
+            <div v-for="person in shown" :key="person.id" class="q-aside__person q-quick-edit-people__row" :class="{ 'q-aside__person--muted': muted, 'q-quick-edit-people__row--editable': editable }" @click="onRowClick(person)">
+                <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)">{{ person.avatar ? person.avatar.initials : '' }}</span>
+                <span class="q-aside__name text-truncate">{{ person.name }}</span>
+                <button v-if="editable" type="button" class="q-quick-edit-people__remove" :aria-label="person.name + ' entfernen'" :disabled="saving || shown.length <= min" @click.stop="remove(person)">
+                    <svg class="icon-bs icon-12"><use href="/svg/bootstrap-icons.svg#x-lg"></use></svg>
+                </button>
             </div>
+            <div v-if="!shown.length" class="q-aside__person q-aside__person--muted">
+                <span class="q-aside__name">{{ empty_text }}</span>
+            </div>
+            <person-dropdown v-if="adding" class="mt-2" :people="unselected" :autoopen="true" @selected="add" @blurred="adding = false"></person-dropdown>
         </template>
 
         <div v-if="error" class="q-quick-edit__error" role="alert">{{ error }}</div>
+
+        <!-- touch screens have no hover: tapping a row offers the removal in a bottom sheet -->
+        <div v-if="multiple && editable" class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="sheet" :aria-label="label">
+            <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
+            <div class="offcanvas-body">
+                <div class="q-sheet__label">{{ sheetPerson ? sheetPerson.name : label }}</div>
+                <button type="button" class="q-row q-quick-edit__row q-quick-edit-people__sheet-remove" @click="removeFromSheet">
+                    <span class="q-row__title">Aus „{{ label }}“ entfernen</span>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -38,12 +57,21 @@
         data() {
             return {
                 shown: [...this.current],
-                draft: null,
-                draftStart: [],
+                blocked: [...this.exclude],
                 editing: false,
+                adding: false,
                 saving: false,
-                resetKey: 0,
+                sheetPerson: null,
                 error: '',
+            }
+        },
+
+        computed: {
+            // who can still be added: not already listed, and not someone the page rules out
+            unselected() {
+                return this.people.filter(person => {
+                    return !this.shown.some(shown => shown.id === person.id) && !this.blocked.includes(person.id);
+                });
             }
         },
 
@@ -61,46 +89,78 @@
                 const { url, field, value } = event.detail;
 
                 if (this.multiple && url === this.url && field === 'employee_id') {
+                    this.blocked = [value];
                     this.shown = this.shown.filter(person => person.id !== value);
                 }
             },
 
             startEditing() {
-                this.error = '';
-                this.draft = this.shown.map(person => person.id);
-                this.draftStart = [...this.shown];
-                this.resetKey++;
-                this.editing = true;
+                if (this.editable && !this.saving) {
+                    this.error = '';
+                    this.editing = true;
+                }
             },
 
-            cancel() {
-                this.editing = false;
+            startAdding() {
                 this.error = '';
+                this.adding = true;
             },
 
             saveSingle(person) {
-                if (!person || (this.shown[0] && person.id === this.shown[0].id)) {
+                this.editing = false;
+
+                if (this.shown[0] && person.id === this.shown[0].id) {
                     return;
                 }
 
-                this.save(person.id);
+                this.save([person.id]);
             },
 
-            saveMultiple() {
-                this.save(this.draft);
+            add(person) {
+                this.adding = false;
+                this.save([...this.shown.map(shown => shown.id), person.id]);
             },
 
-            save(value) {
+            remove(person) {
+                if (this.shown.length <= this.min) {
+                    this.error = this.min === 1 ? 'Es muss mindestens eine Person bleiben.' : 'Es müssen mindestens ' + this.min + ' Personen bleiben.';
+                    return;
+                }
+
+                this.save(this.shown.filter(shown => shown.id !== person.id).map(shown => shown.id));
+            },
+
+            onRowClick(person) {
+                if (!this.editable || !window.matchMedia('(hover: none)').matches) {
+                    return;
+                }
+
+                this.sheetPerson = person;
+                window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs.sheet).show();
+            },
+
+            removeFromSheet() {
+                window.bootstrap.Offcanvas.getOrCreateInstance(this.$refs.sheet).hide();
+
+                if (this.sheetPerson) {
+                    this.remove(this.sheetPerson);
+                }
+            },
+
+            // shows the new list right away and puts the old one back if saving fails
+            save(ids) {
+                const previous = this.shown;
+
                 this.saving = true;
                 this.error = '';
+                this.shown = this.people.filter(person => ids.includes(person.id));
 
-                axios.patch(this.url, { [this.field]: value })
+                axios.patch(this.url, { [this.field]: this.multiple ? ids : ids[0] })
                     .then(response => {
                         const saved = response.data.value;
-                        const ids = Array.isArray(saved) ? saved : [saved];
+                        const savedIds = Array.isArray(saved) ? saved : [saved];
 
-                        this.shown = this.people.filter(person => ids.includes(person.id));
-                        this.editing = false;
+                        this.shown = this.people.filter(person => savedIds.includes(person.id));
 
                         // sibling editors on the same page (e.g. the involved employees) may need to react
                         window.dispatchEvent(new CustomEvent('quick-edit-saved', {
@@ -112,11 +172,8 @@
                         }
                     })
                     .catch(error => {
+                        this.shown = previous;
                         this.error = this.errorMessage(error);
-                        // drop the editor's unsaved selection so it matches what is stored
-                        this.resetKey++;
-                        this.draft = this.shown.map(person => person.id);
-                        this.draftStart = [...this.shown];
                     })
                     .finally(() => {
                         this.saving = false;
@@ -191,6 +248,18 @@
             muted: {
                 type: Boolean,
                 default: false
+            },
+            // a list can't be emptied below this many people
+            min: {
+                type: Number,
+                default: 0
+            },
+            // people who can't be added (e.g. the responsible employee on the involved list)
+            exclude: {
+                type: Array,
+                default() {
+                    return [];
+                }
             },
             // reload after saving, when the change affects other parts of the page
             reload: {

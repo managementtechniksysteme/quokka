@@ -72,7 +72,7 @@ test('on mobile the chip opens a bottom sheet with the choices', function () {
     expect($task->fresh()->billed)->toBe('warranty');
 });
 
-test('the involved employees can be changed from the aside and are saved with one click', function () {
+test('involved employees are added with the plus in the aside header and saved right away', function () {
     $user = quickEditTaskUser();
     $task = Task::factory()->create(['employee_id' => $user->employee_id]);
     $colleague = Employee::factory()->create();
@@ -83,18 +83,57 @@ test('the involved employees can be changed from the aside and are saved with on
     $page = visit(route('tasks.show', $task))->on()->desktop();
 
     $page->assertSeeIn('.q-aside', 'keine Mitwirkenden')
-        ->click('.q-aside button[aria-label="Mitwirkende ändern"]')
-        ->click('.q-aside .vs__dropdown-toggle')
+        ->click('.q-aside button[aria-label="Mitwirkende: Person hinzufügen"]')
         ->click(".q-aside .vs__dropdown-option:has-text(\"{$colleagueName}\")")
-        ->click('.q-aside button:has-text("Speichern")')
         ->wait(0.8)
         ->assertSeeIn('.q-aside', $colleagueName)
-        ->assertDontSeeIn('.q-aside', 'keine Mitwirkenden');
+        ->assertDontSeeIn('.q-aside', 'keine Mitwirkenden')
+        ->assertNotPresent('.q-aside .vs__dropdown-toggle')
+        ->assertNoJavaScriptErrors();
 
     expect($task->fresh()->involvedEmployees->pluck('person_id')->all())->toBe([$colleague->person_id]);
 });
 
-test('picking another responsible employee saves right away', function () {
+test('an involved employee is removed with the x that appears on hover', function () {
+    $user = quickEditTaskUser();
+    $task = Task::factory()->create(['employee_id' => $user->employee_id]);
+    $colleague = Employee::factory()->create();
+    $other = Employee::factory()->create();
+    $task->involvedEmployees()->attach([$colleague->person_id, $other->person_id], ['employee_type' => 'involved']);
+
+    $this->actingAs($user);
+
+    $page = visit(route('tasks.show', $task))->on()->desktop();
+
+    $page->hover(".q-aside .q-quick-edit-people__row:has-text(\"{$colleague->person->name}\")")
+        ->click(".q-aside button[aria-label=\"{$colleague->person->name} entfernen\"]")
+        ->wait(0.8)
+        ->assertDontSeeIn('.q-aside', $colleague->person->name)
+        ->assertSeeIn('.q-aside', $other->person->name);
+
+    expect($task->fresh()->involvedEmployees->pluck('person_id')->all())->toBe([$other->person_id]);
+});
+
+test('on a touch screen tapping an involved employee offers the removal in a bottom sheet', function () {
+    $user = quickEditTaskUser();
+    $task = Task::factory()->create(['employee_id' => $user->employee_id]);
+    $colleague = Employee::factory()->create();
+    $task->involvedEmployees()->attach($colleague->person_id, ['employee_type' => 'involved']);
+
+    $this->actingAs($user);
+
+    $page = visit(route('tasks.show', $task))->on()->mobile();
+
+    $page->click(".q-aside .q-quick-edit-people__row:has-text(\"{$colleague->person->name}\")")
+        ->assertVisible('.q-sheet.show')
+        ->click('.q-sheet.show .q-quick-edit-people__sheet-remove')
+        ->wait(1.0)
+        ->assertSeeIn('.q-aside', 'keine Mitwirkenden');
+
+    expect($task->fresh()->involvedEmployees)->toHaveCount(0);
+});
+
+test('clicking the responsible employee opens the picker and a pick saves right away', function () {
     $user = quickEditTaskUser();
     $task = Task::factory()->create(['employee_id' => $user->employee_id]);
     $colleague = Employee::factory()->create();
@@ -107,7 +146,6 @@ test('picking another responsible employee saves right away', function () {
 
     $page->assertSeeIn('.q-quick-edit-people:nth-child(2)', $colleagueName)
         ->click('.q-aside button[aria-label="Verantwortlich ändern"]')
-        ->click('.q-aside .vs__dropdown-toggle')
         ->click(".q-aside .vs__dropdown-option:has-text(\"{$colleagueName}\")")
         ->wait(1.0)
         ->assertSeeIn('.q-quick-edit-people:nth-child(1)', $colleagueName)

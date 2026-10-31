@@ -37,6 +37,18 @@
       Eine einzelne Person, etwa die verantwortliche, wird durch Anklicken getauscht.
     * Wird ein bereits unterschriebener Bericht auf diesem Weg geändert, wird er wie beim regulären Bearbeiten wieder
       auf "neu" gesetzt und die Unterschrift sowie offene Anfragen werden verworfen.
+    * Neu unter Werkzeuge: die Kennzahlen (für Personen mit entsprechender Berechtigung). Sie zeigen Kennzahlen zu
+      Aufgaben, Berichten, Mitarbeitern, Abrechnung und Fahrtenbuch für einen wählbaren Zeitraum (Monat, Quartal, Jahr
+      oder benutzerdefiniert) mit Vor- und Zurück-Navigation. Die Karten lassen sich nach Kunde, Projekt, Mitarbeiter
+      bzw. Berichtsart aufschlüsseln. Die Ansicht ist auch am Smartphone verfügbar.
+    * In den Kennzahlen zeigt die Ansicht "Aktuell" (die Voreinstellung) den heutigen Stand der Aufgaben, der
+      Auslastung und der überfälligen Aufgaben, alle übrigen Zahlen gelten seit Monatsbeginn. Ein pulsierender Punkt
+      kennzeichnet tagesaktuelle Karten. Bei vergangenen Zeiträumen wird der damalige Status der Aufgaben und Berichte
+      angezeigt. Die durchschnittliche Auslastung und die Wochenstunden berücksichtigen nur Mitarbeiter, die im Zeitraum
+      tatsächlich Aufgaben bzw. Stunden hatten.
+    * Neu in den Kennzahlen (Ansicht "Aktuell"): eine Finanzkarte stellt die bisher angefallenen Ist-Kosten (Stunden,
+      Material und Kilometer) den bereits verrechneten Beträgen gegenüber und zeigt, was noch offen ist. Die
+      Aufschlüsselung erfolgt nach Kunde und Projekt.
     * Auf der Startseite erinnert ein Hinweis in den letzten fünf Werktagen eines Monats daran, die
       Stundenaufzeichnungen zu prüfen und die Abrechnung als PDF für die Buchhaltung abzulegen. Er enthält einen Link
       zur Abrechnung und kann für den Rest des Tages ausgeblendet werden.
@@ -48,6 +60,10 @@
       Dies gilt nun nur noch innerhalb der eingestellten Anzahl an Tagen vor der Fälligkeit.
     * Ein Fehler wurde behoben, durch den die Überstunden auf der Startseite nur die 50% Überstunden und nicht die
       100% Überstunden berücksichtigten.
+    * Ein Fehler wurde behoben, durch den Benachrichtigungen (Email, Push und in Quokka) zu Aufgaben, Kommentaren,
+      Aktenvermerken und Berichten doppelt versendet wurden.
+    * Ein Fehler wurde behoben, durch den sich in der Abrechnung die Leistung bzw. das Projekt und im Fahrtenbuch Start
+      bzw. Ziel am Desktop nicht direkt in der Tabelle ändern ließen, weil die Auswahlliste abgeschnitten wurde.
     @endmarkdown
 
     @markdown

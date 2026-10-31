@@ -1542,7 +1542,10 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 // kebab is a normal flex child now (ms-auto), not absolutely positioned —
 // the old position:absolute + padding-right:2.4rem reservation was squeezing
 // author+date into too little room on mobile ("date shoved into the kebab").
-.q-comment__head { grid-area: head; display: flex; align-items: center; gap: .55rem; margin-bottom: .6rem; }
+// min-height = the kebab's height (20px glyph + .5rem padding + border): a comment's head holds a
+// kebab, an activity's doesn't, and without a shared height the activity's name sat higher than the
+// comment's (centered against the avatar) on desktop.
+.q-comment__head { grid-area: head; display: flex; align-items: center; gap: .55rem; margin-bottom: .6rem; min-height: 2.375rem; }
 .q-comment__meta { display: flex; align-items: baseline; gap: .55rem; min-width: 0; flex: 1; }
 .q-comment__author { font-size: .85rem; font-weight: 700; color: var(--q-text); }
 .q-comment__date { font-size: .72rem; color: var(--q-faint); }

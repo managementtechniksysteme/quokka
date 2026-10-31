@@ -418,9 +418,12 @@ class TaskController extends Controller
 
         return response()->json([
             'field' => $field,
-            'value' => $field === 'involved_ids'
-                ? $task->involvedEmployees()->pluck('employees.person_id')->all()
-                : $task->{$field},
+            'value' => match ($field) {
+                'involved_ids' => $task->involvedEmployees()->pluck('employees.person_id')->all(),
+                'due_on', 'starts_on', 'ends_on' => $task->{$field}?->format('Y-m-d'),
+                default => $task->{$field},
+            },
+            'hint' => $field === 'due_on' ? $task->due_hint : null,
             'changed' => $changed,
         ]);
     }

@@ -523,6 +523,52 @@ button.q-quick-edit__chip {
     -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
     .q-row__check { margin-left: auto; color: var(--q-accent); }
 }
+.q-quick-edit-date { position: relative; flex-wrap: wrap; row-gap: .15rem; }
+.q-quick-edit-date__value { text-align: left; }
+// the calendar floats under the date (a bottom sheet on narrow screens, see QuickEditDate.vue)
+.q-quick-edit-date__popover {
+    position: absolute; top: calc(100% + .35rem); left: 0; z-index: 30; width: 17.5rem; padding: .75rem;
+    background: var(--q-surface); border: 1px solid var(--q-border); border-radius: $q-radius; box-shadow: var(--q-shadow);
+    &--right { left: auto; right: 0; }
+}
+.q-calendar { width: 100%; font-size: .8rem; color: var(--q-text); }
+.q-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+.q-calendar__title { font-weight: 700; }
+.q-calendar__nav {
+    display: inline-flex; padding: .35rem; border: 0; border-radius: 8px; background: transparent; color: var(--q-muted); cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { background: var(--q-surface-3); color: var(--q-text); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-calendar__weekdays, .q-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.q-calendar__weekdays span {
+    padding: .2rem 0; text-align: center; font-size: .62rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint);
+}
+.q-calendar__grid { gap: 2px; }
+.q-calendar__day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 0;
+    border: 0; border-radius: 50%; background: transparent; color: inherit; font: inherit; cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { background: var(--q-surface-3); }
+    &.is-outside { color: var(--q-faint); }
+    &.is-today { box-shadow: inset 0 0 0 1px var(--q-accent); }
+    &.is-selected { background: var(--q-accent); color: #fff; font-weight: 700; }
+    &:disabled { opacity: .35; cursor: not-allowed; }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-calendar__foot { display: flex; justify-content: space-between; margin-top: .5rem; padding-top: .5rem; border-top: 1px solid var(--q-border-2); }
+.q-calendar__action {
+    padding: .2rem .5rem; border: 0; border-radius: 6px; background: transparent; color: var(--q-accent); font: inherit; font-weight: 600; font-size: .78rem; cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { background: var(--q-accent-tint); }
+    &:disabled { opacity: .4; cursor: not-allowed; }
+    &--danger { color: var(--q-red); &:hover:not(:disabled) { background: var(--q-red-bg); } }
+}
+// in the bottom sheet the calendar gets bigger touch targets
+.q-sheet .q-calendar { font-size: .95rem; }
+.q-sheet .q-calendar__day { aspect-ratio: auto; height: 2.7rem; }
 .q-quick-edit-people__head { display: flex; align-items: center; justify-content: space-between; }
 // header "+" that adds a person to a list
 .q-quick-edit-people__add {

@@ -258,6 +258,24 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         }
     }
 
+    /**
+     * The "überfällig" / "bald fällig" note next to the due date, as text plus its stat strip colour class.
+     *
+     * @return array{text: string, class: string}|null
+     */
+    public function getDueHintAttribute(): ?array
+    {
+        if ($this->isOverdue()) {
+            return ['text' => 'überfällig', 'class' => 'q-statbar__urgent'];
+        }
+
+        if ($this->isDueSoon()) {
+            return ['text' => 'bald fällig', 'class' => 'q-statbar__soon'];
+        }
+
+        return null;
+    }
+
     public function isDueSoon()
     {
         $today = Carbon::now();
@@ -265,7 +283,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status !== 'finished'
             && $this->due_on
             && $this->due_on->gt($today)
-            && $this->due_on->diffInDays($today) < ApplicationSettings::get()->task_due_soon_days;
+            && $today->diffInDays($this->due_on) < ApplicationSettings::get()->task_due_soon_days;
     }
 
     public function isOverdue()

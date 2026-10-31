@@ -7,11 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Validates a quick edit of exactly one field on a report's detail page. Which of
- * the fields a given report type accepts is decided by its controller.
+ * the fields a given report type accepts (`date` is that report's own date column) is decided by its controller.
  */
 class ReportQuickUpdateRequest extends FormRequest
 {
-    public const FIELDS = ['weather', 'involved_ids', 'present_ids'];
+    public const FIELDS = ['weather', 'involved_ids', 'present_ids', 'date'];
 
     /**
      * @return array<string, mixed>
@@ -24,6 +24,7 @@ class ReportQuickUpdateRequest extends FormRequest
             'involved_ids.*' => 'exists:employees,person_id',
             'present_ids' => 'sometimes|array',
             'present_ids.*' => 'exists:people,id',
+            'date' => 'sometimes|date',
         ];
     }
 

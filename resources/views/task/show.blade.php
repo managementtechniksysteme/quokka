@@ -167,21 +167,31 @@
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Fällig</span>
                 <span class="q-statbar__value">
-                    @if($task->due_on)
-                        {{ $task->due_on }}
-                        @if($task->isOverdue())
-                            <span class="q-statbar__sep">·</span> <span class="q-statbar__urgent">überfällig</span>
-                        @elseif($task->isDueSoon())
-                            <span class="q-statbar__sep">·</span> <span class="q-statbar__soon">bald fällig</span>
-                        @endif
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="due_on" value="{{ $task->due_on?->format('Y-m-d') }}" :clearable="true" empty_text="kein Datum" aria_label="Fälligkeitsdatum ändern" :hint="{{ json_encode($task->due_hint) }}"></quick-edit-date>
                     @else
-                        <span class="q-statbar__value--empty">kein Datum</span>
+                        @if($task->due_on)
+                            {{ $task->due_on }}
+                            @if($task->due_hint)
+                                <span class="q-statbar__sep">·</span> <span class="{{ $task->due_hint['class'] }}">{{ $task->due_hint['text'] }}</span>
+                            @endif
+                        @else
+                            <span class="q-statbar__value--empty">kein Datum</span>
+                        @endif
                     @endif
                 </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Zeitraum</span>
-                <span class="q-statbar__value">{{ $task->starts_on ?: 'offen' }} → {{ $task->ends_on ?: 'offen' }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="starts_on" value="{{ $task->starts_on?->format('Y-m-d') }}" :clearable="true" empty_text="offen" aria_label="Startdatum ändern"></quick-edit-date>
+                        →
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="ends_on" value="{{ $task->ends_on?->format('Y-m-d') }}" empty_text="offen" aria_label="Enddatum ändern" :editable="{{ $task->status === 'finished' ? 'true' : 'false' }}"></quick-edit-date>
+                    @else
+                        {{ $task->starts_on ?: 'offen' }} → {{ $task->ends_on ?: 'offen' }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Verrechnung</span>

@@ -221,7 +221,13 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $additionsReport->services_provided_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('additions-reports.quick-update', $additionsReport) }}" field="date" value="{{ $additionsReport->services_provided_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $additionsReport->services_provided_on }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Regiestunden</span>

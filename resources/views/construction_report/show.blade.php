@@ -221,7 +221,13 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $constructionReport->services_provided_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="date" value="{{ $constructionReport->services_provided_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $constructionReport->services_provided_on }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>

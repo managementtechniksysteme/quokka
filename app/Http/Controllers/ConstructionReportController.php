@@ -277,7 +277,7 @@ class ConstructionReportController extends Controller
      */
     public function quickUpdate(ReportQuickUpdateRequest $request, ConstructionReport $constructionReport): JsonResponse
     {
-        return $this->quickUpdateReport($request, $constructionReport, ConstructionReportUpdatedEvent::class, ['weather', 'involved_ids', 'present_ids']);
+        return $this->quickUpdateReport($request, $constructionReport, ConstructionReportUpdatedEvent::class, ['weather', 'involved_ids', 'present_ids', 'date'], 'services_provided_on', ['project_id']);
     }
 
     public function destroy(Request $request, ConstructionReport $constructionReport)

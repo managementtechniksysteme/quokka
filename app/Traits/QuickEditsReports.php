@@ -51,8 +51,10 @@ trait QuickEditsReports
     /**
      * @param  class-string  $updatedEvent  the report's *UpdatedEvent
      * @param  array<int, string>  $allowedFields  the fields this report type can quick-edit
+     * @param  string  $dateColumn  the report's own date column, edited through the `date` field
+     * @param  array<int, string>  $uniqueWith  columns that, together with the date, identify a report (only one per combination)
      */
-    protected function quickUpdateReport(ReportQuickUpdateRequest $request, Model $report, string $updatedEvent, array $allowedFields): JsonResponse
+    protected function quickUpdateReport(ReportQuickUpdateRequest $request, Model $report, string $updatedEvent, array $allowedFields, string $dateColumn = 'services_provided_on', array $uniqueWith = ['project_id']): JsonResponse
     {
         $validatedData = $request->validated();
         $field = array_key_first($validatedData);
@@ -63,6 +65,11 @@ trait QuickEditsReports
 
         if ($field === 'weather') {
             $report->update(['weather' => $validatedData['weather']]);
+            $changed = $report->wasChanged();
+        } elseif ($field === 'date') {
+            $this->ensureNoReportOnDate($report, $dateColumn, $uniqueWith, $validatedData['date']);
+
+            $report->update([$dateColumn => $validatedData['date']]);
             $changed = $report->wasChanged();
         } else {
             // compare the lists rather than trust sync()'s "updated" count, which databases report differently
@@ -101,10 +108,29 @@ trait QuickEditsReports
             'field' => $field,
             'value' => match ($field) {
                 'weather' => $report->weather,
+                'date' => $report->{$dateColumn}->format('Y-m-d'),
                 'involved_ids' => $report->involvedEmployees()->pluck('employees.person_id')->all(),
                 default => $report->presentPeople()->pluck('people.id')->all(),
             },
             'changed' => $changed,
         ]);
+    }
+
+    /**
+     * Like the full form, a report is unique per date and its identifying columns (e.g. the project).
+     *
+     * @param  array<int, string>  $uniqueWith
+     */
+    private function ensureNoReportOnDate(Model $report, string $dateColumn, array $uniqueWith, string $date): void
+    {
+        $query = $report::query()->whereDate($dateColumn, $date)->whereKeyNot($report->getKey());
+
+        foreach ($uniqueWith as $column) {
+            $query->where($column, $report->{$column});
+        }
+
+        if ($query->exists()) {
+            throw ValidationException::withMessages(['date' => 'Für dieses Datum existiert bereits ein Bericht.']);
+        }
     }
 }

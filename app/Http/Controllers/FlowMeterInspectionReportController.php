@@ -251,7 +251,7 @@ class FlowMeterInspectionReportController extends Controller
      */
     public function quickUpdate(ReportQuickUpdateRequest $request, FlowMeterInspectionReport $flowMeterInspectionReport): JsonResponse
     {
-        return $this->quickUpdateReport($request, $flowMeterInspectionReport, FlowMeterInspectionReportUpdatedEvent::class, ['weather']);
+        return $this->quickUpdateReport($request, $flowMeterInspectionReport, FlowMeterInspectionReportUpdatedEvent::class, ['weather', 'date'], 'inspected_on', ['project_id', 'equipment_identifier']);
     }
 
     public function destroy(Request $request, FlowMeterInspectionReport $flowMeterInspectionReport)

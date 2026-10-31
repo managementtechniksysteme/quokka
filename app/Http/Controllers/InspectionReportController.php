@@ -219,7 +219,7 @@ class InspectionReportController extends Controller
      */
     public function quickUpdate(ReportQuickUpdateRequest $request, InspectionReport $inspectionReport): JsonResponse
     {
-        return $this->quickUpdateReport($request, $inspectionReport, InspectionReportUpdatedEvent::class, ['weather']);
+        return $this->quickUpdateReport($request, $inspectionReport, InspectionReportUpdatedEvent::class, ['weather', 'date'], 'inspected_on', ['project_id', 'equipment_identifier']);
     }
 
     public function destroy(Request $request, InspectionReport $inspectionReport)

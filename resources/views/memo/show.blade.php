@@ -184,12 +184,24 @@
             @endif
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $memo->meeting_held_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('memos.quick-update', $memo) }}" field="meeting_held_on" value="{{ $memo->meeting_held_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $memo->meeting_held_on }}
+                    @endif
+                </span>
             </div>
-            @if($memo->next_meeting_on)
+            @if($memo->next_meeting_on || $quickEdit)
                 <div class="q-statbar__cell">
                     <span class="q-statbar__label">Nächster Termin</span>
-                    <span class="q-statbar__value">{{ $memo->next_meeting_on }}</span>
+                    <span class="q-statbar__value">
+                        @if($quickEdit)
+                            <quick-edit-date url="{{ route('memos.quick-update', $memo) }}" field="next_meeting_on" value="{{ $memo->next_meeting_on?->format('Y-m-d') }}" :clearable="true" empty_text="kein Termin" aria_label="Nächsten Termin ändern"></quick-edit-date>
+                        @else
+                            {{ $memo->next_meeting_on }}
+                        @endif
+                    </span>
                 </div>
             @endif
         </div>

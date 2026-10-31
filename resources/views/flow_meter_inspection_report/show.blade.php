@@ -230,7 +230,13 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $flowMeterInspectionReport->inspected_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('flow-meter-inspection-reports.quick-update', $flowMeterInspectionReport) }}" field="date" value="{{ $flowMeterInspectionReport->inspected_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $flowMeterInspectionReport->inspected_on }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>

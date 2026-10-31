@@ -255,34 +255,39 @@ class MemoController extends Controller
     }
 
     /**
-     * Change one participant list from the detail page without the full edit form. Like update(), the
-     * recipient is never also on the distribution list, and a published memo notifies about the change.
+     * Change one participant list or date from the detail page without the full edit form. Like update(),
+     * the recipient is never also on the distribution list, and a published memo notifies about the change.
      */
     public function quickUpdate(MemoQuickUpdateRequest $request, Memo $memo): JsonResponse
     {
         $validatedData = $request->validated();
         $field = array_key_first($validatedData);
 
-        if ($field === 'present_ids') {
-            $relation = $memo->presentPeople();
-            $pivotValues = ['person_type' => 'present'];
-            $ids = $validatedData['present_ids'];
+        if (in_array($field, ['meeting_held_on', 'next_meeting_on'], true)) {
+            $memo->update($validatedData);
+            $changed = $memo->wasChanged();
         } else {
-            $relation = $memo->notifiedPeople();
-            $pivotValues = ['person_type' => 'notified'];
-            $ids = array_values(array_filter($validatedData['notified_ids'], fn ($id) => (int) $id !== (int) $memo->person_id));
+            if ($field === 'present_ids') {
+                $relation = $memo->presentPeople();
+                $pivotValues = ['person_type' => 'present'];
+                $ids = $validatedData['present_ids'];
+            } else {
+                $relation = $memo->notifiedPeople();
+                $pivotValues = ['person_type' => 'notified'];
+                $ids = array_values(array_filter($validatedData['notified_ids'], fn ($id) => (int) $id !== (int) $memo->person_id));
+            }
+
+            // compare the lists rather than trust sync()'s "updated" count, which databases report differently
+            $before = $relation->pluck('people.id')->sort()->values()->all();
+
+            if (! empty($ids)) {
+                $relation->syncWithPivotValues($ids, $pivotValues);
+            } else {
+                $relation->detach();
+            }
+
+            $changed = $before !== $relation->pluck('people.id')->sort()->values()->all();
         }
-
-        // compare the lists rather than trust sync()'s "updated" count, which databases report differently
-        $before = $relation->pluck('people.id')->sort()->values()->all();
-
-        if (! empty($ids)) {
-            $relation->syncWithPivotValues($ids, $pivotValues);
-        } else {
-            $relation->detach();
-        }
-
-        $changed = $before !== $relation->pluck('people.id')->sort()->values()->all();
 
         if ($changed) {
             $memo->touch();
@@ -294,7 +299,11 @@ class MemoController extends Controller
 
         return response()->json([
             'field' => $field,
-            'value' => $relation->pluck('people.id')->all(),
+            'value' => match ($field) {
+                'meeting_held_on', 'next_meeting_on' => $memo->{$field}?->format('Y-m-d'),
+                'present_ids' => $memo->presentPeople()->pluck('people.id')->all(),
+                default => $memo->notifiedPeople()->pluck('people.id')->all(),
+            },
             'changed' => $changed,
         ]);
     }

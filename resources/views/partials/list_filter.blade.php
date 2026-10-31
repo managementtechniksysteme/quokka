@@ -23,8 +23,8 @@
                 </a>
             @endif
             @isset($quickFilters)
-                <button type="button" class="btn q-btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="visually-hidden">Schnellfilter</span>
+                <button type="button" class="btn q-btn q-btn-icon dropdown-toggle d-flex align-items-center justify-content-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Schnellfilter" title="Schnellfilter">
+                    <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
                 </button>
                 <div class="dropdown-menu">
                     @foreach($quickFilters as $label => $expr)

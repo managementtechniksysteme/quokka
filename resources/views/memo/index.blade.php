@@ -56,8 +56,8 @@
                                 <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#x-circle"></use></svg>
                             </a>
                         @endif
-                        <button type="button" class="btn q-btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
+                        <button type="button" class="btn q-btn q-btn-icon dropdown-toggle d-flex align-items-center justify-content-center" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Schnellfilter" title="Schnellfilter">
+                            <svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#funnel"></use></svg>
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item"

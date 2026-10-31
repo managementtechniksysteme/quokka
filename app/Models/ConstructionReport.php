@@ -292,4 +292,9 @@ class ConstructionReport extends Model implements FiltersGlobalSearch, HasMedia
     {
         return ConstructionReport::whereStatus('signed')->count();
     }
+
+    public function getTemperatureRangeStringAttribute(): string
+    {
+        return $this->minimum_temperature . ($this->minimum_temperature !== $this->maximum_temperature ? ' bis ' . $this->maximum_temperature : '') . ' °C';
+    }
 }

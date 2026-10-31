@@ -29,7 +29,13 @@
                 <span class="q-inforow__icon"><svg class="icon-bs icon-16"><use href="{{ asset('svg/bootstrap-icons.svg') }}#clock"></use></svg></span>
                 <div class="q-inforow__main">
                     <div class="q-inforow__label">Vorphase</div>
-                    <div class="q-inforow__value">{{ $project->isPreExecutionString }}</div>
+                    <div class="q-inforow__value">
+                        @if(auth()->user()->can('update', $project) && $project->ends_on === null)
+                            <quick-edit-chip url="{{ route('projects.quick-update', $project) }}" field="is_pre_execution" :value="{{ $project->is_pre_execution ? 'true' : 'false' }}" :options="{{ json_encode($project->pre_execution_quick_edit_options) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Vorphase ändern" :reload="true"></quick-edit-chip>
+                        @else
+                            {{ $project->isPreExecutionString }}
+                        @endif
+                    </div>
                 </div>
             </div>
 

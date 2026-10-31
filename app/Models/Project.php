@@ -467,4 +467,17 @@ class Project extends Model implements FiltersGlobalSearch
 
         return $sums->get();
     }
+
+    /**
+     * Choices for the overview tab's in-place pre-execution switch.
+     *
+     * @return array<int, array{value: bool, label: string}>
+     */
+    public function getPreExecutionQuickEditOptionsAttribute(): array
+    {
+        return [
+            ['value' => false, 'label' => 'nein'],
+            ['value' => true, 'label' => 'ja'],
+        ];
+    }
 }

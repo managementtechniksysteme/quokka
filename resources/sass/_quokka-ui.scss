@@ -462,6 +462,160 @@ $q-pad:            1.25rem;
     @include media-breakpoint-down(md) { display: none !important; }
 }
 
+// Quick edit — chips and people on detail pages that change in place
+// (QuickEditChip.vue / QuickEditPeople.vue). The chip is a <button> wearing the
+// classes of the static chip it replaces (.q-chip / .q-status / plain statbar
+// value); :where() keeps the native-button reset at zero specificity so those
+// classes always win.
+.q-quick-edit { display: inline-flex; align-items: center; gap: .35rem; max-width: 100%; }
+:where(.q-quick-edit__chip) {
+    border: 0; background: transparent; color: inherit; font-family: inherit; line-height: inherit; text-align: left;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+}
+button.q-quick-edit__chip {
+    cursor: pointer; transition: box-shadow .12s, opacity .12s;
+    &:hover:not(:disabled) { box-shadow: 0 0 0 1px var(--q-border); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+    &:disabled { opacity: .6; cursor: progress; }
+}
+// the bare statbar value (billing state) reads as text with a caret, not as a pill
+.q-quick-edit__chip--plain { padding: 0; border-radius: 6px; font-size: .8rem; font-weight: 600; color: var(--q-text); gap: .3rem; display: inline-flex; align-items: center; }
+.q-quick-edit__caret { opacity: .55; }
+.q-quick-edit__saved { color: var(--q-green); }
+.q-quick-edit__error { font-size: .72rem; color: var(--q-red); }
+// desktop: the choices unfold beside the chip and fold back after a pick
+.q-quick-edit__options { display: inline-flex; align-items: center; gap: .3rem; overflow: hidden; white-space: nowrap; }
+.q-quick-edit__option {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-family: inherit; font-size: .72rem; font-weight: 500; padding: .18rem .55rem;
+    border-radius: $q-radius-pill; color: var(--q-muted); cursor: pointer;
+    background: var(--q-surface); border: 1px dashed var(--q-border);
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { color: var(--q-text); border-style: solid; background: var(--q-surface-2); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+    &.is-selected { color: var(--q-accent); border: 1px solid var(--q-accent); background: var(--q-accent-tint); }
+}
+// placement="below": a small floating menu under the chip instead of unfolding sideways
+.q-quick-edit--below {
+    position: relative;
+    .q-quick-edit__options {
+        position: absolute; top: calc(100% + .3rem); left: 0; z-index: 20;
+        flex-direction: column; align-items: stretch; gap: .15rem; padding: .3rem;
+        background: var(--q-surface); border: 1px solid var(--q-border); border-radius: $q-radius-sm; box-shadow: var(--q-shadow);
+    }
+    .q-quick-edit__option { border: 0; border-radius: 6px; background: transparent; padding: .3rem .55rem; font-size: .78rem; }
+    .q-quick-edit__option:hover { background: var(--q-surface-2); }
+    .q-quick-edit__option.is-selected { background: var(--q-accent-tint); }
+}
+.q-quick-edit-options-enter-active,
+.q-quick-edit-options-leave-active { transition: max-width .25s ease, opacity .2s ease; max-width: 40rem; }
+.q-quick-edit-options-enter-from,
+.q-quick-edit-options-leave-to { max-width: 0; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+    .q-quick-edit-options-enter-active,
+    .q-quick-edit-options-leave-active { transition: none; }
+}
+// mobile: a .q-row inside the bottom sheet, as a <button>
+.q-quick-edit__row {
+    width: 100%; border: 0; background: transparent; font-family: inherit; text-align: left;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    .q-row__check { margin-left: auto; color: var(--q-accent); }
+}
+.q-quick-edit-date { position: relative; flex-wrap: wrap; row-gap: .15rem; }
+.q-quick-edit-date__value { text-align: left; }
+// the calendar floats under the date (a bottom sheet on narrow screens, see QuickEditDate.vue)
+.q-quick-edit-date__popover {
+    position: absolute; top: calc(100% + .35rem); left: 0; z-index: 30; width: 17.5rem; padding: .75rem;
+    background: var(--q-surface); border: 1px solid var(--q-border); border-radius: $q-radius; box-shadow: var(--q-shadow);
+    &--right { left: auto; right: 0; }
+}
+.q-calendar { width: 100%; font-size: .8rem; color: var(--q-text); }
+.q-calendar__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+.q-calendar__title { font-weight: 700; }
+.q-calendar__nav {
+    display: inline-flex; padding: .35rem; border: 0; border-radius: 8px; background: transparent; color: var(--q-muted); cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { background: var(--q-surface-3); color: var(--q-text); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-calendar__weekdays, .q-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.q-calendar__weekdays span {
+    padding: .2rem 0; text-align: center; font-size: .62rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--q-faint);
+}
+.q-calendar__grid { gap: 2px; }
+.q-calendar__day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 0;
+    border: 0; border-radius: 50%; background: transparent; color: inherit; font: inherit; cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { background: var(--q-surface-3); }
+    &.is-outside { color: var(--q-faint); }
+    &.is-today { box-shadow: inset 0 0 0 1px var(--q-accent); }
+    &.is-selected { background: var(--q-accent); color: #fff; font-weight: 700; }
+    &:disabled { opacity: .35; cursor: not-allowed; }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-calendar__foot { display: flex; justify-content: space-between; margin-top: .5rem; padding-top: .5rem; border-top: 1px solid var(--q-border-2); }
+.q-calendar__action {
+    padding: .2rem .5rem; border: 0; border-radius: 6px; background: transparent; color: var(--q-accent); font: inherit; font-weight: 600; font-size: .78rem; cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { background: var(--q-accent-tint); }
+    &:disabled { opacity: .4; cursor: not-allowed; }
+    &--danger { color: var(--q-red); &:hover:not(:disabled) { background: var(--q-red-bg); } }
+}
+// in the bottom sheet the calendar gets bigger touch targets
+.q-sheet .q-calendar { font-size: .95rem; }
+.q-sheet .q-calendar__day { aspect-ratio: auto; height: 2.7rem; }
+.q-quick-edit-people__head { display: flex; align-items: center; justify-content: space-between; }
+// header "+" that adds a person to a list
+.q-quick-edit-people__add {
+    display: inline-flex; padding: .2rem; margin: -.2rem -.2rem -.2rem 0; border: 0; border-radius: 6px;
+    background: transparent; color: var(--q-faint); cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { color: var(--q-accent); background: var(--q-accent-tint); }
+    &:disabled { opacity: .5; cursor: progress; }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+// a person row that can be edited: tinted on hover, with its action icon (pencil / x)
+// faint at rest and full strength on hover or focus. The row stretches a little past the
+// aside's padding so the tint doesn't hug the avatar.
+.q-quick-edit-people__row {
+    width: calc(100% + .8rem); margin-left: -.4rem; margin-right: -.4rem; padding: .3rem .4rem; border: 0; border-radius: 8px;
+    background: transparent; color: inherit; font: inherit; text-align: left;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    transition: background .12s;
+}
+.q-aside__person + .q-quick-edit-people__row,
+.q-quick-edit-people__row + .q-quick-edit-people__row { margin-top: .35rem; }
+.q-quick-edit-people__row--editable {
+    cursor: pointer;
+    &:hover, &:focus-within { background: var(--q-surface-3); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-quick-edit-people__icon { margin-left: auto; flex-shrink: 0; color: var(--q-faint); opacity: .45; transition: opacity .12s; }
+.q-quick-edit-people__row:hover .q-quick-edit-people__icon,
+.q-quick-edit-people__row:focus-visible .q-quick-edit-people__icon { opacity: 1; }
+// touch screens have no hover: keep the pencil visible there
+@media (hover: none) { .q-quick-edit-people__icon { opacity: .7; } }
+.q-quick-edit-people__remove {
+    display: inline-flex; margin-left: auto; flex-shrink: 0; padding: .25rem; border: 0; border-radius: 6px;
+    background: transparent; color: var(--q-faint); cursor: pointer; opacity: 0; transition: opacity .12s;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover:not(:disabled) { color: var(--q-red); background: var(--q-red-bg); }
+    &:disabled { cursor: not-allowed; }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
+.q-quick-edit-people__row:hover .q-quick-edit-people__remove,
+.q-quick-edit-people__row:focus-within .q-quick-edit-people__remove { opacity: 1; }
+// on touch the x is replaced by a bottom sheet opened by tapping the row
+@media (hover: none) { .q-quick-edit-people__remove { display: none; } }
+
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.
 //   new / in-progress / finished / signed  → tasks, reports, delivery notes
@@ -1433,7 +1587,10 @@ a.q-matrix__row:hover { background: var(--q-surface-2); text-decoration: none; c
 // kebab is a normal flex child now (ms-auto), not absolutely positioned —
 // the old position:absolute + padding-right:2.4rem reservation was squeezing
 // author+date into too little room on mobile ("date shoved into the kebab").
-.q-comment__head { grid-area: head; display: flex; align-items: center; gap: .55rem; margin-bottom: .6rem; }
+// min-height = the kebab's height (20px glyph + .5rem padding + border): a comment's head holds a
+// kebab, an activity's doesn't, and without a shared height the activity's name sat higher than the
+// comment's (centered against the avatar) on desktop.
+.q-comment__head { grid-area: head; display: flex; align-items: center; gap: .55rem; margin-bottom: .6rem; min-height: 2.375rem; }
 .q-comment__meta { display: flex; align-items: baseline; gap: .55rem; min-width: 0; flex: 1; }
 .q-comment__author { font-size: .85rem; font-weight: 700; color: var(--q-text); }
 .q-comment__date { font-size: .72rem; color: var(--q-faint); }

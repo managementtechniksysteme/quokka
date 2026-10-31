@@ -60,14 +60,18 @@
             @include('vehicle.breadcrumb')
         </div>
 
-        @if($vehicle->private)
+        @can('update', $vehicle)
+            <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
+                <quick-edit-chip url="{{ route('vehicles.quick-update', $vehicle) }}" field="private" :value="{{ $vehicle->private ? 'true' : 'false' }}" :options="{{ json_encode($vehicle->visibility_quick_edit_options) }}" aria_label="Sichtbarkeit ändern"></quick-edit-chip>
+            </div>
+        @elseif($vehicle->private)
             <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
                 <span class="q-chip">
                     <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
                     privat
                 </span>
             </div>
-        @endif
+        @endcan
 
         <div class="q-page-head d-none d-md-flex">
             <div class="d-flex align-items-center gap-3">
@@ -77,14 +81,18 @@
                 <div>
                     <div class="q-eyebrow">Fahrzeug</div>
                     <h1 class="q-title">{{ $vehicle->registration_identifier }}</h1>
-                    @if($vehicle->private)
+                    @can('update', $vehicle)
+                        <div class="q-meta">
+                            <quick-edit-chip url="{{ route('vehicles.quick-update', $vehicle) }}" field="private" :value="{{ $vehicle->private ? 'true' : 'false' }}" :options="{{ json_encode($vehicle->visibility_quick_edit_options) }}" aria_label="Sichtbarkeit ändern"></quick-edit-chip>
+                        </div>
+                    @elseif($vehicle->private)
                         <div class="q-meta">
                             <span class="q-chip">
                                 <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
                                 privat
                             </span>
                         </div>
-                    @endif
+                    @endcan
                 </div>
             </div>
 

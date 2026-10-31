@@ -8,6 +8,7 @@ use App\Http\Requests\EmailRequest;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskDownloadListRequest;
 use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskQuickUpdateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Mail\TaskMail;
 use App\Models\Company;
@@ -19,6 +20,7 @@ use App\Models\Task;
 use App\Models\TaskComment;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -37,6 +39,7 @@ class TaskController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
             'finish' => 'update',
+            'quickUpdate' => 'update',
             'downloadList' => 'downloadList',
         ]);
     }
@@ -258,7 +261,52 @@ class TaskController extends Controller
 
         $combinedActivities = $combinedActivities->values()->paginate(Auth::user()->settings->list_pagination_size);
 
-        return view('task.show')->with(compact('task'))->with('activities', $combinedActivities);
+        return view('task.show')
+            ->with(compact('task'))
+            ->with('activities', $combinedActivities)
+            ->with('quickEdit', $this->quickEditData($task));
+    }
+
+    /**
+     * Everything the detail page's in-place editors need, or null for a user who may not edit the task.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function quickEditData(Task $task): ?array
+    {
+        $user = Auth::user();
+
+        if ($user->cannot('update', $task)) {
+            return null;
+        }
+
+        $visibilityOptions = collect([
+            ['value' => false, 'label' => 'öffentlich', 'icon' => 'unlock', 'disabled' => $user->cannot('tasks.create')],
+            ['value' => true, 'label' => 'privat', 'icon' => 'lock', 'disabled' => $user->cannot('tasks.create.private')],
+        ])->reject(fn (array $option) => $option['disabled'] && $option['value'] !== $task->private)
+            ->values()
+            ->all();
+
+        $employees = Person::has('employee')->with('employee.user')->order()->get();
+
+        return [
+            'status' => collect(['new', 'in progress', 'finished'])
+                ->map(fn (string $status) => [
+                    'value' => $status,
+                    'label' => (new Task(['status' => $status]))->status_label,
+                    'class' => 'q-status--' . Str::slug($status),
+                ])->all(),
+            'priority' => collect(['low', 'medium', 'high'])
+                ->map(fn (string $priority) => ['value' => $priority, 'label' => __($priority), 'icon' => 'flag'])
+                ->all(),
+            'billed' => collect(['yes', 'no', 'warranty'])
+                ->map(fn (string $billed) => ['value' => $billed, 'label' => __((new Task(['billed' => $billed]))->billed_string)])
+                ->all(),
+            'visibility' => $visibilityOptions,
+            'employees' => $employees->values(),
+            'responsible' => $employees->where('id', $task->employee_id)->values(),
+            'involved' => $employees->whereIn('id', $task->involvedEmployees->pluck('person_id'))->values(),
+        ];
     }
 
     public function edit(Task $task): View
@@ -301,70 +349,9 @@ class TaskController extends Controller
 
         $task->update($validatedData);
 
-        if ($task->status !== 'finished' && $task->ends_on) {
-            $task->ends_on = null;
-            $task->save();
-        }
+        $task->syncStatusDates();
 
-        if ($task->status === 'finished' && ! $task->ends_on) {
-            $task->starts_on = $task->starts_on ?? Carbon::now();
-            $task->ends_on = Carbon::now();
-            $task->save();
-        }
-
-        $oldInvolvedEmployees = $task->involvedEmployees->pluck('person_id');
-
-        if ($request->filled('involved_ids')) {
-            if (($responsibleEmployee = array_search($task->employee_id, $request->involved_ids)) !== false) {
-                $employees = Employee::find(Arr::except($request->involved_ids, $responsibleEmployee));
-            } else {
-                $employees = Employee::find($request->involved_ids);
-            }
-
-            $touched = $task->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
-
-            if($touched['attached'] || $touched['detached'] || $touched['updated']) {
-                $attributes = [];
-                $attributes['involved_ids'] = $employees->pluck('person_id');
-
-                $old = [];
-                $old['involved_ids'] = $oldInvolvedEmployees;
-
-                activity()
-                    ->by(Auth::user())
-                    ->on($task)
-                    ->withChanges([
-                        'attributes' => $attributes,
-                        'old' => $old,
-                    ])
-                    ->event('updatedInvolvedEmployees')
-                    ->log('updatedInvolvedEmployees');
-
-                $task->touch();
-            }
-        } else {
-            $touched = $task->involvedEmployees()->detach();
-
-            if($touched > 0) {
-                $attributes = [];
-                $attributes['involved_ids'] = [];
-
-                $old = [];
-                $old['involved_ids'] = $oldInvolvedEmployees;
-
-                activity()
-                    ->by(Auth::user())
-                    ->on($task)
-                    ->withChanges([
-                        'attributes' => $attributes,
-                        'old' => $old,
-                    ])
-                    ->event('updatedInvolvedEmployees')
-                    ->log('updatedInvolvedEmployees');
-
-                $task->touch();
-            }
-        }
+        $task->syncInvolvedEmployees($request->input('involved_ids'));
 
         if ($request->remove_attachments) {
             $task->deleteAttachments($request->remove_attachments);
@@ -388,6 +375,57 @@ class TaskController extends Controller
         }
 
         return redirect()->route('tasks.show', $task)->with('success', 'Die Aufgabe wurde erfolgreich bearbeitet.');
+    }
+
+    /**
+     * Change a single task field from the detail page without the full edit form.
+     * Mirrors update(): status dates, involved employees, activity batching and the
+     * updated notification all behave the same way.
+     */
+    public function quickUpdate(TaskQuickUpdateRequest $request, Task $task): JsonResponse
+    {
+        $validatedData = $request->validated();
+        $field = array_key_first($validatedData);
+
+        $activityIdBeforeUpdate = Activity::max('id') ?? 0;
+
+        if ($field === 'involved_ids') {
+            $changed = $task->syncInvolvedEmployees($validatedData['involved_ids']);
+        } else {
+            $task->update($validatedData);
+            $changed = $task->wasChanged();
+
+            if ($field === 'status') {
+                $task->syncStatusDates();
+            }
+
+            if ($field === 'employee_id') {
+                // the new responsible employee can no longer also be an involved one
+                $task->syncInvolvedEmployees($task->involvedEmployees->pluck('person_id')->all());
+            }
+        }
+
+        Activity::where('subject_type', Task::class)
+            ->where('subject_id', $task->id)
+            ->where('id', '>', $activityIdBeforeUpdate)
+            ->update(['batch_uuid' => (string) Str::uuid()]);
+
+        $changed = $changed || $task->wasChanged();
+
+        if ($changed) {
+            event(new TaskUpdatedEvent($task, Auth::user(), Auth::user()->settings->notify_self));
+        }
+
+        return response()->json([
+            'field' => $field,
+            'value' => match ($field) {
+                'involved_ids' => $task->involvedEmployees()->pluck('employees.person_id')->all(),
+                'due_on', 'starts_on', 'ends_on' => $task->{$field}?->format('Y-m-d'),
+                default => $task->{$field},
+            },
+            'hint' => $field === 'due_on' ? $task->due_hint : null,
+            'changed' => $changed,
+        ]);
     }
 
     public function destroy(Request $request, Task $task): RedirectResponse

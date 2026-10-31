@@ -258,6 +258,24 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         }
     }
 
+    /**
+     * The "überfällig" / "bald fällig" note next to the due date, as text plus its stat strip colour class.
+     *
+     * @return array{text: string, class: string}|null
+     */
+    public function getDueHintAttribute(): ?array
+    {
+        if ($this->isOverdue()) {
+            return ['text' => 'überfällig', 'class' => 'q-statbar__urgent'];
+        }
+
+        if ($this->isDueSoon()) {
+            return ['text' => 'bald fällig', 'class' => 'q-statbar__soon'];
+        }
+
+        return null;
+    }
+
     public function isDueSoon()
     {
         $today = Carbon::now();
@@ -265,7 +283,7 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
         return $this->status !== 'finished'
             && $this->due_on
             && $this->due_on->gt($today)
-            && $this->due_on->diffInDays($today) < ApplicationSettings::get()->task_due_soon_days;
+            && $today->diffInDays($this->due_on) < ApplicationSettings::get()->task_due_soon_days;
     }
 
     public function isOverdue()
@@ -295,5 +313,67 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
             'finished' => 'erledigt',
             default => 'neu',
         };
+    }
+
+    /**
+     * Keep the end date in line with the status: finishing a task stamps its
+     * start (if still open) and end date, reopening it clears the end date.
+     */
+    public function syncStatusDates(): void
+    {
+        if ($this->status !== 'finished' && $this->ends_on) {
+            $this->ends_on = null;
+            $this->save();
+        }
+
+        if ($this->status === 'finished' && ! $this->ends_on) {
+            $this->starts_on = $this->starts_on ?? Carbon::now();
+            $this->ends_on = Carbon::now();
+            $this->save();
+        }
+    }
+
+    /**
+     * Replace the involved employees (the responsible employee is never listed as
+     * involved) and log the change. Returns whether anything changed.
+     *
+     * @param  array<int, int|string>|null  $employeeIds
+     */
+    public function syncInvolvedEmployees(?array $employeeIds): bool
+    {
+        $oldInvolvedEmployees = $this->involvedEmployees->pluck('person_id');
+
+        if (! empty($employeeIds)) {
+            $employees = Employee::find(array_values(array_filter(
+                $employeeIds,
+                fn ($employeeId) => (int) $employeeId !== (int) $this->employee_id
+            )));
+
+            $this->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
+            $newInvolvedEmployees = $employees->pluck('person_id');
+        } else {
+            $this->involvedEmployees()->detach();
+            $newInvolvedEmployees = [];
+        }
+
+        // compare the lists rather than trust sync()'s "updated" count, which databases report differently
+        $changed = $oldInvolvedEmployees->sort()->values()->all() !== collect($newInvolvedEmployees)->sort()->values()->all();
+
+        if ($changed) {
+            activity()
+                ->by(Auth::user())
+                ->on($this)
+                ->withChanges([
+                    'attributes' => ['involved_ids' => $newInvolvedEmployees],
+                    'old' => ['involved_ids' => $oldInvolvedEmployees],
+                ])
+                ->event('updatedInvolvedEmployees')
+                ->log('updatedInvolvedEmployees');
+
+            $this->touch();
+            $this->unsetRelation('involvedEmployees');
+        }
+
+        return $changed;
     }
 }

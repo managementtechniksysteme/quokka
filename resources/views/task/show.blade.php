@@ -85,19 +85,7 @@
                     <div class="q-eyebrow">Aufgabe</div>
                     <h1 class="q-title">{{ $task->name }}</h1>
                     <div class="q-meta">
-                        <span class="q-status q-status--{{ Str::slug($task->status) }}">{{ $task->status_label }}</span>
-
-                        @if($task->private)
-                            <span class="q-chip">
-                                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
-                                privat
-                            </span>
-                        @endif
-
-                        <span class="q-chip">
-                            <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#flag"></use></svg>
-                            Priorität {{ __($task->priority) }}
-                        </span>
+                        @include('task._meta_chips', ['task' => $task, 'quickEdit' => $quickEdit])
                     </div>
                 </div>
             </div>
@@ -166,17 +154,7 @@
              user: "we've kinda let that slip through the cracks"). Same
              .q-meta markup as the hidden desktop copy, just relocated. --}}
         <div class="q-meta d-flex d-md-none mt-2 pt-1 mb-3">
-            <span class="q-status q-status--{{ Str::slug($task->status) }}">{{ $task->status_label }}</span>
-            @if($task->private)
-                <span class="q-chip">
-                    <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#lock"></use></svg>
-                    privat
-                </span>
-            @endif
-            <span class="q-chip">
-                <svg class="icon-bs icon-12"><use href="{{ asset('svg/bootstrap-icons.svg') }}#flag"></use></svg>
-                Priorität {{ __($task->priority) }}
-            </span>
+            @include('task._meta_chips', ['task' => $task, 'quickEdit' => $quickEdit])
         </div>
 
         <div class="q-statbar mb-4">
@@ -189,25 +167,41 @@
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Fällig</span>
                 <span class="q-statbar__value">
-                    @if($task->due_on)
-                        {{ $task->due_on }}
-                        @if($task->isOverdue())
-                            <span class="q-statbar__sep">·</span> <span class="q-statbar__urgent">überfällig</span>
-                        @elseif($task->isDueSoon())
-                            <span class="q-statbar__sep">·</span> <span class="q-statbar__soon">bald fällig</span>
-                        @endif
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="due_on" value="{{ $task->due_on?->format('Y-m-d') }}" :clearable="true" empty_text="kein Datum" aria_label="Fälligkeitsdatum ändern" :hint="{{ json_encode($task->due_hint) }}"></quick-edit-date>
                     @else
-                        <span class="q-statbar__value--empty">kein Datum</span>
+                        @if($task->due_on)
+                            {{ $task->due_on }}
+                            @if($task->due_hint)
+                                <span class="q-statbar__sep">·</span> <span class="{{ $task->due_hint['class'] }}">{{ $task->due_hint['text'] }}</span>
+                            @endif
+                        @else
+                            <span class="q-statbar__value--empty">kein Datum</span>
+                        @endif
                     @endif
                 </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Zeitraum</span>
-                <span class="q-statbar__value">{{ $task->starts_on ?: 'offen' }} → {{ $task->ends_on ?: 'offen' }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="starts_on" value="{{ $task->starts_on?->format('Y-m-d') }}" :clearable="true" empty_text="offen" aria_label="Startdatum ändern"></quick-edit-date>
+                        →
+                        <quick-edit-date url="{{ route('tasks.quick-update', $task) }}" field="ends_on" value="{{ $task->ends_on?->format('Y-m-d') }}" empty_text="offen" aria_label="Enddatum ändern" :editable="{{ $task->status === 'finished' ? 'true' : 'false' }}"></quick-edit-date>
+                    @else
+                        {{ $task->starts_on ?: 'offen' }} → {{ $task->ends_on ?: 'offen' }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Verrechnung</span>
-                <span class="q-statbar__value">{{ __($task->billed_string) }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-chip url="{{ route('tasks.quick-update', $task) }}" field="billed" value="{{ $task->billed }}" :options="{{ json_encode($quickEdit['billed']) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Verrechnung ändern"></quick-edit-chip>
+                    @else
+                        {{ __($task->billed_string) }}
+                    @endif
+                </span>
             </div>
         </div>
 
@@ -272,27 +266,33 @@
             </div>
 
             <aside class="q-aside">
-                <div class="q-aside__group">
-                    <div class="q-aside__label">Verantwortlich</div>
-                    <div class="q-aside__person">
-                        @include('partials.employee_avatar', ['employee' => $task->responsibleEmployee, 'modifier' => 'q-avatar--sm'])
-                        <span class="q-aside__name text-truncate">{{ $task->responsibleEmployee->person->name }}</span>
-                    </div>
-                </div>
+                @if($quickEdit)
+                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="employee_id" label="Verantwortlich" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['responsible']->toJson() }}"></quick-edit-people>
 
-                <div class="q-aside__group">
-                    <div class="q-aside__label">Mitwirkende · {{ $task->involvedEmployees->count() }}</div>
-                    @forelse($task->involvedEmployees as $employee)
-                        <div class="q-aside__person q-aside__person--muted">
-                            @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
-                            <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
+                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="involved_ids" label="Mitwirkende" :multiple="true" :muted="true" :exclude="[{{ $task->employee_id }}]" empty_text="keine Mitwirkenden" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
+                @else
+                    <div class="q-aside__group">
+                        <div class="q-aside__label">Verantwortlich</div>
+                        <div class="q-aside__person">
+                            @include('partials.employee_avatar', ['employee' => $task->responsibleEmployee, 'modifier' => 'q-avatar--sm'])
+                            <span class="q-aside__name text-truncate">{{ $task->responsibleEmployee->person->name }}</span>
                         </div>
-                    @empty
-                        <div class="q-aside__person q-aside__person--muted">
-                            <span class="q-aside__name">keine Mitwirkenden</span>
-                        </div>
-                    @endforelse
-                </div>
+                    </div>
+
+                    <div class="q-aside__group">
+                        <div class="q-aside__label">Mitwirkende · {{ $task->involvedEmployees->count() }}</div>
+                        @forelse($task->involvedEmployees as $employee)
+                            <div class="q-aside__person q-aside__person--muted">
+                                @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
+                                <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
+                            </div>
+                        @empty
+                            <div class="q-aside__person q-aside__person--muted">
+                                <span class="q-aside__name">keine Mitwirkenden</span>
+                            </div>
+                        @endforelse
+                    </div>
+                @endif
             </aside>
         </div>
     </div>

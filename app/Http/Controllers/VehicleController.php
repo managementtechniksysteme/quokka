@@ -6,6 +6,7 @@ use App\Http\Requests\VehicleStoreRequest;
 use App\Http\Requests\VehicleUpdateRequest;
 use App\Models\Person;
 use App\Models\Vehicle;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +18,7 @@ class VehicleController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'quickUpdate' => 'update',
         ]);
     }
 
@@ -58,6 +60,22 @@ class VehicleController extends Controller
         $vehicle->load('logbook');
 
         return view('vehicle.show')->with('vehicle', $vehicle);
+    }
+
+    /**
+     * Switch a vehicle between private and company-wide from its detail page.
+     */
+    public function quickUpdate(Request $request, Vehicle $vehicle): JsonResponse
+    {
+        $validatedData = $request->validate(['private' => 'required|boolean']);
+
+        $vehicle->update($validatedData);
+
+        return response()->json([
+            'field' => 'private',
+            'value' => $vehicle->private,
+            'changed' => $vehicle->wasChanged(),
+        ]);
     }
 
     public function edit(Vehicle $vehicle)

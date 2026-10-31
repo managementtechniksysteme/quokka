@@ -221,7 +221,13 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $additionsReport->services_provided_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('additions-reports.quick-update', $additionsReport) }}" field="date" value="{{ $additionsReport->services_provided_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $additionsReport->services_provided_on }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Regiestunden</span>
@@ -229,17 +235,23 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>
-                <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                    <svg class="icon-bs icon-16">
-                        @switch($additionsReport->weather)
-                            @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
-                            @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
-                            @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
-                            @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
-                        @endswitch
-                    </svg>
-                    {{ __($additionsReport->weather) }} ({{ $additionsReport->minimum_temperature }}@if($additionsReport->minimum_temperature !== $additionsReport->maximum_temperature) bis {{ $additionsReport->maximum_temperature }}@endif °C)
-                </span>
+                @if($quickEdit)
+                    <span class="q-statbar__value">
+                        <quick-edit-chip url="{{ route('additions-reports.quick-update', $additionsReport) }}" field="weather" value="{{ $additionsReport->weather }}" :options="{{ json_encode($quickEdit['weather']) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Wetter ändern" suffix=" ({{ $additionsReport->temperature_range_string }})"></quick-edit-chip>
+                    </span>
+                @else
+                    <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                        <svg class="icon-bs icon-16">
+                            @switch($additionsReport->weather)
+                                @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                                @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                                @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
+                            @endswitch
+                        </svg>
+                        {{ __($additionsReport->weather) }} ({{ $additionsReport->temperature_range_string }})
+                    </span>
+                @endif
             </div>
         </div>
 
@@ -328,30 +340,37 @@
             {{-- Beteiligte Personen --}}
             <div class="q-card q-card--quiet q-detail__people">
                 <div class="q-card__body">
-                    <div class="q-aside__group">
-                        <div class="q-aside__label">Personalstand · {{ $additionsReport->involvedEmployees->count() }}</div>
-                        @forelse($additionsReport->involvedEmployees as $employee)
-                            <div class="q-aside__person">
-                                @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
-                                <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
-                            </div>
-                        @empty
-                            <div class="q-aside__person q-aside__person--muted">
-                                <span class="q-aside__name">nicht angegeben</span>
-                            </div>
-                        @endforelse
-                    </div>
+                    @if($quickEdit)
+                        <quick-edit-people url="{{ route('additions-reports.quick-update', $additionsReport) }}" field="involved_ids" label="Personalstand" :multiple="true" :min="1" empty_text="nicht angegeben" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
 
-                    @if($additionsReport->presentPeople->count())
+                        <quick-edit-people url="{{ route('additions-reports.quick-update', $additionsReport) }}" field="present_ids" label="Anwesende Personen" :multiple="true" empty_text="niemand" :people="{{ $quickEdit['people']->toJson() }}" :current="{{ $quickEdit['present']->toJson() }}"></quick-edit-people>
+                    @else
                         <div class="q-aside__group">
-                            <div class="q-aside__label">Anwesende Personen · {{ $additionsReport->presentPeople->count() }}</div>
-                            @foreach($additionsReport->presentPeople as $person)
+                            <div class="q-aside__label">Personalstand · {{ $additionsReport->involvedEmployees->count() }}</div>
+                            @forelse($additionsReport->involvedEmployees as $employee)
                                 <div class="q-aside__person">
-                                    <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
-                                    <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
+                                    <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="q-aside__person q-aside__person--muted">
+                                    <span class="q-aside__name">nicht angegeben</span>
+                                </div>
+                            @endforelse
                         </div>
+
+                        @if($additionsReport->presentPeople->count())
+                            <div class="q-aside__group">
+                                <div class="q-aside__label">Anwesende Personen · {{ $additionsReport->presentPeople->count() }}</div>
+                                @foreach($additionsReport->presentPeople as $person)
+                                    <div class="q-aside__person">
+                                        <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
+                                        <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                     @endif
 
                     @if($additionsReport->other_visitors)

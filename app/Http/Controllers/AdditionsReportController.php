@@ -14,6 +14,8 @@ use App\Http\Requests\SingleEmailRequest;
 use App\Mail\AdditionsReportDownloadRequestMail;
 use App\Mail\AdditionsReportMail;
 use App\Mail\AdditionsReportSignatureRequestMail;
+use App\Http\Requests\ReportQuickUpdateRequest;
+use App\Traits\QuickEditsReports;
 use App\Models\AdditionsReport;
 use App\Models\ApplicationSettings;
 use App\Models\DownloadRequest;
@@ -21,6 +23,7 @@ use App\Models\Employee;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\SignatureRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -29,12 +32,15 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class AdditionsReportController extends Controller
 {
+    use QuickEditsReports;
+
     protected function resourceAbilityMap()
     {
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'quickUpdate' => 'update',
             'showEmailSignatureRequest' => 'emailSignatureRequest',
             'emailSignatureRequest' => 'emailSignatureRequest',
             'showEmailDownloadRequest' => 'emailDownloadRequest',
@@ -155,7 +161,8 @@ class AdditionsReportController extends Controller
 
         return view('additions_report.show')
             ->with(compact('additionsReport'))
-            ->with('signature', $additionsReport->signature());
+            ->with('signature', $additionsReport->signature())
+            ->with('quickEdit', $this->reportQuickEditData($additionsReport, true));
     }
 
     public function edit(AdditionsReport $additionsReport)
@@ -263,6 +270,14 @@ class AdditionsReportController extends Controller
                 ->route('additions-reports.show', $additionsReport)
                 ->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
         }
+    }
+
+    /**
+     * Change a single field from the detail page without the full edit form.
+     */
+    public function quickUpdate(ReportQuickUpdateRequest $request, AdditionsReport $additionsReport): JsonResponse
+    {
+        return $this->quickUpdateReport($request, $additionsReport, AdditionsReportUpdatedEvent::class, ['weather', 'involved_ids', 'present_ids', 'date'], 'services_provided_on', ['project_id']);
     }
 
     public function destroy(Request $request, AdditionsReport $additionsReport)

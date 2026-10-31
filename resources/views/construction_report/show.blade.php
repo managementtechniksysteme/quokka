@@ -221,21 +221,33 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Datum</span>
-                <span class="q-statbar__value">{{ $constructionReport->services_provided_on }}</span>
+                <span class="q-statbar__value">
+                    @if($quickEdit)
+                        <quick-edit-date url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="date" value="{{ $constructionReport->services_provided_on->format('Y-m-d') }}" aria_label="Datum ändern"></quick-edit-date>
+                    @else
+                        {{ $constructionReport->services_provided_on }}
+                    @endif
+                </span>
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>
-                <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                    <svg class="icon-bs icon-16">
-                        @switch($constructionReport->weather)
-                            @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
-                            @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
-                            @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
-                            @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
-                        @endswitch
-                    </svg>
-                    {{ __($constructionReport->weather) }} ({{ $constructionReport->minimum_temperature }}@if($constructionReport->minimum_temperature !== $constructionReport->maximum_temperature) bis {{ $constructionReport->maximum_temperature }}@endif °C)
-                </span>
+                @if($quickEdit)
+                    <span class="q-statbar__value">
+                        <quick-edit-chip url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="weather" value="{{ $constructionReport->weather }}" :options="{{ json_encode($quickEdit['weather']) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Wetter ändern" suffix=" ({{ $constructionReport->temperature_range_string }})"></quick-edit-chip>
+                    </span>
+                @else
+                    <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                        <svg class="icon-bs icon-16">
+                            @switch($constructionReport->weather)
+                                @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                                @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                                @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
+                            @endswitch
+                        </svg>
+                        {{ __($constructionReport->weather) }} ({{ $constructionReport->temperature_range_string }})
+                    </span>
+                @endif
             </div>
         </div>
 
@@ -324,30 +336,37 @@
             {{-- Beteiligte Personen --}}
             <div class="q-card q-card--quiet q-detail__people">
                 <div class="q-card__body">
-                    <div class="q-aside__group">
-                        <div class="q-aside__label">Personalstand · {{ $constructionReport->involvedEmployees->count() }}</div>
-                        @forelse($constructionReport->involvedEmployees as $employee)
-                            <div class="q-aside__person">
-                                @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
-                                <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
-                            </div>
-                        @empty
-                            <div class="q-aside__person q-aside__person--muted">
-                                <span class="q-aside__name">nicht angegeben</span>
-                            </div>
-                        @endforelse
-                    </div>
+                    @if($quickEdit)
+                        <quick-edit-people url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="involved_ids" label="Personalstand" :multiple="true" :min="1" empty_text="nicht angegeben" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
 
-                    @if($constructionReport->presentPeople->count())
+                        <quick-edit-people url="{{ route('construction-reports.quick-update', $constructionReport) }}" field="present_ids" label="Anwesende Personen" :multiple="true" empty_text="niemand" :people="{{ $quickEdit['people']->toJson() }}" :current="{{ $quickEdit['present']->toJson() }}"></quick-edit-people>
+                    @else
                         <div class="q-aside__group">
-                            <div class="q-aside__label">Anwesende Personen · {{ $constructionReport->presentPeople->count() }}</div>
-                            @foreach($constructionReport->presentPeople as $person)
+                            <div class="q-aside__label">Personalstand · {{ $constructionReport->involvedEmployees->count() }}</div>
+                            @forelse($constructionReport->involvedEmployees as $employee)
                                 <div class="q-aside__person">
-                                    <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
-                                    <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    @include('partials.employee_avatar', ['employee' => $employee, 'modifier' => 'q-avatar--sm'])
+                                    <span class="q-aside__name text-truncate">{{ $employee->person->name }}</span>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="q-aside__person q-aside__person--muted">
+                                    <span class="q-aside__name">nicht angegeben</span>
+                                </div>
+                            @endforelse
                         </div>
+
+                        @if($constructionReport->presentPeople->count())
+                            <div class="q-aside__group">
+                                <div class="q-aside__label">Anwesende Personen · {{ $constructionReport->presentPeople->count() }}</div>
+                                @foreach($constructionReport->presentPeople as $person)
+                                    <div class="q-aside__person">
+                                        <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
+                                        <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                     @endif
 
                     @if($constructionReport->other_visitors)

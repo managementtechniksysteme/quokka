@@ -24,7 +24,9 @@ use App\Models\Service;
 use App\Models\ServiceReport;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use ZsgsDesign\PDFConverter\Latex;
 
@@ -38,6 +40,7 @@ class ProjectController extends Controller
             'showDownload' => 'createPdf',
             'download' => 'createPdf',
             'downloadList' => 'downloadList',
+            'quickUpdate' => 'update',
         ]);
     }
 
@@ -414,6 +417,28 @@ class ProjectController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Switch the pre-execution phase on or off from the overview tab. An ended project can't be in it
+     * (the full form enforces the same), and the other project fields stay in the full form because
+     * they cascade (ending a project clears its billed costs; "in finances" is tied to them).
+     */
+    public function quickUpdate(Request $request, Project $project): JsonResponse
+    {
+        $validatedData = $request->validate(['is_pre_execution' => 'required|boolean']);
+
+        if ($validatedData['is_pre_execution'] && $project->ends_on !== null) {
+            throw ValidationException::withMessages(['is_pre_execution' => 'Ein beendetes Projekt kann nicht in der Vorphase sein.']);
+        }
+
+        $project->update($validatedData);
+
+        return response()->json([
+            'field' => 'is_pre_execution',
+            'value' => $project->is_pre_execution,
+            'changed' => $project->wasChanged(),
+        ]);
+    }
+
     public function destroy(Request $request, Project $project)
     {
         $redirect = $this->getConditionalRedirect($request->redirect, $project);

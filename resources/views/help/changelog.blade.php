@@ -18,6 +18,39 @@
 
         <div class="mt-2 mt-md-4">
     @markdown
+    ### v0.6.0-a945811 (31.10.2026)
+    * Viele Angaben können nun direkt auf der Detailseite geändert werden, ohne das Bearbeitungsformular zu öffnen.
+      Änderungen werden sofort gespeichert und lösen dieselben Benachrichtigungen aus wie beim regulären Bearbeiten.
+      Die Möglichkeit steht nur Personen zur Verfügung, die den jeweiligen Eintrag auch bearbeiten dürfen. Erkennbar
+      sind die Stellen an einem kleinen Pfeil, Stift oder Plus-Zeichen, am Desktop teils erst beim Darüberfahren mit
+      der Maus. Folgendes kann direkt geändert werden:
+      * Aufgaben: Status, Priorität, Sichtbarkeit (privat oder öffentlich), Verrechnung, Fälligkeit, Start und Ende,
+        verantwortliche Person und Mitwirkende.
+      * Regieberichte und Bautagesberichte: Datum, Wetter, Personalstand und anwesende Personen.
+      * Prüfberichte und Prüfberichte Durchflussmesseinrichtungen: Datum und Wetter.
+      * Aktenvermerke: Datum, nächster Termin, anwesende Personen und Verteiler.
+      * Projekte: die Vorphase (auf der Übersichtsseite).
+      * Fahrzeuge: privat oder öffentlich.
+    * Bedienung der direkten Änderungen: Auswahlwerte klappen am Desktop neben bzw. unter dem Wert auf und öffnen am
+      Smartphone als Auswahl am unteren Bildschirmrand. Datumsangaben werden in einem Kalender gewählt. Personen
+      werden über das Plus-Zeichen hinzugefügt und über das X (am Smartphone durch Antippen der Person) entfernt.
+      Eine einzelne Person, etwa die verantwortliche, wird durch Anklicken getauscht.
+    * Wird ein bereits unterschriebener Bericht auf diesem Weg geändert, wird er wie beim regulären Bearbeiten wieder
+      auf "neu" gesetzt und die Unterschrift sowie offene Anfragen werden verworfen.
+    * Auf der Startseite erinnert ein Hinweis in den letzten fünf Werktagen eines Monats daran, die
+      Stundenaufzeichnungen zu prüfen und die Abrechnung als PDF für die Buchhaltung abzulegen. Er enthält einen Link
+      zur Abrechnung und kann für den Rest des Tages ausgeblendet werden.
+    * Die Schnellfilter in Listen sind am Desktop nun mit demselben Filter-Symbol wie am Smartphone erreichbar.
+    * Auf der Detailseite einer Aufgabe sind Namen in Aktivitäten und Kommentaren am Desktop nun einheitlich
+      ausgerichtet.
+    * Am Smartphone zeigen die Kennzahlenleisten in Detailseiten nur noch die mittlere Trennlinie.
+    * Ein Fehler wurde behoben, durch den bei allen künftigen Aufgaben "bald fällig" angezeigt und gezählt wurde.
+      Dies gilt nun nur noch innerhalb der eingestellten Anzahl an Tagen vor der Fälligkeit.
+    * Ein Fehler wurde behoben, durch den die Überstunden auf der Startseite nur die 50% Überstunden und nicht die
+      100% Überstunden berücksichtigten.
+    @endmarkdown
+
+    @markdown
     ### v0.5.1-cdd0164 (27.07.2026)
     * Ein Fehler wurde behoben, bei dem die Schaltfläche zum Erstellen von Berichten aus der Abrechnung nicht
       reagierte.

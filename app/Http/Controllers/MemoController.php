@@ -6,6 +6,7 @@ use App\Events\MemoCreatedEvent;
 use App\Events\MemoUpdatedEvent;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\MemoCreateRequest;
+use App\Http\Requests\MemoQuickUpdateRequest;
 use App\Http\Requests\MemoStoreRequest;
 use App\Http\Requests\MemoUpdateRequest;
 use App\Mail\MemoMail;
@@ -13,6 +14,7 @@ use App\Models\Memo;
 use App\Models\Note;
 use App\Models\Person;
 use App\Models\Project;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +31,7 @@ class MemoController extends Controller
             'email' => 'email',
             'download' => 'createPdf',
             'publish' => 'update',
+            'quickUpdate' => 'update',
         ]);
     }
 
@@ -225,7 +228,84 @@ class MemoController extends Controller
             }])
             ->load('media');
 
-        return view('memo.show')->with(compact('memo'));
+        return view('memo.show')
+            ->with(compact('memo'))
+            ->with('quickEdit', $this->quickEditData($memo));
+    }
+
+    /**
+     * What the detail page's in-place people editors need, or null for a user who may not edit the memo.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function quickEditData(Memo $memo): ?array
+    {
+        if (Auth::user()->cannot('update', $memo)) {
+            return null;
+        }
+
+        $people = Person::order()->get();
+
+        return [
+            'people' => $people->values(),
+            'present' => $people->whereIn('id', $memo->presentPeople->pluck('id'))->values(),
+            'notified' => $people->whereIn('id', $memo->notifiedPeople->pluck('id'))->values(),
+            'recipientId' => $memo->person_id,
+        ];
+    }
+
+    /**
+     * Change one participant list or date from the detail page without the full edit form. Like update(),
+     * the recipient is never also on the distribution list, and a published memo notifies about the change.
+     */
+    public function quickUpdate(MemoQuickUpdateRequest $request, Memo $memo): JsonResponse
+    {
+        $validatedData = $request->validated();
+        $field = array_key_first($validatedData);
+
+        if (in_array($field, ['meeting_held_on', 'next_meeting_on'], true)) {
+            $memo->update($validatedData);
+            $changed = $memo->wasChanged();
+        } else {
+            if ($field === 'present_ids') {
+                $relation = $memo->presentPeople();
+                $pivotValues = ['person_type' => 'present'];
+                $ids = $validatedData['present_ids'];
+            } else {
+                $relation = $memo->notifiedPeople();
+                $pivotValues = ['person_type' => 'notified'];
+                $ids = array_values(array_filter($validatedData['notified_ids'], fn ($id) => (int) $id !== (int) $memo->person_id));
+            }
+
+            // compare the lists rather than trust sync()'s "updated" count, which databases report differently
+            $before = $relation->pluck('people.id')->sort()->values()->all();
+
+            if (! empty($ids)) {
+                $relation->syncWithPivotValues($ids, $pivotValues);
+            } else {
+                $relation->detach();
+            }
+
+            $changed = $before !== $relation->pluck('people.id')->sort()->values()->all();
+        }
+
+        if ($changed) {
+            $memo->touch();
+
+            if (! $memo->draft) {
+                event(new MemoUpdatedEvent($memo, Auth::user(), Auth::user()->settings->notify_self));
+            }
+        }
+
+        return response()->json([
+            'field' => $field,
+            'value' => match ($field) {
+                'meeting_held_on', 'next_meeting_on' => $memo->{$field}?->format('Y-m-d'),
+                'present_ids' => $memo->presentPeople()->pluck('people.id')->all(),
+                default => $memo->notifiedPeople()->pluck('people.id')->all(),
+            },
+            'changed' => $changed,
+        ]);
     }
 
     /**

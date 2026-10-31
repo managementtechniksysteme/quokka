@@ -355,6 +355,161 @@ test('updating multiple things in one save merges into a single activity feed en
     expect($feedActivities->first()->attribute_changes['attributes'])->toHaveKeys(['name', 'involved_ids']);
 });
 
+// quick update (single-field edits from the detail page)
+
+test('quick update changes the priority, billed state and visibility of a task', function () {
+    $user = taskUser(['tasks.update.responsible', 'tasks.create', 'tasks.create.private']);
+    $task = responsibleTask($user, ['priority' => 'low', 'billed' => 'no', 'private' => false]);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['priority' => 'high'])
+        ->assertOk()->assertJson(['field' => 'priority', 'value' => 'high', 'changed' => true]);
+    $this->patchJson(route('tasks.quick-update', $task), ['billed' => 'warranty'])
+        ->assertOk()->assertJson(['field' => 'billed', 'value' => 'warranty']);
+    $this->patchJson(route('tasks.quick-update', $task), ['private' => true])
+        ->assertOk()->assertJson(['field' => 'private', 'value' => true]);
+
+    expect($task->fresh())->priority->toBe('high')->billed->toBe('warranty')->private->toBeTrue();
+});
+
+test('quick update finishing a task stamps its dates and reopening it clears the end date', function () {
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user, ['status' => 'in progress', 'starts_on' => null, 'ends_on' => null]);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['status' => 'finished'])->assertOk();
+
+    expect($task->fresh())->status->toBe('finished')
+        ->starts_on->not->toBeNull()
+        ->ends_on->not->toBeNull();
+
+    $this->patchJson(route('tasks.quick-update', $task), ['status' => 'in progress'])->assertOk();
+
+    expect($task->fresh())->status->toBe('in progress')->ends_on->toBeNull();
+});
+
+test('quick update is forbidden without a matching update permission', function () {
+    $user = taskUser(['tasks.view.responsible']);
+    $task = responsibleTask($user, ['priority' => 'low']);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['priority' => 'high'])->assertForbidden();
+
+    expect($task->fresh()->priority)->toBe('low');
+});
+
+test('quick update rejects invalid values, unknown fields and several fields at once', function (array $payload) {
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user, ['priority' => 'low']);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), $payload)->assertUnprocessable();
+
+    expect($task->fresh()->priority)->toBe('low');
+})->with([
+    'invalid priority' => [['priority' => 'urgent']],
+    'invalid status' => [['status' => 'done']],
+    'unknown employee' => [['employee_id' => 999999]],
+    'unknown field' => [['name' => 'Renamed']],
+    'two fields' => [['priority' => 'high', 'billed' => 'yes']],
+    'no field' => [[]],
+]);
+
+test('quick update only allows the visibility the user may create', function () {
+    $user = taskUser(['tasks.update.responsible', 'tasks.create']);
+    $task = responsibleTask($user, ['private' => false]);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['private' => true])->assertUnprocessable();
+
+    expect($task->fresh()->private)->toBeFalse();
+});
+
+test('quick update changes the responsible employee and drops them from the involved employees', function () {
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user);
+    $newResponsible = Employee::factory()->create();
+    $stillInvolved = Employee::factory()->create();
+    $task->involvedEmployees()->attach([$newResponsible->person_id, $stillInvolved->person_id], ['employee_type' => 'involved']);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['employee_id' => $newResponsible->person_id])
+        ->assertOk();
+
+    $task = $task->fresh();
+
+    expect($task->employee_id)->toBe($newResponsible->person_id);
+    expect($task->involvedEmployees->pluck('person_id')->all())->toBe([$stillInvolved->person_id]);
+});
+
+test('quick update replaces the involved employees, never lists the responsible one and logs the change', function () {
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user);
+    $first = Employee::factory()->create();
+    $second = Employee::factory()->create();
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), [
+        'involved_ids' => [$first->person_id, $user->employee_id, $second->person_id],
+    ])->assertOk()->assertJson(['field' => 'involved_ids', 'changed' => true]);
+
+    expect($task->fresh()->involvedEmployees->pluck('person_id')->sort()->values()->all())
+        ->toBe(collect([$first->person_id, $second->person_id])->sort()->values()->all());
+
+    $activity = Activity::where('subject_type', Task::class)->where('subject_id', $task->id)
+        ->where('event', 'updatedInvolvedEmployees')->latest('id')->first();
+
+    expect($activity)->not->toBeNull();
+
+    $this->patchJson(route('tasks.quick-update', $task), ['involved_ids' => []])->assertOk();
+
+    expect($task->fresh()->involvedEmployees)->toHaveCount(0);
+});
+
+test('quick update fires the updated event only when something changed', function () {
+    Event::fake([TaskUpdatedEvent::class]);
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user, ['priority' => 'low']);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['priority' => 'low'])
+        ->assertOk()->assertJson(['changed' => false]);
+    Event::assertNotDispatched(TaskUpdatedEvent::class);
+
+    $this->patchJson(route('tasks.quick-update', $task), ['priority' => 'high'])->assertOk();
+    Event::assertDispatched(TaskUpdatedEvent::class, fn ($event) => $event->task->is($task));
+});
+
+test('show offers in-place editing only to users who may update the task', function () {
+    $editor = taskUser(['tasks.update.responsible', 'tasks.view.responsible']);
+    $viewer = taskUser(['tasks.view.responsible']);
+
+    $this->actingAs($editor)->get(route('tasks.show', responsibleTask($editor)))
+        ->assertSuccessful()
+        ->assertSee('<quick-edit-chip', false)
+        ->assertSee('<quick-edit-people', false);
+
+    $this->actingAs($viewer)->get(route('tasks.show', responsibleTask($viewer)))
+        ->assertSuccessful()
+        ->assertDontSee('<quick-edit-chip', false)
+        ->assertDontSee('<quick-edit-people', false);
+});
+
+test('show only offers the visibilities the user may create', function () {
+    $user = taskUser(['tasks.update.responsible', 'tasks.view.responsible', 'tasks.create']);
+
+    $response = $this->actingAs($user)->get(route('tasks.show', responsibleTask($user, ['private' => false])));
+
+    expect($response->viewData('quickEdit')['visibility'])->toHaveCount(1);
+    $response->assertDontSee('Sichtbarkeit ändern');
+});
+
+test('quick update merges the field change and the involved employees into one activity entry', function () {
+    $user = taskUser(['tasks.update.responsible']);
+    $task = responsibleTask($user);
+    $newResponsible = Employee::factory()->create();
+    $task->involvedEmployees()->attach($newResponsible->person_id, ['employee_type' => 'involved']);
+
+    $this->actingAs($user)->patchJson(route('tasks.quick-update', $task), ['employee_id' => $newResponsible->person_id])->assertOk();
+
+    $activities = Activity::where('subject_type', Task::class)->where('subject_id', $task->id)->get();
+
+    expect($activities->count())->toBeGreaterThanOrEqual(2);
+    expect($activities->pluck('batch_uuid')->unique())->toHaveCount(1);
+});
+
 // email
 
 test('email sends the task mail', function () {

@@ -310,3 +310,55 @@ test('impersonate is forbidden without impersonate permission', function () {
 
     $response->assertForbidden();
 });
+
+// mtd_overtime
+
+function configureOvertimeServices(?\App\Models\WageService $overtime50, ?\App\Models\WageService $overtime100): void
+{
+    ApplicationSettings::get()->update([
+        'overtime_50_service_id' => $overtime50?->id,
+        'overtime_100_service_id' => $overtime100?->id,
+    ]);
+    ApplicationSettings::refreshCache();
+}
+
+function logAccountingAmount(Employee $employee, \App\Models\WageService $service, float $amount): void
+{
+    \App\Models\Accounting::factory()->create([
+        'employee_id' => $employee->getKey(),
+        'service_id' => $service->id,
+        'service_provided_on' => now()->toDateString(),
+        'amount' => $amount,
+    ]);
+}
+
+test('mtd overtime adds the 100 percent overtime to the 50 percent overtime', function () {
+    $this->travelTo('2026-10-15 09:00:00');
+    $overtime50 = \App\Models\WageService::factory()->create();
+    $overtime100 = \App\Models\WageService::factory()->create();
+    configureOvertimeServices($overtime50, $overtime100);
+    $employee = User::factory()->create()->employee;
+    logAccountingAmount($employee, $overtime50, 2.5);
+    logAccountingAmount($employee, $overtime100, 1.5);
+
+    expect($employee->mtd_overtime_50)->toBe(2.5)
+        ->and($employee->mtd_overtime_100)->toBe(1.5)
+        ->and($employee->mtd_overtime)->toBe(4.0);
+});
+
+test('mtd overtime counts only the configured overtime service', function () {
+    $this->travelTo('2026-10-15 09:00:00');
+    $overtime100 = \App\Models\WageService::factory()->create();
+    configureOvertimeServices(null, $overtime100);
+    $employee = User::factory()->create()->employee;
+    logAccountingAmount($employee, $overtime100, 1.5);
+
+    expect($employee->mtd_overtime)->toBe(1.5);
+});
+
+test('mtd overtime is null when no overtime service is configured', function () {
+    configureOvertimeServices(null, null);
+    $employee = User::factory()->create()->employee;
+
+    expect($employee->mtd_overtime)->toBeNull();
+});

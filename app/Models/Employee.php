@@ -274,7 +274,7 @@ class Employee extends Model implements FiltersGlobalSearch
             return null;
         }
 
-        return $this->mtd_overtime_50 ?? 0 + $this->mtd_overtime_100 ?? 0;
+        return ($this->mtd_overtime_50 ?? 0) + ($this->mtd_overtime_100 ?? 0);
     }
 
     private function getMTDServiceSum(int|array $serviceIds)

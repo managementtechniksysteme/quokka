@@ -1,8 +1,8 @@
 <template>
-    <span class="q-quick-edit" :class="{ 'is-open': open, 'is-saving': saving }">
+    <span class="q-quick-edit" :class="{ 'is-open': open, 'is-saving': saving, 'q-quick-edit--below': placement === 'below' }">
         <component :is="editable ? 'button' : 'span'" class="q-quick-edit__chip" :class="[chip_class, current.class, { 'q-quick-edit__chip--static': !editable }]" :type="editable ? 'button' : null" :aria-label="editable ? aria_label : null" :aria-expanded="editable ? (open ? 'true' : 'false') : null" :disabled="editable ? saving : null" @click="toggle">
             <svg v-if="current.icon" class="icon-bs icon-12"><use :href="icon(current.icon)"></use></svg>
-            <span>{{ prefix }}{{ current.label }}</span>
+            <span>{{ prefix }}{{ current.label }}{{ suffix }}</span>
             <svg v-if="saved" class="icon-bs icon-12 q-quick-edit__saved"><use :href="icon('check-lg')"></use></svg>
             <svg v-else-if="editable" class="icon-bs icon-12 q-quick-edit__caret"><use :href="icon('chevron-down')"></use></svg>
         </component>
@@ -180,6 +180,17 @@
             prefix: {
                 type: String,
                 default: ''
+            },
+            // static text after the label, e.g. the temperature next to the weather
+            suffix: {
+                type: String,
+                default: ''
+            },
+            // 'beside': the choices unfold next to the chip; 'below': they open as a small menu under
+            // it, for chips in a stat strip where unfolding sideways would push the cell onto a new row
+            placement: {
+                type: String,
+                default: 'beside'
             },
             chip_class: {
                 type: String,

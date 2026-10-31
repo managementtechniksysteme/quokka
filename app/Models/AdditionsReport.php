@@ -292,4 +292,9 @@ class AdditionsReport extends Model implements FiltersGlobalSearch, HasMedia
     {
         return AdditionsReport::whereStatus('signed')->count();
     }
+
+    public function getTemperatureRangeStringAttribute(): string
+    {
+        return $this->minimum_temperature . ($this->minimum_temperature !== $this->maximum_temperature ? ' bis ' . $this->maximum_temperature : '') . ' °C';
+    }
 }

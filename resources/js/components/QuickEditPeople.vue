@@ -8,7 +8,7 @@
         </div>
 
         <template v-if="!editing">
-            <div v-for="person in shown" :key="person.id" class="q-aside__person" :class="{ 'q-aside__person--muted': multiple }">
+            <div v-for="person in shown" :key="person.id" class="q-aside__person" :class="{ 'q-aside__person--muted': muted }">
                 <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)">{{ person.avatar ? person.avatar.initials : '' }}</span>
                 <span class="q-aside__name text-truncate">{{ person.name }}</span>
             </div>
@@ -19,7 +19,7 @@
 
         <template v-else>
             <person-dropdown v-if="!multiple" :key="resetKey" :people="people" :current_person="shown[0] || null" @selected="saveSingle"></person-dropdown>
-            <people-selector v-else :key="resetKey" :people="people" :current_people="draftStart" @changed="draft = $event"></people-selector>
+            <people-selector v-else :key="resetKey" :people="people" :current_people="draftStart" :compact="true" @changed="draft = $event"></people-selector>
 
             <div class="q-quick-edit-people__actions">
                 <button v-if="multiple" type="button" class="btn btn-primary btn-sm text-white" :disabled="saving" @click="saveMultiple">Speichern</button>
@@ -186,6 +186,11 @@
             editable: {
                 type: Boolean,
                 default: true
+            },
+            // lighter names, for secondary people lists
+            muted: {
+                type: Boolean,
+                default: false
             },
             // reload after saving, when the change affects other parts of the page
             reload: {

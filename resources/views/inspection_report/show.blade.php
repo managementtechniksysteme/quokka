@@ -234,17 +234,23 @@
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Wetter</span>
-                <span class="q-statbar__value d-inline-flex align-items-center gap-2">
-                    <svg class="icon-bs icon-16">
-                        @switch($inspectionReport->weather)
-                            @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
-                            @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
-                            @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
-                            @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
-                        @endswitch
-                    </svg>
-                    {{ __($inspectionReport->weather) }}
-                </span>
+                @if($quickEdit)
+                    <span class="q-statbar__value">
+                        <quick-edit-chip url="{{ route('inspection-reports.quick-update', $inspectionReport) }}" field="weather" value="{{ $inspectionReport->weather }}" :options="{{ json_encode($quickEdit['weather']) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Wetter ändern"></quick-edit-chip>
+                    </span>
+                @else
+                    <span class="q-statbar__value d-inline-flex align-items-center gap-2">
+                        <svg class="icon-bs icon-16">
+                            @switch($inspectionReport->weather)
+                                @case('sunny')<use href="{{ asset('svg/bootstrap-icons.svg') }}#sun"></use>@break
+                                @case('cloudy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud"></use>@break
+                                @case('rainy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-rain"></use>@break
+                                @case('snowy')<use href="{{ asset('svg/bootstrap-icons.svg') }}#cloud-snow"></use>@break
+                            @endswitch
+                        </svg>
+                        {{ __($inspectionReport->weather) }}
+                    </span>
+                @endif
             </div>
             <div class="q-statbar__cell">
                 <span class="q-statbar__label">Anlagentyp</span>

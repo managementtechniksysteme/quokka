@@ -497,6 +497,18 @@ button.q-quick-edit__chip {
     &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
     &.is-selected { color: var(--q-accent); border: 1px solid var(--q-accent); background: var(--q-accent-tint); }
 }
+// placement="below": a small floating menu under the chip instead of unfolding sideways
+.q-quick-edit--below {
+    position: relative;
+    .q-quick-edit__options {
+        position: absolute; top: calc(100% + .3rem); left: 0; z-index: 20;
+        flex-direction: column; align-items: stretch; gap: .15rem; padding: .3rem;
+        background: var(--q-surface); border: 1px solid var(--q-border); border-radius: $q-radius-sm; box-shadow: var(--q-shadow);
+    }
+    .q-quick-edit__option { border: 0; border-radius: 6px; background: transparent; padding: .3rem .55rem; font-size: .78rem; }
+    .q-quick-edit__option:hover { background: var(--q-surface-2); }
+    .q-quick-edit__option.is-selected { background: var(--q-accent-tint); }
+}
 .q-quick-edit-options-enter-active,
 .q-quick-edit-options-leave-active { transition: max-width .25s ease, opacity .2s ease; max-width: 40rem; }
 .q-quick-edit-options-enter-from,
@@ -521,6 +533,14 @@ button.q-quick-edit__chip {
     &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
 }
 .q-quick-edit-people__actions { display: flex; gap: .5rem; margin-top: .6rem; }
+.q-quick-edit-people__remove {
+    display: inline-flex; margin-left: auto; padding: .25rem; border: 0; border-radius: 6px;
+    background: transparent; color: var(--q-faint); cursor: pointer;
+    -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent;
+    &:hover { color: var(--q-red); background: var(--q-red-bg); }
+    &:focus { outline: none; }
+    &:focus-visible { outline: 2px solid var(--q-accent); outline-offset: 1px; }
+}
 
 // Status chip — the single state signal. Keys are the ENGLISH slugs the models
 // store (Str::slug($model->status)); German only appears via __() for display.

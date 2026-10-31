@@ -16,12 +16,15 @@ use App\Mail\FlowMeterInspectionReportMail;
 use App\Mail\FlowMeterInspectionReportSignatureRequestMail;
 use App\Models\ApplicationSettings;
 use App\Models\DownloadRequest;
+use App\Http\Requests\ReportQuickUpdateRequest;
+use App\Traits\QuickEditsReports;
 use App\Models\FlowMeterInspectionReport;
 use App\Models\FlowMeterInspectionReportMeasurements;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\SignatureRequest;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +33,8 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class FlowMeterInspectionReportController extends Controller
 {
+    use QuickEditsReports;
+
     private $COMPARISON_MEASUREMENT_Q_PERCENTAGES= [20, 30, 50, 70, 100];
 
     protected function resourceAbilityMap()
@@ -38,6 +43,7 @@ class FlowMeterInspectionReportController extends Controller
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'quickUpdate' => 'update',
             'showEmailSignatureRequest' => 'emailSignatureRequest',
             'emailSignatureRequest' => 'emailSignatureRequest',
             'showEmailDownloadRequest' => 'emailDownloadRequest',
@@ -162,7 +168,8 @@ class FlowMeterInspectionReportController extends Controller
 
         return view('flow_meter_inspection_report.show')
             ->with(compact('flowMeterInspectionReport'))
-            ->with('signature', $flowMeterInspectionReport->signature());
+            ->with('signature', $flowMeterInspectionReport->signature())
+            ->with('quickEdit', $this->reportQuickEditData($flowMeterInspectionReport, false));
     }
 
     public function edit(FlowMeterInspectionReport $flowMeterInspectionReport)
@@ -237,6 +244,14 @@ class FlowMeterInspectionReportController extends Controller
                 ->route('flow-meter-inspection-reports.show', $flowMeterInspectionReport)
                 ->with('success', 'Der Prüfbericht wurde erfolgreich bearbeitet.');
         }
+    }
+
+    /**
+     * Change a single field from the detail page without the full edit form.
+     */
+    public function quickUpdate(ReportQuickUpdateRequest $request, FlowMeterInspectionReport $flowMeterInspectionReport): JsonResponse
+    {
+        return $this->quickUpdateReport($request, $flowMeterInspectionReport, FlowMeterInspectionReportUpdatedEvent::class, ['weather']);
     }
 
     public function destroy(Request $request, FlowMeterInspectionReport $flowMeterInspectionReport)

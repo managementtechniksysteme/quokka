@@ -113,6 +113,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/accounting/download', [AccountingController::class, 'download'])->name('accounting.download');
 
     Route::resource('additions-reports', AdditionsReportController::class);
+    Route::patch('/additions-reports/{additions_report}/quick-update', [AdditionsReportController::class, 'quickUpdate'])->name('additions-reports.quick-update');
     Route::get('/additions-reports/{additions_report}/download', [AdditionsReportController::class, 'download'])->name('additions-reports.download');
     Route::get('/additions-reports/{additions_report}/email', [AdditionsReportController::class, 'showEmail'])->name('additions-reports.email');
     Route::post('/additions-reports/{additions_report}/email', [AdditionsReportController::class, 'email']);
@@ -128,6 +129,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resource('companies', CompanyController::class);
 
     Route::resource('construction-reports', ConstructionReportController::class);
+    Route::patch('/construction-reports/{construction_report}/quick-update', [ConstructionReportController::class, 'quickUpdate'])->name('construction-reports.quick-update');
     Route::get('/construction-reports/{construction_report}/download', [ConstructionReportController::class, 'download'])->name('construction-reports.download');
     Route::get('/construction-reports/{construction_report}/email', [ConstructionReportController::class, 'showEmail'])->name('construction-reports.email');
     Route::post('/construction-reports/{construction_report}/email', [ConstructionReportController::class, 'email']);
@@ -175,6 +177,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('changelog', [ChangelogController::class, 'show'])->name('changelog.show');
 
     Route::resource('flow-meter-inspection-reports', FlowMeterInspectionReportController::class);
+    Route::patch('/flow-meter-inspection-reports/{flow_meter_inspection_report}/quick-update', [FlowMeterInspectionReportController::class, 'quickUpdate'])->name('flow-meter-inspection-reports.quick-update');
     Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/download', [FlowMeterInspectionReportController::class, 'download'])->name('flow-meter-inspection-reports.download');
     Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email', [FlowMeterInspectionReportController::class, 'showEmail'])->name('flow-meter-inspection-reports.email');
     Route::post('/flow-meter-inspection-reports/{flow_meter_inspection_report}/email', [FlowMeterInspectionReportController::class, 'email']);
@@ -187,6 +190,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/flow-meter-inspection-reports/{flow_meter_inspection_report}/finish', [FlowMeterInspectionReportController::class, 'finish'])->name('flow-meter-inspection-reports.finish');
 
     Route::resource('inspection-reports', InspectionReportController::class);
+    Route::patch('/inspection-reports/{inspection_report}/quick-update', [InspectionReportController::class, 'quickUpdate'])->name('inspection-reports.quick-update');
     Route::get('/inspection-reports/{inspection_report}/download', [InspectionReportController::class, 'download'])->name('inspection-reports.download');
     Route::get('/inspection-reports/{inspection_report}/email', [InspectionReportController::class, 'showEmail'])->name('inspection-reports.email');
     Route::post('/inspection-reports/{inspection_report}/email', [InspectionReportController::class, 'email']);

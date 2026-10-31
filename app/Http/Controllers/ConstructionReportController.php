@@ -15,12 +15,15 @@ use App\Mail\ConstructionReportDownloadRequestMail;
 use App\Mail\ConstructionReportMail;
 use App\Mail\ConstructionReportSignatureRequestMail;
 use App\Models\ApplicationSettings;
+use App\Http\Requests\ReportQuickUpdateRequest;
+use App\Traits\QuickEditsReports;
 use App\Models\ConstructionReport;
 use App\Models\DownloadRequest;
 use App\Models\Employee;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\SignatureRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -29,12 +32,15 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class ConstructionReportController extends Controller
 {
+    use QuickEditsReports;
+
     protected function resourceAbilityMap()
     {
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'quickUpdate' => 'update',
             'showEmailSignatureRequest' => 'emailSignatureRequest',
             'emailSignatureRequest' => 'emailSignatureRequest',
             'showEmailDownloadRequest' => 'emailDownloadRequest',
@@ -155,7 +161,8 @@ class ConstructionReportController extends Controller
 
         return view('construction_report.show')
             ->with(compact('constructionReport'))
-            ->with('signature', $constructionReport->signature());
+            ->with('signature', $constructionReport->signature())
+            ->with('quickEdit', $this->reportQuickEditData($constructionReport, true));
     }
 
     public function edit(ConstructionReport $constructionReport)
@@ -263,6 +270,14 @@ class ConstructionReportController extends Controller
                 ->route('construction-reports.show', $constructionReport)
                 ->with('success', 'Der Regiebericht wurde erfolgreich bearbeitet.');
         }
+    }
+
+    /**
+     * Change a single field from the detail page without the full edit form.
+     */
+    public function quickUpdate(ReportQuickUpdateRequest $request, ConstructionReport $constructionReport): JsonResponse
+    {
+        return $this->quickUpdateReport($request, $constructionReport, ConstructionReportUpdatedEvent::class, ['weather', 'involved_ids', 'present_ids']);
     }
 
     public function destroy(Request $request, ConstructionReport $constructionReport)

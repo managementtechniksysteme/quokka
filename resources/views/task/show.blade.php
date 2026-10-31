@@ -187,7 +187,7 @@
                 <span class="q-statbar__label">Verrechnung</span>
                 <span class="q-statbar__value">
                     @if($quickEdit)
-                        <quick-edit-chip url="{{ route('tasks.quick-update', $task) }}" field="billed" value="{{ $task->billed }}" :options="{{ json_encode($quickEdit['billed']) }}" chip_class="q-quick-edit__chip--plain" aria_label="Verrechnung ändern"></quick-edit-chip>
+                        <quick-edit-chip url="{{ route('tasks.quick-update', $task) }}" field="billed" value="{{ $task->billed }}" :options="{{ json_encode($quickEdit['billed']) }}" chip_class="q-quick-edit__chip--plain" placement="below" aria_label="Verrechnung ändern"></quick-edit-chip>
                     @else
                         {{ __($task->billed_string) }}
                     @endif
@@ -259,7 +259,7 @@
                 @if($quickEdit)
                     <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="employee_id" label="Verantwortlich" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['responsible']->toJson() }}"></quick-edit-people>
 
-                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="involved_ids" label="Mitwirkende" :multiple="true" empty_text="keine Mitwirkenden" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
+                    <quick-edit-people url="{{ route('tasks.quick-update', $task) }}" field="involved_ids" label="Mitwirkende" :multiple="true" :muted="true" empty_text="keine Mitwirkenden" :people="{{ $quickEdit['employees']->toJson() }}" :current="{{ $quickEdit['involved']->toJson() }}"></quick-edit-people>
                 @else
                     <div class="q-aside__group">
                         <div class="q-aside__label">Verantwortlich</div>

@@ -9,7 +9,16 @@
                 </div>
             </template>
         </v-select>
-        <div v-if="selected.length" class="container-fluid mt-2">
+        <div v-if="selected.length && compact" class="d-flex flex-column gap-2 mt-2">
+            <div class="q-aside__person" v-for="person in selected" :key="person.id">
+                <span class="q-avatar q-avatar--round q-avatar--sm" :class="avatarClass(person)" :style="avatarStyle(person)" v-if="person.avatar">{{ person.avatar.initials }}</span>
+                <span class="q-aside__name text-truncate">{{ person.name }}</span>
+                <button type="button" class="q-quick-edit-people__remove" :aria-label="person.name + ' entfernen'" @click="removeSelected(person)">
+                    <svg class="icon-bs icon-12"><use href="/svg/bootstrap-icons.svg#x-lg"></use></svg>
+                </button>
+            </div>
+        </div>
+        <div v-else-if="selected.length" class="container-fluid mt-2">
             <div class="row py-2 align-items-center hover-highlight" v-for="person in selected">
                 <input v-if="selected.length" type="hidden" :id="person.id" :name="inputname" :value="person.id" />
                 <div class="col d-flex align-items-center gap-2">
@@ -104,6 +113,11 @@
                 default() {
                     return [];
                 }
+            },
+            // one-line rows with an icon-only remove button, for narrow side panels (no form inputs)
+            compact: {
+                type: Boolean,
+                default: false
             }
         }
 

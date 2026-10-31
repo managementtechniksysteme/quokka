@@ -15,10 +15,13 @@ use App\Mail\InspectionReportDownloadRequestMail;
 use App\Mail\InspectionReportMail;
 use App\Mail\InspectionReportSignatureRequestMail;
 use App\Models\DownloadRequest;
+use App\Http\Requests\ReportQuickUpdateRequest;
+use App\Traits\QuickEditsReports;
 use App\Models\InspectionReport;
 use App\Models\Person;
 use App\Models\Project;
 use App\Models\SignatureRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -27,12 +30,15 @@ use ZsgsDesign\PDFConverter\Latex;
 
 class InspectionReportController extends Controller
 {
+    use QuickEditsReports;
+
     protected function resourceAbilityMap()
     {
         return array_merge(parent::resourceAbilityMap(), [
             'showEmail' => 'email',
             'email' => 'email',
             'download' => 'createPdf',
+            'quickUpdate' => 'update',
             'showEmailSignatureRequest' => 'emailSignatureRequest',
             'emailSignatureRequest' => 'emailSignatureRequest',
             'showEmailDownloadRequest' => 'emailDownloadRequest',
@@ -145,7 +151,8 @@ class InspectionReportController extends Controller
 
         return view('inspection_report.show')
             ->with(compact('inspectionReport'))
-            ->with('signature', $inspectionReport->signature());
+            ->with('signature', $inspectionReport->signature())
+            ->with('quickEdit', $this->reportQuickEditData($inspectionReport, false));
     }
 
     public function edit(InspectionReport $inspectionReport)
@@ -205,6 +212,14 @@ class InspectionReportController extends Controller
                 ->route('inspection-reports.show', $inspectionReport)
                 ->with('success', 'Der Prüfbericht wurde erfolgreich bearbeitet.');
         }
+    }
+
+    /**
+     * Change a single field from the detail page without the full edit form.
+     */
+    public function quickUpdate(ReportQuickUpdateRequest $request, InspectionReport $inspectionReport): JsonResponse
+    {
+        return $this->quickUpdateReport($request, $inspectionReport, InspectionReportUpdatedEvent::class, ['weather']);
     }
 
     public function destroy(Request $request, InspectionReport $inspectionReport)

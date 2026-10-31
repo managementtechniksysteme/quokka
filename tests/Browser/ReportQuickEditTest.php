@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\AdditionsReport;
 use App\Models\Employee;
 use App\Models\InspectionReport;
+use App\Models\Memo;
 use App\Models\Person;
 use App\Models\User;
 
@@ -73,4 +74,30 @@ test('the last involved employee of a report cannot be removed', function () {
     $page->assertPresent(".q-detail__people button[aria-label=\"{$employee->person->name} entfernen\"][disabled]");
 
     expect($report->fresh()->involvedEmployees)->toHaveCount(1);
+});
+
+test('the people of a memo are added with the plus and removed with the x', function () {
+    $user = User::factory()->create();
+    grantPermission($user, 'memos.view.sender');
+    grantPermission($user, 'memos.update.sender');
+    $memo = Memo::factory()->create(['employee_id' => $user->employee_id, 'draft' => false]);
+    $visitor = Person::factory()->create();
+
+    $this->actingAs($user);
+
+    $page = visit(route('memos.show', $memo))->on()->desktop();
+
+    $page->click('.q-detail__people button[aria-label="Verteiler: Person hinzufügen"]')
+        ->click(".q-detail__people .vs__dropdown-option:has-text(\"{$visitor->name}\")")
+        ->wait(0.8)
+        ->assertSeeIn('.q-detail__people', $visitor->name);
+
+    expect($memo->fresh()->notifiedPeople->pluck('id')->all())->toBe([$visitor->id]);
+
+    $page->hover(".q-detail__people .q-quick-edit-people__row:has-text(\"{$visitor->name}\")")
+        ->click(".q-detail__people button[aria-label=\"{$visitor->name} entfernen\"]")
+        ->wait(0.8)
+        ->assertDontSeeIn('.q-detail__people', $visitor->name);
+
+    expect($memo->fresh()->notifiedPeople)->toHaveCount(0);
 });

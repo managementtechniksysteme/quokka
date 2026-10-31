@@ -331,13 +331,15 @@ class Task extends Model implements FiltersGlobalSearch, HasMedia
                 fn ($employeeId) => (int) $employeeId !== (int) $this->employee_id
             )));
 
-            $touched = $this->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
-            $changed = $touched['attached'] || $touched['detached'] || $touched['updated'];
+            $this->involvedEmployees()->syncWithPivotValues($employees, ['employee_type' => 'involved']);
             $newInvolvedEmployees = $employees->pluck('person_id');
         } else {
-            $changed = $this->involvedEmployees()->detach() > 0;
+            $this->involvedEmployees()->detach();
             $newInvolvedEmployees = [];
         }
+
+        // compare the lists rather than trust sync()'s "updated" count, which databases report differently
+        $changed = $oldInvolvedEmployees->sort()->values()->all() !== collect($newInvolvedEmployees)->sort()->values()->all();
 
         if ($changed) {
             activity()

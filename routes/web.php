@@ -216,6 +216,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/memos/{memo}/email', [MemoController::class, 'showEmail'])->name('memos.email');
     Route::post('/memos/{memo}/email', [MemoController::class, 'email']);
     Route::get('/memos/{memo}/publish', [MemoController::class, 'publish'])->name('memos.publish');
+    Route::patch('/memos/{memo}/quick-update', [MemoController::class, 'quickUpdate'])->name('memos.quick-update');
 
     Route::get('/notes/list', [NoteController::class, 'downloadList'])->name('notes.download-list');
     Route::resource('notes', NoteController::class);

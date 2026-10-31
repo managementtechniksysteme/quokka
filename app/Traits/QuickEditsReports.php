@@ -64,14 +64,21 @@ trait QuickEditsReports
         if ($field === 'weather') {
             $report->update(['weather' => $validatedData['weather']]);
             $changed = $report->wasChanged();
-        } elseif ($field === 'involved_ids') {
-            $touched = $report->involvedEmployees()->syncWithPivotValues($validatedData['involved_ids'], ['employee_type' => 'involved']);
-            $changed = $touched['attached'] || $touched['detached'] || $touched['updated'];
-        } elseif (! empty($validatedData['present_ids'])) {
-            $touched = $report->presentPeople()->syncWithPivotValues($validatedData['present_ids'], ['person_type' => 'present']);
-            $changed = $touched['attached'] || $touched['detached'] || $touched['updated'];
         } else {
-            $changed = $report->presentPeople()->detach() > 0;
+            // compare the lists rather than trust sync()'s "updated" count, which databases report differently
+            [$relation, $idColumn, $pivotValues, $ids] = $field === 'involved_ids'
+                ? [$report->involvedEmployees(), 'employees.person_id', ['employee_type' => 'involved'], $validatedData['involved_ids']]
+                : [$report->presentPeople(), 'people.id', ['person_type' => 'present'], $validatedData['present_ids']];
+
+            $before = $relation->pluck($idColumn)->sort()->values()->all();
+
+            if (! empty($ids)) {
+                $relation->syncWithPivotValues($ids, $pivotValues);
+            } else {
+                $relation->detach();
+            }
+
+            $changed = $before !== $relation->pluck($idColumn)->sort()->values()->all();
         }
 
         if ($changed) {

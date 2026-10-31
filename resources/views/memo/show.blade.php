@@ -240,33 +240,39 @@
             {{-- Beteiligte Personen --}}
             <div class="q-card q-card--quiet q-detail__people">
                 <div class="q-card__body">
-                    <div class="q-aside__group">
-                        <div class="q-aside__label">Anwesende Personen · {{ $memo->presentPeople->count() }}</div>
-                            @forelse($memo->presentPeople as $person)
-                                <div class="q-aside__person">
-                                    <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
-                                    <span class="q-aside__name text-truncate">{{ $person->name }}</span>
-                                </div>
-                            @empty
-                                <div class="q-aside__person q-aside__person--muted">
-                                    <span class="q-aside__name">nicht angegeben</span>
-                                </div>
-                            @endforelse
-                        </div>
+                    @if($quickEdit)
+                        <quick-edit-people url="{{ route('memos.quick-update', $memo) }}" field="present_ids" label="Anwesende Personen" :multiple="true" empty_text="nicht angegeben" :people="{{ $quickEdit['people']->toJson() }}" :current="{{ $quickEdit['present']->toJson() }}"></quick-edit-people>
 
+                        <quick-edit-people url="{{ route('memos.quick-update', $memo) }}" field="notified_ids" label="Verteiler" :multiple="true" empty_text="nicht angegeben" :people="{{ $quickEdit['people']->toJson() }}" :current="{{ $quickEdit['notified']->toJson() }}" :exclude="{{ json_encode(array_values(array_filter([$quickEdit['recipientId']]))) }}"></quick-edit-people>
+                    @else
                         <div class="q-aside__group">
-                            <div class="q-aside__label">Verteiler · {{ $memo->notifiedPeople->count() }}</div>
-                            @forelse($memo->notifiedPeople as $person)
-                                <div class="q-aside__person">
-                                    <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
-                                    <span class="q-aside__name text-truncate">{{ $person->name }}</span>
-                                </div>
-                            @empty
-                                <div class="q-aside__person q-aside__person--muted">
-                                    <span class="q-aside__name">nicht angegeben</span>
-                                </div>
-                            @endforelse
-                        </div>
+                            <div class="q-aside__label">Anwesende Personen · {{ $memo->presentPeople->count() }}</div>
+                                @forelse($memo->presentPeople as $person)
+                                    <div class="q-aside__person">
+                                        <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
+                                        <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    </div>
+                                @empty
+                                    <div class="q-aside__person q-aside__person--muted">
+                                        <span class="q-aside__name">nicht angegeben</span>
+                                    </div>
+                                @endforelse
+                            </div>
+
+                            <div class="q-aside__group">
+                                <div class="q-aside__label">Verteiler · {{ $memo->notifiedPeople->count() }}</div>
+                                @forelse($memo->notifiedPeople as $person)
+                                    <div class="q-aside__person">
+                                        <span class="q-avatar q-avatar--round q-avatar--sm q-avatar--{{ $person->avatar_colour }}">{{ $person->initials }}</span>
+                                        <span class="q-aside__name text-truncate">{{ $person->name }}</span>
+                                    </div>
+                                @empty
+                                    <div class="q-aside__person q-aside__person--muted">
+                                        <span class="q-aside__name">nicht angegeben</span>
+                                    </div>
+                                @endforelse
+                            </div>
+                    @endif
                     </div>
                 </div>
         </div>

@@ -194,3 +194,15 @@ test('show offers participant editing on reports that have participants', functi
     $this->actingAs($editor)->get(route("{$slug}.show", ownReport($modelClass, $editor)))
         ->assertSee('<quick-edit-people', false);
 })->with('reports with participants');
+
+test('quick update with the same participants does not notify or unsign', function (string $slug, string $modelClass) {
+    $user = reportEditor($slug);
+    $report = $modelClass::factory()->withInvolvedEmployees(1)->withPresentPeople(1)->create(['employee_id' => $user->employee_id, 'status' => 'signed']);
+
+    $this->actingAs($user)->patchJson(route("{$slug}.quick-update", $report), ['involved_ids' => $report->involvedEmployees->pluck('person_id')->all()])
+        ->assertOk()->assertJson(['changed' => false]);
+    $this->patchJson(route("{$slug}.quick-update", $report), ['present_ids' => $report->presentPeople->pluck('id')->all()])
+        ->assertOk()->assertJson(['changed' => false]);
+
+    expect($report->fresh()->status)->toBe('signed');
+})->with('reports with participants');

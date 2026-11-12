@@ -108,6 +108,34 @@ test('create form prefills from logbook entries', function () {
     $response->assertViewHas('currentProject', fn ($currentProject) => $currentProject->is($project));
 });
 
+// Regression: the services selector receives these dates as JSON and posts
+// them back from hidden inputs, so a timestamp-serialized summer-time date
+// came back a day early once DST had ended.
+test('create form passes prefilled service dates as plain calendar dates', function () {
+    $user = serviceReportUser(['service-reports.create']);
+    $accounting = \App\Models\Accounting::factory()->create([
+        'employee_id' => $user->employee_id,
+        'service_id' => \App\Models\WageService::factory()->create(['unit' => 'h'])->id,
+        'service_provided_on' => '2026-10-19',
+    ]);
+
+    $response = $this->actingAs($user)->get(route('service-reports.create', ['accounting' => [$accounting->id]]));
+
+    $response->assertSuccessful();
+    $response->assertViewHas('currentServices', fn ($currentServices) => json_decode($currentServices->toJson(), true)[0]['provided_on'] === '2026-10-19');
+});
+
+test('edit form passes service dates as plain calendar dates', function () {
+    $user = serviceReportUser(['service-reports.update.own']);
+    $report = \App\Models\ServiceReport::factory()->create(['employee_id' => $user->employee_id]);
+    $report->services()->create(['provided_on' => '2026-10-19', 'hours' => 2, 'kilometres' => 0]);
+
+    $response = $this->actingAs($user)->get(route('service-reports.edit', $report));
+
+    $response->assertSuccessful();
+    $response->assertViewHas('currentServices', fn ($currentServices) => json_decode($currentServices, true)[0]['provided_on'] === '2026-10-19');
+});
+
 test('store creates a service report for the authenticated employee', function () {
     Event::fake([ServiceReportCreatedEvent::class]);
     $user = serviceReportUser(['service-reports.create']);

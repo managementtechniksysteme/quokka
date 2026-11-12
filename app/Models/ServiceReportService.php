@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\CalendarDate;
 use App\Traits\OrdersResults;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ class ServiceReportService extends Model
     protected function casts(): array
     {
         return [
-        'provided_on' => 'date',
+        'provided_on' => CalendarDate::class,
         'hours' => 'double',
         'kilometres' => 'int',
     ];

@@ -69,6 +69,23 @@ test('ajax index succeeds for a view.own-only user with only_own set', function 
     expect(collect($response->json())->pluck('id'))->toEqual(collect([$own->id]));
 });
 
+// Regression: the date cast used to serialize as a UTC timestamp of local
+// midnight ("2026-10-18T22:00:00.000000Z" for a CEST Monday). The Vue table
+// shifted it back using the browser's *current* UTC offset, which is an hour
+// short for summer-time rows once DST has ended, so editing any field of such
+// a row saved it a day early (Monday turned into Sunday, reported 2026-11).
+test('ajax index serializes the service date as a plain calendar date', function () {
+    $user = accountingUser(['accounting.view.own']);
+    ownAccounting($user, ['service_provided_on' => '2026-10-19']);
+
+    $response = $this->actingAs($user)
+        ->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
+        ->getJson(route('accounting.index', ['only_own' => 1]));
+
+    $response->assertSuccessful()
+        ->assertJsonPath('0.service_provided_on', '2026-10-19');
+});
+
 // store
 
 test('store creates a material-type accounting entry', function () {

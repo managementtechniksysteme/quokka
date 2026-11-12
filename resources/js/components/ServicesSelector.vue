@@ -27,7 +27,7 @@
 
         <template v-if="services.length">
             <input v-for="(service, index) in services" :key="'sr_'+index"   type="hidden" :name="'services['+index+'][service_report_id]'" :value="service.service_report_id" />
-            <input v-for="(service, index) in services" :key="'date_'+index" type="hidden" :name="'services['+index+'][provided_on]'"      :value="service.provided_on.toISOString().substr(0, 10)" />
+            <input v-for="(service, index) in services" :key="'date_'+index" type="hidden" :name="'services['+index+'][provided_on]'"      :value="service.provided_on" />
             <input v-for="(service, index) in services" :key="'h_'+index"    type="hidden" :name="'services['+index+'][hours]'"             :value="service.hours" />
             <input v-for="(service, index) in services" :key="'km_'+index"   type="hidden" :name="'services['+index+'][kilometres]'"        :value="service.kilometres" />
 
@@ -51,8 +51,8 @@
                     </div>
                     <div v-for="(service, index) in services" :key="'row_'+index" class="q-lines__row">
                         <div class="q-lines__cell" @click="setEdit(service, 'provided_on')">
-                            <span v-if="service.edit !== 'provided_on'">{{ service.provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                            <input v-else type="date" class="form-control form-control-sm" :class="{'is-invalid': table_provided_on_invalid}" ref="table_input" :value="getDateStringForInputField(service.provided_on)" required @blur="changeServiceProvidedOn($event, service)" />
+                            <span v-if="service.edit !== 'provided_on'">{{ formatIsoDate(service.provided_on) }}</span>
+                            <input v-else type="date" class="form-control form-control-sm" :class="{'is-invalid': table_provided_on_invalid}" ref="table_input" :value="service.provided_on" required @blur="changeServiceProvidedOn($event, service)" />
                         </div>
                         <div class="q-lines__num q-lines__cell" @click="setEdit(service, 'hours')">
                             <span v-if="service.edit !== 'hours'">{{ service.hours }}</span>
@@ -82,13 +82,14 @@
 </template>
 
 <script>
+    import { formatIsoDate, isValidIsoDate, todayIsoDate } from '../dates';
+
     export default {
         name: "ServicesSelector",
 
         data() {
-            let today = new Date();
             return {
-                date: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                date: todayIsoDate(),
                 provided_on_invalid: false,
                 table_provided_on_invalid: false,
                 hours: null,
@@ -106,15 +107,11 @@
 
         mounted() {
             if(this.current_services) {
-                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-
                 this.current_services.forEach(service => {
-                    let date = Date.parse(service.provided_on);
-
                     this.services.push({
                         edit: null,
                         service_report_id: service.service_report_id,
-                        provided_on: new Date(date - userTimezoneOffset),
+                        provided_on: service.provided_on,
                         hours: service.hours,
                         kilometres: service.kilometres,
                     });
@@ -135,11 +132,11 @@
 
         methods: {
             addService() {
-                let date = new Date(this.date);
+                let date = this.date;
                 let hours = Number(this.hours);
                 let kilometres = Number(this.kilometres);
 
-                this.provided_on_invalid = isNaN(date.getTime());
+                this.provided_on_invalid = !isValidIsoDate(date);
                 this.hours_invalid = Number.isNaN(hours) || hours % 0.5 !== 0 || (hours !== 0 && hours < 0.5);
                 this.kilometres_invalid = !Number.isInteger(kilometres) || (kilometres !== 0 && kilometres < 1);
 
@@ -148,11 +145,7 @@
                     return;
                 }
 
-              let service = this.services.find(service =>
-                service.provided_on.getYear() === date.getYear() &&
-                service.provided_on.getMonth() === date.getMonth() &&
-                service.provided_on.getDate() === date.getDate()
-	            );
+                let service = this.services.find(service => service.provided_on === date);
 
                 if(service) {
                     service.hours += hours;
@@ -170,12 +163,11 @@
                     this.fetchOverlappingServices(
                         this.report_id,
                         this.project_id,
-                        this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                        this.services.map(service => service.provided_on)
                     );
                 }
 
-                let today = new Date();
-                this.date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
+                this.date = todayIsoDate();
                 this.provided_on_invalid = false;
                 this.hours = null;
                 this.hours_invalid = false;
@@ -190,7 +182,7 @@
                 this.fetchOverlappingServices(
                     this.report_id,
                     this.project_id,
-                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                    this.services.map(service => service.provided_on)
                 );
             },
 
@@ -201,9 +193,9 @@
             },
 
             changeServiceProvidedOn(event, changedService) {
-                let date = new Date(event.target.value);
+                let date = event.target.value;
 
-                if(isNaN(date.getTime())) {
+                if(!isValidIsoDate(date)) {
                     this.table_provided_on_invalid = true;
                     return;
                 }
@@ -217,7 +209,7 @@
                 this.fetchOverlappingServices(
                     this.report_id,
                     this.project_id,
-                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                    this.services.map(service => service.provided_on)
                 );
             },
 
@@ -272,21 +264,17 @@
             },
 
             sortArrayByDate(services) {
-                services.sort((a, b) => {
-                    return a.provided_on - b.provided_on;
-                });
+                services.sort((a, b) => a.provided_on < b.provided_on ? -1 : (a.provided_on > b.provided_on ? 1 : 0));
             },
 
-            getDateStringForInputField(date) {
-                return date.toISOString().substr(0, 10);
-            },
+            formatIsoDate,
 
             handleProjectChange(event) {
                 this.project_id = event.detail;
                 this.fetchOverlappingServices(
                     this.report_id,
                     this.project_id,
-                    this.services.map(service => this.getDateStringForInputField(service.provided_on))
+                    this.services.map(service => service.provided_on)
                 );
             },
 

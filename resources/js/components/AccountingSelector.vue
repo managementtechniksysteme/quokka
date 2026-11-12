@@ -210,8 +210,8 @@
                               </button>
                           </span>
                           <div class="q-dtable__cell" @click="setEdit(acc, 'service_provided_on')">
-                              <span v-if="acc.edit !== 'service_provided_on'">{{ acc.service_provided_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                              <input v-if="acc.edit === 'service_provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_on_invalid}" ref="table_input" id="table_service_provided_on" name="table_service_provided_on" :value="getDateStringForInputField(acc.service_provided_on)" placeholder="" required @blur="changeAccountingServiceProvidedOn($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedOn($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_on')" />
+                              <span v-if="acc.edit !== 'service_provided_on'">{{ formatIsoDate(acc.service_provided_on) }}</span>
+                              <input v-if="acc.edit === 'service_provided_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_service_provided_on_invalid}" ref="table_input" id="table_service_provided_on" name="table_service_provided_on" :value="acc.service_provided_on" placeholder="" required @blur="changeAccountingServiceProvidedOn($event, acc)" @keydown.enter.prevent="changeAccountingServiceProvidedOn($event, acc)" @keydown.tab.prevent="onTableInputTab($event, acc, 'service_provided_on')" />
                           </div>
                           <div class="q-dtable__cell d-flex align-items-center gap-1" v-if="acc.edit !== 'service_provided_started_at' && acc.edit !== 'service_provided_ended_at' && !acc.service_provided_started_at && !acc.service_provided_ended_at">
                               <span class="q-dtable__muted" @click="setEdit(acc, 'service_provided_started_at')">–</span>
@@ -293,7 +293,7 @@
                       @click="openMobileRowActions(acc)"
                   >
                       <div class="q-trow--card__top">
-                          <span class="q-trow--card__date">{{ acc.service_provided_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span>
+                          <span class="q-trow--card__date">{{ formatIsoDate(acc.service_provided_on) }}</span>
                           <span v-if="acc.action === 'store'" class="q-status q-status--created">Neu</span>
                           <span v-else-if="acc.action === 'update'" class="q-status q-status--edited">Bearb.</span>
                           <span v-else-if="acc.action === 'destroy'" class="q-status q-status--removed">Entfernt</span>
@@ -420,7 +420,7 @@
           <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileRowActionsSheet" aria-label="Aktionen" @hidden.bs.offcanvas="onMobileRowActionsHidden">
               <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
               <div class="offcanvas-body" v-if="mobileRowActions.target">
-                  <div class="q-sheet__label">{{ mobileRowActions.target.service_provided_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</div>
+                  <div class="q-sheet__label">{{ formatIsoDate(mobileRowActions.target.service_provided_on) }}</div>
 
                   <button v-if="canEditAccounting(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileEditFromRowActions">
                       <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg></span>
@@ -580,6 +580,7 @@
 
 <script>
     import breakpoint from '../mixins/breakpoint';
+    import { addDaysToIsoDate, formatIsoDate, isValidIsoDate, minutesToTime, timeToMinutes, todayIsoDate } from '../dates';
 
     const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
@@ -602,7 +603,6 @@
         mixins: [breakpoint],
 
         data() {
-            let today = new Date();
             return {
                 pagination_labels: PAGINATION_LABELS,
 
@@ -618,7 +618,7 @@
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
-                date: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                date: todayIsoDate(),
                 service_provided_on_invalid: false,
                 table_service_provided_on_invalid: false,
                 service_provided_started_at: null,
@@ -659,11 +659,7 @@
 
         mounted() {
             if(this.current_accounting) {
-                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-
                 this.current_accounting.forEach(acc => {
-                    let date = Date.parse(acc.service_provided_on);
-
                     let row = {
                         action: null,
                         action_old: null,
@@ -673,7 +669,7 @@
                         hover: false,
                         edit: null,
                         id: acc.id,
-                        service_provided_on: new Date(date - userTimezoneOffset),
+                        service_provided_on: acc.service_provided_on,
                         service_provided_started_at: acc.service_provided_started_at,
                         service_provided_ended_at: acc.service_provided_ended_at,
                         project_id: acc.project_id,
@@ -688,12 +684,7 @@
             }
 
             else if(this.show_days > 0) {
-                let today = new Date();
-                let date = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000);
-
-                date.setDate(date.getDate() - this.show_days)
-
-                this.filter_start = this.getDateStringForInputField(date);
+                this.filter_start = addDaysToIsoDate(todayIsoDate(), -this.show_days);
 
                 this.filterData();
             }
@@ -808,8 +799,6 @@
             },
 
             updateLocalAccounting(fetchedAccounting) {
-                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-
                 let newAccounting = fetchedAccounting.filter(
                     fetchedAccounting => !this.accounting.some(
                         localAccounting => localAccounting.id === fetchedAccounting.id
@@ -823,8 +812,6 @@
                 );
 
                 newAccounting.forEach(acc => {
-                    let date = Date.parse(acc.service_provided_on);
-
                     let row = {
                         action: null,
                         action_old: null,
@@ -834,7 +821,7 @@
                         hover: false,
                         edit: null,
                         id: acc.id,
-                        service_provided_on: new Date(date - userTimezoneOffset),
+                        service_provided_on: acc.service_provided_on,
                         service_provided_started_at: acc.service_provided_started_at,
                         service_provided_ended_at: acc.service_provided_ended_at,
                         project_id: acc.project_id,
@@ -1017,8 +1004,8 @@
 
             sortArrayByDateTime(accounting) {
                 accounting.sort((a, b) => {
-                    if(a.service_provided_on.getTime() !== b.service_provided_on.getTime()) {
-                        return a.service_provided_on - b.service_provided_on;
+                    if(a.service_provided_on !== b.service_provided_on) {
+                        return a.service_provided_on < b.service_provided_on ? -1 : 1;
                     }
                     else if(a.service_provided_started_at !== b.service_provided_started_at) {
                         return a.service_provided_started_at < b.service_provided_started_at ? -1 : 1;
@@ -1118,10 +1105,10 @@
             },
 
             addAccounting() {
-                let date = new Date(this.date);
+                let date = this.date;
                 let amount = this.amount === null ? 0 : Number(this.amount);
 
-                this.service_provided_on_invalid = isNaN(date.getTime());
+                this.service_provided_on_invalid = !isValidIsoDate(date);
                 this.service_provided_started_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
                     !this.isTwentyFourHourTimeFormat(this.service_provided_started_at);
                 this.service_provided_ended_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
@@ -1236,10 +1223,8 @@
             },
 
             _blankSheetDraft() {
-                let today = new Date();
-
                 return {
-                    service_provided_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                    service_provided_on: todayIsoDate(),
                     service_provided_started_at: null,
                     service_provided_ended_at: null,
                     project_id: null,
@@ -1265,7 +1250,7 @@
                     target: accounting,
                     errors: {},
                     draft: {
-                        service_provided_on: this.getDateStringForInputField(accounting.service_provided_on),
+                        service_provided_on: accounting.service_provided_on,
                         service_provided_started_at: accounting.service_provided_started_at,
                         service_provided_ended_at: accounting.service_provided_ended_at,
                         project_id: accounting.project_id,
@@ -1298,11 +1283,11 @@
                 let draft = this.sheet.draft;
                 let service = this.getService(draft.service_id);
                 let hourBased = service && service.type === 'wage' && service.unit === this.services_hour_unit;
-                let date = new Date(draft.service_provided_on);
+                let date = draft.service_provided_on;
                 let amount = draft.amount === null ? NaN : Number(draft.amount);
 
                 this.sheet.errors = {
-                    service_provided_on: isNaN(date.getTime()),
+                    service_provided_on: !isValidIsoDate(date),
                     service_provided_started_at: hourBased && !this.isTwentyFourHourTimeFormat(draft.service_provided_started_at),
                     service_provided_ended_at: hourBased && !this.isTwentyFourHourTimeFormat(draft.service_provided_ended_at),
                     project_id: !draft.project_id,
@@ -1373,7 +1358,7 @@
                 let chips = [];
 
                 if(this.filter_start || this.filter_end) {
-                    let format = value => new Date(value).toLocaleDateString('de', { day: '2-digit', month: '2-digit' });
+                    let format = value => formatIsoDate(value, false);
                     let label = this.filter_start && this.filter_end ? format(this.filter_start) + ' – ' + format(this.filter_end)
                         : this.filter_start ? 'ab ' + format(this.filter_start)
                         : 'bis ' + format(this.filter_end);
@@ -1488,9 +1473,9 @@
             },
 
             changeAccountingServiceProvidedOn(event, changedAccounting) {
-                let date = new Date(event.target.value);
+                let date = event.target.value;
 
-                if(isNaN(date.getTime())) {
+                if(!isValidIsoDate(date)) {
                     this.table_service_provided_on_invalid = true;
                     return;
                 }
@@ -1888,13 +1873,7 @@
                 return decimals <= maxDecimals;
             },
 
-            getDateStringForInputField(date) {
-                return date !== null ? date.toISOString().slice(0, 10) : null;
-            },
-
-            getTwentyFourHourTimeString(date) {
-                return date !== null ? ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) : null;
-            },
+            formatIsoDate,
 
             autofill(accounting = null) {
                 let start = accounting === null ? this.service_provided_started_at : accounting.service_provided_started_at;
@@ -1933,16 +1912,7 @@
 
             autofillAmount(accounting = null, start, end) {
                 let minAmountMinutes = this.min_amount * 60;
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
-
-                let startDate = new Date(date + ' ' + start);
-                let endDate = new Date(date + ' ' + end);
-
-                let timeStartMinutes = startDate.getHours() * 60 + startDate.getMinutes();
-                let timeEndMinutes = endDate.getHours() * 60 + endDate.getMinutes();
-
-                let differenceMinutes = timeEndMinutes - timeStartMinutes;
+                let differenceMinutes = timeToMinutes(end) - timeToMinutes(start);
 
                 if(differenceMinutes < minAmountMinutes) {
                     return;
@@ -1962,15 +1932,7 @@
             },
 
             autofillEnd(accounting = null, start, amount) {
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
-
-                let amountMilliseconds = amount * 60 * 60 * 1000;
-
-                let timeStart = new Date(date + ' ' + start);
-                let timeEnd = new Date(timeStart.getTime() + amountMilliseconds);
-
-                let timeEndString = this.getTwentyFourHourTimeString(timeEnd);
+                let timeEndString = minutesToTime(timeToMinutes(start) + amount * 60);
 
                 if(accounting === null) {
                     this.service_provided_ended_at = timeEndString;
@@ -1981,15 +1943,7 @@
             },
 
             autofillStart(accounting = null, end, amount) {
-                let today = new Date();
-                let date = this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000));
-
-                let amountMilliseconds = amount * 60 * 60 * 1000;
-
-                let timeEnd = new Date(date + ' ' + end);
-                let timeStart = new Date(timeEnd.getTime() - amountMilliseconds);
-
-                let timeStartString = this.getTwentyFourHourTimeString(timeStart);
+                let timeStartString = minutesToTime(timeToMinutes(end) - amount * 60);
 
                 if(accounting === null) {
                     this.service_provided_started_at = timeStartString;

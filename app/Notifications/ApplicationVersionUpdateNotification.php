@@ -14,12 +14,17 @@ use NotificationChannels\WebPush\WebPushMessage;
 class ApplicationVersionUpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    use TargetsNotification;
+    use TargetsNotification {
+        shouldSend as shouldSendByRoutingSettings;
+    }
 
     private string $version;
     private array $vibrationDuration = ['100'];
 
-    public function __construct()
+    /**
+     * @param  bool  $ignoreRoutingSettings  send via every channel, regardless of the users' notification settings
+     */
+    public function __construct(public bool $ignoreRoutingSettings = false)
     {
         $this->version = sprintf('v%s.%s.%s-%s', config('version.major'), config('version.minor'), config('version.patch'), config('version.commit'));
     }
@@ -37,6 +42,11 @@ class ApplicationVersionUpdateNotification extends Notification implements Shoul
             MailChannel::class,
             WebPushChannel::class,
         ];
+    }
+
+    public function shouldSend(mixed $notifiable, string $channel): bool
+    {
+        return $this->ignoreRoutingSettings || $this->shouldSendByRoutingSettings($notifiable, $channel);
     }
 
     public function toDatabase($notifiable)

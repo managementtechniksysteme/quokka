@@ -14,7 +14,8 @@ class SendApplicationVersionUpdateNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:version';
+    protected $signature = 'notify:version
+                            {--force : Send via email and push to every user, regardless of their notification settings}';
 
     /**
      * The console command description.
@@ -40,8 +41,12 @@ class SendApplicationVersionUpdateNotification extends Command
      */
     public function handle()
     {
-        $this->info('Sending application version notification to all users!');
+        $force = (bool) $this->option('force');
 
-        Notification::send(User::all(), new ApplicationVersionUpdateNotification());
+        $this->info($force
+            ? 'Sending application version notification to all users via all channels, regardless of their settings!'
+            : 'Sending application version notification to all users!');
+
+        Notification::send(User::all(), new ApplicationVersionUpdateNotification($force));
     }
 }

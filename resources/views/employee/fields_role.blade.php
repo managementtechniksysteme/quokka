@@ -15,7 +15,7 @@
         <div>
             <label for="role_id">Rolle</label>
             <role-dropdown :roles="{{ $roles }}" :current_role="{{ $currentRole ?? 'null' }}" v-cloak></role-dropdown>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback @error('role_id') d-block @enderror">
                 @error('role_id')
                     {{ $message }}
                 @enderror

@@ -31,6 +31,10 @@
     @php $currentHolidayService = WageService::find(old('holiday_service_id')); @endphp
 @endif
 
+@if (old('nursing_holiday_service_id'))
+    @php $currentNursingHolidayService = WageService::find(old('nursing_holiday_service_id')); @endphp
+@endif
+
 @if (old('accounting_time_mandatory_unit'))
     @php $currentServicesHourUnit = old('services_hour_unit'); @endphp
 @endif
@@ -152,7 +156,7 @@
             <div class="q-form-section__head">
                 Urlaub
                 <div class="q-form-section__desc">
-                    Einstellungen zur automatischen Anpassung sowie Gutschreibung von Urlaub basierend auf Abrechnungen.
+                    Einstellungen zur automatischen Anpassung sowie Gutschreibung von Urlaub basierend auf Abrechnungen. Pflegeurlaub wird in Abrechnungsauswertungen gesondert ausgewiesen.
                 </div>
             </div>
             <div class="q-form-section__body d-flex flex-column gap-3">
@@ -172,6 +176,16 @@
                             @error('holiday_yearly_allowance') {{ $message }}
                             @else Jährlich gutzuschreibende Urlaubsmenge muss mindestens 1 sein.
                             @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q-form__row q-form__row--2">
+                    <div>
+                        <label for="nursing_holiday_service_id">Pflegeurlaubsleistung</label>
+                        <service-dropdown inputname="nursing_holiday_service_id" :services="{{ $wageServices }}" :current_service="{{ $currentNursingHolidayService ?? 'null' }}" v-cloak></service-dropdown>
+                        <div class="invalid-feedback @error('nursing_holiday_service_id') d-block @enderror">
+                            @error('nursing_holiday_service_id') {{ $message }} @enderror
                         </div>
                     </div>
                 </div>

@@ -32,6 +32,7 @@ class ApplicationSettings extends Model
         'company_id',
         'holiday_service_id',
         'holiday_yearly_allowance',
+        'nursing_holiday_service_id',
         'currency_unit',
         'allowances_service_id',
         'overtime_50_service_id',
@@ -66,6 +67,11 @@ class ApplicationSettings extends Model
     public function holidayService()
     {
         return $this->belongsTo(WageService::class, 'holiday_service_id');
+    }
+
+    public function nursingHolidayService()
+    {
+        return $this->belongsTo(WageService::class, 'nursing_holiday_service_id');
     }
 
     public function allowancesService()

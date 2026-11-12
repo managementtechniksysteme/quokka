@@ -13,7 +13,7 @@ class AccountingResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'service_provided_on' => $this->service_provided_on,
+            'service_provided_on' => $this->service_provided_on?->toDateString(),
             'service_provided_started_at' => $this->service_provided_started_at,
             'service_provided_ended_at' => $this->service_provided_ended_at,
             'amount' => $this->amount,

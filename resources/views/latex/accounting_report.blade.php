@@ -69,7 +69,7 @@
 Es sind keine Abrechnungen passend dem Filter vorhanden.
 @endif
 @if($kilometre_costs > 0)
-\footnotesize{\textbf{Privatkilometer: }
+\footnotesize{\textbf{Privatkilometer: }}
 @if(count($private_kilometres) === 1)
 \footnotesize{{!! Latex::escape(Number::toLocal($private_kilometres[array_key_first($private_kilometres)])) !!} ({!! Latex::escape(Number::toLocal($private_kilometres[array_key_first($private_kilometres)] * $kilometre_costs)) . $currencyUnit !!})}
 @else
@@ -77,6 +77,20 @@ Es sind keine Abrechnungen passend dem Filter vorhanden.
 \footnotesize{{!! Latex::escape(Str::upper($username)) !!}: {!! Latex::escape(Number::toLocal($kilometres)) !!} ({!! Latex::escape(Number::toLocal($kilometres * $kilometre_costs)) . $currencyUnit !!}), }
 @endforeach
 \footnotesize{Summe: {!! Latex::escape(Number::toLocal(array_sum($private_kilometres))) !!} ({!! Latex::escape(Number::toLocal(array_sum($private_kilometres) * $kilometre_costs)) . $currencyUnit !!})}
+@endif
+@endif
+@if($nursingHolidayService)
+@if($kilometre_costs > 0)
+\\
+@endif
+\footnotesize{\textbf{Pflegeurlaub: }}
+@if(count($nursing_holidays) === 1)
+\footnotesize{{!! Latex::escape(Number::toLocal($nursing_holidays[array_key_first($nursing_holidays)]) . ' ' . $nursingHolidayService->unit) !!}}
+@else
+@foreach($nursing_holidays as $username => $amount)
+\footnotesize{{!! Latex::escape(Str::upper($username)) !!}: {!! Latex::escape(Number::toLocal($amount) . ' ' . $nursingHolidayService->unit) !!}, }
+@endforeach
+\footnotesize{Summe: {!! Latex::escape(Number::toLocal(array_sum($nursing_holidays)) . ' ' . $nursingHolidayService->unit) !!}}
 @endif
 @endif
 @if(count($employees) > 1)

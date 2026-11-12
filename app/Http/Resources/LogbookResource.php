@@ -12,7 +12,7 @@ class LogbookResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'driven_on' => $this->driven_on,
+            'driven_on' => $this->driven_on?->toDateString(),
             'start_kilometres' => $this->start_kilometres,
             'end_kilometres' => $this->end_kilometres,
             'driven_kilometres' => $this->driven_kilometres,

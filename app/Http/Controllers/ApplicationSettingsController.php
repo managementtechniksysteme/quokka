@@ -35,6 +35,7 @@ class ApplicationSettingsController extends Controller
                 $currentOvertime100Service = $applicationSettings->overtime100Service ?? null;
                 $currentTimeBalanceService = $applicationSettings->timeBalanceService ?? null;
                 $currentHolidayService = $applicationSettings->holidayService ?? null;
+                $currentNursingHolidayService = $applicationSettings->nursingHolidayService ?? null;
                 $wageServices = WageService::order()->get();
 
                 $wageServiceUnits = WageService::distinct('unit')->pluck('unit');
@@ -54,6 +55,7 @@ class ApplicationSettingsController extends Controller
                     ->with('currentOvertime100Service', $currentOvertime100Service)
                     ->with('currentTimeBalanceService', $currentTimeBalanceService)
                     ->with('currentHolidayService', $currentHolidayService)
+                    ->with('currentNursingHolidayService', $currentNursingHolidayService)
                     ->with('wageServices', $wageServices->toJson())
                     ->with('wageServiceUnits', $wageServiceUnits->toJson())
                     ->with('currentServicesHourUnit', $currentServicesHourUnit)
@@ -70,12 +72,17 @@ class ApplicationSettingsController extends Controller
 
         $settings = ApplicationSettings::firstOrCreate();
 
-        $settings->update($validatedData);
+        // service-dropdown submits nothing when cleared, so a missing service means "none"
+        $optionalServices = array_fill_keys([
+            'allowances_service_id',
+            'overtime_50_service_id',
+            'overtime_100_service_id',
+            'time_balance_service_id',
+            'holiday_service_id',
+            'nursing_holiday_service_id',
+        ], null);
 
-        if(!$request->filled('holiday_service_id')) {
-            $settings->holidayService()->disassociate();
-            $settings->save();
-        }
+        $settings->update(array_merge($optionalServices, $validatedData));
 
         ApplicationSettings::refreshCache();
 

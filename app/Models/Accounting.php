@@ -95,16 +95,20 @@ class Accounting extends Model
     }
 
     public static function getReport($params) {
-        $specialServiceIds = [
+        // unset services are filtered out: "NOT IN (…, NULL)" would match nothing
+        $specialServiceIds = array_filter([
             ApplicationSettings::get()->allowances_service_id,
             ApplicationSettings::get()->overtime_50_service_id,
             ApplicationSettings::get()->overtime_100_service_id,
             ApplicationSettings::get()->time_balance_service_id,
             ApplicationSettings::get()->holiday_service_id,
-        ];
+        ]);
 
+        // Pflegeurlaub is time off, but has no column of its own: the report
+        // shows it as a total below the table, see Employee::getNursingHolidays().
         $hourBasedServiceIds = WageService::whereUnit(ApplicationSettings::get()->services_hour_unit)
-            ->whereNotIn('id', $specialServiceIds)->select('id')->get()->pluck('id')->toArray();
+            ->whereNotIn('id', array_filter(array_merge($specialServiceIds, [ApplicationSettings::get()->nursing_holiday_service_id])))
+            ->select('id')->get()->pluck('id')->toArray();
 
         $users = User::select(['employee_id', 'username']);
 

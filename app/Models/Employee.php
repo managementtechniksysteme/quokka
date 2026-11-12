@@ -194,13 +194,15 @@ class Employee extends Model implements FiltersGlobalSearch
 
     public function getMTDHourlyBasedServicesAttribute()
     {
-        $specialServiceIds = [
+        // unset services are filtered out: "NOT IN (…, NULL)" would match nothing
+        $specialServiceIds = array_filter([
             ApplicationSettings::get()->allowances_service_id,
             ApplicationSettings::get()->overtime_50_service_id,
             ApplicationSettings::get()->overtime_100_service_id,
             ApplicationSettings::get()->time_balance_service_id,
             ApplicationSettings::get()->holiday_service_id,
-        ];
+            ApplicationSettings::get()->nursing_holiday_service_id,
+        ]);
 
         $hourBasedServiceIds = WageService::whereUnit(ApplicationSettings::get()->services_hour_unit)
             ->whereNotIn('id', $specialServiceIds)->select('id')->get()->pluck('id')->toArray();
@@ -559,6 +561,28 @@ class Employee extends Model implements FiltersGlobalSearch
                 $query->where('driven_on', '<=', $end);
             })
             ->sum('driven_kilometres');
+    }
+
+    /**
+     * Pflegeurlaub taken in the given period, in the nursing holiday service's unit.
+     */
+    public function getNursingHolidays(?Carbon $start, ?Carbon $end): float
+    {
+        $nursingHolidayServiceId = ApplicationSettings::get()->nursing_holiday_service_id;
+
+        if($nursingHolidayServiceId === null) {
+            return 0;
+        }
+
+        return (float)$this->accounting()
+            ->where('service_id', $nursingHolidayServiceId)
+            ->when($start, function ($query) use ($start) {
+                $query->where('service_provided_on', '>=', $start);
+            })
+            ->when($end, function ($query) use ($end) {
+                $query->where('service_provided_on', '<=', $end);
+            })
+            ->sum('amount');
     }
 
     public function getMTDPrivateKilometresAttribute()

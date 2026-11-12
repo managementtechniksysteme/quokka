@@ -562,13 +562,14 @@ class MetricsCalculator
     {
         // Overtime is real hours worked (logged as its own line item
         // alongside the base hours for the day, not a rate multiplier on
-        // top of them) so it counts here. Holiday/time-balance are time off
+        // top of them) so it counts here. Holiday/nursing holiday/time-balance are time off
         // rather than work, and allowances aren't hours at all — those stay
         // excluded (2026-07-30, user).
         $specialServiceIds = array_filter([
             ApplicationSettings::get()->allowances_service_id,
             ApplicationSettings::get()->time_balance_service_id,
             ApplicationSettings::get()->holiday_service_id,
+            ApplicationSettings::get()->nursing_holiday_service_id,
         ]);
 
         return WageService::whereUnit(ApplicationSettings::get()->services_hour_unit)

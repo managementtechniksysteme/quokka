@@ -128,6 +128,7 @@ class AccountingController extends Controller
         $service = isset($validatedData['service_id']) ? Service::find($validatedData['service_id']) : null;
         $allowancesService = ApplicationSettings::get()->allowancesService;
         $holidayService = ApplicationSettings::get()->holidayService;
+        $nursingHolidayService = ApplicationSettings::get()->nursingHolidayService;
         $currencyUnit = ApplicationSettings::get()->currency_unit;
         $kilometre_costs = ApplicationSettings::get()->kilometre_costs;
 
@@ -157,6 +158,16 @@ class AccountingController extends Controller
 
         ksort($private_kilometres);
 
+        $nursing_holidays = [];
+
+        if($nursingHolidayService) {
+            foreach ($employees as $employee) {
+                $nursing_holidays[$employee->user->username] = $employee->getNursingHolidays($start, $end);
+            }
+
+            ksort($nursing_holidays);
+        }
+
         return (new Latex())
             ->binPath('/usr/bin/pdflatex')
             ->untilAuxSettles()
@@ -169,6 +180,8 @@ class AccountingController extends Controller
                 'service' => $service,
                 'allowancesService' => $allowancesService,
                 'holidayService' => $holidayService,
+                'nursingHolidayService' => $nursingHolidayService,
+                'nursing_holidays' => $nursing_holidays,
                 'currencyUnit' => $currencyUnit,
                 'start' => $start,
                 'end' => $end

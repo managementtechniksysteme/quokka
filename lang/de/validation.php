@@ -207,6 +207,7 @@ return [
         'time_balance_service_id'         => 'Zeitausgleich Leistung',
         'holiday_service_id'              => 'Urlaubsleistung',
         'holiday_yearly_allowance'        => 'Jährliche gutgeschriebene Urlaubsmenge',
+        'nursing_holiday_service_id'      => 'Pflegeurlaubsleistung',
         'service_provided_on'             => 'Datum',
         'service_provided_started_at'     => 'Start',
         'service_provided_ended_at'       => 'Ende',

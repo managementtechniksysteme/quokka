@@ -107,3 +107,60 @@ test('update-general requires distinct service ids for the different wage servic
 
     $response->assertSessionHasErrors(['allowances_service_id', 'overtime_50_service_id']);
 });
+
+test('update-general stores the nursing holiday service and clears it when omitted', function () {
+    $user = applicationSettingsUser(['application-settings.update.general']);
+    $nursingHolidayService = WageService::factory()->create();
+
+    $this->actingAs($user)->post(
+        route('application-settings.update-general'),
+        validApplicationSettingsPayload(['nursing_holiday_service_id' => $nursingHolidayService->id])
+    )->assertSessionHasNoErrors();
+
+    expect(ApplicationSettings::get()->nursingHolidayService->is($nursingHolidayService))->toBeTrue();
+
+    $this->actingAs($user)->post(route('application-settings.update-general'), validApplicationSettingsPayload());
+
+    expect(ApplicationSettings::get()->nursing_holiday_service_id)->toBeNull();
+});
+
+test('update-general requires the nursing holiday service to differ from the holiday service', function () {
+    $user = applicationSettingsUser(['application-settings.update.general']);
+    $service = WageService::factory()->create();
+
+    $response = $this->actingAs($user)->post(
+        route('application-settings.update-general'),
+        validApplicationSettingsPayload([
+            'holiday_service_id' => $service->id,
+            'nursing_holiday_service_id' => $service->id,
+        ])
+    );
+
+    $response->assertSessionHasErrors(['holiday_service_id', 'nursing_holiday_service_id']);
+});
+
+// service-dropdown submits nothing once cleared, so only the holiday service
+// could ever be unset again; the other optional services stuck forever.
+test('update-general clears every optional service that is omitted', function (string $field) {
+    $user = applicationSettingsUser(['application-settings.update.general']);
+    $service = WageService::factory()->create();
+
+    $this->actingAs($user)->post(route('application-settings.update-general'), validApplicationSettingsPayload([$field => $service->id]));
+    expect(ApplicationSettings::get()->{$field})->toBe($service->id);
+
+    $this->actingAs($user)->post(route('application-settings.update-general'), validApplicationSettingsPayload());
+    expect(ApplicationSettings::get()->{$field})->toBeNull();
+})->with(['allowances_service_id', 'overtime_50_service_id', 'overtime_100_service_id', 'time_balance_service_id']);
+
+test('edit general tab preselects the configured nursing holiday service', function () {
+    $user = applicationSettingsUser(['application-settings.update.general']);
+    $nursingHolidayService = WageService::factory()->create(['name' => 'Pflegeurlaub']);
+    ApplicationSettings::get()->update(['nursing_holiday_service_id' => $nursingHolidayService->id]);
+    ApplicationSettings::refreshCache();
+
+    $response = $this->actingAs($user)->get(route('application-settings.edit', ['tab' => 'general']));
+
+    $response->assertSuccessful()
+        ->assertSee('Pflegeurlaubsleistung')
+        ->assertViewHas('currentNursingHolidayService', fn ($service) => $service->is($nursingHolidayService));
+});

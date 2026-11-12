@@ -173,6 +173,7 @@ return [
         'title'                           => 'Titel',
         'content'                         => 'Inhalt',
         'description'                     => 'Beschreibung',
+        'unit'                            => 'Einheit',
         'excerpt'                         => 'Auszug',
         'date'                            => 'Datum',
         'time'                            => 'Uhrzeit',

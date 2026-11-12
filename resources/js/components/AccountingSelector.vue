@@ -1107,11 +1107,12 @@
             addAccounting() {
                 let date = this.date;
                 let amount = this.amount === null ? 0 : Number(this.amount);
+                let hourBased = this.service !== null && this.service.type === 'wage' && this.service.unit === this.services_hour_unit;
 
                 this.service_provided_on_invalid = !isValidIsoDate(date);
-                this.service_provided_started_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
+                this.service_provided_started_at_invalid = hourBased &&
                     !this.isTwentyFourHourTimeFormat(this.service_provided_started_at);
-                this.service_provided_ended_at_invalid = this.service.type === 'wage' && this.service.unit === 'h' &&
+                this.service_provided_ended_at_invalid = hourBased &&
                     !this.isTwentyFourHourTimeFormat(this.service_provided_ended_at);
                 this.project_invalid = this.project === null;
                 this.service_invalid = this.service === null;

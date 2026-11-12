@@ -13,7 +13,7 @@
         <div>
             <label for="unit">Einheit</label>
             <service-unit-dropdown :units="{{ $units }}" current_unit="{{ $currentUnit ?? "''" }}" v-cloak></service-unit-dropdown>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback @error('unit') d-block @enderror">
                 @error('unit')
                     {{ $message }}
                 @else

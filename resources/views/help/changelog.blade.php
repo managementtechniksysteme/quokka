@@ -18,6 +18,26 @@
 
         <div class="mt-2 mt-md-4">
     @markdown
+    ### v0.7.0-47f73b7 (12.11.2026)
+    * Neu: Pflegeurlaub. In den allgemeinen Einstellungen kann im Bereich Urlaub eine Pflegeurlaubsleistung gewählt
+      werden. Pflegeurlaub zählt wie Urlaub nicht zu den geleisteten Stunden und wird in der Abrechnungsauswertung
+      unterhalb der Tabelle (wie die Privatkilometer) je Mitarbeiter ausgewiesen.
+    * Ein Fehler wurde behoben, durch den sich nach der Zeitumstellung das Datum von Abrechnungen und
+      Fahrtenbucheinträgen aus der Sommerzeit beim Bearbeiten auf den Vortag verschob (z.B. von Montag auf Sonntag).
+      Dasselbe betraf Serviceberichte, die nach der Zeitumstellung erstellt oder gespeichert wurden.
+    * Ein Fehler wurde behoben, durch den die automatische Berechnung von Beginn, Ende bzw. Stunden in der Abrechnung
+      am Tag der Zeitumstellung um eine Stunde abwich.
+    * Ein Fehler wurde behoben, durch den beim Erfassen einer Abrechnung ohne gewählte Leistung keine Fehlermeldungen
+      angezeigt wurden.
+    * Ein Fehler wurde behoben, durch den beim Anlegen einer Lohndienstleistung ohne Einheit keine Fehlermeldung
+      angezeigt wurde.
+    * Ein Fehler wurde behoben, durch den sich die Diäten-, Überstunden- und Zeitausgleichsleistung in den
+      Einstellungen nicht mehr entfernen ließen.
+    * Ein Fehler wurde behoben, durch den die Stundensummen auf der Startseite und in der Abrechnungsauswertung bei 0
+      blieben, solange in den Einstellungen nicht alle Sonderleistungen gewählt waren.
+    @endmarkdown
+
+    @markdown
     ### v0.6.0-a945811 (31.10.2026)
     * Viele Angaben können nun direkt auf der Detailseite geändert werden, ohne das Bearbeitungsformular zu öffnen.
       Änderungen werden sofort gespeichert und lösen dieselben Benachrichtigungen aus wie beim regulären Bearbeiten.

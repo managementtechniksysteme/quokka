@@ -13,8 +13,8 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'starts_on' => $this->starts_on,
-            'ends_on' => $this->ends_on,
+            'starts_on' => $this->starts_on?->toDateString(),
+            'ends_on' => $this->ends_on?->toDateString(),
             'comment' => $this->comment,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

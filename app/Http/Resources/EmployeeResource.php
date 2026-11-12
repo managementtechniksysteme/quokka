@@ -12,8 +12,8 @@ class EmployeeResource extends JsonResource
     {
         return [
             'id' => $this->person_id,
-            'entered_on' => $this->entered_on,
-            'left_on' => $this->left_on,
+            'entered_on' => $this->entered_on?->toDateString(),
+            'left_on' => $this->left_on?->toDateString(),
             'holidays' => $this->holidays,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

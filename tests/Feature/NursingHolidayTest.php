@@ -22,13 +22,13 @@ function configureNursingHolidayService(string $unit = 'T'): WageService
     return $service;
 }
 
-function renderAccountingReport(array $employees, array $nursingHolidays, ?WageService $nursingHolidayService): string
+function renderAccountingReport(array $employees, array $nursingHolidays, ?WageService $nursingHolidayService, float $kilometreCosts = 0, array $privateKilometres = []): string
 {
     return view('latex.accounting_report', [
         'report' => collect(),
         'employees' => $employees,
-        'private_kilometres' => [],
-        'kilometre_costs' => 0,
+        'private_kilometres' => $privateKilometres,
+        'kilometre_costs' => $kilometreCosts,
         'project' => null,
         'service' => null,
         'allowancesService' => null,
@@ -110,6 +110,16 @@ test('the accounting report shows the nursing holidays per employee and their su
     expect($latex)->toContain('AAA: 1 T')
         ->toContain('BBB: 2 T')
         ->toContain('Summe: 3 T');
+});
+
+test('the accounting report shows the nursing holidays above the private kilometres', function () {
+    $service = configureNursingHolidayService();
+    $employee = Employee::with(['user', 'person'])->find(User::factory()->create()->employee_id);
+    $username = $employee->user->username;
+
+    $latex = renderAccountingReport([$employee], [$username => 1], $service, 0.42, [$username => 10]);
+
+    expect(strpos($latex, 'Pflegeurlaub: '))->toBeLessThan(strpos($latex, 'Privatkilometer: '));
 });
 
 test('the accounting report has no nursing holiday line while no service is configured', function () {

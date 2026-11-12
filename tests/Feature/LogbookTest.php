@@ -78,6 +78,20 @@ test('ajax index succeeds for a view.own-only user with only_own set', function 
     expect(collect($response->json())->pluck('id'))->toEqual(collect([$own->id]));
 });
 
+// Regression: see the identical AccountingTest case — a timestamp-serialized
+// date shifted summer-time rows back a day once saved after the DST change.
+test('ajax index serializes the driven date as a plain calendar date', function () {
+    $user = logbookUser(['logbook.view.own']);
+    ownLogbookEntry($user, ['driven_on' => '2026-10-19']);
+
+    $response = $this->actingAs($user)
+        ->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
+        ->getJson(route('logbook.index', ['only_own' => 1]));
+
+    $response->assertSuccessful()
+        ->assertJsonPath('0.driven_on', '2026-10-19');
+});
+
 test('ajax index excludes own entries for a view.other-only user', function () {
     $user = logbookUser(['logbook.view.other']);
     ownLogbookEntry($user);

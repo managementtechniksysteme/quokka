@@ -194,8 +194,8 @@
                               </v-select>
                           </div>
                           <div class="q-dtable__cell" @click="setEdit(book, 'driven_on')">
-                              <span v-if="book.edit !== 'driven_on'">{{ book.driven_on.toLocaleDateString("de", { month: '2-digit', day: '2-digit', year: 'numeric' }) }}</span>
-                              <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="getDateStringForInputField(book.driven_on)" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
+                              <span v-if="book.edit !== 'driven_on'">{{ formatIsoDate(book.driven_on) }}</span>
+                              <input v-if="book.edit === 'driven_on'" type="date" class="form-control form-control-sm" v-bind:class="{'is-invalid': table_driven_on_invalid}" ref="table_input" id="table_driven_on" name="table_driven_on" :value="book.driven_on" placeholder="" required @blur="changeLogbookDrivenOn($event, book)" @keydown.enter.prevent="changeLogbookDrivenOn($event, book)" @keydown.tab.prevent="onTableInputTab($event, book, 'driven_on')" />
                           </div>
                           <div class="q-dtable__cell d-flex align-items-center gap-1">
                               <span v-if="book.edit !== 'start_kilometres'" @click="setEdit(book, 'start_kilometres')">{{ book.start_kilometres.toLocaleString() }}</span>
@@ -284,7 +284,7 @@
                       @click="openMobileRowActions(book)"
                   >
                       <div class="q-trow--card__top">
-                          <span class="q-trow--card__date">{{ book.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</span>
+                          <span class="q-trow--card__date">{{ formatIsoDate(book.driven_on) }}</span>
                           <span v-if="book.action === 'store'" class="q-status q-status--created">Neu</span>
                           <span v-else-if="book.action === 'update'" class="q-status q-status--edited">Bearb.</span>
                           <span v-else-if="book.action === 'destroy'" class="q-status q-status--removed">Entfernt</span>
@@ -441,7 +441,7 @@
           <div class="offcanvas offcanvas-bottom q-sheet" tabindex="-1" ref="mobileRowActionsSheet" aria-label="Aktionen" @hidden.bs.offcanvas="onMobileRowActionsHidden">
               <div class="q-sheet__handle" aria-hidden="true"><span class="q-sheet__handle-bar"></span></div>
               <div class="offcanvas-body" v-if="mobileRowActions.target">
-                  <div class="q-sheet__label">{{ mobileRowActions.target.driven_on.toLocaleDateString("de", { day: '2-digit', month: '2-digit', year: 'numeric' }) }}</div>
+                  <div class="q-sheet__label">{{ formatIsoDate(mobileRowActions.target.driven_on) }}</div>
 
                   <button v-if="canEditLogbook(current_employee, mobileRowActions.target)" type="button" class="q-row" @click="mobileEditFromRowActions">
                       <span class="q-avatar q-avatar--muted"><svg class="icon-bs icon-20"><use href="/svg/bootstrap-icons.svg#pencil"></use></svg></span>
@@ -603,6 +603,7 @@
 
 <script>
     import breakpoint from '../mixins/breakpoint';
+    import { addDaysToIsoDate, formatIsoDate, isValidIsoDate, todayIsoDate } from '../dates';
 
     const FETCH_ERROR_MESSAGE = "Beim Filtern der Daten traten Probleme auf.";
     const SAVE_SUCCESS_MESSAGE = "Die Änderungen wurden erfolgreich gespeichert.";
@@ -625,7 +626,6 @@
         mixins: [breakpoint],
 
         data() {
-            let today = new Date();
             return {
                 pagination_labels: PAGINATION_LABELS,
 
@@ -641,7 +641,7 @@
                 filter_only_own_errors: null,
                 filter_only_unsaved: false,
 
-                driven_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                driven_on: todayIsoDate(),
                 driven_on_invalid: false,
                 table_driven_on_invalid: false,
                 start_kilometres: null,
@@ -693,11 +693,7 @@
 
         mounted() {
             if(this.current_logbook) {
-                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-
                 this.current_logbook.forEach(book => {
-                    let date = Date.parse(book.driven_on);
-
                     this.logbook.push({
                         action: null,
                         action_old: null,
@@ -707,7 +703,7 @@
                         hover: false,
                         edit: null,
                         id: book.id,
-                        driven_on: new Date(date - userTimezoneOffset),
+                        driven_on: book.driven_on,
                         start_kilometres: book.start_kilometres,
                         end_kilometres: book.end_kilometres,
                         driven_kilometres: book.driven_kilometres,
@@ -723,12 +719,7 @@
             }
 
             else if(this.show_days > 0) {
-                let today = new Date();
-                let date = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000);
-
-                date.setDate(date.getDate() - this.show_days)
-
-                this.filter_start = this.getDateStringForInputField(date);
+                this.filter_start = addDaysToIsoDate(todayIsoDate(), -this.show_days);
 
                 this.filterData();
             }
@@ -838,8 +829,6 @@
             },
 
             updateLocalLogbook(fetchedLogbook) {
-                let userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
-
                 let newLogbook = fetchedLogbook.filter(
                     fetchedLogbook => !this.logbook.some(
                         localLogbook => localLogbook.id === fetchedLogbook.id
@@ -853,8 +842,6 @@
                 );
 
                 newLogbook.forEach(book => {
-                    let date = Date.parse(book.driven_on);
-
                     this.logbook.push({
                         action: null,
                         action_old: null,
@@ -864,7 +851,7 @@
                         hover: false,
                         edit: null,
                         id: book.id,
-                        driven_on: new Date(date - userTimezoneOffset),
+                        driven_on: book.driven_on,
                         start_kilometres: book.start_kilometres,
                         end_kilometres: book.end_kilometres,
                         driven_kilometres: book.driven_kilometres,
@@ -1053,8 +1040,8 @@
 
             sortArrayByDateVehicleStartKilometres(logbook) {
                 logbook.sort((a, b) => {
-                    if(a.driven_on.getTime() !== b.driven_on.getTime()) {
-                        return a.driven_on - b.driven_on;
+                    if(a.driven_on !== b.driven_on) {
+                        return a.driven_on < b.driven_on ? -1 : 1;
                     }
                     else if(a.vehicle_id !== b.vehicle_id) {
                         return this.getVehicleRegistrationIdentifier(a.vehicle_id).localeCompare(
@@ -1177,13 +1164,13 @@
             },
 
             addLogbook() {
-                let date = new Date(this.driven_on);
+                let date = this.driven_on;
                 let startKilometres = this.start_kilometres === null ? null : Number(this.start_kilometres);
                 let endKilometres = this.end_kilometres === null ? null : Number(this.end_kilometres);
                 let drivenKilometres = this.driven_kilometres === null ? null : Number(this.driven_kilometres);
                 let litresRefuelled = this.litres_refuelled === null ? null : Number(this.litres_refuelled);
 
-                this.driven_on_invalid = isNaN(date.getTime());
+                this.driven_on_invalid = !isValidIsoDate(date);
                 this.start_kilometres_invalid = !Number.isInteger(startKilometres) || startKilometres < 0;
                 this.end_kilometres_invalid = !Number.isInteger(endKilometres) || endKilometres < 1;
                 this.driven_kilometres_invalid = !Number.isInteger(drivenKilometres) || drivenKilometres < 1;
@@ -1372,10 +1359,8 @@
             },
 
             _blankSheetDraft() {
-                let today = new Date();
-
                 return {
-                    driven_on: this.getDateStringForInputField(new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000)),
+                    driven_on: todayIsoDate(),
                     start_kilometres: null,
                     end_kilometres: null,
                     driven_kilometres: null,
@@ -1405,7 +1390,7 @@
                     errors: {},
                     returnTrip: false,
                     draft: {
-                        driven_on: this.getDateStringForInputField(logbook.driven_on),
+                        driven_on: logbook.driven_on,
                         start_kilometres: logbook.start_kilometres,
                         end_kilometres: logbook.end_kilometres,
                         driven_kilometres: logbook.driven_kilometres,
@@ -1473,14 +1458,14 @@
 
             applySheet() {
                 let draft = this.sheet.draft;
-                let date = new Date(draft.driven_on);
+                let date = draft.driven_on;
                 let startKilometres = draft.start_kilometres === null || draft.start_kilometres === '' ? null : Number(draft.start_kilometres);
                 let endKilometres = draft.end_kilometres === null || draft.end_kilometres === '' ? null : Number(draft.end_kilometres);
                 let drivenKilometres = draft.driven_kilometres === null || draft.driven_kilometres === '' ? null : Number(draft.driven_kilometres);
                 let litresRefuelled = draft.litres_refuelled === null || draft.litres_refuelled === '' ? null : Number(draft.litres_refuelled);
 
                 this.sheet.errors = {
-                    driven_on: isNaN(date.getTime()),
+                    driven_on: !isValidIsoDate(date),
                     start_kilometres: !Number.isInteger(startKilometres) || startKilometres < 0,
                     end_kilometres: !Number.isInteger(endKilometres) || endKilometres < 1,
                     driven_kilometres: !Number.isInteger(drivenKilometres) || drivenKilometres < 1,
@@ -1602,7 +1587,7 @@
                 let chips = [];
 
                 if(this.filter_start || this.filter_end) {
-                    let format = value => new Date(value).toLocaleDateString('de', { day: '2-digit', month: '2-digit' });
+                    let format = value => formatIsoDate(value, false);
                     let label = this.filter_start && this.filter_end ? format(this.filter_start) + ' – ' + format(this.filter_end)
                         : this.filter_start ? 'ab ' + format(this.filter_start)
                         : 'bis ' + format(this.filter_end);
@@ -1671,9 +1656,9 @@
 
 
             changeLogbookDrivenOn(event, changedLogbook) {
-                let date = new Date(event.target.value);
+                let date = event.target.value;
 
-                if(isNaN(date.getTime())) {
+                if(!isValidIsoDate(date)) {
                     this.table_driven_on_invalid = true;
                     return;
                 }
@@ -2083,9 +2068,7 @@
                 return employee ? employee.avatar.initials : this.current_employee.avatar.initials;
             },
 
-            getDateStringForInputField(date) {
-                return date !== null ? date.toISOString().slice(0, 10) : null;
-            },
+            formatIsoDate,
 
             autofill(logbook = null) {
                 let startKilometres =

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\CalendarDate;
 use App\Traits\FiltersPermissions;
 use App\Traits\FiltersSearch;
 use App\Traits\OrdersResults;
@@ -21,7 +22,7 @@ class Logbook extends Model
     protected function casts(): array
     {
         return [
-        'driven_on' => 'date',
+        'driven_on' => CalendarDate::class,
         'start_kilometres' => 'int',
         'end_kilometres' => 'int',
         'driven_kilometres' => 'int',

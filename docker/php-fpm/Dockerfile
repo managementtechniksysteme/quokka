@@ -1,7 +1,7 @@
 ARG user
 ARG uid
 
-FROM php:8.5-fpm AS base
+FROM php:8.5.13-fpm AS base
 
 # Arguments defined in docker-compose.yml
 ARG user
